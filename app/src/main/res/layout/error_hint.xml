@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/text_17"
+    android:orientation="horizontal"
+    tools:context="com.shuyun.qapp.ui.login.LoginActivity">
+    <!--密码或者验证码错误提示,根据情况显示或者隐藏-->
+    <!--android:text="@string/password_error"-->
+    <TextView
+        android:id="@+id/tv_error_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/text_20"
+
+        android:textColor="@color/color_3"
+        android:textSize="@dimen/text_13"
+        android:visibility="gone"/>
+    <!--根据情况显示或者隐藏-->
+    <TextView
+        android:id="@+id/tv_forget_pwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/text_14"
+        android:text="@string/forget_password"
+        android:textColor="@color/color_2"
+        android:textSize="@dimen/text_13"
+        android:visibility="gone"/>
+</RelativeLayout>

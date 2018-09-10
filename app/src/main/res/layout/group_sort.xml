@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/text_12"
+    android:layout_marginRight="@dimen/text_12"
+    android:paddingBottom="@dimen/text_13"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_13"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/rl_active"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/text_47.5"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/iv_group_icon01"
+                android:layout_width="39dp"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/active" />
+
+            <TextView
+                android:id="@+id/tv_hot01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_1"
+                android:layout_toRightOf="@+id/iv_group_icon01"
+                android:background="@drawable/common_text_bg_1"
+                android:padding="@dimen/text_1"
+                android:text="热门"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_8"
+                android:textStyle="bold"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tv_group_name01"
+                android:layout_width="39dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_group_icon01"
+                android:layout_marginTop="@dimen/text_2"
+                android:gravity="center"
+                android:text="@string/active"
+                android:singleLine="true"
+                android:textColor="@color/color_0"
+                android:textSize="@dimen/text_13" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_life"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/text_47.5"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/iv_group_icon02"
+                android:layout_width="39dp"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/life" />
+
+            <TextView
+                android:id="@+id/tv_hot02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_1"
+                android:layout_toRightOf="@+id/iv_group_icon02"
+                android:background="@drawable/common_text_bg_1"
+                android:padding="@dimen/text_1"
+                android:text="热门"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_8"
+                android:textStyle="bold"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tv_group_name02"
+                android:layout_width="39dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_group_icon02"
+                android:layout_marginTop="@dimen/text_2"
+                android:gravity="center"
+                android:text="@string/live"
+                android:singleLine="true"
+                android:textColor="@color/color_0"
+                android:textSize="@dimen/text_13" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_culture"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/text_47.5"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/iv_group_icon03"
+                android:layout_width="39dp"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/wenxue" />
+
+            <TextView
+                android:id="@+id/tv_hot03"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_1"
+                android:layout_toRightOf="@+id/iv_group_icon03"
+                android:background="@drawable/common_text_bg_1"
+                android:padding="@dimen/text_1"
+                android:text="热门"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_8"
+                android:textStyle="bold"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tv_group_name03"
+                android:layout_width="39dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_group_icon03"
+                android:layout_marginTop="@dimen/text_2"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/culture"
+                android:textColor="@color/color_0"
+                android:textSize="@dimen/text_13" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_video"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/text_47.5"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/iv_group_icon04"
+                android:layout_width="39dp"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/video" />
+
+            <TextView
+                android:id="@+id/tv_hot04"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_1"
+                android:layout_toRightOf="@+id/iv_group_icon04"
+                android:background="@drawable/common_text_bg_1"
+                android:padding="@dimen/text_1"
+                android:text="热门"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_8"
+                android:textStyle="bold"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tv_group_name04"
+                android:layout_width="39dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_group_icon04"
+                android:layout_marginTop="@dimen/text_2"
+                android:gravity="center"
+                android:text="@string/movie"
+                android:textColor="@color/color_0"
+                android:textSize="@dimen/text_13"
+                android:singleLine="true"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_25"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/rl_music"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/text_47.5"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/iv_group_icon05"
+                android:layout_width="39dp"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/music" />
+
+            <TextView
+                android:id="@+id/tv_hot05"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_1"
+                android:layout_toRightOf="@+id/iv_group_icon05"
+                android:background="@drawable/common_text_bg_1"
+                android:padding="@dimen/text_1"
+                android:text="热门"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_8"
+                android:textStyle="bold"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tv_group_name05"
+                android:layout_width="39dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_group_icon05"
+                android:layout_marginTop="@dimen/text_2"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/music"
+                android:textColor="@color/color_0"
+                android:textSize="@dimen/text_13" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_history"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/text_47.5"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/iv_group_icon06"
+                android:layout_width="39dp"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/history" />
+
+            <TextView
+                android:id="@+id/tv_hot06"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_1"
+                android:layout_toRightOf="@+id/iv_group_icon06"
+                android:background="@drawable/common_text_bg_1"
+                android:padding="@dimen/text_1"
+                android:text="热门"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_8"
+                android:textStyle="bold"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tv_group_name06"
+                android:layout_width="39dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_group_icon06"
+                android:layout_marginTop="@dimen/text_2"
+                android:gravity="center"
+                android:text="@string/history"
+                android:textColor="@color/color_0"
+                android:textSize="@dimen/text_13"
+                android:singleLine="true"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_edu"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/text_47.5"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/iv_group_icon07"
+                android:layout_width="39dp"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/edu" />
+
+            <TextView
+                android:id="@+id/tv_hot07"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_1"
+                android:layout_toRightOf="@+id/iv_group_icon07"
+                android:background="@drawable/common_text_bg_1"
+                android:padding="@dimen/text_1"
+                android:text="热门"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_8"
+                android:textStyle="bold"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tv_group_name07"
+                android:layout_width="39dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_group_icon07"
+                android:layout_marginTop="@dimen/text_2"
+                android:singleLine="true"
+                android:gravity="center"
+                android:text="@string/education"
+                android:textColor="@color/color_0"
+                android:textSize="@dimen/text_13" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_more"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/text_47.5"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/iv_more"
+                android:layout_width="39dp"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/more" />
+
+            <TextView
+                android:id="@+id/tv_hot08"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_1"
+                android:layout_toRightOf="@+id/iv_more"
+                android:background="@drawable/common_text_bg_1"
+                android:padding="@dimen/text_1"
+                android:text="热门"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_8"
+                android:textStyle="bold"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tv_group_name08"
+                android:layout_width="39dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_more"
+                android:layout_marginTop="@dimen/text_2"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/more"
+                android:textColor="@color/color_0"
+                android:textSize="@dimen/text_13" />
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

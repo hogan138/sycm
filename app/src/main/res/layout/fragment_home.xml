@@ -1,0 +1,120 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_home_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.shuyun.qapp.ui.homepage.HomeFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_item_height">
+
+        <RelativeLayout
+            android:id="@+id/iv_common_left_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/text_12" />
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/tv_common_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/color_0"
+            android:textSize="@dimen/text_16" />
+
+        <ImageView
+            android:id="@+id/iv_common_right_icon"
+            android:layout_width="@dimen/text_20"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/text_12" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/light_white"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="40dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <!--banner轮播图-->
+            <include layout="@layout/layout_banner" />
+
+            <include layout="@layout/common_line_2" />
+            <!--推荐题组-->
+            <include layout="@layout/recommend_group_question" />
+
+            <include layout="@layout/recommend_group_item" />
+
+            <ImageView
+                android:id="@+id/iv_against"
+                android:layout_width="match_parent"
+                android:layout_height="59dp"
+                android:scaleType="fitXY"
+                android:src="@mipmap/home_against" />
+
+            <!--题组分类-->
+            <include layout="@layout/group_question_sort_title" />
+
+            <include layout="@layout/group_sort" />
+
+            <!--跑马灯效果-->
+            <include layout="@layout/horse_race_lamp" />
+            <!--邀请有奖-->
+            <include layout="@layout/invite_prize" />
+
+            <include layout="@layout/common_line_2" />
+            <!--热门提组-->
+            <include layout="@layout/hot_group_question_head" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:descendantFocusability="blocksDescendants">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_hot_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/text_12"
+                    android:layout_marginTop="@dimen/text_2"
+                    android:paddingBottom="@dimen/text_12">
+
+                </android.support.v7.widget.RecyclerView>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <ImageView
+        android:id="@+id/iv_bx"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/text_70"
+        android:layout_marginRight="@dimen/text_10"
+        android:src="@mipmap/indexbx"
+        android:visibility="gone" />
+</RelativeLayout>

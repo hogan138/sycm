@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_change_personal_info"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+    <!--标题-->
+    <include layout="@layout/common_left_title" />
+    <!--修改头像-->
+    <include layout="@layout/change_head_icon" />
+
+    <include layout="@layout/common_line_6" />
+    <!--绑定手机-->
+    <include layout="@layout/bind_phone_num" />
+
+    <include layout="@layout/common_line_6" />
+    <!--微信绑定-->
+    <include layout="@layout/bind_wechat" />
+
+    <include layout="@layout/common_line_6" />
+    <!--实名认证-->
+    <include layout="@layout/real_name_auth" />
+
+    <include layout="@layout/common_line_6" />
+    <!--修改密码-->
+    <include layout="@layout/modify_password_num" />
+
+    <include layout="@layout/common_line_6" />
+</LinearLayout>

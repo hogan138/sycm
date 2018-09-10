@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_code_container"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/common_item_height"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="@dimen/text_13"
+        android:layout_height="@dimen/text_17"
+        android:layout_marginLeft="@dimen/common_margin"
+        android:layout_marginRight="@dimen/common_margin"
+        android:src="@mipmap/code_icon" />
+
+    <TextView
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="@string/code"
+        android:textColor="@color/color_1"
+        android:textSize="@dimen/text_16" />
+
+    <EditText
+        android:id="@+id/et_code"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/medium_margin"
+        android:layout_weight="1"
+        android:background="@null"
+        android:hint="@string/input_code"
+        android:textColor="@color/color_0"
+        android:inputType="number"
+        android:textSize="@dimen/text_16" />
+    <!--获取验证码按钮,根据情况显示或者隐藏-->
+    <Button
+        android:id="@+id/btn_get_code1"
+        android:layout_width="80dp"
+        android:layout_height="20dp"
+        android:layout_marginRight="19dp"
+        android:text="@string/get_code"
+        android:src="@drawable/is_show_pwd"
+        android:background="@drawable/common_btn_bg_3"
+        android:textSize="@dimen/text_13"
+        android:textColor="@color/color_4"/>
+    <!--60s倒计时,根据情况显示或者隐藏-->
+    <TextView
+        android:id="@+id/tv_60_second"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_2"
+        android:textSize="@dimen/text_13"
+        android:layout_marginRight="25dp"
+        android:text="@string/tv_60_s"
+        android:visibility="gone"/>
+</LinearLayout>

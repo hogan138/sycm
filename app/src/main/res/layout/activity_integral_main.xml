@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_item_height">
+
+        <RelativeLayout
+            android:id="@+id/rl_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_left_back"
+                android:layout_width="@dimen/text_20"
+                android:layout_height="@dimen/text_20"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/text_18"
+                android:src="@mipmap/backb" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="积分夺宝"
+            android:textColor="@color/color_0"
+            android:textSize="@dimen/text_16" />
+
+        <TextView
+            android:id="@+id/tv_rule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="15dp"
+            android:text="规则"
+            android:textColor="#0079ff"
+            android:textSize="@dimen/text_17" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/light_white" />
+    </RelativeLayout>
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rl_title">
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_exam_image"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:layout_marginLeft="@dimen/text_15"
+                android:layout_marginRight="@dimen/text_15"
+                android:layout_marginTop="@dimen/text_20"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_gift_history"
+                    android:layout_width="0dp"
+                    android:layout_height="75dp"
+                    android:layout_weight="1"
+                    android:background="@mipmap/gift_history_bg" />
+
+                <ImageView
+                    android:id="@+id/iv_my_gift"
+                    android:layout_width="0dp"
+                    android:layout_height="75dp"
+                    android:layout_marginLeft="@dimen/text_10"
+                    android:layout_weight="1"
+                    android:background="@mipmap/my_gift_bg" />
+
+            </LinearLayout>
+
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/text_10"
+                android:layout_marginTop="@dimen/text_20"
+                android:background="#f5f5f5"></View>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_all_gift"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/text_20"
+                    android:layout_marginLeft="@dimen/text_15"
+                    android:layout_marginTop="@dimen/text_20"
+                    android:text="全部奖品"
+                    android:textColor="#333333"
+                    android:textSize="15sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_all_gift"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/text_15"
+                        android:layout_marginRight="@dimen/text_15" />
+
+                    <ImageView
+                        android:id="@+id/iv_empty"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@mipmap/blank"
+                        android:visibility="gone" />
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+    <LinearLayout
+        android:id="@+id/tv_all_gift1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_title"
+        android:background="@color/white"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/text_20"
+            android:layout_marginLeft="@dimen/text_15"
+            android:layout_marginTop="@dimen/text_20"
+            android:text="全部奖品"
+            android:textColor="#333333"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

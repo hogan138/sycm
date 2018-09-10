@@ -1,0 +1,117 @@
+<resources>
+    <string name="app_name">全民共进</string>
+    <string name="skip">跳过</string>
+    <string name="three_second">3s</string>
+    <string name="code_login">验证码登录/注册</string>
+    <string name="pwd_login">密码登录</string>
+    <string name="phone_number">手机号</string>
+    <string name="old_phone_number">当前手机号</string>
+    <string name="input_phone_number">请输入手机号</string>
+    <string name="password">密&#160;&#160;&#160;&#8201;码</string>
+    <string name="code">验证码</string>
+    <string name="auth">身份证号</string>
+    <string name="input_name">请输入真实姓名</string>
+    <string name="input_auth">请输入身份证号码</string>
+    <string name="limit">最低提现50元,最高提现50.9元</string>
+    <string name="alipay_real_name">支付宝绑定姓名</string>
+
+    <string name="input_password">请输入密码</string>
+    <!--<string name="input_code">请输入验证码</string>-->
+    <string name="input_code">请输入验证码</string>
+    <string name="get_code">获取验证码</string>
+    <string name="tv_60_s">60s</string>
+    <string name="forget_password">忘记密码?</string>
+    <string name="code_error">验证码错误!</string>
+    <!--<string name="password_error">密码错误,请重新输入密码!</string>-->
+    <string name="login">登录</string>
+    <string name="other_login">其他登录方式</string>
+    <string name="agree">同意</string>
+    <string name="agreement"><u>全民共进用户服务协议</u></string>
+    <string name="bind_phone_number">绑定手机号</string>
+    <string name="confirm">确定</string>
+    <string name="all_broadcast">全民播报</string>
+    <string name="award">恭喜15664655665用户获得100元现金</string>
+    <string name="question_group">推荐题组</string>
+    <string name="question_group_sort">题组分类</string>
+    <string name="hot_question_group_header">热门题组</string>
+    <string name="change_batch">换一批</string>
+    <string name="create_city">创建文明城市</string>
+    <string name="five_water_work">五水共治</string>
+    <string name="active">活动</string>
+    <string name="live">生活</string>
+    <string name="culture">文学</string>
+    <string name="movie">影视剧</string>
+
+    <string name="music">音乐</string>
+    <string name="history">历史</string>
+    <string name="education">教育</string>
+    <string name="more">更多</string>
+    <string name="classify">题组分类</string>
+    <string name="give_question">出题方:衢州市人民政府</string>
+    <string name="mine">我的</string>
+    <string name="real_name">真实姓名</string>
+    <string name="alipay">支付宝账户:</string>
+
+
+    <string name="withdraw_deposit">提现</string>
+    <string name="change_account"><u>修改</u></string>
+    <string name="name_auth">已实名认证</string>
+    <string name="go_name_auth">前往实名认证</string>
+    <string name="surplus_number">今日答题次数剩余:0</string>
+    <string name="add_answer_num"><u>增加答题次数</u></string>
+    <string name="mine_account">我的账户</string>
+    <string name="check_account_record"><u>查看账户记录</u></string>
+    <string name="cash">现金</string>
+    <string name="balance">余额: ￥666</string>
+    <string name="balance1">余额: 888888</string>
+    <string name="hint">普通账户满50即可提现</string>
+    <string name="hint1">用于兑换道具,抽奖,可随时使用</string>
+    <string name="immedicate_withdrawal">立即\n提现</string>
+    <string name="immedicate_use">立即\n使用</string>
+    <string name="integral">积分</string>
+    <string name="mine_prize">我的奖品</string>
+    <string name="not_use">未使用</string>
+    <string name="used">已使用</string>
+    <string name="out_of_date">已过期</string>
+    <string name="all_prize">全部奖品</string>
+    <string name="tv_99">+99</string>
+    <string name="transcript">成绩单</string>
+    <string name="system_set">系统设置</string>
+    <string name="contact_us">联系我们</string>
+    <string name="information">消息</string>
+    <string name="change_personal_info">基本信息修改</string>
+    <string name="change_icon">修改头像</string>
+    <string name="bind_phone_num">绑定手机</string>
+    <string name="real_name_auth">实名认证</string>
+    <string name="change_phone_num">更换手机号</string>
+    <string name="inform">请通过\"全名共进\"微信公众号向我们反馈疑问和建议。</string>
+    <string name="about_us">浙江舒云互联网传媒有限公司总部位于浙江杭州。是一家致力于互联网和移动互联网产品研
+        发、运营;广播电视节目制作、推广覆盖等业务的新型传媒公司。旗下\"全名共进\"APP是一款以中国传统文化和爱国
+        主义教育做为核心内容,以兴趣爱好、生活常识为延伸并细分内容的互联网产品。</string>
+
+    <string name="look_rules"><u>查看规则</u></string>
+    <string name="look_answer_guide">查看答题指南</string>
+    <string name="immediately_answer">立即答题</string>
+    <string name="three_correct_prize">答对三次有大奖</string>
+    <string name="understand">了解啦，我要答题</string>
+    <string name="go_lucky_draw">前往抽奖</string>
+    <string name="accuracy">正确率达到了<font color='#ffd149'>80%</font>,超过了12666名用户</string>
+    <string name="accuracy_1">正确率达到了<font color='#ffd149'>20%</font>,仅超过了666名用户</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="prize_explain"><span style="font-weight:bold">打开宝箱,您有机会获得以下奖励:</span>
+        \n<font style="margin-top:20px"> 1、现金奖:最高可获得<font color='#fe0000'>80%</font>元即时提现现金;</font>
+        \n<font style="margin-top:20px"> 2、景区门票:可获得<font color='#fe0000'>黄山风景区单人门票</font>一张;</font>
+        \n <font style="margin-top:20px"> 3、积分:最高可获得49999个<font color='#fe0000'>积分</font>,用于兑换各种奖品。</font>
+       </string>
+
+    <string name="feedback"><u>反馈</u></string>
+    <string name="questions">正在随机生成题目</string>
+    <string name="three_prize_expired">3件奖品快过期</string>
+    <string name="bind_wechat">微信绑定</string>
+
+    <string name="viewpager_indicator">%1$d/%2$d</string>
+    <string name="loading_text">请稍等...</string>
+
+</resources>

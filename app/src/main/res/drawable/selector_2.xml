@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<item android:drawable="@color/color_12" android:state_checked="true" />-->
+    <!--<item android:drawable="@color/white" android:state_checked="false" />-->
+    <!--<item android:drawable="@color/white" android:state_focused="false" />-->
+    <!--<item android:drawable="@color/color_12" android:state_focused="true" />-->
+    <!--有问题-->
+    <item android:drawable="@drawable/btn_blue_side_boundary_bg" android:state_selected="true" />
+    <item android:drawable="@color/white" android:state_selected="false" />
+
+</selector>

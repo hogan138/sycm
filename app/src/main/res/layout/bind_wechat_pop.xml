@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="270dp"
+    android:layout_height="250dp"
+    android:layout_gravity="center"
+    android:background="@drawable/popupwindow_bg">
+
+    <ImageView
+        android:id="@+id/iv_close"
+        android:layout_width="@dimen/text_15"
+        android:layout_height="@dimen/text_15"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/text_8"
+        android:layout_marginTop="@dimen/text_8"
+        android:src="@mipmap/close_2" />
+
+    <TextView
+        android:id="@+id/tv_bind_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_close"
+        android:layout_centerHorizontal="true"
+        android:text="您的账号已经绑定该微信"
+        android:textColor="@color/color_1"
+        android:textSize="@dimen/text_14" />
+
+    <ImageView
+        android:id="@+id/iv_wechat_head"
+        android:layout_width="@dimen/text_80"
+        android:layout_height="@dimen/text_80"
+        android:layout_below="@+id/tv_bind_status"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/text_16"
+        android:src="@mipmap/women_header" />
+
+    <TextView
+        android:id="@+id/tv_nick_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_wechat_head"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/text_15"
+        android:text="微信昵称"
+        android:textColor="@color/color_1"
+        android:textSize="@dimen/text_15" />
+
+    <View
+        android:id="@+id/v"
+        android:layout_width="270dp"
+        android:layout_height="@dimen/text_0.5"
+        android:layout_below="@id/tv_nick_name"
+        android:layout_marginTop="@dimen/text_11"
+        android:background="@color/color_33" />
+
+    <Button
+        android:id="@+id/btn_change_bind_wechat"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_32"
+        android:layout_below="@+id/v"
+        android:layout_marginBottom="@dimen/text_16"
+        android:layout_marginLeft="@dimen/text_31"
+        android:layout_marginRight="@dimen/text_31"
+        android:layout_marginTop="@dimen/text_16"
+        android:background="@drawable/btn_bind_wechat_bg"
+        android:text="更换绑定微信号"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_15" />
+
+</RelativeLayout>

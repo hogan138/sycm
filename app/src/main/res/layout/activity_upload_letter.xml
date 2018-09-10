@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_letter"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.shuyun.qapp.ui.mine.UploadLetterActivity">
+
+    <include layout="@layout/common_left_title" />
+
+    <ImageView
+        android:id="@+id/iv_letter"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_156"
+        android:layout_marginLeft="@dimen/text_23"
+        android:layout_marginRight="@dimen/text_23"
+        android:layout_marginTop="@dimen/text_10"
+        android:src="@mipmap/letter_example" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/text_16"
+        android:text="申请函样例点击可放大,您需要抄写该申请函并在底部签名"
+        android:textColor="@color/color_35"
+        android:textSize="@dimen/text_12" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_0.5"
+        android:layout_marginLeft="@dimen/text_15"
+        android:layout_marginRight="@dimen/text_15"
+        android:layout_marginTop="@dimen/text_15"
+        android:background="@color/color_36" />
+
+    <ImageView
+        android:id="@+id/iv_camera"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_140"
+        android:layout_marginLeft="@dimen/text_27"
+        android:layout_marginRight="@dimen/text_27"
+        android:layout_marginTop="@dimen/text_40"
+        android:scaleType="fitXY"
+        android:src="@mipmap/camera" />
+
+    <Button
+        android:id="@+id/btn_next"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_45"
+        android:layout_marginLeft="@dimen/text_30"
+        android:layout_marginRight="@dimen/text_30"
+        android:layout_marginTop="@dimen/text_44"
+        android:background="@drawable/btn_bind_wechat_bg"
+        android:text="下一步"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_15" />
+</LinearLayout>

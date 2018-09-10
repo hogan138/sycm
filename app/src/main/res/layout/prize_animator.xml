@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rl_prize_bg"
+    android:background="#66333333"
+    android:visibility="gone">
+
+
+    <RelativeLayout
+        android:id="@+id/rl_prize"
+        android:layout_width="@dimen/text_325"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_12.5"
+            android:layout_marginRight="@dimen/text_12.5"
+            android:layout_marginTop="@dimen/text_12.5"
+            android:background="@drawable/rule_popup_bg"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp">
+                <!--android:id="@+id/iv_box"-->
+                <com.shuyun.qapp.view.OvalImageView
+                    android:id="@+id/iv_prize_pic"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/zw02" />
+
+                <!--<ImageView-->
+                <!--android:id="@+id/iv_close"-->
+                <!--android:layout_width="@dimen/text_20"-->
+                <!--android:layout_height="@dimen/text_20"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_margin="@dimen/text_15"-->
+                <!--android:src="@mipmap/twrong" />-->
+
+                <TextView
+                    android:id="@+id/tv_title_name1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="@dimen/text_6"
+                    android:gravity="center_horizontal"
+                    android:text="现金"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_prize_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="@dimen/text_15"
+                    android:text="5000元奖励，iphone X 手机，答题就有机会获得诸多好礼哦！"
+                    android:textColor="#333333"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tv_prize_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="@dimen/text_10"
+                    android:textColor="@color/color_2"
+                    android:textSize="@dimen/text_12"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</RelativeLayout>
+
+    <!--<?xml version="1.0" encoding="utf-8"?>--><!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"--><!--android:id="@+id/rl_prize"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--android:layout_marginTop="@dimen/text_30">--><!--&lt;!&ndash;android:visibility="gone"&ndash;&gt;-->
+
+    <!--&lt;!&ndash;android:visibility="gone"&ndash;&gt;--><!--<RelativeLayout--><!--android:layout_width="@dimen/text_300"--><!--android:layout_height="@dimen/text_425"--><!--android:layout_centerInParent="true"--><!--android:background="@drawable/prize_animate_bg">-->
+
+    <!--&lt;!&ndash;android:layout_gravity="center"&ndash;&gt;--><!--<ImageView--><!--android:id="@+id/iv_prize_pic"--><!--android:scaleType="centerCrop"--><!--android:layout_width="match_parent"--><!--android:layout_height="@dimen/text_282"--><!--android:src="@mipmap/zw02" />-->
+
+    <!--<RelativeLayout--><!--android:id="@+id/rl"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_below="@+id/iv_prize_pic">-->
+
+    <!--<TextView--><!--android:id="@+id/tv_title_name1"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_marginLeft="@dimen/text_18"--><!--android:layout_marginTop="@dimen/text_10"--><!--android:text="黄山景区电子门票"--><!--android:textColor="@color/color_4"--><!--android:textSize="@dimen/text_20"--><!--android:textStyle="bold" />-->
+
+    <!--<TextView--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_alignParentRight="true"--><!--android:layout_marginRight="@dimen/text_18"--><!--android:layout_marginTop="@dimen/text_10"--><!--android:text="x1"--><!--android:textColor="@color/color_4"--><!--android:textSize="@dimen/text_20" />--><!--</RelativeLayout>-->
+
+    <!--<TextView--><!--android:id="@+id/tv_prize_content"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_below="@+id/rl"--><!--android:layout_marginLeft="@dimen/text_18"--><!--android:layout_marginTop="@dimen/text_15"--><!--android:text="价值230元黄山风景区电子门票一张,\n仅限个人使用。"--><!--android:textColor="@color/color_2"--><!--android:textSize="@dimen/text_15" />-->
+
+    <!--<TextView--><!--android:id="@+id/tv_prize_date"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_alignParentBottom="true"--><!--android:layout_centerHorizontal="true"--><!--android:layout_marginBottom="@dimen/text_10"--><!--android:textColor="@color/color_2"--><!--android:textSize="@dimen/text_12" />--><!--&lt;!&ndash;android:text="使用日期:2018.05.20-2018.06.01"&ndash;&gt;--><!--</RelativeLayout>--><!--</RelativeLayout>-->

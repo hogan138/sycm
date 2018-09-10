@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/common_left_title" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_63.5">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_12"
+            android:layout_marginTop="@dimen/text_33"
+            android:text="真实名字:"
+            android:textColor="@color/color_1"
+            android:textSize="@dimen/text_15" />
+
+
+        <EditText
+            android:id="@+id/et_real_name1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_82"
+            android:layout_marginRight="@dimen/text_12"
+            android:layout_marginTop="@dimen/text_33"
+            android:background="@null" />
+    </RelativeLayout>
+
+    <include layout="@layout/common_line_1" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_45.5">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/text_12"
+            android:text="联系方式:"
+            android:textColor="@color/color_1"
+            android:textSize="@dimen/text_15" />
+
+
+        <EditText
+            android:id="@+id/et_contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/text_82"
+            android:layout_marginRight="@dimen/text_12"
+            android:background="@null" />
+    </RelativeLayout>
+
+    <include layout="@layout/common_line_1" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_45.5">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/text_12"
+            android:text="反馈内容:"
+            android:textColor="@color/color_1"
+            android:textSize="@dimen/text_15" />
+
+    </RelativeLayout>
+
+    <!--反馈内容-->
+    <EditText
+        android:id="@+id/et_feed_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_150"
+        android:layout_marginLeft="@dimen/text_12"
+        android:layout_marginRight="@dimen/text_12"
+        android:background="@drawable/light_frame1"
+        android:gravity="left|top"
+        android:hint="请输入您的反馈信息,稍后会联系您..."
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:padding="@dimen/text_13"
+        android:textColor="@color/color_15"
+        android:textSize="@dimen/text_12" />
+
+    <Button
+        android:id="@+id/btn_commit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_40"
+        android:layout_marginLeft="@dimen/text_12"
+        android:layout_marginRight="@dimen/text_12"
+        android:layout_marginTop="@dimen/text_25"
+        android:background="@drawable/common_btn_bg_4"
+        android:text="提交"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_18" />
+</LinearLayout>

@@ -1,0 +1,92 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_mine_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.shuyun.qapp.ui.mine.MineFragment">
+
+    <include layout="@layout/common_right_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/mine_head" />
+
+            <include layout="@layout/common_line_3" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_15">
+
+                <ImageView
+                    android:id="@+id/iv"
+                    android:layout_width="@dimen/text_5"
+                    android:layout_height="@dimen/text_14"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/text_12"
+                    android:background="@color/color_4" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/iv"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/text_10"
+                    android:text="@string/mine_account"
+                    android:textColor="@color/color_0"
+                    android:textSize="@dimen/text_14" />
+
+                <TextView
+                    android:id="@+id/tv_check_account_record"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/text_12"
+                    android:text="@string/check_account_record"
+                    android:textColor="@color/color_4"
+                    android:textSize="@dimen/text_12" />
+            </RelativeLayout>
+
+            <include layout="@layout/cash" />
+
+
+            <include layout="@layout/common_line_1" />
+
+            <include layout="@layout/integral" />
+
+            <include layout="@layout/common_line_3" />
+
+            <include layout="@layout/mine_prize" />
+
+            <include layout="@layout/prize_item" />
+
+            <include layout="@layout/common_line_3" />
+
+            <include layout="@layout/answer_record" />
+
+            <include layout="@layout/common_line_1" />
+
+            <include layout="@layout/system_set" />
+
+            <include layout="@layout/common_line_1" />
+
+            <include layout="@layout/contact_us" />
+
+            <include layout="@layout/common_line_1" />
+            <!--分享邀请全名共进-->
+            <include layout="@layout/invite_share" />
+
+            <include layout="@layout/bottom_logo" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

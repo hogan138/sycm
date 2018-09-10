@@ -1,0 +1,150 @@
+apply plugin: 'com.android.application'
+
+
+android {
+
+    signingConfigs {
+        release {
+            storeFile file('qapp.jks')
+            storePassword "heimi123456"
+            keyAlias "qapp"
+            keyPassword "heimi123456"
+        }
+    }
+
+    compileSdkVersion 27
+    buildToolsVersion '28.0.0'
+
+    defaultConfig {
+        applicationId "com.shuyun.qapp"
+        minSdkVersion 15
+        targetSdkVersion 27
+        versionCode 30014
+        versionName "3.1.3"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        // Enabling multidex support.
+        multiDexEnabled true
+    }
+
+    buildTypes {
+        release {
+            // 混淆
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable = true
+            signingConfig signingConfigs.release
+        }
+        debug {
+            signingConfig signingConfigs.release
+        }
+    }
+
+    sourceSets {//手动添加jniLibs在src/main/jniLibs时要加入
+        main {
+            jniLibs.srcDirs = ['libs']//设置目标的so存放路径
+        }
+    }
+    //   添加
+    dexOptions {
+        jumboMode true
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    //noinspection GradleCompatible
+    implementation 'com.android.support:appcompat-v7:27.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    //    implementation 'com.android.support:support-v4:27.0.0'//适配低版本系统4.4
+
+    //    implementation 'com.android.support:multidex:1.0.3' //兼容4.4版本
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
+    //添加引导页和轮播框架
+    implementation 'cn.bingoogolapple:bga-banner:2.2.4@aar'
+
+    //添加butterknife依赖
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    //添加retrofit网络请求依赖
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    compile 'com.google.code.gson:gson:2.8.2'
+    compile 'com.squareup.retrofit2:converter-gson:2.4.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+
+    //添加RxJava和RxAndroid依赖
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
+
+    //添加LitePal数据库框架依赖
+    compile 'org.litepal.android:core:1.6.1'
+
+    //添加跑马灯库
+    implementation 'com.sunfusheng:marqueeview:1.3.3'
+    implementation 'com.android.support:recyclerview-v7:27.0.0'
+
+    //添加glide依赖
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+
+    //微信sdk
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+    implementation files('libs/smantifraud.jar')
+
+    //工具类
+    implementation 'com.blankj:utilcode:1.10.0'
+
+    //二维码
+    implementation 'cn.yipianfengye.android:zxing-library:2.2'
+
+    //弹框dialog
+    implementation 'com.mylhyl:circleDialog:2.5.8'
+
+    //沉浸状态栏
+    compile 'com.gyf.barlibrary:barlibrary:2.3.0'
+
+    //tablayout
+    implementation 'com.android.support:design:27.0.2'
+
+    //下拉刷新上拉加载
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.4'
+
+    //没有使用特殊Header，可以不加这行
+    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.4'
+
+    //腾讯统计分析
+    implementation files('libs/mta-android-sdk-3.4.4.jar')
+    implementation files('libs/mid-sdk-4.06.jar')
+
+    //分享动画
+    implementation 'com.android.support:support-dynamic-animation:27.1.1'
+
+    //WebSocket 依赖包
+    implementation 'org.java-websocket:Java-WebSocket:1.3.0'
+    implementation files('libs/universal-image-loader-1.9.3.jar')
+
+    //分割Dex
+    implementation 'com.android.support:multidex:1.0.0'
+
+    //oss
+    implementation 'com.aliyun.dpa:oss-android-sdk:+'
+
+    //SuperTextView
+    implementation 'com.github.lygttpod:SuperTextView:2.0.1'
+    implementation files('libs/smantifraud.jar')
+
+    //极光推送
+    implementation files('libs/jcore-android-1.2.3.jar')
+    implementation files('libs/jpush-android-3.1.5.jar')
+
+    //侧滑返回
+    implementation 'me.imid.swipebacklayout.lib:library:1.1.0'
+
+    //进度条
+    implementation 'com.dyhdyh.loadingbar:loadingbar:1.4.4'
+}

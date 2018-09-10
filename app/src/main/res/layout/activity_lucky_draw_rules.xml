@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.shuyun.qapp.ui.answer.LuckyDrawRulesActivity">
+
+    <include layout="@layout/common_left_title" />
+
+    <!--<include layout="@layout/common_line_4" />-->
+
+    <WebView
+        android:id="@+id/wv_lucky_draw_rule"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"></WebView>
+    <!--<Button-->
+    <!--android:id="@+id/btn_go_lucky_draw"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="40dp"-->
+    <!--android:layout_marginLeft="@dimen/text_12"-->
+    <!--android:layout_marginRight="@dimen/text_12"-->
+    <!--android:layout_marginBottom="@dimen/text_10"-->
+    <!--android:background="@drawable/common_btn_bg_4"-->
+    <!--android:layout_marginTop="@dimen/text_10"-->
+    <!--android:text="@string/go_lucky_draw"-->
+    <!--android:textSize="@dimen/text_18"-->
+    <!--android:textColor="@color/white"/>-->
+</LinearLayout>

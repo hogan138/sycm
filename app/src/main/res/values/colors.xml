@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="color_0">#282828</color>
+    <color name="color_1">#333333</color>
+    <color name="color_2">#565656</color>
+    <color name="color_3">#FB0606</color>
+    <color name="color_4">#0194ec</color>
+    <color name="color_5">#ee5541</color>
+    <color name="color_6">#eeeeee</color>
+    <color name="color_7">#656565</color>
+    <color name="color_8">#12BDBD</color>
+    <color name="color_9">#1293C2</color>
+    <color name="color_10">#be915d</color>
+    <color name="color_11">#f6b54e</color>
+    <color name="color_12">#F5F5F5</color>
+    <color name="color_13">#cccccc</color>
+    <color name="color_14">#f26a52</color>
+    <color name="color_15">#989898</color>
+    <color name="color_16">#f7f7f7</color>
+    <color name="color_17">#000000</color>
+    <color name="color_18">#fa3c39</color>
+    <color name="color_19">#555555</color>
+    <color name="color_20">#ec3d00</color>
+    <color name="color_21">#fc0000</color>
+    <color name="color_22">#e00000</color>
+    <color name="color_23">#373133</color>
+    <color name="color_24">#FFD149</color>
+    <color name="color_25">#33abed</color>
+    <color name="color_26">#EE545D</color>
+    <color name="color_27">#999999</color>
+    <color name="color_28">#D1D1D1</color>
+    <color name="color_29">#0598EA</color>
+    <color name="color_30">#e0000000</color>
+    <color name="color_31">#ED5A3F</color>
+    <color name="color_32">#C8C7CC</color>
+    <color name="color_33">#E3E4E4</color>
+    <color name="color_34">#0BA1F0</color>
+    <color name="color_35">#666666</color>
+    <color name="color_36">#D8D8D8</color>
+    <color name="color_37">#0194EC</color>
+    <color name="color_38">#CCECA517</color>
+
+
+    <color name="transparent">#0000</color>
+    <color name="white">#ffffff</color>
+    <color name="light_white">#eeeeee</color>
+    <color name="red">#FF0000</color>
+    <color name="green">#008000</color>
+    <color name="blue">#0000FF</color>
+    <color name="mine_top">#12B9BE</color>
+    <color name="color_f5">#f5f5f5</color>
+    <color name="color_light">#99000000</color>
+
+    <color name="main_bottom">#308dd3</color>
+
+
+</resources>

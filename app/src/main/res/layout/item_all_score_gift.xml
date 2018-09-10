@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.shuyun.qapp.view.RoundImageView
+            android:id="@+id/iv_picture"
+            android:layout_width="105dp"
+            android:layout_height="105dp"
+            android:layout_marginTop="@dimen/text_2"
+            android:scaleType="fitXY"
+            app:radius="@dimen/text_5"
+            app:type="round" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_12.5"
+            android:layout_toRightOf="@+id/iv_picture"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="iphone X 256G黑色"
+                android:textColor="@color/color_1"
+                android:textSize="@dimen/text_15"
+                android:textStyle="bold" />
+
+            <com.shuyun.qapp.view.RushBuyCountDownTimerView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_4"></com.shuyun.qapp.view.RushBuyCountDownTimerView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="18dp"
+                android:layout_marginTop="@dimen/text_4"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_reduce_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_tv_bg_1"
+                    android:paddingLeft="@dimen/text_6"
+                    android:paddingRight="@dimen/text_6"
+                    android:text="消耗200积分"
+                    android:textColor="#3ea8e7"
+                    android:textSize="@dimen/text_11" />
+
+                <TextView
+                    android:id="@+id/tv_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/text_5"
+                    android:background="@drawable/common_tv_bg_1"
+                    android:paddingLeft="@dimen/text_6"
+                    android:paddingRight="@dimen/text_6"
+                    android:text="5份"
+                    android:textColor="#3ea8e7"
+                    android:textSize="@dimen/text_11" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_5">
+
+                <TextView
+                    android:id="@+id/tv_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="期号：269953"
+                    android:textColor="#999999"
+                    android:textSize="@dimen/text_13" />
+
+                <TextView
+                    android:id="@+id/tv_person_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_number"
+                    android:layout_marginTop="@dimen/text_5"
+                    android:text="参与人数：668"
+                    android:textColor="#999999"
+                    android:textSize="@dimen/text_13" />
+
+                <TextView
+                    android:id="@+id/tv_start_getbaby"
+                    android:layout_width="84dp"
+                    android:layout_height="28dp"
+                    android:layout_alignBottom="@+id/tv_person_count"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/common_tv_bg_2"
+                    android:gravity="center"
+                    android:text="立即夺宝"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_15" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/text_0.5"
+            android:layout_below="@+id/iv_picture"
+            android:layout_marginBottom="@dimen/text_20"
+            android:layout_marginTop="@dimen/text_20"
+            android:background="#e3e4e4"></View>
+
+    </RelativeLayout>
+</LinearLayout>

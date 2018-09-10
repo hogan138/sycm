@@ -1,0 +1,110 @@
+package com.shuyun.qapp.bean;
+
+/**
+ * Created by sunxiao on 2018/6/27.
+ * 答题首页需要传给H5的参数
+ */
+
+public class WebAnswerHomeBean {
+
+    private String token;//登录返回参数
+    private String random;//登录返回参数
+    private int groupId;//题组id
+    private int act;//活动id;获取题组答题详情接口返回
+    private int v;
+    private String salt;
+    /**
+     * 后台配的appKey
+     */
+    private String appSecret;
+    //是否参与邀请分享 1——参与邀请
+    private Integer share;
+    private String deviceId;//设备id  数美sdk得到的设备id
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public void setShare(Integer share) {
+        this.share = share;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public void setRandom(String random) {
+        this.random = random;
+    }
+
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
+    }
+
+    public void setAct(int act) {
+        this.act = act;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public String getRandom() {
+        return random;
+    }
+
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public int getAct() {
+        return act;
+    }
+
+    public void setV(int v) {
+        this.v = v;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public void setAppSecret(String appSecret) {
+        this.appSecret = appSecret;
+    }
+
+    public int getV() {
+        return v;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public String getAppSecret() {
+        return appSecret;
+    }
+
+    public Integer getShare() {
+        return share;
+    }
+
+    @Override
+    public String toString() {
+        return "WebAnswerHomeBean{" +
+                "token='" + token + '\'' +
+                ", random='" + random + '\'' +
+                ", groupId=" + groupId +
+                ", act=" + act +
+                ", v=" + v +
+                ", salt='" + salt + '\'' +
+                ", appSecret='" + appSecret + '\'' +
+                ", share=" + share +
+                ", deviceId='" + deviceId + '\'' +
+                '}';
+    }
+}

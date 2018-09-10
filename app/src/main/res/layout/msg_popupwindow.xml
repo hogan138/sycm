@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="@dimen/text_12">
+
+    <!--android:layout_alignParentRight="true"-->
+
+    <TextView
+        android:id="@+id/tv_all_readed"
+        android:layout_width="@dimen/text_90"
+        android:layout_height="@dimen/text_35"
+        android:paddingLeft="@dimen/text_15"
+        android:paddingTop="@dimen/text_10"
+        android:text="全部已读"
+        android:background="@color/light_white"
+        android:layout_alignParentRight="true"/>
+
+    <View
+        android:id="@+id/v"
+        android:layout_width="@dimen/text_90"
+        android:layout_height="1dp"
+        android:layout_below="@+id/tv_all_readed"
+        android:background="@color/color_13"
+        android:layout_alignParentRight="true"/>
+
+    <TextView
+        android:id="@+id/tv_delete_readed"
+        android:layout_width="@dimen/text_90"
+        android:layout_height="@dimen/text_35"
+        android:layout_below="@id/v"
+        android:paddingLeft="@dimen/text_15"
+        android:paddingTop="@dimen/text_10"
+        android:text="删除已读"
+        android:background="@color/light_white"
+        android:layout_alignParentRight="true"/>
+</RelativeLayout>

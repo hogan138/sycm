@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_common_title"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/common_item_height">
+
+    <RelativeLayout
+        android:id="@+id/iv_common_left_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp">
+        <!--android:id="@+id/iv_common_left_icon"-->
+        <ImageView
+            android:id="@+id/iv_left_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/text_12"
+            android:src="@mipmap/backb" />
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/tv_common_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textColor="@color/color_0"
+        android:textSize="@dimen/text_16" />
+
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/iv_common_right_icon"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_alignParentRight="true">-->
+
+    <ImageView
+        android:id="@+id/iv_right_icon"
+        android:layout_width="@dimen/text_20"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/text_12" />
+
+    <!--</RelativeLayout>-->
+
+
+    <View
+        android:id="@+id/v_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/light_white" />
+</RelativeLayout>

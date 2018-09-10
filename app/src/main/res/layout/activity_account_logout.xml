@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.shuyun.qapp.ui.mine.AccountLogoutActivity">
+
+    <include layout="@layout/common_left_title" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_item_height">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/text_15"
+            android:text="账号注销必须符合以下条件:"
+            android:textColor="@color/color_1"
+            android:textSize="@dimen/text_15" />
+
+    </RelativeLayout>
+
+    <include layout="@layout/common_line_6" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_item_height">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/text_15"
+            android:text="1.抄写或打印申请函,并签名"
+            android:textColor="@color/color_27"
+            android:textSize="@dimen/text_15" />
+
+    </RelativeLayout>
+
+    <include layout="@layout/common_line_6" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_item_height">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/text_15"
+            android:text="2.已完成实名认证"
+            android:textColor="@color/color_27"
+            android:textSize="@dimen/text_15" />
+
+    </RelativeLayout>
+
+    <include layout="@layout/common_line_6" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_item_height">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/text_15"
+            android:text="3.近三个月内无找回密码,修改密码行为"
+            android:textColor="@color/color_27"
+            android:textSize="@dimen/text_15" />
+
+    </RelativeLayout>
+
+    <include layout="@layout/common_line_6" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_item_height">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/text_15"
+            android:text="4.近三个月内无更改手机号码行为"
+            android:textColor="@color/color_27"
+            android:textSize="@dimen/text_15" />
+
+    </RelativeLayout>
+
+    <include layout="@layout/common_line_6" />
+
+    <Button
+        android:id="@+id/btn_logout_account"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_45"
+        android:layout_marginLeft="@dimen/text_30"
+        android:layout_marginRight="@dimen/text_30"
+        android:layout_marginTop="@dimen/text_55"
+        android:background="@drawable/btn_bind_wechat_bg"
+        android:text="下一步"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_15" />
+</LinearLayout>

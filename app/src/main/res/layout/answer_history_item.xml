@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="129.5dp"
+    android:orientation="vertical">
+
+    <include layout="@layout/common_line_2" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="64.5dp">
+        <!--题目问题-->
+        <TextView
+            android:id="@+id/tv_question2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_12"
+            android:layout_marginTop="@dimen/text_7"
+            android:textColor="@color/color_1"
+            android:textSize="@dimen/text_14" />
+        <!--android:text="黑大汉是哪一年诞生的？"-->
+        <!--反馈-->
+        <TextView
+            android:id="@+id/tv_feedback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/text_8"
+            android:layout_marginRight="@dimen/text_12"
+            android:text="@string/feedback"
+            android:textColor="@color/color_4"
+            android:textSize="@dimen/text_11" />
+    </RelativeLayout>
+
+    <include layout="@layout/common_line_1" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <!--正确答案-->
+        <!--android:text="正确答案:诞生于2016年"-->
+        <TextView
+            android:id="@+id/tv_right_answer1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_12"
+            android:layout_marginTop="@dimen/text_10"/>
+        <!--您的答案-->
+        <!--android:text="您的答案:诞生于2018年"-->
+        <TextView
+            android:id="@+id/tv_your_answer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_right_answer1"
+            android:layout_marginLeft="@dimen/text_12"
+            android:layout_marginTop="@dimen/text_8"
+            android:textColor="@color/color_20"
+            android:textSize="@dimen/text_12" />
+        <!--对错-->
+        <ImageView
+            android:id="@+id/iv_is_correct"
+            android:layout_width="@dimen/text_12"
+            android:layout_height="@dimen/text_12"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/text_15"
+            android:layout_marginRight="@dimen/text_12" />
+    </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="270dp"
+    android:layout_height="228dp"
+    android:layout_gravity="center">
+
+    <RelativeLayout
+        android:layout_width="270dp"
+        android:layout_height="228dp"
+        android:layout_marginLeft="@dimen/text_12.5"
+        android:layout_marginRight="@dimen/text_12.5"
+        android:layout_marginTop="@dimen/text_12.5"
+        android:background="@drawable/rule_popup_bg">
+
+        <RelativeLayout
+            android:id="@+id/rl_logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_12.5"
+            android:layout_marginRight="@dimen/text_12.5">
+
+            <ImageView
+                android:id="@+id/iv"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/text_26"
+                android:src="@mipmap/matching_fail" />
+
+
+            <TextView
+                android:id="@+id/tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/text_18"
+                android:text="匹配超时,请重新匹配对手..."
+                android:textColor="#666666"
+                android:textSize="@dimen/text_15" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="270dp"
+            android:layout_height="@dimen/text_0.5"
+            android:layout_above="@+id/ll_bottom"
+            android:background="#E3E4E4"></View>
+
+        <LinearLayout
+            android:id="@+id/ll_bottom"
+            android:layout_width="270dp"
+            android:layout_height="@dimen/text_50"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/tv_close"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="返回"
+                android:textColor="#333333"
+                android:textSize="@dimen/text_17" />
+
+            <View
+                android:layout_width="@dimen/text_0.5"
+                android:layout_height="50dp"
+                android:background="#E3E4E4"></View>
+
+            <TextView
+                android:id="@+id/tv_restart_matching"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="重新匹配"
+                android:textColor="#2BA6F0"
+                android:textSize="@dimen/text_17" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

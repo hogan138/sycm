@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="com.shuyun.qapp.ui.answer.UnrewardedActivity">
+
+    <include layout="@layout/common_title" />
+    <ImageView
+        android:layout_marginTop="@dimen/common_item_height"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/beij"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_90"
+        android:gravity="center_horizontal"
+        android:text="很遗憾,未获得奖励"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_24"
+        android:textStyle="bold" />
+    <!--android:text="@string/accuracy_1"-->
+    <TextView
+        android:id="@+id/tv_accuracy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_130"
+        android:gravity="center_horizontal"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_15" />
+
+    <ImageView
+        android:layout_width="175dp"
+        android:layout_height="175dp"
+        android:layout_above="@+id/tv_look_error"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="45dp"
+        android:src="@mipmap/xren" />
+    <!--描边 2px #227fc5 圆角 10px-->
+    <TextView
+        android:id="@+id/tv_look_error"
+        android:layout_width="350dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="90dp"
+        android:background="@drawable/common_btn_bg_7"
+        android:gravity="center"
+        android:text="查看错题"
+        android:textColor="@color/color_4"
+        android:textSize="@dimen/text_19" />
+
+    <TextView
+        android:id="@+id/tv_unrewarded_back"
+        android:layout_width="350dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="@dimen/text_35"
+        android:background="@drawable/common_btn_bg_4"
+        android:gravity="center"
+        android:text="返回"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_19" />
+</RelativeLayout>

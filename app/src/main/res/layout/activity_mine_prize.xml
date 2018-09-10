@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:id="@+id/ll_prize"
+    android:orientation="vertical"
+    tools:context="com.shuyun.qapp.ui.mine.MinePrizeActivity">
+
+    <include layout="@layout/common_left_title" />
+
+    <include layout="@layout/common_line_1" />
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:tabIndicatorColor="@color/color_4"
+        app:tabSelectedTextColor="@color/color_4"
+        app:tabTextColor="@color/color_0"></android.support.design.widget.TabLayout>
+
+    <include layout="@layout/common_line_4" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+
+</LinearLayout>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="距开奖："
+        android:textColor="#FFB21E"
+        android:textSize="@dimen/text_13" />
+
+    <TextView
+        android:id="@+id/tv_day_decade"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textColor="#FFB21E"
+        android:textSize="@dimen/text_13" />
+
+    <TextView
+        android:id="@+id/tv_day_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="1dp"
+        android:gravity="center"
+        android:textColor="#FFB21E"
+        android:textSize="@dimen/text_13" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="天"
+        android:textColor="#FFB21E"
+        android:textSize="@dimen/text_13" />
+
+    <TextView
+        android:id="@+id/tv_hour_decade"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textColor="#FFB21E"
+        android:textSize="@dimen/text_13" />
+
+    <TextView
+        android:id="@+id/tv_hour_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="1dp"
+        android:gravity="center"
+        android:textColor="#FFB21E"
+        android:textSize="@dimen/text_13" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="小时"
+        android:textColor="#FFB21E"
+        android:textSize="@dimen/text_13" />
+
+    <TextView
+        android:id="@+id/tv_min_decade"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textColor="#FFB21E"
+        android:textSize="@dimen/text_13" />
+
+    <TextView
+        android:id="@+id/tv_min_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="1dp"
+        android:gravity="center"
+        android:textColor="#FFB21E"
+        android:textSize="@dimen/text_13" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="分钟"
+        android:textColor="#FFB21E"
+        android:textSize="@dimen/text_13" />
+
+    <TextView
+        android:id="@+id/tv_sec_decade"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textColor="#FFB21E"
+        android:textSize="@dimen/text_13" />
+
+    <TextView
+        android:id="@+id/tv_sec_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="1dp"
+        android:gravity="center"
+        android:textColor="#FFB21E"
+        android:textSize="@dimen/text_13" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="秒"
+        android:textColor="#FFB21E"
+        android:textSize="@dimen/text_13" />
+
+</LinearLayout>

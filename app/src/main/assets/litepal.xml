@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <!--file:///E:/My/U%E7%9B%98/study/%E7%AC%AC%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%EF%BC%88%E7%AC%AC2%E7%89%88%EF%BC%89PDF.pdf-->
+    <!--https://github.com/LitePalFramework/LitePal-->
+    <!--https://blog.csdn.net/u013277740/article/details/71173010-->
+    <!--https://www.jianshu.com/p/bc68e763c7a2-->
+<litepal>
+    <!--
+    	Define the database name of your application.
+    	By default each database name should be end with .db.
+    	If you didn't name your database end with .db,
+    	LitePal would plus the suffix automatically for you.
+    	For example:
+    	<dbname value="demo" />
+    -->
+    <dbname value="qapp_sqlite" />
+
+    <!--
+    	Define the version of your database. Each time you want
+    	to upgrade your database, the version tag would helps.
+    	Modify the models you defined in the mapping tag, and just
+    	make the version value plus one, the upgrade of database
+    	will be processed automatically without concern.
+			For example:
+    	<version value="1" />
+    -->
+    <version value="1" />
+
+    <!--
+    	Define your models in the list with mapping tag, LitePal will
+    	create tables for each mapping class. The supported fields
+    	defined in models will be mapped into columns.
+    	For example:
+    	<list>
+    		<mapping class="com.test.model.Reader" />
+    		<mapping class="com.test.model.Magazine" />
+    	</list>
+    -->
+    <list>
+        <mapping class = "com.shuyun.qapp.bean.Msg"></mapping>
+    </list>
+
+    <!--
+        Define where the .db file should be. "internal" means the .db file
+        will be stored in the database folder of internal storage which no
+        one can access. "external" means the .db file will be stored in the
+        path to the directory on the primary external storage device where
+        the application can place persistent files it owns which everyone
+        can access. "internal" will act as default.
+        For example:
+        <storage value="external" />
+    -->
+    <!--创建数据库:Connector.getDatabase();-->
+    <!--版本升级:(1)version value加一;(2)list中增加新表-->
+    <!--增加数据:msg.save();-->
+    <!--更新:-->
+    <!--msg.save-->
+    <!--msg.setId(110);-->
+    <!--msg.save();-->
+
+    <!--Msg albumToUpdate = DataSupport.find(Msg.class, 1);-->
+    <!--albumToUpdate.setPrice(20.99f); // raise the price-->
+    <!--albumToUpdate.save();-->
+    <!--删除:-->
+    <!--5. Delete data-->
+    <!--DataSupport.delete(Song.class, id);-->
+    <!--DataSupport.deleteAll(Song.class, "duration > ?" , "350");-->
+    <!--查询:-->
+    <!--Song song = DataSupport.find(Song.class, id);-->
+    <!--List<Song> allSongs = DataSupport.findAll(Song.class);-->
+    <!--List<Song> songs = DataSupport.where("name like ? and duration < ?", "song%", "200").order("duration").find(Song.class);-->
+
+</litepal>

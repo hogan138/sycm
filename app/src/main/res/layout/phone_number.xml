@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/common_item_height"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="@dimen/text_13"
+        android:layout_height="@dimen/text_21"
+        android:layout_marginLeft="@dimen/common_margin"
+        android:layout_marginRight="@dimen/common_margin"
+        android:src="@mipmap/phone_01" />
+
+    <TextView
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="@string/phone_number"
+        android:textColor="@color/color_1"
+        android:textSize="@dimen/text_16" />
+
+
+    <EditText
+        android:id="@+id/et_phone_number"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="@dimen/medium_margin"
+        android:background="@null"
+        android:hint="@string/input_phone_number"
+        android:inputType="number"
+        android:textColor="@color/color_0"
+        android:textSize="@dimen/text_16" />
+    <ImageView
+        android:id="@+id/iv_clear_phone_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/cuowu1"
+        android:layout_marginTop="@dimen/text_12"
+        android:layout_marginLeft="@dimen/text_12"
+        android:layout_marginBottom="@dimen/text_12"
+        android:layout_marginRight="@dimen/text_19"
+        android:visibility="invisible"/>
+
+</LinearLayout>

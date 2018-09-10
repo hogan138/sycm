@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:id="@+id/ll_free_detail"
+    tools:context="com.shuyun.qapp.ui.homepage.FreeDetailActivity">
+
+    <include layout="@layout/common_title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/text_15"
+        android:layout_marginRight="@dimen/text_15"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/text_30"
+            android:text="三国演义专题"
+            android:textColor="#333333"
+            android:textSize="@dimen/text_18" />
+
+        <com.shuyun.qapp.view.RoundImageView
+            android:id="@+id/iv_image"
+            android:layout_width="match_parent"
+            android:layout_height="172dp"
+            android:layout_marginTop="@dimen/text_30"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/xtts"
+            app:type="round" />
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_15"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="三国演义三国演义三国演义三国演义三国演义三国演义三国演义三国演义三国演义三国演义三国演义三国演义三国演义三国演义"
+            android:textColor="#666666"
+            android:textSize="@dimen/text_12" />
+
+        <RelativeLayout
+            android:id="@+id/rl_start_matching"
+            android:layout_width="175dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/text_44"
+            android:background="@drawable/start_matching_bg">
+
+            <TextView
+                android:id="@id/tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/text_3"
+                android:text="开始匹配"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_18" />
+
+            <TextView
+                android:id="@+id/tv_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/text_3"
+                android:text="消耗积分：0"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_11" />
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80.5dp">
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/text_20"
+        android:layout_marginTop="@dimen/text_21"
+        android:textColor="@color/color_0"
+        android:textSize="@dimen/text_16" />
+
+    <ImageView
+        android:id="@+id/iv_status"
+        android:layout_width="@dimen/text_41"
+        android:layout_height="@dimen/text_41"
+        android:layout_marginLeft="@dimen/text_6"
+        android:layout_marginTop="8dp"
+        android:layout_toRightOf="@+id/tv_name"
+        android:src="@mipmap/audit"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/text_20"
+        android:layout_marginTop="@dimen/text_21"
+        android:textColor="@color/color_0"
+        android:textSize="@dimen/text_16"
+        android:textStyle="bold" />
+    <!--android:text="-66.6"-->
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_name"
+        android:layout_marginLeft="@dimen/text_20"
+        android:layout_marginTop="@dimen/text_7"
+        android:textColor="@color/color_15"
+        android:textSize="@dimen/text_14" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/light_white" />
+    <!--android:text="2018-04-26 20:13:30"-->
+</RelativeLayout>

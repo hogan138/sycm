@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/text_325"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/text_12.5"
+        android:layout_marginRight="@dimen/text_12.5"
+        android:layout_marginTop="@dimen/text_12.5"
+        android:background="@drawable/rule_popup_bg"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp">
+
+            <com.shuyun.qapp.view.OvalImageView
+                android:id="@+id/iv_box"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:scaleType="fitXY" />
+
+            <ImageView
+                android:id="@+id/iv_close"
+                android:layout_width="@dimen/text_20"
+                android:layout_height="@dimen/text_20"
+                android:layout_alignParentRight="true"
+                android:layout_margin="@dimen/text_15"
+                android:src="@mipmap/twrong" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/text_6"
+                android:gravity="center_horizontal"
+                android:text="快跟我一起使用全民共进一起答题吧"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/text_15"
+            android:text="5000元奖励，iphone X 手机，答题就有机会获得诸多好礼哦！"
+            android:textColor="#333333"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

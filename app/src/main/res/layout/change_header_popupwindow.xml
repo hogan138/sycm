@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:background="@color/color_16"
+    android:orientation="vertical">
+    <!--下面这写试着用GridView实现-->
+    <GridView
+        android:id="@+id/gv_head_icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/text_12"
+        android:layout_marginRight="@dimen/text_7"
+        android:layout_marginTop="@dimen/text_4"
+        android:background="@color/color_16"
+        android:numColumns="4">
+    </GridView>
+</LinearLayout>

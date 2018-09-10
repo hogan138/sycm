@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".ui.mine.CashWithdrawalActivity">
+
+    <include layout="@layout/with_drawal" />
+    <!--提现提示文本,根据情况显示或者隐藏-->
+    <TextView
+        android:id="@+id/tv_error_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/text_12"
+        android:layout_marginTop="@dimen/text_12"
+        android:inputType="number"
+        android:text="最低提现金额50元,最高50.9元"
+        android:textColor="@color/color_3"
+        android:textSize="@dimen/text_13"
+        android:visibility="gone" />
+
+    <!--圆角5dp 可点击#227fc5不可点击#989898-->
+    <Button
+        android:id="@+id/btn_immedicate"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_40"
+        android:layout_marginLeft="@dimen/common_margin"
+        android:layout_marginRight="@dimen/common_margin"
+        android:layout_marginTop="@dimen/text_30"
+        android:background="@drawable/selector_4"
+        android:enabled="false"
+        android:text="立即提现"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_18" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/text_12"
+        android:layout_marginTop="@dimen/text_22"
+        android:text="提现收费规则:"
+        android:textColor="@color/color_2"
+        android:textSize="@dimen/text_13" />
+    <!--下方采用富文本做:提现收费规则-->
+    <WebView
+        android:id="@+id/wv_charge_rules"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/text_12"
+        android:background="@drawable/common_text_bg_7"
+        android:padding="@dimen/text_12"
+        android:scrollbars="none"></WebView>
+</LinearLayout>
+

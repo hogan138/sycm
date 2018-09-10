@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <!--item 图片-->
+    <com.shuyun.qapp.view.RoundImageView
+        android:id="@+id/iv_bx_prize_pic"
+        android:layout_width="@dimen/text_70"
+        android:layout_height="@dimen/text_70"
+        android:layout_marginRight="@dimen/text_12"
+        android:layout_marginTop="@dimen/text_15"
+        android:scaleType="fitXY"
+        app:type="round" />
+    <!--标题-->
+    <TextView
+        android:id="@+id/tv_title2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_15"
+        android:layout_toRightOf="@+id/iv_bx_prize_pic"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="红包"
+        android:textColor="@color/color_1"
+        android:textSize="@dimen/text_13"
+        android:textStyle="bold" />
+    <!--到期时间-->
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_title2"
+        android:layout_marginTop="@dimen/text_1"
+        android:layout_toRightOf="@+id/iv_bx_prize_pic"
+        android:textColor="#ed5a3f"
+        android:textSize="@dimen/text_13"
+        android:textStyle="bold" />
+
+    <!--内容-->
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_date"
+        android:layout_marginRight="18dp"
+        android:layout_marginTop="@dimen/text_2"
+        android:layout_toLeftOf="@+id/tv_open"
+        android:layout_toRightOf="@+id/iv_bx_prize_pic"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="#999999"
+        android:textSize="@dimen/text_12" />
+
+    <TextView
+        android:id="@+id/tv_open"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/selector_3"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
+</RelativeLayout>

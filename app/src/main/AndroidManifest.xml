@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.shuyun.qapp">
+
+    <!-- 极光推送 -->
+    <permission
+        android:name="com.shuyun.qapp.permission.JPUSH_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <!-- 极光推送 -->
+    <uses-permission android:name="com.shuyun.qapp.permission.JPUSH_MESSAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <!-- Optional for location -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
+    <!-- 其他权限 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <application
+        android:name=".net.MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/logo"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/logo"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.Base">
+
+        <!-- Rich push 核心功能 since 2.0.6 -->
+        <activity
+            android:name="cn.jpush.android.ui.PopWinActivity"
+            android:exported="false"
+            android:theme="@style/MyDialogStyle" />
+
+        <!-- Required SDK核心功能 -->
+        <activity
+            android:name="cn.jpush.android.ui.PushActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:exported="false"
+            android:theme="@android:style/Theme.NoTitleBar">
+            <intent-filter>
+                <action android:name="cn.jpush.android.ui.PushActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="com.shuyun.qapp" />
+            </intent-filter>
+        </activity>
+
+        <!-- Required SDK 核心功能 -->
+        <!-- 可配置android:process参数将PushService放在其他进程中 -->
+        <service
+            android:name="cn.jpush.android.service.PushService"
+            android:exported="false"
+            android:process=":mult">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTER" />
+                <action android:name="cn.jpush.android.intent.REPORT" />
+                <action android:name="cn.jpush.android.intent.PushService" />
+                <action android:name="cn.jpush.android.intent.PUSH_TIME" />
+            </intent-filter>
+        </service>
+        <!-- since 3.0.9 Required SDK 核心功能 -->
+        <provider
+            android:name="cn.jpush.android.service.DataProvider"
+            android:authorities="com.shuyun.qapp.DataProvider"
+            android:exported="false" />
+
+        <!-- since 1.8.0 option 可选项。用于同一设备中不同应用的JPush服务相互拉起的功能。 -->
+        <!-- 若不启用该功能可删除该组件，将不拉起其他应用也不能被其他应用拉起 -->
+        <service
+            android:name="cn.jpush.android.service.DaemonService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.DaemonService" />
+
+                <category android:name="com.shuyun.qapp" />
+            </intent-filter>
+        </service>
+
+        <!-- since 3.1.0 Required SDK 核心功能 -->
+        <provider
+            android:name="cn.jpush.android.service.DownloadProvider"
+            android:authorities="com.shuyun.qapp.DownloadProvider"
+            android:exported="true" />
+        <!-- Required SDK核心功能 -->
+        <receiver
+            android:name="cn.jpush.android.service.PushReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter android:priority="1000">
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" /> <!-- Required  显示通知栏 -->
+                <category android:name="com.shuyun.qapp" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+            <!-- Optional -->
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Required SDK核心功能 -->
+        <receiver
+            android:name="cn.jpush.android.service.AlarmReceiver"
+            android:exported="false" />
+
+        <!-- User defined.  For test only  用户自定义的广播接收器 -->
+        <receiver
+            android:name=".receiver.MyReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTRATION" /> <!-- Required  用户注册SDK的intent -->
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" /> <!-- Required  用户接收SDK消息的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!-- Required  用户接收SDK通知栏信息的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!-- Required  用户打开自定义通知栏的intent -->
+                <action android:name="cn.jpush.android.intent.CONNECTION" /> <!-- 接收网络变化 连接/断开 since 1.6.3 -->
+                <category android:name="com.shuyun.qapp" />
+            </intent-filter>
+        </receiver>
+
+        <!-- User defined.  For test only  用户自定义接收消息器,3.0.7开始支持,目前新tag/alias接口设置结果会在该广播接收器对应的方法中回调 -->
+        <receiver android:name=".receiver.MyJPushMessageReceiver">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
+
+                <category android:name="com.shuyun.qapp" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Required. For publish channel feature -->
+        <meta-data
+            android:name="JPUSH_CHANNEL"
+            android:value="developer-default" />
+        <meta-data
+            android:name="JPUSH_APPKEY"
+            android:value="16442304c7edaf12fc39ca9c" /> <!-- </>值来自开发者平台取得的AppKey -->
+
+
+        <!-- 腾讯统计 -->
+        <!-- 请将value改为MTA分配的appkey < -->
+        <meta-data
+            android:name="TA_APPKEY"
+            android:value="Aqc1105860265" />
+        <!-- 请将value改为app发布对应的渠道，不同的发布渠道使用不同的名字 < -->
+        <!-- <meta-data -->
+        <!-- android:name="InstallChannel" -->
+        <!-- android:value="应用宝" /> -->
+        <!-- 注意：若填写的渠道为纯数字字符串类型，请不要超过int表示的范围！ < -->
+        <!-- MID3.5(mid-sdk-3.5.jar) 以上版本请务必增加此配置 -->
+        <provider
+            android:name="com.tencent.mid.api.MidProvider"
+            android:authorities="com.shuyun.qapp.TENCENT.MID.V3"
+            android:exported="true" />
+
+        <!-- 欢迎页 -->
+        <activity
+            android:name=".ui.welcome.WelcomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/welcome">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!-- 引导页 -->
+        <activity
+            android:name=".ui.welcome.SplashActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <!-- 首页 -->
+        <activity
+            android:name=".ui.homepage.HomePageActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <!-- 登录页 -->
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <!-- 友盟Key -->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="581bf94d734be436a600147a" />
+        <!-- 渠道 -->
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="Channel ID" />
+        <!-- 微信 -->
+        <!-- android:screenOrientation="portrait"Android 8不能加 -->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!-- 绑定微信 -->
+        <activity
+            android:name=".ui.login.BindPhoneNumActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+        <!-- 消息页 -->
+        <activity
+            android:name=".ui.homepage.InformationActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <!-- 修改个人信息 -->
+        <activity
+            android:name=".ui.mine.ChangePersonalInfoActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <!-- 修改手机号 -->
+        <activity
+            android:name=".ui.mine.ChangePhoneNumActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+        <!-- 实名认证页面 -->
+        <activity
+            android:name=".ui.mine.RealNameAuthActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+        <!-- 实名认证结果 -->
+        <activity
+            android:name=".ui.mine.AuthResultActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+        <!-- 账户记录 -->
+        <activity
+            android:name=".ui.mine.AccountRecordActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+        <!-- 现金提现 -->
+        <activity
+            android:name=".ui.mine.CashWithdrawalActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+        <!-- 系统设置 -->
+        <activity
+            android:name=".ui.mine.SystemSettingActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+        <!-- 联系我们 -->
+        <activity
+            android:name=".ui.mine.WebContactUsActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+        <!-- 答题记录 -->
+        <activity
+            android:name=".ui.mine.AnswerRecordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+        <!-- android:launchMode="singleTask" -->
+        <!-- 我的奖品 -->
+        <activity
+            android:name=".ui.mine.MinePrizeActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <!-- 更换绑定手机号 -->
+        <activity
+            android:name=".ui.mine.ChangePhoneActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+        <!-- 答题历史 -->
+        <activity
+            android:name=".ui.answer.AnswerHistoryActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <!-- 红包 -->
+        <activity
+            android:name=".ui.mine.RedWithDrawActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+        <!-- 积分抽奖和宝箱开奖界面 -->
+        <activity
+            android:name=".ui.mine.IntegralDrawActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+        <!-- 我的界面，反馈. -->
+        <activity
+            android:name=".ui.mine.FeedbackActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+        <!-- 现金提现结果页 -->
+        <activity
+            android:name=".ui.mine.CashResultActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+        <!-- 分类 -->
+        <activity
+            android:name=".ui.classify.ClassifyActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <!-- 分享有奖  短信支持 -->
+        <activity
+            android:name=".ui.homepage.SharedPrzieActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <!-- 抽奖规则 -->
+        <!-- 用户信息 -->
+        <activity
+            android:name=".ui.mine.WebRulesActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+        <!-- 关于我们 -->
+        <activity
+            android:name=".ui.mine.WebAboutUsActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+
+        <!-- 用户协议 -->
+        <activity
+            android:name=".ui.login.UserAgreementActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+        <!-- banner跳转页 -->
+        <activity
+            android:name=".ui.homepage.WebBannerActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+        <activity
+            android:name=".ui.mine.WebPrizeActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <!-- 更改密码 -->
+        <activity
+            android:name=".ui.login.ChangePasswordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+        <!-- 动态权限 -->
+        <activity
+            android:name=".ui.homepage.PermissionsActivity"
+            android:screenOrientation="portrait" />
+        <!-- 其他设置之账号注销 -->
+        <activity
+            android:name=".ui.mine.OtherSettingActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+        <!-- 账户注销规则 -->
+        <activity
+            android:name=".ui.mine.AccountLogoutActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+        <!-- 上传申请函 -->
+        <activity
+            android:name=".ui.mine.UploadLetterActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <!-- 摄像头拍照之内容提供器 -->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.shuyun.qapp.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <!-- 答题对战首页 -->
+        <activity
+            android:name=".ui.homepage.MainAgainstActivity"
+            android:screenOrientation="portrait" />
+        <!-- 自由对战首页 -->
+        <activity
+            android:name=".ui.homepage.FreeMainActivity"
+            android:screenOrientation="portrait" />
+        <!-- 自由对战题组详情 -->
+        <activity
+            android:name=".ui.homepage.FreeDetailActivity"
+            android:screenOrientation="portrait" />
+        <!-- 匹配对手 -->
+        <activity
+            android:name=".ui.homepage.MatchingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+        <!-- 答题对战 -->
+        <activity
+            android:name=".ui.homepage.AgainstActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+        <!-- 答题对战结果页 -->
+        <activity
+            android:name=".ui.homepage.AgainstResultActivity"
+            android:screenOrientation="portrait" />
+        <!-- 账号注销结果页 -->
+        <activity
+            android:name=".ui.mine.LogOutResultActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+        <!-- H5答题页 -->
+        <activity
+            android:name=".ui.answer.WebAnswerActivity"
+            android:screenOrientation="portrait" />
+        <!-- H5我的奖品开宝箱页 -->
+        <activity
+            android:name=".ui.mine.WebPrizeBoxActivity"
+            android:screenOrientation="portrait" />
+        <!-- 积分兑换 -->
+        <activity
+            android:name=".ui.integral.IntegralExchangeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+        <!-- 积分开宝 -->
+        <activity
+            android:name=".ui.integral.IntegralMainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+        <!-- 开奖历史 -->
+        <activity
+            android:name=".ui.integral.OpenPrizeHistoryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+        <!-- 我的奖券 -->
+        <activity
+            android:name=".ui.integral.MyPrizeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+        <!-- 宝贝详情 -->
+        <activity
+            android:name=".ui.integral.PrizeDetailsActivity"
+            android:screenOrientation="portrait" />
+        <!-- 兑换结果页 -->
+        <activity
+            android:name=".ui.integral.ExchangeResultActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+        <!-- 积分夺宝规则 -->
+        <activity
+            android:name=".ui.integral.WebRuleActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/otherPageStyle" />
+    </application>
+
+</manifest>

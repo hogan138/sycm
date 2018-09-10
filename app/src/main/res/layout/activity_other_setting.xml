@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.shuyun.qapp.ui.mine.OtherSettingActivity">
+
+    <include layout="@layout/common_left_title" />
+
+    <RelativeLayout
+        android:id="@+id/rl_account_logout"
+        android:layout_width="match_parent"
+        android:layout_height="45.5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/text_12"
+            android:text="账号注销"
+            android:textColor="@color/color_1"
+            android:textSize="@dimen/text_15" />
+
+
+        <ImageView
+            android:layout_width="@dimen/text_7"
+            android:layout_height="@dimen/text_12"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/text_12"
+            android:src="@mipmap/gomore" />
+    </RelativeLayout>
+
+    <include layout="@layout/common_line_6" />
+
+</LinearLayout>

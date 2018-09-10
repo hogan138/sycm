@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/text_325"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
+
+    <RelativeLayout
+        android:layout_width="258dp"
+        android:layout_height="227dp"
+        android:layout_marginLeft="@dimen/text_12.5"
+        android:layout_marginRight="@dimen/text_12.5"
+        android:layout_marginTop="@dimen/text_12.5"
+        android:background="@drawable/rule_popup_bg">
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/text_8"
+            android:src="@mipmap/close" />
+
+        <ImageView
+            android:id="@+id/iv"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/text_49"
+            android:src="@mipmap/biaoqing_pop" />
+
+
+        <TextView
+            android:id="@+id/tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/text_21"
+            android:text="您的积分不足"
+            android:textColor="#666666"
+            android:textSize="@dimen/text_16" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:text="请尝试下自由对战吧"
+            android:textColor="#666666"
+            android:textSize="@dimen/text_16" />
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:id="@+id/rl_against_result"
+    tools:context="com.shuyun.qapp.ui.homepage.AgainstResultActivity">
+
+    <include
+        android:id="@+id/title"
+        layout="@layout/common_title" />
+
+    <ImageView
+        android:id="@+id/iv_status"
+        android:layout_width="217dp"
+        android:layout_height="138dp"
+        android:layout_below="@+id/title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/text_46"
+        android:src="@mipmap/against_success" />
+
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_status"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/text_82"
+        android:text="VS"
+        android:textColor="#0194EC"
+        android:textSize="@dimen/text_24"
+        android:textStyle="bold" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_status"
+        android:layout_marginRight="@dimen/text_30"
+        android:layout_marginTop="@dimen/text_30"
+        android:layout_toLeftOf="@+id/tv"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_mine_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="200"
+            android:textColor="#0194EC"
+            android:textSize="@dimen/text_20" />
+
+        <com.shuyun.qapp.view.CircleImageView
+            android:id="@+id/iv_head_mine"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="13dp"
+            android:src="@mipmap/icon_boy" />
+
+        <TextView
+            android:id="@+id/tv_mine_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/text_13"
+            android:text=""
+            android:textColor="#666666"
+            android:textSize="@dimen/text_13" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_status"
+        android:layout_marginLeft="@dimen/text_30"
+        android:layout_marginTop="@dimen/text_30"
+        android:layout_toRightOf="@+id/tv"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_it_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="200"
+            android:textColor="#0194EC"
+            android:textSize="@dimen/text_20" />
+
+        <com.shuyun.qapp.view.CircleImageView
+            android:id="@+id/iv_head_it"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="13dp"
+            android:src="@mipmap/icon_boy" />
+
+        <TextView
+            android:id="@+id/tv_it_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/text_13"
+            android:text=""
+            android:textColor="#666666"
+            android:textSize="@dimen/text_13" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_again"
+        android:layout_width="175dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/tv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="108dp"
+        android:background="@drawable/start_matching_bg">
+
+        <TextView
+            android:id="@id/tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/text_3"
+            android:text="再来一局"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_18" />
+
+        <TextView
+            android:id="@+id/tv_reduce_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/text_3"
+            android:text="消耗积分：0"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_11" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_look_fail"
+        android:layout_width="175dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/rl_again"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/matching_btn_bg"
+        android:text="查看错题"
+        android:textColor="#0194EC"
+        android:textSize="@dimen/text_18"
+        android:textStyle="bold" />
+
+</RelativeLayout>

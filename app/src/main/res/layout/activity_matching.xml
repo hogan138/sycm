@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="com.shuyun.qapp.ui.homepage.MatchingActivity">
+
+    <include
+        android:id="@+id/title"
+        layout="@layout/common_title" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/text_30"
+        android:text=""
+        android:textColor="#333333"
+        android:textSize="@dimen/text_18" />
+
+
+    <com.shuyun.qapp.view.RoundImageView
+        android:id="@+id/iv_head_mine"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_below="@+id/tv_title"
+        android:layout_marginTop="120dp"
+        android:src="@mipmap/icon_boy" />
+
+    <TextView
+        android:id="@+id/tv_mine_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_vs"
+        android:layout_marginRight="@dimen/text_30"
+        android:layout_marginTop="@dimen/text_34"
+        android:layout_toLeftOf="@+id/tv_vs"
+        android:text="158****1569"
+        android:textColor="#666666"
+        android:textSize="@dimen/text_13"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_vs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/text_140"
+        android:text="VS"
+        android:textColor="#333333"
+        android:textSize="@dimen/text_18" />
+
+    <com.shuyun.qapp.view.RoundImageView
+        android:id="@+id/iv_head_it"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tv_title"
+        android:layout_marginTop="120dp"
+        android:src="@mipmap/icon_oval" />
+
+    <TextView
+        android:id="@+id/tv_it_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_vs"
+        android:layout_marginLeft="@dimen/text_30"
+        android:layout_marginTop="@dimen/text_34"
+        android:layout_toRightOf="@+id/tv_vs"
+        android:text="158****1569"
+        android:textColor="#666666"
+        android:textSize="@dimen/text_13"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/ll_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="202dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="正在搜索对手"
+            android:textColor="#666666"
+            android:textSize="@dimen/text_15" />
+
+        <TextView
+            android:id="@+id/tv_anim"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#666666"
+            android:textSize="@dimen/text_15" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/iv_bottom"
+        android:layout_below="@+id/ll_search">
+
+        <Button
+            android:id="@+id/rl_cancel_matching"
+            android:layout_width="110dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="65dp"
+            android:background="@drawable/matching_btn_bg"
+            android:text="取消匹配"
+            android:textColor="#0194EC"
+            android:textSize="@dimen/text_15"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_score"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/iv_bottom"
+        android:layout_below="@+id/ll_search"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="积分：3688"
+            android:textColor="#0194EC"
+            android:textSize="@dimen/text_18" />
+
+        <TextView
+            android:id="@+id/tv_reduce_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/text_20"
+            android:layout_toRightOf="@+id/tv_score"
+            android:text="-10"
+            android:textColor="#0194EC"
+            android:textSize="@dimen/text_18" />
+
+    </RelativeLayout>
+
+
+    <ImageView
+        android:id="@+id/iv_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_140"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible"
+        android:background="@mipmap/matching_bottom" />
+
+</RelativeLayout>

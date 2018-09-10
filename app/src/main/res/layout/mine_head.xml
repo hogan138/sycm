@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_header"
+    android:layout_width="match_parent"
+    android:layout_height="130dp"
+    android:background="@drawable/mine_bg">
+
+
+    <com.shuyun.qapp.view.CircleImageView
+        android:id="@+id/iv_header_pic"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginLeft="@dimen/text_12"
+        android:layout_marginTop="@dimen/text_5" />
+
+    <TextView
+        android:id="@+id/tv_phone_num1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/text_17"
+        android:layout_marginTop="27dp"
+        android:layout_toRightOf="@+id/iv_header_pic"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_14"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_change_personal_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_phone_num1"
+        android:layout_marginLeft="@dimen/text_17"
+        android:layout_marginTop="@dimen/text_10"
+        android:layout_toRightOf="@+id/iv_header_pic"
+        android:text="@string/change_account"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_11" />
+
+    <!--<Button-->
+    <!--android:id="@+id/btn_already_name_auth"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_marginBottom="63dp"-->
+    <!--android:layout_marginRight="@dimen/text_12"-->
+    <!--android:paddingRight="@dimen/text_12"-->
+    <!--android:paddingTop="@dimen/text_7"-->
+    <!--android:background="@mipmap/pass"-->
+    <!--android:text="@string/name_auth"-->
+    <!--android:textColor="@color/color_10"-->
+    <!--android:textSize="@dimen/text_11"-->
+    <!--android:visibility="gone" />-->
+    <!--根据是否实名认证动态设置图片-->
+    <!--android:textColor="@color/white"-->
+    <!--android:textSize="@dimen/text_13"-->
+    <!--android:textStyle="bold"-->
+    <Button
+        android:id="@+id/btn_is_name_auth"
+        android:layout_width="119dp"
+        android:layout_height="35dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="63dp"
+        android:layout_marginRight="@dimen/text_12"
+        android:background="@mipmap/notpass"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/tv_today_answer_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/text_15"
+        android:layout_marginLeft="@dimen/text_12"
+        android:text="@string/surplus_number"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_14"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_add_answer_num"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/text_12"
+        android:gravity="center_vertical"
+        android:text="@string/add_answer_num"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_11" />
+</RelativeLayout>

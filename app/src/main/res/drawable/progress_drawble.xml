@@ -1,0 +1,33 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@android:id/background">
+        <shape>
+            <solid android:color="@color/white" />
+            <corners android:radius="@dimen/text_6"/>
+        </shape>
+    </item>
+
+    <!--<item android:id="@android:id/secondaryProgress">-->
+    <!--<clip>-->
+    <!--<shape>-->
+    <!--&lt;!&ndash; 矩形的圆角弧度 &ndash;&gt;-->
+    <!--<corners-->
+    <!--android:bottomRightRadius="@dimen/text_6"-->
+    <!--android:topRightRadius="@dimen/text_6" />-->
+    <!--<solid android:color="@color/color_4" />-->
+    <!--</shape>-->
+    <!--</clip>-->
+    <!--</item>-->
+
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape>
+                <solid android:color="@color/color_24" />
+                <!-- 矩形的圆角弧度 -->
+                <corners
+                    android:radius="@dimen/text_6" />
+            </shape>
+        </clip>
+    </item>
+
+</layer-list>  
