@@ -23,7 +23,7 @@ import static com.shuyun.qapp.utils.TimeTool.FORMAT_DATE_TIME_SECOND;
 
 /**
  * Created by sunxiao on 2018/5/4.
- * 现金账户和积分账户流水 adapter1
+ * 现金账户和积分账户流水 adapter
  */
 
 public class AccountRecordAdapter extends RecyclerView.Adapter<AccountRecordAdapter.ViewHolder> {
