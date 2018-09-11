@@ -114,5 +114,8 @@
     <string name="viewpager_indicator">%1$d/%2$d</string>
     <string name="loading_text">请稍等...</string>
     <string name="login_tip">打开知识宝藏</string>
+    <string name="next">下一步</string>
+    <string name="register_tip">点击"下一步"即表示同意协议:</string>
+    <string name="agree_text">《服务协议》</string>
 
 </resources>

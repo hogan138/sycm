@@ -97,7 +97,6 @@
             android:layout_marginTop="@dimen/text_10"
             android:background="@color/color_33" />
 
-        <!--输入密码 根据情况显示或者隐藏-->
         <TextView
             android:id="@+id/tv_new_psw"
             android:layout_width="wrap_content"
@@ -195,8 +194,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="@string/code_login"
-                android:textColor="@color/login_text"
-                android:textSize="@dimen/text_12" />
+                android:textColor="@color/color_1"
+                android:textSize="@dimen/text_15" />
 
         </RelativeLayout>
     </LinearLayout>

@@ -188,6 +188,7 @@
             android:theme="@style/welcome">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -445,6 +446,7 @@
         <activity
             android:name=".ui.integral.WebRuleActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".ui.login.RegisterPhoneActivity"></activity>
     </application>
 
 </manifest>
