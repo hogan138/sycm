@@ -18,7 +18,6 @@ import com.shuyun.qapp.adapter.MyPrizeAdapter;
 import com.shuyun.qapp.animation.MyLayoutAnimationHelper;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
-import com.shuyun.qapp.base.BaseSwipeBackActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.ExchangeMyPrizeBean;
 import com.shuyun.qapp.net.ApiService;
@@ -42,7 +41,7 @@ import io.reactivex.schedulers.Schedulers;
  * 我的奖券
  */
 
-public class MyPrizeActivity extends BaseSwipeBackActivity {
+public class MyPrizeActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;

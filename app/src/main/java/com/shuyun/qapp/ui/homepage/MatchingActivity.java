@@ -25,7 +25,6 @@ import com.blankj.utilcode.util.TimeUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
-import com.shuyun.qapp.base.BaseSwipeBackActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MatchTimeBean;
 import com.shuyun.qapp.net.ApiService;
@@ -49,7 +48,7 @@ import io.reactivex.schedulers.Schedulers;
  * 匹配对手
  */
 
-public class MatchingActivity extends BaseSwipeBackActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface {
+public class MatchingActivity extends BaseActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface {
 
 
     @BindView(R.id.iv_left_icon)

@@ -18,7 +18,6 @@ import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BaseSwipeBackActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.InputVerficationCodeBean;
 import com.shuyun.qapp.net.AppConst;
@@ -48,7 +47,7 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 /**
  * 更改手机号
  */
-public class ChangePhoneNumActivity extends BaseSwipeBackActivity {
+public class ChangePhoneNumActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;//返回按钮

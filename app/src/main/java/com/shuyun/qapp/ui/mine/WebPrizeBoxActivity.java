@@ -23,7 +23,6 @@ import com.google.gson.Gson;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BaseSwipeBackActivity;
 import com.shuyun.qapp.bean.BoxBean;
 import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.bean.WebAnswerHomeBean;

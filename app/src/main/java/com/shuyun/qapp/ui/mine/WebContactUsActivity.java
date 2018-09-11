@@ -21,7 +21,6 @@ import android.widget.TextView;
 import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BaseSwipeBackActivity;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.homepage.PermissionsActivity;
 import com.shuyun.qapp.utils.PermissionsChecker;
@@ -36,7 +35,7 @@ import butterknife.OnClick;
 /**
  * 联系我们
  */
-public class WebContactUsActivity extends BaseSwipeBackActivity {
+public class WebContactUsActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;

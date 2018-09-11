@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.TimeUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BaseSwipeBackActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.Msg;
 import com.shuyun.qapp.base.BasePresenter;

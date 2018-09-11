@@ -17,7 +17,6 @@ import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BaseSwipeBackActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.InputVerficationCodeBean;
 import com.shuyun.qapp.net.AppConst;
@@ -47,7 +46,7 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 /**
  * TODO更换绑定手机号
  */
-public class ChangePhoneActivity extends BaseSwipeBackActivity {
+public class ChangePhoneActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;

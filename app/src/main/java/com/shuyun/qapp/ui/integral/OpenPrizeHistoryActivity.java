@@ -18,7 +18,6 @@ import com.shuyun.qapp.adapter.OpenPrizeHistoryAdapter;
 import com.shuyun.qapp.animation.MyLayoutAnimationHelper;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
-import com.shuyun.qapp.base.BaseSwipeBackActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.PrizeHistoryBean;
 import com.shuyun.qapp.net.ApiService;
@@ -41,7 +40,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * 开奖历史
  */
-public class OpenPrizeHistoryActivity extends BaseSwipeBackActivity {
+public class OpenPrizeHistoryActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;

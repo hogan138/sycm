@@ -188,7 +188,6 @@
             android:theme="@style/welcome">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -226,8 +225,7 @@
         <activity
             android:name=".ui.login.BindPhoneNumActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
         <!-- 消息页 -->
         <activity
             android:name=".ui.homepage.InformationActivity"
@@ -242,49 +240,41 @@
         <activity
             android:name=".ui.mine.ChangePhoneNumActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
         <!-- 实名认证页面 -->
         <activity
             android:name=".ui.mine.RealNameAuthActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
         <!-- 实名认证结果 -->
         <activity
             android:name=".ui.mine.AuthResultActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
         <!-- 账户记录 -->
         <activity
             android:name=".ui.mine.AccountRecordActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
         <!-- 现金提现 -->
         <activity
             android:name=".ui.mine.CashWithdrawalActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
         <!-- 系统设置 -->
         <activity
             android:name=".ui.mine.SystemSettingActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
         <!-- 联系我们 -->
         <activity
             android:name=".ui.mine.WebContactUsActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
         <!-- 答题记录 -->
         <activity
             android:name=".ui.mine.AnswerRecordActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
         <!-- android:launchMode="singleTask" -->
         <!-- 我的奖品 -->
         <activity
@@ -295,8 +285,7 @@
         <activity
             android:name=".ui.mine.ChangePhoneActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
         <!-- 答题历史 -->
         <activity
             android:name=".ui.answer.AnswerHistoryActivity"
@@ -306,26 +295,22 @@
         <activity
             android:name=".ui.mine.RedWithDrawActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
         <!-- 积分抽奖和宝箱开奖界面 -->
         <activity
             android:name=".ui.mine.IntegralDrawActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
         <!-- 我的界面，反馈. -->
         <activity
             android:name=".ui.mine.FeedbackActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
         <!-- 现金提现结果页 -->
         <activity
             android:name=".ui.mine.CashResultActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
         <!-- 分类 -->
         <activity
             android:name=".ui.classify.ClassifyActivity"
@@ -341,27 +326,23 @@
         <activity
             android:name=".ui.mine.WebRulesActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
         <!-- 关于我们 -->
         <activity
             android:name=".ui.mine.WebAboutUsActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
 
         <!-- 用户协议 -->
         <activity
             android:name=".ui.login.UserAgreementActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
         <!-- banner跳转页 -->
         <activity
             android:name=".ui.homepage.WebBannerActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.mine.WebPrizeActivity"
             android:launchMode="singleTask"
@@ -369,8 +350,7 @@
         <!-- 更改密码 -->
         <activity
             android:name=".ui.login.ChangePasswordActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
         <!-- 动态权限 -->
         <activity
             android:name=".ui.homepage.PermissionsActivity"
@@ -379,14 +359,12 @@
         <activity
             android:name=".ui.mine.OtherSettingActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
         <!-- 账户注销规则 -->
         <activity
             android:name=".ui.mine.AccountLogoutActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
         <!-- 上传申请函 -->
         <activity
             android:name=".ui.mine.UploadLetterActivity"
@@ -418,13 +396,11 @@
         <!-- 匹配对手 -->
         <activity
             android:name=".ui.homepage.MatchingActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
         <!-- 答题对战 -->
         <activity
             android:name=".ui.homepage.AgainstActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
         <!-- 答题对战结果页 -->
         <activity
             android:name=".ui.homepage.AgainstResultActivity"
@@ -432,8 +408,7 @@
         <!-- 账号注销结果页 -->
         <activity
             android:name=".ui.mine.LogOutResultActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
         <!-- H5答题页 -->
         <activity
             android:name=".ui.answer.WebAnswerActivity"
@@ -445,23 +420,19 @@
         <!-- 积分兑换 -->
         <activity
             android:name=".ui.integral.IntegralExchangeActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
         <!-- 积分开宝 -->
         <activity
             android:name=".ui.integral.IntegralMainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
         <!-- 开奖历史 -->
         <activity
             android:name=".ui.integral.OpenPrizeHistoryActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
         <!-- 我的奖券 -->
         <activity
             android:name=".ui.integral.MyPrizeActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
         <!-- 宝贝详情 -->
         <activity
             android:name=".ui.integral.PrizeDetailsActivity"
@@ -469,13 +440,11 @@
         <!-- 兑换结果页 -->
         <activity
             android:name=".ui.integral.ExchangeResultActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
         <!-- 积分夺宝规则 -->
         <activity
             android:name=".ui.integral.WebRuleActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/otherPageStyle" />
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

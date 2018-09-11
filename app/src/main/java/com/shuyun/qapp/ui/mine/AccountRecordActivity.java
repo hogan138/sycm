@@ -12,7 +12,6 @@ import android.widget.Toast;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.MyPagerAdapter;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BaseSwipeBackActivity;
 import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 
@@ -27,7 +26,7 @@ import butterknife.OnClick;
  * 账户记录
  * 分页加载
  */
-public class AccountRecordActivity extends BaseSwipeBackActivity {
+public class AccountRecordActivity extends BaseActivity {
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;
     @BindView(R.id.tv_common_title)

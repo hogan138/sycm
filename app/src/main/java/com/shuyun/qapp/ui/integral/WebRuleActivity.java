@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BaseSwipeBackActivity;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
@@ -23,7 +22,7 @@ import butterknife.ButterKnife;
 /**
  * 积分夺宝规则
  */
-public class WebRuleActivity extends BaseSwipeBackActivity {
+public class WebRuleActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;

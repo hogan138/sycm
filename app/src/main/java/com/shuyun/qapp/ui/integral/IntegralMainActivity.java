@@ -22,7 +22,6 @@ import com.shuyun.qapp.adapter.IntegralAllPrizeAdapter;
 import com.shuyun.qapp.animation.MyLayoutAnimationHelper;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
-import com.shuyun.qapp.base.BaseSwipeBackActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.IntegralAllPrizeBean;
 import com.shuyun.qapp.net.ApiService;
@@ -45,7 +44,7 @@ import io.reactivex.schedulers.Schedulers;
  * 积分夺宝首页
  */
 
-public class IntegralMainActivity extends BaseSwipeBackActivity implements View.OnClickListener {
+public class IntegralMainActivity extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.rl_back)
     RelativeLayout rlBack;

@@ -27,8 +27,8 @@ import com.google.gson.Gson;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.RedPacketAdapter;
 import com.shuyun.qapp.adapter.RedPacketAdapter1;
+import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
-import com.shuyun.qapp.base.BaseSwipeBackActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.InputWithdrawalbean;
 import com.shuyun.qapp.bean.MinePrize;
@@ -62,7 +62,7 @@ import okhttp3.RequestBody;
  * 红包提现
  * recyclerView多个选中状态
  */
-public class RedWithDrawActivity extends BaseSwipeBackActivity {
+public class RedWithDrawActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;

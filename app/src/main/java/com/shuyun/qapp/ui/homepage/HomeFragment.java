@@ -750,9 +750,11 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                                     llInvite.setVisibility(View.VISIBLE);
                                     ImageLoaderManager.LoadImage(mContext, inviteBean.getInvite(), ivInvitePrize, R.mipmap.zw01);
                                     invite_h5Url = inviteBean.getH5Url();
+                                    SharedPrefrenceTool.put(mContext, "share", inviteBean.getShare());//是否参与邀请分享 1——参与邀请
                                 } else {
                                     llInvite.setVisibility(View.GONE);
                                     ivInvitePrize.setVisibility(View.GONE);
+                                    SharedPrefrenceTool.put(mContext, "share", inviteBean.getShare());//是否参与邀请分享 1——参与邀请
                                 }
                             } catch (Exception e) {
 

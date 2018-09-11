@@ -20,14 +20,13 @@ import com.mylhyl.circledialog.params.TextParams;
 import com.mylhyl.circledialog.params.TitleParams;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BaseSwipeBackActivity;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AccountLogoutActivity extends BaseSwipeBackActivity {
+public class AccountLogoutActivity extends BaseActivity {
 
     @BindView(R.id.iv_left_back)
     ImageView ivLeftBack;

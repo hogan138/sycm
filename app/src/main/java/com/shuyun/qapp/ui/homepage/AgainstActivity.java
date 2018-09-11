@@ -28,7 +28,6 @@ import com.mylhyl.circledialog.params.DialogParams;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
-import com.shuyun.qapp.base.BaseSwipeBackActivity;
 import com.shuyun.qapp.bean.ApplyAnswer;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.RobotInputAgainstBean;
@@ -66,7 +65,7 @@ import okhttp3.RequestBody;
  * 答题对战页面
  */
 
-public class AgainstActivity extends BaseSwipeBackActivity {
+public class AgainstActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;

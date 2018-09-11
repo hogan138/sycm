@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.google.gson.Gson;
-import com.shuyun.qapp.base.BaseSwipeBackActivity;
+import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.DataResponse;
@@ -50,7 +50,7 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
  * bug
  * S0001 没有找到验证码申请记录
  */
-public class BindPhoneNumActivity extends BaseSwipeBackActivity {
+public class BindPhoneNumActivity extends BaseActivity {
 
     @BindView(R.id.et_phone_number)
     EditText etPhoneNumber;//手机号

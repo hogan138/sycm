@@ -35,7 +35,6 @@ import com.shuyun.qapp.adapter.MyGridViewAdapter;
 import com.shuyun.qapp.adapter.MyViewPagerAdapter;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
-import com.shuyun.qapp.base.BaseSwipeBackActivity;
 import com.shuyun.qapp.bean.AnnounceBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.IntegralExchangeBean;
@@ -85,7 +84,7 @@ import okhttp3.Response;
 /**
  * 积分抽奖
  */
-public class IntegralDrawActivity extends BaseSwipeBackActivity implements CommonPopupWindow.ViewInterface, ViewPager.OnPageChangeListener {//
+public class IntegralDrawActivity extends BaseActivity implements CommonPopupWindow.ViewInterface, ViewPager.OnPageChangeListener {//
     //TODO 积分抽奖点击再开一次的时候跳到 打开宝箱页面
     @BindView(R.id.tv_superise)
     TextView tvSuperise;//恭喜您获得宝箱

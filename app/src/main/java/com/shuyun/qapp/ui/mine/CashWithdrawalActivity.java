@@ -24,8 +24,8 @@ import com.blankj.utilcode.util.TimeUtils;
 import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.google.gson.Gson;
 import com.shuyun.qapp.R;
+import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
-import com.shuyun.qapp.base.BaseSwipeBackActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.InputWithdrawalbean;
 import com.shuyun.qapp.bean.OutPutWithdraw;
@@ -55,7 +55,7 @@ import okhttp3.RequestBody;
 /**
  * 现金提现
  */
-public class CashWithdrawalActivity extends BaseSwipeBackActivity {
+public class CashWithdrawalActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;

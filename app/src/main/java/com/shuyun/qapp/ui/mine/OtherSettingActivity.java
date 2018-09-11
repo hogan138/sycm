@@ -14,7 +14,6 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
-import com.shuyun.qapp.base.BaseSwipeBackActivity;
 import com.shuyun.qapp.bean.AppVersionBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.net.ApiService;
@@ -44,7 +43,7 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 /**
  * 其他设置
  */
-public class OtherSettingActivity extends BaseSwipeBackActivity {
+public class OtherSettingActivity extends BaseActivity {
 
     @BindView(R.id.iv_left_back)
     ImageView ivLeftBack;//返回按钮图片

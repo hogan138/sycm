@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BaseSwipeBackActivity;
 import com.shuyun.qapp.bean.AuthNameBean;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.tencent.stat.StatService;
@@ -24,7 +23,7 @@ import butterknife.OnClick;
 /**
  * 实名认证
  */
-public class AuthResultActivity extends BaseSwipeBackActivity {
+public class AuthResultActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;

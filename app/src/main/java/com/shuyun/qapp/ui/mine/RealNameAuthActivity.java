@@ -13,7 +13,6 @@ import com.blankj.utilcode.util.TimeUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BaseSwipeBackActivity;
 import com.shuyun.qapp.bean.AuthNameBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.base.BasePresenter;
@@ -43,7 +42,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * 实名认证界面
  */
-public class RealNameAuthActivity extends BaseSwipeBackActivity {
+public class RealNameAuthActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;

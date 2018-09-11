@@ -7,7 +7,6 @@ import android.widget.TextView;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BaseSwipeBackActivity;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
 
@@ -17,7 +16,7 @@ import butterknife.ButterKnife;
 /**
  * 兑换结果页
  */
-public class ExchangeResultActivity extends BaseSwipeBackActivity {
+public class ExchangeResultActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;

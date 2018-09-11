@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BaseSwipeBackActivity;
 import com.shuyun.qapp.net.AppConst;
 import com.umeng.analytics.MobclickAgent;
 
@@ -24,7 +23,7 @@ import butterknife.OnClick;
  * 用户协议
  */
 
-public class UserAgreementActivity extends BaseSwipeBackActivity {
+public class UserAgreementActivity extends BaseActivity {
 
     @BindView(R.id.wv_user_agreement)
     WebView wvUserAgreement;

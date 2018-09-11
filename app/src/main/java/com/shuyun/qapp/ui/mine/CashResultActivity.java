@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BaseSwipeBackActivity;
 import com.shuyun.qapp.bean.OutPutWithdraw;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.umeng.analytics.MobclickAgent;
@@ -20,7 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class CashResultActivity extends BaseSwipeBackActivity {
+public class CashResultActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;//返回

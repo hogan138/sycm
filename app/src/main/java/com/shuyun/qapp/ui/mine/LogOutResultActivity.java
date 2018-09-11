@@ -13,7 +13,6 @@ import com.blankj.utilcode.util.TimeUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
-import com.shuyun.qapp.base.BaseSwipeBackActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.utils.ErrorCodeTools;
@@ -28,7 +27,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class LogOutResultActivity extends BaseSwipeBackActivity {
+public class LogOutResultActivity extends BaseActivity {
 
     @BindView(R.id.iv_left_back)
     ImageView ivLeftBack;

@@ -21,7 +21,6 @@ import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.AnswerRecordAdapter;
 import com.shuyun.qapp.animation.MyLayoutAnimationHelper;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BaseSwipeBackActivity;
 import com.shuyun.qapp.bean.AnswerRecordBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.net.AppConst;
@@ -48,7 +47,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * 成绩单
  */
-public class AnswerRecordActivity extends BaseSwipeBackActivity {
+public class AnswerRecordActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;

@@ -16,7 +16,6 @@ import com.blankj.utilcode.util.TimeUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
-import com.shuyun.qapp.base.BaseSwipeBackActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.IntegralExchangeBean;
 import com.shuyun.qapp.bean.SharedBean;
@@ -40,7 +39,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * 积分兑换
  */
-public class IntegralExchangeActivity extends BaseSwipeBackActivity implements View.OnClickListener {
+public class IntegralExchangeActivity extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle;

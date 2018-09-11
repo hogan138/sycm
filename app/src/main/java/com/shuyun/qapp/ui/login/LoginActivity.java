@@ -496,13 +496,12 @@ public class LoginActivity extends BaseActivity {
                                 SharedPrefrenceTool.put(LoginActivity.this, "key", loginResp.getKey());//对称加密的秘钥。
                                 SharedPrefrenceTool.put(LoginActivity.this, "bind", loginResp.getBind());//是否绑定用户。
                                 SharedPrefrenceTool.put(LoginActivity.this, "random", loginResp.getRandom());//登录成果后，平台随机生成的字符串
-                                LoginResponse.User user = loginResp.getUser();
-
-                                SharedPrefrenceTool.put(LoginActivity.this, "share", user.getShare());//是否参与邀请分享 1——参与邀请
+//                                LoginResponse.User user = loginResp.getUser();
+//                                SharedPrefrenceTool.put(LoginActivity.this, "share", user.getShare());//是否参与邀请分享 1——参与邀请
                                 AppConst.loadToken(LoginActivity.this);
-                                if (!EncodeAndStringTool.isStringEmpty(loginResp.getInvite())) {
-                                    SharedPrefrenceTool.put(LoginActivity.this, "invite", loginResp.getInvite());
-                                }
+//                                if (!EncodeAndStringTool.isStringEmpty(loginResp.getInvite())) {
+//                                    SharedPrefrenceTool.put(LoginActivity.this, "invite", loginResp.getInvite());
+//                                }
 
                                 //设置别名
                                 JPushInterface.setAlias(LoginActivity.this, new Random().nextInt(), etPhoneNumber.getText().toString());

@@ -19,7 +19,6 @@ import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BaseSwipeBackActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.FeedBackSuggestBean;
 import com.shuyun.qapp.base.BasePresenter;
@@ -44,7 +43,7 @@ import okhttp3.RequestBody;
 /**
  * 反馈
  */
-public class FeedbackActivity extends BaseSwipeBackActivity {
+public class FeedbackActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;
