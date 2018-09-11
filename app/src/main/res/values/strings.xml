@@ -2,7 +2,7 @@
     <string name="app_name">全民共进</string>
     <string name="skip">跳过</string>
     <string name="three_second">3s</string>
-    <string name="code_login">注册</string>
+    <string name="code_login">注 册</string>
     <string name="pwd_login">密码登录</string>
     <string name="phone_number">手机号</string>
     <string name="old_phone_number">当前手机号</string>
@@ -23,7 +23,7 @@
     <string name="forget_password">忘记密码?</string>
     <string name="code_error">验证码错误!</string>
     <!--<string name="password_error">密码错误,请重新输入密码!</string>-->
-    <string name="login">登录</string>
+    <string name="login">登 录</string>
     <string name="other_login">第三方登录</string>
     <string name="agree">同意</string>
     <string name="agreement"><u>全民共进用户服务协议</u></string>
