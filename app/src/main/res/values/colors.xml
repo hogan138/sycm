@@ -56,6 +56,7 @@
     <color name="color_light">#99000000</color>
 
     <color name="main_bottom">#308dd3</color>
+    <color name="login_text">#999999</color>
 
 
 </resources>
