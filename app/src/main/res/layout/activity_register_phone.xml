@@ -47,7 +47,7 @@
             android:inputType="number"
             android:textColor="@color/login_text"
             android:textColorHint="@color/login_text"
-            android:textSize="@dimen/text_15" />
+            android:textSize="@dimen/text_17" />
 
         <ImageView
             android:id="@+id/iv_clear_phone_num"

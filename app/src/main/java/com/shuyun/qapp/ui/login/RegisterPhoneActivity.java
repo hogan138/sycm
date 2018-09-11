@@ -13,9 +13,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.mylhyl.circledialog.CircleDialog;
+import com.mylhyl.circledialog.callback.ConfigDialog;
+import com.mylhyl.circledialog.params.DialogParams;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
+import com.shuyun.qapp.utils.OnMultiClickListener;
+import com.shuyun.qapp.utils.RegularTool;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,6 +50,7 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
         ivBack.setOnClickListener(this);
         llAgreeText.setOnClickListener(this);
         ivClearPhoneNum.setOnClickListener(this);
+        btnNext.setOnClickListener(this);
 
         if ("login".equals(getIntent().getStringExtra("name"))) {
             tvTitle.setText("新用户注册");
@@ -87,6 +93,12 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
             case R.id.ll_agree_text:
                 //跳转到协议界面
                 startActivity(new Intent(this, UserAgreementActivity.class));
+                break;
+            case R.id.btn_next:
+                if (RegularTool.isMobileExact(etPhoneNumber.getText().toString())) {
+                } else {
+                    errorDialog("手机号码格式错误请重新输入");
+                }
                 break;
             default:
                 break;
@@ -144,5 +156,26 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
             btnNext.setEnabled(false);
             btnNext.setTextColor(Color.parseColor("#999999"));
         }
+    }
+
+    //错误弹框
+    private void errorDialog(final String text) {
+        new CircleDialog.Builder(this)
+                .setText(text)
+                .setTextColor(Color.parseColor("#333333"))
+                .setWidth(0.7f)
+                .setNegative("好的", new OnMultiClickListener() {
+                    @Override
+                    public void onMultiClick(View v) {
+
+                    }
+                })
+                .configDialog(new ConfigDialog() {
+                    @Override
+                    public void onConfig(DialogParams params) {
+                        params.animStyle = R.style.popwin_anim_style;
+                    }
+                })
+                .show();
     }
 }
