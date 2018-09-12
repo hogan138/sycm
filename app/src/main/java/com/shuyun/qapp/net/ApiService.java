@@ -612,4 +612,11 @@ public interface ApiService {
      */
     @GET("/rest/user/inviteShare")
     Observable<DataResponse<InviteBean>> prizeShare();
+
+    /**
+     * 66、用户设置密码
+     */
+    @GET("/rest/user/setPwd")
+    Observable<DataResponse<String>> setPwd(@Query("pwd") String pwd);
+
 }

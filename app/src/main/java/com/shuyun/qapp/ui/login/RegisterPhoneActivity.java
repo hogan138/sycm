@@ -62,6 +62,9 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
         } else if ("login".equals(getIntent().getStringExtra("name"))) {
             tvTitle.setText("输入手机号");
             llAgreeText.setVisibility(View.GONE);
+        } else if ("changePwd".equals(getIntent().getStringExtra("name"))) {
+            tvTitle.setText("输入手机号");
+            llAgreeText.setVisibility(View.GONE);
         }
         clearEditText(etPhoneNumber, ivClearPhoneNum);
     }

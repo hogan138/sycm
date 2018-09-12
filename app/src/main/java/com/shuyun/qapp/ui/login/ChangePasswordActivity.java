@@ -105,16 +105,8 @@ public class ChangePasswordActivity extends BaseActivity {
         tvCommonTitle.setText("修改密码");
         tvNewPsw.setText("新密码");
 
-        //判断入口
-        if (getIntent().getStringExtra("modify").equals("modify")) {
-            //个人信息
-            etPhoneNumber.setText(SaveUserInfo.getInstance(this).getUserInfo("phone"));
-            etPhoneNumber.setInputType(InputType.TYPE_NULL);
-        } else {
-            //忘记密码
-            etPhoneNumber.setInputType(InputType.TYPE_CLASS_PHONE);
-            clearEditText(etPhoneNumber, ivClearPhoneNum);
-        }
+        etPhoneNumber.setText(SaveUserInfo.getInstance(this).getUserInfo("phone"));
+        etPhoneNumber.setInputType(InputType.TYPE_NULL);
 
         clearEditText(etPassword, ivClearPwd);
 
@@ -326,17 +318,12 @@ public class ChangePasswordActivity extends BaseActivity {
                                 }
                                 Toast.makeText(ChangePasswordActivity.this, "修改密码成功！", Toast.LENGTH_SHORT).show();
 
-                                if (getIntent().getStringExtra("modify").equals("modify")) {
-                                    finish();
-                                } else {
-                                    MyActivityManager.getInstance().finishAllActivity();
-                                    startActivity(new Intent(ChangePasswordActivity.this, HomePageActivity.class));
-                                }
+                                finish();
                             } else {
                                 tvErrorHint.setVisibility(View.VISIBLE);
                             }
                         } else {
-                            ErrorCodeTools.errorCodePrompt(ChangePasswordActivity.this, loginResponse.getErr(),loginResponse.getMsg());
+                            ErrorCodeTools.errorCodePrompt(ChangePasswordActivity.this, loginResponse.getErr(), loginResponse.getMsg());
                         }
                     }
 

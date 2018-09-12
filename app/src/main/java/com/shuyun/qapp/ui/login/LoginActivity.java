@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -15,10 +16,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
-import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.TimeUtils;
+import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.google.gson.Gson;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.mylhyl.circledialog.CircleDialog;
@@ -30,7 +30,6 @@ import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.bean.InputVerficationCodeBean;
 import com.shuyun.qapp.bean.LoginInput;
 import com.shuyun.qapp.bean.LoginResponse;
 import com.shuyun.qapp.bean.Msg;
@@ -40,7 +39,9 @@ import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.homepage.PermissionsActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
+import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
+import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.PermissionsChecker;
@@ -93,6 +94,9 @@ public class LoginActivity extends BaseActivity {
     ImageView ivWechatLogin;//微信登录按钮
     @BindView(R.id.ll_other_login)
     LinearLayout llOtherLogin;//其他登录方式
+    @BindView(R.id.rl_main)
+    RelativeLayout rlMain;
+
 
     private static final String TAG = "LoginActivity";
 
@@ -156,40 +160,6 @@ public class LoginActivity extends BaseActivity {
          */
         MobclickAgent.onResume(this);
         StatService.onResume(this);
-        etPhoneNumber.addTextChangedListener(new TextWatcher() {//没有输入正确格式的手机号,登录按钮置灰
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                isLogin();
-            }
-        });
-
-        etPassword.addTextChangedListener(new TextWatcher() {//没有输入正确格式的手机号,登录按钮置灰
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                isLogin();
-            }
-        });
-
         /**
          * 焦点变化监听
          */
@@ -251,8 +221,8 @@ public class LoginActivity extends BaseActivity {
                 startActivity(intent1);
                 break;
             case R.id.tv_forget_pwd:
-                Intent intent = new Intent(LoginActivity.this, ChangePasswordActivity.class);
-                intent.putExtra("modify", "login");
+                Intent intent = new Intent(LoginActivity.this, RegisterPhoneActivity.class);
+                intent.putExtra("name", "changePwd");
                 startActivity(intent);
                 break;
             case R.id.btn_login:
@@ -304,7 +274,6 @@ public class LoginActivity extends BaseActivity {
     /**
      * 登录
      */
-
     public void loadLogin(final Context mContext, final LoginInput loginInput) {
         SaveUserInfo.getInstance(this).setUserInfo("account", loginInput.getAccount());
         final String account = SaveUserInfo.getInstance(this).getUserInfo("account");
@@ -342,20 +311,34 @@ public class LoginActivity extends BaseActivity {
 
                                 btnLogin.setEnabled(false);
 
-                                Intent intent = new Intent(LoginActivity.this, HomePageActivity.class);
-                                startActivity(intent);
-                                finish();
+                                CustomLoadingFactory factory = new CustomLoadingFactory();
+                                LoadingBar.make(rlMain, factory).show();
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        LoadingBar.cancel(rlMain);
+                                        Intent intent = new Intent(LoginActivity.this, HomePageActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                }, 2000);
+
+
                             } else {
                             }
                         } else {
-                            if (error == 0) {
-                                error = 1;
-                                errorDialog("密码错误请重新输入");
+                            if (loginResponse.getErr().equals("TAU11")) {
+                                if (error == 0) {
+                                    error = 1;
+                                    errorDialog("密码错误请重新输入");
+                                } else {
+                                    //再次输入错误密码
+                                    updatePasswordDialog();
+                                }
                             } else {
-                                //再次输入错误密码
-                                updatePasswordDialog();
+                                ErrorCodeTools.errorCodePrompt(mContext, loginResponse.getErr(), loginResponse.getMsg());
                             }
-//                            ErrorCodeTools.errorCodePrompt(mContext, loginResponse.getErr(), loginResponse.getMsg());
+
                         }
 
                     }
@@ -425,6 +408,7 @@ public class LoginActivity extends BaseActivity {
                 } else {
                     clearPic.setVisibility(View.GONE);
                 }
+                isLogin();
             }
         });
         /**
@@ -492,6 +476,9 @@ public class LoginActivity extends BaseActivity {
                 .setPositive("重置", new OnMultiClickListener() {
                     @Override
                     public void onMultiClick(View v) {
+                        Intent intent = new Intent(LoginActivity.this, RegisterPhoneActivity.class);
+                        intent.putExtra("name", "changePwd");
+                        startActivity(intent);
                     }
                 })
                 .setNegative("忽略", new OnMultiClickListener() {
@@ -514,6 +501,7 @@ public class LoginActivity extends BaseActivity {
                 })
                 .show();
     }
+
 }
 
 

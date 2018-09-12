@@ -191,9 +191,7 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
 
                 break;
             case R.id.rl_modify_password:
-                Intent intent1 = new Intent(this, ChangePasswordActivity.class);
-                intent1.putExtra("modify", "modify");
-                startActivity(intent1);
+                startActivity(new Intent(this, ChangePasswordActivity.class));
                 break;
             case R.id.rl_real_name_auth:
                 int certInfo = Integer.parseInt(SaveUserInfo.getInstance(this).getUserInfo("cert"));

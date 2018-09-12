@@ -5,14 +5,15 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.TimeUtils;
+import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.google.gson.Gson;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.mylhyl.circledialog.CircleDialog;
@@ -30,6 +31,7 @@ import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
+import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.MyActivityManager;
@@ -37,7 +39,6 @@ import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
-import com.shuyun.qapp.utils.ToastUtil;
 import com.shuyun.qapp.view.VerifyCodeView;
 
 import org.litepal.crud.DataSupport;
@@ -70,6 +71,8 @@ public class VerifyCodeActivity extends BaseActivity {
     VerifyCodeView verifyCodeView;
     @BindView(R.id.tv_send_code)
     TextView tvSendCode;
+    @BindView(R.id.ll_main)
+    LinearLayout llMain;
 
     String phone = "";
 
@@ -91,9 +94,19 @@ public class VerifyCodeActivity extends BaseActivity {
             @Override
             public void inputComplete() {
                 if (getIntent().getStringExtra("name").equals("login")) {
-                    register(verifyCodeView.getEditContent());
+                    //验证码登录
+                    register(verifyCodeView.getEditContent(), 2);
                 } else if (getIntent().getStringExtra("name").equals("register")) {
-
+                    //注册
+                    register(verifyCodeView.getEditContent(), 4);
+                } else if (getIntent().getStringExtra("name").equals("changePwd")) {
+                    //忘记密码
+                    Intent intent = new Intent(VerifyCodeActivity.this, SetPasswordActivity.class);
+                    intent.putExtra("name", getIntent().getStringExtra("name"));
+                    intent.putExtra("phone", phone);
+                    intent.putExtra("code", verifyCodeView.getEditContent());
+                    intent.putExtra("token", "");
+                    startActivity(intent);
                 }
             }
 
@@ -108,6 +121,8 @@ public class VerifyCodeActivity extends BaseActivity {
             sendVerifyCode(1); //验证码登录
         } else if (getIntent().getStringExtra("name").equals("register")) {
             sendVerifyCode(7); //注册
+        } else if (getIntent().getStringExtra("name").equals("changePwd")) {
+            sendVerifyCode(4); //忘记密码
         }
 
         tvSendCode.setOnClickListener(new View.OnClickListener() {
@@ -117,6 +132,8 @@ public class VerifyCodeActivity extends BaseActivity {
                     sendVerifyCode(1); //验证码登录
                 } else if (getIntent().getStringExtra("name").equals("register")) {
                     sendVerifyCode(7); //注册
+                } else if (getIntent().getStringExtra("name").equals("changePwd")) {
+                    sendVerifyCode(4); //忘记密码
                 }
 
             }
@@ -124,8 +141,8 @@ public class VerifyCodeActivity extends BaseActivity {
 
     }
 
-    //验证码登录
-    private void register(String code) {
+    //2验证码登录4注册
+    private void register(String code, int mode) {
         String mdCode = encryptMD5ToString(phone + encryptMD5ToString(code));
         long curTime = System.currentTimeMillis();
         String tsn = EncodeAndStringTool.getTsn(this);
@@ -133,7 +150,7 @@ public class VerifyCodeActivity extends BaseActivity {
 
         SharedPrefrenceTool.put(VerifyCodeActivity.this, "salt", salt);
         //devId+appId+v+stamp+mode+account+tsn+salt+ appSecret+mdpwd
-        String signString = "" + AppConst.DEV_ID + AppConst.APP_ID + AppConst.V + curTime + 2 + phone + tsn + salt + AppConst.APP_KEY + mdCode;
+        String signString = "" + AppConst.DEV_ID + AppConst.APP_ID + AppConst.V + curTime + mode + phone + tsn + salt + AppConst.APP_KEY + mdCode;
         //将拼接的字符串转化为16进制MD5
         String myCode = encryptMD5ToString(signString);
         /**
@@ -142,7 +159,7 @@ public class VerifyCodeActivity extends BaseActivity {
         String signCode = getCode(myCode);
 
         LoginInput loginInput = new LoginInput();
-        loginInput.setMode(2);
+        loginInput.setMode(mode);
         loginInput.setAccount(phone);
         loginInput.setTsn(tsn);
         loginInput.setSalt(salt);
@@ -154,7 +171,7 @@ public class VerifyCodeActivity extends BaseActivity {
         loginInput.setCode(signCode);
         String deviceId = SmAntiFraud.getDeviceId();
         loginInput.setDeviceId(deviceId);
-        loadLogin(VerifyCodeActivity.this, loginInput);
+        loadLogin(VerifyCodeActivity.this, loginInput, mode);
     }
 
     //发送验证码
@@ -208,7 +225,6 @@ public class VerifyCodeActivity extends BaseActivity {
                     @Override
                     public void onNext(DataResponse<String> loginResponse) {
                         if (loginResponse.isSuccees()) {
-//                            ToastUtil.showToast(VerifyCodeActivity.this, "获取验证码成功");
                             //显示60s倒计时
                             tvSendCode.setEnabled(false);
                             new CountDownTimer(120 * 1000, 1000) {
@@ -227,6 +243,9 @@ public class VerifyCodeActivity extends BaseActivity {
                             }.start();
                         } else {
                             ErrorCodeTools.errorCodePrompt(VerifyCodeActivity.this, loginResponse.getErr(), loginResponse.getMsg());
+                            tvSendCode.setEnabled(true);
+                            tvSendCode.setText("重新发送验证码");
+                            tvSendCode.setTextColor(Color.parseColor("#0194ec"));
                         }
                     }
 
@@ -247,7 +266,7 @@ public class VerifyCodeActivity extends BaseActivity {
      * 登录
      */
 
-    public void loadLogin(final Context mContext, final LoginInput loginInput) {
+    public void loadLogin(final Context mContext, final LoginInput loginInput, final int mode) {
         SaveUserInfo.getInstance(this).setUserInfo("account", loginInput.getAccount());
         final String account = SaveUserInfo.getInstance(this).getUserInfo("account");
         /**
@@ -257,7 +276,7 @@ public class VerifyCodeActivity extends BaseActivity {
             DataSupport.deleteAll(Msg.class);//清空数据库中消息
         }
         ApiService apiService = BasePresenter.create(8000);
-        String inputbean = new Gson().toJson(loginInput);
+        final String inputbean = new Gson().toJson(loginInput);
         Log.i(TAG, "loadLogin: " + loginInput.toString());
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
         apiService.login(body)
@@ -282,14 +301,36 @@ public class VerifyCodeActivity extends BaseActivity {
                                 //设置别名
                                 JPushInterface.setAlias(VerifyCodeActivity.this, new Random().nextInt(), phone);
 
-                                Intent intent = new Intent(VerifyCodeActivity.this, HomePageActivity.class);
-                                startActivity(intent);
-                                MyActivityManager.getInstance().finishAllActivity();
-                            } else {
+                                if (mode == 2) {
+                                    CustomLoadingFactory factory = new CustomLoadingFactory();
+                                    LoadingBar.make(llMain, factory).show();
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            LoadingBar.cancel(llMain);
+                                            //验证码登录
+                                            Intent intent = new Intent(VerifyCodeActivity.this, HomePageActivity.class);
+                                            startActivity(intent);
+                                            MyActivityManager.getInstance().finishAllActivity();
+                                        }
+                                    }, 2000);
+                                } else if (mode == 4) {
+                                    //注册
+                                    Intent intent = new Intent(VerifyCodeActivity.this, SetPasswordActivity.class);
+                                    intent.putExtra("name", getIntent().getStringExtra("name"));
+                                    intent.putExtra("phone", phone);
+                                    intent.putExtra("code", verifyCodeView.getEditContent());
+                                    intent.putExtra("token", loginResp.getToken());
+                                    startActivity(intent);
+                                }
+
                             }
                         } else {
-                            errorDialog("验证码错误，请重新输入");
-//                            ErrorCodeTools.errorCodePrompt(mContext, loginResponse.getErr(), loginResponse.getMsg());
+                            if (loginResponse.getErr().equals("TAU11")) {
+                                errorDialog("验证码错误，请重新输入");
+                            } else {
+                                ErrorCodeTools.errorCodePrompt(mContext, loginResponse.getErr(), loginResponse.getMsg());
+                            }
                         }
 
                     }

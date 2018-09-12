@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -103,7 +104,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/text_15"
             android:layout_marginTop="@dimen/text_18"
-            android:text="密码"
+            android:text="@string/pwd"
             android:textColor="@color/color_1"
             android:textSize="@dimen/text_14" />
 

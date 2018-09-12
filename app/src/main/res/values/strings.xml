@@ -119,5 +119,9 @@
     <string name="agree_text">《服务协议》</string>
     <string name="verify_text">验证码已发送手机至</string>
     <string name="verify_tip">由于近期运营商调整了短信发送规则，可能造成信息发送延迟。如果您长时间未收到验证短信，请尝试重新发送</string>
-
+    <string name="set_pwd">请设置密码</string>
+    <string name="pwd">密码</string>
+    <string name="btn_finish">完成</string>
+    <string name="pwd_error">需4～20位字符</string>
+    <string name="pwd_skip">跳过</string>
 </resources>
