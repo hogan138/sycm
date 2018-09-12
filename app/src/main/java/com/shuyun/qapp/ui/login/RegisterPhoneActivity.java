@@ -19,6 +19,7 @@ import com.mylhyl.circledialog.params.DialogParams;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
+import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.RegularTool;
 
@@ -52,26 +53,17 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
         ivClearPhoneNum.setOnClickListener(this);
         btnNext.setOnClickListener(this);
 
-        if ("login".equals(getIntent().getStringExtra("name"))) {
+        btnNext.setEnabled(false);
+
+        MyActivityManager.getInstance().pushOneActivity(this);
+
+        if ("register".equals(getIntent().getStringExtra("name"))) {
             tvTitle.setText("新用户注册");
+        } else if ("login".equals(getIntent().getStringExtra("name"))) {
+            tvTitle.setText("输入手机号");
+            llAgreeText.setVisibility(View.GONE);
         }
         clearEditText(etPhoneNumber, ivClearPhoneNum);
-        etPhoneNumber.addTextChangedListener(new TextWatcher() {//没有输入正确格式的手机号,登录按钮置灰
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                isLogin();
-            }
-        });
     }
 
     @Override
@@ -96,6 +88,10 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
                 break;
             case R.id.btn_next:
                 if (RegularTool.isMobileExact(etPhoneNumber.getText().toString())) {
+                    Intent intent = new Intent(RegisterPhoneActivity.this, VerifyCodeActivity.class);
+                    intent.putExtra("phone", etPhoneNumber.getText().toString());
+                    intent.putExtra("name", getIntent().getStringExtra("name"));
+                    startActivity(intent);
                 } else {
                     errorDialog("手机号码格式错误请重新输入");
                 }
@@ -126,19 +122,6 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
             @Override
             public void afterTextChanged(Editable s) {
                 if (editText.getText().length() != 0) {
-                    clearPic.setVisibility(View.VISIBLE);
-                } else {
-                    clearPic.setVisibility(View.GONE);
-                }
-            }
-        });
-        /**
-         * 焦点变化监听
-         */
-        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (editText.getText().length() != 0 && hasFocus) {//不等于0,切得到焦点
                     clearPic.setVisibility(View.VISIBLE);
                     isLogin();
                 } else {

@@ -15,7 +15,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.google.gson.Gson;
 import com.ishumei.smantifraud.SmAntiFraud;
@@ -28,6 +30,7 @@ import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
+import com.shuyun.qapp.bean.InputVerficationCodeBean;
 import com.shuyun.qapp.bean.LoginInput;
 import com.shuyun.qapp.bean.LoginResponse;
 import com.shuyun.qapp.bean.Msg;
@@ -219,7 +222,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     @OnClick({R.id.et_phone_number, R.id.et_password, R.id.iv_clear_phone_num, R.id.iv_clear_pwd,
-            R.id.iv_is_show_pwd, R.id.tv_forget_pwd, R.id.btn_login, R.id.iv_wechat_login, R.id.rl_register})
+            R.id.iv_is_show_pwd, R.id.tv_forget_pwd, R.id.btn_login, R.id.iv_wechat_login, R.id.rl_register, R.id.tv_verify_login})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.iv_clear_phone_num:
@@ -237,48 +240,16 @@ public class LoginActivity extends BaseActivity {
                     isShowPwd(etPassword);
                 }
                 break;
+            case R.id.tv_verify_login:
+                Intent intent2 = new Intent(LoginActivity.this, RegisterPhoneActivity.class);
+                intent2.putExtra("name", "login");
+                startActivity(intent2);
+                break;
             case R.id.rl_register:
                 Intent intent1 = new Intent(LoginActivity.this, RegisterPhoneActivity.class);
-                intent1.putExtra("name", "login");
+                intent1.putExtra("name", "register");
                 startActivity(intent1);
                 break;
-//            case R.id.btn_get_code1:
-//                if (!cbIsAgree.isChecked()) {
-//                    Toast.makeText(this, "请您先同意全名共进用户服务协议!", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//                String phoneNum0 = etPhoneNumber.getText().toString().trim();
-//
-//                if (RegularTool.isMobileExact(phoneNum0)) {//正则判断手机号的
-//                    long curTime0 = System.currentTimeMillis();
-//                    //devId+appId+v+stamp+phone+type+appSecret
-//                    String singString0 = "" + AppConst.DEV_ID + AppConst.APP_ID + AppConst.V + curTime0 + phoneNum0 + 1 + AppConst.APP_KEY;
-//                    //将拼接的字符串转化为16进制MD5
-//                    String myCode = encryptMD5ToString(singString0);
-//                    /**
-//                     * 签名code值
-//                     */
-//                    String signCode = getCode(myCode);
-//                    InputVerficationCodeBean verficationCodeBean = new InputVerficationCodeBean();
-//                    verficationCodeBean.setPhone(phoneNum0);
-//                    verficationCodeBean.setType(1);//type为1表示登录
-//                    verficationCodeBean.setDevId(AppConst.DEV_ID);
-//                    verficationCodeBean.setAppId(AppConst.APP_ID);
-//                    verficationCodeBean.setV(AppConst.V);
-//                    verficationCodeBean.setStamp(curTime0);
-//                    verficationCodeBean.setCode(signCode);
-//                    if (NetworkUtils.isAvailableByPing()) {
-//                        //调用获取验证码的接口
-//                        getVerficationCode(verficationCodeBean);
-//                    } else {
-//                        Toast.makeText(this, "网络链接失败，请检查网络链接！", Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                } else {
-//                    Toast.makeText(this, "您输入的手机号格式有误,请重新输入!", Toast.LENGTH_SHORT).show();
-//                }
-//
-//                break;
             case R.id.tv_forget_pwd:
                 Intent intent = new Intent(LoginActivity.this, ChangePasswordActivity.class);
                 intent.putExtra("modify", "login");
@@ -286,44 +257,6 @@ public class LoginActivity extends BaseActivity {
                 break;
             case R.id.btn_login:
                 String phoneNum = etPhoneNumber.getText().toString().trim();
-//                if (LOGIN_MODE == CODE_LOGIN) {
-//                    String code = etCode.getText().toString();
-//                    boolean checkCode = EncodeAndStringTool.checkNull(phoneNum, code);
-//                    if (checkCode) {
-//                        String mdCode = encryptMD5ToString(phoneNum + encryptMD5ToString(code));
-//                        long curTime = System.currentTimeMillis();
-//                        String tsn = EncodeAndStringTool.getTsn(this);
-//                        String salt = EncodeAndStringTool.generateRandomString(12);
-//
-//                        SharedPrefrenceTool.put(LoginActivity.this, "salt", salt);
-//                        //devId+appId+v+stamp+mode+account+tsn+salt+ appSecret+mdpwd
-//                        String signString = "" + AppConst.DEV_ID + AppConst.APP_ID + AppConst.V + curTime + LOGIN_MODE + phoneNum + tsn + salt + AppConst.APP_KEY + mdCode;
-//                        //将拼接的字符串转化为16进制MD5
-//                        String myCode = encryptMD5ToString(signString);
-//                        /**
-//                         * code值
-//                         */
-//                        String signCode = getCode(myCode);
-//
-//                        LoginInput loginInput = new LoginInput();
-//                        loginInput.setMode(LOGIN_MODE);
-//                        loginInput.setAccount(phoneNum);
-//                        loginInput.setTsn(tsn);
-//                        loginInput.setSalt(salt);
-//                        loginInput.setDevId(AppConst.DEV_ID);
-//                        loginInput.setAppId(AppConst.APP_ID);
-//                        loginInput.setV(AppConst.V);
-//                        loginInput.setStamp(curTime);
-//                        loginInput.setAppVersion(APKVersionCodeTools.getVerName(LoginActivity.this));
-//                        loginInput.setCode(signCode);
-//                        String deviceId = SmAntiFraud.getDeviceId();
-//                        loginInput.setDeviceId(deviceId);
-//                        loadLogin(LoginActivity.this, loginInput);
-//
-//                    } else {
-//                    }
-//
-//                } else if (LOGIN_MODE == PWD_LOGIN) {
                 String password = etPassword.getText().toString();
                 boolean checkPwd = EncodeAndStringTool.checkNull(phoneNum, password);
                 if (checkPwd) {
@@ -356,7 +289,6 @@ public class LoginActivity extends BaseActivity {
                     loginInput.setDeviceId(deviceId);
                     loadLogin(LoginActivity.this, loginInput);
                 }
-//                }
                 break;
             case R.id.iv_wechat_login:
                 wxLogin();
@@ -368,68 +300,11 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    /**
-     * 获取到验证码
-     *
-     * @param verficationCodeBean post json body
-     */
-//    private void getVerficationCode(InputVerficationCodeBean verficationCodeBean) {
-//        ApiService apiService = BasePresenter.create(8000);
-//        String inputbean = new Gson().toJson(verficationCodeBean);
-//        Log.i(TAG, "loadLogin: " + verficationCodeBean.toString());
-//        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
-//        apiService.getCode(body)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Observer<DataResponse<String>>() {
-//                    @Override
-//                    public void onSubscribe(Disposable d) {
-//                    }
-//
-//                    @Override
-//                    public void onNext(DataResponse<String> loginResponse) {
-//                        if (loginResponse.isSuccees()) {
-//                            String sn = loginResponse.getDat();//验证码序列号
-//                            ToastUtil.showToast(LoginActivity.this, "获取验证码成功");
-//                            //显示60s倒计时
-//                            btnGetCode1.setVisibility(View.GONE);
-//                            tv60Second.setVisibility(View.VISIBLE);
-//                            //60s走完之后,按钮显示,tv60Second隐藏
-//                            tv60Second.setEnabled(false);
-//                            new CountDownTimer(60 * 1000, 1000) {
-//
-//                                @Override
-//                                public void onTick(long millisUntilFinished) {
-//                                    tv60Second.setText(String.format("%d S", millisUntilFinished / 1000));
-//                                }
-//
-//                                @Override
-//                                public void onFinish() {
-//                                    btnGetCode1.setVisibility(View.VISIBLE);
-//                                    tv60Second.setVisibility(View.GONE);
-//                                }
-//                            }.start();
-//                        } else {
-//                            ErrorCodeTools.errorCodePrompt(LoginActivity.this, loginResponse.getErr(), loginResponse.getMsg());
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        //保存错误信息
-//                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//
-//                    }
-//                });
-//    }
 
     /**
      * 登录
      */
+
     public void loadLogin(final Context mContext, final LoginInput loginInput) {
         SaveUserInfo.getInstance(this).setUserInfo("account", loginInput.getAccount());
         final String account = SaveUserInfo.getInstance(this).getUserInfo("account");

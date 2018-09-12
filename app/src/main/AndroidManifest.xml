@@ -446,10 +446,11 @@
         <activity
             android:name=".ui.integral.WebRuleActivity"
             android:screenOrientation="portrait" />
-        <!--注册输入手机号-->
+        <!-- 注册输入手机号 -->
         <activity
             android:name=".ui.login.RegisterPhoneActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".ui.login.VerifyCodeActivity"></activity>
     </application>
 
 </manifest>
