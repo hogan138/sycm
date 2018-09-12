@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/common_left_title" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/text_15"
+        android:layout_marginTop="@dimen/text_40"
+        android:text="@string/input_code"
+        android:textColor="@color/color_1"
+        android:textSize="@dimen/text_26"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_15"
+            android:text="@string/verify_text"
+            android:textColor="@color/color_1"
+            android:textSize="@dimen/text_13" />
+
+        <TextView
+            android:id="@+id/tv_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_5"
+            android:textColor="@color/color_37"
+            android:textSize="@dimen/text_13" />
+    </LinearLayout>
+
+    <com.shuyun.qapp.view.VerifyCodeView
+        android:id="@+id/verify_code_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="85dp" />
+
+    <TextView
+        android:id="@+id/tv_send_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/text_15"
+        android:layout_marginTop="@dimen/text_15"
+        android:textColor="@color/login_text"
+        android:textSize="@dimen/text_13" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/text_15"
+        android:layout_marginTop="@dimen/text_25"
+        android:lineSpacingExtra="@dimen/text_3"
+        android:text="@string/verify_tip"
+        android:textColor="@color/login_text"
+        android:textSize="@dimen/text_13" />
+
+
+</LinearLayout>
