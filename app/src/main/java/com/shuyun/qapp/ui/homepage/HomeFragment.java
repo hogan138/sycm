@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -36,6 +37,7 @@ import com.blankj.utilcode.constant.TimeConstants;
 import com.blankj.utilcode.util.TimeUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.adapter.HotGroupAdapter;
+import com.shuyun.qapp.bean.ConfigDialogBean;
 import com.shuyun.qapp.bean.InviteBean;
 import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.R;
@@ -51,6 +53,8 @@ import com.shuyun.qapp.bean.SystemInfo;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.answer.WebAnswerActivity;
+import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
+import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
 import com.shuyun.qapp.ui.mine.WebPrizeBoxActivity;
 import com.shuyun.qapp.receiver.MyReceiver;
 import com.shuyun.qapp.utils.ImageLoaderManager;
@@ -67,6 +71,7 @@ import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.NotificationsUtils;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
+import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ScannerUtils;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.view.RoundImageView;
@@ -887,6 +892,10 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                 timer.start();
             }
         }.start();
+
+        //获取弹框信息
+        getDialogInfo();
+
     }
 
 
@@ -895,7 +904,7 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.AlertDialog);
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.open_notification_popup, null);
-        ImageView ivClosePopup = view.findViewById(R.id.iv_close_open_notification_popup);
+        RelativeLayout rl_close = view.findViewById(R.id.rl_close);
         TextView tvOpenNotification = view.findViewById(R.id.tv_open_notification);
         //builer.setView(v);//这里如果使用builer.setView(v)，自定义布局只会覆盖title和button之间的那部分
         final Dialog dialog = builder.create();
@@ -904,7 +913,7 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
         dialog.setCancelable(false);
         dialog.getWindow().setContentView(view);//自定义布局应该在这里添加，要在dialog.show()的后面
 //        dialog.getWindow().setGravity(Gravity.CENTER);//可以设置显示的位置
-        ivClosePopup.setOnClickListener(new OnMultiClickListener() {
+        rl_close.setOnClickListener(new OnMultiClickListener() {
             @Override
             public void onMultiClick(View v) {
                 if (dialog.isShowing()) {
@@ -937,6 +946,194 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
         });
     }
 
+
+    //获取活动弹框信息
+    private void getDialogInfo() {
+        ApiService apiService = BasePresenter.create(8000);
+        apiService.configDialog()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<DataResponse<ConfigDialogBean>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
+
+                    @Override
+                    public void onNext(DataResponse<ConfigDialogBean> dataResponse) {
+                        if (dataResponse.isSuccees()) {
+                            try {
+                                ConfigDialogBean configDialogBean = dataResponse.getDat();
+                                if (configDialogBean.getBtnAction().equals("action.group")) {
+                                    //题组
+                                    if (SaveUserInfo.getInstance(mContext).getUserInfo("action.group_count").equals("")) {
+                                        activitydialog(configDialogBean);
+                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.group_count", "1");
+                                    } else {
+                                        if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.group_count"))) {
+                                            activitydialog(configDialogBean);
+                                            int i = Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.group_count")) + 1;
+                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.group_count", "" + i);
+                                        }
+                                    }
+                                } else if (configDialogBean.getBtnAction().equals("action.real")) {
+                                    //实名认证
+                                    if (SaveUserInfo.getInstance(mContext).getUserInfo("action.real_count").equals("")) {
+                                        activitydialog(configDialogBean);
+                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.real_count", "1");
+                                    } else {
+                                        if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.real_count"))) {
+                                            activitydialog(configDialogBean);
+                                            int i = Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.real_count")) + 1;
+                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.real_count", "" + i);
+                                        }
+                                    }
+                                } else if (configDialogBean.getBtnAction().equals("action.h5")) {
+                                    //h5页面
+                                    if (SaveUserInfo.getInstance(mContext).getUserInfo("action.h5_count").equals("")) {
+                                        activitydialog(configDialogBean);
+                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.h5_count", "1");
+                                    } else {
+                                        if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.h5_count"))) {
+                                            activitydialog(configDialogBean);
+                                            int i = Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.h5_count")) + 1;
+                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.h5_count", "" + i);
+                                        }
+                                    }
+
+                                } else if (configDialogBean.getBtnAction().equals("action.invite")) {
+                                    //邀请
+                                    if (SaveUserInfo.getInstance(mContext).getUserInfo("action.invite_count").equals("")) {
+                                        activitydialog(configDialogBean);
+                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.invite_count", "1");
+                                    } else {
+                                        if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.invite_count"))) {
+                                            activitydialog(configDialogBean);
+                                            int i = Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.invite_count")) + 1;
+                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.invite_count", "" + i);
+                                        }
+                                    }
+                                } else if (configDialogBean.getBtnAction().equals("action.integral")) {
+                                    //积分兑换
+                                    if (SaveUserInfo.getInstance(mContext).getUserInfo("action.integral_count").equals("")) {
+                                        activitydialog(configDialogBean);
+                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.integral_count", "1");
+                                    } else {
+                                        if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.integral_count"))) {
+                                            activitydialog(configDialogBean);
+                                            int i = Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.integral_count")) + 1;
+                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.integral_count", "" + i);
+                                        }
+                                    }
+                                } else if (configDialogBean.getBtnAction().equals("action.answer.against")) {
+                                    //答题对战
+                                    if (SaveUserInfo.getInstance(mContext).getUserInfo("action.answer.against_count").equals("")) {
+                                        activitydialog(configDialogBean);
+                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.answer.against_count", "1");
+                                    } else {
+                                        if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.answer.against_count"))) {
+                                            activitydialog(configDialogBean);
+                                            int i = Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.answer.against_count")) + 1;
+                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.answer.against_count", "" + i);
+                                        }
+                                    }
+                                }
+
+                            } catch (Exception e) {
+
+                            }
+
+                        } else {
+                            ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
+                        }
+
+                    }
+
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //保存错误信息
+                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+    }
+
+    //活动弹框
+    private void activitydialog(final ConfigDialogBean configDialogBean) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.AlertDialog);
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        View view = inflater.inflate(R.layout.open_activity_popup, null);
+        RoundImageView iv_bg = view.findViewById(R.id.iv_bg);
+        RelativeLayout rl_close = view.findViewById(R.id.rl_close);
+        Button btn_enter = view.findViewById(R.id.btn_enter);
+        try {
+            //背景图
+            ImageLoaderManager.LoadImage(mContext, configDialogBean.getBaseImage(), iv_bg, R.mipmap.zw01);
+            if (configDialogBean.isShowBtn() == true) {
+                //显示按钮
+                btn_enter.setVisibility(View.VISIBLE);
+                btn_enter.setText(configDialogBean.getBtnLabel());
+            } else {
+                //隐藏按钮
+                btn_enter.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+
+        }
+        final Dialog dialog = builder.create();
+        dialog.show();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.getWindow().setContentView(view);//自定义布局应该在这里添加，要在dialog.show()的后面
+        rl_close.setOnClickListener(new OnMultiClickListener() {
+            @Override
+            public void onMultiClick(View v) {
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        btn_enter.setOnClickListener(new OnMultiClickListener() {
+            @Override
+            public void onMultiClick(View v) {
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
+                    if (configDialogBean.getBtnAction().equals("action.group")) {
+                        //题组
+                        Intent intent = new Intent(mContext, WebAnswerActivity.class);
+                        intent.putExtra("groupId", Integer.parseInt(configDialogBean.getContent()));
+                        intent.putExtra("h5Url", configDialogBean.getH5Url());
+                        startActivity(intent);
+                    } else if (configDialogBean.getBtnAction().equals("action.real")) {
+                        //实名认证
+                        startActivity(new Intent(mContext, RealNameAuthActivity.class));
+                    } else if (configDialogBean.getBtnAction().equals("action.h5")) {
+                        //h5页面
+                        Intent intent = new Intent(mContext, WebBannerActivity.class);
+                        intent.putExtra("type", 2);
+                        intent.putExtra("url", configDialogBean.getH5Url());
+                        intent.putExtra("name", "全民共进");//名称 标题
+                        startActivity(intent);
+                    } else if (configDialogBean.getBtnAction().equals("action.invite")) {
+                        //邀请
+                        Intent intent = new Intent();
+                        intent.setClass(mContext, SharedPrzieActivity.class);
+                        intent.putExtra("h5Url", configDialogBean.getH5Url());
+                        startActivity(intent);
+                    } else if (configDialogBean.getBtnAction().equals("action.integral")) {
+                        //积分兑换
+                        startActivity(new Intent(mContext, IntegralExchangeActivity.class));
+                    } else if (configDialogBean.getBtnAction().equals("action.answer.against")) {
+                        //答题对战
+                        startActivity(new Intent(mContext, MainAgainstActivity.class));
+                    }
+                }
+            }
+        });
+    }
 
     @Override
     public void onPause() {

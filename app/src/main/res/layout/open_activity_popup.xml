@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#66333333">
+
+    <RelativeLayout
+        android:id="@+id/rl_open_notification"
+        android:layout_width="320dp"
+        android:layout_height="430dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/common_pop_bg">
+
+        <com.shuyun.qapp.view.RoundImageView
+            android:id="@+id/iv_bg"
+            android:layout_width="320dp"
+            android:layout_height="430dp"
+            android:scaleType="centerCrop"
+            app:type="round" />
+
+        <Button
+            android:id="@+id/btn_enter"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/text_35"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/selector_3"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_18"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_close"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_below="@+id/rl_open_notification">
+
+        <ImageView
+            android:layout_width="@dimen/text_20"
+            android:layout_height="@dimen/text_20"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/close_popup" />
+    </RelativeLayout>
+</RelativeLayout>

@@ -298,18 +298,33 @@ public class VerifyCodeActivity extends BaseActivity {
                                 JPushInterface.setAlias(VerifyCodeActivity.this, new Random().nextInt(), phone);
 
                                 if (mode == 2) {
-                                    CustomLoadingFactory factory = new CustomLoadingFactory();
-                                    LoadingBar.make(llMain, factory).show();
-                                    new Handler().postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            LoadingBar.cancel(llMain);
-                                            //验证码登录
-                                            Intent intent = new Intent(VerifyCodeActivity.this, HomePageActivity.class);
+                                    try {
+                                        if (loginResp.isSetPwd()) {
+                                            //未设置密码
+                                            Intent intent = new Intent(VerifyCodeActivity.this, SetPasswordActivity.class);
+                                            intent.putExtra("name", "register");
+                                            intent.putExtra("phone", phone);
+                                            intent.putExtra("code", verifyCodeView.getEditContent());
+                                            intent.putExtra("token", loginResp.getToken());
                                             startActivity(intent);
-                                            MyActivityManager.getInstance().finishAllActivity();
+                                        } else {
+                                            //已设置密码
+                                            CustomLoadingFactory factory = new CustomLoadingFactory();
+                                            LoadingBar.make(llMain, factory).show();
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    LoadingBar.cancel(llMain);
+                                                    //验证码登录
+                                                    Intent intent = new Intent(VerifyCodeActivity.this, HomePageActivity.class);
+                                                    startActivity(intent);
+                                                    MyActivityManager.getInstance().finishAllActivity();
+                                                }
+                                            }, 2000);
                                         }
-                                    }, 2000);
+                                    } catch (Exception e) {
+
+                                    }
                                 } else if (mode == 4) {
                                     //注册
                                     Intent intent = new Intent(VerifyCodeActivity.this, SetPasswordActivity.class);

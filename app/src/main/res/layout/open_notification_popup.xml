@@ -62,16 +62,16 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_close"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rl_open_notification"
-        android:layout_marginTop="@dimen/text_25"
-        android:gravity="center_horizontal">
+        android:layout_height="70dp"
+        android:layout_below="@+id/rl_open_notification">
 
         <ImageView
-            android:id="@+id/iv_close_open_notification_popup"
             android:layout_width="@dimen/text_20"
             android:layout_height="@dimen/text_20"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:src="@mipmap/close_popup" />
     </RelativeLayout>
 </RelativeLayout>

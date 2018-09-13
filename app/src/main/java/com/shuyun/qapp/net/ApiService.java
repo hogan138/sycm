@@ -6,6 +6,7 @@ import com.shuyun.qapp.bean.AnswerOpptyBean;
 import com.shuyun.qapp.bean.AnswerRecordBean;
 import com.shuyun.qapp.bean.AppVersionBean;
 import com.shuyun.qapp.bean.BoxBean;
+import com.shuyun.qapp.bean.ConfigDialogBean;
 import com.shuyun.qapp.bean.ExchangeHistoryBean;
 import com.shuyun.qapp.bean.ExchangeMyPrizeBean;
 import com.shuyun.qapp.bean.GroupAgainstBean;
@@ -624,6 +625,12 @@ public interface ApiService {
      */
     @GET("/rest/security/code/verify")
     Observable<DataResponse<String>> verifyPassWord(@Query("phone") String phone, @Query("devId") int devId,
-                                                           @Query("appId") int appId, @Query("type") int type, @Query("v") int v,
-                                                           @Query("stamp") long stamp, @Query("code") String code);
+                                                    @Query("appId") int appId, @Query("type") int type, @Query("v") int v,
+                                                    @Query("stamp") long stamp, @Query("code") String code);
+
+    /**
+     * 68、首页弹框配置
+     */
+    @GET("/rest/home/config")
+    Observable<DataResponse<ConfigDialogBean>> configDialog();
 }

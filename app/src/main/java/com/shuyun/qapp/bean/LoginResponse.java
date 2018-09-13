@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by sunxiao on 2018/5/3.
  */
 
-public class LoginResponse implements Serializable{
+public class LoginResponse implements Serializable {
     private String token;//返回的token
     private Long expire;//token的有效期
     private String key;//对称加密的秘钥。用请求方的私钥加密
@@ -14,6 +14,15 @@ public class LoginResponse implements Serializable{
     private int bind;//是否绑定用户。0:未绑定;1:已绑定
     private String invite;//邀请分享的展现图片地址  当user.share=1时有效
     private User user;//对象
+    private boolean setPwd;
+
+    public boolean isSetPwd() {
+        return setPwd;
+    }
+
+    public void setSetPwd(boolean setPwd) {
+        this.setPwd = setPwd;
+    }
 
     public void setToken(String token) {
         this.token = token;
@@ -71,7 +80,7 @@ public class LoginResponse implements Serializable{
         return user;
     }
 
-    public static class User implements Serializable{
+    public static class User implements Serializable {
         private String nickname;//用户的昵称
         private int type;//用户类型   1——正式用户 0——内部用户
         private String headerId;//用户的头像
