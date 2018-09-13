@@ -619,4 +619,11 @@ public interface ApiService {
     @GET("/rest/user/setPwd")
     Observable<DataResponse<String>> setPwd(@Query("pwd") String pwd);
 
+    /**
+     * 67、忘记密码验证
+     */
+    @GET("/rest/security/code/verify")
+    Observable<DataResponse<String>> verifyPassWord(@Query("phone") String phone, @Query("devId") int devId,
+                                                           @Query("appId") int appId, @Query("type") int type, @Query("v") int v,
+                                                           @Query("stamp") long stamp, @Query("code") String code);
 }

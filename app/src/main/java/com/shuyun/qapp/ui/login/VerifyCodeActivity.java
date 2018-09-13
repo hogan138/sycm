@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.EncryptUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.google.gson.Gson;
@@ -101,12 +102,7 @@ public class VerifyCodeActivity extends BaseActivity {
                     register(verifyCodeView.getEditContent(), 4);
                 } else if (getIntent().getStringExtra("name").equals("changePwd")) {
                     //忘记密码
-                    Intent intent = new Intent(VerifyCodeActivity.this, SetPasswordActivity.class);
-                    intent.putExtra("name", getIntent().getStringExtra("name"));
-                    intent.putExtra("phone", phone);
-                    intent.putExtra("code", verifyCodeView.getEditContent());
-                    intent.putExtra("token", "");
-                    startActivity(intent);
+                    verfifyPwd(verifyCodeView.getEditContent());
                 }
             }
 
@@ -368,4 +364,68 @@ public class VerifyCodeActivity extends BaseActivity {
                 })
                 .show();
     }
+
+    /**
+     * 忘记密码验证
+     */
+    private void verfifyPwd(String code) {
+        String phoneNum = getIntent().getStringExtra("phone");
+        long curTime = System.currentTimeMillis();
+        String signString = "" + AppConst.DEV_ID + AppConst.APP_ID + AppConst.V + curTime + phoneNum + code + AppConst.APP_KEY;
+        Log.e("签名", signString);
+        //将拼接的字符串转化为16进制MD5
+        String myCode = encryptMD5ToString(signString);
+        /**
+         * code值
+         */
+        String signCode = getCode(myCode);
+        SaveUserInfo.getInstance(this).setUserInfo("account", phoneNum);
+        String account = SaveUserInfo.getInstance(this).getUserInfo("account");
+        /**
+         * 如果两次登录用户不是同一用户,则清空本地数据库中的消息表
+         */
+        if (!phoneNum.equals(account)) {
+            DataSupport.deleteAll(Msg.class);//清空数据库中消息
+        }
+        ApiService apiService = BasePresenter.create(8000);
+        apiService.verifyPassWord(phoneNum, AppConst.DEV_ID, AppConst.APP_ID, 4, AppConst.V, curTime, signCode)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<DataResponse<String>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
+
+                    @Override
+                    public void onNext(DataResponse<String> loginResponse) {
+                        if (loginResponse.isSuccees()) {
+                            Intent intent = new Intent(VerifyCodeActivity.this, SetPasswordActivity.class);
+                            intent.putExtra("name", getIntent().getStringExtra("name"));
+                            intent.putExtra("phone", phone);
+                            intent.putExtra("code", verifyCodeView.getEditContent());
+                            intent.putExtra("token", "");
+                            startActivity(intent);
+                        } else {
+                            if (loginResponse.getErr().equals("TAU11")) {
+                                errorDialog("验证码错误，请重新输入");
+                            } else {
+                                ErrorCodeTools.errorCodePrompt(VerifyCodeActivity.this, loginResponse.getErr(), loginResponse.getMsg());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //保存错误信息
+                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+
 }
