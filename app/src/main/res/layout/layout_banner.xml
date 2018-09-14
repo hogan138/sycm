@@ -16,5 +16,5 @@
         app:banner_pointContainerBackground="@color/transparent"
         app:banner_pointDrawable="@drawable/banner_selector"
         app:banner_pointTopBottomMargin="6dp" />
-
+    <!-- android:clipChildren="false"-->
 </LinearLayout>

@@ -107,8 +107,7 @@ public class WebPrizeActivity extends BaseActivity implements CommonPopupWindow.
         });
 
         wvPrize.loadUrl(url);
-//        wvPrize.loadUrl("http://192.168.191.1:8080/ticket.html");
-
+//        wvPrize.loadUrl("http://192.168.191.1:8080?id=20180914122828769BkuxwigiN2ddli4&prizeId=1042&scheduleId=0&prizeType=0");
     }
 
     @Override

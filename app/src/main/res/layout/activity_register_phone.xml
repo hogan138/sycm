@@ -44,6 +44,7 @@
             android:background="@null"
             android:hint="@string/input_phone_number"
             android:inputType="number"
+            android:maxLength="11"
             android:textColor="@color/color_1"
             android:textColorHint="@color/login_text"
             android:textSize="@dimen/text_17" />

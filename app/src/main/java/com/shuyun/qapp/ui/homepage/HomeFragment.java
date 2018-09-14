@@ -240,6 +240,7 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         /**
          * 检测微信是否安装,如果没有安装,需不显示分享按钮;如果安装了微信则显示分享按钮.
          */
@@ -421,6 +422,13 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                                             ImageLoaderManager.LoadImage(mContext, bannerBean.getPicture(), imageView, R.mipmap.zw01);
                                         }
                                     });
+
+                                    //设置间距
+//                                    mBannerView.getViewPager().setClipChildren(false);
+//                                    mBannerView.setClipChildren(false);
+//                                    mBannerView.getViewPager().setOffscreenPageLimit(3);
+                                    mBannerView.getViewPager().setPageMargin(getResources().getDimensionPixelSize(R.dimen.page_margin));
+
                                     mBannerView.setDelegate(new BGABanner.Delegate<View, BannerBean>() {
                                         @Override
                                         public void onBannerItemClick(BGABanner banner, View itemView, BannerBean model, int position) {
@@ -454,7 +462,7 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                                     });
                                 }
                             } catch (Exception e) {
-
+                                e.printStackTrace();
                             }
 
                         } else {//错误码提示

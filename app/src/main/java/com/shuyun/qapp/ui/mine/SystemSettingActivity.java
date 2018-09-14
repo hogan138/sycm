@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.TimeUtils;
-import com.gyf.barlibrary.ImmersionBar;
 import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.callback.ConfigDialog;
 import com.mylhyl.circledialog.params.DialogParams;
@@ -29,14 +28,17 @@ import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.LogUtil;
 import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
+import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
+import com.shuyun.qapp.view.MyGalleryView;
 import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import butterknife.BindView;
@@ -64,12 +66,12 @@ public class SystemSettingActivity extends BaseActivity {
     RelativeLayout rlUseInfo;//用户信息
     @BindView(R.id.btn_exit_login)
     Button btnExitLogin;
-    @BindView(R.id.iv_qr)
-    ImageView ivQr;
     @BindView(R.id.tv_version)
     TextView tvVersion;
     @BindView(R.id.rl_version)
     RelativeLayout rlVersion;
+    @BindView(R.id.galleryview)
+    MyGalleryView galleryview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,19 @@ public class SystemSettingActivity extends BaseActivity {
         MyActivityManager.getInstance().pushOneActivity(this);
 
         tvVersion.setText("V" + APKVersionCodeTools.getVerName(this));
+
+//        List<String> images = new ArrayList<>();
+//        images.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1536925638494&di=233b2237fc737296454b790e5711bb00&imgtype=0&src=http%3A%2F%2Fimage.tianjimedia.com%2FuploadImages%2F2014%2F219%2F29%2F3PA45RGN659N.jpg");
+//        images.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1536925666229&di=1c844735b7ea9a11a1b4c47a044a0547&imgtype=0&src=http%3A%2F%2Fattachments.gfan.com%2Fforum%2F201605%2F31%2F234941i5wc5mii0juw3iat.jpg");
+//        images.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1536925682750&di=3cddf6a75bcc1b2524dee8940a2f81e2&imgtype=0&src=http%3A%2F%2Fg.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2Ff9198618367adab44ce126ab8bd4b31c8701e420.jpg");
+//        images.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1536925702203&di=a8512967f3c4b29fb52a2cb83a3be41d&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F0127385544c09c0000019ae98b12b0.jpg%401280w_1l_2o_100sh.jpg");
+//        galleryview.setUrls(images);
+//        galleryview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Toast.makeText(SystemSettingActivity.this, "" + position, Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
     @Override
@@ -217,7 +232,8 @@ public class SystemSettingActivity extends BaseActivity {
                 .setNegative("确定", new OnMultiClickListener() {
                     @Override
                     public void onMultiClick(View v) {
-                        SharedPrefrenceTool.clear(SystemSettingActivity.this);//清空首选项中的数据
+                        //清空数据
+                        SharedPrefrenceTool.clear(SystemSettingActivity.this);
 
                         //设置别名为空
                         JPushInterface.setAlias(SystemSettingActivity.this, new Random().nextInt(), "");
@@ -225,6 +241,14 @@ public class SystemSettingActivity extends BaseActivity {
                         MyActivityManager.getInstance().finishAllActivity();//销毁所有页面
                         startActivity(new Intent(SystemSettingActivity.this, LoginActivity.class));
                         finish();
+
+                        //清空缓存
+                        SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.group_count", "");
+                        SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.real_count", "");
+                        SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.h5_count", "");
+                        SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.invite_count", "");
+                        SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.integral_count", "");
+                        SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.answer.against_count", "");
                     }
                 })
                 .configDialog(new ConfigDialog() {

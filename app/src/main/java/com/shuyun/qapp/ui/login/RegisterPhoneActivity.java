@@ -90,14 +90,10 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
                 startActivity(new Intent(this, UserAgreementActivity.class));
                 break;
             case R.id.btn_next:
-                if (RegularTool.isMobileExact(etPhoneNumber.getText().toString())) {
-                    Intent intent = new Intent(RegisterPhoneActivity.this, VerifyCodeActivity.class);
-                    intent.putExtra("phone", etPhoneNumber.getText().toString());
-                    intent.putExtra("name", getIntent().getStringExtra("name"));
-                    startActivity(intent);
-                } else {
-                    errorDialog("手机号码格式错误请重新输入");
-                }
+                Intent intent = new Intent(RegisterPhoneActivity.this, VerifyCodeActivity.class);
+                intent.putExtra("phone", etPhoneNumber.getText().toString());
+                intent.putExtra("name", getIntent().getStringExtra("name"));
+                startActivity(intent);
                 break;
             default:
                 break;
@@ -129,6 +125,7 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
                     isLogin();
                 } else {
                     clearPic.setVisibility(View.GONE);
+                    isLogin();
                 }
             }
         });
@@ -136,12 +133,22 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
 
     private void isLogin() {
         if (!EncodeAndStringTool.isStringEmpty(etPhoneNumber.getText().toString())) {
-            btnNext.setEnabled(true);
-            btnNext.setTextColor(Color.parseColor("#ffffff"));
+            if (RegularTool.isMobileExact(etPhoneNumber.getText().toString()) && etPhoneNumber.getText().toString().length() == 11) {
+                btnNext.setEnabled(true);
+                btnNext.setTextColor(Color.parseColor("#ffffff"));
+            } else {
+                if (etPhoneNumber.getText().toString().length() == 11) {
+                    errorDialog("手机号码格式错误请重新输入");
+                }
+                btnNext.setEnabled(false);
+                btnNext.setTextColor(Color.parseColor("#999999"));
+            }
+
         } else {
             btnNext.setEnabled(false);
             btnNext.setTextColor(Color.parseColor("#999999"));
         }
+
     }
 
     //错误弹框

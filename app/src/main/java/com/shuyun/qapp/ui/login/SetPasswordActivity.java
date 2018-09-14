@@ -1,5 +1,6 @@
 package com.shuyun.qapp.ui.login;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -171,10 +172,17 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
                 btnFinish.setEnabled(false);
                 btnFinish.setTextColor(Color.parseColor("#999999"));
             }
+            //抖动动画
+            if (etPassword.getText().length() > 20) {
+                ObjectAnimator animator = ObjectAnimator.ofFloat(tvLength, "translationX", 0, 100, -100, 0);
+                animator.setDuration(200);
+                animator.start();
+            }
         } else {
             btnFinish.setEnabled(false);
             btnFinish.setTextColor(Color.parseColor("#999999"));
         }
+
     }
 
     @Override
