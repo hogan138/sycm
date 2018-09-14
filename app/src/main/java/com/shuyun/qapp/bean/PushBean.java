@@ -9,6 +9,15 @@ package com.shuyun.qapp.bean;
 public class PushBean {
 
     public String pushAction;
+    public String pushData;
+
+    public String getPushData() {
+        return pushData;
+    }
+
+    public void setPushData(String pushData) {
+        this.pushData = pushData;
+    }
 
     public String getPushAction() {
         return pushAction;

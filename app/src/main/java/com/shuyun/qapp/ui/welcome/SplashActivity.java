@@ -118,7 +118,6 @@ public class SplashActivity extends AppCompatActivity {
                                         } else if (model == 2) {//内部链接
                                             if (!EncodeAndStringTool.isStringEmpty(content)) {
                                                 Intent intent = new Intent(SplashActivity.this, WebBannerActivity.class);
-                                                intent.putExtra("type", model);
                                                 intent.putExtra("url", content);
                                                 intent.putExtra("from", "splash");
                                                 startActivity(intent);

@@ -205,10 +205,6 @@ public class InformationActivity extends BaseActivity implements CommonPopupWind
                     startActivity(intent);
                 } else if (msg.getType() == 3) {//内部链接
                     Intent intent = new Intent(InformationActivity.this, WebBannerActivity.class);
-                    /**
-                     * 链接的类型1:外部链接;2:内部链接
-                     */
-                    intent.putExtra("type", 1);
                     intent.putExtra("url", msg.getUrl());
                     intent.putExtra("name", msg.getTitle());
                     startActivity(intent);

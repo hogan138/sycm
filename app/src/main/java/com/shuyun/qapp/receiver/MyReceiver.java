@@ -14,6 +14,7 @@ import com.shuyun.qapp.bean.PushBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.InformatListenner;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
+import com.shuyun.qapp.ui.homepage.WebBannerActivity;
 import com.shuyun.qapp.ui.integral.MyPrizeActivity;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.mine.AccountRecordActivity;
@@ -124,15 +125,15 @@ public class MyReceiver extends BroadcastReceiver {
                         context.startActivity(i);
                     } else if (pushBean.getPushAction().equals("push.withdraw.success.notify")) {
                         //提现成功通知
-                        i = new Intent(context, AccountRecordActivity.class);
-                        i.putExtras(bundle);
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        i = new Intent(context, WebBannerActivity.class);
+                        i.putExtra("url", pushBean.getPushData());
+                        i.putExtra("name", "提现成功");//名称 标题
                         context.startActivity(i);
                     } else if (pushBean.getPushAction().equals("push.withdraw.error.notify")) {
                         //提现失败通知
-                        i = new Intent(context, AccountRecordActivity.class);
-                        i.putExtras(bundle);
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        i = new Intent(context, WebBannerActivity.class);
+                        i.putExtra("url", pushBean.getPushData());
+                        i.putExtra("name", "提现失败");//名称 标题
                         context.startActivity(i);
                     } else if (pushBean.getPushAction().equals("push.deliver.goods.notity")) {
                         //发货通知

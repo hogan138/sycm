@@ -1,5 +1,6 @@
 package com.shuyun.qapp.ui.welcome;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -47,6 +48,7 @@ public class WelcomeActivity extends Activity {
     // 所需的全部权限
     static final String[] PERMISSIONS = new String[]{
             android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.CALL_PHONE,
             android.Manifest.permission.READ_EXTERNAL_STORAGE
     };
 
