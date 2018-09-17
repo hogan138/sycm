@@ -85,6 +85,7 @@ public class HotGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     public void onMultiClick(View v) {
                         int position = holder.getLayoutPosition();
                         mOnItemClickListener.onItemClick(((MyViewHolder) holder).rlItem, position);
+
                     }
                 });
             }
