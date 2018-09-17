@@ -1474,12 +1474,14 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
     class GlideImageLoader implements ImageLoader {
         @Override
         public void onDisplayImage(Context context, ImageView imageView, String url) {
-            Glide.with(context).load(url)//
+            Glide.with(context).load(url)
                     .bitmapTransform(new CropRoundTransFormation(getContext(), dp2px(4)))
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(imageView);
         }
     }
+
+
 
 
     public int dp2px(int dpValue) {
