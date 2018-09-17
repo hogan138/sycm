@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/text_10"
     android:orientation="vertical">
 
     <cn.kevin.banner.BannerViewPager
@@ -10,9 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="130dp"
         app:around_visible="true"
-        app:item_margin="20dp"
-        app:marginLeft="40dp"
-        app:marginRight="40dp"
+        app:item_margin="5dp"
+        app:marginLeft="20dp"
+        app:marginRight="20dp"
         app:point_drawable="@drawable/banner_selector"
         app:point_gravity="bottom_center" />
 </LinearLayout>

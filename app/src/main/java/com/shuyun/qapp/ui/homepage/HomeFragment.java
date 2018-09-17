@@ -8,12 +8,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.Shader;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,7 +25,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,51 +37,47 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.blankj.utilcode.constant.TimeConstants;
 import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.engine.Resource;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
-import com.bumptech.glide.load.resource.bitmap.BitmapResource;
-import com.bumptech.glide.load.resource.bitmap.FitCenter;
+import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.gyf.barlibrary.ImmersionBar;
-import com.shuyun.qapp.adapter.HotGroupAdapter;
-import com.shuyun.qapp.bean.BannerItem;
-import com.shuyun.qapp.bean.ConfigDialogBean;
-import com.shuyun.qapp.bean.InviteBean;
-import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.R;
+import com.shuyun.qapp.adapter.GroupTreeAdapter;
+import com.shuyun.qapp.adapter.HotGroupAdapter;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.BannerBean;
+import com.shuyun.qapp.bean.BannerItem;
 import com.shuyun.qapp.bean.BoxBean;
+import com.shuyun.qapp.bean.ConfigDialogBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.GroupBean;
 import com.shuyun.qapp.bean.GroupClassifyBean;
 import com.shuyun.qapp.bean.HomeGroupsBean;
+import com.shuyun.qapp.bean.InviteBean;
 import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.bean.SystemInfo;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.ui.answer.WebAnswerActivity;
-import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
-import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
-import com.shuyun.qapp.ui.mine.WebPrizeBoxActivity;
-import com.shuyun.qapp.receiver.MyReceiver;
-import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.net.InformatListenner;
+import com.shuyun.qapp.net.MyApplication;
+import com.shuyun.qapp.receiver.MyReceiver;
+import com.shuyun.qapp.ui.answer.WebAnswerActivity;
 import com.shuyun.qapp.ui.classify.ClassifyActivity;
-import com.shuyun.qapp.adapter.GroupTreeAdapter;
+import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.mine.MinePrizeActivity;
+import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
+import com.shuyun.qapp.ui.mine.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.NotificationsUtils;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
@@ -105,7 +101,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.kevin.banner.BannerAdapter;
 import cn.kevin.banner.BannerViewPager;
 import cn.kevin.banner.IBannerItem;
@@ -121,10 +116,6 @@ import io.reactivex.schedulers.Schedulers;
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInterface {
-    @BindView(R.id.iv_common_left_icon)
-    RelativeLayout ivCommonLeftIcon;//左侧分享文字可点区域
-    @BindView(R.id.tv_left)
-    TextView tvLeft;//左侧分享文字
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle;//标题
     @BindView(R.id.iv_common_right_icon)
@@ -161,11 +152,8 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
     RelativeLayout rlEdu;//教育
     @BindView(R.id.rl_more)
     RelativeLayout rlMore;//更多
-    @BindView(R.id.iv_invite_prize)
-    ImageView ivInvitePrize;//邀请有奖图片
     @BindView(R.id.rv_hot_group)
     RecyclerView rvHotGroup;//热门题组
-
     @BindView(R.id.iv_group_icon01)
     ImageView ivGroupIcon01;//题组分类1
     @BindView(R.id.tv_hot01)
@@ -219,10 +207,12 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
     @BindView(R.id.iv_bx)
     ImageView ivBx;//宝箱抖动的动画
     Unbinder unbinder;
-    @BindView(R.id.iv_against)
-    ImageView ivAgainst;
-    @BindView(R.id.ll_invite)
-    LinearLayout llInvite;
+    @BindView(R.id.iv_invite)
+    ImageView ivInvite;
+    @BindView(R.id.rl_invite_friend)
+    RelativeLayout rlInviteFriend;
+    @BindView(R.id.rl_against)
+    RelativeLayout rlAgainst;
 
     private int SHARE_CHANNEL;
     private static final String TAG = "HomeFragment";
@@ -264,9 +254,9 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
          * 检测微信是否安装,如果没有安装,需不显示分享按钮;如果安装了微信则显示分享按钮.
          */
         if (!MyApplication.mWxApi.isWXAppInstalled()) {
-            tvLeft.setVisibility(View.GONE);
+            ivInvite.setVisibility(View.GONE);
         } else {
-            tvLeft.setText("分享");
+            ivInvite.setVisibility(View.VISIBLE);
         }
         tvCommonTitle.setText("全民共进");
         ivCommonRightIcon.setImageResource(R.mipmap.message_n);//右侧消息按钮;
@@ -323,13 +313,13 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
         invite();
     }
 
-    @OnClick({R.id.iv_common_left_icon, R.id.iv_common_right_icon, R.id.ll_change_group, R.id.iv_group_bg1, R.id.iv_group_bg2,
+    @OnClick({R.id.iv_invite, R.id.iv_common_right_icon, R.id.ll_change_group, R.id.iv_group_bg1, R.id.iv_group_bg2,
             R.id.rl_active, R.id.rl_life, R.id.rl_culture, R.id.rl_video,
             R.id.rl_music, R.id.rl_history, R.id.rl_edu, R.id.rl_more,
-            R.id.iv_invite_prize, R.id.iv_against})
+            R.id.rl_invite_friend, R.id.rl_against})
     public void click(View view) {
         switch (view.getId()) {
-            case R.id.iv_common_left_icon://邀请分享
+            case R.id.iv_invite://邀请分享
                 showSharedPop();
                 break;
             case R.id.iv_common_right_icon:
@@ -398,10 +388,10 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                 intent7.putExtra("id", 0);
                 startActivity(intent7);
                 break;
-            case R.id.iv_against:
+            case R.id.rl_against:
                 startActivity(new Intent(getActivity(), MainAgainstActivity.class));
                 break;
-            case R.id.iv_invite_prize://邀请有奖
+            case R.id.rl_invite_friend://邀请有奖
                 //邀请分享
                 Intent intent = new Intent();
                 intent.setClass(mContext, SharedPrzieActivity.class);
@@ -600,7 +590,7 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                                                     }
                                                 });
 
-                                                GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2);
+                                                GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1);
                                                 rvHotGroup.setLayoutManager(gridLayoutManager);
                                                 rvHotGroup.setAdapter(hotGroupAdapter);
                                             } catch (Exception e) {
@@ -774,13 +764,13 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                             //邀请有奖
                             try {
                                 if (inviteBean.getShare() == 1) {
-                                    llInvite.setVisibility(View.VISIBLE);
-                                    ImageLoaderManager.LoadImage(mContext, inviteBean.getInvite(), ivInvitePrize, R.mipmap.zw01);
+                                    rlInviteFriend.setVisibility(View.VISIBLE);
+//                                    ImageLoaderManager.LoadImage(mContext, inviteBean.getInvite(), ivInvitePrize, R.mipmap.zw01);
                                     invite_h5Url = inviteBean.getH5Url();
                                     SharedPrefrenceTool.put(mContext, "share", inviteBean.getShare());//是否参与邀请分享 1——参与邀请
                                 } else {
-                                    llInvite.setVisibility(View.GONE);
-                                    ivInvitePrize.setVisibility(View.GONE);
+                                    rlInviteFriend.setVisibility(View.GONE);
+//                                    ivInvitePrize.setVisibility(View.GONE);
                                     SharedPrefrenceTool.put(mContext, "share", inviteBean.getShare());//是否参与邀请分享 1——参与邀请
                                 }
                             } catch (Exception e) {
@@ -1474,78 +1464,51 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
     class GlideImageLoader implements ImageLoader {
         @Override
         public void onDisplayImage(Context context, ImageView imageView, String url) {
+
             Glide.with(context).load(url)
-                    .bitmapTransform(new CropRoundTransFormation(getContext(), dp2px(4)))
+                    .transform(new GlideRoundTransform(getContext(), 4))
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(imageView);
         }
     }
 
+    static class GlideRoundTransform extends BitmapTransformation {
 
+        private static float radius = 0f;
 
-
-    public int dp2px(int dpValue) {
-        return (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue,
-                getResources().getDisplayMetrics()) + .5f);
-    }
-
-    public class CropRoundTransFormation implements Transformation<Bitmap> {
-        private BitmapPool mBitmapPool;
-        private int mRadius;
-
-        CropRoundTransFormation(Context context, int radius) {
-            this(Glide.get(context).getBitmapPool());
-            mRadius = radius;
-        }
-
-        public CropRoundTransFormation(BitmapPool pool) {
-            this.mBitmapPool = pool;
+        public GlideRoundTransform(Context context, int dp) {
+            super(context);
+            this.radius = Resources.getSystem().getDisplayMetrics().density * dp;
         }
 
         @Override
-        public Resource<Bitmap> transform(Resource<Bitmap> resource, int outWidth, int outHeight) {
-            Bitmap source = resource.get();
+        protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
+            return roundCrop(pool, toTransform);
+        }
 
-            Bitmap bitmap = mBitmapPool.get(outWidth, outHeight, Bitmap.Config.ARGB_8888);
-            if (bitmap == null) {
-                bitmap = Bitmap.createBitmap(outWidth, outHeight, Bitmap.Config.ARGB_8888);
+        private static Bitmap roundCrop(BitmapPool pool, Bitmap source) {
+            if (source == null) return null;
+
+            Bitmap result = pool.get(source.getWidth(), source.getHeight(), Bitmap.Config.ARGB_8888);
+            if (result == null) {
+                result = Bitmap.createBitmap(source.getWidth(), source.getHeight(), Bitmap.Config.ARGB_8888);
             }
 
-            Canvas canvas = new Canvas(bitmap);
+            Canvas canvas = new Canvas(result);
             Paint paint = new Paint();
-            BitmapShader shader =
-                    new BitmapShader(source, BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP);
-
-            if (source.getWidth() != outWidth || source.getHeight() != outHeight) {
-                //缩放局中
-                final float scale;
-                float dx = 0, dy = 0;
-                Matrix m = new Matrix();
-                if (source.getWidth() * outHeight > outWidth * source.getHeight()) {
-                    scale = (float) outHeight / (float) source.getHeight();
-                    dx = (outWidth - source.getWidth() * scale) * 0.5f;
-                } else {
-                    scale = (float) outWidth / (float) source.getWidth();
-                    dy = (outHeight - source.getHeight() * scale) * 0.5f;
-                }
-                m.setScale(scale, scale);
-                m.postTranslate((int) (dx + 0.5f), (int) (dy + 0.5f));
-                shader.setLocalMatrix(m);
-            }
-
-            paint.setShader(shader);
+            paint.setShader(new BitmapShader(source, BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP));
             paint.setAntiAlias(true);
-
-            canvas.drawRoundRect(new RectF(0, 0, outWidth, outHeight), mRadius, mRadius, paint);
-
-            return BitmapResource.obtain(bitmap, mBitmapPool);
+            RectF rectF = new RectF(0f, 0f, source.getWidth(), source.getHeight());
+            canvas.drawRoundRect(rectF, radius, radius, paint);
+            return result;
         }
 
         @Override
         public String getId() {
-            return "CropRoundTransFormation()" + mRadius;
+            return getClass().getName() + Math.round(radius);
         }
     }
+
 }
 
 

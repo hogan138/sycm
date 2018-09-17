@@ -9,28 +9,15 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/common_item_height">
 
-        <RelativeLayout
-            android:id="@+id/iv_common_left_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/tv_left"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/text_12" />
-        </RelativeLayout>
-
-
         <TextView
             android:id="@+id/tv_common_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:textColor="@color/color_0"
-            android:textSize="@dimen/text_16" />
+            android:textSize="@dimen/text_16"
+            android:textStyle="bold" />
+
 
         <ImageView
             android:id="@+id/iv_common_right_icon"
@@ -40,12 +27,20 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/text_12" />
 
+        <ImageView
+            android:id="@+id/iv_invite"
+            android:layout_width="@dimen/text_20"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/text_15"
+            android:layout_toLeftOf="@+id/iv_common_right_icon"
+            android:src="@mipmap/share" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_alignParentBottom="true"
-            android:background="@color/light_white"
-            android:visibility="gone" />
+            android:background="@color/light_white" />
     </RelativeLayout>
 
     <android.support.v4.widget.NestedScrollView
@@ -60,18 +55,88 @@
             <!--banner轮播图-->
             <include layout="@layout/layout_banner" />
 
-            <include layout="@layout/common_line_2" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_15"
+                android:layout_marginRight="@dimen/text_15"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/rl_invite_friend"
+                    android:layout_width="0dp"
+                    android:layout_height="114dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/home_border_bg">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/text_8"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/invite_friend_text"
+                            android:textColor="@color/color_1"
+                            android:textSize="@dimen/text_15" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/text_8"
+                            android:text="共计送出111141111个宝箱"
+                            android:textColor="@color/login_text"
+                            android:textSize="@dimen/text_11" />
+
+                    </LinearLayout>
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_against"
+                    android:layout_width="0dp"
+                    android:layout_height="114dp"
+                    android:layout_marginLeft="@dimen/text_8"
+                    android:layout_weight="1"
+                    android:background="@drawable/home_border_bg">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/text_8"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/against_text"
+                            android:textColor="@color/color_1"
+                            android:textSize="@dimen/text_15" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/text_8"
+                            android:text="共8854位用户在线"
+                            android:textColor="@color/login_text"
+                            android:textSize="@dimen/text_11" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
             <!--推荐题组-->
             <include layout="@layout/recommend_group_question" />
 
             <include layout="@layout/recommend_group_item" />
-
-            <ImageView
-                android:id="@+id/iv_against"
-                android:layout_width="match_parent"
-                android:layout_height="59dp"
-                android:scaleType="fitXY"
-                android:src="@mipmap/home_against" />
 
             <!--题组分类-->
             <include layout="@layout/group_question_sort_title" />
@@ -80,8 +145,6 @@
 
             <!--跑马灯效果-->
             <include layout="@layout/horse_race_lamp" />
-            <!--邀请有奖-->
-            <include layout="@layout/invite_prize" />
 
             <include layout="@layout/common_line_2" />
             <!--热门提组-->
@@ -96,6 +159,7 @@
                     android:id="@+id/rv_hot_group"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/text_12"
                     android:layout_marginRight="@dimen/text_12"
                     android:layout_marginTop="@dimen/text_2"
                     android:paddingBottom="@dimen/text_12">
