@@ -147,4 +147,7 @@ dependencies {
 
     //进度条
     implementation 'com.dyhdyh.loadingbar:loadingbar:1.4.4'
+
+    //广告轮播
+    implementation 'cn.kevin:bannerview:1.0.8'
 }

@@ -5,16 +5,25 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <cn.bingoogolapple.bgabanner.BGABanner
+    <!-- <cn.bingoogolapple.bgabanner.BGABanner
+         android:id="@+id/banner"
+         android:layout_width="match_parent"
+         android:layout_height="@dimen/text_130"
+         app:banner_indicatorGravity="bottom|center_horizontal"
+         app:banner_pageChangeDuration="1000"
+         app:banner_pointAutoPlayAble="true"
+         app:banner_pointAutoPlayInterval="3000"
+         app:banner_pointContainerBackground="@color/transparent"
+         app:banner_pointDrawable="@drawable/banner_selector"
+         app:banner_pointTopBottomMargin="6dp" />-->
+    <cn.kevin.banner.BannerViewPager
         android:id="@+id/banner"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/text_130"
-        app:banner_indicatorGravity="bottom|center_horizontal"
-        app:banner_pageChangeDuration="1000"
-        app:banner_pointAutoPlayAble="true"
-        app:banner_pointAutoPlayInterval="3000"
-        app:banner_pointContainerBackground="@color/transparent"
-        app:banner_pointDrawable="@drawable/banner_selector"
-        app:banner_pointTopBottomMargin="6dp" />
-    <!-- android:clipChildren="false"-->
+        android:layout_height="130dp"
+        app:around_visible="true"
+        app:item_margin="20dp"
+        app:marginLeft="40dp"
+        app:marginRight="40dp"
+        app:point_drawable="@drawable/banner_selector"
+        app:point_gravity="bottom_center" />
 </LinearLayout>

@@ -2,7 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Button正常状态下的背景 -->
-    <item android:drawable="@mipmap/banner_w" android:state_enabled="false" />
+    <item android:drawable="@mipmap/banner_w" android:state_selected="false" />
     <!-- Button按下时的背景 -->
-    <item android:drawable="@mipmap/banner_x" android:state_enabled="true" />
+    <item android:drawable="@mipmap/banner_x" android:state_selected="true" />
 </selector>

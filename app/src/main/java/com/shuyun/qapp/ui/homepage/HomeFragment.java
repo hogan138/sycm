@@ -9,7 +9,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +24,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,11 +37,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blankj.utilcode.constant.TimeConstants;
 import com.blankj.utilcode.util.TimeUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.Transformation;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.Resource;
+import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
+import com.bumptech.glide.load.resource.bitmap.BitmapResource;
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.adapter.HotGroupAdapter;
+import com.shuyun.qapp.bean.BannerItem;
 import com.shuyun.qapp.bean.ConfigDialogBean;
 import com.shuyun.qapp.bean.InviteBean;
 import com.shuyun.qapp.net.MyApplication;
@@ -92,6 +106,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.bingoogolapple.bgabanner.BGABanner;
+import cn.kevin.banner.BannerAdapter;
+import cn.kevin.banner.BannerViewPager;
+import cn.kevin.banner.IBannerItem;
+import cn.kevin.banner.ImageLoader;
+import cn.kevin.banner.transformer.YZoomTransFormer;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -113,7 +132,7 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
     @BindView(R.id.ll_home_fragment)
     RelativeLayout llHomeFragment;//layout容器
     @BindView(R.id.banner)
-    BGABanner mBannerView;//轮播图
+    BannerViewPager mBannerView;//轮播图
     @BindView(R.id.marqueeView)
     MarqueeView marqueeView;//跑马灯
     @BindView(R.id.tv_change_group)
@@ -414,52 +433,48 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                                 final List<BannerBean> bannerData = listDataResponse.getDat();
                                 if (!EncodeAndStringTool.isListEmpty(bannerData)) {
                                     //设置轮播图
-                                    mBannerView.setData(R.layout.banner_item, bannerData, null);
-                                    mBannerView.setAdapter(new BGABanner.Adapter<View, BannerBean>() {
+                                    BannerAdapter adapter = new BannerAdapter(new GlideImageLoader());
+                                    List<IBannerItem> list = new ArrayList<>();
+                                    for (int i = 0; i < bannerData.size(); i++) {
+                                        list.add(new BannerItem(bannerData.get(i).getPicture()));
+                                    }
+                                    adapter.setData(getContext(), list);
+                                    mBannerView.setBannerAdapter(adapter);
+                                    mBannerView.setBannerItemClick(new BannerViewPager.OnBannerItemClick<IBannerItem>() {
                                         @Override
-                                        public void fillBannerItem(BGABanner banner, View itemView, BannerBean bannerBean, int position) {
-                                            ImageView imageView = (ImageView) itemView.findViewById(R.id.imageView);
-                                            ImageLoaderManager.LoadImage(mContext, bannerBean.getPicture(), imageView, R.mipmap.zw01);
-                                        }
-                                    });
+                                        public void onClick(IBannerItem data) {
+                                            for (int i = 0; i < bannerData.size(); i++) {
+                                                if (data.ImageUrl().equals(bannerData.get(i).getPicture())) {
+                                                    if (bannerData.get(i).getType() == 3) {//题组跳转
+                                                        if (!EncodeAndStringTool.isStringEmpty(bannerData.get(i).getUrl())) {
+                                                            try {
+                                                                Intent intent = new Intent(mContext, WebAnswerActivity.class);
+                                                                intent.putExtra("groupId", Integer.parseInt(bannerData.get(i).getUrl()));
+                                                                intent.putExtra("h5Url", bannerData.get(i).getH5Url());
+                                                                startActivity(intent);
+                                                            } catch (Exception e) {
+                                                            }
 
-                                    //设置间距
-//                                    mBannerView.getViewPager().setClipChildren(false);
-//                                    mBannerView.setClipChildren(false);
-//                                    mBannerView.getViewPager().setOffscreenPageLimit(3);
-                                    mBannerView.getViewPager().setPageMargin(getResources().getDimensionPixelSize(R.dimen.page_margin));
-
-                                    mBannerView.setDelegate(new BGABanner.Delegate<View, BannerBean>() {
-                                        @Override
-                                        public void onBannerItemClick(BGABanner banner, View itemView, BannerBean model, int position) {
-                                            BannerBean bannerBean = bannerData.get(position);
-                                            if (bannerBean.getType() == 3) {//题组跳转
-                                                if (!EncodeAndStringTool.isStringEmpty(bannerBean.getUrl())) {
-                                                    try {
-                                                        Intent intent = new Intent(mContext, WebAnswerActivity.class);
-                                                        intent.putExtra("groupId", Integer.parseInt(bannerBean.getUrl()));
-                                                        intent.putExtra("h5Url", bannerBean.getH5Url());
-                                                        startActivity(intent);
-                                                    } catch (Exception e) {
+                                                        }
+                                                    } else if (bannerData.get(i).getType() == 2) {//内部链接
+                                                        if (!EncodeAndStringTool.isStringEmpty(bannerData.get(i).getUrl())) {
+                                                            Intent intent = new Intent(mContext, WebBannerActivity.class);
+                                                            intent.putExtra("url", bannerData.get(i).getUrl());
+                                                            intent.putExtra("name", bannerData.get(i).getName());//名称 标题
+                                                            startActivity(intent);
+                                                        }
+                                                    } else if (bannerData.get(i).getType() == 1) {//外部链接
+                                                        if (!EncodeAndStringTool.isStringEmpty(bannerData.get(i).getUrl())) {
+                                                            Uri uri = Uri.parse(bannerData.get(i).getUrl());
+                                                            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                                                            startActivity(intent);
+                                                        }
                                                     }
-
-                                                }
-                                            } else if (bannerBean.getType() == 2) {//内部链接
-                                                if (!EncodeAndStringTool.isStringEmpty(bannerBean.getUrl())) {
-                                                    Intent intent = new Intent(mContext, WebBannerActivity.class);
-                                                    intent.putExtra("url", bannerBean.getUrl());
-                                                    intent.putExtra("name", bannerBean.getName());//名称 标题
-                                                    startActivity(intent);
-                                                }
-                                            } else if (bannerBean.getType() == 1) {//外部链接
-                                                if (!EncodeAndStringTool.isStringEmpty(bannerBean.getUrl())) {
-                                                    Uri uri = Uri.parse(bannerBean.getUrl());
-                                                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                                                    startActivity(intent);
                                                 }
                                             }
                                         }
                                     });
+                                    mBannerView.setPageTransformer(true, new YZoomTransFormer(.8f));
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -1453,6 +1468,80 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
         super.onDestroy();
         if (msgReceiver != null) {
             mContext.unregisterReceiver(msgReceiver);
+        }
+    }
+
+    class GlideImageLoader implements ImageLoader {
+        @Override
+        public void onDisplayImage(Context context, ImageView imageView, String url) {
+            Glide.with(context).load(url)//
+                    .bitmapTransform(new CropRoundTransFormation(getContext(), dp2px(4)))
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .into(imageView);
+        }
+    }
+
+
+    public int dp2px(int dpValue) {
+        return (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue,
+                getResources().getDisplayMetrics()) + .5f);
+    }
+
+    public class CropRoundTransFormation implements Transformation<Bitmap> {
+        private BitmapPool mBitmapPool;
+        private int mRadius;
+
+        CropRoundTransFormation(Context context, int radius) {
+            this(Glide.get(context).getBitmapPool());
+            mRadius = radius;
+        }
+
+        public CropRoundTransFormation(BitmapPool pool) {
+            this.mBitmapPool = pool;
+        }
+
+        @Override
+        public Resource<Bitmap> transform(Resource<Bitmap> resource, int outWidth, int outHeight) {
+            Bitmap source = resource.get();
+
+            Bitmap bitmap = mBitmapPool.get(outWidth, outHeight, Bitmap.Config.ARGB_8888);
+            if (bitmap == null) {
+                bitmap = Bitmap.createBitmap(outWidth, outHeight, Bitmap.Config.ARGB_8888);
+            }
+
+            Canvas canvas = new Canvas(bitmap);
+            Paint paint = new Paint();
+            BitmapShader shader =
+                    new BitmapShader(source, BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP);
+
+            if (source.getWidth() != outWidth || source.getHeight() != outHeight) {
+                //缩放局中
+                final float scale;
+                float dx = 0, dy = 0;
+                Matrix m = new Matrix();
+                if (source.getWidth() * outHeight > outWidth * source.getHeight()) {
+                    scale = (float) outHeight / (float) source.getHeight();
+                    dx = (outWidth - source.getWidth() * scale) * 0.5f;
+                } else {
+                    scale = (float) outWidth / (float) source.getWidth();
+                    dy = (outHeight - source.getHeight() * scale) * 0.5f;
+                }
+                m.setScale(scale, scale);
+                m.postTranslate((int) (dx + 0.5f), (int) (dy + 0.5f));
+                shader.setLocalMatrix(m);
+            }
+
+            paint.setShader(shader);
+            paint.setAntiAlias(true);
+
+            canvas.drawRoundRect(new RectF(0, 0, outWidth, outHeight), mRadius, mRadius, paint);
+
+            return BitmapResource.obtain(bitmap, mBitmapPool);
+        }
+
+        @Override
+        public String getId() {
+            return "CropRoundTransFormation()" + mRadius;
         }
     }
 }

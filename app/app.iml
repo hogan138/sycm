@@ -179,7 +179,8 @@
     <orderEntry type="library" name="__local_aars__:E.\android_workspace\android\app\libs\smantifraud.jar:unspecified@jar" level="project" />
     <orderEntry type="library" name="me.imid.swipebacklayout.lib:library-1.1.0" level="project" />
     <orderEntry type="library" name="__local_aars__:E.\android_workspace\android\app\libs\jcore-android-1.2.3.jar:unspecified@jar" level="project" />
-    <orderEntry type="library" name="com.aliyun.dpa:oss-android-sdk-2.9.0" level="project" />
+    <orderEntry type="library" name="com.aliyun.dpa:oss-android-sdk-2.9.1" level="project" />
     <orderEntry type="library" name="com.github.bumptech.glide:glide:3.7.0@jar" level="project" />
+    <orderEntry type="library" name="cn.kevin:bannerview-1.0.8" level="project" />
   </component>
 </module>
