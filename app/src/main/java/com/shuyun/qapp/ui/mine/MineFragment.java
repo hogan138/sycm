@@ -183,13 +183,13 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
     public void onStart() {
         super.onStart();
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("FirstRun", 0);
-        Boolean first_run = sharedPreferences.getBoolean("First", true);
-        if (first_run) {
-            sharedPreferences.edit().putBoolean("First", false).commit();
+//        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("FirstRun", 0);
+//        Boolean first_run = sharedPreferences.getBoolean("First", true);
+//        if (first_run) {
+//            sharedPreferences.edit().putBoolean("First", false).commit();
             loadMineHome();
-        } else {
-        }
+//        } else {
+//        }
     }
 
     @Override

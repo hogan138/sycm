@@ -299,6 +299,16 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
          * 邀请有奖
          */
         invite();
+
+        /**
+         * 首页题组
+         */
+        loadHomeGroups();
+
+        /**
+         * 获取弹框信息
+         */
+        getDialogInfo();
     }
 
     @OnClick({R.id.iv_invite, R.id.iv_common_right_icon,
@@ -843,14 +853,6 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
             //如果通知栏未打开,弹出前往设置打开通知栏的弹窗
             dialogShow();
         }
-
-        /**
-         * 首页题组
-         */
-        loadHomeGroups();
-
-        //获取弹框信息
-        getDialogInfo();
 
     }
 
