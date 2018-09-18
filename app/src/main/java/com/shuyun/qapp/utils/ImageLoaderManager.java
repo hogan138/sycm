@@ -31,7 +31,7 @@ public class ImageLoaderManager {
                     .placeholder(defaultImg)
                     .dontAnimate() //解决圆形图显示占位图问题
                     .error(defaultImg)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(imageView);
         } catch (Exception e) {
         }
@@ -43,7 +43,7 @@ public class ImageLoaderManager {
                 .placeholder(defaultImg)
                 .dontAnimate() //解决圆形图显示占位图问题
                 .error(defaultImg)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(new ViewTarget<View, GlideDrawable>(view) {
                     //括号里为需要加载的控件
                     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)

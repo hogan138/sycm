@@ -7,13 +7,12 @@
     android:layout_marginTop="@dimen/text_11"
     android:background="@drawable/home_border_bg">
 
-    <com.shuyun.qapp.view.RoundImageView
+    <com.shuyun.qapp.view.OvalImageView
         android:id="@+id/iv_group_bg"
         android:layout_width="match_parent"
         android:layout_height="155dp"
         android:scaleType="fitXY"
-        android:src="@mipmap/zw01"
-        app:type="round" />
+        android:src="@mipmap/zw01" />
 
     <TextView
         android:id="@+id/tv_group_title"

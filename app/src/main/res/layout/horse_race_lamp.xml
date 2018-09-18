@@ -2,29 +2,35 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/text_8"
+    android:layout_height="24dp"
+    android:layout_marginBottom="@dimen/text_11"
     android:layout_marginTop="@dimen/text_8"
+    android:background="@color/white"
     android:orientation="horizontal">
-    <!--圆角10dp color #ee5541-->
+
+    <ImageView
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="12dp"
+        android:src="@mipmap/home_voice" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/text_12"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/text_10"
         android:layout_marginRight="@dimen/text_6"
-        android:background="@drawable/marquee_bg"
-        android:paddingBottom="@dimen/text_4"
-        android:paddingLeft="@dimen/text_3"
-        android:paddingRight="@dimen/text_8"
-        android:paddingTop="@dimen/text_4"
         android:text="@string/all_broadcast"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_12" />
+        android:textColor="@color/color_1"
+        android:textSize="@dimen/text_13" />
 
     <com.sunfusheng.marqueeview.MarqueeView
         android:id="@+id/marqueeView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/text_13"
         android:layout_weight="1"
         android:text="@string/award"
         app:mvAnimDuration="1000"

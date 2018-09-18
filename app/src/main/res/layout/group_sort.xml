@@ -2,10 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/text_12"
-    android:layout_marginRight="@dimen/text_12"
-    android:paddingBottom="@dimen/text_13"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/text_13">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,15 +14,16 @@
         <RelativeLayout
             android:id="@+id/rl_active"
             android:layout_width="0dp"
-            android:layout_height="@dimen/text_47.5"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center">
 
             <ImageView
                 android:id="@+id/iv_group_icon01"
-                android:layout_width="39dp"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/active" />
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/culture" />
 
             <TextView
                 android:id="@+id/tv_hot01"
@@ -38,17 +37,17 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_8"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_group_name01"
-                android:layout_width="39dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/iv_group_icon01"
-                android:layout_marginTop="@dimen/text_2"
-                android:gravity="center"
-                android:text="@string/active"
+                android:layout_marginTop="@dimen/text_5"
+                android:gravity="center_horizontal"
                 android:singleLine="true"
+                android:text="文化"
                 android:textColor="@color/color_0"
                 android:textSize="@dimen/text_13" />
         </RelativeLayout>
@@ -56,15 +55,16 @@
         <RelativeLayout
             android:id="@+id/rl_life"
             android:layout_width="0dp"
-            android:layout_height="@dimen/text_47.5"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center">
 
             <ImageView
                 android:id="@+id/iv_group_icon02"
-                android:layout_width="39dp"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/life" />
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/literature" />
 
             <TextView
                 android:id="@+id/tv_hot02"
@@ -78,17 +78,17 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_8"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_group_name02"
-                android:layout_width="39dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/iv_group_icon02"
-                android:layout_marginTop="@dimen/text_2"
-                android:gravity="center"
-                android:text="@string/live"
+                android:layout_marginTop="@dimen/text_5"
+                android:gravity="center_horizontal"
                 android:singleLine="true"
+                android:text="文学"
                 android:textColor="@color/color_0"
                 android:textSize="@dimen/text_13" />
         </RelativeLayout>
@@ -96,15 +96,16 @@
         <RelativeLayout
             android:id="@+id/rl_culture"
             android:layout_width="0dp"
-            android:layout_height="@dimen/text_47.5"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center">
 
             <ImageView
                 android:id="@+id/iv_group_icon03"
-                android:layout_width="39dp"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/wenxue" />
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/life" />
 
             <TextView
                 android:id="@+id/tv_hot03"
@@ -118,17 +119,17 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_8"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_group_name03"
-                android:layout_width="39dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/iv_group_icon03"
-                android:layout_marginTop="@dimen/text_2"
-                android:gravity="center"
+                android:layout_marginTop="@dimen/text_5"
+                android:gravity="center_horizontal"
                 android:singleLine="true"
-                android:text="@string/culture"
+                android:text="历史"
                 android:textColor="@color/color_0"
                 android:textSize="@dimen/text_13" />
         </RelativeLayout>
@@ -136,15 +137,16 @@
         <RelativeLayout
             android:id="@+id/rl_video"
             android:layout_width="0dp"
-            android:layout_height="@dimen/text_47.5"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center">
 
             <ImageView
                 android:id="@+id/iv_group_icon04"
-                android:layout_width="39dp"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/video" />
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/healthy" />
 
             <TextView
                 android:id="@+id/tv_hot04"
@@ -158,19 +160,19 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_8"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_group_name04"
-                android:layout_width="39dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/iv_group_icon04"
-                android:layout_marginTop="@dimen/text_2"
-                android:gravity="center"
-                android:text="@string/movie"
+                android:layout_marginTop="@dimen/text_5"
+                android:gravity="center_horizontal"
+                android:singleLine="true"
+                android:text="健康"
                 android:textColor="@color/color_0"
-                android:textSize="@dimen/text_13"
-                android:singleLine="true"/>
+                android:textSize="@dimen/text_13" />
         </RelativeLayout>
 
     </LinearLayout>
@@ -184,15 +186,16 @@
         <RelativeLayout
             android:id="@+id/rl_music"
             android:layout_width="0dp"
-            android:layout_height="@dimen/text_47.5"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center">
 
             <ImageView
                 android:id="@+id/iv_group_icon05"
-                android:layout_width="39dp"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/music" />
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/sport" />
 
             <TextView
                 android:id="@+id/tv_hot05"
@@ -206,17 +209,17 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_8"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_group_name05"
-                android:layout_width="39dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/iv_group_icon05"
-                android:layout_marginTop="@dimen/text_2"
-                android:gravity="center"
+                android:layout_marginTop="@dimen/text_5"
+                android:gravity="center_horizontal"
                 android:singleLine="true"
-                android:text="@string/music"
+                android:text="体育"
                 android:textColor="@color/color_0"
                 android:textSize="@dimen/text_13" />
         </RelativeLayout>
@@ -224,15 +227,16 @@
         <RelativeLayout
             android:id="@+id/rl_history"
             android:layout_width="0dp"
-            android:layout_height="@dimen/text_47.5"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center">
 
             <ImageView
                 android:id="@+id/iv_group_icon06"
-                android:layout_width="39dp"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/history" />
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/entertainment" />
 
             <TextView
                 android:id="@+id/tv_hot06"
@@ -246,33 +250,34 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_8"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_group_name06"
-                android:layout_width="39dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/iv_group_icon06"
-                android:layout_marginTop="@dimen/text_2"
-                android:gravity="center"
-                android:text="@string/history"
+                android:layout_marginTop="@dimen/text_5"
+                android:gravity="center_horizontal"
+                android:singleLine="true"
+                android:text="娱乐"
                 android:textColor="@color/color_0"
-                android:textSize="@dimen/text_13"
-                android:singleLine="true"/>
+                android:textSize="@dimen/text_13" />
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/rl_edu"
             android:layout_width="0dp"
-            android:layout_height="@dimen/text_47.5"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center">
 
             <ImageView
                 android:id="@+id/iv_group_icon07"
-                android:layout_width="39dp"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/edu" />
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/activity" />
 
             <TextView
                 android:id="@+id/tv_hot07"
@@ -286,16 +291,16 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_8"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_group_name07"
-                android:layout_width="39dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/iv_group_icon07"
-                android:layout_marginTop="@dimen/text_2"
+                android:layout_marginTop="@dimen/text_5"
+                android:gravity="center_horizontal"
                 android:singleLine="true"
-                android:gravity="center"
                 android:text="@string/education"
                 android:textColor="@color/color_0"
                 android:textSize="@dimen/text_13" />
@@ -304,14 +309,15 @@
         <RelativeLayout
             android:id="@+id/rl_more"
             android:layout_width="0dp"
-            android:layout_height="@dimen/text_47.5"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center">
 
             <ImageView
                 android:id="@+id/iv_more"
-                android:layout_width="39dp"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
                 android:src="@mipmap/more" />
 
             <TextView
@@ -326,15 +332,15 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_8"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_group_name08"
-                android:layout_width="39dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/iv_more"
-                android:layout_marginTop="@dimen/text_2"
-                android:gravity="center"
+                android:layout_marginTop="@dimen/text_5"
+                android:gravity="center_horizontal"
                 android:singleLine="true"
                 android:text="@string/more"
                 android:textColor="@color/color_0"

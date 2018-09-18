@@ -18,7 +18,6 @@ import android.graphics.Shader;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.animation.SpringAnimation;
 import android.support.animation.SpringForce;
 import android.support.v4.app.Fragment;
@@ -48,6 +47,7 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.GroupTreeAdapter;
 import com.shuyun.qapp.adapter.HotGroupAdapter;
+import com.shuyun.qapp.adapter.RecommendGroupAdapter;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.BannerBean;
 import com.shuyun.qapp.bean.BannerItem;
@@ -126,16 +126,6 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
     BannerViewPager mBannerView;//轮播图
     @BindView(R.id.marqueeView)
     MarqueeView marqueeView;//跑马灯
-    @BindView(R.id.tv_change_group)
-    TextView tvChangeGroup;//换一批
-    @BindView(R.id.iv_group_bg1)
-    RoundImageView ivGroupBg1;//1、推荐题组背景图
-    @BindView(R.id.iv_group_bg2)
-    RoundImageView ivGroupBg2;//2、推荐题组背景图
-    @BindView(R.id.tv_group_name1)
-    TextView tvGroupName1;//1、推荐题组名字
-    @BindView(R.id.tv_group_name2)
-    TextView tvGroupName2;//2、推荐题组名字
     @BindView(R.id.rl_active)
     RelativeLayout rlActive;//活动
     @BindView(R.id.rl_life)
@@ -202,25 +192,23 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
     TextView tvHot08;
     @BindView(R.id.tv_group_name08)
     TextView tvGroupName08;
-    @BindView(R.id.ll_change_group)
-    LinearLayout llChangeGroup;//换一批
     @BindView(R.id.iv_bx)
     ImageView ivBx;//宝箱抖动的动画
     Unbinder unbinder;
     @BindView(R.id.iv_invite)
-    ImageView ivInvite;
+    ImageView ivInvite; //分享
     @BindView(R.id.rl_invite_friend)
-    RelativeLayout rlInviteFriend;
+    RelativeLayout rlInviteFriend; //邀请好友得宝箱
     @BindView(R.id.rl_against)
-    RelativeLayout rlAgainst;
+    RelativeLayout rlAgainst; //答题对战
+    @BindView(R.id.rv_recomend_group)
+    RecyclerView rvRecomendGroup; //推荐题组
+    @BindView(R.id.always_banner)
+    BannerViewPager alwaysBanner; //常答轮播题组
 
     private int SHARE_CHANNEL;
     private static final String TAG = "HomeFragment";
 
-    /**
-     * 网络获取到推荐题组列表
-     */
-    private List<GroupBean> groupBeans;
     private Activity mContext;
     private GroupClassifyBean groupClassifyBean0;
     private GroupClassifyBean groupClassifyBean1;
@@ -313,7 +301,7 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
         invite();
     }
 
-    @OnClick({R.id.iv_invite, R.id.iv_common_right_icon, R.id.ll_change_group, R.id.iv_group_bg1, R.id.iv_group_bg2,
+    @OnClick({R.id.iv_invite, R.id.iv_common_right_icon,
             R.id.rl_active, R.id.rl_life, R.id.rl_culture, R.id.rl_video,
             R.id.rl_music, R.id.rl_history, R.id.rl_edu, R.id.rl_more,
             R.id.rl_invite_friend, R.id.rl_against})
@@ -325,28 +313,6 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
             case R.id.iv_common_right_icon:
                 ivCommonRightIcon.setImageResource(R.mipmap.message_n);//右侧消息按钮;
                 startActivity(new Intent(mContext, InformationActivity.class));
-                break;
-            case R.id.ll_change_group:
-                //轮训换题组
-                rollRecommendGroup();
-                break;
-            case R.id.iv_group_bg1://推荐题组一//TODO
-                if (!EncodeAndStringTool.isObjectEmpty(recommendGroup1)) {
-                    int groupId = recommendGroup1.getId();
-                    Intent intent = new Intent(mContext, WebAnswerActivity.class);
-                    intent.putExtra("groupId", groupId);
-                    intent.putExtra("h5Url", recommendGroup1.getH5Url());
-                    startActivity(intent);
-                }
-                break;
-            case R.id.iv_group_bg2://推荐题组二
-                if (!EncodeAndStringTool.isObjectEmpty(recommendGroup2)) {
-                    int groupId = recommendGroup2.getId();
-                    Intent intent = new Intent(mContext, WebAnswerActivity.class);
-                    intent.putExtra("groupId", groupId);
-                    intent.putExtra("h5Url", recommendGroup2.getH5Url());
-                    startActivity(intent);
-                }
                 break;
             case R.id.rl_active://活动
                 Intent intent0 = new Intent(mContext, ClassifyActivity.class);
@@ -388,7 +354,7 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                 intent7.putExtra("id", 0);
                 startActivity(intent7);
                 break;
-            case R.id.rl_against:
+            case R.id.rl_against:  //答题对战
                 startActivity(new Intent(getActivity(), MainAgainstActivity.class));
                 break;
             case R.id.rl_invite_friend://邀请有奖
@@ -465,6 +431,51 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                                         }
                                     });
                                     mBannerView.setPageTransformer(true, new YZoomTransFormer(.8f));
+
+                                    //常答题组
+                                    BannerAdapter adapter1 = new BannerAdapter(new GlideImageLoader());
+                                    List<IBannerItem> list1 = new ArrayList<>();
+                                    for (int i = 0; i < bannerData.size(); i++) {
+                                        list1.add(new BannerItem(bannerData.get(i).getPicture()));
+                                    }
+                                    adapter1.setData(getContext(), list1);
+                                    alwaysBanner.setBannerAdapter(adapter1);
+                                    alwaysBanner.setBannerItemClick(new BannerViewPager.OnBannerItemClick<IBannerItem>() {
+                                        @Override
+                                        public void onClick(IBannerItem data) {
+                                            for (int i = 0; i < bannerData.size(); i++) {
+                                                if (data.ImageUrl().equals(bannerData.get(i).getPicture())) {
+                                                    if (bannerData.get(i).getType() == 3) {//题组跳转
+                                                        if (!EncodeAndStringTool.isStringEmpty(bannerData.get(i).getUrl())) {
+                                                            try {
+                                                                Intent intent = new Intent(mContext, WebAnswerActivity.class);
+                                                                intent.putExtra("groupId", Integer.parseInt(bannerData.get(i).getUrl()));
+                                                                intent.putExtra("h5Url", bannerData.get(i).getH5Url());
+                                                                startActivity(intent);
+                                                            } catch (Exception e) {
+                                                            }
+
+                                                        }
+                                                    } else if (bannerData.get(i).getType() == 2) {//内部链接
+                                                        if (!EncodeAndStringTool.isStringEmpty(bannerData.get(i).getUrl())) {
+                                                            Intent intent = new Intent(mContext, WebBannerActivity.class);
+                                                            intent.putExtra("url", bannerData.get(i).getUrl());
+                                                            intent.putExtra("name", bannerData.get(i).getName());//名称 标题
+                                                            startActivity(intent);
+                                                        }
+                                                    } else if (bannerData.get(i).getType() == 1) {//外部链接
+                                                        if (!EncodeAndStringTool.isStringEmpty(bannerData.get(i).getUrl())) {
+                                                            Uri uri = Uri.parse(bannerData.get(i).getUrl());
+                                                            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                                                            startActivity(intent);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    });
+                                    alwaysBanner.setPageTransformer(true, new YZoomTransFormer(.8f));
+
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -563,14 +574,29 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                         if (listDataResponse.isSuccees()) {
                             HomeGroupsBean homeGroupsBean = listDataResponse.getDat();
                             if (!EncodeAndStringTool.isObjectEmpty(homeGroupsBean)) {
-                                if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getRecommend())) {
-                                    groupBeans = homeGroupsBean.getRecommend();
+                                if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getRecommend())) { //推荐题组
+                                    final List<GroupBean> groupBeans = homeGroupsBean.getRecommend();
                                     if (!EncodeAndStringTool.isListEmpty(groupBeans)) {
-                                        recommendIndex = 0;
-                                        rollRecommendGroup();
+                                        rvRecomendGroup.setHasFixedSize(true);
+                                        rvRecomendGroup.setNestedScrollingEnabled(false);
+                                        RecommendGroupAdapter recommendGroupAdapter = new RecommendGroupAdapter(groupBeans, mContext);
+                                        recommendGroupAdapter.setOnItemClickLitsener(new GroupTreeAdapter.OnItemClickListener() {
+                                            @Override
+                                            public void onItemClick(View view, int position) {
+                                                int groupId = groupBeans.get(position).getId();
+                                                Intent intent = new Intent(mContext, WebAnswerActivity.class);
+                                                intent.putExtra("groupId", groupId);
+                                                intent.putExtra("h5Url", groupBeans.get(position).getH5Url());
+                                                startActivity(intent);
+                                            }
+                                        });
+
+                                        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1);
+                                        rvRecomendGroup.setLayoutManager(gridLayoutManager);
+                                        rvRecomendGroup.setAdapter(recommendGroupAdapter);
                                     }
                                 }
-                                if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getThermal())) {
+                                if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getThermal())) {   //热门题组
                                     final List<GroupBean> groupData = homeGroupsBean.getThermal();
                                     mContext.runOnUiThread(new Runnable() {
                                         @Override
@@ -600,7 +626,7 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                                         }
                                     });
                                 }
-                                if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getTree())) {
+                                if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getTree())) {  //分类
                                     try {
                                         List<GroupClassifyBean> groupClassifyBeans = homeGroupsBean.getTree();
                                         groupClassifyBean0 = groupClassifyBeans.get(0);
@@ -611,31 +637,31 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                                         groupClassifyBean5 = groupClassifyBeans.get(5);
                                         groupClassifyBean6 = groupClassifyBeans.get(6);
                                         if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean0)) {
-                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean0.getPicture(), ivGroupIcon01, R.mipmap.active);
+                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean0.getPicture(), ivGroupIcon01, R.mipmap.culture);
                                             tvGroupName01.setText(groupClassifyBean0.getName());
                                         }
                                         if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean1)) {
-                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean1.getPicture(), ivGroupIcon02, R.mipmap.life);
+                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean1.getPicture(), ivGroupIcon02, R.mipmap.literature);
                                             tvGroupName02.setText(groupClassifyBean1.getName());
                                         }
                                         if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean2)) {
-                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean2.getPicture(), ivGroupIcon03, R.mipmap.wenxue);
+                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean2.getPicture(), ivGroupIcon03, R.mipmap.life);
                                             tvGroupName03.setText(groupClassifyBean2.getName());
                                         }
                                         if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean3)) {
-                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean3.getPicture(), ivGroupIcon04, R.mipmap.video);
+                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean3.getPicture(), ivGroupIcon04, R.mipmap.healthy);
                                             tvGroupName04.setText(groupClassifyBean3.getName());
                                         }
                                         if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean4)) {
-                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean4.getPicture(), ivGroupIcon05, R.mipmap.music);
+                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean4.getPicture(), ivGroupIcon05, R.mipmap.sport);
                                             tvGroupName05.setText(groupClassifyBean4.getName());
                                         }
                                         if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean5)) {
-                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean5.getPicture(), ivGroupIcon06, R.mipmap.history);
+                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean5.getPicture(), ivGroupIcon06, R.mipmap.entertainment);
                                             tvGroupName06.setText(groupClassifyBean5.getName());
                                         }
                                         if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean6)) {
-                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean6.getPicture(), ivGroupIcon07, R.mipmap.edu);
+                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean6.getPicture(), ivGroupIcon07, R.mipmap.activity);
                                             tvGroupName07.setText(groupClassifyBean6.getName());
                                         }
                                         ivMore.setImageResource(R.mipmap.more);
@@ -795,76 +821,11 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                 });
     }
 
-
-    GroupBean recommendGroup1;
-    GroupBean recommendGroup2;
-    int recommendIndex = 0;
-
-    /**
-     * 根据角标i的值,两个一组轮询推荐题组列表
-     */
-    private void rollRecommendGroup() {
-        /**
-         * 判断推荐题组数据是否为空
-         */
-        if (EncodeAndStringTool.isListEmpty(groupBeans)) {
-            return;
-        }
-        /**
-         * 如果角标大于等于推荐题组数据长度,将角标值为零
-         */
-        if (recommendIndex >= groupBeans.size()) {
-            recommendIndex = 0;
-        }
-        recommendGroup1 = groupBeans.get(recommendIndex);//获取角标处的推荐题组,显示在推荐题组左侧
-        /***
-         * 如果角标+1不大于推荐题组数据长度,获取角标+1处的推荐题组,显示在推荐题组右侧
-         * 否则获取角标为0处推荐题组数据,显示在推荐题组右侧,并将角标值为1
-         */
-        if (recommendIndex + 1 < groupBeans.size()) {
-            recommendGroup2 = groupBeans.get(recommendIndex + 1);
-            recommendIndex += 2;
-        } else {
-            recommendGroup2 = groupBeans.get(0);
-            recommendIndex = 1;
-        }
-
-        try {
-            /**
-             * 设置推荐左侧题组的值,界面显示在推荐题组左侧
-             */
-            if (!EncodeAndStringTool.isObjectEmpty(recommendGroup1)) {
-                if (!EncodeAndStringTool.isStringEmpty(recommendGroup1.getName())) {
-                    tvGroupName1.setText(recommendGroup1.getName() + "");
-                }
-                if (!EncodeAndStringTool.isStringEmpty(recommendGroup1.getPicture())) {
-                    ImageLoaderManager.LoadImage(mContext, recommendGroup1.getPicture(), ivGroupBg1, R.mipmap.zw01);
-                }
-            }
-            /**
-             * 设置推荐右侧推荐题组的值,界面显示在推荐题组右侧
-             */
-            if (!EncodeAndStringTool.isObjectEmpty(recommendGroup2)) {
-                if (!EncodeAndStringTool.isStringEmpty(recommendGroup2.getName())) {
-                    tvGroupName2.setText(recommendGroup2.getName() + "");
-                }
-                if (!EncodeAndStringTool.isStringEmpty(recommendGroup2.getPicture())) {
-                    ImageLoaderManager.LoadImage(mContext, recommendGroup2.getPicture(), ivGroupBg2, R.mipmap.zw01);
-                }
-            }
-        } catch (Exception e) {
-
-        }
-    }
-
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
-
-    CountDownTimer timer;
 
     @Override
     public void onResume() {
@@ -887,23 +848,6 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
          * 首页题组
          */
         loadHomeGroups();
-
-        //5秒更新推荐题组
-        timer = new CountDownTimer(5 * 1000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-
-            }
-
-            @Override
-            public void onFinish() {
-                if (!EncodeAndStringTool.isListEmpty(groupBeans)) {
-                    //倒计时5秒切換一下推荐题组
-                    rollRecommendGroup();
-                }
-                timer.start();
-            }
-        }.start();
 
         //获取弹框信息
         getDialogInfo();
@@ -1144,17 +1088,11 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
     public void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd("HomeFragment");
-        if (!EncodeAndStringTool.isObjectEmpty(timer)) {
-            timer.cancel();
-        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (!EncodeAndStringTool.isObjectEmpty(timer)) {
-            timer.cancel();
-        }
     }
 
     CommonPopupWindow popupWindow;

@@ -1,13 +1,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_home_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_f5"
     tools:context="com.shuyun.qapp.ui.homepage.HomeFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/common_item_height">
+        android:layout_height="@dimen/common_item_height"
+        android:background="@color/white">
 
         <TextView
             android:id="@+id/tv_common_title"
@@ -94,6 +97,13 @@
 
                     </LinearLayout>
 
+                    <ImageView
+                        android:layout_width="33dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/text_11"
+                        android:layout_marginTop="33dp"
+                        android:src="@mipmap/home_box" />
 
                 </RelativeLayout>
 
@@ -129,6 +139,14 @@
 
                     </LinearLayout>
 
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="52dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/text_12"
+                        android:src="@mipmap/home_against" />
+
                 </RelativeLayout>
 
             </LinearLayout>
@@ -136,17 +154,74 @@
             <!--推荐题组-->
             <include layout="@layout/recommend_group_question" />
 
-            <include layout="@layout/recommend_group_item" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:descendantFocusability="blocksDescendants">
 
-            <!--题组分类-->
-            <include layout="@layout/group_question_sort_title" />
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_recomend_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/text_12"
+                    android:layout_marginRight="@dimen/text_12"
+                    android:paddingBottom="@dimen/text_12">
+
+                </android.support.v7.widget.RecyclerView>
+            </RelativeLayout>
 
             <include layout="@layout/group_sort" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/home_line"></View>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/text_10"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/text_5"
+                        android:layout_height="@dimen/text_14"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/text_12"
+                        android:layout_marginRight="@dimen/text_5"
+                        android:background="@color/color_4" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/home_always"
+                        android:textColor="@color/color_0"
+                        android:textSize="@dimen/text_14" />
+
+                </LinearLayout>
+
+                <cn.kevin.banner.BannerViewPager
+                    android:id="@+id/always_banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp"
+                    android:layout_margin="@dimen/text_10"
+                    app:around_visible="true"
+                    app:item_margin="11dp"
+                    app:marginLeft="36dp"
+                    app:marginRight="36dp"
+                    app:point_drawable="@drawable/banner_selector"
+                    app:point_gravity="bottom_center" />
+            </LinearLayout>
             <!--跑马灯效果-->
             <include layout="@layout/horse_race_lamp" />
 
-            <include layout="@layout/common_line_2" />
             <!--热门提组-->
             <include layout="@layout/hot_group_question_head" />
 

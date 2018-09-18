@@ -13,6 +13,7 @@ import com.shuyun.qapp.bean.GroupBean;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
+import com.shuyun.qapp.view.OvalImageView;
 import com.shuyun.qapp.view.RoundImageView;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class HotGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Context mContext;
     //题组分类集合
     private List<GroupBean> groupBeans;
-    private LayoutInflater inflater;
+//    private LayoutInflater inflater;
 
     public static final int ONE_ITEM = 1;
     public static final int TWO_ITEM = 2;
@@ -36,7 +37,7 @@ public class HotGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public HotGroupAdapter(List<GroupBean> groupBeans, Context mContext) {
         this.groupBeans = groupBeans;
         this.mContext = mContext;
-        inflater = LayoutInflater.from(mContext);
+//        inflater = LayoutInflater.from(mContext);
         notifyDataSetChanged();
     }
 
@@ -47,7 +48,7 @@ public class HotGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         LayoutInflater mInflater = LayoutInflater.from(mContext);
         RecyclerView.ViewHolder holder = null;
         if (ONE_ITEM == viewType) {
-            View view = inflater.inflate(R.layout.hot_group_item, parent, false);
+            View view = mInflater.inflate(R.layout.hot_group_item, parent, false);
             holder = new MyViewHolder(view);
         } else {
             View v = mInflater.inflate(R.layout.hot_group_item1, parent, false);
@@ -131,7 +132,7 @@ public class HotGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     class MyViewHolder1 extends RecyclerView.ViewHolder {
         @BindView(R.id.iv_group_bg)
-        RoundImageView ivGroupBg;//题组背景图
+        OvalImageView ivGroupBg;//题组背景图
         @BindView(R.id.tv_group_title)
         TextView tvGroupTitle;//题组标题
         @BindView(R.id.rl_item)
