@@ -92,7 +92,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/text_8"
-                            android:text="共计送出111141111个宝箱"
+                            android:text="共计送出11114个邀请宝箱"
                             android:textColor="@color/login_text"
                             android:textSize="@dimen/text_11" />
 
@@ -102,7 +102,7 @@
                         android:layout_width="33dp"
                         android:layout_height="25dp"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/text_11"
+                        android:layout_marginRight="@dimen/text_8"
                         android:layout_marginTop="33dp"
                         android:src="@mipmap/home_box" />
 
