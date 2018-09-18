@@ -21,7 +21,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by sunxiao on 2018/5/2.
  * 热门题组列表
  */
 
@@ -58,14 +57,15 @@ public class HotGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     }
 
+    public static int i = 0;
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) {
-            return ONE_ITEM;
-        } else if (position % 4 == 0) {
+        if (i == 3) {
+            i = 0;
             return TWO_ITEM;
         } else {
+            i++;
             return ONE_ITEM;
         }
     }
