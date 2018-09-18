@@ -32,9 +32,6 @@ public class AnswerHistoryAdapter extends RecyclerView.Adapter<AnswerHistoryAdap
     private Context context;
     private LayoutInflater layoutInflater;
 
-    public AnswerHistoryAdapter() {
-    }
-
     private List<LookAnswerResultBean.QuestionsBean> questionsBeans;
 
     public AnswerHistoryAdapter(Context context, List<LookAnswerResultBean.QuestionsBean> questionsBeans) {

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="120dp"
     android:layout_marginTop="@dimen/text_11"
-    android:background="@drawable/home_border_bg">
+    android:background="@mipmap/home_group_one">
 
     <com.shuyun.qapp.view.RoundImageView
         android:id="@+id/iv_group_bg"

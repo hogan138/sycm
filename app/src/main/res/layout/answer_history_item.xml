@@ -4,7 +4,10 @@
     android:layout_height="129.5dp"
     android:orientation="vertical">
 
-    <include layout="@layout/common_line_2" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_8"
+        android:background="@color/color_12" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -46,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/text_12"
-            android:layout_marginTop="@dimen/text_10"/>
+            android:layout_marginTop="@dimen/text_10" />
         <!--您的答案-->
         <!--android:text="您的答案:诞生于2018年"-->
         <TextView

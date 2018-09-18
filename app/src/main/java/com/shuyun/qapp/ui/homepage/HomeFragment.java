@@ -647,31 +647,31 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                                         groupClassifyBean5 = groupClassifyBeans.get(5);
                                         groupClassifyBean6 = groupClassifyBeans.get(6);
                                         if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean0)) {
-                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean0.getPicture(), ivGroupIcon01, R.mipmap.culture);
+                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean0.getPicture(), ivGroupIcon01, 0);
                                             tvGroupName01.setText(groupClassifyBean0.getName());
                                         }
                                         if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean1)) {
-                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean1.getPicture(), ivGroupIcon02, R.mipmap.literature);
+                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean1.getPicture(), ivGroupIcon02, 0);
                                             tvGroupName02.setText(groupClassifyBean1.getName());
                                         }
                                         if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean2)) {
-                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean2.getPicture(), ivGroupIcon03, R.mipmap.life);
+                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean2.getPicture(), ivGroupIcon03, 0);
                                             tvGroupName03.setText(groupClassifyBean2.getName());
                                         }
                                         if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean3)) {
-                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean3.getPicture(), ivGroupIcon04, R.mipmap.healthy);
+                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean3.getPicture(), ivGroupIcon04, 0);
                                             tvGroupName04.setText(groupClassifyBean3.getName());
                                         }
                                         if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean4)) {
-                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean4.getPicture(), ivGroupIcon05, R.mipmap.sport);
+                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean4.getPicture(), ivGroupIcon05, 0);
                                             tvGroupName05.setText(groupClassifyBean4.getName());
                                         }
                                         if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean5)) {
-                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean5.getPicture(), ivGroupIcon06, R.mipmap.entertainment);
+                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean5.getPicture(), ivGroupIcon06, 0);
                                             tvGroupName06.setText(groupClassifyBean5.getName());
                                         }
                                         if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean6)) {
-                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean6.getPicture(), ivGroupIcon07, R.mipmap.activity);
+                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean6.getPicture(), ivGroupIcon07, 0);
                                             tvGroupName07.setText(groupClassifyBean6.getName());
                                         }
                                         ivMore.setImageResource(R.mipmap.more);

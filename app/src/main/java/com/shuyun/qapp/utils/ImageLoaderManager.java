@@ -28,10 +28,10 @@ public class ImageLoaderManager {
         try {
             Glide.with(context)
                     .load(imgUrl)
-                    .placeholder(defaultImg)
+//                    .placeholder(defaultImg)
                     .dontAnimate() //解决圆形图显示占位图问题
-                    .error(defaultImg)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+//                    .error(defaultImg)
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
                     .into(imageView);
         } catch (Exception e) {
         }

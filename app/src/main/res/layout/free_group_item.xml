@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="230dp"
     android:layout_marginTop="@dimen/text_15"
-    android:background="@drawable/free_group_bg"
+    android:background="@mipmap/home_group_two"
     android:orientation="vertical">
 
 
@@ -11,6 +11,8 @@
         android:id="@+id/iv_group_bg"
         android:layout_width="match_parent"
         android:layout_height="153dp"
+        android:layout_marginLeft="@dimen/text_3"
+        android:layout_marginRight="@dimen/text_3"
         android:scaleType="fitXY"
         android:src="@mipmap/zw01" />
 

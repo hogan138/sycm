@@ -11,7 +11,7 @@ import com.shuyun.qapp.R;
  * 项目名称：QMGJ
  * 创建人：${ganquan}
  * 创建日期：2018/9/4 11:18
- * 记载进度条
+ * 加载进度条
  */
 public class CustomLoadingFactory implements LoadingFactory {
     @Override

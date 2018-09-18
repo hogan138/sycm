@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_item"
     android:layout_width="match_parent"
     android:layout_height="230dp"
     android:layout_marginTop="@dimen/text_11"
-    android:background="@drawable/home_border_bg">
+    android:background="@mipmap/home_group_two">
 
     <com.shuyun.qapp.view.OvalImageView
         android:id="@+id/iv_group_bg"
         android:layout_width="match_parent"
         android:layout_height="155dp"
+        android:layout_marginLeft="@dimen/text_3"
+        android:layout_marginRight="@dimen/text_3"
         android:scaleType="fitXY"
         android:src="@mipmap/zw01" />
 
@@ -20,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/iv_group_bg"
         android:layout_marginLeft="@dimen/text_10"
-        android:layout_marginTop="@dimen/text_12"
+        android:layout_marginTop="@dimen/text_10"
         android:text="题目标题"
         android:textColor="@color/color_1"
         android:textSize="@dimen/text_15" />
@@ -31,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_group_title"
         android:layout_marginLeft="@dimen/text_12"
-        android:layout_marginTop="@dimen/text_5"
+        android:layout_marginTop="@dimen/text_4"
         android:text="有答题攻略"
         android:textColor="@color/login_text"
         android:textSize="@dimen/text_11" />
@@ -42,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_strategy"
         android:layout_marginLeft="@dimen/text_12"
-        android:layout_marginTop="@dimen/text_5"
+        android:layout_marginTop="@dimen/text_3"
         android:text="不消耗答题次数"
         android:textColor="@color/color_4"
         android:textSize="@dimen/text_10" />

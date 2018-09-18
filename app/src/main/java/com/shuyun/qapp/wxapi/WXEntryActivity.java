@@ -47,7 +47,9 @@ import static com.shuyun.qapp.net.MyApplication.getAppContext;
 import static com.shuyun.qapp.utils.EncodeAndStringTool.encryptMD5ToString;
 import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 
-//extends WXCallbackActivity  Activity
+/**
+ * 微信登录
+ */
 public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHandler {
     private static final int RETURN_MSG_TYPE_LOGIN = 1;
     private static final int RETURN_MSG_TYPE_SHARE = 2;
@@ -161,12 +163,10 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
                 .subscribe(new Observer<DataResponse<UserWxInfo>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        Log.i(TAG, "loadChangeWXbind==onSubscribe: " + d);
                     }
 
                     @Override
                     public void onNext(DataResponse<UserWxInfo> dataResponse) {
-//                        LogUtil.logInfo("loadChangeWXbind==onNext" + dataResponse.toString(), TAG);
                         UserWxInfo wxBindResultBean = dataResponse.getDat();
                         if (dataResponse.isSuccees()) {
                             SaveUserInfo.getInstance(WXEntryActivity.this).setUserInfo("nickname", wxBindResultBean.getNickname());
@@ -181,14 +181,12 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
 
                     @Override
                     public void onError(Throwable e) {
-//                        LogUtil.logError("loadChangeWXbind==onError" + e.toString(), TAG);
                         //保存错误信息
                         SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
                     }
 
                     @Override
                     public void onComplete() {
-//                        LogUtil.logInfo("loadChangeWXbind==onComplete", TAG);
                     }
                 });
     }
@@ -215,12 +213,10 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
                 .subscribe(new Observer<DataResponse<LoginResponse>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-//                        LogUtil.logInfo("loadLogin==onSubscribe" + d.toString(), TAG);
                     }
 
                     @Override
                     public void onNext(DataResponse<LoginResponse> loginResponse) {
-//                        LogUtil.logInfo("loadLogin==onNext" + loginResponse.toString(), TAG);
                         if (loginResponse.isSuccees()) {
                             LoginResponse loginResp = loginResponse.getDat();
                             if (!EncodeAndStringTool.isObjectEmpty(loginResp)) {
@@ -229,9 +225,6 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
                                 SharedPrefrenceTool.put(getAppContext(), "key", loginResp.getKey());//对称加密的秘钥。
                                 SharedPrefrenceTool.put(getAppContext(), "bind", loginResp.getBind());//是否绑定用户。
                                 SharedPrefrenceTool.put(getAppContext(), "random", loginResp.getRandom());//登录成果后，平台随机生成的字符串
-                                LoginResponse.User user = loginResp.getUser();
-//                            SharedPrefrenceTool.put(getAppContext(), "share", user.getShare());//是否参与邀请分享 1——参与邀请
-//                            SharedPrefrenceTool.put(getApplicationContext(), "nickname", user.getNickname());//用户的昵称。
                                 AppConst.loadToken(getAppContext());
                                 if (!EncodeAndStringTool.isStringEmpty(loginResp.getInvite())) {
                                     SharedPrefrenceTool.put(getAppContext(), "invite", loginResp.getInvite());
@@ -248,7 +241,6 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
                                 }
 
                             } else {
-//                            ToastUtil.showToast(getAppContext(), "登录返回数据为空");
                             }
                         } else {
                             ErrorCodeTools.errorCodePrompt(mContext, loginResponse.getErr(), loginResponse.getMsg());
@@ -257,14 +249,12 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
 
                     @Override
                     public void onError(Throwable e) {
-//                        LogUtil.logError("loadLogin==onError" + e.toString(), TAG);
                         //保存错误信息
                         SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
                     }
 
                     @Override
                     public void onComplete() {
-//                        LogUtil.logInfo("loadLogin==onComplete", TAG);
 
                     }
                 });
@@ -277,111 +267,3 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
         finish();
     }
 }
-
-//    public interface WXloginCallBack{
-//        void login(String code);
-//    }
-//    WXloginCallBack mWXloginCallBack;
-//    public  void setOnWXloginCallBack(WXloginCallBack mWXloginCallBack) {
-//        this.mWXloginCallBack = mWXloginCallBack;
-//    }
-//                                mWXloginCallBack.login(code);
-
-//                            long curTime = System.currentTimeMillis();
-//                            String tsn = EncodeAndStringTool.getTsn(this);
-//                            String salt = EncodeAndStringTool.generateRandomString(12);
-//                            SharedPrefrenceTool.put(WXEntryActivity.this,"salt",salt);
-//                            //devId+appId+v+stamp+mode+account+salt+appSecret
-//                            String signString = "" + AppConst.DEV_ID + AppConst.APP_ID + AppConst.V + curTime + AppConst.WX_MODE + code  + salt + AppConst.APP_KEY ;
-//                            //将拼接的字符串转化为16进制MD5
-//                            String myCode = encryptMD5ToString(signString);
-//                            /**
-//                             * code值
-//                             */
-//                            String signCode = getCode(myCode);
-//                            LogUtil.logInfo("curTime" + curTime  + ",signString==" + signString + ",myCode==" + myCode, TAG);
-//
-//                            final LoginInput loginInput = new LoginInput();
-//                            loginInput.setMode(AppConst.WX_MODE);
-//                            loginInput.setAccount(code);
-//                            loginInput.setTsn(tsn);
-//                            loginInput.setSalt(salt);
-//                            loginInput.setDevId(AppConst.DEV_ID);
-//                            loginInput.setAppId(AppConst.APP_ID);
-//                            loginInput.setV(AppConst.V);
-//                            loginInput.setStamp(curTime);
-//                            loginInput.setCode(signCode);
-//                            runOnUiThread(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    loadLogin(loginInput);
-//                                }
-//                            });
-//
-//                            Toast.makeText(this, "调用微信登录接口", Toast.LENGTH_SHORT).show();
-
-
-//    /**
-//     * 登录
-//     */
-//    private void loadLogin( final LoginInput loginInput) {
-//        ApiService apiService = BasePresenter.create(8000);
-//        String inputbean = new Gson().toJson(loginInput);
-//        Log.i(TAG, "loadLogin: " + loginInput.toString());
-//        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
-//        apiService.login(body)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Observer<DataResponse<LoginResponse>>() {
-//                    @Override
-//                    public void onSubscribe(Disposable d) {
-//                        LogUtil.logInfo("loadLogin==onSubscribe" + d.toString(), TAG);
-//                    }
-//
-//                    @Override
-//                    public void onNext(DataResponse<LoginResponse> loginResponse) {
-//                        LogUtil.logInfo("loadLogin==onNext" + loginResponse.toString(), TAG);
-//                        LoginResponse loginResp = loginResponse.getDat();
-//                        if (!EncodeAndStringTool.isStringEmpty(loginResp)) {
-//                            SharedPrefrenceTool.put(WXEntryActivity.this, "token", loginResp.getToken());
-//                            SharedPrefrenceTool.put(WXEntryActivity.this, "expire", loginResp.getExpire());//token的有效期
-//                            SharedPrefrenceTool.put(WXEntryActivity.this, "key", loginResp.getKey());//对称加密的秘钥。
-//                            SharedPrefrenceTool.put(WXEntryActivity.this, "bind", loginResp.getBind());//是否绑定用户。
-//                            SharedPrefrenceTool.put(WXEntryActivity.this,"random",loginResp.getRandom());//登录成果后，平台随机生成的字符串
-//                            LoginResponse.User user = loginResp.getUser();
-////                            SharedPrefrenceTool.put(WXEntryActivity.this,"share",user.getShare()+"");//奔溃
-////                            SharedPrefrenceTool.put(getApplicationContext(), "nickname", user.getNickname());//用户的昵称。
-//                            AppConst.loadToken(WXEntryActivity.this);
-//                            if (!EncodeAndStringTool.isStringEmpty(loginResp.getInvite())){
-//                                SharedPrefrenceTool.put(WXEntryActivity.this,"invite",loginResp.getInvite());
-//                            }
-//                            Toast.makeText(WXEntryActivity.this, "恭喜您登录成功", Toast.LENGTH_SHORT).show();
-//                            if (0==loginResp.getBind()){
-//                                startActivity(new Intent(WXEntryActivity.this, BindPhoneNumActivity.class));
-//                                finish();
-//                            }else if (1==loginResp.getBind()){
-//                                Intent intent = new Intent(WXEntryActivity.this,HomePageActivity.class);
-//                                startActivity(intent);
-//                                finish();
-//                            }
-//
-//                        } else {
-//                            ToastUtil.showToast(WXEntryActivity.this, "登录返回数据为空");
-//                        }
-//
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        LogUtil.logError("loadLogin==onError" + e.toString(), TAG);
-//
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//                        LogUtil.logInfo("loadLogin==onComplete", TAG);
-//
-//                    }
-//                });
-//    }
