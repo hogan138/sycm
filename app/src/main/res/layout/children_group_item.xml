@@ -1,93 +1,183 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="140dp"
+    android:layout_marginLeft="@dimen/text_12"
+    android:layout_marginRight="@dimen/text_12"
+    android:layout_marginTop="@dimen/text_10"
+    android:background="@mipmap/home_group_two"
+    android:orientation="vertical">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="132dp"
-        android:layout_marginLeft="@dimen/text_10"
-        android:layout_marginRight="@dimen/text_12"
-        android:layout_marginTop="@dimen/text_10">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <com.shuyun.qapp.view.RoundImageView
             android:id="@+id/iv_group"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="120dp"
+            android:layout_height="86dp"
+            android:layout_marginLeft="@dimen/text_15"
+            android:layout_marginTop="@dimen/text_10"
             android:scaleType="centerCrop"
+            android:src="@mipmap/home_group_two"
             app:type="round" />
 
-    </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="13dp"
+            android:layout_marginTop="@dimen/text_10"
+            android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/fl_bg"
+            <TextView
+                android:id="@+id/tv_theme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/create_city"
+                android:textColor="@color/color_1"
+                android:textSize="@dimen/text_15"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_consume_answer_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="不消耗答题次数"
+                android:textColor="@color/login_text"
+                android:textSize="@dimen/text_11" />
+
+            <TextView
+                android:id="@+id/tv_solving_strategy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/text_5"
+                android:text="有答题攻略"
+                android:textColor="@color/color_4"
+                android:textSize="@dimen/text_10" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_info"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/text_10"
-        android:layout_marginRight="@dimen/text_12"
-        android:layout_marginTop="@dimen/text_10"
-        android:background="@drawable/classify_gray_bg" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/text_7"
+        android:layout_marginTop="7dp"
+        android:orientation="horizontal">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="132dp"
-        android:layout_marginLeft="@dimen/text_10"
-        android:layout_marginRight="@dimen/text_12"
-        android:layout_marginTop="@dimen/text_10">
-
-        <TextView
-            android:id="@+id/tv_consume_answer_num"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="1dp"
-            android:layout_marginTop="7dp"
-            android:background="@drawable/common_group_text_bg"
-            android:paddingBottom="@dimen/text_4"
-            android:paddingLeft="@dimen/text_8"
-            android:paddingRight="@dimen/text_3"
-            android:paddingTop="@dimen/text_4"
-            android:text="不消耗答题次数"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_11" />
+            android:layout_weight="1"
+            android:gravity="center">
 
-        <TextView
-            android:id="@+id/tv_solving_strategy"
-            android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/home_get_score"
+                    android:textColor="@color/color_35"
+                    android:textSize="@dimen/text_12" />
+
+                <TextView
+                    android:id="@+id/tv_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_toRightOf="@+id/iv_group_bg"
+                    android:text="10%"
+                    android:textColor="@color/login_text"
+                    android:textSize="@dimen/text_12" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="@dimen/text_0.5"
+            android:layout_height="23dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/color_36"></View>
+
+        <RelativeLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/tv_consume_answer_num"
-            android:layout_marginTop="@dimen/text_5"
-            android:background="@drawable/common_group_text_bg"
-            android:paddingBottom="@dimen/text_4"
-            android:paddingLeft="@dimen/text_8"
-            android:paddingRight="@dimen/text_3"
-            android:paddingTop="@dimen/text_4"
-            android:text="有答题攻略"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_11" />
+            android:layout_weight="1"
+            android:gravity="center">
 
-        <TextView
-            android:id="@+id/tv_theme"
-            android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/home_get_cash"
+                    android:textColor="@color/color_35"
+                    android:textSize="@dimen/text_12" />
+
+                <TextView
+                    android:id="@+id/tv_cash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_toRightOf="@+id/iv_group_bg"
+                    android:text="10%"
+                    android:textColor="@color/login_text"
+                    android:textSize="@dimen/text_12" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="@dimen/text_0.5"
+            android:layout_height="23dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/color_36"></View>
+
+        <RelativeLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/create_city"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_18"
-            android:textStyle="bold" />
+            android:layout_weight="1"
+            android:gravity="center">
 
-        <TextView
-            android:id="@+id/tv_give_people"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/text_8"
-            android:layout_marginLeft="@dimen/text_8"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_11" />
-    </RelativeLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/home_correct"
+                    android:textColor="@color/color_35"
+                    android:textSize="@dimen/text_12" />
 
-</FrameLayout>
+                <TextView
+                    android:id="@+id/tv_right_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_toRightOf="@+id/iv_group_bg"
+                    android:text="10%"
+                    android:textColor="@color/login_text"
+                    android:textSize="@dimen/text_12" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

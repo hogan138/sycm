@@ -68,9 +68,6 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
         }
 
         holder.tvTheme.setText(childrenBean.getName());//题组名称
-        if (!EncodeAndStringTool.isStringEmpty(childrenBean.getMerchantName())) {
-            holder.tvGivePeople.setText("出题方:" + childrenBean.getMerchantName());//出题方
-        }
 
         if ((!EncodeAndStringTool.isObjectEmpty(mOnItemChildClickLitsener))) {
             holder.itemView.setOnClickListener(new OnMultiClickListener() {
@@ -100,9 +97,6 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
         TextView tvSolvingStrategy;//有答题攻略 TODO
         @BindView(R.id.tv_theme)
         TextView tvTheme;//题组名字
-        @BindView(R.id.tv_give_people)
-        TextView tvGivePeople;//出题方
-
 
         public ViewHolder(View itemView) {
             super(itemView);

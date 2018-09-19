@@ -15,38 +15,46 @@
         android:scaleType="fitXY"
         android:src="@mipmap/zw01" />
 
-    <TextView
-        android:id="@+id/tv_group_title"
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/iv_group_bg"
+        android:layout_height="65dp"
         android:layout_marginLeft="@dimen/text_10"
-        android:layout_marginTop="@dimen/text_10"
-        android:text="题目标题"
-        android:textColor="@color/color_1"
-        android:textSize="@dimen/text_15" />
+        android:layout_marginTop="160dp">
 
-    <TextView
-        android:id="@+id/tv_strategy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_group_title"
-        android:layout_marginLeft="@dimen/text_12"
-        android:layout_marginTop="@dimen/text_4"
-        android:text="有答题攻略"
-        android:textColor="@color/login_text"
-        android:textSize="@dimen/text_11" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_reduce_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_strategy"
-        android:layout_marginLeft="@dimen/text_12"
-        android:layout_marginTop="@dimen/text_3"
-        android:text="不消耗答题次数"
-        android:textColor="@color/color_4"
-        android:textSize="@dimen/text_10" />
+            <TextView
+                android:id="@+id/tv_group_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="题目标题"
+                android:textColor="@color/color_1"
+                android:textSize="@dimen/text_15" />
+
+            <TextView
+                android:id="@+id/tv_strategy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_4"
+                android:text="有答题攻略"
+                android:textColor="@color/login_text"
+                android:textSize="@dimen/text_11" />
+
+            <TextView
+                android:id="@+id/tv_reduce_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_3"
+                android:text="不消耗答题次数"
+                android:textColor="@color/color_4"
+                android:textSize="@dimen/text_10" />
+        </LinearLayout>
+
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/ll_info"
@@ -76,6 +84,7 @@
                     android:textSize="@dimen/text_12" />
 
                 <TextView
+                    android:id="@+id/tv_score"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -108,11 +117,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/home_get_score"
+                    android:text="@string/home_get_cash"
                     android:textColor="@color/color_35"
                     android:textSize="@dimen/text_12" />
 
                 <TextView
+                    android:id="@+id/tv_cash"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -145,11 +155,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/home_get_score"
+                    android:text="@string/home_correct"
                     android:textColor="@color/color_35"
                     android:textSize="@dimen/text_12" />
 
                 <TextView
+                    android:id="@+id/tv_right_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"

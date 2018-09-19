@@ -17,157 +17,161 @@
         android:src="@mipmap/zw01"
         app:type="round" />
 
-    <TextView
-        android:id="@+id/tv_group_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/text_15"
-        android:layout_marginTop="@dimen/text_15"
-        android:layout_toRightOf="@+id/iv_group_bg"
-        android:text="题目标题"
-        android:textColor="@color/color_1"
-        android:textSize="@dimen/text_15" />
-
     <LinearLayout
-        android:id="@+id/ll_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_group_title"
-        android:layout_marginLeft="@dimen/text_8"
-        android:layout_marginTop="5dp"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/text_15"
         android:layout_toRightOf="@+id/iv_group_bg"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/tv_group_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center">
+            android:layout_marginLeft="@dimen/text_15"
+            android:text="题目标题"
+            android:textColor="@color/color_1"
+            android:textSize="@dimen/text_15" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/home_get_score"
-                    android:textColor="@color/color_35"
-                    android:textSize="@dimen/text_12" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_toRightOf="@+id/iv_group_bg"
-                    android:text="10%"
-                    android:textColor="@color/login_text"
-                    android:textSize="@dimen/text_12" />
-
-            </LinearLayout>
-
-        </RelativeLayout>
-
-        <View
-            android:layout_width="@dimen/text_0.5"
-            android:layout_height="23dp"
-            android:layout_gravity="center_vertical"
-            android:background="@color/color_36"></View>
-
-        <RelativeLayout
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/ll_info"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center">
+            android:layout_marginLeft="@dimen/text_8"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_weight="1"
+                android:gravity="center">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/home_get_cash"
-                    android:textColor="@color/color_35"
-                    android:textSize="@dimen/text_12" />
+                    android:orientation="vertical">
 
-                <TextView
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_get_score"
+                        android:textColor="@color/color_35"
+                        android:textSize="@dimen/text_12" />
+
+                    <TextView
+                        android:id="@+id/tv_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_toRightOf="@+id/iv_group_bg"
+                        android:text="10%"
+                        android:textColor="@color/login_text"
+                        android:textSize="@dimen/text_12" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="@dimen/text_0.5"
+                android:layout_height="23dp"
+                android:layout_gravity="center_vertical"
+                android:background="@color/color_36"></View>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_toRightOf="@+id/iv_group_bg"
-                    android:text="10%"
-                    android:textColor="@color/login_text"
-                    android:textSize="@dimen/text_12" />
+                    android:orientation="vertical">
 
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_get_cash"
+                        android:textColor="@color/color_35"
+                        android:textSize="@dimen/text_12" />
 
-        </RelativeLayout>
+                    <TextView
+                        android:id="@+id/tv_cash"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_toRightOf="@+id/iv_group_bg"
+                        android:text="10%"
+                        android:textColor="@color/login_text"
+                        android:textSize="@dimen/text_12" />
 
-        <View
-            android:layout_width="@dimen/text_0.5"
-            android:layout_height="23dp"
-            android:layout_gravity="center_vertical"
-            android:background="@color/color_36"></View>
+                </LinearLayout>
 
-        <RelativeLayout
-            android:layout_width="0dp"
+            </RelativeLayout>
+
+            <View
+                android:layout_width="@dimen/text_0.5"
+                android:layout_height="23dp"
+                android:layout_gravity="center_vertical"
+                android:background="@color/color_36"></View>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_correct"
+                        android:textColor="@color/color_35"
+                        android:textSize="@dimen/text_12" />
+
+                    <TextView
+                        android:id="@+id/tv_right_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_toRightOf="@+id/iv_group_bg"
+                        android:text="10%"
+                        android:textColor="@color/login_text"
+                        android:textSize="@dimen/text_12" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_strategy"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center">
+            android:layout_marginLeft="@dimen/text_15"
+            android:layout_marginTop="@dimen/text_5"
+            android:text="有答题攻略"
+            android:textColor="@color/login_text"
+            android:textSize="@dimen/text_11" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/home_correct"
-                    android:textColor="@color/color_35"
-                    android:textSize="@dimen/text_12" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_toRightOf="@+id/iv_group_bg"
-                    android:text="10%"
-                    android:textColor="@color/login_text"
-                    android:textSize="@dimen/text_12" />
-
-            </LinearLayout>
-
-        </RelativeLayout>
-
+        <TextView
+            android:id="@+id/tv_reduce_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_15"
+            android:layout_marginTop="@dimen/text_5"
+            android:text="不消耗答题次数"
+            android:textColor="@color/color_4"
+            android:textSize="@dimen/text_10" />
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_strategy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_info"
-        android:layout_marginLeft="@dimen/text_15"
-        android:layout_marginTop="@dimen/text_5"
-        android:layout_toRightOf="@+id/iv_group_bg"
-        android:text="有答题攻略"
-        android:textColor="@color/login_text"
-        android:textSize="@dimen/text_11" />
-
-    <TextView
-        android:id="@+id/tv_reduce_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_strategy"
-        android:layout_marginLeft="@dimen/text_15"
-        android:layout_marginTop="@dimen/text_5"
-        android:layout_toRightOf="@+id/iv_group_bg"
-        android:text="不消耗答题次数"
-        android:textColor="@color/color_4"
-        android:textSize="@dimen/text_10" />
 
     <ImageView
         android:id="@+id/iv_recommend"

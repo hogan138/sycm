@@ -29,7 +29,6 @@ public class HotGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Context mContext;
     //题组分类集合
     private List<GroupBean> groupBeans;
-//    private LayoutInflater inflater;
 
     public static final int ONE_ITEM = 1;
     public static final int TWO_ITEM = 2;
@@ -37,7 +36,6 @@ public class HotGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public HotGroupAdapter(List<GroupBean> groupBeans, Context mContext) {
         this.groupBeans = groupBeans;
         this.mContext = mContext;
-//        inflater = LayoutInflater.from(mContext);
         notifyDataSetChanged();
     }
 
@@ -77,6 +75,18 @@ public class HotGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (holder instanceof MyViewHolder) {
             ((MyViewHolder) holder).tvGroupTitle.setText(groupBean.getName() + "");
             ImageLoaderManager.LoadImage(mContext, groupBean.getPicture(), ((MyViewHolder) holder).ivGroupBg, R.mipmap.zw01);
+            if (0 == groupBean.getOpportunity()) {
+                ((MyViewHolder) holder).tvReduceNumber.setVisibility(View.VISIBLE);
+                ((MyViewHolder) holder).tvReduceNumber.setText("不消耗答题次数");
+            } else {
+                ((MyViewHolder) holder).tvReduceNumber.setVisibility(View.GONE);
+            }
+            if (groupBean.getGuideId() != 0) {
+                ((MyViewHolder) holder).tvStrategy.setVisibility(View.VISIBLE);
+                ((MyViewHolder) holder).tvStrategy.setText("有答题攻略");
+            } else {
+                ((MyViewHolder) holder).tvStrategy.setVisibility(View.GONE);
+            }
             /**
              * 同时不为null才可以点击
              */
@@ -93,6 +103,18 @@ public class HotGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else {
             ((MyViewHolder1) holder).tvGroupTitle.setText(groupBean.getName() + "");
             ImageLoaderManager.LoadImage(mContext, groupBean.getPicture(), ((MyViewHolder1) holder).ivGroupBg, R.mipmap.zw01);
+            if (0 == groupBean.getOpportunity()) {
+                ((MyViewHolder1) holder).tvReduceNumber.setVisibility(View.VISIBLE);
+                ((MyViewHolder1) holder).tvReduceNumber.setText("不消耗答题次数");
+            } else {
+                ((MyViewHolder1) holder).tvReduceNumber.setVisibility(View.GONE);
+            }
+            if (groupBean.getGuideId() != 0) {
+                ((MyViewHolder1) holder).tvStrategy.setVisibility(View.VISIBLE);
+                ((MyViewHolder1) holder).tvStrategy.setText("有答题攻略");
+            } else {
+                ((MyViewHolder1) holder).tvStrategy.setVisibility(View.GONE);
+            }
             /**
              * 同时不为null才可以点击
              */
@@ -121,6 +143,16 @@ public class HotGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         TextView tvGroupTitle;//题组标题
         @BindView(R.id.rl_item)
         RelativeLayout rlItem;
+        @BindView(R.id.tv_score)
+        TextView tvScore;
+        @BindView(R.id.tv_cash)
+        TextView tvCash;
+        @BindView(R.id.tv_right_number)
+        TextView tvRightNumber;
+        @BindView(R.id.tv_strategy)
+        TextView tvStrategy;
+        @BindView(R.id.tv_reduce_number)
+        TextView tvReduceNumber;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -137,6 +169,16 @@ public class HotGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         TextView tvGroupTitle;//题组标题
         @BindView(R.id.rl_item)
         RelativeLayout rlItem;
+        @BindView(R.id.tv_strategy)
+        TextView tvStrategy;
+        @BindView(R.id.tv_reduce_number)
+        TextView tvReduceNumber;
+        @BindView(R.id.tv_score)
+        TextView tvScore;
+        @BindView(R.id.tv_cash)
+        TextView tvCash;
+        @BindView(R.id.tv_right_number)
+        TextView tvRightNumber;
 
         public MyViewHolder1(View itemView) {
             super(itemView);

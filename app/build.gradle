@@ -19,8 +19,8 @@ android {
         applicationId "com.shuyun.qapp"
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 30020
-        versionName "3.2"
+        versionCode 30021
+        versionName "3.2.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         // Enabling multidex support.
