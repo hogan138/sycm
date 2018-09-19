@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.support.animation.SpringAnimation;
 import android.support.animation.SpringForce;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -47,6 +48,7 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.GroupTreeAdapter;
 import com.shuyun.qapp.adapter.HotGroupAdapter;
+import com.shuyun.qapp.adapter.MarkBannerAdapter;
 import com.shuyun.qapp.adapter.RecommendGroupAdapter;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.BannerBean;
@@ -58,6 +60,7 @@ import com.shuyun.qapp.bean.GroupBean;
 import com.shuyun.qapp.bean.GroupClassifyBean;
 import com.shuyun.qapp.bean.HomeGroupsBean;
 import com.shuyun.qapp.bean.InviteBean;
+import com.shuyun.qapp.bean.MarkBannerItem;
 import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.bean.SystemInfo;
 import com.shuyun.qapp.net.ApiService;
@@ -101,6 +104,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import cn.bingoogolapple.bgabanner.transformer.DepthPageTransformer;
 import cn.kevin.banner.BannerAdapter;
 import cn.kevin.banner.BannerViewPager;
 import cn.kevin.banner.IBannerItem;
@@ -406,6 +410,14 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                                     }
                                     adapter.setData(getContext(), list);
                                     mBannerView.setBannerAdapter(adapter);
+
+                                    //设置index 在viewpager下面
+                                    ViewPager mViewpager = (ViewPager)mBannerView.getChildAt(0);
+                                    //为ViewPager设置高度
+                                    ViewGroup.LayoutParams params = mViewpager.getLayoutParams();
+                                    params.height = getResources().getDimensionPixelSize(R.dimen.viewPager_01);
+                                    mViewpager.setLayoutParams(params);
+
                                     mBannerView.setBannerItemClick(new BannerViewPager.OnBannerItemClick<IBannerItem>() {
                                         @Override
                                         public void onClick(IBannerItem data) {
@@ -443,13 +455,23 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                                     mBannerView.setPageTransformer(true, new YZoomTransFormer(.8f));
 
                                     //常答题组
-                                    BannerAdapter adapter1 = new BannerAdapter(new GlideImageLoader());
+                                    MarkBannerAdapter adapter1 = new MarkBannerAdapter(new GlideImageLoader());
                                     List<IBannerItem> list1 = new ArrayList<>();
                                     for (int i = 0; i < bannerData.size(); i++) {
-                                        list1.add(new BannerItem(bannerData.get(i).getPicture()));
+                                        MarkBannerItem item = new MarkBannerItem(bannerData.get(i).getPicture());
+                                        item.setMarkLabel("西湖旅游");
+                                        list1.add(item);
                                     }
                                     adapter1.setData(getContext(), list1);
                                     alwaysBanner.setBannerAdapter(adapter1);
+
+                                    //设置index 在viewpager下面
+                                    ViewPager mViewpager1 = (ViewPager)alwaysBanner.getChildAt(0);
+                                    //为ViewPager设置高度
+                                    params = mViewpager1.getLayoutParams();
+                                    params.height = getResources().getDimensionPixelSize(R.dimen.viewPager_01);
+                                    mViewpager1.setLayoutParams(params);
+
                                     alwaysBanner.setBannerItemClick(new BannerViewPager.OnBannerItemClick<IBannerItem>() {
                                         @Override
                                         public void onClick(IBannerItem data) {
@@ -484,8 +506,6 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                                             }
                                         }
                                     });
-                                    alwaysBanner.setPageTransformer(true, new YZoomTransFormer(.8f));
-
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();

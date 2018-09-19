@@ -60,4 +60,5 @@
     <color name="translucent_white">#61FFFFFF</color>
     <color name="home_line">#FBFBFB</color>
     <color name="home_text_bottom">#DEDEDE</color>
+    <color name="against_name">#0096E9</color>
 </resources>

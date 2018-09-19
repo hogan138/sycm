@@ -1,37 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context="com.shuyun.qapp.ui.answer.AnswerActivity">
+    android:background="@color/white">
 
     <include layout="@layout/common_left_title" />
-
 
     <LinearLayout
         android:id="@+id/ll_exam_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/common_item_height"
-        android:background="@mipmap/tmbg"
+        android:layout_marginTop="175dp"
         android:orientation="vertical">
 
         <RelativeLayout
             android:id="@+id/rl"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/text_52"
             android:layout_weight="1">
 
             <LinearLayout
                 android:id="@+id/ll_question_options"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="100dp"
                 android:layout_marginLeft="@dimen/text_23"
                 android:layout_marginRight="@dimen/text_23"
-                android:layout_marginTop="@dimen/text_18"
                 android:background="@mipmap/bj"
                 android:orientation="vertical">
 
@@ -42,15 +37,14 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginLeft="@dimen/text_15"
                     android:layout_marginRight="@dimen/text_15"
-                    android:layout_marginTop="@dimen/text_52"
                     android:gravity="center"
-                    android:textColor="@color/color_17"
+                    android:textColor="@color/against_name"
                     android:textSize="@dimen/text_18" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp">
+                    android:layout_marginTop="18dp">
 
                     <RadioButton
                         android:id="@+id/btn_answer1"
@@ -58,11 +52,11 @@
                         android:layout_height="@dimen/text_42"
                         android:layout_marginLeft="55dp"
                         android:layout_marginRight="55dp"
-                        android:paddingLeft="@dimen/text_36"
-                        android:paddingRight="@dimen/text_36"
                         android:background="@drawable/radiobutton_select2"
                         android:button="@null"
                         android:gravity="center"
+                        android:paddingLeft="@dimen/text_36"
+                        android:paddingRight="@dimen/text_36"
                         android:textColor="@color/radio_button_text_selector"
                         android:textSize="@dimen/text_18" />
 
@@ -75,15 +69,6 @@
                         android:src="@mipmap/btn_logo_success"
                         android:visibility="gone" />
 
-                    <ImageView
-                        android:id="@+id/btn1_right_iv"
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="70dp"
-                        android:src="@mipmap/btn_logo_success"
-                        android:visibility="gone" />
                 </RelativeLayout>
 
                 <View
@@ -101,11 +86,11 @@
                         android:layout_height="@dimen/text_42"
                         android:layout_marginLeft="55dp"
                         android:layout_marginRight="55dp"
-                        android:paddingLeft="@dimen/text_36"
-                        android:paddingRight="@dimen/text_36"
                         android:background="@drawable/radiobutton_select2"
                         android:button="@null"
                         android:gravity="center"
+                        android:paddingLeft="@dimen/text_36"
+                        android:paddingRight="@dimen/text_36"
                         android:textColor="@color/radio_button_text_selector"
                         android:textSize="@dimen/text_18" />
 
@@ -118,15 +103,6 @@
                         android:src="@mipmap/btn_logo_success"
                         android:visibility="gone" />
 
-                    <ImageView
-                        android:id="@+id/btn2_right_iv"
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="70dp"
-                        android:src="@mipmap/btn_logo_success"
-                        android:visibility="gone" />
                 </RelativeLayout>
 
                 <View
@@ -144,11 +120,11 @@
                         android:layout_height="@dimen/text_42"
                         android:layout_marginLeft="55dp"
                         android:layout_marginRight="55dp"
-                        android:paddingLeft="@dimen/text_36"
-                        android:paddingRight="@dimen/text_36"
                         android:background="@drawable/radiobutton_select2"
                         android:button="@null"
                         android:gravity="center"
+                        android:paddingLeft="@dimen/text_36"
+                        android:paddingRight="@dimen/text_36"
                         android:textColor="@color/radio_button_text_selector"
                         android:textSize="@dimen/text_18" />
 
@@ -161,15 +137,6 @@
                         android:src="@mipmap/btn_logo_success"
                         android:visibility="gone" />
 
-                    <ImageView
-                        android:id="@+id/btn3_right_iv"
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="70dp"
-                        android:src="@mipmap/btn_logo_success"
-                        android:visibility="gone" />
                 </RelativeLayout>
 
                 <View
@@ -188,11 +155,11 @@
                         android:layout_height="@dimen/text_42"
                         android:layout_marginLeft="55dp"
                         android:layout_marginRight="55dp"
-                        android:paddingLeft="@dimen/text_36"
-                        android:paddingRight="@dimen/text_36"
                         android:background="@drawable/radiobutton_select2"
                         android:button="@null"
                         android:gravity="center"
+                        android:paddingLeft="@dimen/text_36"
+                        android:paddingRight="@dimen/text_36"
                         android:textColor="@color/radio_button_text_selector"
                         android:textSize="@dimen/text_18" />
 
@@ -205,58 +172,11 @@
                         android:src="@mipmap/btn_logo_success"
                         android:visibility="gone" />
 
-                    <ImageView
-                        android:id="@+id/btn4_right_iv"
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="70dp"
-                        android:src="@mipmap/btn_logo_success"
-                        android:visibility="gone" />
                 </RelativeLayout>
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_countdown"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:background="@mipmap/daojishi"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_21" />
-
-            <com.shuyun.qapp.view.CircleProgressView
-                android:id="@+id/circle_view"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_centerHorizontal="true"
-                app:progress_paint_color="@color/white"
-                app:progress_paint_width="6dp" />
-
         </RelativeLayout>
 
-
-        <TextView
-            android:id="@+id/tv_page_end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/text_5"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_11" />
-
-        <ProgressBar
-            android:id="@+id/pb_progress"
-            style="@style/MyProgress"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/text_12"
-            android:layout_marginBottom="@dimen/text_25"
-            android:layout_marginLeft="@dimen/text_23"
-            android:layout_marginRight="@dimen/text_23"
-            android:layout_marginTop="@dimen/text_8"
-            android:max="100" />
     </LinearLayout>
 
     <RelativeLayout
@@ -308,16 +228,18 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_marginLeft="@dimen/text_15"
-        android:layout_marginTop="55dp">
+        android:layout_width="137dp"
+        android:layout_height="45dp"
+        android:layout_marginLeft="@dimen/text_28"
+        android:layout_marginTop="114dp"
+        android:background="@mipmap/huisebanyuan">
 
         <com.shuyun.qapp.view.CircleImageView
             android:id="@+id/iv_head_mine"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_centerVertical="true"
+            android:layout_margin="@dimen/text_2"
             android:src="@mipmap/icon_boy" />
 
         <RelativeLayout
@@ -330,20 +252,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginRight="@dimen/text_4"
-                android:layout_marginTop="@dimen/text_8"
-                android:text=""
+                android:layout_marginTop="@dimen/text_4"
                 android:textColor="@color/white"
-                android:textSize="13dp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/tv_mine_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_mine_phone"
-                android:layout_centerHorizontal="true"
                 android:text="0"
-                android:textColor="#F8E71C"
+                android:textColor="@color/white"
                 android:textSize="@dimen/text_20" />
 
         </RelativeLayout>
@@ -351,11 +270,12 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
+        android:layout_width="137dp"
+        android:layout_height="45dp"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/text_15"
-        android:layout_marginTop="55dp">
+        android:layout_marginRight="@dimen/text_28"
+        android:layout_marginTop="114dp"
+        android:background="@mipmap/huisebanyuan1">
 
         <com.shuyun.qapp.view.CircleImageView
             android:id="@+id/iv_head_it"
@@ -363,37 +283,95 @@
             android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_margin="@dimen/text_2"
             android:src="@mipmap/icon_boy" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/text_4"
             android:layout_toLeftOf="@+id/iv_head_it">
 
             <TextView
                 android:id="@+id/tv_it_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginRight="@dimen/text_4"
-                android:layout_marginTop="@dimen/text_8"
-                android:text=""
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/text_2"
                 android:textColor="@color/white"
-                android:textSize="13dp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/tv_it_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_below="@+id/tv_it_phone"
-                android:layout_centerHorizontal="true"
                 android:text="0"
-                android:textColor="#F8E71C"
+                android:textColor="@color/white"
                 android:textSize="@dimen/text_20" />
 
         </RelativeLayout>
 
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/text_15"
+        android:layout_marginRight="@dimen/text_15"
+        android:layout_marginTop="60dp">
+
+        <ProgressBar
+            android:id="@+id/pb_progress"
+            style="@style/MyProgress"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/text_12"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="52dp"
+            android:max="100" />
+
+        <TextView
+            android:id="@+id/tv_page_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/text_14"
+            android:textColor="@color/color_1"
+            android:textSize="@dimen/text_11" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="110dp">
+
+        <TextView
+            android:id="@+id/tv_countdown"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_centerHorizontal="true"
+            android:background="@mipmap/daojishi"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_21" />
+
+        <com.shuyun.qapp.view.CircleProgressView
+            android:id="@+id/circle_view"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_centerHorizontal="true"
+            app:progress_paint_color="@color/white"
+            app:progress_paint_width="6dp" />
 
     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/iv_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="95dp"
+        android:layout_alignParentBottom="true"
+        android:background="@mipmap/answer_bottom" />
 
 </RelativeLayout>

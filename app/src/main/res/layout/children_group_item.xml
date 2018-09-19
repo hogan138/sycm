@@ -28,6 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="13dp"
+            android:layout_marginRight="@dimen/text_13"
             android:layout_marginTop="@dimen/text_10"
             android:orientation="vertical">
 

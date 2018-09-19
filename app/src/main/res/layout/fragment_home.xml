@@ -177,7 +177,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
-                android:background="@color/home_line"></View>
+                android:background="@color/home_line" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -212,10 +212,10 @@
                 <cn.kevin.banner.BannerViewPager
                     android:id="@+id/always_banner"
                     android:layout_width="match_parent"
-                    android:layout_height="132dp"
+                    android:layout_height="@dimen/B_viewPager_02"
                     android:layout_margin="@dimen/text_10"
                     app:around_visible="true"
-                    app:item_margin="11dp"
+                    app:item_margin="12dp"
                     app:marginLeft="36dp"
                     app:marginRight="36dp"
                     app:point_drawable="@drawable/banner_selector"

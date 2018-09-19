@@ -148,6 +148,6 @@ dependencies {
     //进度条
     implementation 'com.dyhdyh.loadingbar:loadingbar:1.4.4'
 
-    //广告轮播
+    //广告轮播 https://github.com/kevin-mob/banner
     implementation 'cn.kevin:bannerview:1.0.8'
 }

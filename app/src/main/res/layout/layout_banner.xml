@@ -9,7 +9,7 @@
     <cn.kevin.banner.BannerViewPager
         android:id="@+id/banner"
         android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_height="@dimen/B_viewPager_01"
         app:around_visible="true"
         app:item_margin="5dp"
         app:marginLeft="20dp"

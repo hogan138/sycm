@@ -83,7 +83,6 @@ public class AgainstActivity extends BaseActivity {
     ProgressBar pbProgress;
     @BindView(R.id.tv_page_end)
     TextView tvPageEnd;//第几题,共有多少题
-    private static final String TAG = "AgainstActivity";
     @BindView(R.id.tv_question)
     TextView tvQuestion;//题目
     @BindView(R.id.tv_countdown)
@@ -112,23 +111,15 @@ public class AgainstActivity extends BaseActivity {
     TextView tvItScore;
     @BindView(R.id.btn1_left_iv)
     ImageView btn1LeftIv;
-    @BindView(R.id.btn1_right_iv)
-    ImageView btn1RightIv;
     @BindView(R.id.btn2_left_iv)
     ImageView btn2LeftIv;
-    @BindView(R.id.btn2_right_iv)
-    ImageView btn2RightIv;
     @BindView(R.id.btn3_left_iv)
     ImageView btn3LeftIv;
-    @BindView(R.id.btn3_right_iv)
-    ImageView btn3RightIv;
     @BindView(R.id.btn4_left_iv)
     ImageView btn4LeftIv;
-    @BindView(R.id.btn4_right_iv)
-    ImageView btn4RightIv;
     @BindView(R.id.ll_question_options)
     LinearLayout llQuestionOptions;
-
+    private static final String TAG = "AgainstActivity";
     /**
      * 申请答题返回数据
      */
@@ -149,9 +140,6 @@ public class AgainstActivity extends BaseActivity {
      * 题目数量
      */
     private int answerNum;
-    /**
-     * 是否回答过某一题,回答过了值为true,没回答值为false
-     */
     /**
      * 当前正在回答的题目对象
      */
@@ -551,44 +539,44 @@ public class AgainstActivity extends BaseActivity {
 
             //显示机器人选项
             if (answer.equals("0")) {
-                btn1RightIv.setVisibility(View.VISIBLE);
+                btn1LeftIv.setVisibility(View.VISIBLE);
                 btnAnswer1.setTextColor(Color.parseColor("#ffffff"));
                 if (answerId.equals(oks)) {
                     btnAnswer1.setBackgroundResource(R.drawable.rbtn_bg_1);
-                    btn1RightIv.setImageResource(R.mipmap.btn_logo_success);
+                    btn1LeftIv.setImageResource(R.mipmap.btn_logo_success);
                 } else {
                     btnAnswer1.setBackgroundResource(R.drawable.rbtn_bg_2);
-                    btn1RightIv.setImageResource(R.mipmap.btn_logo_fail);
+                    btn1LeftIv.setImageResource(R.mipmap.btn_logo_fail);
                 }
             } else if (answer.equals("1")) {
-                btn2RightIv.setVisibility(View.VISIBLE);
+                btn2LeftIv.setVisibility(View.VISIBLE);
                 btnAnswer2.setTextColor(Color.parseColor("#ffffff"));
                 if (answerId.equals(oks)) {
                     btnAnswer2.setBackgroundResource(R.drawable.rbtn_bg_1);
-                    btn2RightIv.setImageResource(R.mipmap.btn_logo_success);
+                    btn2LeftIv.setImageResource(R.mipmap.btn_logo_success);
                 } else {
                     btnAnswer2.setBackgroundResource(R.drawable.rbtn_bg_2);
-                    btn2RightIv.setImageResource(R.mipmap.btn_logo_fail);
+                    btn2LeftIv.setImageResource(R.mipmap.btn_logo_fail);
                 }
             } else if (answer.equals("2")) {
-                btn3RightIv.setVisibility(View.VISIBLE);
+                btn3LeftIv.setVisibility(View.VISIBLE);
                 btnAnswer3.setTextColor(Color.parseColor("#ffffff"));
                 if (answerId.equals(oks)) {
                     btnAnswer3.setBackgroundResource(R.drawable.rbtn_bg_1);
-                    btn3RightIv.setImageResource(R.mipmap.btn_logo_success);
+                    btn3LeftIv.setImageResource(R.mipmap.btn_logo_success);
                 } else {
                     btnAnswer3.setBackgroundResource(R.drawable.rbtn_bg_2);
-                    btn3RightIv.setImageResource(R.mipmap.btn_logo_fail);
+                    btn3LeftIv.setImageResource(R.mipmap.btn_logo_fail);
                 }
             } else if (answer.equals("3")) {
-                btn4RightIv.setVisibility(View.VISIBLE);
+                btn4LeftIv.setVisibility(View.VISIBLE);
                 btnAnswer4.setTextColor(Color.parseColor("#ffffff"));
                 if (answerId.equals(oks)) {
                     btnAnswer4.setBackgroundResource(R.drawable.rbtn_bg_1);
-                    btn4RightIv.setImageResource(R.mipmap.btn_logo_success);
+                    btn4LeftIv.setImageResource(R.mipmap.btn_logo_success);
                 } else {
                     btnAnswer4.setBackgroundResource(R.drawable.rbtn_bg_2);
-                    btn4RightIv.setImageResource(R.mipmap.btn_logo_fail);
+                    btn4LeftIv.setImageResource(R.mipmap.btn_logo_fail);
                 }
             }
 
@@ -684,7 +672,7 @@ public class AgainstActivity extends BaseActivity {
                 getRobotAgainst(robotInputAgainstBean);
 
             } else if (position == questionsBeans.size()) {
-
+                //判题
                 questionId = questionsBeans.get(position - 1).getId();
 
                 last = 1;
@@ -764,10 +752,6 @@ public class AgainstActivity extends BaseActivity {
         btn2LeftIv.setVisibility(View.GONE);
         btn3LeftIv.setVisibility(View.GONE);
         btn4LeftIv.setVisibility(View.GONE);
-        btn1RightIv.setVisibility(View.GONE);
-        btn2RightIv.setVisibility(View.GONE);
-        btn3RightIv.setVisibility(View.GONE);
-        btn4RightIv.setVisibility(View.GONE);
     }
 
     //答题倒计时进度条
@@ -885,43 +869,43 @@ public class AgainstActivity extends BaseActivity {
 
                                 //显示机器人选项
                                 if (answer.equals("0")) {
-                                    btn1RightIv.setVisibility(View.VISIBLE);
+                                    btn1LeftIv.setVisibility(View.VISIBLE);
                                     if (user_checked == 1) {
-                                        btn1RightIv.setImageResource(R.mipmap.btn_logo_success);
+                                        btn1LeftIv.setImageResource(R.mipmap.btn_logo_success);
                                     } else {
-                                        btn1RightIv.setImageResource(R.mipmap.btn_logo_fail);
+                                        btn1LeftIv.setImageResource(R.mipmap.btn_logo_fail);
                                     }
                                 } else if (answer.equals("1")) {
-                                    btn2RightIv.setVisibility(View.VISIBLE);
+                                    btn2LeftIv.setVisibility(View.VISIBLE);
                                     btnAnswer2.setTextColor(Color.parseColor("#ffffff"));
                                     if (answerId.equals(oks) && user_checked == 2) {
                                         btnAnswer2.setBackgroundResource(R.drawable.rbtn_bg_1);
-                                        btn2RightIv.setImageResource(R.mipmap.btn_logo_success);
+                                        btn2LeftIv.setImageResource(R.mipmap.btn_logo_success);
                                     } else {
                                         btnAnswer2.setBackgroundResource(R.drawable.rbtn_bg_2);
-                                        btn2RightIv.setImageResource(R.mipmap.btn_logo_fail);
+                                        btn2LeftIv.setImageResource(R.mipmap.btn_logo_fail);
                                     }
 
                                 } else if (answer.equals("2")) {
-                                    btn3RightIv.setVisibility(View.VISIBLE);
+                                    btn3LeftIv.setVisibility(View.VISIBLE);
                                     btnAnswer3.setTextColor(Color.parseColor("#ffffff"));
                                     if (answerId.equals(oks) && user_checked == 2) {
                                         btnAnswer3.setBackgroundResource(R.drawable.rbtn_bg_1);
-                                        btn3RightIv.setImageResource(R.mipmap.btn_logo_success);
+                                        btn3LeftIv.setImageResource(R.mipmap.btn_logo_success);
                                     } else {
                                         btnAnswer3.setBackgroundResource(R.drawable.rbtn_bg_2);
-                                        btn3RightIv.setImageResource(R.mipmap.btn_logo_fail);
+                                        btn3LeftIv.setImageResource(R.mipmap.btn_logo_fail);
                                     }
 
                                 } else if (answer.equals("3")) {
-                                    btn4RightIv.setVisibility(View.VISIBLE);
+                                    btn4LeftIv.setVisibility(View.VISIBLE);
                                     btnAnswer4.setTextColor(Color.parseColor("#ffffff"));
                                     if (answerId.equals(oks) && user_checked == 2) {
                                         btnAnswer4.setBackgroundResource(R.drawable.rbtn_bg_1);
-                                        btn4RightIv.setImageResource(R.mipmap.btn_logo_success);
+                                        btn4LeftIv.setImageResource(R.mipmap.btn_logo_success);
                                     } else {
                                         btnAnswer4.setBackgroundResource(R.drawable.rbtn_bg_2);
-                                        btn4RightIv.setImageResource(R.mipmap.btn_logo_fail);
+                                        btn4LeftIv.setImageResource(R.mipmap.btn_logo_fail);
                                     }
                                 }
 
@@ -1027,43 +1011,43 @@ public class AgainstActivity extends BaseActivity {
 
                                 //显示机器人选项
                                 if (answer.equals("0")) {
-                                    btn1RightIv.setVisibility(View.VISIBLE);
+                                    btn1LeftIv.setVisibility(View.VISIBLE);
                                     btnAnswer1.setTextColor(Color.parseColor("#ffffff"));
                                     if (answerId.equals(oks) && user_checked == 2) {
                                         btnAnswer1.setBackgroundResource(R.drawable.rbtn_bg_1);
-                                        btn1RightIv.setImageResource(R.mipmap.btn_logo_success);
+                                        btn1LeftIv.setImageResource(R.mipmap.btn_logo_success);
                                     } else {
                                         btnAnswer1.setBackgroundResource(R.drawable.rbtn_bg_2);
-                                        btn1RightIv.setImageResource(R.mipmap.btn_logo_fail);
+                                        btn1LeftIv.setImageResource(R.mipmap.btn_logo_fail);
                                     }
                                 } else if (answer.equals("1")) {
-                                    btn2RightIv.setVisibility(View.VISIBLE);
+                                    btn2LeftIv.setVisibility(View.VISIBLE);
                                     if (user_checked == 1) {
-                                        btn2RightIv.setImageResource(R.mipmap.btn_logo_success);
+                                        btn2LeftIv.setImageResource(R.mipmap.btn_logo_success);
                                     } else {
-                                        btn2RightIv.setImageResource(R.mipmap.btn_logo_fail);
+                                        btn2LeftIv.setImageResource(R.mipmap.btn_logo_fail);
                                     }
 
                                 } else if (answer.equals("2")) {
-                                    btn3RightIv.setVisibility(View.VISIBLE);
+                                    btn3LeftIv.setVisibility(View.VISIBLE);
                                     btnAnswer3.setTextColor(Color.parseColor("#ffffff"));
                                     if (answerId.equals(oks) && user_checked == 2) {
                                         btnAnswer3.setBackgroundResource(R.drawable.rbtn_bg_1);
-                                        btn3RightIv.setImageResource(R.mipmap.btn_logo_success);
+                                        btn3LeftIv.setImageResource(R.mipmap.btn_logo_success);
                                     } else {
                                         btnAnswer3.setBackgroundResource(R.drawable.rbtn_bg_2);
-                                        btn3RightIv.setImageResource(R.mipmap.btn_logo_fail);
+                                        btn3LeftIv.setImageResource(R.mipmap.btn_logo_fail);
                                     }
 
                                 } else if (answer.equals("3")) {
-                                    btn4RightIv.setVisibility(View.VISIBLE);
+                                    btn4LeftIv.setVisibility(View.VISIBLE);
                                     btnAnswer4.setTextColor(Color.parseColor("#ffffff"));
                                     if (answerId.equals(oks) && user_checked == 2) {
                                         btnAnswer4.setBackgroundResource(R.drawable.rbtn_bg_1);
-                                        btn4RightIv.setImageResource(R.mipmap.btn_logo_success);
+                                        btn4LeftIv.setImageResource(R.mipmap.btn_logo_success);
                                     } else {
                                         btnAnswer4.setBackgroundResource(R.drawable.rbtn_bg_2);
-                                        btn4RightIv.setImageResource(R.mipmap.btn_logo_fail);
+                                        btn4LeftIv.setImageResource(R.mipmap.btn_logo_fail);
                                     }
                                 }
 
@@ -1170,43 +1154,43 @@ public class AgainstActivity extends BaseActivity {
 
                                 //显示机器人选项
                                 if (answer.equals("0")) {
-                                    btn1RightIv.setVisibility(View.VISIBLE);
+                                    btn1LeftIv.setVisibility(View.VISIBLE);
                                     btnAnswer1.setTextColor(Color.parseColor("#ffffff"));
                                     if (answerId.equals(oks) && user_checked == 2) {
                                         btnAnswer1.setBackgroundResource(R.drawable.rbtn_bg_1);
-                                        btn1RightIv.setImageResource(R.mipmap.btn_logo_success);
+                                        btn1LeftIv.setImageResource(R.mipmap.btn_logo_success);
                                     } else {
                                         btnAnswer1.setBackgroundResource(R.drawable.rbtn_bg_2);
-                                        btn1RightIv.setImageResource(R.mipmap.btn_logo_fail);
+                                        btn1LeftIv.setImageResource(R.mipmap.btn_logo_fail);
                                     }
                                 } else if (answer.equals("1")) {
-                                    btn2RightIv.setVisibility(View.VISIBLE);
+                                    btn2LeftIv.setVisibility(View.VISIBLE);
                                     btnAnswer2.setTextColor(Color.parseColor("#ffffff"));
                                     if (answerId.equals(oks) && user_checked == 2) {
                                         btnAnswer2.setBackgroundResource(R.drawable.rbtn_bg_1);
-                                        btn2RightIv.setImageResource(R.mipmap.btn_logo_success);
+                                        btn2LeftIv.setImageResource(R.mipmap.btn_logo_success);
                                     } else {
                                         btnAnswer2.setBackgroundResource(R.drawable.rbtn_bg_2);
-                                        btn2RightIv.setImageResource(R.mipmap.btn_logo_fail);
+                                        btn2LeftIv.setImageResource(R.mipmap.btn_logo_fail);
                                     }
 
                                 } else if (answer.equals("2")) {
-                                    btn3RightIv.setVisibility(View.VISIBLE);
+                                    btn3LeftIv.setVisibility(View.VISIBLE);
                                     if (user_checked == 1) {
-                                        btn3RightIv.setImageResource(R.mipmap.btn_logo_success);
+                                        btn3LeftIv.setImageResource(R.mipmap.btn_logo_success);
                                     } else {
-                                        btn3RightIv.setImageResource(R.mipmap.btn_logo_fail);
+                                        btn3LeftIv.setImageResource(R.mipmap.btn_logo_fail);
                                     }
 
                                 } else if (answer.equals("3")) {
-                                    btn4RightIv.setVisibility(View.VISIBLE);
+                                    btn4LeftIv.setVisibility(View.VISIBLE);
                                     btnAnswer4.setTextColor(Color.parseColor("#ffffff"));
                                     if (answerId.equals(oks) && user_checked == 2) {
                                         btnAnswer4.setBackgroundResource(R.drawable.rbtn_bg_1);
-                                        btn4RightIv.setImageResource(R.mipmap.btn_logo_success);
+                                        btn4LeftIv.setImageResource(R.mipmap.btn_logo_success);
                                     } else {
                                         btnAnswer4.setBackgroundResource(R.drawable.rbtn_bg_2);
-                                        btn4RightIv.setImageResource(R.mipmap.btn_logo_fail);
+                                        btn4LeftIv.setImageResource(R.mipmap.btn_logo_fail);
                                     }
                                 }
 
@@ -1311,41 +1295,41 @@ public class AgainstActivity extends BaseActivity {
 
                                 //显示机器人选项
                                 if (answer.equals("0")) {
-                                    btn1RightIv.setVisibility(View.VISIBLE);
+                                    btn1LeftIv.setVisibility(View.VISIBLE);
                                     btnAnswer1.setTextColor(Color.parseColor("#ffffff"));
                                     if (answerId.equals(oks) && user_checked == 2) {
                                         btnAnswer1.setBackgroundResource(R.drawable.rbtn_bg_1);
-                                        btn1RightIv.setImageResource(R.mipmap.btn_logo_success);
+                                        btn1LeftIv.setImageResource(R.mipmap.btn_logo_success);
                                     } else {
                                         btnAnswer1.setBackgroundResource(R.drawable.rbtn_bg_2);
-                                        btn1RightIv.setImageResource(R.mipmap.btn_logo_fail);
+                                        btn1LeftIv.setImageResource(R.mipmap.btn_logo_fail);
                                     }
                                 } else if (answer.equals("1")) {
-                                    btn2RightIv.setVisibility(View.VISIBLE);
+                                    btn2LeftIv.setVisibility(View.VISIBLE);
                                     btnAnswer2.setTextColor(Color.parseColor("#ffffff"));
                                     if (answerId.equals(oks) && user_checked == 2) {
                                         btnAnswer2.setBackgroundResource(R.drawable.rbtn_bg_1);
-                                        btn2RightIv.setImageResource(R.mipmap.btn_logo_success);
+                                        btn2LeftIv.setImageResource(R.mipmap.btn_logo_success);
                                     } else {
                                         btnAnswer2.setBackgroundResource(R.drawable.rbtn_bg_2);
-                                        btn2RightIv.setImageResource(R.mipmap.btn_logo_fail);
+                                        btn2LeftIv.setImageResource(R.mipmap.btn_logo_fail);
                                     }
                                 } else if (answer.equals("2")) {
-                                    btn3RightIv.setVisibility(View.VISIBLE);
+                                    btn3LeftIv.setVisibility(View.VISIBLE);
                                     btnAnswer3.setTextColor(Color.parseColor("#ffffff"));
                                     if (answerId.equals(oks) && user_checked == 2) {
                                         btnAnswer3.setBackgroundResource(R.drawable.rbtn_bg_1);
-                                        btn3RightIv.setImageResource(R.mipmap.btn_logo_success);
+                                        btn3LeftIv.setImageResource(R.mipmap.btn_logo_success);
                                     } else {
                                         btnAnswer3.setBackgroundResource(R.drawable.rbtn_bg_2);
-                                        btn3RightIv.setImageResource(R.mipmap.btn_logo_fail);
+                                        btn3LeftIv.setImageResource(R.mipmap.btn_logo_fail);
                                     }
                                 } else if (answer.equals("3")) {
-                                    btn4RightIv.setVisibility(View.VISIBLE);
+                                    btn4LeftIv.setVisibility(View.VISIBLE);
                                     if (user_checked == 1) {
-                                        btn4RightIv.setImageResource(R.mipmap.btn_logo_success);
+                                        btn4LeftIv.setImageResource(R.mipmap.btn_logo_success);
                                     } else {
-                                        btn4RightIv.setImageResource(R.mipmap.btn_logo_fail);
+                                        btn4LeftIv.setImageResource(R.mipmap.btn_logo_fail);
                                     }
                                 }
 
@@ -1435,44 +1419,44 @@ public class AgainstActivity extends BaseActivity {
 
                 //显示机器人选项
                 if (answer.equals("0")) {
-                    btn1RightIv.setVisibility(View.VISIBLE);
+                    btn1LeftIv.setVisibility(View.VISIBLE);
                     btnAnswer1.setTextColor(Color.parseColor("#ffffff"));
                     if (answerId.equals(oks)) {
                         btnAnswer1.setBackgroundResource(R.drawable.rbtn_bg_1);
-                        btn1RightIv.setImageResource(R.mipmap.btn_logo_success);
+                        btn1LeftIv.setImageResource(R.mipmap.btn_logo_success);
                     } else {
                         btnAnswer1.setBackgroundResource(R.drawable.rbtn_bg_2);
-                        btn1RightIv.setImageResource(R.mipmap.btn_logo_fail);
+                        btn1LeftIv.setImageResource(R.mipmap.btn_logo_fail);
                     }
                 } else if (answer.equals("1")) {
-                    btn2RightIv.setVisibility(View.VISIBLE);
+                    btn2LeftIv.setVisibility(View.VISIBLE);
                     btnAnswer2.setTextColor(Color.parseColor("#ffffff"));
                     if (answerId.equals(oks)) {
                         btnAnswer2.setBackgroundResource(R.drawable.rbtn_bg_1);
-                        btn2RightIv.setImageResource(R.mipmap.btn_logo_success);
+                        btn2LeftIv.setImageResource(R.mipmap.btn_logo_success);
                     } else {
                         btnAnswer2.setBackgroundResource(R.drawable.rbtn_bg_2);
-                        btn2RightIv.setImageResource(R.mipmap.btn_logo_fail);
+                        btn2LeftIv.setImageResource(R.mipmap.btn_logo_fail);
                     }
                 } else if (answer.equals("2")) {
-                    btn3RightIv.setVisibility(View.VISIBLE);
+                    btn3LeftIv.setVisibility(View.VISIBLE);
                     btnAnswer3.setTextColor(Color.parseColor("#ffffff"));
                     if (answerId.equals(oks)) {
                         btnAnswer3.setBackgroundResource(R.drawable.rbtn_bg_1);
-                        btn3RightIv.setImageResource(R.mipmap.btn_logo_success);
+                        btn3LeftIv.setImageResource(R.mipmap.btn_logo_success);
                     } else {
                         btnAnswer3.setBackgroundResource(R.drawable.rbtn_bg_2);
-                        btn3RightIv.setImageResource(R.mipmap.btn_logo_fail);
+                        btn3LeftIv.setImageResource(R.mipmap.btn_logo_fail);
                     }
                 } else if (answer.equals("3")) {
-                    btn4RightIv.setVisibility(View.VISIBLE);
+                    btn4LeftIv.setVisibility(View.VISIBLE);
                     btnAnswer4.setTextColor(Color.parseColor("#ffffff"));
                     if (answerId.equals(oks)) {
                         btnAnswer4.setBackgroundResource(R.drawable.rbtn_bg_1);
-                        btn4RightIv.setImageResource(R.mipmap.btn_logo_success);
+                        btn4LeftIv.setImageResource(R.mipmap.btn_logo_success);
                     } else {
                         btnAnswer4.setBackgroundResource(R.drawable.rbtn_bg_2);
-                        btn4RightIv.setImageResource(R.mipmap.btn_logo_fail);
+                        btn4LeftIv.setImageResource(R.mipmap.btn_logo_fail);
                     }
                 }
 
@@ -1532,7 +1516,7 @@ public class AgainstActivity extends BaseActivity {
 
                                 handler1.post(runnable);
 
-                                if (last == 1) {
+                                if (last == 1) {   //最后一题
 
                                     userScore = robotShowBean.getUserScore();
                                     robotScore = robotShowBean.getRobotScore();
@@ -1620,7 +1604,7 @@ public class AgainstActivity extends BaseActivity {
                                         removeSelect();
 
                                         //答题进度
-                                        tvPageEnd.setText("第" + (position + 1) + "题，共" + answerNum + "题");
+                                        tvPageEnd.setText((position + 1) + "/" + answerNum + "题");
 
                                         //答题进度条
                                         int progress = (int) (((position + 1) / (double) answerNum) * 100);
