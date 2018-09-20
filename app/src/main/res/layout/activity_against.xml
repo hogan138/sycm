@@ -7,18 +7,16 @@
 
     <include layout="@layout/common_left_title" />
 
-    <LinearLayout
-        android:id="@+id/ll_exam_image"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="175dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="175dp">
 
-        <RelativeLayout
-            android:id="@+id/rl"
+        <LinearLayout
+            android:id="@+id/ll_exam_image"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/ll_question_options"
@@ -35,6 +33,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="@dimen/text_18"
                     android:layout_marginLeft="@dimen/text_15"
                     android:layout_marginRight="@dimen/text_15"
                     android:gravity="center"
@@ -43,38 +42,45 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="18dp">
+                    android:layout_height="wrap_content">
 
                     <RadioButton
                         android:id="@+id/btn_answer1"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/text_42"
-                        android:layout_marginLeft="55dp"
-                        android:layout_marginRight="55dp"
-                        android:background="@drawable/radiobutton_select2"
-                        android:button="@null"
-                        android:gravity="center"
-                        android:paddingLeft="@dimen/text_36"
-                        android:paddingRight="@dimen/text_36"
-                        android:textColor="@color/radio_button_text_selector"
-                        android:textSize="@dimen/text_18" />
-
-                    <ImageView
-                        android:id="@+id/btn1_left_iv"
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
+                        android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="70dp"
-                        android:src="@mipmap/btn_logo_success"
-                        android:visibility="gone" />
+                        android:button="@null"
+                        android:paddingLeft="55dp"
+                        android:text="111111111111111"
+                        android:textColor="@color/color_35"
+                        android:textSize="@dimen/text_15" />
+
+                    <RelativeLayout
+                        android:layout_width="@dimen/text_40"
+                        android:layout_height="@dimen/text_40">
+
+                        <ImageView
+                            android:id="@+id/btn1_left_iv"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_centerVertical="true"
+                            android:src="@mipmap/huse" />
+
+                        <TextView
+                            android:id="@+id/tv_select_a"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="A"
+                            android:textColor="@color/select_normal" />
+                    </RelativeLayout>
+
 
                 </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
+                    android:layout_height="15dp" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -83,32 +89,39 @@
                     <RadioButton
                         android:id="@+id/btn_answer2"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/text_42"
-                        android:layout_marginLeft="55dp"
-                        android:layout_marginRight="55dp"
-                        android:background="@drawable/radiobutton_select2"
-                        android:button="@null"
-                        android:gravity="center"
-                        android:paddingLeft="@dimen/text_36"
-                        android:paddingRight="@dimen/text_36"
-                        android:textColor="@color/radio_button_text_selector"
-                        android:textSize="@dimen/text_18" />
-
-                    <ImageView
-                        android:id="@+id/btn2_left_iv"
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
+                        android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="70dp"
-                        android:src="@mipmap/btn_logo_success"
-                        android:visibility="gone" />
+                        android:button="@null"
+                        android:paddingLeft="55dp"
+                        android:text="222222222222"
+                        android:textColor="@color/color_35"
+                        android:textSize="@dimen/text_15" />
+
+                    <RelativeLayout
+                        android:layout_width="@dimen/text_40"
+                        android:layout_height="@dimen/text_40">
+
+                        <ImageView
+                            android:id="@+id/btn2_left_iv"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_centerVertical="true"
+                            android:src="@mipmap/huse" />
+
+                        <TextView
+                            android:id="@+id/tv_select_b"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="B"
+                            android:textColor="@color/select_normal" />
+                    </RelativeLayout>
 
                 </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
+                    android:layout_height="15dp" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -117,32 +130,39 @@
                     <RadioButton
                         android:id="@+id/btn_answer3"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/text_42"
-                        android:layout_marginLeft="55dp"
-                        android:layout_marginRight="55dp"
-                        android:background="@drawable/radiobutton_select2"
-                        android:button="@null"
-                        android:gravity="center"
-                        android:paddingLeft="@dimen/text_36"
-                        android:paddingRight="@dimen/text_36"
-                        android:textColor="@color/radio_button_text_selector"
-                        android:textSize="@dimen/text_18" />
-
-                    <ImageView
-                        android:id="@+id/btn3_left_iv"
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
+                        android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="70dp"
-                        android:src="@mipmap/btn_logo_success"
-                        android:visibility="gone" />
+                        android:button="@null"
+                        android:paddingLeft="55dp"
+                        android:text="3333333333"
+                        android:textColor="@color/color_35"
+                        android:textSize="@dimen/text_15" />
+
+                    <RelativeLayout
+                        android:layout_width="@dimen/text_40"
+                        android:layout_height="@dimen/text_40">
+
+                        <ImageView
+                            android:id="@+id/btn3_left_iv"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_centerVertical="true"
+                            android:src="@mipmap/huse" />
+
+                        <TextView
+                            android:id="@+id/tv_select_c"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="C"
+                            android:textColor="@color/select_normal" />
+                    </RelativeLayout>
 
                 </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
+                    android:layout_height="15dp" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -152,40 +172,49 @@
                     <RadioButton
                         android:id="@+id/btn_answer4"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/text_42"
-                        android:layout_marginLeft="55dp"
-                        android:layout_marginRight="55dp"
-                        android:background="@drawable/radiobutton_select2"
-                        android:button="@null"
-                        android:gravity="center"
-                        android:paddingLeft="@dimen/text_36"
-                        android:paddingRight="@dimen/text_36"
-                        android:textColor="@color/radio_button_text_selector"
-                        android:textSize="@dimen/text_18" />
-
-                    <ImageView
-                        android:id="@+id/btn4_left_iv"
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
+                        android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="70dp"
-                        android:src="@mipmap/btn_logo_success"
-                        android:visibility="gone" />
+                        android:button="@null"
+                        android:paddingLeft="55dp"
+                        android:text="4444444444444"
+                        android:textColor="@color/color_35"
+                        android:textSize="@dimen/text_15" />
+
+                    <RelativeLayout
+                        android:layout_width="@dimen/text_40"
+                        android:layout_height="@dimen/text_40">
+
+                        <ImageView
+                            android:id="@+id/btn4_left_iv"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_centerVertical="true"
+                            android:src="@mipmap/huse" />
+
+                        <TextView
+                            android:id="@+id/tv_select_d"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="D"
+                            android:textColor="@color/select_normal" />
+                    </RelativeLayout>
 
                 </RelativeLayout>
             </LinearLayout>
 
-        </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
 
-    </LinearLayout>
-
+    <!--生成题目倒计时-->
     <RelativeLayout
         android:id="@+id/rl_count_down"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tv_count_down"
@@ -227,7 +256,9 @@
         </LinearLayout>
     </RelativeLayout>
 
+    <!--左边用户信息-->
     <RelativeLayout
+        android:id="@+id/rl_left_bg"
         android:layout_width="137dp"
         android:layout_height="45dp"
         android:layout_marginLeft="@dimen/text_28"
@@ -269,7 +300,9 @@
 
     </RelativeLayout>
 
+    <!--右边用户信息-->
     <RelativeLayout
+        android:id="@+id/rl_right_bg"
         android:layout_width="137dp"
         android:layout_height="45dp"
         android:layout_alignParentRight="true"
@@ -315,6 +348,7 @@
 
     </RelativeLayout>
 
+    <!--进度条-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -342,6 +376,7 @@
             android:textSize="@dimen/text_11" />
     </RelativeLayout>
 
+    <!--倒计时-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -367,6 +402,7 @@
 
     </RelativeLayout>
 
+    <!--底部图片-->
     <ImageView
         android:id="@+id/iv_bottom"
         android:layout_width="match_parent"

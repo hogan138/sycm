@@ -53,15 +53,6 @@ public class ImageLoaderManager {
                         this.view.setBackground(resource.getCurrent());
                     }
                 });
-        //        Glide.with(context)
-//                .load(img)
-//                .into(new SimpleTarget<GlideDrawable>() {
-//                    @Override
-//                    public void onResourceReady(GlideDrawable resource, GlideAnimation<?
-//                                                super GlideDrawable> glideAnimation) {
-//                        view.setBackgroundDrawable(resource);
-//                    }
-//                });
     }
 
 

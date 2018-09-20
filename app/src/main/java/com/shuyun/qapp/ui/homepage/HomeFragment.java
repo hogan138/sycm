@@ -14,7 +14,6 @@ import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.graphics.Shader;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -104,7 +103,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import cn.bingoogolapple.bgabanner.transformer.DepthPageTransformer;
 import cn.kevin.banner.BannerAdapter;
 import cn.kevin.banner.BannerViewPager;
 import cn.kevin.banner.IBannerItem;
@@ -117,7 +115,7 @@ import io.reactivex.schedulers.Schedulers;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * 首页
  */
 public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInterface {
     @BindView(R.id.tv_common_title)
@@ -412,7 +410,7 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                                     mBannerView.setBannerAdapter(adapter);
 
                                     //设置index 在viewpager下面
-                                    ViewPager mViewpager = (ViewPager)mBannerView.getChildAt(0);
+                                    ViewPager mViewpager = (ViewPager) mBannerView.getChildAt(0);
                                     //为ViewPager设置高度
                                     ViewGroup.LayoutParams params = mViewpager.getLayoutParams();
                                     params.height = getResources().getDimensionPixelSize(R.dimen.viewPager_01);
@@ -452,7 +450,7 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                                             }
                                         }
                                     });
-                                    mBannerView.setPageTransformer(true, new YZoomTransFormer(.8f));
+                                    mBannerView.setPageTransformer(true, new YZoomTransFormer(.8f)); //banner动画
 
                                     //常答题组
                                     MarkBannerAdapter adapter1 = new MarkBannerAdapter(new GlideImageLoader());
@@ -466,10 +464,10 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                                     alwaysBanner.setBannerAdapter(adapter1);
 
                                     //设置index 在viewpager下面
-                                    ViewPager mViewpager1 = (ViewPager)alwaysBanner.getChildAt(0);
+                                    ViewPager mViewpager1 = (ViewPager) alwaysBanner.getChildAt(0);
                                     //为ViewPager设置高度
                                     params = mViewpager1.getLayoutParams();
-                                    params.height = getResources().getDimensionPixelSize(R.dimen.viewPager_01);
+                                    params.height = getResources().getDimensionPixelSize(R.dimen.viewPager_02);
                                     mViewpager1.setLayoutParams(params);
 
                                     alwaysBanner.setBannerItemClick(new BannerViewPager.OnBannerItemClick<IBannerItem>() {
@@ -821,12 +819,10 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                             try {
                                 if (inviteBean.getShare() == 1) {
                                     rlInviteFriend.setVisibility(View.VISIBLE);
-//                                    ImageLoaderManager.LoadImage(mContext, inviteBean.getInvite(), ivInvitePrize, R.mipmap.zw01);
                                     invite_h5Url = inviteBean.getH5Url();
                                     SharedPrefrenceTool.put(mContext, "share", inviteBean.getShare());//是否参与邀请分享 1——参与邀请
                                 } else {
                                     rlInviteFriend.setVisibility(View.GONE);
-//                                    ivInvitePrize.setVisibility(View.GONE);
                                     SharedPrefrenceTool.put(mContext, "share", inviteBean.getShare());//是否参与邀请分享 1——参与邀请
                                 }
                             } catch (Exception e) {

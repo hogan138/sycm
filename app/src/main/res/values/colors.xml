@@ -61,4 +61,5 @@
     <color name="home_line">#FBFBFB</color>
     <color name="home_text_bottom">#DEDEDE</color>
     <color name="against_name">#0096E9</color>
+    <color name="select_normal">#151515</color>
 </resources>
