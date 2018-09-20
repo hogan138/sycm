@@ -547,11 +547,11 @@ public class AgainstActivity extends BaseActivity {
                     tvSelectA.setTextColor(Color.parseColor("#ffffff"));
                 } else if (oksIndex.equals("1")) {
                     btnAnswer2.setTextColor(Color.parseColor("#41B1EF"));
-                    btn4LeftIv.setImageResource(R.mipmap.lanse);
+                    btn2LeftIv.setImageResource(R.mipmap.lanse);
                     tvSelectB.setTextColor(Color.parseColor("#ffffff"));
                 } else if (oksIndex.equals("2")) {
                     btnAnswer3.setTextColor(Color.parseColor("#41B1EF"));
-                    btn4LeftIv.setImageResource(R.mipmap.lanse);
+                    btn3LeftIv.setImageResource(R.mipmap.lanse);
                     tvSelectC.setTextColor(Color.parseColor("#ffffff"));
                 } else if (oksIndex.equals("3")) {
                     btnAnswer4.setTextColor(Color.parseColor("#41B1EF"));
@@ -912,12 +912,8 @@ public class AgainstActivity extends BaseActivity {
 
                                 //显示机器人选项
                                 if (answer.equals("0")) {
-                                    if (user_checked == 1) {
-                                        btn1LeftIv.setImageResource(R.mipmap.lanse);
-                                    } else {
-                                        btn1LeftIv.setImageResource(R.mipmap.hongse);
-                                    }
                                 } else if (answer.equals("1")) {
+                                    tvSelectB.setTextColor(Color.parseColor("#ffffff"));
                                     if (answerId.equals(oks) && user_checked == 2) {
                                         btn2LeftIv.setImageResource(R.mipmap.lanse);
                                         btnAnswer2.setTextColor(Color.parseColor("#41B1EF"));
@@ -927,6 +923,7 @@ public class AgainstActivity extends BaseActivity {
                                     }
 
                                 } else if (answer.equals("2")) {
+                                    tvSelectC.setTextColor(Color.parseColor("#ffffff"));
                                     if (answerId.equals(oks) && user_checked == 2) {
                                         btn3LeftIv.setImageResource(R.mipmap.lanse);
                                         btnAnswer3.setTextColor(Color.parseColor("#41B1EF"));
@@ -936,6 +933,7 @@ public class AgainstActivity extends BaseActivity {
                                     }
 
                                 } else if (answer.equals("3")) {
+                                    tvSelectD.setTextColor(Color.parseColor("#ffffff"));
                                     if (answerId.equals(oks) && user_checked == 2) {
                                         btn4LeftIv.setImageResource(R.mipmap.lanse);
                                         btnAnswer4.setTextColor(Color.parseColor("#41B1EF"));
@@ -1062,6 +1060,7 @@ public class AgainstActivity extends BaseActivity {
 
                                 //显示机器人选项
                                 if (answer.equals("0")) {
+                                    tvSelectA.setTextColor(Color.parseColor("#ffffff"));
                                     if (answerId.equals(oks) && user_checked == 2) {
                                         btn1LeftIv.setImageResource(R.mipmap.lanse);
                                         btnAnswer1.setTextColor(Color.parseColor("#41B1EF"));
@@ -1069,14 +1068,8 @@ public class AgainstActivity extends BaseActivity {
                                         btn1LeftIv.setImageResource(R.mipmap.hongse);
                                         btnAnswer1.setTextColor(Color.parseColor("#F16F77"));
                                     }
-                                } else if (answer.equals("1")) {
-                                    if (user_checked == 1) {
-                                        btn2LeftIv.setImageResource(R.mipmap.lanse);
-                                    } else {
-                                        btn2LeftIv.setImageResource(R.mipmap.hongse);
-                                    }
-
                                 } else if (answer.equals("2")) {
+                                    tvSelectC.setTextColor(Color.parseColor("#ffffff"));
                                     if (answerId.equals(oks) && user_checked == 2) {
                                         btn3LeftIv.setImageResource(R.mipmap.lanse);
                                         btnAnswer3.setTextColor(Color.parseColor("#41B1EF"));
@@ -1086,6 +1079,7 @@ public class AgainstActivity extends BaseActivity {
                                     }
 
                                 } else if (answer.equals("3")) {
+                                    tvSelectD.setTextColor(Color.parseColor("#ffffff"));
                                     if (answerId.equals(oks) && user_checked == 2) {
                                         btn4LeftIv.setImageResource(R.mipmap.lanse);
                                         btnAnswer4.setTextColor(Color.parseColor("#41B1EF"));
@@ -1213,6 +1207,7 @@ public class AgainstActivity extends BaseActivity {
 
                                 //显示机器人选项
                                 if (answer.equals("0")) {
+                                    tvSelectA.setTextColor(Color.parseColor("#ffffff"));
                                     if (answerId.equals(oks) && user_checked == 2) {
                                         btn1LeftIv.setImageResource(R.mipmap.lanse);
                                         btnAnswer1.setTextColor(Color.parseColor("#41B1EF"));
@@ -1221,6 +1216,7 @@ public class AgainstActivity extends BaseActivity {
                                         btnAnswer1.setTextColor(Color.parseColor("#F16F77"));
                                     }
                                 } else if (answer.equals("1")) {
+                                    tvSelectB.setTextColor(Color.parseColor("#ffffff"));
                                     if (answerId.equals(oks) && user_checked == 2) {
                                         btn2LeftIv.setImageResource(R.mipmap.lanse);
                                         btnAnswer2.setTextColor(Color.parseColor("#41B1EF"));
@@ -1229,14 +1225,8 @@ public class AgainstActivity extends BaseActivity {
                                         btnAnswer2.setTextColor(Color.parseColor("#F16F77"));
                                     }
 
-                                } else if (answer.equals("2")) {
-                                    if (user_checked == 1) {
-                                        btn3LeftIv.setImageResource(R.mipmap.lanse);
-                                    } else {
-                                        btn3LeftIv.setImageResource(R.mipmap.hongse);
-                                    }
-
                                 } else if (answer.equals("3")) {
+                                    tvSelectD.setTextColor(Color.parseColor("#ffffff"));
                                     if (answerId.equals(oks) && user_checked == 2) {
                                         btn4LeftIv.setImageResource(R.mipmap.lanse);
                                         btnAnswer4.setTextColor(Color.parseColor("#41B1EF"));
@@ -1387,12 +1377,6 @@ public class AgainstActivity extends BaseActivity {
                                     } else {
                                         btn3LeftIv.setImageResource(R.mipmap.hongse);
                                         btnAnswer3.setTextColor(Color.parseColor("#F16F77"));
-                                    }
-                                } else if (answer.equals("3")) {
-                                    if (user_checked == 1) {
-                                        btn4LeftIv.setImageResource(R.mipmap.lanse);
-                                    } else {
-                                        btn4LeftIv.setImageResource(R.mipmap.hongse);
                                     }
                                 }
 
@@ -1648,13 +1632,19 @@ public class AgainstActivity extends BaseActivity {
                                         //左侧环形图片显示隐藏
                                         if (answerIds.length == 1) {
                                             rlSelectA.setVisibility(View.VISIBLE);
+                                            rlSelectB.setVisibility(View.GONE);
+                                            rlSelectC.setVisibility(View.GONE);
+                                            rlSelectD.setVisibility(View.GONE);
                                         } else if (answerIds.length == 2) {
                                             rlSelectA.setVisibility(View.VISIBLE);
                                             rlSelectB.setVisibility(View.VISIBLE);
+                                            rlSelectC.setVisibility(View.GONE);
+                                            rlSelectD.setVisibility(View.GONE);
                                         } else if (answerIds.length == 3) {
                                             rlSelectA.setVisibility(View.VISIBLE);
                                             rlSelectB.setVisibility(View.VISIBLE);
                                             rlSelectC.setVisibility(View.VISIBLE);
+                                            rlSelectD.setVisibility(View.GONE);
                                         } else if (answerIds.length == 4) {
                                             rlSelectA.setVisibility(View.VISIBLE);
                                             rlSelectB.setVisibility(View.VISIBLE);
