@@ -14,8 +14,6 @@
 
     <include layout="@layout/common_line_1" />
 
-    <!--android:layout_marginTop="@dimen/common_item_height"-->
-
     <LinearLayout
         android:id="@+id/home_bottome_switcher_container"
         android:layout_width="match_parent"

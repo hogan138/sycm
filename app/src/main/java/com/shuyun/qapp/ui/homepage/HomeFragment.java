@@ -941,33 +941,34 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                                     //题组
                                     if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.group_count").equals("")) {
                                         activitydialog(configDialogBean);
-                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.group_count", "" + configDialogBean.getCount() + 1);
+                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.group_count", "" + 1)
+                                        ;
                                     } else {
-                                        if (configDialogBean.getCount() >= Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.group_count"))) {
+                                        if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.group_count"))) {
                                             activitydialog(configDialogBean);
-                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.group_count", "" + configDialogBean.getCount() + 1);
+                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.group_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.group_count")) + 1) + "");
                                         }
                                     }
                                 } else if (configDialogBean.getBtnAction().equals("action.real")) {
                                     //实名认证
                                     if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.real_count").equals("")) {
                                         activitydialog(configDialogBean);
-                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.real_count", "" + configDialogBean.getCount() + 1);
+                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.real_count", "" + 1);
                                     } else {
-                                        if (configDialogBean.getCount() >= Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.real_count"))) {
+                                        if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.real_count"))) {
                                             activitydialog(configDialogBean);
-                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.real_count", "" + configDialogBean.getCount() + 1);
+                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.real_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.real_count")) + 1) + "");
                                         }
                                     }
                                 } else if (configDialogBean.getBtnAction().equals("action.h5")) {
                                     //h5页面
                                     if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.h5_count").equals("")) {
                                         activitydialog(configDialogBean);
-                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.h5_count", "" + configDialogBean.getCount() + 1);
+                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.h5_count", "" + 1);
                                     } else {
-                                        if (configDialogBean.getCount() >= Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.h5_count"))) {
+                                        if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.h5_count"))) {
                                             activitydialog(configDialogBean);
-                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.h5_count", "" + configDialogBean.getCount() + 1);
+                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.h5_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.h5_count")) + 1) + "");
                                         }
                                     }
 
@@ -975,33 +976,33 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                                     //邀请
                                     if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.invite_count").equals("")) {
                                         activitydialog(configDialogBean);
-                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.invite_count", "" + configDialogBean.getCount() + 1);
+                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.invite_count", "" + 1);
                                     } else {
-                                        if (configDialogBean.getCount() >= Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.invite_count"))) {
+                                        if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.invite_count"))) {
                                             activitydialog(configDialogBean);
-                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.invite_count", "" + configDialogBean.getCount() + 1);
+                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.invite_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.invite_count")) + 1) + "");
                                         }
                                     }
                                 } else if (configDialogBean.getBtnAction().equals("action.integral")) {
                                     //积分兑换
                                     if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.integral_count").equals("")) {
                                         activitydialog(configDialogBean);
-                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.integral_count", "" + configDialogBean.getCount() + 1);
+                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.integral_count", "" + 1);
                                     } else {
-                                        if (configDialogBean.getCount() >= Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.integral_count"))) {
+                                        if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.integral_count"))) {
                                             activitydialog(configDialogBean);
-                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.integral_count", "" + configDialogBean.getCount() + 1);
+                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.integral_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.integral_count")) + 1) + "");
                                         }
                                     }
                                 } else if (configDialogBean.getBtnAction().equals("action.answer.against")) {
                                     //答题对战
                                     if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.answer.against_count").equals("")) {
                                         activitydialog(configDialogBean);
-                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.answer.against_count", "" + configDialogBean.getCount() + 1);
+                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.answer.against_count", "" + 1);
                                     } else {
-                                        if (configDialogBean.getCount() >= Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.answer.against_count"))) {
+                                        if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.answer.against_count"))) {
                                             activitydialog(configDialogBean);
-                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.answer.against_count", "" + configDialogBean.getCount() + 1);
+                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.answer.against_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.answer.against_count")) + 1) + "");
                                         }
                                     }
                                 }

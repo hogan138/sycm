@@ -56,6 +56,7 @@
                         android:textSize="@dimen/text_15" />
 
                     <RelativeLayout
+                        android:id="@+id/rl_select_a"
                         android:layout_width="@dimen/text_40"
                         android:layout_height="@dimen/text_40">
 
@@ -98,6 +99,7 @@
                         android:textSize="@dimen/text_15" />
 
                     <RelativeLayout
+                        android:id="@+id/rl_select_b"
                         android:layout_width="@dimen/text_40"
                         android:layout_height="@dimen/text_40">
 
@@ -139,6 +141,7 @@
                         android:textSize="@dimen/text_15" />
 
                     <RelativeLayout
+                        android:id="@+id/rl_select_c"
                         android:layout_width="@dimen/text_40"
                         android:layout_height="@dimen/text_40">
 
@@ -181,6 +184,7 @@
                         android:textSize="@dimen/text_15" />
 
                     <RelativeLayout
+                        android:id="@+id/rl_select_d"
                         android:layout_width="@dimen/text_40"
                         android:layout_height="@dimen/text_40">
 

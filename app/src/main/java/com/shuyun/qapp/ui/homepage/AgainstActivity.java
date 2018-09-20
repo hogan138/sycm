@@ -118,6 +118,26 @@ public class AgainstActivity extends BaseActivity {
     @BindView(R.id.ll_question_options)
     LinearLayout llQuestionOptions;
     private static final String TAG = "AgainstActivity";
+    @BindView(R.id.tv_select_a)
+    TextView tvSelectA;
+    @BindView(R.id.rl_select_a)
+    RelativeLayout rlSelectA;
+    @BindView(R.id.tv_select_b)
+    TextView tvSelectB;
+    @BindView(R.id.rl_select_b)
+    RelativeLayout rlSelectB;
+    @BindView(R.id.tv_select_c)
+    TextView tvSelectC;
+    @BindView(R.id.rl_select_c)
+    RelativeLayout rlSelectC;
+    @BindView(R.id.tv_select_d)
+    TextView tvSelectD;
+    @BindView(R.id.rl_select_d)
+    RelativeLayout rlSelectD;
+    @BindView(R.id.rl_left_bg)
+    RelativeLayout rlLeftBg;
+    @BindView(R.id.rl_right_bg)
+    RelativeLayout rlRightBg;
     /**
      * 申请答题返回数据
      */
@@ -722,10 +742,10 @@ public class AgainstActivity extends BaseActivity {
         btnAnswer2.setChecked(false);
         btnAnswer3.setChecked(false);
         btnAnswer4.setChecked(false);
-        btnAnswer1.setTextColor(Color.parseColor("#227fc5"));
-        btnAnswer2.setTextColor(Color.parseColor("#227fc5"));
-        btnAnswer3.setTextColor(Color.parseColor("#227fc5"));
-        btnAnswer4.setTextColor(Color.parseColor("#227fc5"));
+        btnAnswer1.setTextColor(Color.parseColor("#666666"));
+        btnAnswer2.setTextColor(Color.parseColor("#666666"));
+        btnAnswer3.setTextColor(Color.parseColor("#666666"));
+        btnAnswer4.setTextColor(Color.parseColor("#666666"));
     }
 
     //答题倒计时进度条
@@ -791,12 +811,14 @@ public class AgainstActivity extends BaseActivity {
                         if (oks.equals(String.valueOf(option.getId()))) {
                             //答题正确
                             btn1LeftIv.setImageResource(R.mipmap.lanse);
-                            btnAnswer1.setTextColor(Color.parseColor("#ffffff"));
+                            tvSelectA.setTextColor(Color.parseColor("#ffffff"));
+                            btnAnswer1.setTextColor(Color.parseColor("#41B1EF"));
                             user_checked = 1;
                         } else {
                             //答题错误
                             btn1LeftIv.setImageResource(R.mipmap.hongse);
-                            btnAnswer1.setTextColor(Color.parseColor("#ffffff"));
+                            tvSelectA.setTextColor(Color.parseColor("#ffffff"));
+                            btnAnswer1.setTextColor(Color.parseColor("#F16F77"));
                             user_checked = 2;
                         }
 
@@ -918,12 +940,14 @@ public class AgainstActivity extends BaseActivity {
                         if (oks.equals(String.valueOf(option.getId()))) {
                             //答题正确
                             btn2LeftIv.setImageResource(R.mipmap.lanse);
-                            btnAnswer2.setTextColor(Color.parseColor("#ffffff"));
+                            tvSelectB.setTextColor(Color.parseColor("#ffffff"));
+                            btnAnswer2.setTextColor(Color.parseColor("#41B1EF"));
                             user_checked = 1;
                         } else {
                             //答题错误
                             btn2LeftIv.setImageResource(R.mipmap.hongse);
-                            btnAnswer2.setTextColor(Color.parseColor("#ffffff"));
+                            tvSelectB.setTextColor(Color.parseColor("#ffffff"));
+                            btnAnswer2.setTextColor(Color.parseColor("#F16F77"));
                             user_checked = 2;
                         }
 
@@ -1045,12 +1069,14 @@ public class AgainstActivity extends BaseActivity {
                         if (oks.equals(String.valueOf(option.getId()))) {
                             //答题正确
                             btn3LeftIv.setImageResource(R.mipmap.lanse);
-                            btnAnswer3.setTextColor(Color.parseColor("#ffffff"));
+                            tvSelectC.setTextColor(Color.parseColor("#ffffff"));
+                            btnAnswer3.setTextColor(Color.parseColor("#41B1EF"));
                             user_checked = 1;
                         } else {
                             //答题错误
                             btn3LeftIv.setImageResource(R.mipmap.hongse);
-                            btnAnswer3.setTextColor(Color.parseColor("#ffffff"));
+                            tvSelectC.setTextColor(Color.parseColor("#ffffff"));
+                            btnAnswer3.setTextColor(Color.parseColor("#F16F77"));
                             user_checked = 2;
                         }
 
@@ -1170,12 +1196,14 @@ public class AgainstActivity extends BaseActivity {
                         if (oks.equals(String.valueOf(option.getId()))) {
                             //答题正确
                             btn4LeftIv.setImageResource(R.mipmap.lanse);
-                            btnAnswer4.setTextColor(Color.parseColor("#ffffff"));
+                            tvSelectD.setTextColor(Color.parseColor("#ffffff"));
+                            btnAnswer4.setTextColor(Color.parseColor("#41B1EF"));
                             user_checked = 1;
                         } else {
                             //答题错误
                             btn4LeftIv.setImageResource(R.mipmap.hongse);
-                            btnAnswer4.setTextColor(Color.parseColor("#ffffff"));
+                            tvSelectD.setTextColor(Color.parseColor("#ffffff"));
+                            btnAnswer4.setTextColor(Color.parseColor("#F16F77"));
                             user_checked = 2;
                         }
 
