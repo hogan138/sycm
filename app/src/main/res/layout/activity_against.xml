@@ -51,14 +51,14 @@
                         android:layout_centerVertical="true"
                         android:button="@null"
                         android:paddingLeft="55dp"
-                        android:text="111111111111111"
                         android:textColor="@color/color_35"
                         android:textSize="@dimen/text_15" />
 
                     <RelativeLayout
                         android:id="@+id/rl_select_a"
                         android:layout_width="@dimen/text_40"
-                        android:layout_height="@dimen/text_40">
+                        android:layout_height="@dimen/text_40"
+                        android:visibility="invisible">
 
                         <ImageView
                             android:id="@+id/btn1_left_iv"
@@ -94,14 +94,14 @@
                         android:layout_centerVertical="true"
                         android:button="@null"
                         android:paddingLeft="55dp"
-                        android:text="222222222222"
                         android:textColor="@color/color_35"
                         android:textSize="@dimen/text_15" />
 
                     <RelativeLayout
                         android:id="@+id/rl_select_b"
                         android:layout_width="@dimen/text_40"
-                        android:layout_height="@dimen/text_40">
+                        android:layout_height="@dimen/text_40"
+                        android:visibility="invisible">
 
                         <ImageView
                             android:id="@+id/btn2_left_iv"
@@ -136,14 +136,14 @@
                         android:layout_centerVertical="true"
                         android:button="@null"
                         android:paddingLeft="55dp"
-                        android:text="3333333333"
                         android:textColor="@color/color_35"
                         android:textSize="@dimen/text_15" />
 
                     <RelativeLayout
                         android:id="@+id/rl_select_c"
                         android:layout_width="@dimen/text_40"
-                        android:layout_height="@dimen/text_40">
+                        android:layout_height="@dimen/text_40"
+                        android:visibility="invisible">
 
                         <ImageView
                             android:id="@+id/btn3_left_iv"
@@ -179,14 +179,14 @@
                         android:layout_centerVertical="true"
                         android:button="@null"
                         android:paddingLeft="55dp"
-                        android:text="4444444444444"
                         android:textColor="@color/color_35"
                         android:textSize="@dimen/text_15" />
 
                     <RelativeLayout
                         android:id="@+id/rl_select_d"
                         android:layout_width="@dimen/text_40"
-                        android:layout_height="@dimen/text_40">
+                        android:layout_height="@dimen/text_40"
+                        android:visibility="invisible">
 
                         <ImageView
                             android:id="@+id/btn4_left_iv"
