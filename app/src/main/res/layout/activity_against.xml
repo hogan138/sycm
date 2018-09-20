@@ -23,8 +23,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="100dp"
-                android:layout_marginLeft="@dimen/text_23"
-                android:layout_marginRight="@dimen/text_23"
+                android:layout_marginLeft="@dimen/text_28"
+                android:layout_marginRight="@dimen/text_28"
                 android:background="@mipmap/bj"
                 android:orientation="vertical">
 
@@ -217,8 +217,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:visibility="gone">
+        android:layout_alignParentTop="true">
 
         <TextView
             android:id="@+id/tv_count_down"
@@ -287,7 +286,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/text_4"
+                android:layout_marginTop="@dimen/text_2"
                 android:textColor="@color/white"
                 android:textSize="12sp" />
 
