@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -19,7 +20,6 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.blankj.utilcode.util.TimeUtils;
 import com.google.gson.Gson;
@@ -139,6 +139,8 @@ public class AgainstActivity extends BaseActivity {
     RelativeLayout rlLeftBg;
     @BindView(R.id.rl_right_bg)
     RelativeLayout rlRightBg;
+    @BindView(R.id.iv_bottom)
+    ImageView ivBottom;
     /**
      * 申请答题返回数据
      */
@@ -163,6 +165,11 @@ public class AgainstActivity extends BaseActivity {
      * 当前正在回答的题目对象
      */
     private ApplyAnswer.QuestionsBean questionsBean;
+
+    /**
+     * 动画
+     */
+    Animation mAnimation = null;
 
     private Handler timehandler = new Handler() {
         @Override
@@ -218,6 +225,12 @@ public class AgainstActivity extends BaseActivity {
         tvMinePhone.setText(getIntent().getStringExtra("my_phone"));
         ivHeadIt.setImageResource(icon[getIntent().getIntExtra("it_head", 0)]);// - 1
         tvItPhone.setText(getIntent().getStringExtra("it_phone"));
+
+        //底部图片动画
+        ivBottom.setVisibility(View.VISIBLE);
+        mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.image_alpha);
+        ivBottom.setAnimation(mAnimation);
+        mAnimation.start();
 
         timehandler.sendEmptyMessageDelayed(0, 4000);
         CountDownTimer timer = new CountDownTimer(4 * 1000, 1000) {
@@ -485,24 +498,56 @@ public class AgainstActivity extends BaseActivity {
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                //用户选项id
-                                userOptionId = "0";
-                                user_checked = 0;
+                                Animation alphaAnimation = new AlphaAnimation(1, 0);
+                                alphaAnimation.setDuration(400);
+                                alphaAnimation.setInterpolator(new LinearInterpolator());
+                                alphaAnimation.setRepeatCount(2);
+                                alphaAnimation.setRepeatMode(Animation.REVERSE);
 
-                                userCont = applyAnswer.getTimeout() + 1;
+                                //用户背景闪烁
+                                if (user_isSelect == true && user_checked == 1) {
+                                    //用户答对
+                                    rlLeftBg.setBackgroundResource(R.mipmap.lanse1);
+                                } else {
+                                    rlLeftBg.setBackgroundResource(R.mipmap.hongse2);
+                                }
+                                rlLeftBg.startAnimation(alphaAnimation);
+
+                                //机器人背景闪烁
+                                String oks = "";
+                                oks = questionsBeans.get(position - 1).getOks();
+                                //私钥解密
+                                try {
+                                    PrivateKey private_key = RSAUtils.loadPrivateKey(AppConst.private_key);
+                                    byte[] decryptByte = RSAUtils.decryptDataPrivateKey(Base64Utils.decode(oks), private_key);
+                                    oks = new String(decryptByte);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                if (robot_isSelcet == true && answerId.equals(oks)) {
+                                    //机器人答对
+                                    rlRightBg.setBackgroundResource(R.mipmap.lanse2);
+                                } else {
+                                    rlRightBg.setBackgroundResource(R.mipmap.hongse1);
+                                }
+                                rlRightBg.startAnimation(alphaAnimation);
 
                                 //用户未答 机器人已答
                                 if (user_isSelect == false && robot_isSelcet == true) {
+                                    //用户选项id
+                                    userOptionId = "0";
+                                    user_checked = 0;
+                                    userCont = applyAnswer.getTimeout() + 1;
                                     showRobotSelect();
                                 } else if (user_isSelect == true && robot_isSelcet == true) {
+                                    //用户已答 机器人已答
                                     showRobotSelect();
                                 } else {
                                     nextReplyQuestion();
                                 }
 
-
                             }
-                        }, 100); // 100毫秒后进入下一题
+                        }, 100);
 
                         if (position == questionsBeans.size()) {
                             //答题完成
@@ -518,7 +563,7 @@ public class AgainstActivity extends BaseActivity {
     }
 
 
-    //用户未答 机器人已答 展示机器人选项
+    //显示机器人选项和正确选项
     private void showRobotSelect() {
 
         String oks = "";
@@ -542,7 +587,7 @@ public class AgainstActivity extends BaseActivity {
             e.printStackTrace();
         }
         //显示正确答案
-        if (!answerId.equals(oks)) {
+        if (user_isSelect == true) {
             if (oksIndex.equals("0")) {
                 btnAnswer1.setTextColor(Color.parseColor("#41B1EF"));
                 btn1LeftIv.setImageResource(R.mipmap.lanse);
@@ -627,7 +672,7 @@ public class AgainstActivity extends BaseActivity {
                     robotInputAgainstBean.setExamId(fail_id);
                     getRobotAgainst(robotInputAgainstBean);
                 }
-            }, 500);
+            }, 100);
 
         } else {
 
@@ -636,9 +681,8 @@ public class AgainstActivity extends BaseActivity {
                 @Override
                 public void run() {
                     nextReplyQuestion();
-                    handler1.removeCallbacks(runnable);
                 }
-            }, 500);
+            }, 100);
         }
 
     }
@@ -653,9 +697,10 @@ public class AgainstActivity extends BaseActivity {
     private String robotOptionId = "";
 
     private void nextReplyQuestion() {
-
         robot_isSelcet = false;
         user_isSelect = false;
+        rlLeftBg.setBackgroundResource(R.mipmap.huisebanyuan);
+        rlRightBg.setBackgroundResource(R.mipmap.huisebanyuan1);
 
         if (!EncodeAndStringTool.isListEmpty(questionsBeans)) {
 
@@ -866,93 +911,10 @@ public class AgainstActivity extends BaseActivity {
                         btnAnswer3.setTextColor(Color.parseColor("#D1D1D1"));
                         btnAnswer4.setTextColor(Color.parseColor("#D1D1D1"));
 
-
-                        Animation alphaAnimation = new AlphaAnimation(1, 0);
-                        alphaAnimation.setDuration(400);
-                        alphaAnimation.setInterpolator(new LinearInterpolator());
-                        alphaAnimation.setRepeatCount(2);
-                        alphaAnimation.setRepeatMode(Animation.REVERSE);
-                        ivHeadMine.startAnimation(alphaAnimation);
-                        tvMineScore.startAnimation(alphaAnimation);
-
                         //用户选项信息
                         userOptionId = String.valueOf(option.getId());
                         userCont = applyAnswer.getTimeout() - Double.valueOf(tvCountdown_main.getText().toString());
                         user_isSelect = true;
-
-
-//                        if (timeConsuming == -1.0) {
-//
-//                        } else {
-//
-//                            if (robot_isSelcet == true) {
-//
-//                                handler1.removeCallbacks(runnable);
-//
-//                                //双方都错
-//                                if (user_checked == 2 && !answerId.equals(oks)) {
-//                                    if (oksIndex.equals("0")) {
-//                                        btnAnswer1.setTextColor(Color.parseColor("#41B1EF"));
-//                                        btn1LeftIv.setImageResource(R.mipmap.lanse);
-//                                        tvSelectA.setTextColor(Color.parseColor("#ffffff"));
-//                                    } else if (oksIndex.equals("1")) {
-//                                        btnAnswer2.setTextColor(Color.parseColor("#41B1EF"));
-//                                        btn2LeftIv.setImageResource(R.mipmap.lanse);
-//                                        tvSelectB.setTextColor(Color.parseColor("#ffffff"));
-//                                    } else if (oksIndex.equals("2")) {
-//                                        btnAnswer3.setTextColor(Color.parseColor("#41B1EF"));
-//                                        btn3LeftIv.setImageResource(R.mipmap.lanse);
-//                                        tvSelectC.setTextColor(Color.parseColor("#ffffff"));
-//                                    } else if (oksIndex.equals("3")) {
-//                                        btnAnswer4.setTextColor(Color.parseColor("#41B1EF"));
-//                                        btn4LeftIv.setImageResource(R.mipmap.lanse);
-//                                        tvSelectD.setTextColor(Color.parseColor("#ffffff"));
-//                                    }
-//                                }
-//
-//                                //显示机器人选项
-//                                if (answer.equals("0")) {
-//                                } else if (answer.equals("1")) {
-//                                    tvSelectB.setTextColor(Color.parseColor("#ffffff"));
-//                                    if (answerId.equals(oks) && user_checked == 2) {
-//                                        btn2LeftIv.setImageResource(R.mipmap.lanse);
-//                                        btnAnswer2.setTextColor(Color.parseColor("#41B1EF"));
-//                                    } else {
-//                                        btn2LeftIv.setImageResource(R.mipmap.hongse);
-//                                        btnAnswer2.setTextColor(Color.parseColor("#F16F77"));
-//                                    }
-//
-//                                } else if (answer.equals("2")) {
-//                                    tvSelectC.setTextColor(Color.parseColor("#ffffff"));
-//                                    if (answerId.equals(oks) && user_checked == 2) {
-//                                        btn3LeftIv.setImageResource(R.mipmap.lanse);
-//                                        btnAnswer3.setTextColor(Color.parseColor("#41B1EF"));
-//                                    } else {
-//                                        btn3LeftIv.setImageResource(R.mipmap.hongse);
-//                                        btnAnswer3.setTextColor(Color.parseColor("#F16F77"));
-//                                    }
-//
-//                                } else if (answer.equals("3")) {
-//                                    tvSelectD.setTextColor(Color.parseColor("#ffffff"));
-//                                    if (answerId.equals(oks) && user_checked == 2) {
-//                                        btn4LeftIv.setImageResource(R.mipmap.lanse);
-//                                        btnAnswer4.setTextColor(Color.parseColor("#41B1EF"));
-//                                    } else {
-//                                        btn4LeftIv.setImageResource(R.mipmap.hongse);
-//                                        btnAnswer4.setTextColor(Color.parseColor("#F16F77"));
-//                                    }
-//                                }
-//
-//                                // 延时一定时间后进入下一题: 等待5毫秒
-//                                handler.postDelayed(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        ++position;
-//                                        nextReplyQuestion();
-//                                    }
-//                                }, 1000);
-//                            }
-//                        }
 
                     }
 
@@ -1016,91 +978,11 @@ public class AgainstActivity extends BaseActivity {
                         btnAnswer3.setTextColor(Color.parseColor("#D1D1D1"));
                         btnAnswer4.setTextColor(Color.parseColor("#D1D1D1"));
 
-                        Animation alphaAnimation = new AlphaAnimation(1, 0);
-                        alphaAnimation.setDuration(400);
-                        alphaAnimation.setInterpolator(new LinearInterpolator());
-                        alphaAnimation.setRepeatCount(2);
-                        alphaAnimation.setRepeatMode(Animation.REVERSE);
-                        ivHeadMine.startAnimation(alphaAnimation);
-                        tvMineScore.startAnimation(alphaAnimation);
-
                         //用户选项信息
                         userOptionId = String.valueOf(option.getId());
                         userCont = applyAnswer.getTimeout() - Double.valueOf(tvCountdown_main.getText().toString());
                         user_isSelect = true;
 
-//                        if (timeConsuming == -1.0) {
-//
-//                        } else {
-//
-//                            if (robot_isSelcet == true) {
-//
-//                                handler1.removeCallbacks(runnable);
-//
-//                                //双方都错
-//                                if (user_checked == 2 && !answerId.equals(oks)) {
-//                                    if (oksIndex.equals("0")) {
-//                                        btnAnswer1.setTextColor(Color.parseColor("#41B1EF"));
-//                                        btn1LeftIv.setImageResource(R.mipmap.lanse);
-//                                        tvSelectA.setTextColor(Color.parseColor("#ffffff"));
-//                                    } else if (oksIndex.equals("1")) {
-//                                        btnAnswer2.setTextColor(Color.parseColor("#41B1EF"));
-//                                        btn2LeftIv.setImageResource(R.mipmap.lanse);
-//                                        tvSelectB.setTextColor(Color.parseColor("#ffffff"));
-//                                    } else if (oksIndex.equals("2")) {
-//                                        btnAnswer3.setTextColor(Color.parseColor("#41B1EF"));
-//                                        btn3LeftIv.setImageResource(R.mipmap.lanse);
-//                                        tvSelectC.setTextColor(Color.parseColor("#ffffff"));
-//                                    } else if (oksIndex.equals("3")) {
-//                                        btnAnswer4.setTextColor(Color.parseColor("#41B1EF"));
-//                                        btn4LeftIv.setImageResource(R.mipmap.lanse);
-//                                        tvSelectD.setTextColor(Color.parseColor("#ffffff"));
-//                                    }
-//                                }
-//
-//                                //显示机器人选项
-//                                if (answer.equals("0")) {
-//                                    tvSelectA.setTextColor(Color.parseColor("#ffffff"));
-//                                    if (answerId.equals(oks) && user_checked == 2) {
-//                                        btn1LeftIv.setImageResource(R.mipmap.lanse);
-//                                        btnAnswer1.setTextColor(Color.parseColor("#41B1EF"));
-//                                    } else {
-//                                        btn1LeftIv.setImageResource(R.mipmap.hongse);
-//                                        btnAnswer1.setTextColor(Color.parseColor("#F16F77"));
-//                                    }
-//                                } else if (answer.equals("2")) {
-//                                    tvSelectC.setTextColor(Color.parseColor("#ffffff"));
-//                                    if (answerId.equals(oks) && user_checked == 2) {
-//                                        btn3LeftIv.setImageResource(R.mipmap.lanse);
-//                                        btnAnswer3.setTextColor(Color.parseColor("#41B1EF"));
-//                                    } else {
-//                                        btn3LeftIv.setImageResource(R.mipmap.hongse);
-//                                        btnAnswer3.setTextColor(Color.parseColor("#F16F77"));
-//                                    }
-//
-//                                } else if (answer.equals("3")) {
-//                                    tvSelectD.setTextColor(Color.parseColor("#ffffff"));
-//                                    if (answerId.equals(oks) && user_checked == 2) {
-//                                        btn4LeftIv.setImageResource(R.mipmap.lanse);
-//                                        btnAnswer4.setTextColor(Color.parseColor("#41B1EF"));
-//                                    } else {
-//                                        btn4LeftIv.setImageResource(R.mipmap.hongse);
-//                                        btnAnswer4.setTextColor(Color.parseColor("#F16F77"));
-//                                    }
-//                                }
-//
-//
-//                                // 延时一定时间后进入下一题: 等待5毫秒
-//                                handler.postDelayed(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        ++position;
-//                                        nextReplyQuestion();
-//                                    }
-//                                }, 1000);
-//
-//                            }
-//                        }
                     }
 
                 }
@@ -1163,89 +1045,11 @@ public class AgainstActivity extends BaseActivity {
                         btnAnswer2.setTextColor(Color.parseColor("#D1D1D1"));
                         btnAnswer4.setTextColor(Color.parseColor("#D1D1D1"));
 
-                        Animation alphaAnimation = new AlphaAnimation(1, 0);
-                        alphaAnimation.setDuration(400);
-                        alphaAnimation.setInterpolator(new LinearInterpolator());
-                        alphaAnimation.setRepeatCount(2);
-                        alphaAnimation.setRepeatMode(Animation.REVERSE);
-                        ivHeadMine.startAnimation(alphaAnimation);
-                        tvMineScore.startAnimation(alphaAnimation);
-
                         //用户选项信息
                         userOptionId = String.valueOf(option.getId());
                         userCont = applyAnswer.getTimeout() - Double.valueOf(tvCountdown_main.getText().toString());
                         user_isSelect = true;
 
-//                        if (timeConsuming == -1.0) {
-//
-//                        } else {
-//
-//                            if (robot_isSelcet == true) {
-//
-//                                handler1.removeCallbacks(runnable);
-//
-//                                //双方都错
-//                                if (user_checked == 2 && !answerId.equals(oks)) {
-//                                    if (oksIndex.equals("0")) {
-//                                        btnAnswer1.setTextColor(Color.parseColor("#41B1EF"));
-//                                        btn1LeftIv.setImageResource(R.mipmap.lanse);
-//                                        tvSelectA.setTextColor(Color.parseColor("#ffffff"));
-//                                    } else if (oksIndex.equals("1")) {
-//                                        btnAnswer2.setTextColor(Color.parseColor("#41B1EF"));
-//                                        btn2LeftIv.setImageResource(R.mipmap.lanse);
-//                                        tvSelectB.setTextColor(Color.parseColor("#ffffff"));
-//                                    } else if (oksIndex.equals("2")) {
-//                                        btnAnswer3.setTextColor(Color.parseColor("#41B1EF"));
-//                                        btn3LeftIv.setImageResource(R.mipmap.lanse);
-//                                        tvSelectC.setTextColor(Color.parseColor("#ffffff"));
-//                                    } else if (oksIndex.equals("3")) {
-//                                        btnAnswer4.setTextColor(Color.parseColor("#41B1EF"));
-//                                        btn4LeftIv.setImageResource(R.mipmap.lanse);
-//                                        tvSelectD.setTextColor(Color.parseColor("#ffffff"));
-//                                    }
-//                                }
-//
-//                                //显示机器人选项
-//                                if (answer.equals("0")) {
-//                                    tvSelectA.setTextColor(Color.parseColor("#ffffff"));
-//                                    if (answerId.equals(oks) && user_checked == 2) {
-//                                        btn1LeftIv.setImageResource(R.mipmap.lanse);
-//                                        btnAnswer1.setTextColor(Color.parseColor("#41B1EF"));
-//                                    } else {
-//                                        btn1LeftIv.setImageResource(R.mipmap.hongse);
-//                                        btnAnswer1.setTextColor(Color.parseColor("#F16F77"));
-//                                    }
-//                                } else if (answer.equals("1")) {
-//                                    tvSelectB.setTextColor(Color.parseColor("#ffffff"));
-//                                    if (answerId.equals(oks) && user_checked == 2) {
-//                                        btn2LeftIv.setImageResource(R.mipmap.lanse);
-//                                        btnAnswer2.setTextColor(Color.parseColor("#41B1EF"));
-//                                    } else {
-//                                        btn2LeftIv.setImageResource(R.mipmap.hongse);
-//                                        btnAnswer2.setTextColor(Color.parseColor("#F16F77"));
-//                                    }
-//
-//                                } else if (answer.equals("3")) {
-//                                    tvSelectD.setTextColor(Color.parseColor("#ffffff"));
-//                                    if (answerId.equals(oks) && user_checked == 2) {
-//                                        btn4LeftIv.setImageResource(R.mipmap.lanse);
-//                                        btnAnswer4.setTextColor(Color.parseColor("#41B1EF"));
-//                                    } else {
-//                                        btn4LeftIv.setImageResource(R.mipmap.hongse);
-//                                        btnAnswer4.setTextColor(Color.parseColor("#F16F77"));
-//                                    }
-//                                }
-//
-//                                // 延时一定时间后进入下一题: 等待5毫秒
-//                                handler.postDelayed(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        ++position;
-//                                        nextReplyQuestion();
-//                                    }
-//                                }, 1000);
-//                            }
-//                        }
                     }
 
                 }
@@ -1308,89 +1112,11 @@ public class AgainstActivity extends BaseActivity {
                         btnAnswer2.setTextColor(Color.parseColor("#D1D1D1"));
                         btnAnswer3.setTextColor(Color.parseColor("#D1D1D1"));
 
-                        Animation alphaAnimation = new AlphaAnimation(1, 0);
-                        alphaAnimation.setDuration(400);
-                        alphaAnimation.setInterpolator(new LinearInterpolator());
-                        alphaAnimation.setRepeatCount(2);
-                        alphaAnimation.setRepeatMode(Animation.REVERSE);
-                        ivHeadMine.startAnimation(alphaAnimation);
-                        tvMineScore.startAnimation(alphaAnimation);
-
                         //用户选项信息
                         userOptionId = String.valueOf(option.getId());
                         userCont = applyAnswer.getTimeout() - Double.valueOf(tvCountdown_main.getText().toString());
                         user_isSelect = true;
 
-//                        if (timeConsuming == -1.0) {
-//
-//                        } else {
-//
-//                            if (robot_isSelcet == true) {  //机器人答过
-//
-//                                handler1.removeCallbacks(runnable);
-//
-//                                //双方都错
-//                                if (user_checked == 2 && !answerId.equals(oks)) {
-//                                    if (oksIndex.equals("0")) {
-//                                        btnAnswer1.setTextColor(Color.parseColor("#41B1EF"));
-//                                        btn1LeftIv.setImageResource(R.mipmap.lanse);
-//                                        tvSelectA.setTextColor(Color.parseColor("#ffffff"));
-//                                    } else if (oksIndex.equals("1")) {
-//                                        btnAnswer2.setTextColor(Color.parseColor("#41B1EF"));
-//                                        btn2LeftIv.setImageResource(R.mipmap.lanse);
-//                                        tvSelectB.setTextColor(Color.parseColor("#ffffff"));
-//                                    } else if (oksIndex.equals("2")) {
-//                                        btnAnswer3.setTextColor(Color.parseColor("#41B1EF"));
-//                                        btn3LeftIv.setImageResource(R.mipmap.lanse);
-//                                        tvSelectC.setTextColor(Color.parseColor("#ffffff"));
-//                                    } else if (oksIndex.equals("3")) {
-//                                        btnAnswer4.setTextColor(Color.parseColor("#41B1EF"));
-//                                        btn4LeftIv.setImageResource(R.mipmap.lanse);
-//                                        tvSelectD.setTextColor(Color.parseColor("#ffffff"));
-//                                    }
-//                                }
-//
-//                                //显示机器人选项
-//                                if (answer.equals("0")) {
-//                                    tvSelectA.setTextColor(Color.parseColor("#ffffff"));
-//                                    if (answerId.equals(oks) && user_checked == 2) {
-//                                        btn1LeftIv.setImageResource(R.mipmap.lanse);
-//                                        btnAnswer1.setTextColor(Color.parseColor("#41B1EF"));
-//                                    } else {
-//                                        btn1LeftIv.setImageResource(R.mipmap.hongse);
-//                                        btnAnswer1.setTextColor(Color.parseColor("#F16F77"));
-//                                    }
-//                                } else if (answer.equals("1")) {
-//                                    tvSelectB.setTextColor(Color.parseColor("#ffffff"));
-//                                    if (answerId.equals(oks) && user_checked == 2) {
-//                                        btn2LeftIv.setImageResource(R.mipmap.lanse);
-//                                        btnAnswer2.setTextColor(Color.parseColor("#41B1EF"));
-//                                    } else {
-//                                        btn2LeftIv.setImageResource(R.mipmap.hongse);
-//                                        btnAnswer2.setTextColor(Color.parseColor("#F16F77"));
-//                                    }
-//                                } else if (answer.equals("2")) {
-//                                    tvSelectC.setTextColor(Color.parseColor("#ffffff"));
-//                                    if (answerId.equals(oks) && user_checked == 2) {
-//                                        btn3LeftIv.setImageResource(R.mipmap.lanse);
-//                                        btnAnswer3.setTextColor(Color.parseColor("#41B1EF"));
-//                                    } else {
-//                                        btn3LeftIv.setImageResource(R.mipmap.hongse);
-//                                        btnAnswer3.setTextColor(Color.parseColor("#F16F77"));
-//                                    }
-//                                }
-//
-//                                // 延时一定时间后进入下一题: 等待5毫秒
-//                                handler.postDelayed(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        ++position;
-//                                        nextReplyQuestion();
-//                                    }
-//                                }, 1000);
-//
-//                            }
-//                        }
                     }
 
                 }
@@ -1416,110 +1142,6 @@ public class AgainstActivity extends BaseActivity {
 
     private boolean user_isSelect = false;
 
-
-    private Handler handler1 = new Handler();
-
-    Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            //用户已答 机器人已答
-            if (user_isSelect == true && robot_isSelcet == true) {
-                String oks = "";
-                oks = questionsBeans.get(position).getOks();
-                //私钥解密
-                try {
-                    PrivateKey private_key = RSAUtils.loadPrivateKey(AppConst.private_key);
-                    byte[] decryptByte = RSAUtils.decryptDataPrivateKey(Base64Utils.decode(oks), private_key);
-                    oks = new String(decryptByte);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                String oksIndex = "";
-                oksIndex = questionsBeans.get(position).getOksIndex();
-                //私钥解密
-                try {
-                    PrivateKey private_key = RSAUtils.loadPrivateKey(AppConst.private_key);
-                    byte[] decryptByte = RSAUtils.decryptDataPrivateKey(Base64Utils.decode(oksIndex), private_key);
-                    oksIndex = new String(decryptByte);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                //显示正确答案
-                if (user_checked == 2 && !answerId.equals(oks)) {
-                    if (oksIndex.equals("0")) {
-                        btnAnswer1.setTextColor(Color.parseColor("#41B1EF"));
-                        btn1LeftIv.setImageResource(R.mipmap.lanse);
-                        tvSelectA.setTextColor(Color.parseColor("#ffffff"));
-                    } else if (oksIndex.equals("1")) {
-                        btnAnswer2.setTextColor(Color.parseColor("#41B1EF"));
-                        btn2LeftIv.setImageResource(R.mipmap.lanse);
-                        tvSelectB.setTextColor(Color.parseColor("#ffffff"));
-                    } else if (oksIndex.equals("2")) {
-                        btnAnswer3.setTextColor(Color.parseColor("#41B1EF"));
-                        btn3LeftIv.setImageResource(R.mipmap.lanse);
-                        tvSelectC.setTextColor(Color.parseColor("#ffffff"));
-                    } else if (oksIndex.equals("3")) {
-                        btnAnswer4.setTextColor(Color.parseColor("#41B1EF"));
-                        btn4LeftIv.setImageResource(R.mipmap.lanse);
-                        tvSelectD.setTextColor(Color.parseColor("#ffffff"));
-                    }
-                }
-
-                //显示机器人选项
-                if (answer.equals("0")) {
-                    tvSelectA.setTextColor(Color.parseColor("#ffffff"));
-                    if (answerId.equals(oks)) {
-                        btn1LeftIv.setImageResource(R.mipmap.lanse);
-                        btnAnswer1.setTextColor(Color.parseColor("#41B1EF"));
-                    } else {
-                        btn1LeftIv.setImageResource(R.mipmap.hongse);
-                        btnAnswer1.setTextColor(Color.parseColor("#F16F77"));
-                    }
-                } else if (answer.equals("1")) {
-                    tvSelectB.setTextColor(Color.parseColor("#ffffff"));
-                    if (answerId.equals(oks)) {
-                        btn2LeftIv.setImageResource(R.mipmap.lanse);
-                        btnAnswer2.setTextColor(Color.parseColor("#41B1EF"));
-                    } else {
-                        btn2LeftIv.setImageResource(R.mipmap.hongse);
-                        btnAnswer2.setTextColor(Color.parseColor("#F16F77"));
-                    }
-                } else if (answer.equals("2")) {
-                    tvSelectC.setTextColor(Color.parseColor("#ffffff"));
-                    if (answerId.equals(oks)) {
-                        btn3LeftIv.setImageResource(R.mipmap.lanse);
-                        btnAnswer3.setTextColor(Color.parseColor("#41B1EF"));
-                    } else {
-                        btn3LeftIv.setImageResource(R.mipmap.hongse);
-                        btnAnswer3.setTextColor(Color.parseColor("#F16F77"));
-                    }
-                } else if (answer.equals("3")) {
-                    tvSelectD.setTextColor(Color.parseColor("#ffffff"));
-                    if (answerId.equals(oks)) {
-                        btn4LeftIv.setImageResource(R.mipmap.lanse);
-                        btnAnswer4.setTextColor(Color.parseColor("#41B1EF"));
-                    } else {
-                        btn4LeftIv.setImageResource(R.mipmap.hongse);
-                        btnAnswer4.setTextColor(Color.parseColor("#F16F77"));
-                    }
-                }
-
-                // 延时一定时间后进入下一题: 等待5毫秒
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        ++position;
-                        nextReplyQuestion();
-                        handler1.removeCallbacks(runnable);
-                    }
-                }, 500);
-
-            }
-            handler1.postDelayed(runnable, 2000);
-        }
-    };
 
     private void getRobotAgainst(final RobotInputAgainstBean robotInputAgainstBean) {
         ApiService apiService = BasePresenter.create(8000);
@@ -1550,17 +1172,8 @@ public class AgainstActivity extends BaseActivity {
                                     @Override
                                     public void run() {
                                         robot_isSelcet = true;
-                                        Animation alphaAnimation = new AlphaAnimation(1, 0);
-                                        alphaAnimation.setDuration(400);
-                                        alphaAnimation.setInterpolator(new LinearInterpolator());
-                                        alphaAnimation.setRepeatCount(2);
-                                        alphaAnimation.setRepeatMode(Animation.REVERSE);
-                                        ivHeadIt.startAnimation(alphaAnimation);
-                                        tvItScore.startAnimation(alphaAnimation);
                                     }
                                 }, (int) robotShowBean.getTimeConsuming() * 1000);
-
-//                                handler1.post(runnable);
 
                                 if (last == 1) {   //最后一题
 
