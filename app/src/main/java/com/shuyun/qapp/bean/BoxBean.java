@@ -29,6 +29,7 @@ public class BoxBean implements Parcelable {
     private short upcomming = 0; // 是否快过期，1表示快过期了
     private double amount; // 奖品价值
     private String h5Url;
+    private String isRealName;//是否实名认证
 
     protected BoxBean(Parcel in) {
         count = in.readInt();
@@ -66,6 +67,14 @@ public class BoxBean implements Parcelable {
             return new BoxBean[size];
         }
     };
+
+    public String getIsRealName() {
+        return isRealName;
+    }
+
+    public void setIsRealName(String isRealName) {
+        this.isRealName = isRealName;
+    }
 
     public String getH5Url() {
         return h5Url;

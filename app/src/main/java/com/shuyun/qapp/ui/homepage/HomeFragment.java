@@ -753,6 +753,14 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                                             } else {
                                             }
                                         } else {
+                                            //是否实名认证
+                                            if (!EncodeAndStringTool.isStringEmpty(boxBean.getIsRealName())) {
+                                                if (boxBean.getIsRealName().equals("true")) {
+                                                    SaveUserInfo.getInstance(mContext).setUserInfo("cert", "1");
+                                                } else {
+                                                    SaveUserInfo.getInstance(mContext).setUserInfo("cert", "0");
+                                                }
+                                            }
                                             ivBx.setVisibility(View.VISIBLE);
                                             TranslateAnimation animation = new TranslateAnimation(5, -5, 0, 0);
                                             animation.setInterpolator(new OvershootInterpolator());
