@@ -1045,6 +1045,7 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
         View view = inflater.inflate(R.layout.open_activity_popup, null);
         RoundImageView iv_bg = view.findViewById(R.id.iv_bg);
         RelativeLayout rl_close = view.findViewById(R.id.rl_close);
+        RelativeLayout rl_all = view.findViewById(R.id.rl_open_notification);
         Button btn_enter = view.findViewById(R.id.btn_enter);
         try {
             //背景图
@@ -1074,6 +1075,42 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
             }
         });
         btn_enter.setOnClickListener(new OnMultiClickListener() {
+            @Override
+            public void onMultiClick(View v) {
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
+                    if (configDialogBean.getBtnAction().equals("action.group")) {
+                        //题组
+                        Intent intent = new Intent(mContext, WebAnswerActivity.class);
+                        intent.putExtra("groupId", Integer.parseInt(configDialogBean.getContent()));
+                        intent.putExtra("h5Url", configDialogBean.getH5Url());
+                        startActivity(intent);
+                    } else if (configDialogBean.getBtnAction().equals("action.real")) {
+                        //实名认证
+                        startActivity(new Intent(mContext, RealNameAuthActivity.class));
+                    } else if (configDialogBean.getBtnAction().equals("action.h5")) {
+                        //h5页面
+                        Intent intent = new Intent(mContext, WebBannerActivity.class);
+                        intent.putExtra("url", configDialogBean.getH5Url());
+                        intent.putExtra("name", "全民共进");//名称 标题
+                        startActivity(intent);
+                    } else if (configDialogBean.getBtnAction().equals("action.invite")) {
+                        //邀请
+                        Intent intent = new Intent();
+                        intent.setClass(mContext, SharedPrzieActivity.class);
+                        intent.putExtra("h5Url", configDialogBean.getH5Url());
+                        startActivity(intent);
+                    } else if (configDialogBean.getBtnAction().equals("action.integral")) {
+                        //积分兑换
+                        startActivity(new Intent(mContext, IntegralExchangeActivity.class));
+                    } else if (configDialogBean.getBtnAction().equals("action.answer.against")) {
+                        //答题对战
+                        startActivity(new Intent(mContext, MainAgainstActivity.class));
+                    }
+                }
+            }
+        });
+        rl_all.setOnClickListener(new OnMultiClickListener() {
             @Override
             public void onMultiClick(View v) {
                 if (dialog.isShowing()) {

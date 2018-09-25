@@ -15,15 +15,15 @@ import android.widget.Toast;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.google.gson.Gson;
-import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.R;
+import com.shuyun.qapp.base.BaseActivity;
+import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.InputVerficationCodeBean;
 import com.shuyun.qapp.bean.LoginResponse;
-import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
@@ -73,6 +73,8 @@ public class BindPhoneNumActivity extends BaseActivity {
     RelativeLayout ivBack;//返回键
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle;//标题
+    @BindView(R.id.ll_agree_text)
+    LinearLayout llAgreeText;
     private String sn;
     /**
      * 微信登录成功返回值
@@ -92,12 +94,16 @@ public class BindPhoneNumActivity extends BaseActivity {
         return R.layout.activity_bind_phone_num;
     }
 
-    @OnClick({R.id.iv_back, R.id.btn_get_code1, R.id.btn_confirm})
+    @OnClick({R.id.iv_back, R.id.btn_get_code1, R.id.btn_confirm, R.id.ll_agree_text})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 startActivity(new Intent(this, LoginActivity.class));
                 finish();
+                break;
+            case R.id.ll_agree_text:
+                //跳转到协议界面
+                startActivity(new Intent(this, UserAgreementActivity.class));
                 break;
             case R.id.btn_get_code1:
                 String phoneNum = etPhoneNumber.getText().toString().trim();

@@ -193,7 +193,11 @@ public class CashWithdrawalActivity extends BaseActivity {
                 SharedPrefrenceTool.put(CashWithdrawalActivity.this, "spName", name);
                 String[] reds = new String[]{};//针对哪几个红包提现,多个红包id用逗号分隔
                 inputWithdrawalbean = new InputWithdrawalbean(moneyNumber, 1, alipayAccount, name, reds);
-                if (myCash >= 50 && money < myCash && !EncodeAndStringTool.isStringEmpty(alipayAccount) && !EncodeAndStringTool.isStringEmpty(name) && !EncodeAndStringTool.isStringEmpty(moneyNumber)) {
+                if (myCash >= 50
+                        && money <= myCash
+                        && !EncodeAndStringTool.isStringEmpty(alipayAccount)
+                        && !EncodeAndStringTool.isStringEmpty(name)
+                        && !EncodeAndStringTool.isStringEmpty(moneyNumber)) {
                     CustomLoadingFactory factory = new CustomLoadingFactory();
                     LoadingBar.make(llMain, factory).show();
                     new Handler().postDelayed(new Runnable() {
