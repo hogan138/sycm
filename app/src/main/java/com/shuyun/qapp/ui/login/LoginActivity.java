@@ -211,6 +211,13 @@ public class LoginActivity extends BaseActivity {
                 }
                 break;
             case R.id.tv_verify_login:
+                if (!EncodeAndStringTool.isStringEmpty(etPhoneNumber.getText().toString())) {
+                    if (RegularTool.isMobileExact(etPhoneNumber.getText().toString())) {
+                        SaveUserInfo.getInstance(LoginActivity.this).setUserInfo("login_phone", etPhoneNumber.getText().toString());
+                    } else {
+                        SaveUserInfo.getInstance(LoginActivity.this).setUserInfo("login_phone", "");
+                    }
+                }
                 Intent intent2 = new Intent(LoginActivity.this, RegisterPhoneActivity.class);
                 intent2.putExtra("name", "login");
                 startActivity(intent2);
@@ -221,6 +228,13 @@ public class LoginActivity extends BaseActivity {
                 startActivity(intent1);
                 break;
             case R.id.tv_forget_pwd:
+                if (!EncodeAndStringTool.isStringEmpty(etPhoneNumber.getText().toString())) {
+                    if (RegularTool.isMobileExact(etPhoneNumber.getText().toString())) {
+                        SaveUserInfo.getInstance(LoginActivity.this).setUserInfo("login_phone", etPhoneNumber.getText().toString());
+                    } else {
+                        SaveUserInfo.getInstance(LoginActivity.this).setUserInfo("login_phone", "");
+                    }
+                }
                 Intent intent = new Intent(LoginActivity.this, RegisterPhoneActivity.class);
                 intent.putExtra("name", "changePwd");
                 startActivity(intent);

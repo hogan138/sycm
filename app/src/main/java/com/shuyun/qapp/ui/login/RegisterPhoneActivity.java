@@ -22,6 +22,7 @@ import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.RegularTool;
+import com.shuyun.qapp.utils.SaveUserInfo;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,10 +62,19 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
             tvTitle.setText("新用户注册");
         } else if ("login".equals(getIntent().getStringExtra("name"))) {
             tvTitle.setText("输入手机号");
-//            llAgreeText.setVisibility(View.GONE);
+            String phone = SaveUserInfo.getInstance(RegisterPhoneActivity.this).getUserInfo("login_phone");
+            if (!EncodeAndStringTool.isStringEmpty(phone)) {
+                etPhoneNumber.setText(phone);
+                etPhoneNumber.setSelection(etPhoneNumber.length());
+            }
         } else if ("changePwd".equals(getIntent().getStringExtra("name"))) {
             tvTitle.setText("输入手机号");
             llAgreeText.setVisibility(View.GONE);
+            String phone = SaveUserInfo.getInstance(RegisterPhoneActivity.this).getUserInfo("login_phone");
+            if (!EncodeAndStringTool.isStringEmpty(phone)) {
+                etPhoneNumber.setText(phone);
+                etPhoneNumber.setSelection(etPhoneNumber.length());
+            }
         }
         clearEditText(etPhoneNumber, ivClearPhoneNum);
     }
