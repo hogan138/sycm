@@ -58,6 +58,8 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
 
         MyActivityManager.getInstance().pushOneActivity(this);
 
+        clearEditText(etPhoneNumber, ivClearPhoneNum);
+
         if ("register".equals(getIntent().getStringExtra("name"))) {
             tvTitle.setText("新用户注册");
         } else if ("login".equals(getIntent().getStringExtra("name"))) {
@@ -76,7 +78,7 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
                 etPhoneNumber.setSelection(etPhoneNumber.length());
             }
         }
-        clearEditText(etPhoneNumber, ivClearPhoneNum);
+
     }
 
     @Override
