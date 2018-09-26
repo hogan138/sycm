@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="@string/register_tip"
+            android:text="@string/bind_phone_tip"
             android:textColor="@color/login_text"
             android:textSize="@dimen/text_12" />
 

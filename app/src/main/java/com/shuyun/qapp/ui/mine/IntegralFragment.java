@@ -121,15 +121,7 @@ public class IntegralFragment extends Fragment {
                                 ivEmpty.setVisibility(View.GONE);
                                 if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {//首次加載||下拉刷新
                                     accountBeanList.clear();
-                                    for (int i = 0; i < accountBeanList1.size(); i++) {
-                                        AccountBean accountBean = new AccountBean();
-                                        accountBean.setSource(accountBeanList1.get(i).getSource());
-                                        accountBean.setAmount(accountBeanList1.get(i).getAmount());
-                                        accountBean.setStatus(accountBeanList1.get(i).getStatus());
-                                        accountBean.setTime(accountBeanList1.get(i).getTime());
-                                        accountBean.setWay(accountBeanList1.get(i).getWay());
-                                        accountBeanList.add(accountBean);
-                                    }
+                                    accountBeanList.addAll(accountBeanList1);
                                     rvAccountRecord.setAdapter(recordAdapter);
                                     refreshLayout.finishRefresh();
                                     refreshLayout.setLoadmoreFinished(false);
@@ -143,15 +135,7 @@ public class IntegralFragment extends Fragment {
                                         refreshLayout.finishLoadmore();
                                         refreshLayout.setLoadmoreFinished(true);
                                     } else {
-                                        for (int i = 0; i < accountBeanList1.size(); i++) {
-                                            AccountBean accountBean = new AccountBean();
-                                            accountBean.setSource(accountBeanList1.get(i).getSource());
-                                            accountBean.setAmount(accountBeanList1.get(i).getAmount());
-                                            accountBean.setStatus(accountBeanList1.get(i).getStatus());
-                                            accountBean.setTime(accountBeanList1.get(i).getTime());
-                                            accountBean.setWay(accountBeanList1.get(i).getWay());
-                                            accountBeanList.add(accountBean);
-                                        }
+                                        accountBeanList.addAll(accountBeanList1);
                                         recordAdapter.notifyDataSetChanged();
                                         refreshLayout.finishLoadmore();
                                         refreshLayout.setLoadmoreFinished(false);

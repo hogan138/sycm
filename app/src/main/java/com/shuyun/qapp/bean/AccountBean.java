@@ -25,6 +25,15 @@ public class AccountBean {
     private String amount;
     private int status;//流水状态
     private String time;//流水时间
+    private String name;//名称
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public void setSource(int source) {
         this.source = source;

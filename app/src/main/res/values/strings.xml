@@ -116,6 +116,7 @@
     <string name="login_tip">打开知识宝藏</string>
     <string name="next">下一步</string>
     <string name="register_tip">点击“下一步”即表示同意协议:</string>
+    <string name="bind_phone_tip">点击“确定”即表示同意协议:</string>
     <string name="agree_text">《服务协议》</string>
     <string name="verify_text">验证码已发送手机至</string>
     <string name="verify_tip">由于近期运营商调整了短信发送规则，可能造成信息发送延迟。如果您长时间未收到验证短信，请尝试重新发送</string>

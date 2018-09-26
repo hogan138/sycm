@@ -12,6 +12,7 @@ import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.AccountBean;
 
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.TimeTool;
 
 import java.util.List;
@@ -46,31 +47,43 @@ public class AccountRecordAdapter extends RecyclerView.Adapter<AccountRecordAdap
     }
 
     @Override
-    public AccountRecordAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = layoutInflater.inflate(R.layout.account_record_item, parent, false);
-        AccountRecordAdapter.ViewHolder holder = new AccountRecordAdapter.ViewHolder(view);
+        ViewHolder holder = new ViewHolder(view);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(AccountRecordAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         AccountBean accountBean = accountRecordBeans.get(position);
         if (type == AppConst.ACCOUNT_INTEGRAL_TYPE) { //积分
             holder.ivStatus.setVisibility(View.GONE);
-            if (accountBean.getSource() == 5) {
-                holder.tvName.setText("答题对战");
-            } else if (1 == accountBean.getWay()) {
-                holder.tvName.setText("拆宝箱");
-            } else if (accountBean.getSource() == 6) {
-                holder.tvName.setText("积分夺宝");
+            if (!EncodeAndStringTool.isStringEmpty(accountBean.getName())) {
+                holder.tvName.setText(accountBean.getName());
             } else {
-                holder.tvName.setText("积分抽奖");
+                if (accountBean.getSource() == 5) {
+                    holder.tvName.setText("答题对战");
+                } else if (1 == accountBean.getWay()) {
+                    holder.tvName.setText("拆宝箱");
+                } else if (accountBean.getSource() == 6) {
+                    holder.tvName.setText("积分夺宝");
+                } else {
+                    holder.tvName.setText("积分抽奖");
+                }
             }
         } else if (type == AppConst.ACCOUNT_CASH_TYPE) {  //现金提现
             if (1 == accountBean.getWay()) {
-                holder.tvName.setText("拆宝箱");
+                if (!EncodeAndStringTool.isStringEmpty(accountBean.getName())) {
+                    holder.tvName.setText(accountBean.getName());
+                } else {
+                    holder.tvName.setText("拆宝箱");
+                }
                 if (3 == accountBean.getSource()) {
-                    holder.tvName.setText("提现");
+                    if (!EncodeAndStringTool.isStringEmpty(accountBean.getName())) {
+                        holder.tvName.setText(accountBean.getName());
+                    } else {
+                        holder.tvName.setText("提现");
+                    }
                     holder.ivStatus.setVisibility(View.VISIBLE);
                     holder.ivStatus.setImageResource(R.mipmap.fail);//
                     holder.tvName.setTextColor(context.getResources().getColor(R.color.color_15));
@@ -79,7 +92,11 @@ public class AccountRecordAdapter extends RecyclerView.Adapter<AccountRecordAdap
                 }
                 holder.ivStatus.setVisibility(View.GONE);
             } else if (2 == accountBean.getWay()) {
-                holder.tvName.setText("提现");
+                if (!EncodeAndStringTool.isStringEmpty(accountBean.getName())) {
+                    holder.tvName.setText(accountBean.getName());
+                } else {
+                    holder.tvName.setText("提现");
+                }
                 if (1 == accountBean.getStatus()) {
                     holder.ivStatus.setVisibility(View.VISIBLE);
                     holder.ivStatus.setImageResource(R.mipmap.audit);//审核中
