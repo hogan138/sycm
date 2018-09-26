@@ -79,6 +79,7 @@ import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.GlideUtils;
 import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.NotificationsUtils;
 import com.shuyun.qapp.utils.OnMultiClickListener;
@@ -665,31 +666,38 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                                         groupClassifyBean5 = groupClassifyBeans.get(5);
                                         groupClassifyBean6 = groupClassifyBeans.get(6);
                                         if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean0)) {
-                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean0.getPicture(), ivGroupIcon01, 0);
+//                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean0.getPicture(), ivGroupIcon01, 0);
+                                            GlideUtils.LoadCircleImage(mContext, groupClassifyBean0.getPicture(), ivGroupIcon01);
                                             tvGroupName01.setText(groupClassifyBean0.getName());
                                         }
                                         if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean1)) {
-                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean1.getPicture(), ivGroupIcon02, 0);
+//                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean1.getPicture(), ivGroupIcon02, 0);
+                                            GlideUtils.LoadCircleImage(mContext, groupClassifyBean1.getPicture(), ivGroupIcon02);
                                             tvGroupName02.setText(groupClassifyBean1.getName());
                                         }
                                         if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean2)) {
-                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean2.getPicture(), ivGroupIcon03, 0);
+//                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean2.getPicture(), ivGroupIcon03, 0);
+                                            GlideUtils.LoadCircleImage(mContext, groupClassifyBean2.getPicture(), ivGroupIcon03);
                                             tvGroupName03.setText(groupClassifyBean2.getName());
                                         }
                                         if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean3)) {
-                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean3.getPicture(), ivGroupIcon04, 0);
+//                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean3.getPicture(), ivGroupIcon04, 0);
+                                            GlideUtils.LoadCircleImage(mContext, groupClassifyBean3.getPicture(), ivGroupIcon04);
                                             tvGroupName04.setText(groupClassifyBean3.getName());
                                         }
                                         if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean4)) {
-                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean4.getPicture(), ivGroupIcon05, 0);
+//                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean4.getPicture(), ivGroupIcon05, 0);
+                                            GlideUtils.LoadCircleImage(mContext, groupClassifyBean4.getPicture(), ivGroupIcon05);
                                             tvGroupName05.setText(groupClassifyBean4.getName());
                                         }
                                         if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean5)) {
-                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean5.getPicture(), ivGroupIcon06, 0);
+//                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean5.getPicture(), ivGroupIcon06, 0);
+                                            GlideUtils.LoadCircleImage(mContext, groupClassifyBean5.getPicture(), ivGroupIcon06);
                                             tvGroupName06.setText(groupClassifyBean5.getName());
                                         }
                                         if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean6)) {
-                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean6.getPicture(), ivGroupIcon07, 0);
+//                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean6.getPicture(), ivGroupIcon07, 0);
+                                            GlideUtils.LoadCircleImage(mContext, groupClassifyBean6.getPicture(), ivGroupIcon07);
                                             tvGroupName07.setText(groupClassifyBean6.getName());
                                         }
                                         ivMore.setImageResource(R.mipmap.more);

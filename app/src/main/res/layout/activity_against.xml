@@ -38,6 +38,7 @@
                     android:textSize="@dimen/text_18" />
 
                 <RelativeLayout
+                    android:id="@+id/rl_A"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -82,6 +83,7 @@
                     android:layout_height="15dp" />
 
                 <RelativeLayout
+                    android:id="@+id/rl_B"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -125,6 +127,7 @@
                     android:layout_height="15dp" />
 
                 <RelativeLayout
+                    android:id="@+id/rl_C"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -168,6 +171,7 @@
                     android:layout_height="15dp" />
 
                 <RelativeLayout
+                    android:id="@+id/rl_D"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/text_33">

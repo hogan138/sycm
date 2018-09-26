@@ -141,6 +141,14 @@ public class AgainstActivity extends BaseActivity {
     RelativeLayout rlRightBg;
     @BindView(R.id.iv_bottom)
     ImageView ivBottom;
+    @BindView(R.id.rl_A)
+    RelativeLayout rlA;  //选项A
+    @BindView(R.id.rl_B)
+    RelativeLayout rlB; //选项B
+    @BindView(R.id.rl_C)
+    RelativeLayout rlC; //选项C
+    @BindView(R.id.rl_D)
+    RelativeLayout rlD; //选项D
     /**
      * 申请答题返回数据
      */
@@ -1279,6 +1287,8 @@ public class AgainstActivity extends BaseActivity {
                                             rlSelectC.setVisibility(View.VISIBLE);
                                             rlSelectD.setVisibility(View.VISIBLE);
                                         }
+
+                                        //动画
 
                                         //清除所有选中项
                                         removeSelect();
