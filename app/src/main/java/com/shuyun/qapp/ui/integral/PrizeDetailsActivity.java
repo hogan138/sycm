@@ -40,7 +40,7 @@ import com.shuyun.qapp.bean.PrizeDetailBean;
 import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.ui.webview.WebPrizeFragment;
+import com.shuyun.qapp.ui.webview.WebDetailFragment;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.CustomLoadingFactory;
@@ -166,7 +166,7 @@ public class PrizeDetailsActivity extends BaseActivity implements View.OnClickLi
 
     private void initFragment() {
         mFragmentList = new ArrayList<>();
-        mFragmentList.add(new WebPrizeFragment());
+        mFragmentList.add(new WebDetailFragment());
         mFragmentList.add(new PrizeHistoryFragment());
     }
 

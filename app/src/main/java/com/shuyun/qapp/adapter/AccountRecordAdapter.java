@@ -23,7 +23,6 @@ import butterknife.ButterKnife;
 import static com.shuyun.qapp.utils.TimeTool.FORMAT_DATE_TIME_SECOND;
 
 /**
- * Created by sunxiao on 2018/5/4.
  * 现金账户和积分账户流水 adapter
  */
 
@@ -32,9 +31,6 @@ public class AccountRecordAdapter extends RecyclerView.Adapter<AccountRecordAdap
     private int type;
     private Context context;
     private LayoutInflater layoutInflater;
-
-    public AccountRecordAdapter() {
-    }
 
     private List<AccountBean> accountRecordBeans;
 

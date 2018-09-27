@@ -33,7 +33,7 @@ import butterknife.Unbinder;
 /**
  * 宝贝详情h5
  */
-public class WebPrizeFragment extends Fragment {
+public class WebDetailFragment extends Fragment {
 
     Unbinder unbinder;
     @BindView(R.id.webView_prize)
