@@ -372,8 +372,8 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
             settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
         if (!EncodeAndStringTool.isStringEmpty(h5Url)) {
-//            wvAnswerHome.loadUrl(h5Url);
-            wvAnswerHome.loadUrl("http://192.168.191.1:8080");
+            wvAnswerHome.loadUrl(h5Url);
+//            wvAnswerHome.loadUrl("http://192.168.191.1:8080");
         } else {
             wvAnswerHome.loadUrl(AppConst.ANSWER);
         }
