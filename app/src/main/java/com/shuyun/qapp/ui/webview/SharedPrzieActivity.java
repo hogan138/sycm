@@ -208,6 +208,23 @@ public class SharedPrzieActivity extends BaseActivity implements CommonPopupWind
         public JsInteration() {
         }
 
+        /**
+         * 头部标题
+         *
+         * @param page  是否显示分享图标1:显示;其他值不显示
+         * @param title 标题
+         * @param id    答题Id
+         */
+        @JavascriptInterface
+        public void header(final int page, final String title, String id) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    tvCommonTitle.setText(title);
+                }
+            });
+        }
+
         @JavascriptInterface
         public String sendKey() {
             AuthHeader authHeader = new AuthHeader();
