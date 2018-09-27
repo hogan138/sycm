@@ -1,4 +1,4 @@
-package com.shuyun.qapp.ui.mine;
+package com.shuyun.qapp.ui.webview;
 
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;

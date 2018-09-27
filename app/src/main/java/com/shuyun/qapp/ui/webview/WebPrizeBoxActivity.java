@@ -1,24 +1,26 @@
-package com.shuyun.qapp.ui.homepage;
+package com.shuyun.qapp.ui.webview;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.support.animation.SpringAnimation;
 import android.support.animation.SpringForce;
-import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -26,30 +28,38 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.TimeUtils;
 import com.google.gson.Gson;
-import com.shuyun.qapp.net.MyApplication;
+import com.ishumei.smantifraud.SmAntiFraud;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.bean.AuthHeader;
-import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.bean.SharedBean;
-import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.base.BasePresenter;
+import com.shuyun.qapp.bean.BoxBean;
+import com.shuyun.qapp.bean.DataResponse;
+import com.shuyun.qapp.bean.MinePrize;
+import com.shuyun.qapp.bean.SharedBean;
+import com.shuyun.qapp.bean.WebAnswerHomeBean;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.MyApplication;
+import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
+import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
+import com.shuyun.qapp.ui.mine.RedWithDrawActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.OnMultiClickListener;
-import com.shuyun.qapp.utils.PermissionsChecker;
 import com.shuyun.qapp.utils.SaveErrorTxt;
+import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ScannerUtils;
-import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,18 +69,23 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+public class WebPrizeBoxActivity extends BaseActivity implements CommonPopupWindow.ViewInterface {
 
-public class SharedPrzieActivity extends BaseActivity implements CommonPopupWindow.ViewInterface {
-
-    //   和H5交互 https://www.jianshu.com/p/a25907862523
-    @BindView(R.id.wv_shared_prize)
-    WebView wvSharedPrize;
-    @BindView(R.id.fl_share)
-    RelativeLayout flShare;
+    WebAnswerHomeBean answerHomeBean = new WebAnswerHomeBean();
+    @BindView(R.id.iv_left_back)
+    ImageView ivLeftBack;
     @BindView(R.id.iv_back)
-    RelativeLayout ivBack;//返回
+    RelativeLayout ivBack;
     @BindView(R.id.tv_common_title)
-    TextView tvCommonTitle;//标题
+    TextView tvCommonTitle;
+    @BindView(R.id.wv_prize_box)
+    WebView wvPrizeBox;
+    @BindView(R.id.ll_web_box)
+    LinearLayout llWebBox;
+    private MinePrize minePrize;
+
+    private BoxBean boxBean;
+
     /**
      * 1:微信朋友圈
      * 2:微信好友
@@ -78,14 +93,6 @@ public class SharedPrzieActivity extends BaseActivity implements CommonPopupWind
     private static int SHARE_CHANNEL;
     private static final int SHARE_SECCEED = 1;//分享成功
     private static final int SHARE_FAILURE = 2;//分享失败
-    // 发送短信所需的全部权限
-    static final String[] PERMISSIONS = new String[]{
-            android.Manifest.permission.SEND_SMS,
-    };
-    private PermissionsChecker mPermissionsChecker; // 权限检测器
-    private static final int REQUEST_CODE = 0; // 请求码
-    private static final String TAG = "SharedPrzieActivity";
-
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -106,100 +113,6 @@ public class SharedPrzieActivity extends BaseActivity implements CommonPopupWind
         }
     };
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
-        tvCommonTitle.setText("邀请有奖");
-        mPermissionsChecker = new PermissionsChecker(this);
-        WebSettings settings = wvSharedPrize.getSettings();
-        settings.setJavaScriptEnabled(true);
-        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        wvSharedPrize.addJavascriptInterface(new JsInteration(), "android");
-        /**
-         * 拦截HTML页面中的点击事件 让网页在本应用内打开
-         */
-        wvSharedPrize.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                wvSharedPrize.loadUrl(url);
-                //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
-                return true;
-
-            }
-        });
-        String h5Url = getIntent().getStringExtra("h5Url");
-        if (!EncodeAndStringTool.isStringEmpty("h5Url")) {
-            wvSharedPrize.loadUrl(h5Url);
-//            wvSharedPrize.loadUrl("http://192.168.191.1:8080/invitation?debug=1");
-        } else {
-            wvSharedPrize.loadUrl(AppConst.SHARE);
-        }
-
-
-    }
-
-    @Override
-    public int intiLayout() {
-        return R.layout.activity_shared_prize;
-    }
-
-    @OnClick({R.id.iv_back})
-    public void click(View view) {
-        switch (view.getId()) {
-            case R.id.iv_back:
-                if (wvSharedPrize.canGoBack()) {
-                    wvSharedPrize.goBack();
-                } else {
-                    super.onBackPressed();
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this); //统计时长
-        // 缺少权限时, 进入权限配置页面
-        if (mPermissionsChecker.lacksPermissions(PERMISSIONS)) {
-            startPermissionsActivity();
-        }
-
-    }
-
-    private void startPermissionsActivity() {
-        PermissionsActivity.startActivityForResult(this, REQUEST_CODE, PERMISSIONS);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // 拒绝时, 关闭页面, 缺少主要权限, 无法运行
-        if (requestCode == REQUEST_CODE && resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
-            finish();
-        }
-    }
-
-    //在activity或者fragment中添加友盟统计
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this); //统计时长
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (wvSharedPrize.canGoBack()) {
-            wvSharedPrize.goBack();
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-
     class JsInteration {
 
         private static final String TAG = "JsInteration";
@@ -208,12 +121,143 @@ public class SharedPrzieActivity extends BaseActivity implements CommonPopupWind
         }
 
         @JavascriptInterface
-        public String sendKey() {
-            AuthHeader authHeader = new AuthHeader();
-            authHeader.setAuthorization(AppConst.TOKEN);
-            authHeader.setSycm(AppConst.sycm());
-            String header = new Gson().toJson(authHeader);
-            return header.toString();
+        public String answerLogin() {
+            String answerHome = null;
+            if (!EncodeAndStringTool.isObjectEmpty(answerHomeBean)) {
+                answerHome = new Gson().toJson(answerHomeBean);
+            }
+            Log.i(TAG, answerHome.toString());
+            return answerHome.toString();
+        }
+
+        /**
+         * 我的奖品开宝箱
+         *
+         * @return
+         */
+        @JavascriptInterface
+        public String prizeData() {
+            String prizeBox = null;
+            if (!EncodeAndStringTool.isStringEmpty(getIntent().getStringExtra("main_box")) && getIntent().getStringExtra("main_box").equals("main_box")) {
+                boxBean = getIntent().getParcelableExtra("BoxBean");
+                prizeBox = new Gson().toJson(boxBean);
+            } else {
+                if (!EncodeAndStringTool.isObjectEmpty(minePrize)) {
+                    prizeBox = new Gson().toJson(minePrize);
+                }
+            }
+            Log.i(TAG, prizeBox.toString());
+            return prizeBox.toString();
+        }
+
+        /**
+         * 头部标题
+         *
+         * @param page  是否显示分享图标1:显示;其他值不显示
+         * @param title 标题
+         * @param id    答题Id
+         */
+        @JavascriptInterface
+        public void header(final int page, final String title, String id) {
+            Log.i(TAG, page + "");
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    tvCommonTitle.setText(title);
+                }
+            });
+        }
+
+        /**
+         * 衢州活动弹窗和商户引流跳外部链接
+         *
+         * @param url
+         */
+        @JavascriptInterface
+        public void openWeb(final String url) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Uri uri = Uri.parse(url);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                }
+            });
+        }
+
+        /**
+         * JS调用此方法,关闭H5页面进入App页面
+         */
+        @JavascriptInterface
+        public void closeWeb() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    finish();
+                }
+            });
+        }
+
+        /**
+         * h5页面调用网络出现错误码
+         */
+        @JavascriptInterface
+        public void newLoginDate(final String err, final String msg) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ErrorCodeTools.errorCodePrompt(WebPrizeBoxActivity.this, err, msg);
+                }
+            });
+        }
+
+        /**
+         * 开宝箱奖品跳转
+         */
+        @JavascriptInterface
+        public void gotoprize(final String prizeData) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.e("奖品返回", prizeData.toString());
+                    MinePrize minePrize = new Gson().fromJson(prizeData.toString(), MinePrize.class);
+                    if (minePrize.getActionType().equals("action.h5.url")) {
+                        //实物
+                        Intent intent = new Intent(WebPrizeBoxActivity.this, WebPrizeActivity.class);
+                        intent.putExtra("id", minePrize.getId());
+                        intent.putExtra("url", minePrize.getH5Url());
+                        intent.putExtra("name", minePrize.getName());
+                        startActivity(intent);
+                    } else if (minePrize.getActionType().equals("action.withdraw")) {
+                        //红包
+                        if (Integer.parseInt(SaveUserInfo.getInstance(WebPrizeBoxActivity.this).getUserInfo("cert")) == 1) {
+                            if (!EncodeAndStringTool.isListEmpty(minePrize.getMinePrizes())) {
+                                List<MinePrize.minePrize> redPrizeList = new ArrayList<>();
+                                for (int i = 0; i < minePrize.getMinePrizes().size(); i++) {
+                                    MinePrize.minePrize minePrize1 = minePrize.getMinePrizes().get(i);
+                                    redPrizeList.add(minePrize1);
+                                }
+                                if (!EncodeAndStringTool.isListEmpty(redPrizeList)) {
+                                    Intent intent = new Intent(WebPrizeBoxActivity.this, RedWithDrawActivity.class);
+                                    Bundle bundle = new Bundle();
+                                    bundle.putParcelableArrayList("redPrize", (ArrayList<? extends Parcelable>) redPrizeList);
+                                    bundle.putString("redId", minePrize.getId());
+                                    bundle.putString("from", "box");
+                                    intent.putExtras(bundle);
+                                    startActivity(intent);
+                                }
+                            }
+                        } else {
+                            //显示实名认证弹窗
+                            showAuthPop();
+                        }
+                    } else if (minePrize.getActionType().equals("action.bp.use")) {
+                        //积分
+                        startActivity(new Intent(WebPrizeBoxActivity.this, IntegralExchangeActivity.class));
+                    }
+                }
+            });
+
         }
 
         /**
@@ -229,72 +273,131 @@ public class SharedPrzieActivity extends BaseActivity implements CommonPopupWind
             handler.sendMessage(msg);
         }
 
-        /**
-         * 接收js返回的手机号码,调用发短信业务
-         *
-         * @param phoneNum
-         */
-        @JavascriptInterface
-        public void sms(String phoneNum) {
-            //调用发短信业务
-            doSendSMSTo(phoneNum);
+
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ButterKnife.bind(this);
+
+        Intent intent = getIntent();
+        try {
+            //我的奖品
+            minePrize = intent.getParcelableExtra("minePrize");
+            boxBean = intent.getParcelableExtra("BoxBean");
+
+        } catch (Exception e) {
+
         }
 
-        /**
-         * h5页面调用网络出现错误码
-         */
-        @JavascriptInterface
-        public void newLoginDate(final String err, final String msg) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ErrorCodeTools.errorCodePrompt(SharedPrzieActivity.this, err, msg);
+        answerHomeBean.setToken(AppConst.TOKEN);
+        answerHomeBean.setRandom(AppConst.RANDOM);
+        answerHomeBean.setV(AppConst.V);
+        answerHomeBean.setSalt(AppConst.SALT);
+        answerHomeBean.setAppSecret(AppConst.APP_KEY);
+        String deviceId = SmAntiFraud.getDeviceId();
+        answerHomeBean.setDeviceId(deviceId);
+
+        tvCommonTitle.setText("全民共进");
+        WebSettings settings = wvPrizeBox.getSettings();
+        settings.setJavaScriptEnabled(true);
+        wvPrizeBox.setWebChromeClient(new WebChromeClient());//解决答题时无法弹出dialog问题.
+        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        wvPrizeBox.addJavascriptInterface(new JsInteration(), "android");
+        // 允许混合内容 解决部分手机 加载不出https请求里面的http下的图片
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
+        if (!EncodeAndStringTool.isStringEmpty(getIntent().getStringExtra("main_box")) && getIntent().getStringExtra("main_box").equals("main_box")) {
+            if (!EncodeAndStringTool.isStringEmpty(boxBean.getH5Url())) {
+                //首页开宝箱
+                wvPrizeBox.loadUrl(boxBean.getH5Url());
+            } else {
+                //为空加载本地
+                wvPrizeBox.loadUrl(AppConst.BOX);
+            }
+        } else if (!EncodeAndStringTool.isStringEmpty(getIntent().getStringExtra("main_box")) && getIntent().getStringExtra("main_box").equals("my_prize")) {
+            if (!EncodeAndStringTool.isStringEmpty(minePrize.getH5Url())) {
+                //我的奖品开宝箱
+                wvPrizeBox.loadUrl(minePrize.getH5Url());
+            } else {
+                //为空加载本地
+                wvPrizeBox.loadUrl(AppConst.BOX);
+            }
+        }
+
+
+    }
+
+    @Override
+    public int intiLayout() {
+        return R.layout.activity_web_prize_box;
+    }
+
+    @OnClick({R.id.iv_left_back})
+    public void click(View view) {
+        switch (view.getId()) {
+            case R.id.iv_left_back:
+                if (wvPrizeBox.canGoBack()) {
+                    wvPrizeBox.goBack();
+                } else {
+                    finish();
                 }
-            });
+                break;
+            default:
+                break;
         }
     }
 
     /**
-     * 调用系统已有程序发短信功能
-     *
-     * @param phoneNumber
+     * 实名认证popupWindow
      */
-    public void doSendSMSTo(String phoneNumber) {
-        String[] smsInfo = phoneNumber.split("[$]");
-        if (PhoneNumberUtils.isGlobalPhoneNumber(smsInfo[0])) {
-            Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + smsInfo[0]));
-            intent.putExtra("sms_body", smsInfo[1]);
-            startActivity(intent);
-        }
-    }
+    CommonPopupWindow commonPopupWindow;
 
-
-    private CommonPopupWindow popupWindow;
-
-    /**
-     * 分享弹窗
-     */
-    public void showSharedPop() {
-        if ((!EncodeAndStringTool.isObjectEmpty(popupWindow)) && popupWindow.isShowing()) return;
-        View upView = LayoutInflater.from(SharedPrzieActivity.this).inflate(R.layout.share_popupwindow, null);
+    public void showAuthPop() {
+        if ((!EncodeAndStringTool.isObjectEmpty(commonPopupWindow)) && commonPopupWindow.isShowing())
+            return;
+        View upView = LayoutInflater.from(this).inflate(R.layout.real_name_auth_popupwindow, null);
         //测量View的宽高
         CommonPopUtil.measureWidthAndHeight(upView);
-        popupWindow = new CommonPopupWindow.Builder(SharedPrzieActivity.this)
-                .setView(R.layout.share_popupwindow)
-                .setWidthAndHeight(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        commonPopupWindow = new CommonPopupWindow.Builder(this)
+                .setView(R.layout.real_name_auth_popupwindow)
+                .setWidthAndHeight(upView.getMeasuredWidth(), upView.getMeasuredHeight())
                 .setBackGroundLevel(0.5f)//取值范围0.0f-1.0f 值越小越暗
                 .setOutsideTouchable(true)
-//                .setAnimationStyle(R.style.AnimUp)//设置动画
+                .setAnimationStyle(R.style.popwin_anim_style)//设置动画
                 //设置子View点击事件
                 .setViewOnclickListener(this)
                 .create();
 
-        popupWindow.showAtLocation(flShare, Gravity.BOTTOM, 0, 0);
+        commonPopupWindow.showAtLocation(llWebBox, Gravity.CENTER, 0, 0);
     }
 
     @Override
     public void getChildView(View view, int layoutResId) {
         switch (layoutResId) {
+            case R.layout.real_name_auth_popupwindow:
+                ImageView ivClose1 = (ImageView) view.findViewById(R.id.iv_close_icon1);
+                Button btnRealNameAuth = (Button) view.findViewById(R.id.btn_real_name_auth1);
+                ivClose1.setOnClickListener(new OnMultiClickListener() {
+                    @Override
+                    public void onMultiClick(View v) {
+                        if (commonPopupWindow != null && commonPopupWindow.isShowing()) {
+                            commonPopupWindow.dismiss();
+                        }
+                    }
+                });
+                btnRealNameAuth.setOnClickListener(new OnMultiClickListener() {
+                    @Override
+                    public void onMultiClick(View v) {
+                        if (commonPopupWindow != null && commonPopupWindow.isShowing()) {
+                            commonPopupWindow.dismiss();
+                        }
+                        startActivity(new Intent(WebPrizeBoxActivity.this, RealNameAuthActivity.class));
+                    }
+                });
+                break;
             case R.layout.share_popupwindow:
                 final LinearLayout ll_share = view.findViewById(R.id.ll_share);
                 SpringAnimation signUpBtnAnimY = new SpringAnimation(ll_share, SpringAnimation.TRANSLATION_Y, 0);
@@ -370,6 +473,38 @@ public class SharedPrzieActivity extends BaseActivity implements CommonPopupWind
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (wvPrizeBox.canGoBack()) {
+            wvPrizeBox.goBack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    private CommonPopupWindow popupWindow;
+
+    /**
+     * 分享弹窗
+     */
+    public void showSharedPop() {
+        if ((!EncodeAndStringTool.isObjectEmpty(popupWindow)) && popupWindow.isShowing()) return;
+        View upView = LayoutInflater.from(WebPrizeBoxActivity.this).inflate(R.layout.share_popupwindow, null);
+        //测量View的宽高
+        CommonPopUtil.measureWidthAndHeight(upView);
+        popupWindow = new CommonPopupWindow.Builder(WebPrizeBoxActivity.this)
+                .setView(R.layout.share_popupwindow)
+                .setWidthAndHeight(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                .setBackGroundLevel(0.5f)//取值范围0.0f-1.0f 值越小越暗
+                .setOutsideTouchable(true)
+//                .setAnimationStyle(R.style.AnimUp)//设置动画
+                //设置子View点击事件
+                .setViewOnclickListener(this)
+                .create();
+
+        popupWindow.showAtLocation(llWebBox, Gravity.BOTTOM, 0, 0);
+    }
+
     //创建bitmap
     public Bitmap createViewBitmap(View v) {
         Bitmap bitmap = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
@@ -410,7 +545,7 @@ public class SharedPrzieActivity extends BaseActivity implements CommonPopupWind
                             } else {
                             }
                         } else {
-                            ErrorCodeTools.errorCodePrompt(SharedPrzieActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                            ErrorCodeTools.errorCodePrompt(WebPrizeBoxActivity.this, dataResponse.getErr(), dataResponse.getMsg());
                         }
                     }
 
@@ -443,7 +578,7 @@ public class SharedPrzieActivity extends BaseActivity implements CommonPopupWind
                 //设置子View点击事件
                 .setViewOnclickListener(this)
                 .create();
-        popupWindow.showAtLocation(flShare, Gravity.CENTER, 0, 0);
+        popupWindow.showAtLocation(llWebBox, Gravity.CENTER, 0, 0);
     }
 
     /**
@@ -531,7 +666,7 @@ public class SharedPrzieActivity extends BaseActivity implements CommonPopupWind
                         if (dataResponse.isSuccees()) {
 
                         } else {
-                            ErrorCodeTools.errorCodePrompt(SharedPrzieActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                            ErrorCodeTools.errorCodePrompt(WebPrizeBoxActivity.this, dataResponse.getErr(), dataResponse.getMsg());
                         }
                     }
 
@@ -547,6 +682,4 @@ public class SharedPrzieActivity extends BaseActivity implements CommonPopupWind
                     }
                 });
     }
-
-
 }

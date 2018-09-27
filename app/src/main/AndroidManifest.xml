@@ -269,7 +269,7 @@
             android:screenOrientation="portrait" />
         <!-- 联系我们 -->
         <activity
-            android:name=".ui.mine.WebContactUsActivity"
+            android:name=".ui.webview.WebPublicActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <!-- 答题记录 -->
@@ -319,33 +319,21 @@
             android:screenOrientation="portrait" />
         <!-- 分享有奖  短信支持 -->
         <activity
-            android:name=".ui.homepage.SharedPrzieActivity"
+            android:name=".ui.webview.SharedPrzieActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <!-- 抽奖规则 -->
-        <!-- 用户信息 -->
         <activity
-            android:name=".ui.mine.WebRulesActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-        <!-- 关于我们 -->
-        <activity
-            android:name=".ui.mine.WebAboutUsActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-
-        <!-- 用户协议 -->
-        <activity
-            android:name=".ui.login.UserAgreementActivity"
+            android:name=".ui.webview.WebRulesActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <!-- banner跳转页 -->
         <activity
-            android:name=".ui.homepage.WebBannerActivity"
+            android:name=".ui.webview.WebBannerActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.mine.WebPrizeActivity"
+            android:name=".ui.webview.WebPrizeActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <!-- 更改密码 -->
@@ -412,11 +400,11 @@
             android:screenOrientation="portrait" />
         <!-- H5答题页 -->
         <activity
-            android:name=".ui.answer.WebAnswerActivity"
+            android:name=".ui.webview.WebAnswerActivity"
             android:screenOrientation="portrait" />
         <!-- H5我的奖品开宝箱页 -->
         <activity
-            android:name=".ui.mine.WebPrizeBoxActivity"
+            android:name=".ui.webview.WebPrizeBoxActivity"
             android:screenOrientation="portrait" />
         <!-- 积分兑换 -->
         <activity
@@ -441,10 +429,6 @@
         <!-- 兑换结果页 -->
         <activity
             android:name=".ui.integral.ExchangeResultActivity"
-            android:screenOrientation="portrait" />
-        <!-- 积分夺宝规则 -->
-        <activity
-            android:name=".ui.integral.WebRuleActivity"
             android:screenOrientation="portrait" />
         <!-- 注册输入手机号 -->
         <activity

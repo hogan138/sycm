@@ -24,9 +24,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.google.gson.Gson;
 import com.ishumei.smantifraud.SmAntiFraud;
@@ -46,6 +44,8 @@ import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.adapter.BxPrizeAdapter;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
+import com.shuyun.qapp.ui.webview.WebPrizeActivity;
+import com.shuyun.qapp.ui.webview.WebRulesActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;

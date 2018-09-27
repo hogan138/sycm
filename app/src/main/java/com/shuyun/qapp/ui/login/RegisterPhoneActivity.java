@@ -18,6 +18,7 @@ import com.mylhyl.circledialog.callback.ConfigDialog;
 import com.mylhyl.circledialog.params.DialogParams;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
+import com.shuyun.qapp.ui.webview.WebPublicActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
@@ -99,7 +100,9 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
                 break;
             case R.id.ll_agree_text:
                 //跳转到协议界面
-                startActivity(new Intent(this, UserAgreementActivity.class));
+                Intent i = new Intent(RegisterPhoneActivity.this, WebPublicActivity.class);
+                i.putExtra("name", "useragree");
+                startActivity(i);
                 break;
             case R.id.btn_next:
                 Intent intent = new Intent(RegisterPhoneActivity.this, VerifyCodeActivity.class);

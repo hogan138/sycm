@@ -1,4 +1,4 @@
-package com.shuyun.qapp.ui.integral;
+package com.shuyun.qapp.ui.webview;
 
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;

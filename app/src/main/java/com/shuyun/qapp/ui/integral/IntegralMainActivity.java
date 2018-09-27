@@ -26,6 +26,7 @@ import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.IntegralAllPrizeBean;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.ui.webview.WebPublicActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveErrorTxt;
@@ -124,7 +125,9 @@ public class IntegralMainActivity extends BaseActivity implements View.OnClickLi
                 finish();
                 break;
             case R.id.tv_rule:
-                startActivity(new Intent(IntegralMainActivity.this, WebRuleActivity.class));
+                Intent i = new Intent(IntegralMainActivity.this, WebPublicActivity.class);
+                i.putExtra("name", "rule");
+                startActivity(i);
                 break;
             case R.id.iv_gift_history:
                 startActivity(new Intent(IntegralMainActivity.this, OpenPrizeHistoryActivity.class));

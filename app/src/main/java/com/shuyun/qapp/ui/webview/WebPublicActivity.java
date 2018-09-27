@@ -1,4 +1,4 @@
-package com.shuyun.qapp.ui.mine;
+package com.shuyun.qapp.ui.webview;
 
 import android.Manifest;
 import android.content.Intent;
@@ -7,7 +7,6 @@ import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
@@ -18,12 +17,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.homepage.PermissionsActivity;
 import com.shuyun.qapp.utils.PermissionsChecker;
+import com.shuyun.qapp.utils.SaveUserInfo;
 import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 
@@ -33,16 +32,16 @@ import butterknife.OnClick;
 
 
 /**
- * 联系我们
+ * 公用的静态webview
  */
-public class WebContactUsActivity extends BaseActivity {
+public class WebPublicActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle;
     @BindView(R.id.wv_contact_us)
-    WebView wvContactUs;//联系我们
+    WebView wvContactUs;
     @BindView(R.id.animation_iv)
     ImageView animationIv;
 
@@ -61,7 +60,15 @@ public class WebContactUsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        tvCommonTitle.setText("联系我们");
+        if (getIntent().getStringExtra("name").equals("contanct")) {
+            tvCommonTitle.setText("联系我们");
+        } else if (getIntent().getStringExtra("name").equals("useragree")) {
+            tvCommonTitle.setText("用户协议");
+        } else if (getIntent().getStringExtra("name").equals("about")) {
+            tvCommonTitle.setText("关于我们");
+        } else if (getIntent().getStringExtra("name").equals("rule")) {
+            tvCommonTitle.setText("活动规则");
+        }
 
         animationDrawable = (AnimationDrawable) animationIv.getDrawable();
         animationDrawable.start();
@@ -112,7 +119,7 @@ public class WebContactUsActivity extends BaseActivity {
      * @param phoneNum
      */
     private void call(final String phoneNum) {
-        WebContactUsActivity.this.runOnUiThread(new Runnable() {
+        WebPublicActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 /**
@@ -120,7 +127,7 @@ public class WebContactUsActivity extends BaseActivity {
                  */
                 Intent intent = new Intent(Intent.ACTION_CALL);
                 intent.setData(Uri.parse("tel:" + phoneNum));
-                if (ActivityCompat.checkSelfPermission(WebContactUsActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(WebPublicActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
                 startActivity(intent);
@@ -138,7 +145,17 @@ public class WebContactUsActivity extends BaseActivity {
         wvContactUs.getSettings().setJavaScriptEnabled(true);
         wvContactUs.addJavascriptInterface(new JsInteration(), "android");
         wvContactUs.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-        wvContactUs.loadUrl(AppConst.CONTACT_US);
+
+        if (getIntent().getStringExtra("name").equals("contanct")) {
+            wvContactUs.loadUrl(AppConst.CONTACT_US); //联系我们
+        } else if (getIntent().getStringExtra("name").equals("useragree")) {
+            wvContactUs.loadUrl(AppConst.USER_AGREEMENT); //用户协议
+        } else if (getIntent().getStringExtra("name").equals("about")) {
+            wvContactUs.loadUrl(AppConst.ABOUT_US); //关于我们
+        } else if (getIntent().getStringExtra("name").equals("rule")) {
+            wvContactUs.loadUrl(SaveUserInfo.getInstance(WebPublicActivity.this).getUserInfo("h5_rule"));//积分夺宝规则
+        }
+
         wvContactUs.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int progress) {
                 //当进度走到100的时候做自己的操作，我这边是弹出dialog

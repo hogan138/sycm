@@ -15,9 +15,7 @@ import android.view.ViewGroup;
 import android.view.animation.LayoutAnimationController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
@@ -28,7 +26,7 @@ import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.GroupClassifyBean;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.net.ApiService;
-import com.shuyun.qapp.ui.answer.WebAnswerActivity;
+import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;

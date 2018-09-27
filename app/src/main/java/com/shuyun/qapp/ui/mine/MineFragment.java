@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
@@ -31,7 +30,6 @@ import android.widget.Toast;
 
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.TimeUtils;
-import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.R;
@@ -46,9 +44,9 @@ import com.shuyun.qapp.net.InformatListenner;
 import com.shuyun.qapp.ui.homepage.InformationActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
 import com.shuyun.qapp.receiver.MyReceiver;
+import com.shuyun.qapp.ui.webview.WebPublicActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
-import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ImageLoaderManager;
@@ -187,7 +185,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
 //        Boolean first_run = sharedPreferences.getBoolean("First", true);
 //        if (first_run) {
 //            sharedPreferences.edit().putBoolean("First", false).commit();
-            loadMineHome();
+        loadMineHome();
 //        } else {
 //        }
     }
@@ -479,7 +477,9 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                 startActivity(new Intent(mContext, SystemSettingActivity.class));
                 break;
             case R.id.rl_contact_us:
-                startActivity(new Intent(mContext, WebContactUsActivity.class));
+                Intent intent = new Intent(mContext, WebPublicActivity.class);
+                intent.putExtra("name", "contanct");
+                startActivity(intent);
                 break;
             case R.id.rl_invite_share:
                 showSharedPop();

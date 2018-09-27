@@ -1,4 +1,4 @@
-package com.shuyun.qapp.ui.answer;
+package com.shuyun.qapp.ui.webview;
 
 import android.content.Context;
 import android.content.Intent;
@@ -43,12 +43,12 @@ import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.bean.WebAnswerHomeBean;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.ui.answer.AnswerHistoryActivity;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
 import com.shuyun.qapp.ui.mine.IntegralDrawActivity;
 import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
 import com.shuyun.qapp.ui.mine.RedWithDrawActivity;
-import com.shuyun.qapp.ui.mine.WebPrizeActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;

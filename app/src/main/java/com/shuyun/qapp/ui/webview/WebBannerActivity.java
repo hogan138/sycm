@@ -1,4 +1,4 @@
-package com.shuyun.qapp.ui.homepage;
+package com.shuyun.qapp.ui.webview;
 
 import android.Manifest;
 import android.content.Intent;
@@ -37,6 +37,7 @@ import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.MyApplication;
+import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.mine.AccountRecordActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;

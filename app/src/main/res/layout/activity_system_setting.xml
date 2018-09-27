@@ -183,10 +183,4 @@
         android:textColor="@color/color_2"
         android:textSize="@dimen/text_18" />
 
-    <com.shuyun.qapp.view.MyGalleryView
-        android:id="@+id/galleryview"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"></com.shuyun.qapp.view.MyGalleryView>
-
 </LinearLayout>

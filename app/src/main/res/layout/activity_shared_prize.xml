@@ -4,7 +4,7 @@
     android:id="@+id/fl_share"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.shuyun.qapp.ui.homepage.SharedPrzieActivity">
+    tools:context="com.shuyun.qapp.ui.webview.SharedPrzieActivity">
     <include
         android:id="@+id/title"
         layout="@layout/common_left_title"/>

@@ -16,11 +16,11 @@ import com.shuyun.qapp.bean.AdBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.base.BasePresenter;
-import com.shuyun.qapp.ui.answer.WebAnswerActivity;
+import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
-import com.shuyun.qapp.ui.homepage.WebBannerActivity;
+import com.shuyun.qapp.ui.webview.WebBannerActivity;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
@@ -40,7 +40,6 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.shuyun.qapp.utils.EncodeAndStringTool.encryptMD5ToString;
 import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
-import static com.umeng.socialize.net.dplus.CommonNetImpl.TAG;
 
 public class SplashActivity extends AppCompatActivity {
 

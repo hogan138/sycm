@@ -507,7 +507,7 @@ public class AgainstActivity extends BaseActivity {
                             @Override
                             public void run() {
                                 Animation alphaAnimation = new AlphaAnimation(1, 0);
-                                alphaAnimation.setDuration(400);
+                                alphaAnimation.setDuration(100);
                                 alphaAnimation.setInterpolator(new LinearInterpolator());
                                 alphaAnimation.setRepeatCount(2);
                                 alphaAnimation.setRepeatMode(Animation.REVERSE);
@@ -553,16 +553,20 @@ public class AgainstActivity extends BaseActivity {
                                 } else {
                                     nextReplyQuestion();
                                 }
-
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (position == questionsBeans.size()) {
+                                            //答题完成
+                                        } else {
+                                            //倒计时进度条
+                                            showProgress();
+                                        }
+                                    }
+                                }, 1000);
                             }
                         }, 100);
 
-                        if (position == questionsBeans.size()) {
-                            //答题完成
-                        } else {
-                            //倒计时进度条
-                            showProgress();
-                        }
                     }
                 }
             };
@@ -1202,7 +1206,6 @@ public class AgainstActivity extends BaseActivity {
                                     startActivity(intent);
 
                                 } else {
-
                                     if (!EncodeAndStringTool.isStringEmpty(robotShowBean.getAnswer())) {
                                         answer = robotShowBean.getAnswer();
                                     } else {
@@ -1267,28 +1270,88 @@ public class AgainstActivity extends BaseActivity {
 
                                         //左侧环形图片显示隐藏
                                         if (options.size() == 1) {
+                                            mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                            rlA.setAnimation(mAnimation);
+                                            mAnimation.start();
                                             rlSelectA.setVisibility(View.VISIBLE);
                                             rlSelectB.setVisibility(View.GONE);
                                             rlSelectC.setVisibility(View.GONE);
                                             rlSelectD.setVisibility(View.GONE);
                                         } else if (options.size() == 2) {
+                                            mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                            rlA.setAnimation(mAnimation);
+                                            mAnimation.start();
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                                    rlB.setAnimation(mAnimation);
+                                                    mAnimation.start();
+                                                }
+                                            }, 100);
                                             rlSelectA.setVisibility(View.VISIBLE);
                                             rlSelectB.setVisibility(View.VISIBLE);
                                             rlSelectC.setVisibility(View.GONE);
                                             rlSelectD.setVisibility(View.GONE);
                                         } else if (options.size() == 3) {
+                                            mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                            rlA.setAnimation(mAnimation);
+                                            mAnimation.start();
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                                    rlB.setAnimation(mAnimation);
+                                                    mAnimation.start();
+                                                    new Handler().postDelayed(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                                            rlC.setAnimation(mAnimation);
+                                                            mAnimation.start();
+                                                        }
+                                                    }, 100);
+                                                }
+                                            }, 100);
                                             rlSelectA.setVisibility(View.VISIBLE);
                                             rlSelectB.setVisibility(View.VISIBLE);
                                             rlSelectC.setVisibility(View.VISIBLE);
                                             rlSelectD.setVisibility(View.GONE);
                                         } else if (options.size() == 4) {
+                                            mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                            rlA.setAnimation(mAnimation);
+                                            mAnimation.start();
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                                    rlB.setAnimation(mAnimation);
+                                                    mAnimation.start();
+                                                    new Handler().postDelayed(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                                            rlC.setAnimation(mAnimation);
+                                                            mAnimation.start();
+                                                            new Handler().postDelayed(new Runnable() {
+                                                                @Override
+                                                                public void run() {
+                                                                    mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                                                    rlD.setAnimation(mAnimation);
+                                                                    mAnimation.start();
+
+                                                                }
+                                                            }, 100);
+                                                        }
+                                                    }, 100);
+                                                }
+                                            }, 100);
                                             rlSelectA.setVisibility(View.VISIBLE);
                                             rlSelectB.setVisibility(View.VISIBLE);
                                             rlSelectC.setVisibility(View.VISIBLE);
                                             rlSelectD.setVisibility(View.VISIBLE);
                                         }
 
-                                        //动画
 
                                         //清除所有选中项
                                         removeSelect();

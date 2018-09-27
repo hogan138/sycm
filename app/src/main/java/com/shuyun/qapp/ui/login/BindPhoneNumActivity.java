@@ -25,6 +25,7 @@ import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
+import com.shuyun.qapp.ui.webview.WebPublicActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveErrorTxt;
@@ -103,7 +104,9 @@ public class BindPhoneNumActivity extends BaseActivity {
                 break;
             case R.id.ll_agree_text:
                 //跳转到协议界面
-                startActivity(new Intent(this, UserAgreementActivity.class));
+                Intent i = new Intent(BindPhoneNumActivity.this, WebPublicActivity.class);
+                i.putExtra("name", "useragree");
+                startActivity(i);
                 break;
             case R.id.btn_get_code1:
                 String phoneNum = etPhoneNumber.getText().toString().trim();

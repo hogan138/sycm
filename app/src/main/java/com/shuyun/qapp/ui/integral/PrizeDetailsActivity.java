@@ -40,6 +40,7 @@ import com.shuyun.qapp.bean.PrizeDetailBean;
 import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.ui.webview.WebPrizeFragment;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.CustomLoadingFactory;
