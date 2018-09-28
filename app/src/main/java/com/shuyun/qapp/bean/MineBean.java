@@ -36,6 +36,9 @@ public class MineBean implements Parcelable{
     private int headerId;//头像id
     private long id;
 
+    public MineBean(){
+
+    }
 
     protected MineBean(Parcel in) {
         account = in.readString();

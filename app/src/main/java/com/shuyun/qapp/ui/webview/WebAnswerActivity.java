@@ -1,6 +1,5 @@
 package com.shuyun.qapp.ui.webview;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -17,7 +16,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -29,9 +27,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.TimeUtils;
-import com.google.gson.Gson;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.net.MyApplication;
@@ -80,6 +79,8 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
+import static com.blankj.utilcode.util.SizeUtils.dp2px;
 
 /**
  * Created by sunxiao on 2018/7/5
@@ -137,10 +138,9 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
         public String answerLogin() {
             String answerHome = null;
             if (!EncodeAndStringTool.isObjectEmpty(answerHomeBean)) {
-                answerHome = new Gson().toJson(answerHomeBean);
+                answerHome = JSON.toJSONString(answerHomeBean);
             }
-            Log.i(TAG, answerHome.toString());
-            return answerHome.toString();
+            return answerHome;
         }
 
         /**
@@ -285,7 +285,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                 @Override
                 public void run() {
                     Log.e("奖品返回", prizeData.toString());
-                    MinePrize minePrize = new Gson().fromJson(prizeData.toString(), MinePrize.class);
+                    MinePrize minePrize = JSONObject.parseObject(prizeData.toString(), MinePrize.class);
                     if (minePrize.getActionType().equals("action.h5.url")) {
                         //实物
                         Intent intent = new Intent(WebAnswerActivity.this, WebPrizeActivity.class);
@@ -297,11 +297,11 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                         //红包
                         if (Integer.parseInt(SaveUserInfo.getInstance(WebAnswerActivity.this).getUserInfo("cert")) == 1) {
                             if (!EncodeAndStringTool.isListEmpty(minePrize.getMinePrizes())) {
-                                List<MinePrize.minePrize> redPrizeList = new ArrayList<>();
+                                List<MinePrize.ChildMinePrize> redPrizeList = new ArrayList<>();
                                 for (int i = 0; i < minePrize.getMinePrizes().size(); i++) {
-                                    MinePrize.minePrize minePrize1 = minePrize.getMinePrizes().get(i);
+                                    MinePrize.ChildMinePrize childMinePrize1 = minePrize.getMinePrizes().get(i);
                                     if (minePrize.getMinePrizes().get(i).getActionType().equals("action.withdraw")) {
-                                        redPrizeList.add(minePrize1);
+                                        redPrizeList.add(childMinePrize1);
                                     }
                                 }
                                 if (!EncodeAndStringTool.isListEmpty(redPrizeList)) {
@@ -771,7 +771,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                 TextView tv_content = view.findViewById(R.id.tv_content);
                 tv_content.setText(sharedBean1.getContent());
                 final ImageView iv_qr = view.findViewById(R.id.iv_qr);
-                Bitmap mBitmap = CodeUtils.createImage(sharedBean1.getUrl(), 100, 100, null);
+                Bitmap mBitmap = CodeUtils.createImage(sharedBean1.getUrl(), dp2px(114), dp2px(114), null);
                 iv_qr.setImageBitmap(mBitmap);
                 TextView tv_save_picture = view.findViewById(R.id.tv_save_picture);
                 tv_save_picture.setOnClickListener(new OnMultiClickListener() {

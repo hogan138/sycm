@@ -56,6 +56,10 @@ public class Textbean {
 
     public boolean selected = false;
 
+    public Textbean(){
+
+    }
+
     protected Textbean(Parcel in) {
         id = in.readString();
         type = in.readInt();

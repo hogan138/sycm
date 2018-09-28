@@ -66,8 +66,11 @@ public class MinePrize implements Parcelable {
     private String openPicture;//开奖使用的图片
     private String actionType; //动作值
     private String actionTypeLabel;//按钮名称
-    private List<minePrize> groups; //红包集合
+    private List<ChildMinePrize> groups; //红包集合
 
+    public MinePrize(){
+
+    }
     protected MinePrize(Parcel in) {
         name = in.readString();
         type = in.readInt();
@@ -99,7 +102,7 @@ public class MinePrize implements Parcelable {
         openPicture = in.readString();
         actionType = in.readString();
         actionTypeLabel = in.readString();
-        groups = in.createTypedArrayList(minePrize.CREATOR);
+        groups = in.createTypedArrayList(ChildMinePrize.CREATOR);
     }
 
     public static final Creator<MinePrize> CREATOR = new Creator<MinePrize>() {
@@ -354,12 +357,12 @@ public class MinePrize implements Parcelable {
         this.actionTypeLabel = actionTypeLabel;
     }
 
-    public List<minePrize> getMinePrizes() {
+    public List<ChildMinePrize> getMinePrizes() {
         return groups;
     }
 
-    public void setMinePrizes(List<minePrize> minePrizes) {
-        this.groups = minePrizes;
+    public void setMinePrizes(List<ChildMinePrize> ChildMinePrizes) {
+        this.groups = ChildMinePrizes;
     }
 
     @Override
@@ -405,7 +408,7 @@ public class MinePrize implements Parcelable {
 
     public static class PrizesBean implements Parcelable {
         /**
-         * name : 现金
+         * showName : 现金
          * type : 1
          * mode : 1
          * purpose : 满50可提现至支付宝
@@ -457,11 +460,11 @@ public class MinePrize implements Parcelable {
             }
         };
 
-        public String getName() {
+        public String getShowName() {
             return showName;
         }
 
-        public void setName(String name) {
+        public void setShowName(String name) {
             this.showName = name;
         }
 
@@ -557,7 +560,7 @@ public class MinePrize implements Parcelable {
         }
     }
 
-    public static class minePrize implements Parcelable {
+    public static class ChildMinePrize implements Parcelable {
 
         /**
          * name : 红包
@@ -830,11 +833,14 @@ public class MinePrize implements Parcelable {
             this.selected = selected;
         }
 
-        public static Creator<minePrize> getCREATOR() {
+        public static Creator<ChildMinePrize> getCREATOR() {
             return CREATOR;
         }
 
-        protected minePrize(Parcel in) {
+        public ChildMinePrize(){
+
+        }
+        protected ChildMinePrize(Parcel in) {
             name = in.readString();
             type = in.readInt();
             description = in.readString();
@@ -864,15 +870,15 @@ public class MinePrize implements Parcelable {
             actionTypeLabel = in.readString();
         }
 
-        public static final Creator<minePrize> CREATOR = new Creator<minePrize>() {
+        public static final Creator<ChildMinePrize> CREATOR = new Creator<ChildMinePrize>() {
             @Override
-            public minePrize createFromParcel(Parcel in) {
-                return new minePrize(in);
+            public ChildMinePrize createFromParcel(Parcel in) {
+                return new ChildMinePrize(in);
             }
 
             @Override
-            public minePrize[] newArray(int size) {
-                return new minePrize[size];
+            public ChildMinePrize[] newArray(int size) {
+                return new ChildMinePrize[size];
             }
         };
 

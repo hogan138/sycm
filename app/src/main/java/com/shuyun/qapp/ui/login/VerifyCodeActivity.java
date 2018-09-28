@@ -12,10 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.EncryptUtils;
+import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.TimeUtils;
 import com.dyhdyh.widget.loading.bar.LoadingBar;
-import com.google.gson.Gson;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.callback.ConfigDialog;
@@ -207,7 +206,7 @@ public class VerifyCodeActivity extends BaseActivity {
      */
     private void getVerficationCode(InputVerficationCodeBean verficationCodeBean) {
         ApiService apiService = BasePresenter.create(8000);
-        String inputbean = new Gson().toJson(verficationCodeBean);
+        String inputbean = JSON.toJSONString(verficationCodeBean);
         Log.i(TAG, "loadLogin: " + verficationCodeBean.toString());
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
         apiService.getCode(body)
@@ -272,7 +271,7 @@ public class VerifyCodeActivity extends BaseActivity {
             DataSupport.deleteAll(Msg.class);//清空数据库中消息
         }
         ApiService apiService = BasePresenter.create(8000);
-        final String inputbean = new Gson().toJson(loginInput);
+        final String inputbean =JSON.toJSONString(loginInput);
         Log.i(TAG, "loadLogin: " + loginInput.toString());
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
         apiService.login(body)

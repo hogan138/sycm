@@ -8,7 +8,8 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.google.gson.Gson;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.bean.PushBean;
 import com.shuyun.qapp.net.AppConst;
@@ -22,9 +23,6 @@ import com.shuyun.qapp.utils.ExampleUtil;
 import com.shuyun.qapp.utils.Logger;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Iterator;
 
@@ -96,7 +94,7 @@ public class MyReceiver extends BroadcastReceiver {
                     MyApplication.getAppContext().startActivity(i);
                     return;
                 } else {
-                    PushBean pushBean = new Gson().fromJson(bundle.getString(JPushInterface.EXTRA_EXTRA), PushBean.class);
+                    PushBean pushBean = JSON.parseObject(bundle.getString(JPushInterface.EXTRA_EXTRA), PushBean.class);
                     Intent i;
                     //积分夺宝中奖通知
                     if (pushBean.getPushAction().equals("push.integral.snatch.notify")) {
@@ -190,15 +188,15 @@ public class MyReceiver extends BroadcastReceiver {
                 }
 
                 try {
-                    JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
-                    Iterator<String> it = json.keys();
+                    JSONObject json = JSON.parseObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
+                    Iterator<String> it = json.keySet().iterator();
 
                     while (it.hasNext()) {
                         String myKey = it.next();
                         sb.append("\nkey:" + key + ", value: [" +
-                                myKey + " - " + json.optString(myKey) + "]");
+                                myKey + " - " + json.getString(myKey) + "]");
                     }
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     Logger.e(TAG, "Get message extra JSON error!");
                 }
 
@@ -218,14 +216,13 @@ public class MyReceiver extends BroadcastReceiver {
             msgIntent.putExtra(HomePageActivity.KEY_MESSAGE, message);
             if (!ExampleUtil.isEmpty(extras)) {
                 try {
-                    JSONObject extraJson = new JSONObject(extras);
-                    if (extraJson.length() > 0) {
+                    JSONObject extraJson = JSON.parseObject(extras);
+                    if (!extraJson.isEmpty()) {
                         msgIntent.putExtra(HomePageActivity.KEY_EXTRAS, extras);
                     }
-                } catch (JSONException e) {
+                } catch (Exception e) {
 
                 }
-
             }
             LocalBroadcastManager.getInstance(context).sendBroadcast(msgIntent);
         }

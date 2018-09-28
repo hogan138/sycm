@@ -11,15 +11,16 @@ import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.TimeUtils;
 import com.dyhdyh.widget.loading.bar.LoadingBar;
-import com.google.gson.Gson;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.callback.ConfigButton;
@@ -114,6 +115,7 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);//输入法弹出布局上移
         btnLogin.setEnabled(false);
         mPermissionsChecker = new PermissionsChecker(this);
         clearEditText(etPhoneNumber, ivClearPhoneNum);
@@ -298,7 +300,7 @@ public class LoginActivity extends BaseActivity {
             DataSupport.deleteAll(Msg.class);//清空数据库中消息
         }
         ApiService apiService = BasePresenter.create(8000);
-        String inputbean = new Gson().toJson(loginInput);
+        String inputbean =  JSON.toJSONString(loginInput);
         Log.i(TAG, "loadLogin: " + loginInput.toString());
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
         apiService.login(body)

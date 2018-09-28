@@ -62,10 +62,6 @@ public class ClassifyFragment extends Fragment {
     private static final String TAG = "ClassifyFragment";
     private Activity mContext;
 
-    public ClassifyFragment() {
-    }
-
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

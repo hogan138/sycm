@@ -20,9 +20,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.TimeUtils;
 import com.dyhdyh.widget.loading.bar.LoadingBar;
-import com.google.gson.Gson;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
@@ -218,7 +218,7 @@ public class CashWithdrawalActivity extends BaseActivity {
 
     private void loadApplyWithdrawal(InputWithdrawalbean inputWithdrawalbean) {
         ApiService apiService = BasePresenter.create(8000);
-        final String inputbean = new Gson().toJson(inputWithdrawalbean);
+        final String inputbean = JSON.toJSONString(inputWithdrawalbean);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
         apiService.applyWithdrawal(body)
                 .subscribeOn(Schedulers.newThread())

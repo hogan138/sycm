@@ -3,8 +3,8 @@ package com.shuyun.qapp.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +35,8 @@ public class ListDataSave {
         if (null == datalist || datalist.size() <= 0)
             return;
 
-        Gson gson = new Gson();
         //转换成json数据，再保存
-        String strJson = gson.toJson(datalist);
+        String strJson = JSON.toJSONString(datalist);
         editor.clear();
         editor.putString(tag, strJson);
         editor.commit();
@@ -56,9 +55,7 @@ public class ListDataSave {
         if (null == strJson) {
             return datalist;
         }
-        Gson gson = new Gson();
-        datalist = gson.fromJson(strJson, new TypeToken<List<T>>() {
-        }.getType());
+        datalist = JSON.parseObject(strJson, new TypeReference<List<T>>(){});
         return datalist;
 
     }

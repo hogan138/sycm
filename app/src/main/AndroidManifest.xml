@@ -323,10 +323,6 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <!-- 抽奖规则 -->
-        <activity
-            android:name=".ui.webview.WebRulesActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
         <!-- banner跳转页 -->
         <activity
             android:name=".ui.webview.WebBannerActivity"

@@ -21,9 +21,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.TimeUtils;
 import com.dyhdyh.widget.loading.bar.LoadingBar;
-import com.google.gson.Gson;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.RedPacketAdapter;
 import com.shuyun.qapp.adapter.RedPacketAdapter1;
@@ -152,9 +152,9 @@ public class RedWithDrawActivity extends BaseActivity {
             }
         } else if (bundle.getString("from").equals("box")) {
             //开宝箱提现
-            final List<MinePrize.minePrize> prizeBeanList = bundle.getParcelableArrayList("redPrize");
+            final List<MinePrize.ChildMinePrize> prizeBeanList = bundle.getParcelableArrayList("redPrize");
             if (!EncodeAndStringTool.isListEmpty(prizeBeanList)) {
-                for (MinePrize.minePrize red : prizeBeanList) {
+                for (MinePrize.ChildMinePrize red : prizeBeanList) {
                     if (red.getId().equals(redId)) {
                         etMoneyNumber.setText(new BigDecimal(red.getAmount()).toString());
                         redIdList.add(redId);
@@ -167,12 +167,12 @@ public class RedWithDrawActivity extends BaseActivity {
                 redPacketAdapter.setOnItemClickLitsener(new RedPacketAdapter1.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        MinePrize.minePrize minePrize = prizeBeanList.get(position);
-                        String redId = minePrize.getId();
-                        String amount = minePrize.getAmount();
+                        MinePrize.ChildMinePrize ChildMinePrize = prizeBeanList.get(position);
+                        String redId = ChildMinePrize.getId();
+                        String amount = ChildMinePrize.getAmount();
                         String money = etMoneyNumber.getText().toString();
                         BigDecimal number = new BigDecimal(EncodeAndStringTool.isStringEmpty(money) ? "0.00" : money);
-                        if (minePrize.selected) {
+                        if (ChildMinePrize.selected) {
                             number = number.add(new BigDecimal(amount));
                             redIdList.add(redId);
                         } else {
@@ -261,7 +261,7 @@ public class RedWithDrawActivity extends BaseActivity {
      */
     private void redWithDrawal(InputWithdrawalbean inputWithdrawalbean) {
         ApiService apiService = BasePresenter.create(8000);
-        String inputbean = new Gson().toJson(inputWithdrawalbean);
+        String inputbean = JSON.toJSONString(inputWithdrawalbean);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
         apiService.applyWithdrawal(body)
                 .subscribeOn(Schedulers.io())

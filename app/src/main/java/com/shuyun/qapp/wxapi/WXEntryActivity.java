@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.TimeUtils;
-import com.google.gson.Gson;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.bean.DataResponse;
@@ -204,7 +204,7 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
             DataSupport.deleteAll(Msg.class);//清空数据库中消息
         }
         ApiService apiService = BasePresenter.create(8000);
-        final String inputbean = new Gson().toJson(loginInput);
+        final String inputbean =  JSON.toJSONString(loginInput);
         Log.i(TAG, "loadLogin: " + loginInput.toString());
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
         apiService.login(body)

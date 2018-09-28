@@ -24,8 +24,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.TimeUtils;
-import com.google.gson.Gson;
 import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
@@ -59,6 +59,8 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
+import static com.blankj.utilcode.util.SizeUtils.dp2px;
 
 
 public class SharedPrzieActivity extends BaseActivity implements CommonPopupWindow.ViewInterface {
@@ -230,8 +232,7 @@ public class SharedPrzieActivity extends BaseActivity implements CommonPopupWind
             AuthHeader authHeader = new AuthHeader();
             authHeader.setAuthorization(AppConst.TOKEN);
             authHeader.setSycm(AppConst.sycm());
-            String header = new Gson().toJson(authHeader);
-            return header.toString();
+            return JSON.toJSONString(authHeader);
         }
 
         /**
@@ -371,7 +372,7 @@ public class SharedPrzieActivity extends BaseActivity implements CommonPopupWind
                 TextView tv_content = view.findViewById(R.id.tv_content);
                 tv_content.setText(sharedBean1.getContent());
                 final ImageView iv_qr = view.findViewById(R.id.iv_qr);
-                Bitmap mBitmap = CodeUtils.createImage(sharedBean1.getUrl(), 100, 100, null);
+                Bitmap mBitmap = CodeUtils.createImage(sharedBean1.getUrl(), dp2px(114), dp2px(114), null);
                 iv_qr.setImageBitmap(mBitmap);
                 TextView tv_save_picture = view.findViewById(R.id.tv_save_picture);
                 tv_save_picture.setOnClickListener(new OnMultiClickListener() {

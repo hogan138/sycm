@@ -72,6 +72,10 @@ public class GroupDetail implements Parcelable{
     private ActivityBean activity;//该题组参加的活动中当前运营中的活动
     private Guide guide;//题组指南
 
+    public GroupDetail(){
+
+    }
+
     protected GroupDetail(Parcel in) {
         id = in.readInt();
         name = in.readString();
@@ -239,6 +243,9 @@ public class GroupDetail implements Parcelable{
         private RuleBean rule;//活动适用的规则
         private List<XruleBean> xrule;//扩展规则
 
+        public ActivityBean(){
+
+        }
 
         protected ActivityBean(Parcel in) {
             name = in.readString();
@@ -336,6 +343,9 @@ public class GroupDetail implements Parcelable{
              */
             private int limitation;
 
+            public RuleBean(){
+
+            }
 
             protected RuleBean(Parcel in) {
                 bulletin = in.readString();
@@ -404,6 +414,10 @@ public class GroupDetail implements Parcelable{
             private String description;//扩展规则描述
             private String remark;//扩展规则备注
             private String type;//扩展规则类型
+
+            public XruleBean(){
+
+            }
 
             protected XruleBean(Parcel in) {
                 id = in.readInt();
@@ -477,6 +491,9 @@ public class GroupDetail implements Parcelable{
         private String url;//指南链接网页
         private String content;//指南内容
 
+        public Guide(){
+
+        }
 
         protected Guide(Parcel in) {
             url = in.readString();

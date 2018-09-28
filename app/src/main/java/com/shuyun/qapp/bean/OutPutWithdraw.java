@@ -19,6 +19,10 @@ public class OutPutWithdraw implements Parcelable {
     private BigDecimal actual;//实际可到账金额 分
     private String time;//提现申请时间
 
+    public OutPutWithdraw(){
+
+    }
+
     protected OutPutWithdraw(Parcel in) {
         id = in.readString();
         type = in.readInt();

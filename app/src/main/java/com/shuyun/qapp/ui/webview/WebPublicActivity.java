@@ -40,8 +40,8 @@ public class WebPublicActivity extends BaseActivity {
     RelativeLayout ivBack;
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle;
-    @BindView(R.id.wv_contact_us)
-    WebView wvContactUs;
+    @BindView(R.id.webView)
+    WebView webView;
     @BindView(R.id.animation_iv)
     ImageView animationIv;
 
@@ -50,10 +50,11 @@ public class WebPublicActivity extends BaseActivity {
             Manifest.permission.CALL_PHONE,
 
     };
+
     private PermissionsChecker mPermissionsChecker; // 权限检测器
     private static final int REQUEST_CODE = 0; // 请求码
 
-
+    private String bulletin;
     AnimationDrawable animationDrawable;
 
     @Override
@@ -68,6 +69,10 @@ public class WebPublicActivity extends BaseActivity {
             tvCommonTitle.setText("关于我们");
         } else if (getIntent().getStringExtra("name").equals("rule")) {
             tvCommonTitle.setText("活动规则");
+        } else if (getIntent().getStringExtra("name").equals("rules")) {
+            tvCommonTitle.setText("活动规则");
+            Intent intent = getIntent();
+            bulletin = intent.getStringExtra("bulletin");
         }
 
         animationDrawable = (AnimationDrawable) animationIv.getDrawable();
@@ -111,6 +116,16 @@ public class WebPublicActivity extends BaseActivity {
             //调用打电话业务
             call(phoneNum);
         }
+
+        /**
+         * 接收js返回的规则
+         *
+         * @param
+         */
+        @JavascriptInterface
+        public String actRule() {//String backParams
+            return bulletin;
+        }
     }
 
     /**
@@ -142,21 +157,23 @@ public class WebPublicActivity extends BaseActivity {
         MobclickAgent.onResume(this); //统计时长
 
         StatService.onResume(this);
-        wvContactUs.getSettings().setJavaScriptEnabled(true);
-        wvContactUs.addJavascriptInterface(new JsInteration(), "android");
-        wvContactUs.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.addJavascriptInterface(new JsInteration(), "android");
+        webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 
         if (getIntent().getStringExtra("name").equals("contanct")) {
-            wvContactUs.loadUrl(AppConst.CONTACT_US); //联系我们
+            webView.loadUrl(AppConst.CONTACT_US); //联系我们
         } else if (getIntent().getStringExtra("name").equals("useragree")) {
-            wvContactUs.loadUrl(AppConst.USER_AGREEMENT); //用户协议
+            webView.loadUrl(AppConst.USER_AGREEMENT); //用户协议
         } else if (getIntent().getStringExtra("name").equals("about")) {
-            wvContactUs.loadUrl(AppConst.ABOUT_US); //关于我们
+            webView.loadUrl(AppConst.ABOUT_US); //关于我们
         } else if (getIntent().getStringExtra("name").equals("rule")) {
-            wvContactUs.loadUrl(SaveUserInfo.getInstance(WebPublicActivity.this).getUserInfo("h5_rule"));//积分夺宝规则
+            webView.loadUrl(SaveUserInfo.getInstance(WebPublicActivity.this).getUserInfo("h5_rule"));//积分夺宝规则
+        } else if (getIntent().getStringExtra("name").equals("rules")) {
+            webView.loadUrl(AppConst.LOOK_RULES);//积分开宝箱规则
         }
 
-        wvContactUs.setWebChromeClient(new WebChromeClient() {
+        webView.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int progress) {
                 //当进度走到100的时候做自己的操作，我这边是弹出dialog
                 if (progress == 100) {

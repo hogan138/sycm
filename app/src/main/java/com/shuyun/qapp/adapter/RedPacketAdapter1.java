@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.utils.ImageLoaderManager;
-import com.shuyun.qapp.utils.OnMultiClickListener;
 
 import java.util.List;
 
@@ -27,12 +26,12 @@ public class RedPacketAdapter1 extends RecyclerView.Adapter<RedPacketAdapter1.Vi
     private Context mContext;
     private LayoutInflater layoutInflater;
 
-    private List<MinePrize.minePrize> minePrizes;
+    private List<MinePrize.ChildMinePrize> ChildMinePrizes;
 
-    public RedPacketAdapter1(Context mContext, List<MinePrize.minePrize> minePrizes) {
+    public RedPacketAdapter1(Context mContext, List<MinePrize.ChildMinePrize> ChildMinePrizes) {
         this.mContext = mContext;
         layoutInflater = LayoutInflater.from(mContext);
-        this.minePrizes = minePrizes;
+        this.ChildMinePrizes = ChildMinePrizes;
         notifyDataSetChanged();
     }
 
@@ -45,10 +44,10 @@ public class RedPacketAdapter1 extends RecyclerView.Adapter<RedPacketAdapter1.Vi
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final MinePrize.minePrize minePrize = minePrizes.get(position);
-        ImageLoaderManager.LoadImage(mContext, minePrize.getPicture(), holder.ivRedPacket, R.mipmap.zw02);
-        holder.tvMoneyNum.setText(minePrize.getAmount());
-        holder.itemView.setSelected(minePrize.selected);
+        final MinePrize.ChildMinePrize ChildMinePrize = ChildMinePrizes.get(position);
+        ImageLoaderManager.LoadImage(mContext, ChildMinePrize.getPicture(), holder.ivRedPacket, R.mipmap.zw02);
+        holder.tvMoneyNum.setText(ChildMinePrize.getAmount());
+        holder.itemView.setSelected(ChildMinePrize.selected);
         /**
          * 红包点击事件
          */
@@ -57,8 +56,8 @@ public class RedPacketAdapter1 extends RecyclerView.Adapter<RedPacketAdapter1.Vi
                 @Override
                 public void onClick(View v) {
                     int position = holder.getLayoutPosition();
-                    minePrize.selected = !minePrize.selected;
-                    holder.itemView.setSelected(minePrize.selected);
+                    ChildMinePrize.selected = !ChildMinePrize.selected;
+                    holder.itemView.setSelected(ChildMinePrize.selected);
                     mOnItemClickListener.onItemClick(holder.itemView, position);
                 }
             });
@@ -68,7 +67,7 @@ public class RedPacketAdapter1 extends RecyclerView.Adapter<RedPacketAdapter1.Vi
 
     @Override
     public int getItemCount() {
-        return minePrizes == null ? 0 : minePrizes.size();
+        return ChildMinePrizes == null ? 0 : ChildMinePrizes.size();
     }
 
 

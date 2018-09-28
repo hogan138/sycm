@@ -25,8 +25,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.TimeUtils;
-import com.google.gson.Gson;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.MyGridViewAdapter;
@@ -45,7 +47,7 @@ import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.adapter.BxPrizeAdapter;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
 import com.shuyun.qapp.ui.webview.WebPrizeActivity;
-import com.shuyun.qapp.ui.webview.WebRulesActivity;
+import com.shuyun.qapp.ui.webview.WebPublicActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -59,9 +61,6 @@ import com.shuyun.qapp.utils.ToastUtil;
 import com.shuyun.qapp.view.OvalImageView;
 import com.shuyun.qapp.view.ViewPagerSlide;
 import com.umeng.analytics.MobclickAgent;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -188,7 +187,7 @@ public class IntegralDrawActivity extends BaseActivity implements CommonPopupWin
          * 1:代表我的奖品开宝箱
          */
         status = intent.getIntExtra("status", 0);//状态
-        minePrize1 = intent.getParcelableExtra("minePrize");//我的奖品
+        minePrize1 = intent.getParcelableExtra("ChildMinePrize");//我的奖品
         if (status == 0) {//积分抽奖
             tvJiFenBalance.setText(SaveUserInfo.getInstance(IntegralDrawActivity.this).getUserInfo("my_bp"));
             loadGetIntegralDrawInfo();
@@ -266,12 +265,15 @@ public class IntegralDrawActivity extends BaseActivity implements CommonPopupWin
 
     private void showpopu() {
         //奖品图片
-        for (int i = 0; i < minePrize1.getPrizes().size(); i++) {
+        List<MinePrize.PrizesBean> list = minePrize1.getPrizes();
+        for (int i = 0; i < list.size(); i++) {
+            MinePrize.PrizesBean bean = list.get(i);
+
             ProductListBean prizesBean = new ProductListBean();
-            prizesBean.setName(minePrize1.getPrizes().get(i).getName());
-            prizesBean.setMainImage(minePrize1.getPrizes().get(i).getMainImage());
-            prizesBean.setLongImage(minePrize1.getPrizes().get(i).getLongImage());
-            prizesBean.setPurpose(minePrize1.getPrizes().get(i).getPurpose());
+            prizesBean.setName(bean.getShowName());
+            prizesBean.setMainImage(bean.getMainImage());
+            prizesBean.setLongImage(bean.getLongImage());
+            prizesBean.setPurpose(bean.getPurpose());
             listDatas.add(prizesBean);
         }
         LayoutInflater inflater = LayoutInflater.from(IntegralDrawActivity.this);
@@ -409,10 +411,11 @@ public class IntegralDrawActivity extends BaseActivity implements CommonPopupWin
                 }
                 break;
             case R.id.tv_look_rules://查看规则
-                Intent intent = new Intent(this, WebRulesActivity.class);
+                Intent intent = new Intent(this, WebPublicActivity.class);
                 if (status == 0) {//积分抽奖
                     if (!EncodeAndStringTool.isObjectEmpty(announceBean) && !EncodeAndStringTool.isStringEmpty(announceBean.getBulletin())) {
                         intent.putExtra("bulletin", announceBean.getBulletin());
+                        intent.putExtra("name", "rules");
                         startActivity(intent);
                     } else {
                         ToastUtil.showToast(this, "该奖品暂时没有配活动规则");
@@ -420,6 +423,7 @@ public class IntegralDrawActivity extends BaseActivity implements CommonPopupWin
                 } else if (status == 1) {//宝箱开奖
                     if (!EncodeAndStringTool.isObjectEmpty(minePrize1) && !EncodeAndStringTool.isStringEmpty(minePrize1.getBulletin())) {
                         intent.putExtra("bulletin", minePrize1.getBulletin());
+                        intent.putExtra("name", "rules");
                         startActivity(intent);
                     } else {
                         ToastUtil.showToast(this, "该奖品暂时没有配活动规则");
@@ -594,17 +598,16 @@ public class IntegralDrawActivity extends BaseActivity implements CommonPopupWin
                 //子线程
                 //main thread1
                 String body = response.body().string();
-                Gson gson = new Gson();
                 try {
-                    JSONObject jresult = new JSONObject(body);
-                    String err = jresult.getString("err");
-                    if (err.equals("00000")) {
-                        JSONArray jarr = jresult.getJSONArray("dat");
-                        int size = jarr.length();
+                    JSONObject jResult = JSON.parseObject(body);
+                    String err = jResult.getString("err");
+                    if ("00000".equals(err)) {
+                        JSONArray jarr = jResult.getJSONArray("dat");
+                        int size = jarr.size();
                         final List<MinePrize> minePrizes = new ArrayList<>();
                         for (int index = 0; index < size; ++index) {
                             JSONObject jprize = jarr.getJSONObject(index);
-                            MinePrize prize = gson.fromJson(jprize.toString(), MinePrize.class);
+                            MinePrize prize = JSON.parseObject(jprize.toJSONString(), MinePrize.class);
                             minePrizes.add(prize);
                         }
                         runOnUiThread(new Runnable() {
@@ -617,9 +620,8 @@ public class IntegralDrawActivity extends BaseActivity implements CommonPopupWin
                                 }
                             }
                         });
-                    } else if (err.equals("U2006")) {
-                        JSONObject jr = new JSONObject(body);
-                        JSONObject object = jr.getJSONObject("dat");
+                    } else if ("U2006".equals(err)) {
+                        JSONObject object = jResult.getJSONObject("dat");
                         String title = object.getString("title");
                         String content = object.getString("content");
                         long time = object.getLong("time");
@@ -640,7 +642,7 @@ public class IntegralDrawActivity extends BaseActivity implements CommonPopupWin
                             }
                         });
                     } else {
-                        String msg = jresult.getString("msg");
+                        String msg = jResult.getString("msg");
                         ErrorCodeTools.errorCodePrompt(IntegralDrawActivity.this, err, msg);
                     }
                 } catch (Exception e) {
@@ -681,7 +683,7 @@ public class IntegralDrawActivity extends BaseActivity implements CommonPopupWin
 
                     tvPrizeContent.setText(minePrize.getDescription());//内容
                     if (!EncodeAndStringTool.isStringEmpty(minePrize.getExpireTime()) && !minePrize.getExpireTime().equals("0")) {
-                        tvPrizeDate.setText(Html.fromHtml("奖品的有效期至:<font color='#FBC859'>" + TimeTool.getCommTime(minePrize.getExpireTime(), TimeTool.FORMAT_DATE_TIME_SECOND) + "</font>"));//+ TimeTool.getTime(minePrize.getValidTime()) + "-"
+                        tvPrizeDate.setText(Html.fromHtml("奖品的有效期至:<font color='#FBC859'>" + TimeTool.getCommTime(minePrize.getExpireTime(), TimeTool.FORMAT_DATE_TIME_SECOND) + "</font>"));//+ TimeTool.getTime(ChildMinePrize.getValidTime()) + "-"
                     }
 
                     //加载奖品放大动画效果
@@ -731,10 +733,10 @@ public class IntegralDrawActivity extends BaseActivity implements CommonPopupWin
                                             if (minePrize.getActionType().equals("action.withdraw")) {
                                                 if (Integer.parseInt(SaveUserInfo.getInstance(IntegralDrawActivity.this).getUserInfo("cert")) == 1) {
                                                     //红包
-                                                    List<MinePrize.minePrize> redPrizeList = new ArrayList<>();
+                                                    List<MinePrize.ChildMinePrize> redPrizeList = new ArrayList<>();
                                                     for (int i = 0; i < minePrizes.get(position).getMinePrizes().size(); i++) {
-                                                        MinePrize.minePrize minePrize1 = minePrizes.get(position).getMinePrizes().get(i);
-                                                        redPrizeList.add(minePrize1);
+                                                        MinePrize.ChildMinePrize childMinePrize1 = minePrizes.get(position).getMinePrizes().get(i);
+                                                        redPrizeList.add(childMinePrize1);
                                                     }
                                                     if (!EncodeAndStringTool.isListEmpty(redPrizeList)) {
                                                         Intent intent = new Intent(IntegralDrawActivity.this, RedWithDrawActivity.class);

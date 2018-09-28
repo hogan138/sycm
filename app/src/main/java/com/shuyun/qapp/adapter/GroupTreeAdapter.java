@@ -30,6 +30,7 @@ public class GroupTreeAdapter extends RecyclerView.Adapter<GroupTreeAdapter.View
     private List<GroupClassifyBean> classifyBeans;
     private LayoutInflater inflater;
 
+    private int selectedPosition = 0;
 
     public GroupTreeAdapter(List<GroupClassifyBean> classifyBeans, Context mContext) {
         this.mContext = mContext;
@@ -46,9 +47,9 @@ public class GroupTreeAdapter extends RecyclerView.Adapter<GroupTreeAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(final GroupTreeAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final GroupTreeAdapter.ViewHolder holder, final int position) {
         GroupClassifyBean classifyBean = classifyBeans.get(position);
-        holder.tvSortName.setText(classifyBean.getName() + "");
+        holder.tvSortName.setText(classifyBean.getName());
         ImageLoaderManager.LoadImage(mContext, classifyBean.getPicture(), holder.ivItem, R.mipmap.zw01);
         if (classifyBeans.get(position).isFlag()) {
             holder.rlSort.setSelected(true);
@@ -64,7 +65,9 @@ public class GroupTreeAdapter extends RecyclerView.Adapter<GroupTreeAdapter.View
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int position = holder.getLayoutPosition();
+                    if(selectedPosition == position)
+                        return;
+                    selectedPosition = position;
                     mOnItemClickListener.onItemClick(holder.itemView, position);
                 }
             });

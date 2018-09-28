@@ -26,8 +26,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.TimeUtils;
-import com.google.gson.Gson;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
@@ -68,6 +68,8 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
+import static com.blankj.utilcode.util.SizeUtils.dp2px;
 
 public class WebPrizeBoxActivity extends BaseActivity implements CommonPopupWindow.ViewInterface {
 
@@ -124,10 +126,10 @@ public class WebPrizeBoxActivity extends BaseActivity implements CommonPopupWind
         public String answerLogin() {
             String answerHome = null;
             if (!EncodeAndStringTool.isObjectEmpty(answerHomeBean)) {
-                answerHome = new Gson().toJson(answerHomeBean);
+                answerHome = JSON.toJSONString(answerHomeBean);
             }
-            Log.i(TAG, answerHome.toString());
-            return answerHome.toString();
+            Log.i(TAG, answerHome);
+            return answerHome;
         }
 
         /**
@@ -137,17 +139,18 @@ public class WebPrizeBoxActivity extends BaseActivity implements CommonPopupWind
          */
         @JavascriptInterface
         public String prizeData() {
+            String main_box = getIntent().getStringExtra("main_box");
             String prizeBox = null;
-            if (!EncodeAndStringTool.isStringEmpty(getIntent().getStringExtra("main_box")) && getIntent().getStringExtra("main_box").equals("main_box")) {
+            if (!EncodeAndStringTool.isStringEmpty(main_box) && "main_box".equals(main_box)) {
                 boxBean = getIntent().getParcelableExtra("BoxBean");
-                prizeBox = new Gson().toJson(boxBean);
+                prizeBox = JSON.toJSONString(boxBean);
             } else {
                 if (!EncodeAndStringTool.isObjectEmpty(minePrize)) {
-                    prizeBox = new Gson().toJson(minePrize);
+                    prizeBox = JSON.toJSONString(minePrize);
                 }
             }
-            Log.i(TAG, prizeBox.toString());
-            return prizeBox.toString();
+            Log.i(TAG, prizeBox);
+            return prizeBox;
         }
 
         /**
@@ -219,8 +222,8 @@ public class WebPrizeBoxActivity extends BaseActivity implements CommonPopupWind
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Log.e("奖品返回", prizeData.toString());
-                    MinePrize minePrize = new Gson().fromJson(prizeData.toString(), MinePrize.class);
+                    Log.e("奖品返回", prizeData);
+                    MinePrize minePrize = JSON.parseObject(prizeData, MinePrize.class);
                     if (minePrize.getActionType().equals("action.h5.url")) {
                         //实物
                         Intent intent = new Intent(WebPrizeBoxActivity.this, WebPrizeActivity.class);
@@ -232,10 +235,10 @@ public class WebPrizeBoxActivity extends BaseActivity implements CommonPopupWind
                         //红包
                         if (Integer.parseInt(SaveUserInfo.getInstance(WebPrizeBoxActivity.this).getUserInfo("cert")) == 1) {
                             if (!EncodeAndStringTool.isListEmpty(minePrize.getMinePrizes())) {
-                                List<MinePrize.minePrize> redPrizeList = new ArrayList<>();
+                                List<MinePrize.ChildMinePrize> redPrizeList = new ArrayList<>();
                                 for (int i = 0; i < minePrize.getMinePrizes().size(); i++) {
-                                    MinePrize.minePrize minePrize1 = minePrize.getMinePrizes().get(i);
-                                    redPrizeList.add(minePrize1);
+                                    MinePrize.ChildMinePrize childMinePrize1 = minePrize.getMinePrizes().get(i);
+                                    redPrizeList.add(childMinePrize1);
                                 }
                                 if (!EncodeAndStringTool.isListEmpty(redPrizeList)) {
                                     Intent intent = new Intent(WebPrizeBoxActivity.this, RedWithDrawActivity.class);
@@ -284,7 +287,7 @@ public class WebPrizeBoxActivity extends BaseActivity implements CommonPopupWind
         Intent intent = getIntent();
         try {
             //我的奖品
-            minePrize = intent.getParcelableExtra("minePrize");
+            minePrize = intent.getParcelableExtra("ChildMinePrize");
             boxBean = intent.getParcelableExtra("BoxBean");
 
         } catch (Exception e) {
@@ -456,7 +459,7 @@ public class WebPrizeBoxActivity extends BaseActivity implements CommonPopupWind
                 TextView tv_content = view.findViewById(R.id.tv_content);
                 tv_content.setText(sharedBean1.getContent());
                 final ImageView iv_qr = view.findViewById(R.id.iv_qr);
-                Bitmap mBitmap = CodeUtils.createImage(sharedBean1.getUrl(), 100, 100, null);
+                Bitmap mBitmap = CodeUtils.createImage(sharedBean1.getUrl(), dp2px(114), dp2px(114), null);
                 iv_qr.setImageBitmap(mBitmap);
                 TextView tv_save_picture = view.findViewById(R.id.tv_save_picture);
                 tv_save_picture.setOnClickListener(new OnMultiClickListener() {

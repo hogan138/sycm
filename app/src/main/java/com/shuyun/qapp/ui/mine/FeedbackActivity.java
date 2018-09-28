@@ -2,7 +2,6 @@ package com.shuyun.qapp.ui.mine;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -13,19 +12,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.TimeUtils;
-import com.google.gson.Gson;
-import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
+import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.FeedBackSuggestBean;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.LogUtil;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.ToastUtil;
 import com.umeng.analytics.MobclickAgent;
@@ -132,7 +129,7 @@ public class FeedbackActivity extends BaseActivity {
      * @param feedBackSuggestBean
      */
     private void loadFeedBack(FeedBackSuggestBean feedBackSuggestBean) {
-        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), new Gson().toJson(feedBackSuggestBean));
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), JSON.toJSONString(feedBackSuggestBean));
         ApiService apiService = BasePresenter.create(8000);
         apiService.getFeedBack(body)
                 .subscribeOn(Schedulers.io())

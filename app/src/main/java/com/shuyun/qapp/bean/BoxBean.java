@@ -31,6 +31,10 @@ public class BoxBean implements Parcelable {
     private String h5Url;
     private String isRealName;//是否实名认证
 
+    public BoxBean(){
+
+    }
+
     protected BoxBean(Parcel in) {
         count = in.readInt();
         source = in.readInt();
@@ -273,6 +277,10 @@ public class BoxBean implements Parcelable {
         private String goodsCode; // 奖品商品编码
         private BigDecimal worthLower = new BigDecimal(0); // 价值范围
         private BigDecimal worthUpper = new BigDecimal(0); // 仅针对现金、红包和积分有效
+
+        public PrizeInfo(){
+
+        }
 
         protected PrizeInfo(Parcel in) {
             name = in.readString();

@@ -1,5 +1,7 @@
 package com.shuyun.qapp.bean;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * Created by sunxiao on 2018/5/22.
  * 分享需要传给H5的签名
@@ -7,13 +9,14 @@ package com.shuyun.qapp.bean;
 
 public class AuthHeader {
 
-    private String Authorization;
+    @JSONField(name = "Authorization")
+    private String authorization;
     private String sycm;
 
     private String id;
 
     public void setAuthorization(String authorization) {
-        Authorization = authorization;
+        this.authorization = authorization;
     }
 
     public void setSycm(String sycm) {
@@ -25,7 +28,7 @@ public class AuthHeader {
     }
 
     public String getAuthorization() {
-        return Authorization;
+        return authorization;
     }
 
     public String getSycm() {
@@ -39,7 +42,7 @@ public class AuthHeader {
     @Override
     public String toString() {
         return "AuthHeader{" +
-                "Authorization='" + Authorization + '\'' +
+                "Authorization='" + authorization + '\'' +
                 ", sycm='" + sycm + '\'' +
                 ", id='" + id + '\'' +
                 '}';

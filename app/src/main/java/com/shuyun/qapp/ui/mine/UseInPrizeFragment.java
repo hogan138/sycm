@@ -140,7 +140,7 @@ public class UseInPrizeFragment extends Fragment {
                     if (Integer.parseInt(SaveUserInfo.getInstance(getActivity()).getUserInfo("cert")) == 1) {
                         //宝箱
                         Intent intent = new Intent(getActivity(), WebPrizeBoxActivity.class);
-                        intent.putExtra("minePrize", minePrize);
+                        intent.putExtra("ChildMinePrize", minePrize);
                         intent.putExtra("main_box", "my_prize");
                         startActivity(intent);
                     } else {

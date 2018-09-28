@@ -2,7 +2,6 @@ package com.shuyun.qapp.ui.mine;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -11,10 +10,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.TimeUtils;
-import com.google.gson.Gson;
-import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
@@ -24,7 +22,6 @@ import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.LogUtil;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ToastUtil;
@@ -132,7 +129,7 @@ public class ChangePhoneActivity extends BaseActivity {
      */
     private void getCodeNum(InputVerficationCodeBean verficationCodeBean) {
         ApiService apiService = BasePresenter.create(8000);
-        String inputbean = new Gson().toJson(verficationCodeBean);
+        String inputbean = JSON.toJSONString(verficationCodeBean);
         Log.i(TAG, "loadLogin: " + verficationCodeBean.toString());
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
         apiService.getCode(body)

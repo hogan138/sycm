@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,7 +12,7 @@
 
 
     <WebView
-        android:id="@+id/wv_contact_us"
+        android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/title">
@@ -27,95 +26,4 @@
         android:layout_centerInParent="true"
         android:src="@drawable/lottery_animlist" />
 
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginLeft="@dimen/text_12"-->
-    <!--android:layout_marginTop="@dimen/text_25"-->
-    <!--android:text="@string/inform"-->
-    <!--android:textColor="@color/color_2"-->
-    <!--android:textSize="@dimen/text_15"/>-->
-    <!--<LinearLayout-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:orientation="vertical">-->
-    <!--<LinearLayout-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:orientation="horizontal">-->
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginLeft="@dimen/text_12"-->
-    <!--android:layout_marginTop="@dimen/text_10"-->
-    <!--android:text="客服热线:"-->
-    <!--android:textColor="@color/color_2"-->
-    <!--android:textSize="@dimen/text_15"/>-->
-    <!--<TextView-->
-    <!--android:id="@+id/tv_phone"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginLeft="@dimen/text_12"-->
-    <!--android:layout_marginTop="@dimen/text_10"-->
-    <!--android:text="0571-86875106"-->
-    <!--android:textColor="@color/color_4"-->
-    <!--android:textSize="@dimen/text_15"/>-->
-
-    <!--</LinearLayout>-->
-    <!--<LinearLayout-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:orientation="horizontal">-->
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginLeft="@dimen/text_12"-->
-    <!--android:layout_marginTop="@dimen/text_10"-->
-    <!--android:text="招商邮箱:"-->
-    <!--android:textColor="@color/color_2"-->
-    <!--android:textSize="@dimen/text_15"/>-->
-    <!--<TextView-->
-    <!--android:id="@+id/tv_email"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginLeft="@dimen/text_12"-->
-    <!--android:layout_marginTop="@dimen/text_10"-->
-    <!--android:text="zhaoshang@25876.com"-->
-    <!--android:textColor="@color/color_4"-->
-    <!--android:textSize="@dimen/text_15"/>-->
-
-    <!--</LinearLayout>-->
-    <!--<LinearLayout-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:orientation="horizontal">-->
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginLeft="@dimen/text_12"-->
-    <!--android:layout_marginTop="@dimen/text_10"-->
-    <!--android:text="微信号:"-->
-    <!--android:textColor="@color/color_2"-->
-    <!--android:textSize="@dimen/text_15"/>-->
-    <!--<TextView-->
-    <!--android:id="@+id/tv_wechat"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginLeft="@dimen/text_12"-->
-    <!--android:layout_marginTop="@dimen/text_10"-->
-    <!--android:text="www25876com"-->
-    <!--android:textColor="@color/color_4"-->
-    <!--android:textSize="@dimen/text_15"/>-->
-
-    <!--</LinearLayout>-->
-    <!--</LinearLayout>-->
-
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginLeft="@dimen/text_12"-->
-    <!--android:layout_marginTop="@dimen/text_10"-->
-    <!--android:text="客服在线时间:周一到周五 上午10点-下午17点"-->
-    <!--android:textColor="@color/color_2"-->
-    <!--android:textSize="@dimen/text_15"/>-->
 </RelativeLayout>

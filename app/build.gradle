@@ -74,7 +74,7 @@ dependencies {
 
     //添加retrofit网络请求依赖
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    compile 'com.google.code.gson:gson:2.8.2'
+    //compile 'com.google.code.gson:gson:2.8.2'
     compile 'com.squareup.retrofit2:converter-gson:2.4.0'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
 
@@ -150,4 +150,7 @@ dependencies {
 
     //广告轮播 https://github.com/kevin-mob/banner
     implementation 'cn.kevin:bannerview:1.0.8'
+
+    //json
+    implementation 'com.alibaba:fastjson:1.1.70.android'
 }

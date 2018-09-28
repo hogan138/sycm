@@ -78,6 +78,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.blankj.utilcode.util.SizeUtils.dp2px;
+
 /**
  * 通用popupwindow
  * https://www.jianshu.com/p/9304d553aa67
@@ -665,7 +667,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                 TextView tv_content = view.findViewById(R.id.tv_content);
                 tv_content.setText(sharedBean1.getContent());
                 final ImageView iv_qr = view.findViewById(R.id.iv_qr);
-                Bitmap mBitmap = CodeUtils.createImage(sharedBean1.getUrl(), 100, 100, null);
+                Bitmap mBitmap = CodeUtils.createImage(sharedBean1.getUrl(), dp2px(114), dp2px(114), null);
                 iv_qr.setImageBitmap(mBitmap);
                 TextView tv_save_picture = view.findViewById(R.id.tv_save_picture);
                 tv_save_picture.setOnClickListener(new OnMultiClickListener() {

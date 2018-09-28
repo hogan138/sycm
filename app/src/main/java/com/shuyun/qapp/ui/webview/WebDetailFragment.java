@@ -15,9 +15,8 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
+import com.alibaba.fastjson.JSON;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.WebAnswerHomeBean;
@@ -109,10 +108,9 @@ public class WebDetailFragment extends Fragment {
         public String answerLogin() {
             String answerHome = null;
             if (!EncodeAndStringTool.isObjectEmpty(answerHomeBean)) {
-                answerHome = new Gson().toJson(answerHomeBean);
+                answerHome = JSON.toJSONString(answerHomeBean);
             }
-            Log.e(TAG, answerHome.toString());
-            return answerHome.toString();
+            return answerHome;
         }
 
         /**

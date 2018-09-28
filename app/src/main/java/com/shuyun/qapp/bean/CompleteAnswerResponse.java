@@ -27,7 +27,9 @@ public class CompleteAnswerResponse implements Parcelable {
     private long beat0;//真实击败人次
     private double beatRate;//击败的人次比例值
 
+    public  CompleteAnswerResponse(){
 
+    }
     protected CompleteAnswerResponse(Parcel in) {
         total = in.readInt();
         status = in.readInt();
@@ -127,7 +129,9 @@ public class CompleteAnswerResponse implements Parcelable {
         private double worthLower;
         private double worthUpper;
 
+        public PrizesBean(){
 
+        }
         protected PrizesBean(Parcel in) {
             showName = in.readString();
             type = in.readInt();

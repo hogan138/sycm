@@ -30,8 +30,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.TimeUtils;
-import com.google.gson.Gson;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.callback.ConfigDialog;
@@ -69,6 +69,8 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
+import static com.blankj.utilcode.util.SizeUtils.dp2px;
 
 //黄山电子门票、招商银行等h5页面
 public class WebPrizeActivity extends BaseActivity implements CommonPopupWindow.ViewInterface {
@@ -209,8 +211,7 @@ public class WebPrizeActivity extends BaseActivity implements CommonPopupWindow.
             if (!EncodeAndStringTool.isStringEmpty(id)) {
                 authHeader.setId(id);
             }
-            String header = new Gson().toJson(authHeader);
-            return header.toString();
+            return JSON.toJSONString(authHeader);
         }
 
         /**
@@ -270,10 +271,10 @@ public class WebPrizeActivity extends BaseActivity implements CommonPopupWindow.
         public String answerLogin() {
             String answerHome = null;
             if (!EncodeAndStringTool.isObjectEmpty(answerHomeBean)) {
-                answerHome = new Gson().toJson(answerHomeBean);
+                answerHome = JSON.toJSONString(answerHomeBean);
             }
-            Log.e(TAG, answerHome.toString());
-            return answerHome.toString();
+            Log.e(TAG, answerHome);
+            return answerHome;
         }
 
         /**
@@ -535,7 +536,7 @@ public class WebPrizeActivity extends BaseActivity implements CommonPopupWindow.
                 TextView tv_content = view.findViewById(R.id.tv_content);
                 tv_content.setText(sharedBean1.getContent());
                 final ImageView iv_qr = view.findViewById(R.id.iv_qr);
-                Bitmap mBitmap = CodeUtils.createImage(sharedBean1.getUrl(), 100, 100, null);
+                Bitmap mBitmap = CodeUtils.createImage(sharedBean1.getUrl(), dp2px(114), dp2px(114), null);
                 iv_qr.setImageBitmap(mBitmap);
                 TextView tv_save_picture = view.findViewById(R.id.tv_save_picture);
                 tv_save_picture.setOnClickListener(new OnMultiClickListener() {

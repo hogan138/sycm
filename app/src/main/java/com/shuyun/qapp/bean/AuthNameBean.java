@@ -19,6 +19,10 @@ public class AuthNameBean implements Parcelable {
     private String opinion;//审核结果备注
     private String certInfo; //实名认证信息
 
+    public AuthNameBean(){
+
+    }
+
     protected AuthNameBean(Parcel in) {
         status = in.readInt();
         opinion = in.readString();

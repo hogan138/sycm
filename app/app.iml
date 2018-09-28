@@ -152,6 +152,7 @@
     <orderEntry type="library" name="com.android.support:design-27.0.2" level="project" />
     <orderEntry type="library" name="cn.bingoogolapple:bga-banner-2.2.4" level="project" />
     <orderEntry type="library" scope="TEST" name="junit:junit:4.12@jar" level="project" />
+    <orderEntry type="library" name="com.alibaba:fastjson:1.1.70.android@jar" level="project" />
     <orderEntry type="library" name="__local_aars__:E.\android_workspace\android\app\libs\umeng-sharetool-6.9.0.jar:unspecified@jar" level="project" />
     <orderEntry type="library" name="android.arch.core:common:1.1.0@jar" level="project" />
     <orderEntry type="library" scope="TEST" name="com.android.support.test.espresso:espresso-core-3.0.1" level="project" />
