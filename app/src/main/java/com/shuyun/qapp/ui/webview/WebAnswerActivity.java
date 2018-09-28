@@ -332,10 +332,6 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        WindowManager wm = (WindowManager) WebAnswerActivity.this
-                .getSystemService(Context.WINDOW_SERVICE);
-        int width = wm.getDefaultDisplay().getWidth();
-
         /**
          * 检测微信是否安装,如果没有安装,需不显示分享按钮,如果安装了,需要显示分享按钮
          */
