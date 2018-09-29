@@ -63,6 +63,10 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.blankj.utilcode.util.SizeUtils.dp2px;
 
+/**
+ * h5跳转页面
+ */
+
 public class WebBannerActivity extends BaseActivity implements CommonPopupWindow.ViewInterface {
 
     @BindView(R.id.iv_back)
@@ -70,7 +74,7 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle;
     @BindView(R.id.wv_banner)
-    WebView wvBanner;//首页轮播图跳转页面
+    WebView wvBanner;
     @BindView(R.id.rl_main)
     RelativeLayout rlMain;
     private String url;
@@ -228,7 +232,7 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
         }
 
         /**
-         * 提现成功，进入我的账户
+         * 提现成功
          */
         @JavascriptInterface
         public void goWebview(final String h5url) {
@@ -245,7 +249,7 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
 
 
         /**
-         * 提现时败，进入我的账户
+         * 提现失败，进入我的账户
          */
         @JavascriptInterface
         public void goAccount(final String err) {

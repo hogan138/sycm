@@ -135,7 +135,6 @@ public class SharedPrzieActivity extends BaseActivity implements CommonPopupWind
         String h5Url = getIntent().getStringExtra("h5Url");
         if (!EncodeAndStringTool.isStringEmpty("h5Url")) {
             wvSharedPrize.loadUrl(h5Url);
-//            wvSharedPrize.loadUrl("http://192.168.191.1:8080");
         } else {
             wvSharedPrize.loadUrl(AppConst.SHARE);
         }

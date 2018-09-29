@@ -132,6 +132,12 @@ public class MyReceiver extends BroadcastReceiver {
                         i.putExtra("url", pushBean.getPushData());
                         i.putExtra("name", "提现失败");//名称 标题
                         context.startActivity(i);
+                    } else if (pushBean.getPushAction().equals("push.default")) {
+                        //默认跳转h5
+                        i = new Intent(context, WebBannerActivity.class);
+                        i.putExtra("url", pushBean.getPushData());
+                        i.putExtra("name", "全民共进");//名称 标题
+                        context.startActivity(i);
                     } else if (pushBean.getPushAction().equals("push.deliver.goods.notity")) {
                         //发货通知
                         i = new Intent(context, MinePrizeActivity.class);
