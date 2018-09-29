@@ -158,6 +158,8 @@ public class LoginActivity extends BaseActivity {
             startPermissionsActivity();
         }
 
+        SaveUserInfo.getInstance(LoginActivity.this).setUserInfo("login_phone", "");
+
         /**
          * 友盟统计
          */

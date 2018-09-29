@@ -73,7 +73,6 @@ import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.mine.MinePrizeActivity;
 import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
-import com.shuyun.qapp.ui.webview.SharedPrzieActivity;
 import com.shuyun.qapp.ui.webview.WebBannerActivity;
 import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
@@ -298,11 +297,6 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
         loadSystemInfo();
 
         /**
-         * 获取宝箱数量
-         */
-        loadTreasureBoxNum();
-
-        /**
          * 邀请有奖
          */
         invite();
@@ -377,8 +371,9 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
             case R.id.rl_invite_friend://邀请有奖
                 //邀请分享
                 Intent intent = new Intent();
-                intent.setClass(mContext, SharedPrzieActivity.class);
-                intent.putExtra("h5Url", invite_h5Url);
+                intent.setClass(mContext, WebBannerActivity.class);
+                intent.putExtra("url", invite_h5Url);
+                intent.putExtra("name", "邀请分享");
                 startActivity(intent);
                 break;
             default:
@@ -889,6 +884,11 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
             dialogShow();
         }
 
+        /**
+         * 获取宝箱数量
+         */
+        loadTreasureBoxNum();
+
     }
 
 
@@ -1052,7 +1052,7 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
     //活动弹框
     private void activitydialog(final ConfigDialogBean configDialogBean) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.AlertDialog);
-        LayoutInflater inflater = LayoutInflater.from(mContext);
+        final LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.open_activity_popup, null);
         RoundImageView iv_bg = view.findViewById(R.id.iv_bg);
         RelativeLayout rl_close = view.findViewById(R.id.rl_close);
@@ -1108,8 +1108,9 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                     } else if (configDialogBean.getBtnAction().equals("action.invite")) {
                         //邀请
                         Intent intent = new Intent();
-                        intent.setClass(mContext, SharedPrzieActivity.class);
-                        intent.putExtra("h5Url", configDialogBean.getH5Url());
+                        intent.setClass(mContext, WebBannerActivity.class);
+                        intent.putExtra("url", configDialogBean.getH5Url());
+                        intent.putExtra("name", "邀请分享");
                         startActivity(intent);
                     } else if (configDialogBean.getBtnAction().equals("action.integral")) {
                         //积分兑换
@@ -1144,8 +1145,9 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                     } else if (configDialogBean.getBtnAction().equals("action.invite")) {
                         //邀请
                         Intent intent = new Intent();
-                        intent.setClass(mContext, SharedPrzieActivity.class);
-                        intent.putExtra("h5Url", configDialogBean.getH5Url());
+                        intent.setClass(mContext, WebBannerActivity.class);
+                        intent.putExtra("url", configDialogBean.getH5Url());
+                        intent.putExtra("name", "邀请分享");
                         startActivity(intent);
                     } else if (configDialogBean.getBtnAction().equals("action.integral")) {
                         //积分兑换

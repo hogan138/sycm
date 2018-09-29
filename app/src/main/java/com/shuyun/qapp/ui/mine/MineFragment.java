@@ -333,6 +333,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                                     tvIntegralBalance.setText("余额:" + mineBean.getBp());
 
                                     if (mineBean.getAvailablePrize() > 0) {
+                                        tvNum.setVisibility(View.VISIBLE);
                                         tvNum.setText("+" + mineBean.getAvailablePrize());//未使用奖品数
                                     } else {
                                         tvNum.setVisibility(View.GONE);

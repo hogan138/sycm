@@ -318,10 +318,6 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <!-- 分享有奖  短信支持 -->
-        <activity
-            android:name=".ui.webview.SharedPrzieActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
         <!-- 抽奖规则 -->
         <!-- banner跳转页 -->
         <activity

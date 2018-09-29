@@ -50,29 +50,35 @@ public class BxPrizeAdapter extends RecyclerView.Adapter<BxPrizeAdapter.ViewHold
     public void onBindViewHolder(final ViewHolder holder, int position) {
         MinePrize prize = prizeBeans.get(position);
 
-        if (prize.getActionType().equals("action.withdraw")) {
+        //名字显示
+        if (prize.getType() == 1 || prize.getType() == 7) {
             //现金红包、实物
             holder.tvTitle2.setText(prize.getName() + "  " + prize.getAmount() + "元");//标题
-            holder.tvOpen.setVisibility(View.VISIBLE);
-            holder.tvOpen.setText(prize.getActionTypeLabel());
-        } else if (prize.getActionType().equals("action.bp.use")) {
+        } else if (prize.getType() == 2) {
             //积分
             String amount = prize.getAmount();
             if (prize.getAmount().contains(".")) {
                 amount = prize.getAmount().substring(0, prize.getAmount().indexOf('.'));
             }
             holder.tvTitle2.setText(prize.getName() + "  " + amount);
+        } else {
+            holder.tvTitle2.setText(prize.getName());
+        }
+
+        //按钮显示
+        if (prize.getActionType().equals("action.withdraw")) {
+            holder.tvOpen.setVisibility(View.VISIBLE);
+            holder.tvOpen.setText(prize.getActionTypeLabel());
+        } else if (prize.getActionType().equals("action.bp.use")) {
             holder.tvOpen.setVisibility(View.VISIBLE);
             holder.tvOpen.setText(prize.getActionTypeLabel());
         } else if (prize.getActionType().equals("action.h5.url")) {
-            //实物兑换
-            holder.tvTitle2.setText(prize.getName());
             holder.tvOpen.setVisibility(View.VISIBLE);
             holder.tvOpen.setText(prize.getActionTypeLabel());
         } else {
             holder.tvOpen.setVisibility(View.GONE);
-            holder.tvTitle2.setText(prize.getName());
         }
+
         String time = TimeTool.getTime(prize.getExpireTime());
         if (prize.getExpireTime().equals("0")) {
             holder.tvDate.setVisibility(View.INVISIBLE);

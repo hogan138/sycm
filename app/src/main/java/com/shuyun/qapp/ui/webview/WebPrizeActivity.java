@@ -86,7 +86,6 @@ public class WebPrizeActivity extends BaseActivity implements CommonPopupWindow.
     TextView tvRignt;
     private String id;
     private String url;
-    private static final String TAG = "WebPrizeActivity";
 
     WebAnswerHomeBean answerHomeBean = new WebAnswerHomeBean();
 

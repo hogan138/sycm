@@ -13,6 +13,7 @@ import android.os.Message;
 import android.support.animation.SpringAnimation;
 import android.support.animation.SpringForce;
 import android.support.v4.app.ActivityCompat;
+import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -28,10 +29,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.TimeUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
+import com.shuyun.qapp.bean.AuthHeader;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.net.ApiService;
@@ -64,7 +67,7 @@ import io.reactivex.schedulers.Schedulers;
 import static com.blankj.utilcode.util.SizeUtils.dp2px;
 
 /**
- * h5跳转页面
+ * h5页面（广告、首页邀请、首页轮播图、首页弹框、极光推送消息、消息列表）
  */
 
 public class WebBannerActivity extends BaseActivity implements CommonPopupWindow.ViewInterface {
@@ -217,6 +220,13 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
             });
         }
 
+        @JavascriptInterface
+        public String sendKey() {
+            AuthHeader authHeader = new AuthHeader();
+            authHeader.setAuthorization(AppConst.TOKEN);
+            authHeader.setSycm(AppConst.sycm());
+            return JSON.toJSONString(authHeader);
+        }
 
         /**
          * h5页面调用网络出现错误码
@@ -239,10 +249,7 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Intent intent = new Intent();
-                    intent.setClass(WebBannerActivity.this, SharedPrzieActivity.class);
-                    intent.putExtra("h5Url", h5url);
-                    startActivity(intent);
+                    wvBanner.loadUrl(h5url);
                 }
             });
         }
@@ -287,6 +294,31 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
             handler.sendMessage(msg);
         }
 
+        /**
+         * 接收js返回的手机号码,调用发短信业务
+         *
+         * @param phoneNum
+         */
+        @JavascriptInterface
+        public void sms(String phoneNum) {
+            //调用发短信业务
+            doSendSMSTo(phoneNum);
+        }
+
+    }
+
+    /**
+     * 调用系统已有程序发短信功能
+     *
+     * @param phoneNumber
+     */
+    public void doSendSMSTo(String phoneNumber) {
+        String[] smsInfo = phoneNumber.split("[$]");
+        if (PhoneNumberUtils.isGlobalPhoneNumber(smsInfo[0])) {
+            Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + smsInfo[0]));
+            intent.putExtra("sms_body", smsInfo[1]);
+            startActivity(intent);
+        }
     }
 
     /**

@@ -71,6 +71,9 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.blankj.utilcode.util.SizeUtils.dp2px;
 
+/**
+ * h5开宝箱
+ */
 public class WebPrizeBoxActivity extends BaseActivity implements CommonPopupWindow.ViewInterface {
 
     WebAnswerHomeBean answerHomeBean = new WebAnswerHomeBean();

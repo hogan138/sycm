@@ -118,6 +118,7 @@ public class SplashActivity extends AppCompatActivity {
                                             if (!EncodeAndStringTool.isStringEmpty(content)) {
                                                 Intent intent = new Intent(SplashActivity.this, WebBannerActivity.class);
                                                 intent.putExtra("url", content);
+                                                intent.putExtra("name", "全民共进");
                                                 intent.putExtra("from", "splash");
                                                 startActivity(intent);
                                                 finish();

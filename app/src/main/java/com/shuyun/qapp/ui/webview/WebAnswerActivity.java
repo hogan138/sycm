@@ -83,7 +83,6 @@ import io.reactivex.schedulers.Schedulers;
 import static com.blankj.utilcode.util.SizeUtils.dp2px;
 
 /**
- * Created by sunxiao on 2018/7/5
  * H5答题页
  */
 public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow.ViewInterface {

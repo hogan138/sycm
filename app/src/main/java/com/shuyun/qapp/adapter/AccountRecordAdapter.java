@@ -67,6 +67,12 @@ public class AccountRecordAdapter extends RecyclerView.Adapter<AccountRecordAdap
                     holder.tvName.setText("积分抽奖");
                 }
             }
+            //积分
+            if (1 == accountBean.getWay()) {
+                holder.tvNumber.setText("+" + accountBean.getAmount());
+            } else if (2 == accountBean.getWay()) {
+                holder.tvNumber.setText("-" + accountBean.getAmount());
+            }
         } else if (type == AppConst.ACCOUNT_CASH_TYPE) {  //现金提现
             if (1 == accountBean.getWay()) {
                 if (!EncodeAndStringTool.isStringEmpty(accountBean.getName())) {
@@ -109,6 +115,12 @@ public class AccountRecordAdapter extends RecyclerView.Adapter<AccountRecordAdap
                     holder.ivStatus.setVisibility(View.GONE);//默认状态
                 }
             }
+
+            if (1 == accountBean.getWay()) {
+                holder.tvNumber.setText("+" + accountBean.getAmount() + "元");
+            } else if (2 == accountBean.getWay()) {
+                holder.tvNumber.setText("-" + accountBean.getAmount() + "元");
+            }
         }
 
         //时间
@@ -116,12 +128,7 @@ public class AccountRecordAdapter extends RecyclerView.Adapter<AccountRecordAdap
             String time = TimeTool.getCommTime(accountBean.getTime(), FORMAT_DATE_TIME_SECOND);
             holder.tvDate.setText(time);
         }
-        //金额 或者积分个数
-        if (1 == accountBean.getWay()) {
-            holder.tvNumber.setText("+" + accountBean.getAmount());
-        } else if (2 == accountBean.getWay()) {
-            holder.tvNumber.setText("-" + accountBean.getAmount());
-        }
+
     }
 
 
