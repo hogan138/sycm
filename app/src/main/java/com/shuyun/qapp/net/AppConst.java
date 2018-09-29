@@ -3,7 +3,6 @@ package com.shuyun.qapp.net;
 import android.content.Context;
 
 import com.shuyun.qapp.utils.EncodeAndStringTool;
-import com.shuyun.qapp.utils.LogUtil;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 
 import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;

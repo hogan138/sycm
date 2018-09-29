@@ -50,6 +50,7 @@ import com.shuyun.qapp.utils.RegularTool;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
+import com.shuyun.qapp.utils.ToastUtil;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
@@ -300,7 +301,7 @@ public class LoginActivity extends BaseActivity {
             DataSupport.deleteAll(Msg.class);//清空数据库中消息
         }
         ApiService apiService = BasePresenter.create(8000);
-        String inputbean =  JSON.toJSONString(loginInput);
+        String inputbean = JSON.toJSONString(loginInput);
         Log.i(TAG, "loadLogin: " + loginInput.toString());
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
         apiService.login(body)
@@ -352,7 +353,12 @@ public class LoginActivity extends BaseActivity {
                                     updatePasswordDialog();
                                 }
                             } else {
-                                ErrorCodeTools.errorCodePrompt(mContext, loginResponse.getErr(), loginResponse.getMsg());
+                                if ("U0001".equals(loginResponse.getErr())) {
+                                    ToastUtil.showToast(mContext, "用户未注册");
+                                } else {
+                                    ErrorCodeTools.errorCodePrompt(mContext, loginResponse.getErr(), loginResponse.getMsg());
+                                }
+
                             }
 
                         }

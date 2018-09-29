@@ -31,7 +31,7 @@ public class BoxBean implements Parcelable {
     private String h5Url;
     private String isRealName;//是否实名认证
 
-    public BoxBean(){
+    public BoxBean() {
 
     }
 
@@ -277,8 +277,9 @@ public class BoxBean implements Parcelable {
         private String goodsCode; // 奖品商品编码
         private BigDecimal worthLower = new BigDecimal(0); // 价值范围
         private BigDecimal worthUpper = new BigDecimal(0); // 仅针对现金、红包和积分有效
+        private String showName; // 显示名称
 
-        public PrizeInfo(){
+        public PrizeInfo() {
 
         }
 
@@ -433,8 +434,6 @@ public class BoxBean implements Parcelable {
         public void setShowName(String showName) {
             this.showName = showName;
         }
-
-        private String showName; // 显示名称
 
         @Override
         public int describeContents() {

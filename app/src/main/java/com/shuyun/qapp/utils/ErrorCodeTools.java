@@ -104,6 +104,7 @@ public class ErrorCodeTools {
             ToastUtil.showToast(mContext, "用户未注册");
             Intent intent = new Intent(mContext, LoginActivity.class);
             mContext.startActivity(intent);
+            MyActivityManager.getInstance().finishAllActivity();
             return false;
         } else if (err.equals("U0002")) {//手机号已经被其它用户绑定,跳到登录页
             ToastUtil.showToast(mContext, "手机号码已经被其它用户绑定");

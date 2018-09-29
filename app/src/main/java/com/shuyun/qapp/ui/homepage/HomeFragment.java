@@ -762,7 +762,6 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                                                 intent.putExtra("BoxBean", boxBean);
                                                 intent.putExtra("main_box", "main_box");
                                                 startActivity(intent);
-                                            } else {
                                             }
                                         } else {
                                             //是否实名认证
