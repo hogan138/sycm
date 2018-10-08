@@ -327,6 +327,7 @@ public class WebPrizeBoxActivity extends BaseActivity implements CommonPopupWind
             if (!EncodeAndStringTool.isStringEmpty(minePrize.getH5Url())) {
                 //我的奖品开宝箱
                 wvPrizeBox.loadUrl(minePrize.getH5Url());
+//                wvPrizeBox.loadUrl("http://192.168.191.1:8080?prize=1");
             } else {
                 //为空加载本地
                 wvPrizeBox.loadUrl(AppConst.BOX);
