@@ -14,6 +14,7 @@ import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.Shader;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -59,6 +60,7 @@ import com.shuyun.qapp.bean.GroupBean;
 import com.shuyun.qapp.bean.GroupClassifyBean;
 import com.shuyun.qapp.bean.HomeGroupsBean;
 import com.shuyun.qapp.bean.InviteBean;
+import com.shuyun.qapp.bean.MainConfigBean;
 import com.shuyun.qapp.bean.MarkBannerItem;
 import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.bean.SystemInfo;
@@ -67,12 +69,13 @@ import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.InformatListenner;
 import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.receiver.MyReceiver;
-import com.shuyun.qapp.ui.webview.WebAnswerActivity;
+import com.shuyun.qapp.ui.activity.ActivityRegionManager;
 import com.shuyun.qapp.ui.classify.ClassifyActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.mine.MinePrizeActivity;
 import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
+import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.webview.WebBannerActivity;
 import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
@@ -203,14 +206,12 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
     Unbinder unbinder;
     @BindView(R.id.iv_invite)
     ImageView ivInvite; //分享
-    @BindView(R.id.rl_invite_friend)
-    RelativeLayout rlInviteFriend; //邀请好友得宝箱
-    @BindView(R.id.rl_against)
-    RelativeLayout rlAgainst; //答题对战
     @BindView(R.id.rv_recomend_group)
     RecyclerView rvRecomendGroup; //推荐题组
     @BindView(R.id.always_banner)
     BannerViewPager alwaysBanner; //常答轮播题组
+    @BindView(R.id.activityRegion)
+    LinearLayout activityRegion;
 
     private int SHARE_CHANNEL;
     private static final String TAG = "HomeFragment";
@@ -230,7 +231,6 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
         super.onAttach(context);
         this.mContext = (Activity) context;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -310,12 +310,17 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
          * 获取弹框信息
          */
         getDialogInfo();
+
+        /**
+         * 获取活动配置信息
+         */
+        getConfigInfo();
     }
 
     @OnClick({R.id.iv_invite, R.id.iv_common_right_icon,
             R.id.rl_active, R.id.rl_life, R.id.rl_culture, R.id.rl_video,
-            R.id.rl_music, R.id.rl_history, R.id.rl_edu, R.id.rl_more,
-            R.id.rl_invite_friend, R.id.rl_against})
+            R.id.rl_music, R.id.rl_history, R.id.rl_edu, R.id.rl_more
+    })
     public void click(View view) {
         switch (view.getId()) {
             case R.id.iv_invite://邀请分享
@@ -364,17 +369,6 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                 Intent intent7 = new Intent(mContext, ClassifyActivity.class);
                 intent7.putExtra("id", 0);
                 startActivity(intent7);
-                break;
-            case R.id.rl_against:  //答题对战
-                startActivity(new Intent(getActivity(), MainAgainstActivity.class));
-                break;
-            case R.id.rl_invite_friend://邀请有奖
-                //邀请分享
-                Intent intent = new Intent();
-                intent.setClass(mContext, WebBannerActivity.class);
-                intent.putExtra("url", invite_h5Url);
-                intent.putExtra("name", "邀请分享");
-                startActivity(intent);
                 break;
             default:
                 break;
@@ -570,6 +564,44 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                         }
                     }
 
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //保存错误信息
+                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+    }
+
+    /**
+     * 获取活动配置信息
+     */
+    private void getConfigInfo() {
+        ApiService apiService = BasePresenter.create(8000);
+        apiService.configMainActivity()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<DataResponse<MainConfigBean>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
+
+                    @Override
+                    public void onNext(DataResponse<MainConfigBean> dataResponse) {
+                        if (dataResponse.isSuccees()) {
+                            MainConfigBean mainConfigBean = dataResponse.getDat();
+                            //动态添加布局
+                            activityRegion.removeAllViews();
+                            activityRegion.addView(ActivityRegionManager.getView(mContext, mainConfigBean, invite_h5Url));
+
+                        } else {
+                            ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
+                        }
+                    }
 
                     @Override
                     public void onError(Throwable e) {
@@ -834,11 +866,9 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                             //邀请有奖
                             try {
                                 if (inviteBean.getShare() == 1) {
-                                    rlInviteFriend.setVisibility(View.VISIBLE);
                                     invite_h5Url = inviteBean.getH5Url();
                                     SharedPrefrenceTool.put(mContext, "share", inviteBean.getShare());//是否参与邀请分享 1——参与邀请
                                 } else {
-                                    rlInviteFriend.setVisibility(View.GONE);
                                     SharedPrefrenceTool.put(mContext, "share", inviteBean.getShare());//是否参与邀请分享 1——参与邀请
                                 }
                             } catch (Exception e) {

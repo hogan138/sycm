@@ -332,6 +332,15 @@ public class WebPrizeBoxActivity extends BaseActivity implements CommonPopupWind
                 //为空加载本地
                 wvPrizeBox.loadUrl(AppConst.BOX);
             }
+        } else if (!EncodeAndStringTool.isStringEmpty(getIntent().getStringExtra("main_box")) && getIntent().getStringExtra("main_box").equals("score_box")) {
+//            if (!EncodeAndStringTool.isStringEmpty(minePrize.getH5Url())) {
+            //积分开宝箱
+//                wvPrizeBox.loadUrl(minePrize.getH5Url());
+//            } else {
+            //为空加载本地
+//                wvPrizeBox.loadUrl(AppConst.BOX);
+            wvPrizeBox.loadUrl("http://192.168.191.1:8080?prize=integral");
+//            }
         }
 
 

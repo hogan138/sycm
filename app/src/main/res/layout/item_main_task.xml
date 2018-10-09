@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_main"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/text_4"
+    android:background="@mipmap/home_invite_bg">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/text_8"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginLeft="0dp"
+                android:textColor="@color/color_1"
+                android:textSize="@dimen/text_15" />
+
+
+            <TextView
+                android:id="@+id/tv_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/text_4"
+                android:layout_toRightOf="@+id/tv_name"
+                android:background="@drawable/item_task_score_bg"
+                android:paddingLeft="4dp"
+                android:paddingRight="@dimen/text_4"
+                android:text="+15"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_12"
+                android:visibility="gone" />
+
+
+            <ImageView
+                android:id="@+id/iv_icon"
+                android:layout_width="33dp"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/text_8" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_remark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_8"
+            android:textColor="@color/login_text"
+            android:textSize="@dimen/text_10" />
+
+    </LinearLayout>
+
+</RelativeLayout>

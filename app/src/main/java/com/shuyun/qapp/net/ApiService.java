@@ -19,6 +19,7 @@ import com.shuyun.qapp.bean.InviteBean;
 import com.shuyun.qapp.bean.LoginResponse;
 import com.shuyun.qapp.bean.LookAnswerResultBean;
 import com.shuyun.qapp.bean.MainAgainstBean;
+import com.shuyun.qapp.bean.MainConfigBean;
 import com.shuyun.qapp.bean.MatchTimeBean;
 import com.shuyun.qapp.bean.Msg;
 import com.shuyun.qapp.bean.PrizeDetailBean;
@@ -633,4 +634,10 @@ public interface ApiService {
      */
     @GET("/rest/home/config")
     Observable<DataResponse<ConfigDialogBean>> configDialog();
+
+    /**
+     * 69、首页活动配置
+     */
+    @GET("/rest/home/activity/config")
+    Observable<DataResponse<MainConfigBean>> configMainActivity();
 }

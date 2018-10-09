@@ -20,6 +20,7 @@ import com.shuyun.qapp.bean.IntegralExchangeBean;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.mine.IntegralDrawActivity;
+import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.GlideUtils;
@@ -87,9 +88,12 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
                 finish();
                 break;
             case R.id.rl_start_box:
-                //跳到积分抽奖界面
-                Intent intent = new Intent(IntegralExchangeActivity.this, IntegralDrawActivity.class);
-                intent.putExtra("status", AppConst.INTEGRL_DRAW);//积分抽奖跳到开宝箱界面;
+//                //跳到积分抽奖界面
+//                Intent intent = new Intent(IntegralExchangeActivity.this, IntegralDrawActivity.class);
+//                intent.putExtra("status", AppConst.INTEGRL_DRAW);//积分抽奖跳到开宝箱界面;
+//                startActivity(intent);
+                Intent intent = new Intent(IntegralExchangeActivity.this, WebPrizeBoxActivity.class);
+                intent.putExtra("main_box", "score_box");
                 startActivity(intent);
                 break;
             case R.id.rl_start_baby:

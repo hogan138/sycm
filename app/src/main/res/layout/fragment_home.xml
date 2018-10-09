@@ -58,100 +58,15 @@
             <!--banner轮播图-->
             <include layout="@layout/layout_banner" />
 
+            <!--活动布局-->
             <LinearLayout
+                android:id="@+id/activityRegion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/text_15"
-                android:layout_marginRight="@dimen/text_15"
                 android:layout_marginTop="8dp"
-                android:orientation="horizontal">
-
-                <RelativeLayout
-                    android:id="@+id/rl_invite_friend"
-                    android:layout_width="0dp"
-                    android:layout_height="114dp"
-                    android:layout_weight="1"
-                    android:background="@mipmap/home_invite_bg">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/text_8"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/invite_friend_text"
-                            android:textColor="@color/color_1"
-                            android:textSize="@dimen/text_15" />
-
-                        <TextView
-                            android:id="@+id/tv_invite_friend_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/text_8"
-                            android:text="共计送出11114个邀请宝箱"
-                            android:textColor="@color/login_text"
-                            android:textSize="@dimen/text_11" />
-
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="33dp"
-                        android:layout_height="25dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/text_8"
-                        android:layout_marginTop="33dp"
-                        android:src="@mipmap/home_box" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/rl_against"
-                    android:layout_width="0dp"
-                    android:layout_height="114dp"
-                    android:layout_marginLeft="@dimen/text_8"
-                    android:layout_weight="1"
-                    android:background="@mipmap/home_invite_bg">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/text_8"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/against_text"
-                            android:textColor="@color/color_1"
-                            android:textSize="@dimen/text_15" />
-
-                        <TextView
-                            android:id="@+id/tv_against_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/text_8"
-                            android:text="共8854位用户在线"
-                            android:textColor="@color/login_text"
-                            android:textSize="@dimen/text_11" />
-
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="52dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/text_12"
-                        android:src="@mipmap/home_against" />
-
-                </RelativeLayout>
-
-            </LinearLayout>
+                android:layout_marginRight="@dimen/text_15"
+                android:orientation="horizontal"></LinearLayout>
 
             <!--推荐题组-->
             <include layout="@layout/recommend_group_question" />
@@ -237,8 +152,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/text_12"
-                    android:layout_marginRight="@dimen/text_12"
                     android:layout_marginTop="@dimen/text_2"
+                    android:layout_marginRight="@dimen/text_12"
                     android:paddingBottom="@dimen/text_12">
 
                 </android.support.v7.widget.RecyclerView>
@@ -271,8 +186,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="@dimen/text_18"
                     android:layout_marginTop="@dimen/text_5"
+                    android:layout_marginBottom="@dimen/text_18"
                     android:text="@string/home_bottom_text"
                     android:textColor="@color/home_text_bottom"
                     android:textSize="@dimen/text_15" />
@@ -288,10 +203,10 @@
         android:id="@+id/iv_bx"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="@dimen/text_70"
+        android:layout_alignParentBottom="true"
         android:layout_marginRight="@dimen/text_10"
+        android:layout_marginBottom="@dimen/text_70"
         android:src="@mipmap/indexbx"
         android:visibility="gone" />
 </RelativeLayout>
