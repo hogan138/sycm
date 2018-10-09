@@ -597,7 +597,6 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                             //动态添加布局
                             activityRegion.removeAllViews();
                             activityRegion.addView(ActivityRegionManager.getView(mContext, mainConfigBean, invite_h5Url));
-
                         } else {
                             ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
                         }
