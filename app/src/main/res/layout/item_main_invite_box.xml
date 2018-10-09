@@ -37,7 +37,7 @@
             android:id="@+id/tv_remark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/text_8"
+            android:layout_marginTop="@dimen/text_4"
             android:textColor="@color/login_text"
             android:textSize="@dimen/text_10" />
 
