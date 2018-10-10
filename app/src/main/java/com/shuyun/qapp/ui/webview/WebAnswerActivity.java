@@ -318,8 +318,13 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                             showAuthPop();
                         }
                     } else if (minePrize.getActionType().equals("action.bp.use")) {
-                        //积分
-                        startActivity(new Intent(WebAnswerActivity.this, IntegralExchangeActivity.class));
+                        if (Integer.parseInt(SaveUserInfo.getInstance(WebAnswerActivity.this).getUserInfo("cert")) == 1) {
+                            //积分
+                            startActivity(new Intent(WebAnswerActivity.this, IntegralExchangeActivity.class));
+                        } else {
+                            //显示实名认证弹窗
+                            showAuthPop();
+                        }
                     }
                 }
             });

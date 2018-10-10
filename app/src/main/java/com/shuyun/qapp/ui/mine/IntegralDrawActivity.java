@@ -759,8 +759,13 @@ public class IntegralDrawActivity extends BaseActivity implements CommonPopupWin
                                                 intent.putExtra("name", minePrize.getName());
                                                 startActivity(intent);
                                             } else if (minePrize.getActionType().equals("action.bp.use")) {
-                                                //积分
-                                                startActivity(new Intent(IntegralDrawActivity.this, IntegralExchangeActivity.class));
+                                                if (Integer.parseInt(SaveUserInfo.getInstance(IntegralDrawActivity.this).getUserInfo("cert")) == 1) {
+                                                    //积分
+                                                    startActivity(new Intent(IntegralDrawActivity.this, IntegralExchangeActivity.class));
+                                                } else {
+                                                    //显示实名认证弹窗
+                                                    showAuthPop();
+                                                }
                                             }
 
                                         }

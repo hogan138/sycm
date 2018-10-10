@@ -8,13 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
 import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.RectF;
-import android.graphics.Shader;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -40,10 +35,6 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.constant.TimeConstants;
 import com.blankj.utilcode.util.TimeUtils;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
-import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.GroupTreeAdapter;
@@ -72,6 +63,7 @@ import com.shuyun.qapp.receiver.MyReceiver;
 import com.shuyun.qapp.ui.activity.ActivityRegionManager;
 import com.shuyun.qapp.ui.classify.ClassifyActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
+import com.shuyun.qapp.ui.loader.GlideImageLoader;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.mine.MinePrizeActivity;
 import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
@@ -111,7 +103,6 @@ import butterknife.Unbinder;
 import cn.kevin.banner.BannerAdapter;
 import cn.kevin.banner.BannerViewPager;
 import cn.kevin.banner.IBannerItem;
-import cn.kevin.banner.ImageLoader;
 import cn.kevin.banner.transformer.YZoomTransFormer;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -655,7 +646,7 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                                         rvRecomendGroup.setAdapter(recommendGroupAdapter);
                                     }
                                 }
-                                if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getThermal())) {   //热门题组
+                                if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getThermal())) {   //大家都在答
                                     final List<GroupBean> groupData = homeGroupsBean.getThermal();
                                     mContext.runOnUiThread(new Runnable() {
                                         @Override
@@ -1506,55 +1497,6 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
             mContext.unregisterReceiver(msgReceiver);
         }
     }
-
-    class GlideImageLoader implements ImageLoader {
-        @Override
-        public void onDisplayImage(Context context, ImageView imageView, String url) {
-
-            Glide.with(context).load(url)
-                    .transform(new GlideRoundTransform(getContext(), 4))
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .into(imageView);
-        }
-    }
-
-    static class GlideRoundTransform extends BitmapTransformation {
-
-        private static float radius = 0f;
-
-        public GlideRoundTransform(Context context, int dp) {
-            super(context);
-            this.radius = Resources.getSystem().getDisplayMetrics().density * dp;
-        }
-
-        @Override
-        protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
-            return roundCrop(pool, toTransform);
-        }
-
-        private static Bitmap roundCrop(BitmapPool pool, Bitmap source) {
-            if (source == null) return null;
-
-            Bitmap result = pool.get(source.getWidth(), source.getHeight(), Bitmap.Config.ARGB_8888);
-            if (result == null) {
-                result = Bitmap.createBitmap(source.getWidth(), source.getHeight(), Bitmap.Config.ARGB_8888);
-            }
-
-            Canvas canvas = new Canvas(result);
-            Paint paint = new Paint();
-            paint.setShader(new BitmapShader(source, BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP));
-            paint.setAntiAlias(true);
-            RectF rectF = new RectF(0f, 0f, source.getWidth(), source.getHeight());
-            canvas.drawRoundRect(rectF, radius, radius, paint);
-            return result;
-        }
-
-        @Override
-        public String getId() {
-            return getClass().getName() + Math.round(radius);
-        }
-    }
-
 }
 
 

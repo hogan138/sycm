@@ -161,6 +161,7 @@
 
             <RelativeLayout
                 android:id="@+id/rl_pull"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="190dp"
                 android:layout_marginLeft="@dimen/text_15"
@@ -225,6 +226,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="190dp"
                 android:layout_marginBottom="@dimen/text_17"
+                android:visibility="gone"
                 android:layout_marginLeft="@dimen/text_15"
                 android:layout_marginRight="@dimen/text_15"
                 android:layout_marginTop="@dimen/text_15"

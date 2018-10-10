@@ -21,7 +21,6 @@ public class GroupClassifyBean {
      * parentId : 0
      * children : [{"id":234,"name":"全民大探班40期","parentId":1,"opportunity":1}]
      */
-//    {id=253, name='教育', opportunity=1, parentId=0, picture='null', isFlag=false, guideId=0, merchantName='null', children=null}
     private int id;//题组id 0表示活动的题组
     private String name;//题组名称
     private int opportunity;//消耗答题机会次数0:表示不消耗答题机会次数

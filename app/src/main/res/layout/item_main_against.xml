@@ -3,7 +3,6 @@
     android:id="@+id/rl_main"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/text_4"
     android:background="@mipmap/home_invite_bg">
 
     <LinearLayout

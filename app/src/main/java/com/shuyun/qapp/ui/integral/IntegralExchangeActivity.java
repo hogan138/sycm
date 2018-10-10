@@ -18,8 +18,6 @@ import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.IntegralExchangeBean;
 import com.shuyun.qapp.net.ApiService;
-import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.ui.mine.IntegralDrawActivity;
 import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
