@@ -603,9 +603,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                          * 4——拉黑
                          */
                         if (mineBean.getCertification() == 1) {
-                            Intent intent0 = new Intent(mContext, IntegralDrawActivity.class);
-                            intent0.putExtra("status", AppConst.INTEGRL_DRAW);//积分抽奖跳到开宝箱界面;
-                            startActivity(intent0);
+                            startActivity(new Intent(mContext, IntegralExchangeActivity.class));
                         } else {
                             showAuthPop();
                         }

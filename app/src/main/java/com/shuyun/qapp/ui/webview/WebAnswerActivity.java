@@ -45,7 +45,6 @@ import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.answer.AnswerHistoryActivity;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
-import com.shuyun.qapp.ui.mine.IntegralDrawActivity;
 import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
 import com.shuyun.qapp.ui.mine.RedWithDrawActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
@@ -831,9 +830,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                             certification = Integer.parseInt(cert);
                         }
                         if (certification == 1) {//groupDetail.getCertification()
-                            Intent intent0 = new Intent(WebAnswerActivity.this, IntegralDrawActivity.class);
-                            intent0.putExtra("status", AppConst.INTEGRL_DRAW);//积分抽奖跳到开宝箱界面;
-                            startActivity(intent0);
+                            startActivity(new Intent(WebAnswerActivity.this, IntegralExchangeActivity.class));
                         } else if (certification == 2) {
                             ToastUtil.showToast(WebAnswerActivity.this, "您已成功提交认证申请..\n预计将在24小时内审核完成");
                         } else {

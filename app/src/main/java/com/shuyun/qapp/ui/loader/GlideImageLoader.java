@@ -16,6 +16,9 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 
 import cn.kevin.banner.ImageLoader;
 
+/**
+ * 加载四周圆角ImageView
+ */
 public class GlideImageLoader implements ImageLoader {
     @Override
     public void onDisplayImage(Context context, ImageView imageView, String url) {

@@ -1,6 +1,7 @@
 package com.shuyun.qapp.ui.homepage;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -8,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.Uri;
@@ -15,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.animation.SpringAnimation;
 import android.support.animation.SpringForce;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
@@ -60,7 +63,6 @@ import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.InformatListenner;
 import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.receiver.MyReceiver;
-import com.shuyun.qapp.ui.activity.ActivityRegionManager;
 import com.shuyun.qapp.ui.classify.ClassifyActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
@@ -70,6 +72,7 @@ import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.webview.WebBannerActivity;
 import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
+import com.shuyun.qapp.ui.webview.WebPublicActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
@@ -203,6 +206,10 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
     BannerViewPager alwaysBanner; //常答轮播题组
     @BindView(R.id.activityRegion)
     LinearLayout activityRegion;
+    @BindView(R.id.tv_number1)
+    TextView tvNumber1;  //客服电话
+    @BindView(R.id.tv_number2)
+    TextView tvNumber2; //招商电话
 
     private int SHARE_CHANNEL;
     private static final String TAG = "HomeFragment";
@@ -310,7 +317,8 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
 
     @OnClick({R.id.iv_invite, R.id.iv_common_right_icon,
             R.id.rl_active, R.id.rl_life, R.id.rl_culture, R.id.rl_video,
-            R.id.rl_music, R.id.rl_history, R.id.rl_edu, R.id.rl_more
+            R.id.rl_music, R.id.rl_history, R.id.rl_edu, R.id.rl_more,
+            R.id.tv_number1, R.id.tv_number2
     })
     public void click(View view) {
         switch (view.getId()) {
@@ -360,6 +368,16 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                 Intent intent7 = new Intent(mContext, ClassifyActivity.class);
                 intent7.putExtra("id", 0);
                 startActivity(intent7);
+                break;
+            case R.id.tv_number1: //客服电话
+                Intent intent = new Intent(Intent.ACTION_CALL);
+                intent.setData(Uri.parse("tel:" + "400-660-9258"));
+                startActivity(intent);
+                break;
+            case R.id.tv_number2: //招商电话
+                Intent i = new Intent(Intent.ACTION_CALL);
+                i.setData(Uri.parse("tel:" + "0671-86875104"));
+                startActivity(i);
                 break;
             default:
                 break;
@@ -587,7 +605,7 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                             MainConfigBean mainConfigBean = dataResponse.getDat();
                             //动态添加布局
                             activityRegion.removeAllViews();
-                            activityRegion.addView(ActivityRegionManager.getView(mContext, mainConfigBean, invite_h5Url));
+                            activityRegion.addView(ActivityRegionManager.getView(mContext, mainConfigBean));
                         } else {
                             ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
                         }
@@ -648,33 +666,26 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                                 }
                                 if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getThermal())) {   //大家都在答
                                     final List<GroupBean> groupData = homeGroupsBean.getThermal();
-                                    mContext.runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            try {
-                                                rvHotGroup.setHasFixedSize(true);
-                                                rvHotGroup.setNestedScrollingEnabled(false);
-                                                HotGroupAdapter hotGroupAdapter = new HotGroupAdapter(groupData, mContext);
-                                                hotGroupAdapter.setOnItemClickLitsener(new GroupTreeAdapter.OnItemClickListener() {
-                                                    @Override
-                                                    public void onItemClick(View view, int position) {
-                                                        int groupId = groupData.get(position).getId();
-                                                        Intent intent = new Intent(mContext, WebAnswerActivity.class);
-                                                        intent.putExtra("groupId", groupId);
-                                                        intent.putExtra("h5Url", groupData.get(position).getH5Url());
-                                                        startActivity(intent);
-                                                    }
-                                                });
-
-                                                GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1);
-                                                rvHotGroup.setLayoutManager(gridLayoutManager);
-                                                rvHotGroup.setAdapter(hotGroupAdapter);
-                                            } catch (Exception e) {
-
+                                    try {
+                                        rvHotGroup.setHasFixedSize(true);
+                                        rvHotGroup.setNestedScrollingEnabled(false);
+                                        HotGroupAdapter hotGroupAdapter = new HotGroupAdapter(groupData, mContext);
+                                        hotGroupAdapter.setOnItemClickLitsener(new GroupTreeAdapter.OnItemClickListener() {
+                                            @Override
+                                            public void onItemClick(View view, int position) {
+                                                int groupId = groupData.get(position).getId();
+                                                Intent intent = new Intent(mContext, WebAnswerActivity.class);
+                                                intent.putExtra("groupId", groupId);
+                                                intent.putExtra("h5Url", groupData.get(position).getH5Url());
+                                                startActivity(intent);
                                             }
+                                        });
 
-                                        }
-                                    });
+                                        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1);
+                                        rvHotGroup.setLayoutManager(gridLayoutManager);
+                                        rvHotGroup.setAdapter(hotGroupAdapter);
+                                    } catch (Exception e) {
+                                    }
                                 }
                                 if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getTree())) {  //分类
                                     try {

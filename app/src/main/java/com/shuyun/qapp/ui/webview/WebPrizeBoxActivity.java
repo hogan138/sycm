@@ -258,8 +258,14 @@ public class WebPrizeBoxActivity extends BaseActivity implements CommonPopupWind
                             showAuthPop();
                         }
                     } else if (minePrize.getActionType().equals("action.bp.use")) {
-                        //积分
-                        startActivity(new Intent(WebPrizeBoxActivity.this, IntegralExchangeActivity.class));
+                        if (Integer.parseInt(SaveUserInfo.getInstance(WebPrizeBoxActivity.this).getUserInfo("cert")) == 1) {
+                            //积分
+                            startActivity(new Intent(WebPrizeBoxActivity.this, IntegralExchangeActivity.class));
+                        } else {
+                            //显示实名认证弹窗
+                            showAuthPop();
+                        }
+
                     }
                 }
             });
@@ -292,7 +298,6 @@ public class WebPrizeBoxActivity extends BaseActivity implements CommonPopupWind
             //我的奖品
             minePrize = intent.getParcelableExtra("ChildMinePrize");
             boxBean = intent.getParcelableExtra("BoxBean");
-
         } catch (Exception e) {
 
         }
@@ -333,14 +338,15 @@ public class WebPrizeBoxActivity extends BaseActivity implements CommonPopupWind
                 wvPrizeBox.loadUrl(AppConst.BOX);
             }
         } else if (!EncodeAndStringTool.isStringEmpty(getIntent().getStringExtra("main_box")) && getIntent().getStringExtra("main_box").equals("score_box")) {
-//            if (!EncodeAndStringTool.isStringEmpty(minePrize.getH5Url())) {
-            //积分开宝箱
-//                wvPrizeBox.loadUrl(minePrize.getH5Url());
-//            } else {
-            //为空加载本地
-//                wvPrizeBox.loadUrl(AppConst.BOX);
-            wvPrizeBox.loadUrl("http://192.168.191.1:8080?prize=integral");
-//            }
+            String h5Url = getIntent().getStringExtra("h5Url");
+            if (!EncodeAndStringTool.isStringEmpty(h5Url)) {
+                //积分开宝箱
+                wvPrizeBox.loadUrl(h5Url);
+            } else {
+                //为空加载本地
+                wvPrizeBox.loadUrl(AppConst.BOX);
+//                wvPrizeBox.loadUrl("http://192.168.191.1:8080?prize=integral");
+            }
         }
 
 
@@ -504,7 +510,8 @@ public class WebPrizeBoxActivity extends BaseActivity implements CommonPopupWind
      * 分享弹窗
      */
     public void showSharedPop() {
-        if ((!EncodeAndStringTool.isObjectEmpty(popupWindow)) && popupWindow.isShowing()) return;
+        if ((!EncodeAndStringTool.isObjectEmpty(popupWindow)) && popupWindow.isShowing())
+            return;
         View upView = LayoutInflater.from(WebPrizeBoxActivity.this).inflate(R.layout.share_popupwindow, null);
         //测量View的宽高
         CommonPopUtil.measureWidthAndHeight(upView);

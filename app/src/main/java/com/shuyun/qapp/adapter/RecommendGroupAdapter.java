@@ -99,15 +99,15 @@ public class RecommendGroupAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         @BindView(R.id.iv_recommend)
         ImageView ivRecommend;
         @BindView(R.id.tv_score)
-        TextView tvScore;
+        TextView tvScore; //获得积分
         @BindView(R.id.tv_cash)
-        TextView tvCash;
+        TextView tvCash; //获得现金
         @BindView(R.id.tv_right_number)
-        TextView tvRightNumber;
+        TextView tvRightNumber; //正确率
         @BindView(R.id.tv_strategy)
-        TextView tvStrategy;
+        TextView tvStrategy; // 答题攻略
         @BindView(R.id.tv_reduce_number)
-        TextView tvReduceNumber;
+        TextView tvReduceNumber; //不消耗答题次数
 
         public MyViewHolder(View itemView) {
             super(itemView);

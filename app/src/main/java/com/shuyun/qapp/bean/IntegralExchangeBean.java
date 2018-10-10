@@ -22,6 +22,15 @@ public class IntegralExchangeBean {
     private List<String> luckyPicList;
     private List<String> treasurePicList;
     private String ruleUrl;
+    private String h5Url; //开宝箱地址
+
+    public String getH5Url() {
+        return h5Url;
+    }
+
+    public void setH5Url(String h5Url) {
+        this.h5Url = h5Url;
+    }
 
     public String getRuleUrl() {
         return ruleUrl;

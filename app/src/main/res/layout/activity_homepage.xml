@@ -34,14 +34,15 @@
                 android:layout_width="21dp"
                 android:layout_height="21dp"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
                 android:src="@drawable/home" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="@dimen/text_7"
                 android:layout_marginTop="@dimen/text_5"
+                android:layout_marginBottom="@dimen/text_7"
                 android:text="首页"
                 android:textColor="@color/home_bottom_tv_color"
                 android:textSize="@dimen/text_10"
@@ -60,15 +61,57 @@
                 android:layout_width="21dp"
                 android:layout_height="21dp"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
                 android:src="@drawable/classify" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="@dimen/text_7"
                 android:layout_marginTop="@dimen/text_5"
+                android:layout_marginBottom="@dimen/text_7"
                 android:text="分类"
+                android:textColor="@color/home_bottom_tv_color"
+                android:textSize="@dimen/text_10"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_activity"
+                    android:layout_width="21dp"
+                    android:layout_height="21dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="4dp"
+                    android:src="@drawable/classify" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="10dp"
+                    android:background="@mipmap/hongse"
+                    android:visibility="gone" />
+
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/text_5"
+                android:layout_marginBottom="@dimen/text_7"
+                android:text="活动"
                 android:textColor="@color/home_bottom_tv_color"
                 android:textSize="@dimen/text_10"
                 android:textStyle="bold" />
@@ -86,14 +129,15 @@
                 android:layout_width="21dp"
                 android:layout_height="21dp"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
                 android:src="@drawable/me" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="@dimen/text_7"
                 android:layout_marginTop="@dimen/text_5"
+                android:layout_marginBottom="@dimen/text_7"
                 android:text="我的"
                 android:textColor="@color/home_bottom_tv_color"
                 android:textSize="@dimen/text_10"

@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.GroupClassifyBean;
-import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
+import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.view.RoundImageView;
 
@@ -28,7 +28,6 @@ import butterknife.ButterKnife;
 
 public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdapter.ViewHolder> {
 
-
     private Context context;
     private LayoutInflater layoutInflater;
 
@@ -42,7 +41,7 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
     }
 
     @Override
-    public ChildrenGroupAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = layoutInflater.inflate(R.layout.children_group_item, parent, false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
@@ -97,6 +96,12 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
         TextView tvSolvingStrategy;//有答题攻略 TODO
         @BindView(R.id.tv_theme)
         TextView tvTheme;//题组名字
+        @BindView(R.id.tv_score)
+        TextView tvScore; //获得积分
+        @BindView(R.id.tv_cash)
+        TextView tvCash; //获得现金
+        @BindView(R.id.tv_right_number)
+        TextView tvRightNumber; //正确率
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -105,7 +110,7 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
         }
     }
 
-    ChildrenGroupAdapter.OnItemClickListener mOnItemChildClickLitsener;
+    OnItemClickListener mOnItemChildClickLitsener;
 
     /**
      * 设置RecyclerView点击事件
@@ -114,7 +119,7 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
         void onItemChildClick(View view, int position);
     }
 
-    public void setOnItemClickLitsener(ChildrenGroupAdapter.OnItemClickListener mOnItemChildClickLitsener) {
+    public void setOnItemClickLitsener(OnItemClickListener mOnItemChildClickLitsener) {
         this.mOnItemChildClickLitsener = mOnItemChildClickLitsener;
     }
 

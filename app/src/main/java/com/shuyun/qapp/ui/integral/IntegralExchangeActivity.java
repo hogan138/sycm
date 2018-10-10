@@ -54,7 +54,11 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
     @BindView(R.id.rl_start_baby)
     RelativeLayout rlStartBaby;
 
+    //开宝箱h5地址
+    String h5Url = "";
+
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
@@ -86,12 +90,10 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
                 finish();
                 break;
             case R.id.rl_start_box:
-//                //跳到积分抽奖界面
-//                Intent intent = new Intent(IntegralExchangeActivity.this, IntegralDrawActivity.class);
-//                intent.putExtra("status", AppConst.INTEGRL_DRAW);//积分抽奖跳到开宝箱界面;
-//                startActivity(intent);
+                //跳到积分抽奖界面
                 Intent intent = new Intent(IntegralExchangeActivity.this, WebPrizeBoxActivity.class);
                 intent.putExtra("main_box", "score_box");
+                intent.putExtra("h5Url", h5Url);
                 startActivity(intent);
                 break;
             case R.id.rl_start_baby:
@@ -115,13 +117,15 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
 
                     @Override
                     public void onNext(DataResponse<IntegralExchangeBean> dataResponse) {
-                        Log.i(TAG, "loadAppShared==onNext: " + dataResponse.toString());
                         if (dataResponse.isSuccees()) {
                             IntegralExchangeBean integralExchangeBean = dataResponse.getDat();
                             if (!EncodeAndStringTool.isObjectEmpty(integralExchangeBean)) {
 
                                 tvScore.setText("我的积分：" + integralExchangeBean.getUserBp());
                                 tvReduceScore.setText("最低消费" + integralExchangeBean.getLuckyConsBp() + "积分");
+
+                                //开宝箱h5地址
+                                h5Url = integralExchangeBean.getH5Url();
 
                                 //保存我的积分
                                 SaveUserInfo.getInstance(IntegralExchangeActivity.this).setUserInfo("my_bp", integralExchangeBean.getUserBp() + "");

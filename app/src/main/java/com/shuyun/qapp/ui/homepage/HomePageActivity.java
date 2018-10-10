@@ -31,6 +31,7 @@ import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.ui.activity.ActivityFragment;
 import com.shuyun.qapp.ui.classify.ClassifyFragment;
 import com.shuyun.qapp.ui.integral.MyPrizeActivity;
 import com.shuyun.qapp.ui.mine.MineFragment;
@@ -130,6 +131,7 @@ public class HomePageActivity extends AppCompatActivity {
         //添加fragment
         fragments.add(new HomeFragment());
         fragments.add(new ClassifyFragment());
+        fragments.add(new ActivityFragment());
         fragments.add(new MineFragment());
         onClickListener.onClick(homeBottomeSwitcherContainer.getChildAt(0));
 
@@ -224,14 +226,16 @@ public class HomePageActivity extends AppCompatActivity {
                 //添加fragment
                 fragments.add(new HomeFragment());
                 fragments.add(new ClassifyFragment());
+                fragments.add(new ActivityFragment());
                 fragments.add(new MineFragment());
-                onClickListener.onClick(homeBottomeSwitcherContainer.getChildAt(2));
+                onClickListener.onClick(homeBottomeSwitcherContainer.getChildAt(3));
                 setListener();
             } else if (getIntent().getStringExtra("from") != null && getIntent().getStringExtra("from").equals("h5")) {  //我的奖品h5返回首页
                 fragments.clear();
                 //添加fragment
                 fragments.add(new HomeFragment());
                 fragments.add(new ClassifyFragment());
+                fragments.add(new ActivityFragment());
                 fragments.add(new MineFragment());
                 onClickListener.onClick(homeBottomeSwitcherContainer.getChildAt(0));
                 setListener();

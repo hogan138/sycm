@@ -79,6 +79,15 @@ public class MainConfigBean {
         private String row;
         private String title;
         private String height;
+        private String content;
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
 
         public String getTemplate() {
             return template;

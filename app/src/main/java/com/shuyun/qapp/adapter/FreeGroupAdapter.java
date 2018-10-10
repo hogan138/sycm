@@ -13,6 +13,7 @@ import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.view.OvalImageView;
+import com.shuyun.qapp.view.PrinterTextView;
 
 import java.util.List;
 
@@ -50,7 +51,8 @@ public class FreeGroupAdapter extends RecyclerView.Adapter<FreeGroupAdapter.MyVi
         ImageLoaderManager.LoadImage(mContext, groupBean.getPicture(), holder.ivGroupBg, R.mipmap.zw01);
         holder.tvGroupTitle.setText(groupBean.getName() + "");
         if (!EncodeAndStringTool.isStringEmpty(groupBean.getDescription())) {
-            holder.tvGroupContent.setText(groupBean.getDescription() + "");
+            holder.tvGroupContent.setPrintText(groupBean.getDescription());
+            holder.tvGroupContent.startPrint();
         }
 
         holder.ivGroupBg.setOnClickListener(new OnMultiClickListener() {
@@ -73,7 +75,7 @@ public class FreeGroupAdapter extends RecyclerView.Adapter<FreeGroupAdapter.MyVi
         @BindView(R.id.tv_group_title)
         TextView tvGroupTitle;//题组标题
         @BindView(R.id.tv_group_content)
-        TextView tvGroupContent;//题组内容
+        PrinterTextView tvGroupContent;//题组内容
 
         public MyViewHolder(View itemView) {
             super(itemView);

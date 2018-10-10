@@ -22,7 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * 热门题组列表
+ * 大家都在答题组列表
  */
 
 public class HotGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -144,15 +144,15 @@ public class HotGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @BindView(R.id.rl_item)
         RelativeLayout rlItem;
         @BindView(R.id.tv_score)
-        TextView tvScore;
+        TextView tvScore; //获得积分
         @BindView(R.id.tv_cash)
-        TextView tvCash;
+        TextView tvCash; //获得现金
         @BindView(R.id.tv_right_number)
-        TextView tvRightNumber;
+        TextView tvRightNumber; //正确率
         @BindView(R.id.tv_strategy)
-        TextView tvStrategy;
+        TextView tvStrategy; //答题攻略
         @BindView(R.id.tv_reduce_number)
-        TextView tvReduceNumber;
+        TextView tvReduceNumber; //不消耗答题次数
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -170,15 +170,15 @@ public class HotGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @BindView(R.id.rl_item)
         RelativeLayout rlItem;
         @BindView(R.id.tv_strategy)
-        TextView tvStrategy;
+        TextView tvStrategy; //答题攻略
         @BindView(R.id.tv_reduce_number)
-        TextView tvReduceNumber;
+        TextView tvReduceNumber; //不消耗答题次数
         @BindView(R.id.tv_score)
-        TextView tvScore;
+        TextView tvScore; //消耗积分
         @BindView(R.id.tv_cash)
-        TextView tvCash;
+        TextView tvCash; //获得现金
         @BindView(R.id.tv_right_number)
-        TextView tvRightNumber;
+        TextView tvRightNumber; //正确率
 
         public MyViewHolder1(View itemView) {
             super(itemView);

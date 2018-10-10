@@ -1,4 +1,4 @@
-package com.shuyun.qapp.ui.activity;
+package com.shuyun.qapp.ui.homepage;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +14,10 @@ import android.widget.TextView;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.MainConfigBean;
 import com.shuyun.qapp.ui.homepage.MainAgainstActivity;
+import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
+import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
+import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.webview.WebBannerActivity;
 import com.shuyun.qapp.utils.GlideUtils;
 
@@ -29,7 +32,7 @@ import static com.blankj.utilcode.util.ActivityUtils.startActivity;
  */
 public class ActivityRegionManager {
 
-    public static RelativeLayout getView(final Context context, MainConfigBean data, final String invite_h5Url) {
+    public static RelativeLayout getView(final Context context, MainConfigBean data) {
         Resources resources = context.getResources();
         DisplayMetrics dm = resources.getDisplayMetrics();
 
@@ -94,6 +97,7 @@ public class ActivityRegionManager {
                 String count = datasBean.getCount();//积分数量
                 final String action = datasBean.getAction(); //跳转action
                 final String h5_url = datasBean.getH5Url(); //跳转地址
+                final String content = datasBean.getContent();//题组id
 
                 //计算 top left
                 int x = xList[colD - 1];
@@ -112,7 +116,7 @@ public class ActivityRegionManager {
                     rl_main1.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            actionTo(context, h5_url, action);
+                            actionTo(context, h5_url, action, content);
                         }
                     });
                 } else if ("2".equals(template)) { //答题对战
@@ -128,7 +132,7 @@ public class ActivityRegionManager {
                     rl_main2.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            actionTo(context, h5_url, action);
+                            actionTo(context, h5_url, action, content);
                         }
                     });
                 } else if ("3".equals(template)) { //每日任务
@@ -151,19 +155,18 @@ public class ActivityRegionManager {
                     rl_main3.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            actionTo(context, h5_url, action);
+                            actionTo(context, h5_url, action, content);
                         }
                     });
                 } else if ("4".equals(template)) { //图片模板
                     view = LayoutInflater.from(context).inflate(R.layout.item_main_picture, null);
                     RelativeLayout rl_main4 = view.findViewById(R.id.rl_main);
                     ImageView roundImageView = view.findViewById(R.id.iv_bg);
-                    //GlideUtils.LoadImage(context, icon, roundImageView);
                     new GlideImageLoader().onDisplayImage(context, roundImageView, icon);
                     rl_main4.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            actionTo(context, h5_url, action);
+                            actionTo(context, h5_url, action, content);
                         }
                     });
                 }
@@ -185,12 +188,12 @@ public class ActivityRegionManager {
     }
 
     //跳转
-    public static void actionTo(Context context, String invite_h5Url, String action) {
+    public static void actionTo(Context context, String h5Url, String action, String content) {
         if ("action.invite".equals(action)) {
-            //邀请分享
+            //邀请
             Intent intent = new Intent();
             intent.setClass(context, WebBannerActivity.class);
-            intent.putExtra("url", invite_h5Url);
+            intent.putExtra("url", h5Url);
             intent.putExtra("name", "邀请分享");
             startActivity(intent);
         } else if ("action.answer.against".equals(action)) {
@@ -198,6 +201,24 @@ public class ActivityRegionManager {
             startActivity(new Intent(context, MainAgainstActivity.class));
         } else if ("action.day.task".equals(action)) {
             //每日任务
+        } else if ("action.group".equals(action)) {
+            //题组
+            Intent intent = new Intent(context, WebAnswerActivity.class);
+            intent.putExtra("groupId", Integer.parseInt(content));
+            intent.putExtra("h5Url", h5Url);
+            startActivity(intent);
+        } else if ("action.real".equals(action)) {
+            //实名认证
+            startActivity(new Intent(context, RealNameAuthActivity.class));
+        } else if ("action.h5".equals(action)) {
+            //h5
+            Intent intent = new Intent(context, WebBannerActivity.class);
+            intent.putExtra("url", h5Url);
+            intent.putExtra("name", "全民共进");//名称 标题
+            startActivity(intent);
+        } else if ("action.integral".equals(action)) {
+            //积分兑换
+            startActivity(new Intent(context, IntegralExchangeActivity.class));
         }
     }
 
