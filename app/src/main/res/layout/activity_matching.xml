@@ -17,7 +17,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/title"
         android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/text_15"
         android:layout_marginTop="@dimen/text_30"
+        android:layout_marginRight="@dimen/text_15"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:text=""
         android:textColor="#333333"
         android:textSize="@dimen/text_18" />
@@ -36,8 +40,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_vs"
-        android:layout_marginRight="@dimen/text_30"
         android:layout_marginTop="@dimen/text_34"
+        android:layout_marginRight="@dimen/text_30"
         android:layout_toLeftOf="@+id/tv_vs"
         android:text="158****1569"
         android:textColor="#666666"
@@ -59,8 +63,8 @@
         android:id="@+id/iv_head_it"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_alignParentRight="true"
         android:layout_below="@+id/tv_title"
+        android:layout_alignParentRight="true"
         android:layout_marginTop="120dp"
         android:src="@mipmap/icon_oval" />
 
@@ -156,7 +160,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_140"
         android:layout_alignParentBottom="true"
-        android:visibility="invisible"
-        android:background="@mipmap/matching_bottom" />
+        android:background="@mipmap/matching_bottom"
+        android:visibility="invisible" />
 
 </RelativeLayout>

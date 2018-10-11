@@ -29,27 +29,30 @@
 
             <TextView
                 android:id="@+id/tv_group_title"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="题目标题"
+                android:ellipsize="end"
+                android:singleLine="true"
                 android:textColor="@color/color_1"
                 android:textSize="@dimen/text_15" />
 
             <TextView
                 android:id="@+id/tv_strategy"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/text_4"
-                android:text="有答题攻略"
+                android:ellipsize="end"
+                android:singleLine="true"
                 android:textColor="@color/login_text"
                 android:textSize="@dimen/text_11" />
 
             <TextView
                 android:id="@+id/tv_reduce_number"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/text_3"
-                android:text="不消耗答题次数"
+                android:ellipsize="end"
+                android:singleLine="true"
                 android:textColor="@color/color_4"
                 android:textSize="@dimen/text_10" />
         </LinearLayout>
@@ -77,9 +80,9 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/title1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/home_get_score"
                     android:textColor="@color/color_35"
                     android:textSize="@dimen/text_12" />
 
@@ -89,7 +92,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_toRightOf="@+id/iv_group_bg"
-                    android:text="10%"
                     android:textColor="@color/login_text"
                     android:textSize="@dimen/text_12" />
 
@@ -115,9 +117,9 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/title2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/home_get_cash"
                     android:textColor="@color/color_35"
                     android:textSize="@dimen/text_12" />
 
@@ -127,7 +129,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_toRightOf="@+id/iv_group_bg"
-                    android:text="10%"
                     android:textColor="@color/login_text"
                     android:textSize="@dimen/text_12" />
 
@@ -153,9 +154,9 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/title3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/home_correct"
                     android:textColor="@color/color_35"
                     android:textSize="@dimen/text_12" />
 
@@ -165,7 +166,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_toRightOf="@+id/iv_group_bg"
-                    android:text="10%"
                     android:textColor="@color/login_text"
                     android:textSize="@dimen/text_12" />
 

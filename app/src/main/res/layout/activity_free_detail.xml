@@ -24,6 +24,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/text_30"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:text="三国演义专题"
             android:textColor="#333333"
             android:textSize="@dimen/text_18" />

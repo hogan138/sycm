@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.shuyun.qapp.R;
@@ -22,7 +23,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by sunxiao on 2018/4/25.
  * 右侧题组分类适配器
  */
 
@@ -52,16 +52,32 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
     public void onBindViewHolder(final ViewHolder holder, int position) {
         GroupClassifyBean.ChildrenBean childrenBean = childrenBeans.get(position);
         ImageLoaderManager.LoadImage(context, childrenBean.getPicture(), holder.ivGroup, R.mipmap.zw01);//题组图片
-        if (0 == childrenBean.getOpportunity()) {
+
+        //百分比
+        if (!EncodeAndStringTool.isListEmpty(childrenBean.getTags())) {
+            holder.llInfo.setVisibility(View.VISIBLE);
+            holder.title1.setText(childrenBean.getTags().get(0).getTagName());
+            holder.title2.setText(childrenBean.getTags().get(1).getTagName());
+            holder.title3.setText(childrenBean.getTags().get(2).getTagName());
+            holder.tvScore.setText(childrenBean.getTags().get(0).getRemark());
+            holder.tvCash.setText(childrenBean.getTags().get(1).getRemark());
+            holder.tvRightNumber.setText(childrenBean.getTags().get(2).getRemark());
+        } else {
+            holder.llInfo.setVisibility(View.GONE);
+        }
+
+        //消耗答题次数
+        if (!EncodeAndStringTool.isStringEmpty(childrenBean.getOpportunityLabel())) {
             holder.tvConsumeAnswerNum.setVisibility(View.VISIBLE);
-            holder.tvConsumeAnswerNum.setText("不消耗答题次数");
+            holder.tvConsumeAnswerNum.setText(childrenBean.getOpportunityLabel());
         } else {
             holder.tvConsumeAnswerNum.setVisibility(View.GONE);
         }
 
-        if (childrenBean.getGuideId() != 0) {
+        //答题攻略
+        if (!EncodeAndStringTool.isStringEmpty(childrenBean.getTag())) {
             holder.tvSolvingStrategy.setVisibility(View.VISIBLE);
-            holder.tvSolvingStrategy.setText("有答题攻略");
+            holder.tvSolvingStrategy.setText(childrenBean.getTag());
         } else {
             holder.tvSolvingStrategy.setVisibility(View.GONE);
         }
@@ -69,7 +85,7 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
         holder.tvTheme.setText(childrenBean.getName());//题组名称
 
         if ((!EncodeAndStringTool.isObjectEmpty(mOnItemChildClickLitsener))) {
-            holder.itemView.setOnClickListener(new OnMultiClickListener() {
+            holder.itemView.setOnClickListener( new OnMultiClickListener() {
                 @Override
                 public void onMultiClick(View v) {
                     int position = holder.getLayoutPosition();
@@ -96,6 +112,14 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
         TextView tvSolvingStrategy;//有答题攻略 TODO
         @BindView(R.id.tv_theme)
         TextView tvTheme;//题组名字
+        @BindView(R.id.title1)
+        TextView title1;
+        @BindView(R.id.title2)
+        TextView title2;
+        @BindView(R.id.title3)
+        TextView title3;
+        @BindView(R.id.ll_info)
+        LinearLayout llInfo;
         @BindView(R.id.tv_score)
         TextView tvScore; //获得积分
         @BindView(R.id.tv_cash)

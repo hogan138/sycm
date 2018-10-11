@@ -22,6 +22,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/text_10"
         android:layout_marginTop="@dimen/text_7"
+        android:layout_marginRight="@dimen/text_10"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:text="@string/create_city"
         android:textColor="#333333"
         android:textSize="@dimen/text_15" />

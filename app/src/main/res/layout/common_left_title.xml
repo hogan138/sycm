@@ -24,6 +24,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/text_40"
+        android:layout_marginRight="@dimen/text_40"
+        android:singleLine="true"
+        android:ellipsize="end"
         android:textColor="@color/color_0"
         android:textSize="@dimen/text_16" />
 

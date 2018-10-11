@@ -149,6 +149,8 @@ public class AgainstActivity extends BaseActivity {
     RelativeLayout rlC; //选项C
     @BindView(R.id.rl_D)
     RelativeLayout rlD; //选项D
+    @BindView(R.id.rl_countdown)
+    RelativeLayout rlCountdown; //倒计时布局
     /**
      * 申请答题返回数据
      */
@@ -244,19 +246,31 @@ public class AgainstActivity extends BaseActivity {
         CountDownTimer timer = new CountDownTimer(4 * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
+
                 tvCountDown.setText(String.format("%d", millisUntilFinished / 1000));
                 TiaoZiView tiaoziView = new TiaoZiView(tvAnim, "...", 300);//调用构造方法，直接开启
 
-                //隐藏 直接显示或隐藏ll_question_options
+                //隐藏
                 hideRadioButton();
+
+                //隐藏顶部布局
+                rlCountdown.setVisibility(View.GONE);
+                rlRightBg.setVisibility(View.GONE);
+                rlLeftBg.setVisibility(View.GONE);
+                pbProgress.setVisibility(View.GONE);
             }
 
             @Override
             public void onFinish() {
                 rlCountDown.setVisibility(View.GONE);
 
-                //显示  直接显示或隐藏 ll_question_options
+                //显示
                 showRadioButton();
+                //隐藏顶部布局
+                rlCountdown.setVisibility(View.VISIBLE);
+                rlRightBg.setVisibility(View.VISIBLE);
+                rlLeftBg.setVisibility(View.VISIBLE);
+                pbProgress.setVisibility(View.VISIBLE);
             }
         }.start();
 
@@ -309,19 +323,19 @@ public class AgainstActivity extends BaseActivity {
                 .setText("答题未结束,真的要离开么?")
                 .setTextColor(Color.parseColor("#333333"))
                 .setWidth(0.7f)
-                .setPositive("离开", new OnMultiClickListener() {
+                .setPositive("继续答题", new OnMultiClickListener() {
+                    @Override
+                    public void onMultiClick(View v) {
+
+                    }
+                })
+                .setNegative("离开", new OnMultiClickListener() {
                     @Override
                     public void onMultiClick(View v) {
                         if (!EncodeAndStringTool.isObjectEmpty(timehandler)) {
                             timehandler.removeCallbacksAndMessages(null);
                         }
                         finish();
-                    }
-                })
-                .setNegative("继续答题", new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v) {
-
                     }
                 })
                 .configDialog(new ConfigDialog() {
@@ -509,7 +523,7 @@ public class AgainstActivity extends BaseActivity {
                                 Animation alphaAnimation = new AlphaAnimation(1, 0);
                                 alphaAnimation.setDuration(100);
                                 alphaAnimation.setInterpolator(new LinearInterpolator());
-                                alphaAnimation.setRepeatCount(2);
+                                alphaAnimation.setRepeatCount(1);
                                 alphaAnimation.setRepeatMode(Animation.REVERSE);
 
                                 //用户背景闪烁
@@ -551,7 +565,15 @@ public class AgainstActivity extends BaseActivity {
                                     //用户已答 机器人已答
                                     showRobotSelect();
                                 } else {
-                                    nextReplyQuestion();
+                                    //1、用户答 机器人没答
+                                    //2、双方都没答
+
+                                    //显示正确选项
+                                    showRightSelect();
+
+                                    //进入下一题
+                                    enterNext();
+
                                 }
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
@@ -563,7 +585,7 @@ public class AgainstActivity extends BaseActivity {
                                             showProgress();
                                         }
                                     }
-                                }, 1000);
+                                }, 2000);
                             }
                         }, 100);
 
@@ -574,20 +596,8 @@ public class AgainstActivity extends BaseActivity {
         }
     }
 
-
-    //显示机器人选项和正确选项
-    private void showRobotSelect() {
-
-        String oks = "";
-        oks = questionsBeans.get(position - 1).getOks();
-        //私钥解密
-        try {
-            PrivateKey private_key = RSAUtils.loadPrivateKey(AppConst.private_key);
-            byte[] decryptByte = RSAUtils.decryptDataPrivateKey(Base64Utils.decode(oks), private_key);
-            oks = new String(decryptByte);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    //显示正确选项
+    private void showRightSelect() {
         String oksIndex = "";
         oksIndex = questionsBeans.get(position - 1).getOksIndex();
         //私钥解密
@@ -598,25 +608,35 @@ public class AgainstActivity extends BaseActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         //显示正确答案
-        if (user_isSelect == true) {
-            if (oksIndex.equals("0")) {
-                btnAnswer1.setTextColor(Color.parseColor("#41B1EF"));
-                btn1LeftIv.setImageResource(R.mipmap.lanse);
-                tvSelectA.setTextColor(Color.parseColor("#ffffff"));
-            } else if (oksIndex.equals("1")) {
-                btnAnswer2.setTextColor(Color.parseColor("#41B1EF"));
-                btn2LeftIv.setImageResource(R.mipmap.lanse);
-                tvSelectB.setTextColor(Color.parseColor("#ffffff"));
-            } else if (oksIndex.equals("2")) {
-                btnAnswer3.setTextColor(Color.parseColor("#41B1EF"));
-                btn3LeftIv.setImageResource(R.mipmap.lanse);
-                tvSelectC.setTextColor(Color.parseColor("#ffffff"));
-            } else if (oksIndex.equals("3")) {
-                btnAnswer4.setTextColor(Color.parseColor("#41B1EF"));
-                btn4LeftIv.setImageResource(R.mipmap.lanse);
-                tvSelectD.setTextColor(Color.parseColor("#ffffff"));
-            }
+        if (oksIndex.equals("0")) {
+            btnAnswer1.setTextColor(Color.parseColor("#41B1EF"));
+        } else if (oksIndex.equals("1")) {
+            btnAnswer2.setTextColor(Color.parseColor("#41B1EF"));
+        } else if (oksIndex.equals("2")) {
+            btnAnswer3.setTextColor(Color.parseColor("#41B1EF"));
+        } else if (oksIndex.equals("3")) {
+            btnAnswer4.setTextColor(Color.parseColor("#41B1EF"));
+        }
+    }
+
+
+    //显示机器人选项并显示正确选项
+    private void showRobotSelect() {
+
+        //显示正确选项
+        showRightSelect();
+
+        String oks = "";
+        oks = questionsBeans.get(position - 1).getOks();
+        //私钥解密
+        try {
+            PrivateKey private_key = RSAUtils.loadPrivateKey(AppConst.private_key);
+            byte[] decryptByte = RSAUtils.decryptDataPrivateKey(Base64Utils.decode(oks), private_key);
+            oks = new String(decryptByte);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         //显示机器人选项
@@ -662,11 +682,19 @@ public class AgainstActivity extends BaseActivity {
             }
         }
 
+        //进入下一题
+        enterNext();
+
+    }
+
+    //进入下一题
+    private void enterNext() {
         if (position == questionsBeans.size()) {
 
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    //最后一题
                     questionId = questionsBeans.get(position - 1).getId();
                     last = 1;
                     //获取与机器人对战数据
@@ -684,19 +712,17 @@ public class AgainstActivity extends BaseActivity {
                     robotInputAgainstBean.setExamId(fail_id);
                     getRobotAgainst(robotInputAgainstBean);
                 }
-            }, 100);
+            }, 2000);
 
         } else {
-
-            // 延时一定时间后进入下一题: 等待5毫秒
+            // 延时一定时间后进入下一题: 等待2秒
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     nextReplyQuestion();
                 }
-            }, 100);
+            }, 2000);
         }
-
     }
 
     private int questionId = 0; //上一题目题目id
@@ -708,6 +734,7 @@ public class AgainstActivity extends BaseActivity {
     private double userCont = 0; //用户耗时
     private String robotOptionId = "";
 
+    //请求下一题数据
     private void nextReplyQuestion() {
         robot_isSelcet = false;
         user_isSelect = false;

@@ -13,12 +13,17 @@ public class HomeGroupsBean {
      */
     private List<GroupBean> recommend;
     /**
-     * 热门题组列表
+     * 大家都在答题组列表
      */
     private List<GroupBean> thermal;
 
     /**
-     * 题组树
+     * 常答题组
+     */
+    private List<GroupBean> often;
+
+    /**
+     * 题组树（分类）
      */
     private List<GroupClassifyBean> tree;
 
@@ -28,6 +33,10 @@ public class HomeGroupsBean {
 
     public List<GroupBean> getThermal() {
         return thermal;
+    }
+
+    public List<GroupBean> getOften() {
+        return often;
     }
 
     public List<GroupClassifyBean> getTree() {

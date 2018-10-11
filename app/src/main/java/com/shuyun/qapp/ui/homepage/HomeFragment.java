@@ -1,7 +1,6 @@
 package com.shuyun.qapp.ui.homepage;
 
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -9,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.Uri;
@@ -17,7 +15,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.animation.SpringAnimation;
 import android.support.animation.SpringForce;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
@@ -72,7 +69,6 @@ import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.webview.WebBannerActivity;
 import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
-import com.shuyun.qapp.ui.webview.WebPublicActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
@@ -127,6 +123,8 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
     RelativeLayout llHomeFragment;//layout容器
     @BindView(R.id.banner)
     BannerViewPager mBannerView;//轮播图
+    @BindView(R.id.ll_marqueeView)
+    LinearLayout llMarqueeView; //跑马灯布局
     @BindView(R.id.marqueeView)
     MarqueeView marqueeView;//跑马灯
     @BindView(R.id.rl_active)
@@ -202,6 +200,8 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
     ImageView ivInvite; //分享
     @BindView(R.id.rv_recomend_group)
     RecyclerView rvRecomendGroup; //推荐题组
+    @BindView(R.id.ll_often)
+    LinearLayout llOften; //常答题组title
     @BindView(R.id.always_banner)
     BannerViewPager alwaysBanner; //常答轮播题组
     @BindView(R.id.activityRegion)
@@ -454,59 +454,6 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                                         }
                                     });
                                     mBannerView.setPageTransformer(true, new YZoomTransFormer(.8f)); //banner动画
-
-                                    //常答题组
-                                    MarkBannerAdapter adapter1 = new MarkBannerAdapter(new GlideImageLoader());
-                                    List<IBannerItem> list1 = new ArrayList<>();
-                                    for (int i = 0; i < bannerData.size(); i++) {
-                                        MarkBannerItem item = new MarkBannerItem(bannerData.get(i).getPicture());
-                                        item.setMarkLabel("西湖旅游");
-                                        list1.add(item);
-                                    }
-                                    adapter1.setData(getContext(), list1);
-                                    alwaysBanner.setBannerAdapter(adapter1);
-
-                                    //设置index 在viewpager下面
-                                    ViewPager mViewpager1 = (ViewPager) alwaysBanner.getChildAt(0);
-                                    //为ViewPager设置高度
-                                    params = mViewpager1.getLayoutParams();
-                                    params.height = getResources().getDimensionPixelSize(R.dimen.viewPager_02);
-                                    mViewpager1.setLayoutParams(params);
-
-                                    alwaysBanner.setBannerItemClick(new BannerViewPager.OnBannerItemClick<IBannerItem>() {
-                                        @Override
-                                        public void onClick(IBannerItem data) {
-                                            for (int i = 0; i < bannerData.size(); i++) {
-                                                if (data.ImageUrl().equals(bannerData.get(i).getPicture())) {
-                                                    if (bannerData.get(i).getType() == 3) {//题组跳转
-                                                        if (!EncodeAndStringTool.isStringEmpty(bannerData.get(i).getUrl())) {
-                                                            try {
-                                                                Intent intent = new Intent(mContext, WebAnswerActivity.class);
-                                                                intent.putExtra("groupId", Integer.parseInt(bannerData.get(i).getUrl()));
-                                                                intent.putExtra("h5Url", bannerData.get(i).getH5Url());
-                                                                startActivity(intent);
-                                                            } catch (Exception e) {
-                                                            }
-
-                                                        }
-                                                    } else if (bannerData.get(i).getType() == 2) {//内部链接
-                                                        if (!EncodeAndStringTool.isStringEmpty(bannerData.get(i).getUrl())) {
-                                                            Intent intent = new Intent(mContext, WebBannerActivity.class);
-                                                            intent.putExtra("url", bannerData.get(i).getUrl());
-                                                            intent.putExtra("name", bannerData.get(i).getName());//名称 标题
-                                                            startActivity(intent);
-                                                        }
-                                                    } else if (bannerData.get(i).getType() == 1) {//外部链接
-                                                        if (!EncodeAndStringTool.isStringEmpty(bannerData.get(i).getUrl())) {
-                                                            Uri uri = Uri.parse(bannerData.get(i).getUrl());
-                                                            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                                                            startActivity(intent);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    });
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -551,6 +498,7 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                         if (dataResponse.isSuccees()) {
                             List<SystemInfo> systemInfos = dataResponse.getDat();
                             if (!EncodeAndStringTool.isListEmpty(systemInfos)) {
+                                llMarqueeView.setVisibility(View.VISIBLE);
                                 /**
                                  * 跑马灯数据
                                  */
@@ -564,6 +512,8 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                                     }
                                 } catch (Exception e) {
                                 }
+                            } else {
+                                llMarqueeView.setVisibility(View.GONE);
                             }
                         } else {
                             if (dataResponse.getErr().equals("U0001")) {
@@ -640,7 +590,7 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                     @Override
                     public void onNext(DataResponse<HomeGroupsBean> listDataResponse) {
                         if (listDataResponse.isSuccees()) {
-                            HomeGroupsBean homeGroupsBean = listDataResponse.getDat();
+                            final HomeGroupsBean homeGroupsBean = listDataResponse.getDat();
                             if (!EncodeAndStringTool.isObjectEmpty(homeGroupsBean)) {
                                 if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getRecommend())) { //推荐题组
                                     final List<GroupBean> groupBeans = homeGroupsBean.getRecommend();
@@ -664,6 +614,50 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                                         rvRecomendGroup.setAdapter(recommendGroupAdapter);
                                     }
                                 }
+
+                                if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getOften())) { //常答题组
+                                    llOften.setVisibility(View.VISIBLE);
+                                    alwaysBanner.setVisibility(View.VISIBLE);
+
+                                    //常答题组
+                                    MarkBannerAdapter adapter1 = new MarkBannerAdapter(new GlideImageLoader());
+                                    List<IBannerItem> list1 = new ArrayList<>();
+                                    for (int i = 0; i < homeGroupsBean.getOften().size(); i++) {
+                                        MarkBannerItem item = new MarkBannerItem(homeGroupsBean.getOften().get(i).getPicture());
+                                        item.setMarkLabel(homeGroupsBean.getOften().get(i).getName());
+                                        list1.add(item);
+                                    }
+                                    adapter1.setData(getContext(), list1);
+                                    alwaysBanner.setBannerAdapter(adapter1);
+
+                                    //设置index 在viewpager下面
+                                    ViewPager mViewpager1 = (ViewPager) alwaysBanner.getChildAt(0);
+                                    //为ViewPager设置高度
+                                    ViewGroup.LayoutParams params = params = mViewpager1.getLayoutParams();
+                                    params.height = getResources().getDimensionPixelSize(R.dimen.viewPager_02);
+                                    mViewpager1.setLayoutParams(params);
+
+                                    alwaysBanner.setBannerItemClick(new BannerViewPager.OnBannerItemClick<IBannerItem>() {
+                                        @Override
+                                        public void onClick(IBannerItem data) {
+                                            for (int i = 0; i < homeGroupsBean.getOften().size(); i++) {
+                                                if (data.ImageUrl().equals(homeGroupsBean.getOften().get(i).getPicture())) {
+                                                    try {
+                                                        Intent intent = new Intent(mContext, WebAnswerActivity.class);
+                                                        intent.putExtra("groupId", homeGroupsBean.getOften().get(i).getId());
+                                                        intent.putExtra("h5Url", homeGroupsBean.getOften().get(i).getH5Url());
+                                                        startActivity(intent);
+                                                    } catch (Exception e) {
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    llOften.setVisibility(View.GONE);
+                                    alwaysBanner.setVisibility(View.GONE);
+                                }
+
                                 if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getThermal())) {   //大家都在答
                                     final List<GroupBean> groupData = homeGroupsBean.getThermal();
                                     try {
@@ -698,37 +692,30 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                                         groupClassifyBean5 = groupClassifyBeans.get(5);
                                         groupClassifyBean6 = groupClassifyBeans.get(6);
                                         if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean0)) {
-//                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean0.getPicture(), ivGroupIcon01, 0);
                                             GlideUtils.LoadCircleImage(mContext, groupClassifyBean0.getPicture(), ivGroupIcon01);
                                             tvGroupName01.setText(groupClassifyBean0.getName());
                                         }
                                         if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean1)) {
-//                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean1.getPicture(), ivGroupIcon02, 0);
                                             GlideUtils.LoadCircleImage(mContext, groupClassifyBean1.getPicture(), ivGroupIcon02);
                                             tvGroupName02.setText(groupClassifyBean1.getName());
                                         }
                                         if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean2)) {
-//                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean2.getPicture(), ivGroupIcon03, 0);
                                             GlideUtils.LoadCircleImage(mContext, groupClassifyBean2.getPicture(), ivGroupIcon03);
                                             tvGroupName03.setText(groupClassifyBean2.getName());
                                         }
                                         if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean3)) {
-//                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean3.getPicture(), ivGroupIcon04, 0);
                                             GlideUtils.LoadCircleImage(mContext, groupClassifyBean3.getPicture(), ivGroupIcon04);
                                             tvGroupName04.setText(groupClassifyBean3.getName());
                                         }
                                         if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean4)) {
-//                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean4.getPicture(), ivGroupIcon05, 0);
                                             GlideUtils.LoadCircleImage(mContext, groupClassifyBean4.getPicture(), ivGroupIcon05);
                                             tvGroupName05.setText(groupClassifyBean4.getName());
                                         }
                                         if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean5)) {
-//                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean5.getPicture(), ivGroupIcon06, 0);
                                             GlideUtils.LoadCircleImage(mContext, groupClassifyBean5.getPicture(), ivGroupIcon06);
                                             tvGroupName06.setText(groupClassifyBean5.getName());
                                         }
                                         if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean6)) {
-//                                            ImageLoaderManager.LoadImage(mContext, groupClassifyBean6.getPicture(), ivGroupIcon07, 0);
                                             GlideUtils.LoadCircleImage(mContext, groupClassifyBean6.getPicture(), ivGroupIcon07);
                                             tvGroupName07.setText(groupClassifyBean6.getName());
                                         }

@@ -187,7 +187,10 @@ public class AgainstResultActivity extends BaseActivity implements View.OnClickL
                     @Override
                     public void onNext(DataResponse<Integer> listDataResponse) {
                         if (listDataResponse.isSuccees()) {
-                            Toast.makeText(AgainstResultActivity.this, "积分 +" + listDataResponse.getDat(), Toast.LENGTH_SHORT).show();
+                            if (type == 0) { //自由对战不提示积分情况
+                            } else {
+                                Toast.makeText(AgainstResultActivity.this, "积分 +" + listDataResponse.getDat(), Toast.LENGTH_SHORT).show();
+                            }
                         } else {//错误码提示
                             ErrorCodeTools.errorCodePrompt(AgainstResultActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
                         }

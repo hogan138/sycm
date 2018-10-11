@@ -100,8 +100,7 @@
                     android:layout_height="15dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="10dp"
-                    android:background="@mipmap/hongse"
-                    android:visibility="gone" />
+                    android:background="@mipmap/hongse" />
 
             </FrameLayout>
 

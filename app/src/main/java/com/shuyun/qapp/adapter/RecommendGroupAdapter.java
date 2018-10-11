@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -26,6 +27,7 @@ import butterknife.ButterKnife;
  */
 
 public class RecommendGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
     private Context mContext;
     //题组分类集合
     private List<GroupBean> groupBeans;
@@ -55,16 +57,31 @@ public class RecommendGroupAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         ImageLoaderManager.LoadImage(mContext, groupBean.getPicture(), ((MyViewHolder) holder).ivGroupBg, R.mipmap.zw01);
         ((MyViewHolder) holder).ivRecommend.setVisibility(View.VISIBLE);
 
-        if (0 == groupBean.getOpportunity()) {
+        //百分比
+        if (!EncodeAndStringTool.isListEmpty(groupBean.getTags())) {
+            ((MyViewHolder) holder).llInfo.setVisibility(View.VISIBLE);
+            ((MyViewHolder) holder).title1.setText(groupBean.getTags().get(0).getTagName());
+            ((MyViewHolder) holder).title2.setText(groupBean.getTags().get(1).getTagName());
+            ((MyViewHolder) holder).title3.setText(groupBean.getTags().get(2).getTagName());
+            ((MyViewHolder) holder).tvScore.setText(groupBean.getTags().get(0).getRemark());
+            ((MyViewHolder) holder).tvCash.setText(groupBean.getTags().get(1).getRemark());
+            ((MyViewHolder) holder).tvRightNumber.setText(groupBean.getTags().get(2).getRemark());
+        } else {
+            ((MyViewHolder) holder).llInfo.setVisibility(View.GONE);
+        }
+
+        //是否消耗答题次数
+        if (!EncodeAndStringTool.isStringEmpty(groupBean.getOpportunityLabel())) {
             ((MyViewHolder) holder).tvReduceNumber.setVisibility(View.VISIBLE);
-            ((MyViewHolder) holder).tvReduceNumber.setText("不消耗答题次数");
+            ((MyViewHolder) holder).tvReduceNumber.setText(groupBean.getOpportunityLabel());
         } else {
             ((MyViewHolder) holder).tvReduceNumber.setVisibility(View.GONE);
         }
 
-        if (groupBean.getGuideId() != 0) {
+        //答题攻略
+        if (!EncodeAndStringTool.isListEmpty(groupBean.getTag())) {
             ((MyViewHolder) holder).tvStrategy.setVisibility(View.VISIBLE);
-            ((MyViewHolder) holder).tvStrategy.setText("有答题攻略");
+            ((MyViewHolder) holder).tvStrategy.setText(groupBean.getTag());
         } else {
             ((MyViewHolder) holder).tvStrategy.setVisibility(View.GONE);
         }
@@ -98,6 +115,14 @@ public class RecommendGroupAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         RelativeLayout rlItem;
         @BindView(R.id.iv_recommend)
         ImageView ivRecommend;
+        @BindView(R.id.ll_info)
+        LinearLayout llInfo;
+        @BindView(R.id.title1)
+        TextView title1;
+        @BindView(R.id.title2)
+        TextView title2;
+        @BindView(R.id.title3)
+        TextView title3;
         @BindView(R.id.tv_score)
         TextView tvScore; //获得积分
         @BindView(R.id.tv_cash)

@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="140dp"
     android:layout_marginLeft="@dimen/text_12"
-    android:layout_marginRight="@dimen/text_12"
     android:layout_marginTop="@dimen/text_10"
+    android:layout_marginRight="@dimen/text_12"
     android:background="@mipmap/home_group_two"
     android:orientation="vertical">
 
@@ -28,8 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="13dp"
-            android:layout_marginRight="@dimen/text_13"
             android:layout_marginTop="@dimen/text_10"
+            android:layout_marginRight="@dimen/text_13"
             android:orientation="vertical">
 
             <TextView
@@ -37,27 +37,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="@string/create_city"
+                android:ellipsize="end"
+                android:maxLines="2"
                 android:textColor="@color/color_1"
                 android:textSize="@dimen/text_15"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tv_consume_answer_num"
+                android:id="@+id/tv_solving_strategy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="不消耗答题次数"
+                android:ellipsize="end"
+                android:singleLine="true"
                 android:textColor="@color/login_text"
                 android:textSize="@dimen/text_11" />
 
             <TextView
-                android:id="@+id/tv_solving_strategy"
+                android:id="@+id/tv_consume_answer_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="@dimen/text_5"
-                android:text="有答题攻略"
+                android:ellipsize="end"
+                android:singleLine="true"
                 android:textColor="@color/color_4"
                 android:textSize="@dimen/text_10" />
         </LinearLayout>
@@ -67,8 +70,8 @@
         android:id="@+id/ll_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/text_7"
         android:layout_marginTop="7dp"
+        android:layout_marginBottom="@dimen/text_7"
         android:orientation="horizontal">
 
         <RelativeLayout
@@ -83,9 +86,9 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/title1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/home_get_score"
                     android:textColor="@color/color_35"
                     android:textSize="@dimen/text_12" />
 
@@ -95,7 +98,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_toRightOf="@+id/iv_group_bg"
-                    android:text="10%"
                     android:textColor="@color/login_text"
                     android:textSize="@dimen/text_12" />
 
@@ -121,9 +123,9 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/title2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/home_get_cash"
                     android:textColor="@color/color_35"
                     android:textSize="@dimen/text_12" />
 
@@ -133,7 +135,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_toRightOf="@+id/iv_group_bg"
-                    android:text="10%"
                     android:textColor="@color/login_text"
                     android:textSize="@dimen/text_12" />
 
@@ -159,9 +160,9 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/title3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/home_correct"
                     android:textColor="@color/color_35"
                     android:textSize="@dimen/text_12" />
 
@@ -171,7 +172,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_toRightOf="@+id/iv_group_bg"
-                    android:text="10%"
                     android:textColor="@color/login_text"
                     android:textSize="@dimen/text_12" />
 

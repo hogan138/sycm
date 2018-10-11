@@ -134,6 +134,32 @@ public class GroupClassifyBean {
         private int guideId;//指南id
         private String merchantName;//题组参与的活动商户名称
         private String h5Url; //答题url
+        private String opportunityLabel; //不消耗答题次数
+        private String tag;//答题攻略
+        private List<TagsBean> tags;  //积分、现金、准确率
+
+        public String getTag() {
+            return tag;
+        }
+
+        public void setTag(String tag) {
+            this.tag = tag;
+        }
+        public String getOpportunityLabel() {
+            return opportunityLabel;
+        }
+
+        public void setOpportunityLabel(String opportunityLabel) {
+            this.opportunityLabel = opportunityLabel;
+        }
+
+        public List<TagsBean> getTags() {
+            return tags;
+        }
+
+        public void setTags(List<TagsBean> tags) {
+            this.tags = tags;
+        }
 
         public String getH5Url() {
             return h5Url;
@@ -219,6 +245,42 @@ public class GroupClassifyBean {
                     ", guideId=" + guideId +
                     ", merchantName='" + merchantName + '\'' +
                     '}';
+        }
+    }
+
+    public static class TagsBean {
+        /**
+         * groupId : 611
+         * remark : 10%
+         * tagName : 获得积分
+         */
+
+        private int groupId;
+        private String remark;
+        private String tagName;
+
+        public int getGroupId() {
+            return groupId;
+        }
+
+        public void setGroupId(int groupId) {
+            this.groupId = groupId;
+        }
+
+        public String getRemark() {
+            return remark;
+        }
+
+        public void setRemark(String remark) {
+            this.remark = remark;
+        }
+
+        public String getTagName() {
+            return tagName;
+        }
+
+        public void setTagName(String tagName) {
+            this.tagName = tagName;
         }
     }
 

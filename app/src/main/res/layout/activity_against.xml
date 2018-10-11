@@ -22,9 +22,9 @@
                 android:id="@+id/ll_question_options"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="100dp"
                 android:layout_marginLeft="@dimen/text_28"
                 android:layout_marginRight="@dimen/text_28"
+                android:layout_marginBottom="100dp"
                 android:background="@mipmap/bj"
                 android:orientation="vertical">
 
@@ -220,8 +220,8 @@
         android:id="@+id/rl_count_down"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true">
 
         <TextView
@@ -314,8 +314,8 @@
         android:layout_width="137dp"
         android:layout_height="45dp"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/text_28"
         android:layout_marginTop="114dp"
+        android:layout_marginRight="@dimen/text_28"
         android:background="@mipmap/huisebanyuan1">
 
         <com.shuyun.qapp.view.CircleImageView
@@ -346,8 +346,8 @@
                 android:id="@+id/tv_it_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_below="@+id/tv_it_phone"
+                android:layout_alignParentRight="true"
                 android:text="0"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_20" />
@@ -361,8 +361,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/text_15"
-        android:layout_marginRight="@dimen/text_15"
-        android:layout_marginTop="60dp">
+        android:layout_marginTop="60dp"
+        android:layout_marginRight="@dimen/text_15">
 
         <ProgressBar
             android:id="@+id/pb_progress"
@@ -371,7 +371,8 @@
             android:layout_height="@dimen/text_12"
             android:layout_centerVertical="true"
             android:layout_marginRight="52dp"
-            android:max="100" />
+            android:max="100"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_page_end"
@@ -386,6 +387,7 @@
 
     <!--倒计时-->
     <RelativeLayout
+        android:id="@+id/rl_countdown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="110dp">
