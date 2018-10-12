@@ -58,7 +58,6 @@ public class AnswerRecordActivity extends BaseActivity {
     @BindView(R.id.iv_prize_empty)
     ImageView ivPrizeEmpty;//我的奖品
 
-    private static final String TAG = "AnswerRecordActivity";
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
 

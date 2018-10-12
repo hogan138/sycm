@@ -27,10 +27,10 @@
             android:id="@+id/tv_feedback"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="@dimen/text_8"
+            android:layout_alignParentBottom="true"
             android:layout_marginRight="@dimen/text_12"
+            android:layout_marginBottom="@dimen/text_8"
             android:text="@string/feedback"
             android:textColor="@color/color_4"
             android:textSize="@dimen/text_11" />
@@ -49,7 +49,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/text_12"
-            android:layout_marginTop="@dimen/text_10" />
+            android:layout_marginTop="@dimen/text_10"
+            android:ellipsize="end"
+            android:singleLine="true" />
         <!--您的答案-->
         <!--android:text="您的答案:诞生于2018年"-->
         <TextView
@@ -59,6 +61,8 @@
             android:layout_below="@+id/tv_right_answer1"
             android:layout_marginLeft="@dimen/text_12"
             android:layout_marginTop="@dimen/text_8"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:textColor="@color/color_20"
             android:textSize="@dimen/text_12" />
         <!--对错-->
@@ -66,9 +70,9 @@
             android:id="@+id/iv_is_correct"
             android:layout_width="@dimen/text_12"
             android:layout_height="@dimen/text_12"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="@dimen/text_15"
-            android:layout_marginRight="@dimen/text_12" />
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="@dimen/text_12"
+            android:layout_marginBottom="@dimen/text_15" />
     </RelativeLayout>
 </LinearLayout>

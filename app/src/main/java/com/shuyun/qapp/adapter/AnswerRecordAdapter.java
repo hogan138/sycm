@@ -35,9 +35,6 @@ public class AnswerRecordAdapter extends RecyclerView.Adapter<AnswerRecordAdapte
     private Context context;
     private LayoutInflater layoutInflater;
 
-    public AnswerRecordAdapter() {
-    }
-
     private List<AnswerRecordBean> answerRecordBeans;
 
     public AnswerRecordAdapter(Context context, List<AnswerRecordBean> answerRecordBeans) {

@@ -1,6 +1,7 @@
 package com.shuyun.qapp.net;
 
 
+import com.shuyun.qapp.bean.ActivityTabBean;
 import com.shuyun.qapp.bean.AdBean;
 import com.shuyun.qapp.bean.AnswerOpptyBean;
 import com.shuyun.qapp.bean.AnswerRecordBean;
@@ -640,4 +641,10 @@ public interface ApiService {
      */
     @GET("/rest/home/activity/config")
     Observable<DataResponse<MainConfigBean>> configMainActivity();
+
+    /**
+     * 70、活动专区数据
+     */
+    @GET("/rest/act/zone/list")
+    Observable<DataResponse<ActivityTabBean>> ActivityList(@Query("pageStart") String pageStart, @Query("pageSize") String pageSize);
 }

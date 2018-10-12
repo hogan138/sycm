@@ -15,6 +15,7 @@
         android:layout_marginTop="@dimen/text_15"
         android:scaleType="centerCrop"
         android:src="@mipmap/zw01"
+        app:radius="@dimen/text_5"
         app:type="round" />
 
     <LinearLayout

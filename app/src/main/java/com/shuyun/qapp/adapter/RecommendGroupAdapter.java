@@ -79,7 +79,7 @@ public class RecommendGroupAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
 
         //答题攻略
-        if (!EncodeAndStringTool.isListEmpty(groupBean.getTag())) {
+        if (!EncodeAndStringTool.isStringEmpty(groupBean.getTag())) {
             ((MyViewHolder) holder).tvStrategy.setVisibility(View.VISIBLE);
             ((MyViewHolder) holder).tvStrategy.setText(groupBean.getTag());
         } else {

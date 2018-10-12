@@ -18,6 +18,7 @@
             android:id="@+id/iv_group"
             android:layout_width="120dp"
             android:layout_height="86dp"
+            app:radius="@dimen/text_5"
             android:layout_marginLeft="@dimen/text_15"
             android:layout_marginTop="@dimen/text_10"
             android:scaleType="centerCrop"
