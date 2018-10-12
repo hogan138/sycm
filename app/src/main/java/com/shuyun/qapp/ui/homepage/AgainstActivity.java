@@ -1206,14 +1206,6 @@ public class AgainstActivity extends BaseActivity {
                                 robot_isSelcet = false;
                                 user_isSelect = false;
 
-                                //机器人答题耗时
-//                                new Handler().postDelayed(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        robot_isSelcet = true;
-//                                    }
-//                                }, (int) robotShowBean.getTimeConsuming() * 1000);
-
                                 //机器人是否答题
                                 if ("0".equals(robotShowBean.getAnswerId())) {
                                     robot_isSelcet = false;
