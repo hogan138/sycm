@@ -498,7 +498,11 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                         if (dataResponse.isSuccees()) {
                             List<SystemInfo> systemInfos = dataResponse.getDat();
                             if (!EncodeAndStringTool.isListEmpty(systemInfos)) {
-                                llMarqueeView.setVisibility(View.VISIBLE);
+                                try {
+                                    llMarqueeView.setVisibility(View.VISIBLE);
+                                } catch (Exception e) {
+
+                                }
                                 /**
                                  * 跑马灯数据
                                  */
@@ -590,141 +594,145 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                     @Override
                     public void onNext(DataResponse<HomeGroupsBean> listDataResponse) {
                         if (listDataResponse.isSuccees()) {
-                            final HomeGroupsBean homeGroupsBean = listDataResponse.getDat();
-                            if (!EncodeAndStringTool.isObjectEmpty(homeGroupsBean)) {
-                                if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getRecommend())) { //推荐题组
-                                    final List<GroupBean> groupBeans = homeGroupsBean.getRecommend();
-                                    if (!EncodeAndStringTool.isListEmpty(groupBeans)) {
-                                        rvRecomendGroup.setHasFixedSize(true);
-                                        rvRecomendGroup.setNestedScrollingEnabled(false);
-                                        RecommendGroupAdapter recommendGroupAdapter = new RecommendGroupAdapter(groupBeans, mContext);
-                                        recommendGroupAdapter.setOnItemClickLitsener(new GroupTreeAdapter.OnItemClickListener() {
+                            try {
+                                final HomeGroupsBean homeGroupsBean = listDataResponse.getDat();
+                                if (!EncodeAndStringTool.isObjectEmpty(homeGroupsBean)) {
+                                    if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getRecommend())) { //推荐题组
+                                        final List<GroupBean> groupBeans = homeGroupsBean.getRecommend();
+                                        if (!EncodeAndStringTool.isListEmpty(groupBeans)) {
+                                            rvRecomendGroup.setHasFixedSize(true);
+                                            rvRecomendGroup.setNestedScrollingEnabled(false);
+                                            RecommendGroupAdapter recommendGroupAdapter = new RecommendGroupAdapter(groupBeans, mContext);
+                                            recommendGroupAdapter.setOnItemClickLitsener(new GroupTreeAdapter.OnItemClickListener() {
+                                                @Override
+                                                public void onItemClick(View view, int position) {
+                                                    int groupId = groupBeans.get(position).getId();
+                                                    Intent intent = new Intent(mContext, WebAnswerActivity.class);
+                                                    intent.putExtra("groupId", groupId);
+                                                    intent.putExtra("h5Url", groupBeans.get(position).getH5Url());
+                                                    startActivity(intent);
+                                                }
+                                            });
+
+                                            GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1);
+                                            rvRecomendGroup.setLayoutManager(gridLayoutManager);
+                                            rvRecomendGroup.setAdapter(recommendGroupAdapter);
+                                        }
+                                    }
+
+                                    if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getOften())) { //常答题组
+                                        llOften.setVisibility(View.VISIBLE);
+                                        alwaysBanner.setVisibility(View.VISIBLE);
+
+                                        //常答题组
+                                        MarkBannerAdapter adapter1 = new MarkBannerAdapter(new GlideImageLoader());
+                                        List<IBannerItem> list1 = new ArrayList<>();
+                                        for (int i = 0; i < homeGroupsBean.getOften().size(); i++) {
+                                            MarkBannerItem item = new MarkBannerItem(homeGroupsBean.getOften().get(i).getPicture());
+                                            item.setMarkLabel(homeGroupsBean.getOften().get(i).getName());
+                                            list1.add(item);
+                                        }
+                                        adapter1.setData(getContext(), list1);
+                                        alwaysBanner.setBannerAdapter(adapter1);
+
+                                        //设置index 在viewpager下面
+                                        ViewPager mViewpager1 = (ViewPager) alwaysBanner.getChildAt(0);
+                                        //为ViewPager设置高度
+                                        ViewGroup.LayoutParams params = params = mViewpager1.getLayoutParams();
+                                        params.height = getResources().getDimensionPixelSize(R.dimen.viewPager_02);
+                                        mViewpager1.setLayoutParams(params);
+
+                                        alwaysBanner.setBannerItemClick(new BannerViewPager.OnBannerItemClick<IBannerItem>() {
                                             @Override
-                                            public void onItemClick(View view, int position) {
-                                                int groupId = groupBeans.get(position).getId();
-                                                Intent intent = new Intent(mContext, WebAnswerActivity.class);
-                                                intent.putExtra("groupId", groupId);
-                                                intent.putExtra("h5Url", groupBeans.get(position).getH5Url());
-                                                startActivity(intent);
-                                            }
-                                        });
-
-                                        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1);
-                                        rvRecomendGroup.setLayoutManager(gridLayoutManager);
-                                        rvRecomendGroup.setAdapter(recommendGroupAdapter);
-                                    }
-                                }
-
-                                if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getOften())) { //常答题组
-                                    llOften.setVisibility(View.VISIBLE);
-                                    alwaysBanner.setVisibility(View.VISIBLE);
-
-                                    //常答题组
-                                    MarkBannerAdapter adapter1 = new MarkBannerAdapter(new GlideImageLoader());
-                                    List<IBannerItem> list1 = new ArrayList<>();
-                                    for (int i = 0; i < homeGroupsBean.getOften().size(); i++) {
-                                        MarkBannerItem item = new MarkBannerItem(homeGroupsBean.getOften().get(i).getPicture());
-                                        item.setMarkLabel(homeGroupsBean.getOften().get(i).getName());
-                                        list1.add(item);
-                                    }
-                                    adapter1.setData(getContext(), list1);
-                                    alwaysBanner.setBannerAdapter(adapter1);
-
-                                    //设置index 在viewpager下面
-                                    ViewPager mViewpager1 = (ViewPager) alwaysBanner.getChildAt(0);
-                                    //为ViewPager设置高度
-                                    ViewGroup.LayoutParams params = params = mViewpager1.getLayoutParams();
-                                    params.height = getResources().getDimensionPixelSize(R.dimen.viewPager_02);
-                                    mViewpager1.setLayoutParams(params);
-
-                                    alwaysBanner.setBannerItemClick(new BannerViewPager.OnBannerItemClick<IBannerItem>() {
-                                        @Override
-                                        public void onClick(IBannerItem data) {
-                                            for (int i = 0; i < homeGroupsBean.getOften().size(); i++) {
-                                                if (data.ImageUrl().equals(homeGroupsBean.getOften().get(i).getPicture())) {
-                                                    try {
-                                                        Intent intent = new Intent(mContext, WebAnswerActivity.class);
-                                                        intent.putExtra("groupId", homeGroupsBean.getOften().get(i).getId());
-                                                        intent.putExtra("h5Url", homeGroupsBean.getOften().get(i).getH5Url());
-                                                        startActivity(intent);
-                                                    } catch (Exception e) {
+                                            public void onClick(IBannerItem data) {
+                                                for (int i = 0; i < homeGroupsBean.getOften().size(); i++) {
+                                                    if (data.ImageUrl().equals(homeGroupsBean.getOften().get(i).getPicture())) {
+                                                        try {
+                                                            Intent intent = new Intent(mContext, WebAnswerActivity.class);
+                                                            intent.putExtra("groupId", homeGroupsBean.getOften().get(i).getId());
+                                                            intent.putExtra("h5Url", homeGroupsBean.getOften().get(i).getH5Url());
+                                                            startActivity(intent);
+                                                        } catch (Exception e) {
+                                                        }
                                                     }
                                                 }
                                             }
-                                        }
-                                    });
-                                } else {
-                                    llOften.setVisibility(View.GONE);
-                                    alwaysBanner.setVisibility(View.GONE);
-                                }
-
-                                if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getThermal())) {   //大家都在答
-                                    final List<GroupBean> groupData = homeGroupsBean.getThermal();
-                                    try {
-                                        rvHotGroup.setHasFixedSize(true);
-                                        rvHotGroup.setNestedScrollingEnabled(false);
-                                        HotGroupAdapter hotGroupAdapter = new HotGroupAdapter(groupData, mContext);
-                                        hotGroupAdapter.setOnItemClickLitsener(new GroupTreeAdapter.OnItemClickListener() {
-                                            @Override
-                                            public void onItemClick(View view, int position) {
-                                                int groupId = groupData.get(position).getId();
-                                                Intent intent = new Intent(mContext, WebAnswerActivity.class);
-                                                intent.putExtra("groupId", groupId);
-                                                intent.putExtra("h5Url", groupData.get(position).getH5Url());
-                                                startActivity(intent);
-                                            }
                                         });
+                                    } else {
+                                        llOften.setVisibility(View.GONE);
+                                        alwaysBanner.setVisibility(View.GONE);
+                                    }
 
-                                        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1);
-                                        rvHotGroup.setLayoutManager(gridLayoutManager);
-                                        rvHotGroup.setAdapter(hotGroupAdapter);
-                                    } catch (Exception e) {
+                                    if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getThermal())) {   //大家都在答
+                                        final List<GroupBean> groupData = homeGroupsBean.getThermal();
+                                        try {
+                                            rvHotGroup.setHasFixedSize(true);
+                                            rvHotGroup.setNestedScrollingEnabled(false);
+                                            HotGroupAdapter hotGroupAdapter = new HotGroupAdapter(groupData, mContext);
+                                            hotGroupAdapter.setOnItemClickLitsener(new GroupTreeAdapter.OnItemClickListener() {
+                                                @Override
+                                                public void onItemClick(View view, int position) {
+                                                    int groupId = groupData.get(position).getId();
+                                                    Intent intent = new Intent(mContext, WebAnswerActivity.class);
+                                                    intent.putExtra("groupId", groupId);
+                                                    intent.putExtra("h5Url", groupData.get(position).getH5Url());
+                                                    startActivity(intent);
+                                                }
+                                            });
+
+                                            GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1);
+                                            rvHotGroup.setLayoutManager(gridLayoutManager);
+                                            rvHotGroup.setAdapter(hotGroupAdapter);
+                                        } catch (Exception e) {
+                                        }
+                                    }
+                                    if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getTree())) {  //分类
+                                        try {
+                                            List<GroupClassifyBean> groupClassifyBeans = homeGroupsBean.getTree();
+                                            groupClassifyBean0 = groupClassifyBeans.get(0);
+                                            groupClassifyBean1 = groupClassifyBeans.get(1);
+                                            groupClassifyBean2 = groupClassifyBeans.get(2);
+                                            groupClassifyBean3 = groupClassifyBeans.get(3);
+                                            groupClassifyBean4 = groupClassifyBeans.get(4);
+                                            groupClassifyBean5 = groupClassifyBeans.get(5);
+                                            groupClassifyBean6 = groupClassifyBeans.get(6);
+                                            if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean0)) {
+                                                GlideUtils.LoadCircleImage(mContext, groupClassifyBean0.getPicture(), ivGroupIcon01);
+                                                tvGroupName01.setText(groupClassifyBean0.getName());
+                                            }
+                                            if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean1)) {
+                                                GlideUtils.LoadCircleImage(mContext, groupClassifyBean1.getPicture(), ivGroupIcon02);
+                                                tvGroupName02.setText(groupClassifyBean1.getName());
+                                            }
+                                            if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean2)) {
+                                                GlideUtils.LoadCircleImage(mContext, groupClassifyBean2.getPicture(), ivGroupIcon03);
+                                                tvGroupName03.setText(groupClassifyBean2.getName());
+                                            }
+                                            if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean3)) {
+                                                GlideUtils.LoadCircleImage(mContext, groupClassifyBean3.getPicture(), ivGroupIcon04);
+                                                tvGroupName04.setText(groupClassifyBean3.getName());
+                                            }
+                                            if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean4)) {
+                                                GlideUtils.LoadCircleImage(mContext, groupClassifyBean4.getPicture(), ivGroupIcon05);
+                                                tvGroupName05.setText(groupClassifyBean4.getName());
+                                            }
+                                            if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean5)) {
+                                                GlideUtils.LoadCircleImage(mContext, groupClassifyBean5.getPicture(), ivGroupIcon06);
+                                                tvGroupName06.setText(groupClassifyBean5.getName());
+                                            }
+                                            if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean6)) {
+                                                GlideUtils.LoadCircleImage(mContext, groupClassifyBean6.getPicture(), ivGroupIcon07);
+                                                tvGroupName07.setText(groupClassifyBean6.getName());
+                                            }
+                                            ivMore.setImageResource(R.mipmap.more);
+                                            tvGroupName08.setText("更多");
+
+                                        } catch (Exception e) {
+                                        }
                                     }
                                 }
-                                if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getTree())) {  //分类
-                                    try {
-                                        List<GroupClassifyBean> groupClassifyBeans = homeGroupsBean.getTree();
-                                        groupClassifyBean0 = groupClassifyBeans.get(0);
-                                        groupClassifyBean1 = groupClassifyBeans.get(1);
-                                        groupClassifyBean2 = groupClassifyBeans.get(2);
-                                        groupClassifyBean3 = groupClassifyBeans.get(3);
-                                        groupClassifyBean4 = groupClassifyBeans.get(4);
-                                        groupClassifyBean5 = groupClassifyBeans.get(5);
-                                        groupClassifyBean6 = groupClassifyBeans.get(6);
-                                        if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean0)) {
-                                            GlideUtils.LoadCircleImage(mContext, groupClassifyBean0.getPicture(), ivGroupIcon01);
-                                            tvGroupName01.setText(groupClassifyBean0.getName());
-                                        }
-                                        if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean1)) {
-                                            GlideUtils.LoadCircleImage(mContext, groupClassifyBean1.getPicture(), ivGroupIcon02);
-                                            tvGroupName02.setText(groupClassifyBean1.getName());
-                                        }
-                                        if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean2)) {
-                                            GlideUtils.LoadCircleImage(mContext, groupClassifyBean2.getPicture(), ivGroupIcon03);
-                                            tvGroupName03.setText(groupClassifyBean2.getName());
-                                        }
-                                        if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean3)) {
-                                            GlideUtils.LoadCircleImage(mContext, groupClassifyBean3.getPicture(), ivGroupIcon04);
-                                            tvGroupName04.setText(groupClassifyBean3.getName());
-                                        }
-                                        if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean4)) {
-                                            GlideUtils.LoadCircleImage(mContext, groupClassifyBean4.getPicture(), ivGroupIcon05);
-                                            tvGroupName05.setText(groupClassifyBean4.getName());
-                                        }
-                                        if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean5)) {
-                                            GlideUtils.LoadCircleImage(mContext, groupClassifyBean5.getPicture(), ivGroupIcon06);
-                                            tvGroupName06.setText(groupClassifyBean5.getName());
-                                        }
-                                        if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean6)) {
-                                            GlideUtils.LoadCircleImage(mContext, groupClassifyBean6.getPicture(), ivGroupIcon07);
-                                            tvGroupName07.setText(groupClassifyBean6.getName());
-                                        }
-                                        ivMore.setImageResource(R.mipmap.more);
-                                        tvGroupName08.setText("更多");
+                            } catch (Exception e) {
 
-                                    } catch (Exception e) {
-                                    }
-                                }
                             }
                         } else {//错误码提示
                             if (listDataResponse.getErr().equals("U0001")) {

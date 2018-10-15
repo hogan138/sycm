@@ -97,6 +97,7 @@ public class ActivityFragment extends Fragment {
         //初始化沉浸状态栏
         ImmersionBar.with(this).statusBarColor(R.color.white).statusBarDarkFont(true).fitsSystemWindows(true).init();
 
+
     }
 
     @OnClick({R.id.iv_back})
@@ -136,39 +137,42 @@ public class ActivityFragment extends Fragment {
                             ActivityTabBean activityTabBean = dataResponse.getDat();
                             List<ActivityTabBean.ResultBean> activityTabBeanlist1 = activityTabBean.getResult();
                             if (!EncodeAndStringTool.isListEmpty(activityTabBeanlist1) && activityTabBeanlist1.size() > 0) {
-                                ivActivityEmpty.setVisibility(View.GONE);
-                                if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {//首次加载||下拉刷新
-                                    activityTabBeanlist.clear();
-                                    activityTabBeanlist.addAll(activityTabBeanlist1);
-                                    rvActivity.setAdapter(activityTabAdapter);
-                                    refreshLayout.finishRefresh();
-                                    refreshLayout.setLoadmoreFinished(false);
-
-                                    //进入动画
-                                    LayoutAnimationController controller = new LayoutAnimationController(MyLayoutAnimationHelper.getAnimationSetScaleBig());
-                                    controller.setDelay(0.1f);
-                                    rvActivity.setLayoutAnimation(controller);
-                                    rvActivity.scheduleLayoutAnimation();
-
-                                } else if (loadState == AppConst.STATE_MORE) {
-                                    if (activityTabBeanlist1.size() == 0) {//没有数据了
-                                        refreshLayout.finishLoadmore(); //
-                                        refreshLayout.setLoadmoreFinished(true);
-                                    } else {
+                                try {
+                                    ivActivityEmpty.setVisibility(View.GONE);
+                                    if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {//首次加载||下拉刷新
+                                        activityTabBeanlist.clear();
                                         activityTabBeanlist.addAll(activityTabBeanlist1);
-                                        activityTabAdapter.notifyDataSetChanged();
-                                        refreshLayout.finishLoadmore();
+                                        rvActivity.setAdapter(activityTabAdapter);
+                                        refreshLayout.finishRefresh();
                                         refreshLayout.setLoadmoreFinished(false);
+
                                         //进入动画
                                         LayoutAnimationController controller = new LayoutAnimationController(MyLayoutAnimationHelper.getAnimationSetScaleBig());
                                         controller.setDelay(0.1f);
                                         rvActivity.setLayoutAnimation(controller);
                                         rvActivity.scheduleLayoutAnimation();
-                                    }
-                                }
 
+                                    } else if (loadState == AppConst.STATE_MORE) {
+                                        if (activityTabBeanlist1.size() == 0) {//没有数据了
+                                            refreshLayout.finishLoadmore(); //
+                                            refreshLayout.setLoadmoreFinished(true);
+                                        } else {
+                                            activityTabBeanlist.addAll(activityTabBeanlist1);
+                                            activityTabAdapter.notifyDataSetChanged();
+                                            refreshLayout.finishLoadmore();
+                                            refreshLayout.setLoadmoreFinished(false);
+                                            //进入动画
+                                            LayoutAnimationController controller = new LayoutAnimationController(MyLayoutAnimationHelper.getAnimationSetScaleBig());
+                                            controller.setDelay(0.1f);
+                                            rvActivity.setLayoutAnimation(controller);
+                                            rvActivity.scheduleLayoutAnimation();
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                }
                             } else {
                                 if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {
+
                                     ivActivityEmpty.setVisibility(View.VISIBLE);
                                 }
                                 refreshLayout.finishLoadmore();

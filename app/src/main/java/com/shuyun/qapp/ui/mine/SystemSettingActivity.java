@@ -22,6 +22,7 @@ import com.shuyun.qapp.bean.AppVersionBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.webview.WebPublicActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
@@ -234,6 +235,8 @@ public class SystemSettingActivity extends BaseActivity {
                         SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.invite_count", "");
                         SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.integral_count", "");
                         SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.answer.against_count", "");
+//                        //活动到期时间
+//                        SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("get_activity_time", "");
                     }
                 })
                 .configDialog(new ConfigDialog() {

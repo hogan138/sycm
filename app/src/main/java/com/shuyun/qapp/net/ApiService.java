@@ -2,6 +2,7 @@ package com.shuyun.qapp.net;
 
 
 import com.shuyun.qapp.bean.ActivityTabBean;
+import com.shuyun.qapp.bean.ActivityTimeBean;
 import com.shuyun.qapp.bean.AdBean;
 import com.shuyun.qapp.bean.AnswerOpptyBean;
 import com.shuyun.qapp.bean.AnswerRecordBean;
@@ -647,4 +648,10 @@ public interface ApiService {
      */
     @GET("/rest/act/zone/list")
     Observable<DataResponse<ActivityTabBean>> ActivityList(@Query("pageStart") String pageStart, @Query("pageSize") String pageSize);
+
+    /**
+     * 71、获取最新活动时间
+     */
+    @GET("/rest/act/zone/time")
+    Observable<DataResponse<ActivityTimeBean>> getActivityTime();
 }

@@ -3,6 +3,7 @@ package com.shuyun.qapp.ui.webview;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,6 +33,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.ishumei.smantifraud.SmAntiFraud;
+import com.mylhyl.circledialog.CircleDialog;
+import com.mylhyl.circledialog.callback.ConfigButton;
+import com.mylhyl.circledialog.callback.ConfigDialog;
+import com.mylhyl.circledialog.callback.ConfigText;
+import com.mylhyl.circledialog.callback.ConfigTitle;
+import com.mylhyl.circledialog.params.ButtonParams;
+import com.mylhyl.circledialog.params.DialogParams;
+import com.mylhyl.circledialog.params.TextParams;
+import com.mylhyl.circledialog.params.TitleParams;
 import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.R;
@@ -45,8 +55,10 @@ import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.answer.AnswerHistoryActivity;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
+import com.shuyun.qapp.ui.mine.AccountLogoutActivity;
 import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
 import com.shuyun.qapp.ui.mine.RedWithDrawActivity;
+import com.shuyun.qapp.ui.mine.UploadLetterActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -407,7 +419,8 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                         }
                     } else {
                         if (wvAnswerHome.canGoBack()) {
-                            wvAnswerHome.goBack();
+//                            wvAnswerHome.goBack();
+                            exitDialog();
                         } else {
                             finish();
                         }
@@ -1043,6 +1056,69 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                 }
             }
         }
+    }
+
+
+    /**
+     * 中途退出弹窗
+     */
+    private void exitDialog() {
+        new CircleDialog.Builder(this)
+                .setTitle("确认要中途退出吗？")
+                .configTitle(new ConfigTitle() {
+                    @Override
+                    public void onConfig(TitleParams params) {
+                        params.textSize = 40;
+                    }
+                })
+                .setCanceledOnTouchOutside(false)
+                .setText("现在退出无法进入榜单哦")
+                .configText(new ConfigText() {
+                    @Override
+                    public void onConfig(TextParams params) {
+                        params.textSize = 40;
+                        params.textColor = Color.parseColor("#666666");
+                    }
+                })
+                .setTextColor(Color.parseColor("#333333"))
+                .setWidth(0.7f)
+//                .setNeutral("中间", new OnMultiClickListener() {
+//                    @Override
+//                    public void onMultiClick(View v) {
+//
+//                    }
+//                })
+                .setPositive("继续答题", new OnMultiClickListener() {
+                    @Override
+                    public void onMultiClick(View v) {
+
+                    }
+                })
+                .configPositive(new ConfigButton() {
+                    @Override
+                    public void onConfig(ButtonParams params) {
+                        params.textColor = Color.parseColor("#0194ec");
+                    }
+                })
+                .setNegative("确认退出", new OnMultiClickListener() {
+                    @Override
+                    public void onMultiClick(View v) {
+                        finish();
+                    }
+                })
+                .configNegative(new ConfigButton() {
+                    @Override
+                    public void onConfig(ButtonParams params) {
+                        params.textColor = Color.parseColor("#333333");
+                    }
+                })
+                .configDialog(new ConfigDialog() {
+                    @Override
+                    public void onConfig(DialogParams params) {
+                        params.animStyle = R.style.popwin_anim_style;
+                    }
+                })
+                .show();
     }
 
 }

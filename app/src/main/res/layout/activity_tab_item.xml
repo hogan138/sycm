@@ -3,14 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_activity_item"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:layout_marginTop="@dimen/text_10">
+    android:layout_height="157dp"
+    android:layout_marginTop="@dimen/text_15"
+    android:background="@mipmap/activity_img_bg">
 
     <com.shuyun.qapp.view.RoundImageView
         android:id="@+id/iv_bg_image"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginLeft="@dimen/text_5"
+        android:layout_marginRight="@dimen/text_5"
         android:scaleType="fitXY"
+        app:radius="@dimen/text_15"
         app:type="round" />
 
     <TextView
@@ -26,7 +30,9 @@
     <RelativeLayout
         android:id="@+id/ll_end"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginLeft="@dimen/text_5"
+        android:layout_marginRight="@dimen/text_5"
         android:background="@drawable/activity_tab_gray_bg"
         android:visibility="gone">
 
@@ -35,8 +41,8 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="已结束"
+            android:text="活动已结束"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_17" />
+            android:textSize="@dimen/text_24" />
     </RelativeLayout>
 </RelativeLayout>

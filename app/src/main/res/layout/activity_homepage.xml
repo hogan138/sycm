@@ -34,7 +34,7 @@
                 android:layout_width="21dp"
                 android:layout_height="21dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="3dp"
                 android:src="@drawable/home" />
 
             <TextView
@@ -61,7 +61,7 @@
                 android:layout_width="21dp"
                 android:layout_height="21dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="3dp"
                 android:src="@drawable/classify" />
 
             <TextView
@@ -92,17 +92,16 @@
                     android:layout_width="21dp"
                     android:layout_height="21dp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="4dp"
-                    android:src="@drawable/classify" />
+                    android:layout_marginTop="3dp"
+                    android:src="@drawable/activity" />
 
                 <ImageView
                     android:id="@+id/iv_logo"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginLeft="10dp"
-                    android:background="@mipmap/hongse"
-                    android:visibility="gone" />
+                    android:layout_marginLeft="8dp"
+                    android:background="@mipmap/tab_activity_tip" />
 
             </FrameLayout>
 
@@ -130,7 +129,7 @@
                 android:layout_width="21dp"
                 android:layout_height="21dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="3dp"
                 android:src="@drawable/me" />
 
             <TextView

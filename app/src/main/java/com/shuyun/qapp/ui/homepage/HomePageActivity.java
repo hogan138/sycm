@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -16,45 +17,43 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.callback.ConfigDialog;
 import com.mylhyl.circledialog.params.DialogParams;
 import com.shuyun.qapp.R;
+import com.shuyun.qapp.base.BasePresenter;
+import com.shuyun.qapp.bean.ActivityTimeBean;
 import com.shuyun.qapp.bean.AppVersionBean;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.base.BasePresenter;
+import com.shuyun.qapp.bean.InviteBean;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.activity.ActivityFragment;
 import com.shuyun.qapp.ui.classify.ClassifyFragment;
-import com.shuyun.qapp.ui.integral.MyPrizeActivity;
 import com.shuyun.qapp.ui.mine.MineFragment;
-import com.shuyun.qapp.ui.welcome.SplashActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ExampleUtil;
-import com.shuyun.qapp.utils.ListDataSave;
-import com.shuyun.qapp.utils.LogUtil;
 import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
+import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.jpush.android.api.JPushInterface;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -62,11 +61,9 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.shuyun.qapp.utils.EncodeAndStringTool.encryptMD5ToString;
 import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
-import static com.umeng.commonsdk.stateless.UMSLEnvelopeBuild.mContext;
 
 public class HomePageActivity extends AppCompatActivity {
 
-    private static boolean isLogin = false;
     @BindView(R.id.home_fragment_container)
     FrameLayout homeFragmentContainer;
 
@@ -82,6 +79,8 @@ public class HomePageActivity extends AppCompatActivity {
     ArrayList<Fragment> fragments = new ArrayList<>();
 
     public static boolean isForeground = false;
+    @BindView(R.id.iv_logo)
+    ImageView ivLogo; //活动角标
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,6 +154,9 @@ public class HomePageActivity extends AppCompatActivity {
             int index = homeBottomeSwitcherContainer.indexOfChild(view);
             changeUi(index);
             changeFragment(index);
+
+            //获取最新活动时间
+            getActivityTime(index);
         }
     };
 
@@ -253,7 +255,6 @@ public class HomePageActivity extends AppCompatActivity {
     }
 
     //更新版本
-    ListDataSave listDataSave;
 
     private void updateVersion() {
         long curTime = System.currentTimeMillis();
@@ -280,11 +281,6 @@ public class HomePageActivity extends AppCompatActivity {
                         if (loginResponse.isSuccees()) {
                             AppVersionBean appVersionBean = loginResponse.getDat();
                             if (!EncodeAndStringTool.isObjectEmpty(appVersionBean)) {
-
-                                //保存h5 url地址
-                                SaveUserInfo.getInstance(HomePageActivity.this).setUserInfo("box_h5_url", appVersionBean.getBoxUrl());
-                                SaveUserInfo.getInstance(HomePageActivity.this).setUserInfo("exam_h5_url", appVersionBean.getExamUrl());
-
                                 int mode = appVersionBean.getMode();
                                 if (mode == 0) {
                                 } else if (mode == 1) {
@@ -292,20 +288,6 @@ public class HomePageActivity extends AppCompatActivity {
                                     updateDialog(appVersionBean.getUrl());
                                 }
                             }
-                            List<String> listUrl = new ArrayList<>();
-                            listUrl.clear();
-                            for (int i = 0; i < appVersionBean.getApis().size(); i++) {
-                                listUrl.add(appVersionBean.getApis().get(i));
-                            }
-                            //保存轮询IP
-                            try {
-                                listDataSave = new ListDataSave(HomePageActivity.this, "url");
-                                listDataSave.setDataList("forUrl", listUrl);
-                                Log.e("url", listDataSave.getDataList("forUrl").toString());
-                            } catch (Exception e) {
-
-                            }
-
 
                         } else {
                             ErrorCodeTools.errorCodePrompt(HomePageActivity.this, loginResponse.getErr(), loginResponse.getMsg());
@@ -329,6 +311,7 @@ public class HomePageActivity extends AppCompatActivity {
                 .setTitle("监测到新版本")
                 .setText("已经监测到新版本")
                 .setTextColor(Color.parseColor("#333333"))
+                .setCanceledOnTouchOutside(false)
                 .setWidth(0.7f)
                 .setPositive("前往更新", new OnMultiClickListener() {
                     @Override
@@ -360,7 +343,7 @@ public class HomePageActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
+        FragmentManager manager = getSupportFragmentManager();
         Fragment fragment = manager.findFragmentById(R.id.home_fragment_container);
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
             if (fragment instanceof MineFragment) {
@@ -419,6 +402,68 @@ public class HomePageActivity extends AppCompatActivity {
             } catch (Exception e) {
             }
         }
+    }
+
+    //获取最新活动时间
+    private void getActivityTime(final int index) {
+        ApiService apiService = BasePresenter.create(8000);
+        apiService.getActivityTime()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<DataResponse<ActivityTimeBean>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
+
+                    @Override
+                    public void onNext(DataResponse<ActivityTimeBean> dataResponse) {
+                        if (dataResponse.isSuccees()) {
+                            ActivityTimeBean activityTimeBean = dataResponse.getDat();
+
+                            if (index == 2) {
+                                SaveUserInfo.getInstance(HomePageActivity.this).setUserInfo("get_activity_time", String.valueOf(activityTimeBean.getTime()));
+                                //隐藏活动角标
+                                ivLogo.setVisibility(View.GONE);
+                            } else {
+                                String time = SaveUserInfo.getInstance(HomePageActivity.this).getUserInfo("get_activity_time");
+
+                                if ("".equals(time)) {
+                                    //第一次显示活动角标
+                                    ivLogo.setVisibility(View.VISIBLE);
+                                } else {
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");//年-月-日 时-分
+                                    try {
+                                        long time1 = dateFormat.parse(TimeUtils.millis2String(activityTimeBean.getTime())).getTime();
+                                        long time2 = dateFormat.parse(TimeUtils.millis2String(Long.parseLong(time))).getTime();
+                                        if (time1 > time2) {
+                                            //显示活动角标
+                                            ivLogo.setVisibility(View.VISIBLE);
+                                        } else {
+                                            //隐藏活动角标
+                                            ivLogo.setVisibility(View.GONE);
+                                        }
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        } else {
+                            ErrorCodeTools.errorCodePrompt(HomePageActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                        }
+
+                    }
+
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //保存错误信息
+                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
     }
 
 }
