@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.shuyun.qapp.R;
@@ -214,6 +215,7 @@ public class RedWithDrawActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
+                KeyboardUtils.hideSoftInput(RedWithDrawActivity.this);
                 break;
             case R.id.btn_immedicate1:
                 //立即提现

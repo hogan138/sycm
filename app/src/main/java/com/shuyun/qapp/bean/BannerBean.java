@@ -14,6 +14,16 @@ public class BannerBean {
     private String url;//跳转的地址
     private int type;//类型 1、外部链接;2、内部链接;3、内部功能
     private String h5Url; //答题url
+    private String action;
+    private String content;
+
+    public String getAction() {
+        return action;
+    }
+
+    public String getContent() {
+        return content;
+    }
 
     public String getH5Url() {
         return h5Url;

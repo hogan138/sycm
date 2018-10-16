@@ -35,6 +35,7 @@ import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ToastUtil;
+import com.shuyun.qapp.view.RealNamePopupUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -125,16 +126,14 @@ public class UseInPrizeFragment extends Fragment {
                         intent.putExtra("name", minePrize.getName());
                         startActivity(intent);
                     } else {
-                        MinePrizeActivity activity = (MinePrizeActivity) getActivity();
-                        activity.showAuthPop();
+                        RealNamePopupUtil.showAuthPop(getContext(), ((MinePrizeActivity) getActivity()).llPrize);
                     }
                 } else if (minePrize.getActionType().equals("action.use.record")) {
                     //红包
                     if (Integer.parseInt(SaveUserInfo.getInstance(getActivity()).getUserInfo("cert")) == 1) {
                         startActivity(new Intent(getActivity(), CashResultActivity.class));
                     } else {
-                        MinePrizeActivity activity = (MinePrizeActivity) getActivity();
-                        activity.showAuthPop();
+                        RealNamePopupUtil.showAuthPop(getContext(), ((MinePrizeActivity) getActivity()).llPrize);
                     }
                 } else if (minePrize.getActionType().equals("action.open.box")) {
                     if (Integer.parseInt(SaveUserInfo.getInstance(getActivity()).getUserInfo("cert")) == 1) {
@@ -144,8 +143,7 @@ public class UseInPrizeFragment extends Fragment {
                         intent.putExtra("main_box", "my_prize");
                         startActivity(intent);
                     } else {
-                        MinePrizeActivity activity = (MinePrizeActivity) getActivity();
-                        activity.showAuthPop();
+                        RealNamePopupUtil.showAuthPop(getContext(), ((MinePrizeActivity) getActivity()).llPrize);
                     }
                 } else {
                     //暂不支持 实物和电子卷 提示用户去下载新版本

@@ -155,8 +155,15 @@ public class HomePageActivity extends AppCompatActivity {
             changeUi(index);
             changeFragment(index);
 
-            //获取最新活动时间
-            getActivityTime(index);
+            //点击活动专区
+            if (index == 2) {
+                //隐藏活动角标
+                ivLogo.setVisibility(View.GONE);
+                clickActivity();
+            } else {
+                //获取最新活动显示角标
+                getActivityShow();
+            }
         }
     };
 
@@ -404,10 +411,10 @@ public class HomePageActivity extends AppCompatActivity {
         }
     }
 
-    //获取最新活动时间
-    private void getActivityTime(final int index) {
+    //获取最新活动显示角标
+    private void getActivityShow() {
         ApiService apiService = BasePresenter.create(8000);
-        apiService.getActivityTime()
+        apiService.getActivityShow()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<DataResponse<ActivityTimeBean>>() {
@@ -419,34 +426,47 @@ public class HomePageActivity extends AppCompatActivity {
                     public void onNext(DataResponse<ActivityTimeBean> dataResponse) {
                         if (dataResponse.isSuccees()) {
                             ActivityTimeBean activityTimeBean = dataResponse.getDat();
-
-                            if (index == 2) {
-                                SaveUserInfo.getInstance(HomePageActivity.this).setUserInfo("get_activity_time", String.valueOf(activityTimeBean.getTime()));
+                            if ("1".equals(activityTimeBean.getShow())) {
+                                //显示活动角标
+                                ivLogo.setVisibility(View.VISIBLE);
+                            } else {
                                 //隐藏活动角标
                                 ivLogo.setVisibility(View.GONE);
-                            } else {
-                                String time = SaveUserInfo.getInstance(HomePageActivity.this).getUserInfo("get_activity_time");
-
-                                if ("".equals(time)) {
-                                    //第一次显示活动角标
-                                    ivLogo.setVisibility(View.VISIBLE);
-                                } else {
-                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");//年-月-日 时-分
-                                    try {
-                                        long time1 = dateFormat.parse(TimeUtils.millis2String(activityTimeBean.getTime())).getTime();
-                                        long time2 = dateFormat.parse(TimeUtils.millis2String(Long.parseLong(time))).getTime();
-                                        if (time1 > time2) {
-                                            //显示活动角标
-                                            ivLogo.setVisibility(View.VISIBLE);
-                                        } else {
-                                            //隐藏活动角标
-                                            ivLogo.setVisibility(View.GONE);
-                                        }
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
                             }
+
+                        } else {
+                            ErrorCodeTools.errorCodePrompt(HomePageActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                        }
+
+                    }
+
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //保存错误信息
+                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+    }
+
+    //活动专区点击
+    private void clickActivity() {
+        ApiService apiService = BasePresenter.create(8000);
+        apiService.clickActivity()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<DataResponse<String>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
+
+                    @Override
+                    public void onNext(DataResponse<String> dataResponse) {
+                        if (dataResponse.isSuccees()) {
                         } else {
                             ErrorCodeTools.errorCodePrompt(HomePageActivity.this, dataResponse.getErr(), dataResponse.getMsg());
                         }

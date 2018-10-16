@@ -57,6 +57,7 @@ import com.shuyun.qapp.utils.ScannerUtils;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.ToastUtil;
 import com.shuyun.qapp.view.CircleImageView;
+import com.shuyun.qapp.view.RealNamePopupUtil;
 import com.tencent.stat.StatConfig;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.ShareAction;
@@ -406,7 +407,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                         ToastUtil.showToast(mContext, "您已实名认证了");
                     } else {
                         //未实名认证
-                        showAuthPop();
+                        RealNamePopupUtil.showAuthPop(mContext, llMineFragment);
                     }
                 }
                 break;
@@ -428,7 +429,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                             ToastUtil.showToast(mContext, "您有一笔资金正在提现中,请耐心等待...");
                         }
                     } else {
-                        showAuthPop();
+                        RealNamePopupUtil.showAuthPop(mContext, llMineFragment);
                     }
 
                 }
@@ -438,7 +439,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                     Intent intent = new Intent(mContext, IntegralExchangeActivity.class);
                     startActivity(intent);
                 } else {
-                    showAuthPop();
+                    RealNamePopupUtil.showAuthPop(mContext, llMineFragment);
                 }
                 break;
             case R.id.iv_not_use:
@@ -493,27 +494,6 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
         }
     }
 
-    /**
-     * 实名认证popupWindow
-     */
-    public void showAuthPop() {
-        if (popupWindow != null && popupWindow.isShowing()) return;
-        View upView = LayoutInflater.from(mContext).inflate(R.layout.real_name_auth_popupwindow, null);
-        //测量View的宽高
-        CommonPopUtil.measureWidthAndHeight(upView);
-        popupWindow = new CommonPopupWindow.Builder(mContext)
-                .setView(R.layout.real_name_auth_popupwindow)
-                .setWidthAndHeight(upView.getMeasuredWidth(), upView.getMeasuredHeight())
-                .setBackGroundLevel(0.5f)//取值范围0.0f-1.0f 值越小越暗
-                .setOutsideTouchable(true)
-                .setAnimationStyle(R.style.popwin_anim_style)//设置动画
-                //设置子View点击事件
-                .setViewOnclickListener(this)
-                .create();
-
-        popupWindow.showAtLocation(llMineFragment, Gravity.CENTER, 0, 0);
-    }
-
 
     TextView tvRemainderTime;
     Button btnGetImmedicate;
@@ -543,27 +523,6 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
     @Override
     public void getChildView(final View view, int layoutResId) {
         switch (layoutResId) {
-            case R.layout.real_name_auth_popupwindow:
-                ImageView ivClose1 = (ImageView) view.findViewById(R.id.iv_close_icon1);
-                Button btnRealNameAuth = (Button) view.findViewById(R.id.btn_real_name_auth1);
-                ivClose1.setOnClickListener(new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v) {
-                        if (popupWindow != null && popupWindow.isShowing()) {
-                            popupWindow.dismiss();
-                        }
-                    }
-                });
-                btnRealNameAuth.setOnClickListener(new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v) {
-                        if (popupWindow != null && popupWindow.isShowing()) {
-                            popupWindow.dismiss();
-                        }
-                        startActivity(new Intent(mContext, RealNameAuthActivity.class));
-                    }
-                });
-                break;
             case R.layout.add_answer_num_popupwindow:
                 ImageView ivClose0 = view.findViewById(R.id.iv_close_icon0);
                 btnGetImmedicate = view.findViewById(R.id.btn_get_immedicate);
@@ -605,7 +564,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                         if (mineBean.getCertification() == 1) {
                             startActivity(new Intent(mContext, IntegralExchangeActivity.class));
                         } else {
-                            showAuthPop();
+                            RealNamePopupUtil.showAuthPop(mContext, llMineFragment);
                         }
                     }
                 });
@@ -1091,7 +1050,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                                         //已实名认证
                                     } else {
                                         //未实名认证
-                                        showAuthPop();
+                                        RealNamePopupUtil.showAuthPop(mContext, llMineFragment);
                                     }
 
                                 } catch (Exception e) {

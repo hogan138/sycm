@@ -50,7 +50,7 @@ import io.reactivex.schedulers.Schedulers;
  * <p>
  * 修改于：2018/6/9
  */
-public class MinePrizeActivity extends BaseActivity implements CommonPopupWindow.ViewInterface {
+public class MinePrizeActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;
@@ -75,7 +75,6 @@ public class MinePrizeActivity extends BaseActivity implements CommonPopupWindow
 
     private List<Fragment> mFragmentList;
     private List<String> mTitleList;
-    private static final String TAG = "MinePrizeActivity";
     private MineBean mineBean;
 
     @Override
@@ -155,56 +154,6 @@ public class MinePrizeActivity extends BaseActivity implements CommonPopupWindow
 
     private CommonPopupWindow popupWindow;
 
-    /**
-     * 实名认证popupWindow
-     */
-    public void showAuthPop() {
-        if ((!EncodeAndStringTool.isObjectEmpty(popupWindow)) && popupWindow.isShowing()) return;
-        View upView = LayoutInflater.from(this).inflate(R.layout.real_name_auth_popupwindow, null);
-        //测量View的宽高
-        CommonPopUtil.measureWidthAndHeight(upView);
-        popupWindow = new CommonPopupWindow.Builder(this)
-                .setView(R.layout.real_name_auth_popupwindow)
-                .setWidthAndHeight(upView.getMeasuredWidth(), upView.getMeasuredHeight())
-                .setBackGroundLevel(0.5f)//取值范围0.0f-1.0f 值越小越暗
-                .setOutsideTouchable(true)
-                .setAnimationStyle(R.style.popwin_anim_style)//设置动画
-                //设置子View点击事件
-                .setViewOnclickListener(this)
-                .create();
-
-        popupWindow.showAtLocation(llPrize, Gravity.CENTER, 0, 0);
-    }
-
-
-    @Override
-    public void getChildView(View view, int layoutResId) {
-        switch (layoutResId) {
-            case R.layout.real_name_auth_popupwindow:
-                ImageView ivClose1 = (ImageView) view.findViewById(R.id.iv_close_icon1);
-                Button btnRealNameAuth = (Button) view.findViewById(R.id.btn_real_name_auth1);
-                ivClose1.setOnClickListener(new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v) {
-                        if (popupWindow != null && popupWindow.isShowing()) {
-                            popupWindow.dismiss();
-                        }
-                    }
-                });
-                btnRealNameAuth.setOnClickListener(new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v) {
-                        if (popupWindow != null && popupWindow.isShowing()) {
-                            popupWindow.dismiss();
-                        }
-                        startActivity(new Intent(MinePrizeActivity.this, RealNameAuthActivity.class));
-                    }
-                });
-                break;
-            default:
-                break;
-        }
-    }
 
     /**
      * 监听返回键

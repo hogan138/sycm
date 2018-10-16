@@ -1,21 +1,22 @@
 package com.shuyun.qapp.bean;
 
 /**
- * 获取活动最新时间
+ * 获取活动专区显示
  */
 public class ActivityTimeBean {
 
+
     /**
-     * time : 0
+     * show : 1
      */
 
-    private long time;
+    private String show;
 
-    public long getTime() {
-        return time;
+    public String getShow() {
+        return show;
     }
 
-    public void setTime(long time) {
-        this.time = time;
+    public void setShow(String show) {
+        this.show = show;
     }
 }

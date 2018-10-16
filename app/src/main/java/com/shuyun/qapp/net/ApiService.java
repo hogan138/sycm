@@ -652,6 +652,12 @@ public interface ApiService {
     /**
      * 71、获取最新活动时间
      */
-    @GET("/rest/act/zone/time")
-    Observable<DataResponse<ActivityTimeBean>> getActivityTime();
+    @GET("/rest/act/zone/status")
+    Observable<DataResponse<ActivityTimeBean>> getActivityShow();
+
+    /**
+     * 72、点击活动专区
+     */
+    @GET("/rest/act/zone/action")
+    Observable<DataResponse<String>> clickActivity();
 }

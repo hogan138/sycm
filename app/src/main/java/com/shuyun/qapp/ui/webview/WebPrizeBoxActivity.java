@@ -20,7 +20,6 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -28,6 +27,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.TimeUtils;
+import com.google.gson.Gson;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
@@ -41,7 +41,6 @@ import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
-import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
 import com.shuyun.qapp.ui.mine.RedWithDrawActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
@@ -51,6 +50,7 @@ import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ScannerUtils;
+import com.shuyun.qapp.view.RealNamePopupUtil;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -226,7 +226,8 @@ public class WebPrizeBoxActivity extends BaseActivity implements CommonPopupWind
                 @Override
                 public void run() {
                     Log.e("奖品返回", prizeData);
-                    MinePrize minePrize = JSON.parseObject(prizeData, MinePrize.class);
+//                    MinePrize minePrize = JSON.parseObject(prizeData, MinePrize.class);
+                    MinePrize minePrize = new Gson().fromJson(prizeData, MinePrize.class);
                     if (minePrize.getActionType().equals("action.h5.url")) {
                         //实物
                         Intent intent = new Intent(WebPrizeBoxActivity.this, WebPrizeActivity.class);
@@ -255,7 +256,7 @@ public class WebPrizeBoxActivity extends BaseActivity implements CommonPopupWind
                             }
                         } else {
                             //显示实名认证弹窗
-                            showAuthPop();
+                            RealNamePopupUtil.showAuthPop(getApplicationContext(), llWebBox);
                         }
                     } else if (minePrize.getActionType().equals("action.bp.use")) {
                         if (Integer.parseInt(SaveUserInfo.getInstance(WebPrizeBoxActivity.this).getUserInfo("cert")) == 1) {
@@ -263,7 +264,7 @@ public class WebPrizeBoxActivity extends BaseActivity implements CommonPopupWind
                             startActivity(new Intent(WebPrizeBoxActivity.this, IntegralExchangeActivity.class));
                         } else {
                             //显示实名认证弹窗
-                            showAuthPop();
+                            RealNamePopupUtil.showAuthPop(getApplicationContext(), llWebBox);
                         }
 
                     }
@@ -372,54 +373,9 @@ public class WebPrizeBoxActivity extends BaseActivity implements CommonPopupWind
         }
     }
 
-    /**
-     * 实名认证popupWindow
-     */
-    CommonPopupWindow commonPopupWindow;
-
-    public void showAuthPop() {
-        if ((!EncodeAndStringTool.isObjectEmpty(commonPopupWindow)) && commonPopupWindow.isShowing())
-            return;
-        View upView = LayoutInflater.from(this).inflate(R.layout.real_name_auth_popupwindow, null);
-        //测量View的宽高
-        CommonPopUtil.measureWidthAndHeight(upView);
-        commonPopupWindow = new CommonPopupWindow.Builder(this)
-                .setView(R.layout.real_name_auth_popupwindow)
-                .setWidthAndHeight(upView.getMeasuredWidth(), upView.getMeasuredHeight())
-                .setBackGroundLevel(0.5f)//取值范围0.0f-1.0f 值越小越暗
-                .setOutsideTouchable(true)
-                .setAnimationStyle(R.style.popwin_anim_style)//设置动画
-                //设置子View点击事件
-                .setViewOnclickListener(this)
-                .create();
-
-        commonPopupWindow.showAtLocation(llWebBox, Gravity.CENTER, 0, 0);
-    }
-
     @Override
     public void getChildView(View view, int layoutResId) {
         switch (layoutResId) {
-            case R.layout.real_name_auth_popupwindow:
-                ImageView ivClose1 = (ImageView) view.findViewById(R.id.iv_close_icon1);
-                Button btnRealNameAuth = (Button) view.findViewById(R.id.btn_real_name_auth1);
-                ivClose1.setOnClickListener(new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v) {
-                        if (commonPopupWindow != null && commonPopupWindow.isShowing()) {
-                            commonPopupWindow.dismiss();
-                        }
-                    }
-                });
-                btnRealNameAuth.setOnClickListener(new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v) {
-                        if (commonPopupWindow != null && commonPopupWindow.isShowing()) {
-                            commonPopupWindow.dismiss();
-                        }
-                        startActivity(new Intent(WebPrizeBoxActivity.this, RealNameAuthActivity.class));
-                    }
-                });
-                break;
             case R.layout.share_popupwindow:
                 final LinearLayout ll_share = view.findViewById(R.id.ll_share);
                 SpringAnimation signUpBtnAnimY = new SpringAnimation(ll_share, SpringAnimation.TRANSLATION_Y, 0);

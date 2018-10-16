@@ -298,10 +298,6 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <!-- 积分抽奖和宝箱开奖界面 -->
-        <activity
-            android:name=".ui.mine.IntegralDrawActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
         <!-- 我的界面，反馈. -->
         <activity
             android:name=".ui.mine.FeedbackActivity"

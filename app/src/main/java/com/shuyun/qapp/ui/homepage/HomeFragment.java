@@ -62,6 +62,7 @@ import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.receiver.MyReceiver;
 import com.shuyun.qapp.ui.classify.ClassifyActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
+import com.shuyun.qapp.ui.integral.IntegralMainActivity;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.mine.MinePrizeActivity;
@@ -82,6 +83,7 @@ import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ScannerUtils;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
+import com.shuyun.qapp.view.RealNamePopupUtil;
 import com.shuyun.qapp.view.RoundImageView;
 import com.sunfusheng.marqueeview.MarqueeView;
 import com.umeng.analytics.MobclickAgent;
@@ -108,6 +110,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.blankj.utilcode.util.ActivityUtils.startActivity;
 import static com.blankj.utilcode.util.SizeUtils.dp2px;
 
 
@@ -286,11 +289,11 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
             }
         });
         /**
-         * 获取并设置轮播数据
+         * 获取banner轮播数据
          */
         loadHomeBanners();
         /**
-         * 获取跑马灯消息
+         * 获取全民播报
          */
         loadSystemInfo();
 
@@ -424,36 +427,83 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                                         public void onClick(IBannerItem data) {
                                             for (int i = 0; i < bannerData.size(); i++) {
                                                 if (data.ImageUrl().equals(bannerData.get(i).getPicture())) {
-                                                    if (bannerData.get(i).getType() == 3) {//题组跳转
-                                                        if (!EncodeAndStringTool.isStringEmpty(bannerData.get(i).getUrl())) {
-                                                            try {
-                                                                Intent intent = new Intent(mContext, WebAnswerActivity.class);
-                                                                intent.putExtra("groupId", Integer.parseInt(bannerData.get(i).getUrl()));
-                                                                intent.putExtra("h5Url", bannerData.get(i).getH5Url());
-                                                                startActivity(intent);
-                                                            } catch (Exception e) {
-                                                            }
-
+                                                    String action = bannerData.get(i).getAction();
+                                                    String h5Url = bannerData.get(i).getH5Url();
+                                                    String name = bannerData.get(i).getName();
+                                                    if (AppConst.DEFAULT.equals(action)) {
+                                                        //默认不跳转
+                                                    } else if (AppConst.GROUP.equals(action)) {
+                                                        //题组 h5Url值
+                                                        Intent intent = new Intent(mContext, WebAnswerActivity.class);
+                                                        intent.putExtra("groupId", Integer.parseInt(bannerData.get(i).getContent()));
+                                                        intent.putExtra("h5Url", h5Url);
+                                                        startActivity(intent);
+                                                    } else if (AppConst.REAL.equals(action)) {
+                                                        //实名认证
+                                                        startActivity(new Intent(mContext, RealNameAuthActivity.class));
+                                                    } else if (AppConst.H5.equals(action)) {
+                                                        //h5页面
+                                                        Intent intent = new Intent(mContext, WebBannerActivity.class);
+                                                        intent.putExtra("url", h5Url);
+                                                        intent.putExtra("name", name);//名称 标题
+                                                        startActivity(intent);
+                                                    } else if (AppConst.INVITE.equals(action)) {
+                                                        //邀请
+                                                        Intent intent = new Intent();
+                                                        intent.setClass(mContext, WebBannerActivity.class);
+                                                        intent.putExtra("url", h5Url);
+                                                        intent.putExtra("name", "邀请分享");
+                                                        startActivity(intent);
+                                                    } else if (AppConst.INTEGRAL.equals(action)) {
+                                                        if (Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("cert")) == 1) {
+                                                            //积分兑换
+                                                            //保存规则地址
+                                                            SaveUserInfo.getInstance(mContext).setUserInfo("h5_rule", h5Url);
+                                                            startActivity(new Intent(mContext, IntegralExchangeActivity.class));
+                                                        } else {
+                                                            RealNamePopupUtil.showAuthPop(mContext, llHomeFragment);
                                                         }
-                                                    } else if (bannerData.get(i).getType() == 2) {//内部链接
-                                                        if (!EncodeAndStringTool.isStringEmpty(bannerData.get(i).getUrl())) {
-                                                            Intent intent = new Intent(mContext, WebBannerActivity.class);
-                                                            intent.putExtra("url", bannerData.get(i).getUrl());
-                                                            intent.putExtra("name", bannerData.get(i).getName());//名称 标题
+                                                    } else if (AppConst.OPEN_BOX.equals(action)) {
+                                                        if (Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("cert")) == 1) {
+                                                            //积分开宝箱
+                                                            Intent intent = new Intent(mContext, WebPrizeBoxActivity.class);
+                                                            intent.putExtra("main_box", "score_box");
+                                                            intent.putExtra("h5Url", h5Url);
                                                             startActivity(intent);
+                                                        } else {
+                                                            RealNamePopupUtil.showAuthPop(mContext, llHomeFragment);
                                                         }
-                                                    } else if (bannerData.get(i).getType() == 1) {//外部链接
-                                                        if (!EncodeAndStringTool.isStringEmpty(bannerData.get(i).getUrl())) {
-                                                            Uri uri = Uri.parse(bannerData.get(i).getUrl());
-                                                            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                                                            startActivity(intent);
+                                                    } else if (AppConst.TREASURE.equals(action)) {
+                                                        if (Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("cert")) == 1) {
+                                                            //积分夺宝
+                                                            startActivity(new Intent(mContext, IntegralMainActivity.class));
+                                                        } else {
+                                                            RealNamePopupUtil.showAuthPop(mContext, llHomeFragment);
                                                         }
+                                                    } else if (AppConst.AGAINST.equals(action)) {
+                                                        //答题对战
+                                                        startActivity(new Intent(mContext, MainAgainstActivity.class));
+                                                    } else if (AppConst.TASK.equals(action)) {
+                                                        //每日任务
+                                                    } else if (AppConst.WITHDRAW_INFO.equals(action)) {
+                                                        //提现
+                                                        Intent in = new Intent(mContext, WebBannerActivity.class);
+                                                        in.putExtra("url", h5Url);
+                                                        in.putExtra("name", "提现");//名称 标题
+                                                        startActivity(in);
+                                                    } else if (AppConst.H5_EXTERNAL.equals(action)) {
+                                                        //外部h5链接
+                                                        Uri uri = Uri.parse(h5Url);
+                                                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                                                        startActivity(intent);
                                                     }
                                                 }
                                             }
                                         }
                                     });
-                                    mBannerView.setPageTransformer(true, new YZoomTransFormer(.8f)); //banner动画
+                                    mBannerView.setPageTransformer(true, new
+
+                                            YZoomTransFormer(.8f)); //banner动画
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -559,7 +609,7 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
                             MainConfigBean mainConfigBean = dataResponse.getDat();
                             //动态添加布局
                             activityRegion.removeAllViews();
-                            activityRegion.addView(ActivityRegionManager.getView(mContext, mainConfigBean));
+                            activityRegion.addView(ActivityRegionManager.getView(mContext, mainConfigBean, llHomeFragment));
                         } else {
                             ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
                         }
@@ -1118,35 +1168,7 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
             public void onMultiClick(View v) {
                 if (dialog.isShowing()) {
                     dialog.dismiss();
-                    if (configDialogBean.getBtnAction().equals("action.group")) {
-                        //题组
-                        Intent intent = new Intent(mContext, WebAnswerActivity.class);
-                        intent.putExtra("groupId", Integer.parseInt(configDialogBean.getContent()));
-                        intent.putExtra("h5Url", configDialogBean.getH5Url());
-                        startActivity(intent);
-                    } else if (configDialogBean.getBtnAction().equals("action.real")) {
-                        //实名认证
-                        startActivity(new Intent(mContext, RealNameAuthActivity.class));
-                    } else if (configDialogBean.getBtnAction().equals("action.h5")) {
-                        //h5页面
-                        Intent intent = new Intent(mContext, WebBannerActivity.class);
-                        intent.putExtra("url", configDialogBean.getH5Url());
-                        intent.putExtra("name", "全民共进");//名称 标题
-                        startActivity(intent);
-                    } else if (configDialogBean.getBtnAction().equals("action.invite")) {
-                        //邀请
-                        Intent intent = new Intent();
-                        intent.setClass(mContext, WebBannerActivity.class);
-                        intent.putExtra("url", configDialogBean.getH5Url());
-                        intent.putExtra("name", "邀请分享");
-                        startActivity(intent);
-                    } else if (configDialogBean.getBtnAction().equals("action.integral")) {
-                        //积分兑换
-                        startActivity(new Intent(mContext, IntegralExchangeActivity.class));
-                    } else if (configDialogBean.getBtnAction().equals("action.answer.against")) {
-                        //答题对战
-                        startActivity(new Intent(mContext, MainAgainstActivity.class));
-                    }
+                    dialogSkip(configDialogBean);
                 }
             }
         });
@@ -1155,38 +1177,81 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
             public void onMultiClick(View v) {
                 if (dialog.isShowing()) {
                     dialog.dismiss();
-                    if (configDialogBean.getBtnAction().equals("action.group")) {
-                        //题组
-                        Intent intent = new Intent(mContext, WebAnswerActivity.class);
-                        intent.putExtra("groupId", Integer.parseInt(configDialogBean.getContent()));
-                        intent.putExtra("h5Url", configDialogBean.getH5Url());
-                        startActivity(intent);
-                    } else if (configDialogBean.getBtnAction().equals("action.real")) {
-                        //实名认证
-                        startActivity(new Intent(mContext, RealNameAuthActivity.class));
-                    } else if (configDialogBean.getBtnAction().equals("action.h5")) {
-                        //h5页面
-                        Intent intent = new Intent(mContext, WebBannerActivity.class);
-                        intent.putExtra("url", configDialogBean.getH5Url());
-                        intent.putExtra("name", "全民共进");//名称 标题
-                        startActivity(intent);
-                    } else if (configDialogBean.getBtnAction().equals("action.invite")) {
-                        //邀请
-                        Intent intent = new Intent();
-                        intent.setClass(mContext, WebBannerActivity.class);
-                        intent.putExtra("url", configDialogBean.getH5Url());
-                        intent.putExtra("name", "邀请分享");
-                        startActivity(intent);
-                    } else if (configDialogBean.getBtnAction().equals("action.integral")) {
-                        //积分兑换
-                        startActivity(new Intent(mContext, IntegralExchangeActivity.class));
-                    } else if (configDialogBean.getBtnAction().equals("action.answer.against")) {
-                        //答题对战
-                        startActivity(new Intent(mContext, MainAgainstActivity.class));
-                    }
+                    dialogSkip(configDialogBean);
                 }
             }
         });
+    }
+
+    private void dialogSkip(ConfigDialogBean configDialogBean) {
+        String action = configDialogBean.getBtnAction();
+        if (AppConst.GROUP.equals(action)) {
+            //题组
+            Intent intent = new Intent(mContext, WebAnswerActivity.class);
+            intent.putExtra("groupId", Integer.parseInt(configDialogBean.getContent()));
+            intent.putExtra("h5Url", configDialogBean.getH5Url());
+            startActivity(intent);
+        } else if (AppConst.REAL.equals(action)) {
+            //实名认证
+            startActivity(new Intent(mContext, RealNameAuthActivity.class));
+        } else if (AppConst.H5.equals(action)) {
+            //h5页面
+            Intent intent = new Intent(mContext, WebBannerActivity.class);
+            intent.putExtra("url", configDialogBean.getH5Url());
+            intent.putExtra("name", "全民共进");//名称 标题
+            startActivity(intent);
+        } else if (AppConst.INVITE.equals(action)) {
+            //邀请
+            Intent intent = new Intent();
+            intent.setClass(mContext, WebBannerActivity.class);
+            intent.putExtra("url", configDialogBean.getH5Url());
+            intent.putExtra("name", "邀请分享");
+            startActivity(intent);
+        } else if (AppConst.INTEGRAL.equals(action)) {
+            if (Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("cert")) == 1) {
+                //积分兑换
+                startActivity(new Intent(mContext, IntegralExchangeActivity.class));
+            } else {
+                RealNamePopupUtil.showAuthPop(mContext, llHomeFragment);
+            }
+        } else if (AppConst.AGAINST.equals(action)) {
+            //答题对战
+            startActivity(new Intent(mContext, MainAgainstActivity.class));
+        } else if (AppConst.OPEN_BOX.equals(action)) {
+            if (Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("cert")) == 1) {
+                //积分开宝箱
+                Intent intent = new Intent(mContext, WebPrizeBoxActivity.class);
+                intent.putExtra("main_box", "score_box");
+                intent.putExtra("h5Url", configDialogBean.getH5Url());
+                startActivity(intent);
+            } else {
+                RealNamePopupUtil.showAuthPop(mContext, llHomeFragment);
+            }
+        } else if (AppConst.TREASURE.equals(action)) {
+            if (Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("cert")) == 1) {
+                //积分夺宝
+                //保存规则地址
+                SaveUserInfo.getInstance(mContext).setUserInfo("h5_rule", configDialogBean.getH5Url());
+                startActivity(new Intent(mContext, IntegralMainActivity.class));
+            } else {
+                RealNamePopupUtil.showAuthPop(mContext, llHomeFragment);
+            }
+        } else if (AppConst.TASK.equals(action)) {
+            //每日任务
+        } else if (AppConst.WITHDRAW_INFO.equals(action)) {
+            //提现信息
+            Intent i = new Intent(mContext, WebBannerActivity.class);
+            i.putExtra("url", configDialogBean.getH5Url());
+            i.putExtra("name", "提现");//名称 标题
+            startActivity(i);
+        } else if (AppConst.H5_EXTERNAL.equals(action)) {
+            //外部链接
+            Uri uri = Uri.parse(configDialogBean.getH5Url());
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        } else if (AppConst.DEFAULT.equals(action)) {
+            //默认不跳转
+        }
     }
 
     @Override
@@ -1206,7 +1271,8 @@ public class HomeFragment extends Fragment implements CommonPopupWindow.ViewInte
      * 分享弹窗
      */
     public void showSharedPop() {
-        if ((!EncodeAndStringTool.isObjectEmpty(popupWindow)) && popupWindow.isShowing()) return;
+        if ((!EncodeAndStringTool.isObjectEmpty(popupWindow)) && popupWindow.isShowing())
+            return;
         View upView = LayoutInflater.from(mContext).inflate(R.layout.share_popupwindow, null);
         //测量View的宽高
         CommonPopUtil.measureWidthAndHeight(upView);

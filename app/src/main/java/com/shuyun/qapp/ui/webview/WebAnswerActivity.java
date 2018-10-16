@@ -29,9 +29,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.TimeUtils;
+import com.google.gson.Gson;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.callback.ConfigButton;
@@ -55,10 +55,7 @@ import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.answer.AnswerHistoryActivity;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
-import com.shuyun.qapp.ui.mine.AccountLogoutActivity;
-import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
 import com.shuyun.qapp.ui.mine.RedWithDrawActivity;
-import com.shuyun.qapp.ui.mine.UploadLetterActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -69,6 +66,7 @@ import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ScannerUtils;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.ToastUtil;
+import com.shuyun.qapp.view.RealNamePopupUtil;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -294,8 +292,9 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Log.e("奖品返回", prizeData.toString());
-                    MinePrize minePrize = JSONObject.parseObject(prizeData.toString(), MinePrize.class);
+                    Log.e("奖品返回", prizeData);
+//                    MinePrize minePrize = JSONObject.parseObject(prizeData.toString(), MinePrize.class);
+                    MinePrize minePrize = new Gson().fromJson(prizeData, MinePrize.class);
                     if (minePrize.getActionType().equals("action.h5.url")) {
                         //实物
                         Intent intent = new Intent(WebAnswerActivity.this, WebPrizeActivity.class);
@@ -326,7 +325,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                             }
                         } else {
                             //显示实名认证弹窗
-                            showAuthPop();
+                            RealNamePopupUtil.showAuthPop(WebAnswerActivity.this, llH5);
                         }
                     } else if (minePrize.getActionType().equals("action.bp.use")) {
                         if (Integer.parseInt(SaveUserInfo.getInstance(WebAnswerActivity.this).getUserInfo("cert")) == 1) {
@@ -334,7 +333,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                             startActivity(new Intent(WebAnswerActivity.this, IntegralExchangeActivity.class));
                         } else {
                             //显示实名认证弹窗
-                            showAuthPop();
+                            RealNamePopupUtil.showAuthPop(WebAnswerActivity.this, llH5);
                         }
                     }
                 }
@@ -419,8 +418,8 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                         }
                     } else {
                         if (wvAnswerHome.canGoBack()) {
-//                            wvAnswerHome.goBack();
-                            exitDialog();
+                            wvAnswerHome.goBack();
+//                            exitDialog();
                         } else {
                             finish();
                         }
@@ -847,29 +846,8 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                         } else if (certification == 2) {
                             ToastUtil.showToast(WebAnswerActivity.this, "您已成功提交认证申请..\n预计将在24小时内审核完成");
                         } else {
-                            showAuthPop();
+                            RealNamePopupUtil.showAuthPop(WebAnswerActivity.this, llH5);
                         }
-                    }
-                });
-                break;
-            case R.layout.real_name_auth_popupwindow:
-                ImageView ivClose1 = (ImageView) view.findViewById(R.id.iv_close_icon1);
-                Button btnRealNameAuth = (Button) view.findViewById(R.id.btn_real_name_auth1);
-                ivClose1.setOnClickListener(new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v) {
-                        if (commonPopupWindow != null && commonPopupWindow.isShowing()) {
-                            commonPopupWindow.dismiss();
-                        }
-                    }
-                });
-                btnRealNameAuth.setOnClickListener(new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v) {
-                        if (commonPopupWindow != null && commonPopupWindow.isShowing()) {
-                            commonPopupWindow.dismiss();
-                        }
-                        startActivity(new Intent(WebAnswerActivity.this, RealNameAuthActivity.class));
                     }
                 });
                 break;
@@ -1008,27 +986,6 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                 });
     }
 
-    /**
-     * 实名认证popupWindow
-     */
-    public void showAuthPop() {
-        if ((!EncodeAndStringTool.isObjectEmpty(commonPopupWindow)) && commonPopupWindow.isShowing())
-            return;
-        View upView = LayoutInflater.from(this).inflate(R.layout.real_name_auth_popupwindow, null);
-        //测量View的宽高
-        CommonPopUtil.measureWidthAndHeight(upView);
-        commonPopupWindow = new CommonPopupWindow.Builder(this)
-                .setView(R.layout.real_name_auth_popupwindow)
-                .setWidthAndHeight(upView.getMeasuredWidth(), upView.getMeasuredHeight())
-                .setBackGroundLevel(0.5f)//取值范围0.0f-1.0f 值越小越暗
-                .setOutsideTouchable(true)
-                .setAnimationStyle(R.style.popwin_anim_style)//设置动画
-                //设置子View点击事件
-                .setViewOnclickListener(this)
-                .create();
-
-        commonPopupWindow.showAtLocation(llH5, Gravity.CENTER, 0, 0);
-    }
 
     @Override
     public void onBackPressed() {

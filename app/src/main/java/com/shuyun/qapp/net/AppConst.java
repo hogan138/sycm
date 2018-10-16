@@ -12,7 +12,7 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
  */
 
 public class AppConst {
-//    public static final String BASE_URL = "https://api-syksc.25876.com";///线上服务器
+    //    public static final String BASE_URL = "https://api-syksc.25876.com";///线上服务器
 //    public static final String BASE_URL = "http://192.168.3.250:8080";//:8002/公司内部服务器
 //    public static final String BASE_URL = "http://139.224.199.106:8080";//开发测试服务器
     public static final String BASE_URL = "http://192.168.3.137:8080";//测试环境
@@ -27,7 +27,6 @@ public class AppConst {
     public static final String WEIXIN_APP_ID = "wxb9167b3dcd6daa1e";
 
     /**
-     *
      * 后台配的appKey
      */
     public static final String APP_KEY = "G9cSpkRWAmrvNmT84rHIhQUeolfk88htOrIxSrQFRxA8lSY9ZNGnztHPNtLeIigXCAFsyXtk7sGkmVlKLp8kLffYvsNy6vE9HMDNLEee2peDbnvvMgk1hxsmGdVIUW";
@@ -135,5 +134,23 @@ public class AppConst {
 
     public static final int ACCOUNT_CASH_TYPE = 0;
     public static final int ACCOUNT_INTEGRAL_TYPE = 1;
+
+
+    /**
+     * 动作action
+     */
+    public static final String DEFAULT = "action.default";//默认不跳转
+    public static final String GROUP = "action.group";//题组
+    public static final String REAL = "action.real";//实名认证
+    public static final String H5 = "action.h5";//H5
+    public static final String INVITE = "action.invite";//邀请
+    public static final String INTEGRAL = "action.integral";//积分兑换
+    public static final String OPEN_BOX = "action.integral.open.box";//积分开宝箱
+    public static final String TREASURE = "action.integral.treasure";//积分夺宝
+    public static final String AGAINST = "action.answer.against";//答题对战
+    public static final String TASK = "action.day.task";//每日任务
+    public static final String WITHDRAW_INFO = "action.withdraw.info";//提现信息
+    public static final String H5_EXTERNAL = "action.h5.external";//h5 跳转外部链接
+
 
 }

@@ -3,6 +3,7 @@ package com.shuyun.qapp.ui.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,26 +26,25 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.ActivityTabAdapter;
-import com.shuyun.qapp.adapter.AnswerRecordAdapter;
 import com.shuyun.qapp.animation.MyLayoutAnimationHelper;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.ActivityTabBean;
-import com.shuyun.qapp.bean.AnswerRecordBean;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.bean.GroupClassifyBean;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.ui.answer.AnswerHistoryActivity;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.homepage.MainAgainstActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
-import com.shuyun.qapp.ui.mine.AnswerRecordActivity;
+import com.shuyun.qapp.ui.integral.IntegralMainActivity;
 import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.webview.WebBannerActivity;
+import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveErrorTxt;
+import com.shuyun.qapp.utils.SaveUserInfo;
+import com.shuyun.qapp.view.RealNamePopupUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -74,6 +75,8 @@ public class ActivityFragment extends Fragment {
     SmartRefreshLayout refreshLayout;
     @BindView(R.id.iv_activity_empty)
     ImageView ivActivityEmpty;
+    @BindView(R.id.ll_main)
+    LinearLayout llMain;
     private Activity mContext;
 
     private int loadState = AppConst.STATE_NORMAL;
@@ -229,37 +232,72 @@ public class ActivityFragment extends Fragment {
                 String action = resultBean.getBtnAction();
                 String h5Url = resultBean.getH5Url();
 
-                if ("action.group".equals(action)) {
+                if (AppConst.GROUP.equals(action)) {
                     //题组
                     Intent intent = new Intent(mContext, WebAnswerActivity.class);
                     intent.putExtra("groupId", Integer.parseInt(resultBean.getContent()));
                     intent.putExtra("h5Url", h5Url);
                     startActivity(intent);
-                } else if ("action.real".equals(action)) {
+                } else if (AppConst.REAL.equals(action)) {
                     //实名认证
                     startActivity(new Intent(mContext, RealNameAuthActivity.class));
-                } else if ("action.h5".equals(action)) {
+                } else if (AppConst.H5.equals(action)) {
                     //h5
                     Intent intent = new Intent(mContext, WebBannerActivity.class);
                     intent.putExtra("url", h5Url);
                     intent.putExtra("name", "全民共进");//名称 标题
                     startActivity(intent);
-                } else if ("action.invite".equals(action)) {
+                } else if (AppConst.INVITE.equals(action)) {
                     //邀请
                     Intent intent = new Intent();
                     intent.setClass(mContext, WebBannerActivity.class);
                     intent.putExtra("url", h5Url);
                     intent.putExtra("name", "邀请分享");
                     startActivity(intent);
-                } else if ("action.integral".equals(action)) {
-                    //积分兑换
-                    startActivity(new Intent(mContext, IntegralExchangeActivity.class));
-                } else if ("action.answer.against".equals(action)) {
+                } else if (AppConst.INTEGRAL.equals(action)) {
+                    if (Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("cert")) == 1) {
+                        //积分兑换
+                        startActivity(new Intent(mContext, IntegralExchangeActivity.class));
+                    } else {
+                        RealNamePopupUtil.showAuthPop(mContext, llMain);
+                    }
+                } else if (AppConst.AGAINST.equals(action)) {
                     //答题对战
                     startActivity(new Intent(mContext, MainAgainstActivity.class));
-                } else if ("action.day.task".equals(action)) {
+                } else if (AppConst.TASK.equals(action)) {
                     //每日任务
-
+                } else if (AppConst.DEFAULT.equals(action)) {
+                    //默认
+                } else if (AppConst.OPEN_BOX.equals(action)) {
+                    if (Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("cert")) == 1) {
+                        //积分开宝箱
+                        Intent intent = new Intent(mContext, WebPrizeBoxActivity.class);
+                        intent.putExtra("main_box", "score_box");
+                        intent.putExtra("h5Url", h5Url);
+                        startActivity(intent);
+                    } else {
+                        RealNamePopupUtil.showAuthPop(mContext, llMain);
+                    }
+                } else if (AppConst.TREASURE.equals(action)) {
+                    if (Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("cert")) == 1) {
+                        //积分夺宝
+                        //保存规则地址
+                        SaveUserInfo.getInstance(mContext).setUserInfo("h5_rule", h5Url);
+                        startActivity(new Intent(mContext, IntegralMainActivity.class));
+                    } else {
+                        RealNamePopupUtil.showAuthPop(mContext, llMain);
+                    }
+                } else if (AppConst.WITHDRAW_INFO.equals(action)) {
+                    //提现信息
+                    Intent i = new Intent(mContext, WebBannerActivity.class);
+                    i.putExtra("url", h5Url);
+                    i.putExtra("name", "提现");//名称 标题
+                    startActivity(i);
+                } else if (AppConst.H5_EXTERNAL.equals(action)) {
+                    //外部链接
+                    Uri uri = Uri.parse(h5Url);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
                 }
 
 
