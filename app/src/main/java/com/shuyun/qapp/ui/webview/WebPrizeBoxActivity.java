@@ -3,6 +3,7 @@ package com.shuyun.qapp.ui.webview;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,12 +30,23 @@ import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.TimeUtils;
 import com.google.gson.Gson;
 import com.ishumei.smantifraud.SmAntiFraud;
+import com.mylhyl.circledialog.CircleDialog;
+import com.mylhyl.circledialog.callback.ConfigButton;
+import com.mylhyl.circledialog.callback.ConfigDialog;
+import com.mylhyl.circledialog.callback.ConfigText;
+import com.mylhyl.circledialog.callback.ConfigTitle;
+import com.mylhyl.circledialog.params.ButtonParams;
+import com.mylhyl.circledialog.params.DialogParams;
+import com.mylhyl.circledialog.params.TextParams;
+import com.mylhyl.circledialog.params.TitleParams;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.BoxBean;
 import com.shuyun.qapp.bean.DataResponse;
+import com.shuyun.qapp.bean.H5JumpBean;
 import com.shuyun.qapp.bean.MinePrize;
+import com.shuyun.qapp.bean.ReturnDialogBean;
 import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.bean.WebAnswerHomeBean;
 import com.shuyun.qapp.net.ApiService;
@@ -50,6 +62,8 @@ import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ScannerUtils;
+import com.shuyun.qapp.view.H5JumpUtil;
+import com.shuyun.qapp.view.InviteSharePopupUtil;
 import com.shuyun.qapp.view.RealNamePopupUtil;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
@@ -74,7 +88,7 @@ import static com.blankj.utilcode.util.SizeUtils.dp2px;
 /**
  * h5开宝箱
  */
-public class WebPrizeBoxActivity extends BaseActivity implements CommonPopupWindow.ViewInterface {
+public class WebPrizeBoxActivity extends BaseActivity {
 
     WebAnswerHomeBean answerHomeBean = new WebAnswerHomeBean();
     @BindView(R.id.iv_left_back)
@@ -91,13 +105,9 @@ public class WebPrizeBoxActivity extends BaseActivity implements CommonPopupWind
 
     private BoxBean boxBean;
 
-    /**
-     * 1:微信朋友圈
-     * 2:微信好友
-     */
-    private static int SHARE_CHANNEL;
-    private static final int SHARE_SECCEED = 1;//分享成功
-    private static final int SHARE_FAILURE = 2;//分享失败
+    private boolean show = false;
+    ReturnDialogBean returnDialogBean;
+
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -109,7 +119,7 @@ public class WebPrizeBoxActivity extends BaseActivity implements CommonPopupWind
                     if (!MyApplication.mWxApi.isWXAppInstalled()) {
 
                     } else {
-                        showSharedPop();
+                        InviteSharePopupUtil.showSharedPop(WebPrizeBoxActivity.this, llWebBox);
                     }
                     break;
                 default:
@@ -230,7 +240,7 @@ public class WebPrizeBoxActivity extends BaseActivity implements CommonPopupWind
                     MinePrize minePrize = new Gson().fromJson(prizeData, MinePrize.class);
                     if (minePrize.getActionType().equals("action.h5.url")) {
                         //实物
-                        Intent intent = new Intent(WebPrizeBoxActivity.this, WebPrizeActivity.class);
+                        Intent intent = new Intent(WebPrizeBoxActivity.this, WebBannerActivity.class);
                         intent.putExtra("id", minePrize.getId());
                         intent.putExtra("url", minePrize.getH5Url());
                         intent.putExtra("name", minePrize.getName());
@@ -286,6 +296,31 @@ public class WebPrizeBoxActivity extends BaseActivity implements CommonPopupWind
             handler.sendMessage(msg);
         }
 
+
+        /**
+         * 与js交互跳转到不同界面
+         */
+        @JavascriptInterface
+        public void doJump(String data) {
+            final H5JumpBean h5JumpBean = new Gson().fromJson(data, H5JumpBean.class);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    H5JumpUtil.dialogSkip(h5JumpBean, WebPrizeBoxActivity.this, llWebBox);
+                }
+            });
+            Log.e("data", data);
+        }
+
+        /**
+         * 返回弹框h5调用方法
+         */
+        @JavascriptInterface
+        public void pageLoad(String data) {
+            returnDialogBean = new Gson().fromJson(data, ReturnDialogBean.class);
+            show = returnDialogBean.isShow();
+            Log.e("data", data);
+        }
 
     }
 
@@ -363,88 +398,18 @@ public class WebPrizeBoxActivity extends BaseActivity implements CommonPopupWind
         switch (view.getId()) {
             case R.id.iv_left_back:
                 if (wvPrizeBox.canGoBack()) {
-                    wvPrizeBox.goBack();
+                    if (show) {
+                        exitDialog(returnDialogBean);
+                    } else {
+                        wvPrizeBox.goBack();
+                    }
                 } else {
-                    finish();
+                    if (show) {
+                        exitDialog(returnDialogBean);
+                    } else {
+                        finish();
+                    }
                 }
-                break;
-            default:
-                break;
-        }
-    }
-
-    @Override
-    public void getChildView(View view, int layoutResId) {
-        switch (layoutResId) {
-            case R.layout.share_popupwindow:
-                final LinearLayout ll_share = view.findViewById(R.id.ll_share);
-                SpringAnimation signUpBtnAnimY = new SpringAnimation(ll_share, SpringAnimation.TRANSLATION_Y, 0);
-                signUpBtnAnimY.getSpring().setStiffness(SpringForce.STIFFNESS_VERY_LOW);
-                signUpBtnAnimY.getSpring().setDampingRatio(SpringForce.DAMPING_RATIO_LOW_BOUNCY);
-                signUpBtnAnimY.setStartVelocity(800);
-                signUpBtnAnimY.start();
-
-                ImageView ivWeChat = view.findViewById(R.id.iv_wechat);
-                ImageView ivFriends = view.findViewById(R.id.iv_friends);
-                ImageView ivqr = view.findViewById(R.id.iv_qr);
-
-
-                ivWeChat.setOnClickListener(new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v) {
-                        if (popupWindow != null && popupWindow.isShowing()) {
-                            popupWindow.dismiss();
-                        }
-                        SHARE_CHANNEL = AppConst.SHARE_MEDIA_WEIXIN;
-                        loadInviteShared(SHARE_CHANNEL);
-                    }
-                });
-                ivFriends.setOnClickListener(new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v) {
-                        if (popupWindow != null && popupWindow.isShowing()) {
-                            popupWindow.dismiss();
-                        }
-                        SHARE_CHANNEL = AppConst.SHARE_MEDIA_WEIXIN_CIRCLE;
-                        loadInviteShared(SHARE_CHANNEL);
-                    }
-                });
-                ivqr.setOnClickListener(new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v) {
-                        if (!EncodeAndStringTool.isObjectEmpty(popupWindow) && popupWindow.isShowing()) {
-                            popupWindow.dismiss();
-                        }
-                        //二维码分享
-                        loadInviteShared(AppConst.SHARE_MEDIA_QR);//二维码分享
-                    }
-                });
-                TextView tv_cancel = view.findViewById(R.id.tv_cancel);
-                tv_cancel.setOnClickListener(new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v) {
-                        popupWindow.dismiss();
-                    }
-                });
-                break;
-            case R.layout.share_qr_popupwindow:
-                final LinearLayout ll_view = view.findViewById(R.id.ll_view);
-                TextView tv_title = view.findViewById(R.id.tv_title);
-                tv_title.setText(sharedBean1.getTitle());
-                TextView tv_content = view.findViewById(R.id.tv_content);
-                tv_content.setText(sharedBean1.getContent());
-                final ImageView iv_qr = view.findViewById(R.id.iv_qr);
-                Bitmap mBitmap = CodeUtils.createImage(sharedBean1.getUrl(), dp2px(114), dp2px(114), null);
-                iv_qr.setImageBitmap(mBitmap);
-                TextView tv_save_picture = view.findViewById(R.id.tv_save_picture);
-                tv_save_picture.setOnClickListener(new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v) {
-                        //保存二维码
-                        ScannerUtils.saveImageToGallery(getApplicationContext(), createViewBitmap(ll_view), ScannerUtils.ScannerType.MEDIA);
-                        popupWindow.dismiss();
-                    }
-                });
                 break;
             default:
                 break;
@@ -454,211 +419,73 @@ public class WebPrizeBoxActivity extends BaseActivity implements CommonPopupWind
     @Override
     public void onBackPressed() {
         if (wvPrizeBox.canGoBack()) {
-            wvPrizeBox.goBack();
+            if (show) {
+                exitDialog(returnDialogBean);
+            } else {
+                wvPrizeBox.goBack();
+            }
         } else {
-            super.onBackPressed();
+            if (show) {
+                exitDialog(returnDialogBean);
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
-    private CommonPopupWindow popupWindow;
-
     /**
-     * 分享弹窗
+     * 中途退出弹窗
      */
-    public void showSharedPop() {
-        if ((!EncodeAndStringTool.isObjectEmpty(popupWindow)) && popupWindow.isShowing())
-            return;
-        View upView = LayoutInflater.from(WebPrizeBoxActivity.this).inflate(R.layout.share_popupwindow, null);
-        //测量View的宽高
-        CommonPopUtil.measureWidthAndHeight(upView);
-        popupWindow = new CommonPopupWindow.Builder(WebPrizeBoxActivity.this)
-                .setView(R.layout.share_popupwindow)
-                .setWidthAndHeight(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-                .setBackGroundLevel(0.5f)//取值范围0.0f-1.0f 值越小越暗
-                .setOutsideTouchable(true)
-//                .setAnimationStyle(R.style.AnimUp)//设置动画
-                //设置子View点击事件
-                .setViewOnclickListener(this)
-                .create();
-
-        popupWindow.showAtLocation(llWebBox, Gravity.BOTTOM, 0, 0);
-    }
-
-    //创建bitmap
-    public Bitmap createViewBitmap(View v) {
-        Bitmap bitmap = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
-                Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        v.draw(canvas);
-        return bitmap;
-    }
-
-
-    /**
-     * 邀请分享
-     */
-    SharedBean sharedBean1;
-
-    private void loadInviteShared(final int channel) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.inviteShared(channel)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<SharedBean>>() {
+    private void exitDialog(ReturnDialogBean returnDialogBean) {
+        new CircleDialog.Builder(this)
+                .setTitle(returnDialogBean.getTitle())
+                .configTitle(new ConfigTitle() {
                     @Override
-                    public void onSubscribe(Disposable d) {
+                    public void onConfig(TitleParams params) {
+                        params.textSize = 40;
                     }
-
+                })
+                .setCanceledOnTouchOutside(false)
+                .setText(returnDialogBean.getContent())
+                .configText(new ConfigText() {
                     @Override
-                    public void onNext(DataResponse<SharedBean> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            SharedBean sharedBean = dataResponse.getDat();
-                            if (!EncodeAndStringTool.isObjectEmpty(sharedBean)) {
-                                if (channel == 3) {
-                                    sharedBean1 = dataResponse.getDat();
-                                    //显示二维码弹框
-                                    showQr();
-                                } else {
-                                    wechatShare(sharedBean);
-                                }
-                            } else {
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(WebPrizeBoxActivity.this, dataResponse.getErr(), dataResponse.getMsg());
-                        }
+                    public void onConfig(TextParams params) {
+                        params.textSize = 40;
+                        params.textColor = Color.parseColor("#666666");
                     }
-
+                })
+                .setTextColor(Color.parseColor("#333333"))
+                .setWidth(0.7f)
+                .setNegative(returnDialogBean.getBtn().get(0), new OnMultiClickListener() {
                     @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
+                    public void onMultiClick(View v) {
+                        finish();
                     }
-
+                })
+                .configNegative(new ConfigButton() {
                     @Override
-                    public void onComplete() {
+                    public void onConfig(ButtonParams params) {
+                        params.textColor = Color.parseColor("#333333");
                     }
-                });
-    }
-
-    /**
-     * 分享二维码
-     */
-    public void showQr() {
-        if (popupWindow != null && popupWindow.isShowing()) return;
-        View upView = LayoutInflater.from(this).inflate(R.layout.share_qr_popupwindow, null);
-        //测量View的宽高
-        CommonPopUtil.measureWidthAndHeight(upView);
-        popupWindow = new CommonPopupWindow.Builder(this)
-                .setView(R.layout.share_qr_popupwindow)
-                .setWidthAndHeight(upView.getMeasuredWidth(), ViewGroup.LayoutParams.WRAP_CONTENT)
-                .setBackGroundLevel(0.5f)//取值范围0.0f-1.0f 值越小越暗
-                .setOutsideTouchable(true)
-                .setAnimationStyle(R.style.popwin_anim_style)//设置动画
-                //设置子View点击事件
-                .setViewOnclickListener(this)
-                .create();
-        popupWindow.showAtLocation(llWebBox, Gravity.CENTER, 0, 0);
-    }
-
-    /**
-     * 微信分享
-     */
-    private void wechatShare(final SharedBean sharedBean) {
-        SHARE_MEDIA share_media = SHARE_MEDIA.WEIXIN;
-        /**
-         * 1:微信朋友圈
-         * 2:微信好友
-         */
-        if (SHARE_CHANNEL == 1) {
-            share_media = SHARE_MEDIA.WEIXIN_CIRCLE;
-        } else if (SHARE_CHANNEL == 2) {
-            share_media = SHARE_MEDIA.WEIXIN;
-        }
-        UMImage image = new UMImage(this, R.mipmap.logo);//网络图片
-        image.compressStyle = UMImage.CompressStyle.SCALE;//大小压缩，默认为大小压缩，适合普通很大的图
-        UMWeb web = new UMWeb(sharedBean.getUrl());//默认链接AppConst.CONTACT_US
-        web.setTitle(sharedBean.getTitle());//标题
-        web.setThumb(image);
-        web.setDescription(sharedBean.getContent());//描述
-
-        new ShareAction(this)
-                .setPlatform(share_media)
-                .withMedia(web)
-                .setCallback(new UMShareListener() {
-                    /**
-                     * @param share_media 平台类型
-                     * @descrption 分享开始的回调
-                     */
+                })
+                .setPositive(returnDialogBean.getBtn().get(1), new OnMultiClickListener() {
                     @Override
-                    public void onStart(SHARE_MEDIA share_media) {
+                    public void onMultiClick(View v) {
 
                     }
-
-                    /**
-                     * @param share_media 平台类型
-                     * @descrption 分享成功的回调
-                     */
+                })
+                .configPositive(new ConfigButton() {
                     @Override
-                    public void onResult(SHARE_MEDIA share_media) {
-                        loadSharedSure(sharedBean.getId(), SHARE_SECCEED, SHARE_CHANNEL);
+                    public void onConfig(ButtonParams params) {
+                        params.textColor = Color.parseColor("#0194ec");
                     }
-
-                    /**
-                     * @param share_media 平台类型
-                     * @param throwable   错误原因
-                     * @descrption 分享失败的回调
-                     */
+                })
+                .configDialog(new ConfigDialog() {
                     @Override
-                    public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-                        loadSharedSure(sharedBean.getId(), SHARE_FAILURE, SHARE_CHANNEL);
+                    public void onConfig(DialogParams params) {
+                        params.animStyle = R.style.popwin_anim_style;
                     }
-
-                    /**
-                     * @param share_media 平台类型
-                     * @descrption 分享取消的回调
-                     */
-                    @Override
-                    public void onCancel(SHARE_MEDIA share_media) {
-                    }
-                }).share();
-    }
-
-    /**
-     * 分享确认
-     *
-     * @param id      分享id
-     * @param result  分享结果1:分享成功;2:分享失败
-     * @param channel 1:微信朋友圈 2:微信好友
-     */
-    private void loadSharedSure(int id, int result, int channel) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.sharedConfirm(id, result, channel)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse dataResponse) {
-                        if (dataResponse.isSuccees()) {
-
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(WebPrizeBoxActivity.this, dataResponse.getErr(), dataResponse.getMsg());
-                        }
-                    }
-
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+                })
+                .show();
     }
 }

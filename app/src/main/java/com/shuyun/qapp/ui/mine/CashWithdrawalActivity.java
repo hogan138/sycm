@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.shuyun.qapp.R;
@@ -173,6 +174,7 @@ public class CashWithdrawalActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
+                KeyboardUtils.hideSoftInput(CashWithdrawalActivity.this);
                 break;
             case R.id.iv_clear_account:
                 etAlipayAccount.setText("");
@@ -364,7 +366,7 @@ public class CashWithdrawalActivity extends BaseActivity {
                 else if (editText.equals(etMoneyNumber)) {
                     moneyNumber = etMoneyNumber.getText().toString().trim();//提现金额
                     //输入文字中的状态
-                    if (!EncodeAndStringTool.isStringEmpty(moneyNumber)) {
+                    if (!EncodeAndStringTool.isStringEmpty(moneyNumber) && !".".equals(moneyNumber)) {
                         money = Double.parseDouble(moneyNumber);
                     }
                     if (money < 50 || money > myCash) {//小于50和大于余额 提现按钮不能点击

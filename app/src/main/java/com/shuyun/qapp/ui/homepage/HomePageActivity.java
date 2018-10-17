@@ -156,7 +156,7 @@ public class HomePageActivity extends AppCompatActivity {
             changeFragment(index);
 
             //点击活动专区
-            if (index == 2) {
+            if (index == 2 && "1".equals(show)) {
                 //隐藏活动角标
                 ivLogo.setVisibility(View.GONE);
                 clickActivity();
@@ -412,6 +412,8 @@ public class HomePageActivity extends AppCompatActivity {
     }
 
     //获取最新活动显示角标
+    String show = "";
+
     private void getActivityShow() {
         ApiService apiService = BasePresenter.create(8000);
         apiService.getActivityShow()
@@ -427,9 +429,11 @@ public class HomePageActivity extends AppCompatActivity {
                         if (dataResponse.isSuccees()) {
                             ActivityTimeBean activityTimeBean = dataResponse.getDat();
                             if ("1".equals(activityTimeBean.getShow())) {
+                                show = "1";
                                 //显示活动角标
                                 ivLogo.setVisibility(View.VISIBLE);
                             } else {
+                                show = "0";
                                 //隐藏活动角标
                                 ivLogo.setVisibility(View.GONE);
                             }

@@ -320,10 +320,6 @@
             android:name=".ui.webview.WebBannerActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.webview.WebPrizeActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
         <!-- 更改密码 -->
         <activity
             android:name=".ui.login.ChangePasswordActivity"

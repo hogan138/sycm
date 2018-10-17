@@ -28,7 +28,7 @@ import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.net.ApiService;
-import com.shuyun.qapp.ui.webview.WebPrizeActivity;
+import com.shuyun.qapp.ui.webview.WebBannerActivity;
 import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
@@ -117,10 +117,10 @@ public class UseInPrizeFragment extends Fragment {
                     useAddCard(minePrize.getId());
                     minePrizeList.remove(position);
                     rvPrize.setAdapter(prizeAdapter);
-                } else if (minePrize.getActionType().equals("action.use.loading")) {
+                } else if (minePrize.getActionType().equals("action.use.loading") || minePrize.getActionType().equals("action.h5.url")) {
                     if (Integer.parseInt(SaveUserInfo.getInstance(getActivity()).getUserInfo("cert")) == 1) {
                         //票务
-                        Intent intent = new Intent(getActivity(), WebPrizeActivity.class);
+                        Intent intent = new Intent(getActivity(), WebBannerActivity.class);
                         intent.putExtra("id", minePrize.getId());
                         intent.putExtra("url", minePrize.getH5Url());
                         intent.putExtra("name", minePrize.getName());

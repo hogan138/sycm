@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.ui.mine.RealNameAuthActivity;

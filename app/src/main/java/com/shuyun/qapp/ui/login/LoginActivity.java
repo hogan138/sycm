@@ -39,6 +39,7 @@ import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.homepage.PermissionsActivity;
+import com.shuyun.qapp.ui.mine.SystemSettingActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -326,6 +327,7 @@ public class LoginActivity extends BaseActivity {
                                 SharedPrefrenceTool.put(LoginActivity.this, "random", loginResp.getRandom());//登录成果后，平台随机生成的字符串
                                 AppConst.loadToken(LoginActivity.this);
                                 //设置别名
+                                JPushInterface.setAlias(LoginActivity.this, new Random().nextInt(), "");
                                 JPushInterface.setAlias(LoginActivity.this, new Random().nextInt(), etPhoneNumber.getText().toString());
 
                                 btnLogin.setEnabled(false);

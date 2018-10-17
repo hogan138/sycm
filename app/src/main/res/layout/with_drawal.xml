@@ -24,10 +24,11 @@
             android:id="@+id/et_alipay_account"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/text_127"
+            android:layout_marginLeft="115dp"
             android:layout_marginTop="@dimen/text_25"
             android:layout_toLeftOf="@+id/iv_clear_account"
             android:background="@null"
+            android:hint="请填写支付宝账号"
             android:textColor="@color/color_0"
             android:textSize="@dimen/text_14" />
         <!--清除editext中输入的内容,根据情况显示或隐藏-->
@@ -36,10 +37,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="@dimen/text_12"
             android:layout_marginLeft="@dimen/text_12"
-            android:layout_marginRight="@dimen/text_19"
             android:layout_marginTop="@dimen/text_34"
+            android:layout_marginRight="@dimen/text_19"
+            android:layout_marginBottom="@dimen/text_12"
             android:src="@mipmap/cuowu1"
             android:visibility="gone" />
 
@@ -56,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="支付宝绑定姓名:"
+            android:text="支付宝绑定姓名"
             android:textColor="@color/color_1"
             android:textSize="@dimen/text_15" />
 
@@ -65,10 +66,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/text_127"
+            android:layout_marginLeft="115dp"
             android:layout_toLeftOf="@+id/iv_clear_name"
             android:background="@null"
-            android:hint=""
+            android:hint="请填写支付宝绑定姓名"
             android:textColor="@color/color_0"
             android:textSize="@dimen/text_14" />
         <!--清除editext中输入的内容,根据情况显示或隐藏-->
@@ -78,9 +79,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginBottom="@dimen/text_12"
             android:layout_marginLeft="@dimen/text_12"
             android:layout_marginRight="@dimen/text_19"
+            android:layout_marginBottom="@dimen/text_12"
             android:src="@mipmap/cuowu1"
             android:visibility="gone" />
     </RelativeLayout>
@@ -96,7 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="提现金额:"
+            android:text="提现金额"
             android:textColor="@color/color_1"
             android:textSize="@dimen/text_15" />
         <!--android:hint="@string/limit"-->
@@ -105,7 +106,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/text_127"
+            android:layout_marginLeft="115dp"
             android:layout_marginRight="@dimen/text_5"
             android:layout_toLeftOf="@+id/iv_clear_money"
             android:background="@null"
@@ -120,8 +121,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginBottom="@dimen/text_12"
             android:layout_marginRight="@dimen/text_12"
+            android:layout_marginBottom="@dimen/text_12"
             android:layout_toLeftOf="@+id/tv_unit"
             android:src="@mipmap/cuowu1"
             android:visibility="gone" />

@@ -235,7 +235,7 @@ public class ActivityFragment extends Fragment {
                 if (AppConst.GROUP.equals(action)) {
                     //题组
                     Intent intent = new Intent(mContext, WebAnswerActivity.class);
-                    intent.putExtra("groupId", Integer.parseInt(resultBean.getContent()));
+                    intent.putExtra("groupId", Integer.parseInt(resultBean.getContent().trim()));
                     intent.putExtra("h5Url", h5Url);
                     startActivity(intent);
                 } else if (AppConst.REAL.equals(action)) {

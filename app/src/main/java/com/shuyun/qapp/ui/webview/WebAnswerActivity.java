@@ -42,7 +42,9 @@ import com.mylhyl.circledialog.params.ButtonParams;
 import com.mylhyl.circledialog.params.DialogParams;
 import com.mylhyl.circledialog.params.TextParams;
 import com.mylhyl.circledialog.params.TitleParams;
+import com.shuyun.qapp.bean.H5JumpBean;
 import com.shuyun.qapp.bean.MinePrize;
+import com.shuyun.qapp.bean.ReturnDialogBean;
 import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.*;
@@ -66,6 +68,7 @@ import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ScannerUtils;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.ToastUtil;
+import com.shuyun.qapp.view.H5JumpUtil;
 import com.shuyun.qapp.view.RealNamePopupUtil;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
@@ -111,6 +114,9 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
     private String h5Url;
     private static final String TAG = "WebAnswerActivity";
     private String splash = "";
+
+    private boolean show = false;
+    ReturnDialogBean returnDialogBean;
     /**
      * 答题Id
      */
@@ -297,7 +303,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                     MinePrize minePrize = new Gson().fromJson(prizeData, MinePrize.class);
                     if (minePrize.getActionType().equals("action.h5.url")) {
                         //实物
-                        Intent intent = new Intent(WebAnswerActivity.this, WebPrizeActivity.class);
+                        Intent intent = new Intent(WebAnswerActivity.this, WebBannerActivity.class);
                         intent.putExtra("id", minePrize.getId());
                         intent.putExtra("url", minePrize.getH5Url());
                         intent.putExtra("name", minePrize.getName());
@@ -339,6 +345,31 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                 }
             });
 
+        }
+
+        /**
+         * 与js交互跳转到不同界面
+         */
+        @JavascriptInterface
+        public void doJump(String data) {
+            final H5JumpBean h5JumpBean = new Gson().fromJson(data, H5JumpBean.class);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    H5JumpUtil.dialogSkip(h5JumpBean, WebAnswerActivity.this, llH5);
+                }
+            });
+            Log.e("data", data);
+        }
+
+        /**
+         * 返回弹框h5调用方法
+         */
+        @JavascriptInterface
+        public void pageLoad(String data) {
+            returnDialogBean = new Gson().fromJson(data, ReturnDialogBean.class);
+            show = returnDialogBean.isShow();
+            Log.e("data", data);
         }
     }
 
@@ -409,7 +440,11 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                     if (!EncodeAndStringTool.isStringEmpty(splash)) {
                         if (splash.equals("splash")) {
                             if (wvAnswerHome.canGoBack()) {
-                                wvAnswerHome.goBack();
+                                if (show) {
+                                    exitDialog(returnDialogBean);
+                                } else {
+                                    wvAnswerHome.goBack();
+                                }
                             } else {
                                 finish();
                                 Intent intent = new Intent(this, HomePageActivity.class);
@@ -418,10 +453,17 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                         }
                     } else {
                         if (wvAnswerHome.canGoBack()) {
-                            wvAnswerHome.goBack();
-//                            exitDialog();
+                            if (show) {
+                                exitDialog(returnDialogBean);
+                            } else {
+                                wvAnswerHome.goBack();
+                            }
                         } else {
-                            finish();
+                            if (show) {
+                                exitDialog(returnDialogBean);
+                            } else {
+                                finish();
+                            }
                         }
                     }
                 }
@@ -998,7 +1040,11 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
             if (!EncodeAndStringTool.isStringEmpty(splash)) {
                 if (splash.equals("splash")) {
                     if (wvAnswerHome.canGoBack()) {
-                        wvAnswerHome.goBack();
+                        if (show) {
+                            exitDialog(returnDialogBean);
+                        } else {
+                            wvAnswerHome.goBack();
+                        }
                     } else {
                         super.onBackPressed();
                         Intent intent = new Intent(this, HomePageActivity.class);
@@ -1007,21 +1053,28 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                 }
             } else {
                 if (wvAnswerHome.canGoBack()) {
-                    wvAnswerHome.goBack();
+                    if (show) {
+                        exitDialog(returnDialogBean);
+                    } else {
+                        wvAnswerHome.goBack();
+                    }
                 } else {
-                    super.onBackPressed();
+                    if (show) {
+                        exitDialog(returnDialogBean);
+                    } else {
+                        super.onBackPressed();
+                    }
                 }
             }
         }
     }
 
-
     /**
      * 中途退出弹窗
      */
-    private void exitDialog() {
+    private void exitDialog(ReturnDialogBean returnDialogBean) {
         new CircleDialog.Builder(this)
-                .setTitle("确认要中途退出吗？")
+                .setTitle(returnDialogBean.getTitle())
                 .configTitle(new ConfigTitle() {
                     @Override
                     public void onConfig(TitleParams params) {
@@ -1029,7 +1082,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                     }
                 })
                 .setCanceledOnTouchOutside(false)
-                .setText("现在退出无法进入榜单哦")
+                .setText(returnDialogBean.getContent())
                 .configText(new ConfigText() {
                     @Override
                     public void onConfig(TextParams params) {
@@ -1039,25 +1092,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                 })
                 .setTextColor(Color.parseColor("#333333"))
                 .setWidth(0.7f)
-//                .setNeutral("中间", new OnMultiClickListener() {
-//                    @Override
-//                    public void onMultiClick(View v) {
-//
-//                    }
-//                })
-                .setPositive("继续答题", new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v) {
-
-                    }
-                })
-                .configPositive(new ConfigButton() {
-                    @Override
-                    public void onConfig(ButtonParams params) {
-                        params.textColor = Color.parseColor("#0194ec");
-                    }
-                })
-                .setNegative("确认退出", new OnMultiClickListener() {
+                .setNegative(returnDialogBean.getBtn().get(0), new OnMultiClickListener() {
                     @Override
                     public void onMultiClick(View v) {
                         finish();
@@ -1067,6 +1102,18 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                     @Override
                     public void onConfig(ButtonParams params) {
                         params.textColor = Color.parseColor("#333333");
+                    }
+                })
+                .setPositive(returnDialogBean.getBtn().get(1), new OnMultiClickListener() {
+                    @Override
+                    public void onMultiClick(View v) {
+
+                    }
+                })
+                .configPositive(new ConfigButton() {
+                    @Override
+                    public void onConfig(ButtonParams params) {
+                        params.textColor = Color.parseColor("#0194ec");
                     }
                 })
                 .configDialog(new ConfigDialog() {

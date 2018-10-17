@@ -3,15 +3,12 @@ package com.shuyun.qapp.ui.webview;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.animation.SpringAnimation;
-import android.support.animation.SpringForce;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.PhoneNumberUtils;
 import android.util.Log;
@@ -19,72 +16,89 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.blankj.utilcode.util.TimeUtils;
+import com.google.gson.Gson;
+import com.ishumei.smantifraud.SmAntiFraud;
+import com.mylhyl.circledialog.CircleDialog;
+import com.mylhyl.circledialog.callback.ConfigButton;
+import com.mylhyl.circledialog.callback.ConfigDialog;
+import com.mylhyl.circledialog.callback.ConfigText;
+import com.mylhyl.circledialog.callback.ConfigTitle;
+import com.mylhyl.circledialog.params.ButtonParams;
+import com.mylhyl.circledialog.params.DialogParams;
+import com.mylhyl.circledialog.params.TextParams;
+import com.mylhyl.circledialog.params.TitleParams;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.AuthHeader;
-import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.bean.SharedBean;
-import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.bean.ConfigDialogBean;
+import com.shuyun.qapp.bean.H5JumpBean;
+import com.shuyun.qapp.bean.ReturnDialogBean;
+import com.shuyun.qapp.bean.WebAnswerHomeBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
+import com.shuyun.qapp.ui.homepage.MainAgainstActivity;
+import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
+import com.shuyun.qapp.ui.integral.IntegralMainActivity;
 import com.shuyun.qapp.ui.mine.AccountRecordActivity;
+import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.JumpTomap;
 import com.shuyun.qapp.utils.OnMultiClickListener;
-import com.shuyun.qapp.utils.SaveErrorTxt;
-import com.shuyun.qapp.utils.ScannerUtils;
-import com.umeng.socialize.ShareAction;
-import com.umeng.socialize.UMShareListener;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
-import com.umeng.socialize.media.UMWeb;
-import com.uuzuche.lib_zxing.activity.CodeUtils;
+import com.shuyun.qapp.utils.SaveUserInfo;
+import com.shuyun.qapp.view.H5JumpUtil;
+import com.shuyun.qapp.view.InviteSharePopupUtil;
+import com.shuyun.qapp.view.RealNamePopupUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-
-import static com.blankj.utilcode.util.SizeUtils.dp2px;
 
 /**
- * h5页面（广告、首页邀请、首页轮播图、首页弹框、极光推送消息、消息列表）
+ * h5页面（广告、首页邀请、首页轮播图、首页弹框、极光推送消息、消息列表、票务、招商银行）
  */
 
 public class WebBannerActivity extends BaseActivity implements CommonPopupWindow.ViewInterface {
 
-    @BindView(R.id.iv_back)
-    RelativeLayout ivBack;
-    @BindView(R.id.tv_common_title)
-    TextView tvCommonTitle;
     @BindView(R.id.wv_banner)
     WebView wvBanner;
     @BindView(R.id.rl_main)
     RelativeLayout rlMain;
-    private String url;
+    @BindView(R.id.iv_back)
+    RelativeLayout ivBack;
+    @BindView(R.id.tv_common_title)
+    TextView tvCommonTitle;
+    @BindView(R.id.tv_right)
+    TextView tvRight;
 
+    private String url;
+    private String id;
     //从广告页进入
     private String splash;
 
+    //经纬度、名称
+    private String Longitude;
+    private String Latitude;
+    private String Name;
+
+    private boolean show = false;
+    ReturnDialogBean returnDialogBean;
+
+    WebAnswerHomeBean answerHomeBean = new WebAnswerHomeBean();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +106,14 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
         ButterKnife.bind(this);
 
         initData();
+
+        answerHomeBean.setToken(AppConst.TOKEN);
+        answerHomeBean.setRandom(AppConst.RANDOM);
+        answerHomeBean.setV(AppConst.V);
+        answerHomeBean.setSalt(AppConst.SALT);
+        answerHomeBean.setAppSecret(AppConst.APP_KEY);
+        String deviceId = SmAntiFraud.getDeviceId();
+        answerHomeBean.setDeviceId(deviceId);
 
         WebSettings settings = wvBanner.getSettings();
         settings.setSupportZoom(true);//支持缩放
@@ -109,6 +131,7 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
             }
         });
         wvBanner.loadUrl(url);
+//        wvBanner.loadUrl("http://192.168.3.137:8080/h5_static/PA_bank.html");
 
     }
 
@@ -126,6 +149,8 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
         url = intent.getStringExtra("url");
         try {
             splash = getIntent().getStringExtra("from");
+            //奖品id
+            id = intent.getStringExtra("id");
         } catch (Exception e) {
 
         }
@@ -141,7 +166,11 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
         switch (view.getId()) {
             case R.id.iv_back:
                 if (wvBanner.canGoBack()) {
-                    wvBanner.goBack();
+                    if (show) {
+                        exitDialog(returnDialogBean);
+                    } else {
+                        wvBanner.goBack();
+                    }
                 } else {
                     if (!EncodeAndStringTool.isStringEmpty(splash)) {
                         if (splash.equals("splash")) {
@@ -150,7 +179,11 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
                             startActivity(intent);
                         }
                     } else {
-                        finish();
+                        if (show) {
+                            exitDialog(returnDialogBean);
+                        } else {
+                            finish();
+                        }
                     }
                 }
                 break;
@@ -162,7 +195,11 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
     @Override
     public void onBackPressed() {
         if (wvBanner.canGoBack()) {
-            wvBanner.goBack();
+            if (show) {
+                exitDialog(returnDialogBean);
+            } else {
+                wvBanner.goBack();
+            }
         } else {
             if (!EncodeAndStringTool.isStringEmpty(splash)) {
                 if (splash.equals("splash")) {
@@ -171,7 +208,11 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
                     startActivity(intent);
                 }
             } else {
-                finish();
+                if (show) {
+                    exitDialog(returnDialogBean);
+                } else {
+                    finish();
+                }
             }
         }
     }
@@ -187,7 +228,7 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
                     if (!MyApplication.mWxApi.isWXAppInstalled()) {
 
                     } else {
-                        showSharedPop();
+                        InviteSharePopupUtil.showSharedPop(WebBannerActivity.this, rlMain);
                     }
                     break;
                 default:
@@ -203,6 +244,30 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
         public JsInteration() {
         }
 
+        @JavascriptInterface
+        public String getTicketData(String jsParams) {
+            AuthHeader authHeader = new AuthHeader();
+            authHeader.setAuthorization(AppConst.TOKEN);
+            authHeader.setSycm(AppConst.sycm());
+            if (!EncodeAndStringTool.isStringEmpty(id)) {
+                authHeader.setId(id);
+            }
+            return JSON.toJSONString(authHeader);
+        }
+
+        /**
+         * JS调用此方法,关闭H5页面进入App页面
+         */
+        @JavascriptInterface
+        public void closeWeb(String jsParams) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    finish();
+                }
+            });
+        }
+
         /**
          * 头部标题
          *
@@ -216,6 +281,33 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
                 @Override
                 public void run() {
                     tvCommonTitle.setText(title);
+                }
+            });
+        }
+
+        /**
+         * 顶部管理按钮显示隐藏
+         */
+        @JavascriptInterface
+        public void headBtn(final String title, final String name, final String type, final String funname) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    tvCommonTitle.setText(title);
+                    if (type.equals("0")) {
+                        //不显示
+                        tvRight.setVisibility(View.GONE);
+                    } else if (type.equals("1")) {
+                        //显示
+                        tvRight.setVisibility(View.VISIBLE);
+                        tvRight.setText(name);
+                        tvRight.setOnClickListener(new OnMultiClickListener() {
+                            @Override
+                            public void onMultiClick(View v) {
+                                wvBanner.loadUrl("javascript:" + funname + "()");
+                            }
+                        });
+                    }
                 }
             });
         }
@@ -242,6 +334,44 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
         }
 
         /**
+         * 调起本地地图
+         */
+        @JavascriptInterface
+        public void gotomap(String name, String longitude, String latitude) {
+            Longitude = longitude;
+            Latitude = latitude;
+            Name = name;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (JumpTomap.isAvilible(WebBannerActivity.this, "com.tencent.map")
+                            || JumpTomap.isAvilible(WebBannerActivity.this, "com.baidu.BaiduMap")
+                            || JumpTomap.isAvilible(WebBannerActivity.this, "com.autonavi.minimap")) {
+                        showToMap();
+                    } else {
+                        showDialog();
+                    }
+                }
+            });
+        }
+
+        /**
+         * 登录返回的token需要传给H5
+         *
+         * @return
+         */
+        @JavascriptInterface
+        public String answerLogin() {
+            String answerHome = null;
+            if (!EncodeAndStringTool.isObjectEmpty(answerHomeBean)) {
+                answerHome = JSON.toJSONString(answerHomeBean);
+            }
+            Log.e(TAG, answerHome);
+            return answerHome;
+        }
+
+
+        /**
          * 提现成功
          */
         @JavascriptInterface
@@ -254,6 +384,21 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
             });
         }
 
+        /**
+         * JS调用此方法,关闭H5页面进入首页面
+         */
+        @JavascriptInterface
+        public void goMain() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    finish();
+                    Intent intent = new Intent(WebBannerActivity.this, HomePageActivity.class);
+                    intent.putExtra("from", "h5");
+                    startActivity(intent);
+                }
+            });
+        }
 
         /**
          * 提现失败，进入我的账户
@@ -281,6 +426,7 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
             call(phoneNum);
         }
 
+
         /**
          * 接收Js传的参数调用分享业务
          *
@@ -303,6 +449,32 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
         public void sms(String phoneNum) {
             //调用发短信业务
             doSendSMSTo(phoneNum);
+        }
+
+        /**
+         * 返回弹框h5调用方法
+         */
+        @JavascriptInterface
+        public void pageLoad(String data) {
+            returnDialogBean = new Gson().fromJson(data, ReturnDialogBean.class);
+            show = returnDialogBean.isShow();
+            Log.e("data", data);
+        }
+
+
+        /**
+         * 与js交互跳转到不同界面
+         */
+        @JavascriptInterface
+        public void doJump(String data) {
+            final H5JumpBean h5JumpBean = new Gson().fromJson(data, H5JumpBean.class);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    H5JumpUtil.dialogSkip(h5JumpBean, WebBannerActivity.this, rlMain);
+                }
+            });
+            Log.e("data", data);
         }
 
     }
@@ -343,31 +515,23 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
         });
     }
 
+    /**
+     * 调用本机地图弹窗
+     */
     private CommonPopupWindow popupWindow;
 
-    /**
-     * 分享弹窗
-     */
-
-    /**
-     * 1:微信朋友圈
-     * 2:微信好友
-     */
-    private static int SHARE_CHANNEL;
-    private static final int SHARE_SECCEED = 1;//分享成功
-    private static final int SHARE_FAILURE = 2;//分享失败
-
-    public void showSharedPop() {
+    public void showToMap() {
         if ((!EncodeAndStringTool.isObjectEmpty(popupWindow)) && popupWindow.isShowing()) return;
-        View upView = LayoutInflater.from(WebBannerActivity.this).inflate(R.layout.share_popupwindow, null);
+        View upView = LayoutInflater.from(WebBannerActivity.this).inflate(R.layout.share_map_popupwindow, null);
         //测量View的宽高
         CommonPopUtil.measureWidthAndHeight(upView);
+        //设置子View点击事件
         popupWindow = new CommonPopupWindow.Builder(WebBannerActivity.this)
-                .setView(R.layout.share_popupwindow)
+                .setView(R.layout.share_map_popupwindow)
                 .setWidthAndHeight(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                 .setBackGroundLevel(0.5f)//取值范围0.0f-1.0f 值越小越暗
                 .setOutsideTouchable(true)
-//                .setAnimationStyle(R.style.AnimUp)//设置动画
+                .setAnimationStyle(R.style.popwin_anim_style_bottom)//设置动画
                 //设置子View点击事件
                 .setViewOnclickListener(this)
                 .create();
@@ -378,257 +542,153 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
     @Override
     public void getChildView(View view, int layoutResId) {
         switch (layoutResId) {
-            case R.layout.share_popupwindow:
-                final LinearLayout ll_share = view.findViewById(R.id.ll_share);
-                SpringAnimation signUpBtnAnimY = new SpringAnimation(ll_share, SpringAnimation.TRANSLATION_Y, 0);
-                signUpBtnAnimY.getSpring().setStiffness(SpringForce.STIFFNESS_VERY_LOW);
-                signUpBtnAnimY.getSpring().setDampingRatio(SpringForce.DAMPING_RATIO_LOW_BOUNCY);
-                signUpBtnAnimY.setStartVelocity(800);
-                signUpBtnAnimY.start();
-
-                ImageView ivWeChat = view.findViewById(R.id.iv_wechat);
-                ImageView ivFriends = view.findViewById(R.id.iv_friends);
-                ImageView ivqr = view.findViewById(R.id.iv_qr);
-
-
-                ivWeChat.setOnClickListener(new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v) {
-                        if (popupWindow != null && popupWindow.isShowing()) {
-                            popupWindow.dismiss();
-                        }
-                        SHARE_CHANNEL = AppConst.SHARE_MEDIA_WEIXIN;
-                        loadInviteShared(SHARE_CHANNEL);
-                    }
-                });
-                ivFriends.setOnClickListener(new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v) {
-                        if (popupWindow != null && popupWindow.isShowing()) {
-                            popupWindow.dismiss();
-                        }
-                        SHARE_CHANNEL = AppConst.SHARE_MEDIA_WEIXIN_CIRCLE;
-                        loadInviteShared(SHARE_CHANNEL);
-                    }
-                });
-                ivqr.setOnClickListener(new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v) {
-                        if (!EncodeAndStringTool.isObjectEmpty(popupWindow) && popupWindow.isShowing()) {
-                            popupWindow.dismiss();
-                        }
-                        //二维码分享
-                        loadInviteShared(AppConst.SHARE_MEDIA_QR);//二维码分享
-                    }
-                });
+            case R.layout.share_map_popupwindow:
+                TextView tv_tencent = view.findViewById(R.id.tv_tencent);
+                TextView tv_baidu = view.findViewById(R.id.tv_baidu);
+                TextView tv_gaode = view.findViewById(R.id.tv_gaode);
                 TextView tv_cancel = view.findViewById(R.id.tv_cancel);
                 tv_cancel.setOnClickListener(new OnMultiClickListener() {
                     @Override
                     public void onMultiClick(View v) {
-                        popupWindow.dismiss();
+                        if (popupWindow != null && popupWindow.isShowing()) {
+                            popupWindow.dismiss();
+                        }
                     }
                 });
-                break;
-            case R.layout.share_qr_popupwindow:
-                final LinearLayout ll_view = view.findViewById(R.id.ll_view);
-                TextView tv_title = view.findViewById(R.id.tv_title);
-                tv_title.setText(sharedBean1.getTitle());
-                TextView tv_content = view.findViewById(R.id.tv_content);
-                tv_content.setText(sharedBean1.getContent());
-                final ImageView iv_qr = view.findViewById(R.id.iv_qr);
-                Bitmap mBitmap = CodeUtils.createImage(sharedBean1.getUrl(), dp2px(114), dp2px(114), null);
-                iv_qr.setImageBitmap(mBitmap);
-                TextView tv_save_picture = view.findViewById(R.id.tv_save_picture);
-                tv_save_picture.setOnClickListener(new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v) {
-                        //保存二维码
-                        ScannerUtils.saveImageToGallery(getApplicationContext(), createViewBitmap(ll_view), ScannerUtils.ScannerType.MEDIA);
-                        popupWindow.dismiss();
-                    }
-                });
+                if (JumpTomap.isAvilible(WebBannerActivity.this, "com.tencent.map")) {
+                    //腾讯地图
+                    tv_tencent.setVisibility(View.VISIBLE);
+                    tv_tencent.setOnClickListener(new OnMultiClickListener() {
+                        @Override
+                        public void onMultiClick(View v) {
+                            JumpTomap.goToTencent(WebBannerActivity.this, Name, Latitude, Longitude);
+                        }
+                    });
+                } else {
+                    tv_tencent.setVisibility(View.GONE);
+                }
+                if (JumpTomap.isAvilible(WebBannerActivity.this, "com.baidu.BaiduMap")) {
+                    //百度地图
+                    tv_baidu.setVisibility(View.VISIBLE);
+                    tv_baidu.setOnClickListener(new OnMultiClickListener() {
+                        @Override
+                        public void onMultiClick(View v) {
+                            JumpTomap.goToBaidu(WebBannerActivity.this, Name);
+                        }
+                    });
+                } else {
+                    tv_baidu.setVisibility(View.GONE);
+                }
+                if (JumpTomap.isAvilible(WebBannerActivity.this, "com.autonavi.minimap")) {
+                    //高德地图
+                    tv_gaode.setVisibility(View.VISIBLE);
+                    tv_gaode.setOnClickListener(new OnMultiClickListener() {
+                        @Override
+                        public void onMultiClick(View v) {
+                            JumpTomap.goToGaode(WebBannerActivity.this, Name);
+                        }
+                    });
+                } else {
+                    tv_gaode.setVisibility(View.GONE);
+                }
                 break;
             default:
                 break;
         }
     }
 
-    //创建bitmap
-    public Bitmap createViewBitmap(View v) {
-        Bitmap bitmap = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
-                Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        v.draw(canvas);
-        return bitmap;
-    }
-
-
-    /**
-     * 邀请分享
-     */
-    SharedBean sharedBean1;
-
-    private void loadInviteShared(final int channel) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.inviteShared(channel)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<SharedBean>>() {
+    private void showDialog() {
+        new CircleDialog.Builder(this)
+                .setTitle("提示")
+                .setText("您好，未在您的手机中检测到主流地图类App，安装主流地图App后，将打开地图自动导航至目的地")
+                .setTextColor(Color.parseColor("#333333"))
+                .setWidth(0.7f)
+                .setNegative("确定", new OnMultiClickListener() {
                     @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+                    public void onMultiClick(View v) {
 
-                    @Override
-                    public void onNext(DataResponse<SharedBean> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            SharedBean sharedBean = dataResponse.getDat();
-                            if (!EncodeAndStringTool.isObjectEmpty(sharedBean)) {
-                                if (channel == 3) {
-                                    sharedBean1 = dataResponse.getDat();
-                                    //显示二维码弹框
-                                    showQr();
-                                } else {
-                                    wechatShare(sharedBean);
-                                }
-                            } else {
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(WebBannerActivity.this, dataResponse.getErr(), dataResponse.getMsg());
-                        }
                     }
-
+                })
+                .configDialog(new ConfigDialog() {
                     @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
+                    public void onConfig(DialogParams params) {
+                        params.animStyle = R.style.popwin_anim_style;
                     }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+                })
+                .show();
     }
 
     /**
-     * 分享二维码
+     * 中途退出弹窗
      */
-    public void showQr() {
-        if (popupWindow != null && popupWindow.isShowing()) return;
-        View upView = LayoutInflater.from(this).inflate(R.layout.share_qr_popupwindow, null);
-        //测量View的宽高
-        CommonPopUtil.measureWidthAndHeight(upView);
-        popupWindow = new CommonPopupWindow.Builder(this)
-                .setView(R.layout.share_qr_popupwindow)
-                .setWidthAndHeight(upView.getMeasuredWidth(), ViewGroup.LayoutParams.WRAP_CONTENT)
-                .setBackGroundLevel(0.5f)//取值范围0.0f-1.0f 值越小越暗
-                .setOutsideTouchable(true)
-                .setAnimationStyle(R.style.popwin_anim_style)//设置动画
-                //设置子View点击事件
-                .setViewOnclickListener(this)
-                .create();
-        popupWindow.showAtLocation(rlMain, Gravity.CENTER, 0, 0);
+    private void exitDialog(ReturnDialogBean returnDialogBean) {
+        new CircleDialog.Builder(this)
+                .setTitle(returnDialogBean.getTitle())
+                .configTitle(new ConfigTitle() {
+                    @Override
+                    public void onConfig(TitleParams params) {
+                        params.textSize = 40;
+                    }
+                })
+                .setCanceledOnTouchOutside(false)
+                .setText(returnDialogBean.getContent())
+                .configText(new ConfigText() {
+                    @Override
+                    public void onConfig(TextParams params) {
+                        params.textSize = 40;
+                        params.textColor = Color.parseColor("#666666");
+                    }
+                })
+                .setTextColor(Color.parseColor("#333333"))
+                .setWidth(0.7f)
+                .setNegative(returnDialogBean.getBtn().get(0), new OnMultiClickListener() {
+                    @Override
+                    public void onMultiClick(View v) {
+                        finish();
+                    }
+                })
+                .configNegative(new ConfigButton() {
+                    @Override
+                    public void onConfig(ButtonParams params) {
+                        params.textColor = Color.parseColor("#333333");
+                    }
+                })
+                .setPositive(returnDialogBean.getBtn().get(1), new OnMultiClickListener() {
+                    @Override
+                    public void onMultiClick(View v) {
+
+                    }
+                })
+                .configPositive(new ConfigButton() {
+                    @Override
+                    public void onConfig(ButtonParams params) {
+                        params.textColor = Color.parseColor("#0194ec");
+                    }
+                })
+                .configDialog(new ConfigDialog() {
+                    @Override
+                    public void onConfig(DialogParams params) {
+                        params.animStyle = R.style.popwin_anim_style;
+                    }
+                })
+                .show();
     }
 
-    /**
-     * 微信分享
-     */
-    private void wechatShare(final SharedBean sharedBean) {
-        SHARE_MEDIA share_media = SHARE_MEDIA.WEIXIN;
-        /**
-         * 1:微信朋友圈
-         * 2:微信好友
-         */
-        if (SHARE_CHANNEL == 1) {
-            share_media = SHARE_MEDIA.WEIXIN_CIRCLE;
-        } else if (SHARE_CHANNEL == 2) {
-            share_media = SHARE_MEDIA.WEIXIN;
-        }
-        UMImage image = new UMImage(this, R.mipmap.logo);//网络图片
-        image.compressStyle = UMImage.CompressStyle.SCALE;//大小压缩，默认为大小压缩，适合普通很大的图
-        UMWeb web = new UMWeb(sharedBean.getUrl());//默认链接AppConst.CONTACT_US
-        web.setTitle(sharedBean.getTitle());//标题
-        web.setThumb(image);
-        web.setDescription(sharedBean.getContent());//描述
 
-        new ShareAction(this)
-                .setPlatform(share_media)
-                .withMedia(web)
-                .setCallback(new UMShareListener() {
-                    /**
-                     * @param share_media 平台类型
-                     * @descrption 分享开始的回调
-                     */
-                    @Override
-                    public void onStart(SHARE_MEDIA share_media) {
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //清空所有Cookie
+        CookieSyncManager.createInstance(MyApplication.getAppContext());  //Create a singleton CookieSyncManager within a context
+        CookieManager cookieManager = CookieManager.getInstance(); // the singleton CookieManager instance
+        cookieManager.removeAllCookie();// Removes all cookies.
+        CookieSyncManager.getInstance().sync(); // forces sync manager to sync now
 
-                    }
-
-                    /**
-                     * @param share_media 平台类型
-                     * @descrption 分享成功的回调
-                     */
-                    @Override
-                    public void onResult(SHARE_MEDIA share_media) {
-                        loadSharedSure(sharedBean.getId(), SHARE_SECCEED, SHARE_CHANNEL);
-                    }
-
-                    /**
-                     * @param share_media 平台类型
-                     * @param throwable   错误原因
-                     * @descrption 分享失败的回调
-                     */
-                    @Override
-                    public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-                        loadSharedSure(sharedBean.getId(), SHARE_FAILURE, SHARE_CHANNEL);
-                    }
-
-                    /**
-                     * @param share_media 平台类型
-                     * @descrption 分享取消的回调
-                     */
-                    @Override
-                    public void onCancel(SHARE_MEDIA share_media) {
-                    }
-                }).share();
+        wvBanner.setWebChromeClient(null);
+        wvBanner.setWebViewClient(null);
+        wvBanner.getSettings().setJavaScriptEnabled(false);
+        wvBanner.clearCache(true);
     }
 
-    /**
-     * 分享确认
-     *
-     * @param id      分享id
-     * @param result  分享结果1:分享成功;2:分享失败
-     * @param channel 1:微信朋友圈 2:微信好友
-     */
-    private void loadSharedSure(int id, int result, int channel) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.sharedConfirm(id, result, channel)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse dataResponse) {
-                        if (dataResponse.isSuccees()) {
-
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(WebBannerActivity.this, dataResponse.getErr(), dataResponse.getMsg());
-                        }
-                    }
-
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
-    }
 
 }

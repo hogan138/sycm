@@ -235,8 +235,12 @@ public class SystemSettingActivity extends BaseActivity {
                         SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.invite_count", "");
                         SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.integral_count", "");
                         SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.answer.against_count", "");
-//                        //活动到期时间
-//                        SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("get_activity_time", "");
+                        SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.integral.open.box_count", "");
+                        SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.integral.treasure_count", "");
+                        SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.withdraw.info_count", "");
+                        SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.h5.external_count", "");
+                        SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.day.task_count", "");
+                        SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.default_count", "");
                     }
                 })
                 .configDialog(new ConfigDialog() {

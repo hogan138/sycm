@@ -70,12 +70,6 @@ public class AppConst {
     }
 
     /**
-     * 积分抽奖
-     */
-    public static final int INTEGRL_DRAW = 0;
-
-
-    /**
      * 微信朋友圈分享
      */
     public static final int SHARE_MEDIA_WEIXIN_CIRCLE = 1;
@@ -132,6 +126,9 @@ public class AppConst {
      */
     public static boolean hasMsg = false;
 
+    /**
+     * 账户记录
+     */
     public static final int ACCOUNT_CASH_TYPE = 0;
     public static final int ACCOUNT_INTEGRAL_TYPE = 1;
 
@@ -150,7 +147,7 @@ public class AppConst {
     public static final String AGAINST = "action.answer.against";//答题对战
     public static final String TASK = "action.day.task";//每日任务
     public static final String WITHDRAW_INFO = "action.withdraw.info";//提现信息
-    public static final String H5_EXTERNAL = "action.h5.external";//h5 跳转外部链接
+    public static final String H5_EXTERNAL = "action.h5.external";//h5跳转外部链接
 
 
 }
