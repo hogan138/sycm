@@ -1,12 +1,8 @@
 package com.shuyun.qapp.base;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
@@ -38,6 +34,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 //        }
         //初始化沉浸状态栏
         ImmersionBar.with(this).statusBarColor(R.color.white).statusBarDarkFont(true).fitsSystemWindows(true).init();
+
         //设置布局
         setContentView(intiLayout());
         //初始化控件

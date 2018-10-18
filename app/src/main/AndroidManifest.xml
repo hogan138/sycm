@@ -47,7 +47,9 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Base">
-
+        <!--  <meta-data
+              android:name="android.notch_support"
+              android:value="true" />-->
         <!-- Rich push 核心功能 since 2.0.6 -->
         <activity
             android:name="cn.jpush.android.ui.PopWinActivity"
@@ -184,8 +186,9 @@
         <!-- 欢迎页 -->
         <activity
             android:name=".ui.welcome.WelcomeActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/welcome">
+            android:screenOrientation="portrait">
+            <!--android:theme="@style/welcome"-->
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

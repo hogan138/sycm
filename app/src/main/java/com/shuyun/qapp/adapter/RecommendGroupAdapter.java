@@ -53,37 +53,42 @@ public class RecommendGroupAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         GroupBean groupBean = groupBeans.get(position);
-        ((MyViewHolder) holder).tvGroupTitle.setText(groupBean.getName() + "");
-        ImageLoaderManager.LoadImage(mContext, groupBean.getPicture(), ((MyViewHolder) holder).ivGroupBg, R.mipmap.zw01);
-        ((MyViewHolder) holder).ivRecommend.setVisibility(View.VISIBLE);
+        try {
+            ((MyViewHolder) holder).tvGroupTitle.setText(groupBean.getName() + "");
+            ImageLoaderManager.LoadImage(mContext, groupBean.getPicture(), ((MyViewHolder) holder).ivGroupBg, R.mipmap.zw01);
+            ((MyViewHolder) holder).ivRecommend.setVisibility(View.VISIBLE);
 
-        //百分比
-        if (!EncodeAndStringTool.isListEmpty(groupBean.getTags())) {
-            ((MyViewHolder) holder).llInfo.setVisibility(View.VISIBLE);
-            ((MyViewHolder) holder).title1.setText(groupBean.getTags().get(0).getTagName());
-            ((MyViewHolder) holder).title2.setText(groupBean.getTags().get(1).getTagName());
-            ((MyViewHolder) holder).title3.setText(groupBean.getTags().get(2).getTagName());
-            ((MyViewHolder) holder).tvScore.setText(groupBean.getTags().get(0).getRemark());
-            ((MyViewHolder) holder).tvCash.setText(groupBean.getTags().get(1).getRemark());
-            ((MyViewHolder) holder).tvRightNumber.setText(groupBean.getTags().get(2).getRemark());
-        } else {
-            ((MyViewHolder) holder).llInfo.setVisibility(View.GONE);
-        }
+            //百分比
+            if (!EncodeAndStringTool.isListEmpty(groupBean.getTags())) {
+                ((MyViewHolder) holder).llInfo.setVisibility(View.VISIBLE);
+                ((MyViewHolder) holder).title1.setText(groupBean.getTags().get(0).getTagName());
+                ((MyViewHolder) holder).title2.setText(groupBean.getTags().get(1).getTagName());
+                ((MyViewHolder) holder).title3.setText(groupBean.getTags().get(2).getTagName());
+                ((MyViewHolder) holder).tvScore.setText(groupBean.getTags().get(0).getRemark());
+                ((MyViewHolder) holder).tvCash.setText(groupBean.getTags().get(1).getRemark());
+                ((MyViewHolder) holder).tvRightNumber.setText(groupBean.getTags().get(2).getRemark());
+            } else {
+                ((MyViewHolder) holder).llInfo.setVisibility(View.GONE);
+            }
 
-        //是否消耗答题次数
-        if (!EncodeAndStringTool.isStringEmpty(groupBean.getOpportunityLabel())) {
-            ((MyViewHolder) holder).tvReduceNumber.setVisibility(View.VISIBLE);
-            ((MyViewHolder) holder).tvReduceNumber.setText(groupBean.getOpportunityLabel());
-        } else {
-            ((MyViewHolder) holder).tvReduceNumber.setVisibility(View.GONE);
-        }
+            //是否消耗答题次数
+            if (!EncodeAndStringTool.isStringEmpty(groupBean.getOpportunityLabel())) {
+                ((MyViewHolder) holder).tvReduceNumber.setVisibility(View.VISIBLE);
+                ((MyViewHolder) holder).tvReduceNumber.setText(groupBean.getOpportunityLabel());
+            } else {
+                ((MyViewHolder) holder).tvReduceNumber.setVisibility(View.GONE);
+            }
 
-        //答题攻略
-        if (!EncodeAndStringTool.isStringEmpty(groupBean.getTag())) {
-            ((MyViewHolder) holder).tvStrategy.setVisibility(View.VISIBLE);
-            ((MyViewHolder) holder).tvStrategy.setText(groupBean.getTag());
-        } else {
-            ((MyViewHolder) holder).tvStrategy.setVisibility(View.GONE);
+            //答题攻略
+            if (!EncodeAndStringTool.isStringEmpty(groupBean.getTag())) {
+                ((MyViewHolder) holder).tvStrategy.setVisibility(View.VISIBLE);
+                ((MyViewHolder) holder).tvStrategy.setText(groupBean.getTag());
+            } else {
+                ((MyViewHolder) holder).tvStrategy.setVisibility(View.GONE);
+            }
+
+        } catch (Exception e) {
+
         }
 
         /**

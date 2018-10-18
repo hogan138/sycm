@@ -105,7 +105,11 @@ public class LoginActivity extends BaseActivity {
 
     // 所需的全部权限
     static final String[] PERMISSIONS = new String[]{
-            Manifest.permission.READ_PHONE_STATE
+            Manifest.permission.READ_PHONE_STATE,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.CALL_PHONE,
+            android.Manifest.permission.READ_EXTERNAL_STORAGE,
+            android.Manifest.permission.SEND_SMS
     };
 
     private PermissionsChecker mPermissionsChecker; // 权限检测器

@@ -1,15 +1,13 @@
 package com.shuyun.qapp.ui.welcome;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.TimeUtils;
+import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.AdBean;
 import com.shuyun.qapp.bean.DataResponse;
@@ -17,12 +15,8 @@ import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
-import com.shuyun.qapp.ui.homepage.PermissionsActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.LogUtil;
-import com.shuyun.qapp.utils.PermissionsChecker;
-import com.shuyun.qapp.utils.RSAUtils;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.tencent.stat.MtaSDkException;
@@ -37,7 +31,6 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.shuyun.qapp.utils.EncodeAndStringTool.encryptMD5ToString;
 import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
-import static com.umeng.socialize.net.dplus.CommonNetImpl.TAG;
 
 /**
  * 启动页
@@ -45,23 +38,10 @@ import static com.umeng.socialize.net.dplus.CommonNetImpl.TAG;
 public class WelcomeActivity extends Activity {
     private static int LOGIN_MODE = 1;
 
-    // 所需的全部权限
-    static final String[] PERMISSIONS = new String[]{
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.CALL_PHONE,
-            android.Manifest.permission.READ_EXTERNAL_STORAGE,
-            android.Manifest.permission.SEND_SMS
-    };
-
-    private PermissionsChecker mPermissionsChecker; // 权限检测器
-    private static final int REQUEST_CODE = 0; // 请求码
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-
-        mPermissionsChecker = new PermissionsChecker(this);
 
         //腾讯应用分析
         StatConfig.init(this);
@@ -75,6 +55,8 @@ public class WelcomeActivity extends Activity {
             Log.e("MTA", "MTA start failed");
         }
 
+        //初始化沉浸状态栏
+        ImmersionBar.with(this).statusBarColor(R.color.white).statusBarDarkFont(true).fitsSystemWindows(true).init();
 
         //保存登录状态
         SaveUserInfo.getInstance(this).setUserInfo("LOGIN_MODE", String.valueOf(LOGIN_MODE));
@@ -145,20 +127,6 @@ public class WelcomeActivity extends Activity {
                 });
     }
 
-    private void startPermissionsActivity() {
-        PermissionsActivity.startActivityForResult(this, REQUEST_CODE, PERMISSIONS);
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // 拒绝时, 关闭页面, 缺少主要权限, 无法运行
-        if (requestCode == REQUEST_CODE && resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
-            finish();
-        }
-    }
-
     @Override
     protected void onStop() {
         super.onStop();
@@ -168,11 +136,6 @@ public class WelcomeActivity extends Activity {
     public void onResume() {
         super.onResume();
         MobclickAgent.onResume(this); //统计时长
-
-        // 缺少权限时, 进入权限配置页面
-        if (mPermissionsChecker.lacksPermissions(PERMISSIONS)) {
-            startPermissionsActivity();
-        }
 
         StatService.onResume(this);
     }

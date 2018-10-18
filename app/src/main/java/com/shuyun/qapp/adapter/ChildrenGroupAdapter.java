@@ -51,47 +51,52 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         GroupClassifyBean.ChildrenBean childrenBean = childrenBeans.get(position);
-        ImageLoaderManager.LoadImage(context, childrenBean.getPicture(), holder.ivGroup, R.mipmap.zw01);//题组图片
 
-        //百分比
-        if (!EncodeAndStringTool.isListEmpty(childrenBean.getTags())) {
-            holder.llInfo.setVisibility(View.VISIBLE);
-            holder.title1.setText(childrenBean.getTags().get(0).getTagName());
-            holder.title2.setText(childrenBean.getTags().get(1).getTagName());
-            holder.title3.setText(childrenBean.getTags().get(2).getTagName());
-            holder.tvScore.setText(childrenBean.getTags().get(0).getRemark());
-            holder.tvCash.setText(childrenBean.getTags().get(1).getRemark());
-            holder.tvRightNumber.setText(childrenBean.getTags().get(2).getRemark());
-        } else {
-            holder.llInfo.setVisibility(View.GONE);
-        }
+        try {
+            ImageLoaderManager.LoadImage(context, childrenBean.getPicture(), holder.ivGroup, R.mipmap.zw01);//题组图片
 
-        //消耗答题次数
-        if (!EncodeAndStringTool.isStringEmpty(childrenBean.getOpportunityLabel())) {
-            holder.tvConsumeAnswerNum.setVisibility(View.VISIBLE);
-            holder.tvConsumeAnswerNum.setText(childrenBean.getOpportunityLabel());
-        } else {
-            holder.tvConsumeAnswerNum.setVisibility(View.GONE);
-        }
+            //百分比
+            if (!EncodeAndStringTool.isListEmpty(childrenBean.getTags())) {
+                holder.llInfo.setVisibility(View.VISIBLE);
+                holder.title1.setText(childrenBean.getTags().get(0).getTagName());
+                holder.title2.setText(childrenBean.getTags().get(1).getTagName());
+                holder.title3.setText(childrenBean.getTags().get(2).getTagName());
+                holder.tvScore.setText(childrenBean.getTags().get(0).getRemark());
+                holder.tvCash.setText(childrenBean.getTags().get(1).getRemark());
+                holder.tvRightNumber.setText(childrenBean.getTags().get(2).getRemark());
+            } else {
+                holder.llInfo.setVisibility(View.GONE);
+            }
 
-        //答题攻略
-        if (!EncodeAndStringTool.isStringEmpty(childrenBean.getTag())) {
-            holder.tvSolvingStrategy.setVisibility(View.VISIBLE);
-            holder.tvSolvingStrategy.setText(childrenBean.getTag());
-        } else {
-            holder.tvSolvingStrategy.setVisibility(View.GONE);
-        }
+            //消耗答题次数
+            if (!EncodeAndStringTool.isStringEmpty(childrenBean.getOpportunityLabel())) {
+                holder.tvConsumeAnswerNum.setVisibility(View.VISIBLE);
+                holder.tvConsumeAnswerNum.setText(childrenBean.getOpportunityLabel());
+            } else {
+                holder.tvConsumeAnswerNum.setVisibility(View.GONE);
+            }
 
-        holder.tvTheme.setText(childrenBean.getName());//题组名称
+            //答题攻略
+            if (!EncodeAndStringTool.isStringEmpty(childrenBean.getTag())) {
+                holder.tvSolvingStrategy.setVisibility(View.VISIBLE);
+                holder.tvSolvingStrategy.setText(childrenBean.getTag());
+            } else {
+                holder.tvSolvingStrategy.setVisibility(View.GONE);
+            }
 
-        if ((!EncodeAndStringTool.isObjectEmpty(mOnItemChildClickLitsener))) {
-            holder.itemView.setOnClickListener( new OnMultiClickListener() {
-                @Override
-                public void onMultiClick(View v) {
-                    int position = holder.getLayoutPosition();
-                    mOnItemChildClickLitsener.onItemChildClick(holder.itemView, position);
-                }
-            });
+            holder.tvTheme.setText(childrenBean.getName());//题组名称
+
+            if ((!EncodeAndStringTool.isObjectEmpty(mOnItemChildClickLitsener))) {
+                holder.itemView.setOnClickListener(new OnMultiClickListener() {
+                    @Override
+                    public void onMultiClick(View v) {
+                        int position = holder.getLayoutPosition();
+                        mOnItemChildClickLitsener.onItemChildClick(holder.itemView, position);
+                    }
+                });
+            }
+        } catch (Exception e) {
+
         }
     }
 
