@@ -155,6 +155,11 @@ public class HomePageActivity extends AppCompatActivity {
             changeUi(index);
             changeFragment(index);
 
+            /**
+             * 大家都在答
+             */
+            AppConst.i = 0;
+
             //点击活动专区
             if (index == 2 && "1".equals(show)) {
                 //隐藏活动角标

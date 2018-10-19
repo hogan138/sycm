@@ -132,4 +132,11 @@
     <string name="home_correct">正确率</string>
     <string name="home_always">常答题组</string>
     <string name="home_bottom_text">－全民共进 打开知识的宝库－</string>
+    <string name="contact_our">联系客服</string>
+    <string name="tip_one">全民共进将会保护您的信息及资料安全</string>
+    <string name="tip_two">如果您遇到任何问题，请联系客服</string>
+    <string name="tip_three">我们将会第一时间解决您的问题</string>
+    <string name="add_info_tip_one">1、提现信息完善后，3个月内不可修改</string>
+    <string name="add_info_tip_two">2、用户需自行保证支付宝绑定姓名和账户是否一致，请妥善填写</string>
+    <string name="add_info_tip_three">3、支付宝相关信息不可被您的其他全民共进账号重复使用</string>
 </resources>

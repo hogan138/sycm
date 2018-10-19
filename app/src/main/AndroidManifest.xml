@@ -47,9 +47,12 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Base">
-        <!--  <meta-data
+
+        <!--
+              <meta-data
               android:name="android.notch_support"
-              android:value="true" />-->
+              android:value="true" />
+        -->
         <!-- Rich push 核心功能 since 2.0.6 -->
         <activity
             android:name="cn.jpush.android.ui.PopWinActivity"
@@ -187,7 +190,8 @@
         <activity
             android:name=".ui.welcome.WelcomeActivity"
             android:screenOrientation="portrait">
-            <!--android:theme="@style/welcome"-->
+
+            <!-- android:theme="@style/welcome" -->
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -421,14 +425,16 @@
         <activity
             android:name=".ui.login.RegisterPhoneActivity"
             android:screenOrientation="portrait" />
-        <!--输入验证码-->
+        <!-- 输入验证码 -->
         <activity
             android:name=".ui.login.VerifyCodeActivity"
             android:screenOrientation="portrait" />
-        <!--设置密码-->
+        <!-- 设置密码 -->
         <activity
             android:name=".ui.login.SetPasswordActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".ui.mine.NewCashWithdrawActivity" />
+        <activity android:name=".ui.mine.AddWithdrawInfoActivity"></activity>
     </application>
 
 </manifest>

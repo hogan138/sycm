@@ -84,29 +84,14 @@ public class RedWithDrawActivity extends BaseActivity {
     @BindView(R.id.wv_red_charge_rules)
     WebView wvRedChargeRules;//红包提现规则
 
-
-    // 打电话所需的全部权限
-    static final String[] PERMISSIONS = new String[]{
-            Manifest.permission.CALL_PHONE,
-
-    };
     @BindView(R.id.ll_main)
     LinearLayout llMain;
-    private PermissionsChecker mPermissionsChecker; // 权限检测器
-    private static final int REQUEST_CODE = 0; // 请求码
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         tvCommonTitle.setText("即时提现红包");
-        /**
-         * 申请打电话权限
-         */
-        mPermissionsChecker = new PermissionsChecker(this);
-        if (mPermissionsChecker.lacksPermissions(PERMISSIONS)) {
-            startPermissionsActivity();
-        }
         wvRedChargeRules.getSettings().setJavaScriptEnabled(true);
         wvRedChargeRules.addJavascriptInterface(new JsInteration(), "android");
         wvRedChargeRules.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
@@ -195,19 +180,6 @@ public class RedWithDrawActivity extends BaseActivity {
     @Override
     public int intiLayout() {
         return R.layout.activity_red_with_draw;
-    }
-
-    private void startPermissionsActivity() {
-        PermissionsActivity.startActivityForResult(this, REQUEST_CODE, PERMISSIONS);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // 拒绝时, 关闭页面, 缺少主要权限, 无法运行
-        if (requestCode == REQUEST_CODE && resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
-            finish();
-        }
     }
 
     @OnClick({R.id.iv_back, R.id.btn_immedicate1})

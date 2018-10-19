@@ -154,7 +154,6 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
     private MineBean mineBean;
     private String remainderTime;
     private Activity mContext;
-    private int SHARE_CHANNEL;//分享渠道2:微信好友;1:微信朋友圈
     private MyReceiver msgReceiver;
 
 
@@ -488,6 +487,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                 break;
             case R.id.rl_invite_share:
                 InviteSharePopupUtil.showSharedPop(mContext, llMineFragment);
+//                startActivity(new Intent(mContext, NewCashWithdrawActivity.class));
                 break;
             default:
                 break;

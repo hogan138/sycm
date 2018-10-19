@@ -8,19 +8,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.animation.SpringAnimation;
-import android.support.animation.SpringForce;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +47,6 @@ import com.shuyun.qapp.bean.HomeGroupsBean;
 import com.shuyun.qapp.bean.InviteBean;
 import com.shuyun.qapp.bean.MainConfigBean;
 import com.shuyun.qapp.bean.MarkBannerItem;
-import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.bean.SystemInfo;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
@@ -71,7 +64,6 @@ import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.webview.WebBannerActivity;
 import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
-import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
@@ -81,19 +73,12 @@ import com.shuyun.qapp.utils.NotificationsUtils;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
-import com.shuyun.qapp.utils.ScannerUtils;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.view.InviteSharePopupUtil;
 import com.shuyun.qapp.view.RealNamePopupUtil;
 import com.shuyun.qapp.view.RoundImageView;
 import com.sunfusheng.marqueeview.MarqueeView;
 import com.umeng.analytics.MobclickAgent;
-import com.umeng.socialize.ShareAction;
-import com.umeng.socialize.UMShareListener;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
-import com.umeng.socialize.media.UMWeb;
-import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,9 +95,6 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-
-import static com.blankj.utilcode.util.ActivityUtils.startActivity;
-import static com.blankj.utilcode.util.SizeUtils.dp2px;
 
 
 /**
@@ -1195,6 +1177,8 @@ public class HomeFragment extends Fragment {
     }
 
     //活动弹框
+    Dialog dialog;
+
     private void activitydialog(final ConfigDialogBean configDialogBean) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.AlertDialog);
         final LayoutInflater inflater = LayoutInflater.from(mContext);
@@ -1217,7 +1201,12 @@ public class HomeFragment extends Fragment {
         } catch (Exception e) {
 
         }
-        final Dialog dialog = builder.create();
+        dialog = builder.create();
+
+        if (dialog.isShowing()) {
+            return;
+        }
+
         dialog.show();
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
@@ -1332,19 +1321,11 @@ public class HomeFragment extends Fragment {
         super.onStop();
     }
 
-    CommonPopupWindow popupWindow;
-
-
     /**
      * 监听首界面返回键
      */
     public void homeFragmentBack() {
-        if (!EncodeAndStringTool.isObjectEmpty(popupWindow)) {
-            popupWindow.dismiss();
-            popupWindow = null;
-        } else {
-            mContext.finish();
-        }
+        mContext.finish();
     }
 
 

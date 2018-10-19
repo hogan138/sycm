@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.GroupBean;
+import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
@@ -58,15 +59,13 @@ public class HotGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     }
 
-    public static int i = 0;
-
     @Override
     public int getItemViewType(int position) {
-        if (i == 3) {
-            i = 0;
+        if (AppConst.i == 3) {
+            AppConst.i = 0;
             return TWO_ITEM;
         } else {
-            i++;
+            AppConst.i++;
             return ONE_ITEM;
         }
     }
@@ -75,7 +74,6 @@ public class HotGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         GroupBean groupBean = groupBeans.get(position);
         try {
-
             if (holder instanceof MyViewHolder) {
                 ((MyViewHolder) holder).tvGroupTitle.setText(groupBean.getName() + "");
                 ImageLoaderManager.LoadImage(mContext, groupBean.getPicture(), ((MyViewHolder) holder).ivGroupBg, R.mipmap.zw01);

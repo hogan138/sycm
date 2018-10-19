@@ -62,4 +62,5 @@
     <color name="home_text_bottom">#DEDEDE</color>
     <color name="against_name">#0096E9</color>
     <color name="select_normal">#151515</color>
+    <color name="select_blue">#b2def9</color>
 </resources>
