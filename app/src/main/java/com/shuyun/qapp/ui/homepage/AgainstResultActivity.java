@@ -384,7 +384,7 @@ public class AgainstResultActivity extends BaseActivity implements View.OnClickL
 
     private void loadBattleAnswerShared(final int channl) {
         ApiService apiService = BasePresenter.create(8000);
-        apiService.battleAnswerShared(channl)
+        apiService.battleAnswerShared1(channl, type)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<DataResponse<SharedBean>>() {

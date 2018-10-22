@@ -559,6 +559,9 @@ public interface ApiService {
     @GET("/rest/share/battle")
     Observable<DataResponse<SharedBean>> battleAnswerShared(@Query("channel") int channel);
 
+    @GET("/rest/share/battleEnd")
+    Observable<DataResponse<SharedBean>> battleAnswerShared1(@Query("channel") int channel, @Query("type") int type);
+
     /**
      * 57、积分兑换首页
      */
@@ -660,4 +663,16 @@ public interface ApiService {
      */
     @GET("/rest/act/zone/action")
     Observable<DataResponse<String>> clickActivity();
+
+    /**
+     * 73、分享
+     *
+     * @param channel 分享渠道id
+     * @return
+     */
+    @GET("/rest/share")
+    Observable<DataResponse<SharedBean>> SharedPublic(@Query("channel") int channel, @Query("action") String action, @Query("id") String id);
+
+    @GET("/rest/share")
+    Observable<DataResponse<SharedBean>> SharedPublic1(@Query("channel") int channel, @Query("action") String action);
 }

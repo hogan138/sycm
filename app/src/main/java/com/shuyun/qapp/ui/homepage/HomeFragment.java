@@ -32,6 +32,7 @@ import com.blankj.utilcode.util.TimeUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.GroupTreeAdapter;
+import com.shuyun.qapp.adapter.HomeBannerAdapter;
 import com.shuyun.qapp.adapter.HotGroupAdapter;
 import com.shuyun.qapp.adapter.MarkBannerAdapter;
 import com.shuyun.qapp.adapter.RecommendGroupAdapter;
@@ -57,6 +58,7 @@ import com.shuyun.qapp.ui.classify.ClassifyActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
 import com.shuyun.qapp.ui.integral.IntegralMainActivity;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
+import com.shuyun.qapp.ui.loader.GlideImageLoader1;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.mine.MinePrizeActivity;
 import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
@@ -390,7 +392,8 @@ public class HomeFragment extends Fragment {
                                 final List<BannerBean> bannerData = listDataResponse.getDat();
                                 if (!EncodeAndStringTool.isListEmpty(bannerData)) {
                                     //设置轮播图
-                                    BannerAdapter adapter = new BannerAdapter(new GlideImageLoader());
+//                                    BannerAdapter adapter = new BannerAdapter(new GlideImageLoader());
+                                    HomeBannerAdapter adapter = new HomeBannerAdapter(new GlideImageLoader1());
                                     List<IBannerItem> list = new ArrayList<>();
                                     for (int i = 0; i < bannerData.size(); i++) {
                                         list.add(new BannerItem(bannerData.get(i).getPicture()));
@@ -671,7 +674,7 @@ public class HomeFragment extends Fragment {
                                         //设置index 在viewpager下面
                                         ViewPager mViewpager1 = (ViewPager) alwaysBanner.getChildAt(0);
                                         //为ViewPager设置高度
-                                        ViewGroup.LayoutParams params = params = mViewpager1.getLayoutParams();
+                                        ViewGroup.LayoutParams params = mViewpager1.getLayoutParams();
                                         params.height = getResources().getDimensionPixelSize(R.dimen.viewPager_02);
                                         mViewpager1.setLayoutParams(params);
 

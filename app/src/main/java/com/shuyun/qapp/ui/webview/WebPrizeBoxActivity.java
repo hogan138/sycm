@@ -436,7 +436,7 @@ public class WebPrizeBoxActivity extends BaseActivity {
     /**
      * 中途退出弹窗
      */
-    private void exitDialog(ReturnDialogBean returnDialogBean) {
+    private void exitDialog(final ReturnDialogBean returnDialogBean) {
         new CircleDialog.Builder(this)
                 .setTitle(returnDialogBean.getTitle())
                 .configTitle(new ConfigTitle() {
@@ -456,10 +456,27 @@ public class WebPrizeBoxActivity extends BaseActivity {
                 })
                 .setTextColor(Color.parseColor("#333333"))
                 .setWidth(0.7f)
-                .setNegative(returnDialogBean.getBtn().get(0), new OnMultiClickListener() {
+                .setNegative(returnDialogBean.getBtns().get(0).getLabel(), new OnMultiClickListener() {
                     @Override
                     public void onMultiClick(View v) {
-                        finish();
+                        String action = returnDialogBean.getBtns().get(0).getAction();
+                        if ("return.previous.page".equals(action)) {
+                            //返回上一页
+                            if (wvPrizeBox.canGoBack()) {
+                                wvPrizeBox.goBack();
+                            } else {
+                                finish();
+                            }
+                        } else if ("continue.to.perform".equals(action)) {
+                            //继续执行
+
+                        } else if ("determined.to.leave".equals(action)) {
+                            //确定离开
+                            finish();
+                        } else if ("open.new.page".equals(action)) {
+                            //新开页面
+                            wvPrizeBox.loadUrl(returnDialogBean.getBtns().get(0).getH5Url());
+                        }
                     }
                 })
                 .configNegative(new ConfigButton() {
@@ -468,10 +485,26 @@ public class WebPrizeBoxActivity extends BaseActivity {
                         params.textColor = Color.parseColor("#333333");
                     }
                 })
-                .setPositive(returnDialogBean.getBtn().get(1), new OnMultiClickListener() {
+                .setPositive(returnDialogBean.getBtns().get(1).getLabel(), new OnMultiClickListener() {
                     @Override
                     public void onMultiClick(View v) {
-
+                        String action = returnDialogBean.getBtns().get(1).getAction();
+                        if ("return.previous.page".equals(action)) {
+                            //返回上一页
+                            if (wvPrizeBox.canGoBack()) {
+                                wvPrizeBox.goBack();
+                            } else {
+                                finish();
+                            }
+                        } else if ("continue.to.perform".equals(action)) {
+                            //继续执行
+                        } else if ("determined.to.leave".equals(action)) {
+                            //确定离开
+                            finish();
+                        } else if ("open.new.page".equals(action)) {
+                            //新开页面
+                            wvPrizeBox.loadUrl(returnDialogBean.getBtns().get(1).getH5Url());
+                        }
                     }
                 })
                 .configPositive(new ConfigButton() {

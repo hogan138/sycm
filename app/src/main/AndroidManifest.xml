@@ -433,8 +433,14 @@
         <activity
             android:name=".ui.login.SetPasswordActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.mine.NewCashWithdrawActivity" />
-        <activity android:name=".ui.mine.AddWithdrawInfoActivity"></activity>
+        <!--现金提现-->
+        <activity
+            android:name=".ui.mine.NewCashWithdrawActivity"
+            android:screenOrientation="portrait" />
+        <!--添加用户信息-->
+        <activity
+            android:name=".ui.mine.AddWithdrawInfoActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

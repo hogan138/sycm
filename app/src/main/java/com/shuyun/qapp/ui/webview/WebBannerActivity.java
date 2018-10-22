@@ -23,6 +23,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -41,28 +42,23 @@ import com.mylhyl.circledialog.params.TitleParams;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.AuthHeader;
-import com.shuyun.qapp.bean.ConfigDialogBean;
 import com.shuyun.qapp.bean.H5JumpBean;
 import com.shuyun.qapp.bean.ReturnDialogBean;
+import com.shuyun.qapp.bean.SharePublicBean;
 import com.shuyun.qapp.bean.WebAnswerHomeBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
-import com.shuyun.qapp.ui.homepage.MainAgainstActivity;
-import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
-import com.shuyun.qapp.ui.integral.IntegralMainActivity;
 import com.shuyun.qapp.ui.mine.AccountRecordActivity;
-import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.JumpTomap;
 import com.shuyun.qapp.utils.OnMultiClickListener;
-import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.view.H5JumpUtil;
 import com.shuyun.qapp.view.InviteSharePopupUtil;
-import com.shuyun.qapp.view.RealNamePopupUtil;
+import com.shuyun.qapp.view.SharePopupUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -84,6 +80,8 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
     TextView tvCommonTitle;
     @BindView(R.id.tv_right)
     TextView tvRight;
+    @BindView(R.id.iv_right_icon)
+    ImageView ivRightIcon; //右边分享按钮
 
     private String url;
     private String id;
@@ -131,7 +129,6 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
             }
         });
         wvBanner.loadUrl(url);
-//        wvBanner.loadUrl("http://192.168.3.137:8080/h5_static/PA_bank.html");
 
     }
 
@@ -283,6 +280,36 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
                     tvCommonTitle.setText(title);
                 }
             });
+        }
+
+
+        /**
+         * 是否显示右边分享按钮
+         */
+        @JavascriptInterface
+        public void showShare(final String config) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    SharePublicBean sharedBean = new Gson().fromJson(config, SharePublicBean.class);
+                    if (sharedBean.isShow()) {
+                        if (!MyApplication.mWxApi.isWXAppInstalled()) {
+                            ivRightIcon.setVisibility(View.GONE);
+                        } else {
+                            ivRightIcon.setImageResource(R.mipmap.share);//右侧分享
+                            ivRightIcon.setOnClickListener(new OnMultiClickListener() {
+                                @Override
+                                public void onMultiClick(View v) {
+                                    SharePopupUtil.showSharedPop(config, WebBannerActivity.this, rlMain);
+                                }
+                            });
+                        }
+                    } else {
+                        ivRightIcon.setVisibility(View.GONE);
+                    }
+                }
+            });
+
         }
 
         /**
@@ -438,6 +465,24 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
             Message msg = new Message();
             msg.what = 1;
             handler.sendMessage(msg);
+        }
+
+
+        /**
+         * 公共分享方法
+         */
+        @JavascriptInterface
+        public void doShare(final String config) {
+            if (!MyApplication.mWxApi.isWXAppInstalled()) {
+
+            } else {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        SharePopupUtil.showSharedPop(config, WebBannerActivity.this, rlMain);
+                    }
+                });
+            }
         }
 
         /**
@@ -621,7 +666,7 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
     /**
      * 中途退出弹窗
      */
-    private void exitDialog(ReturnDialogBean returnDialogBean) {
+    private void exitDialog(final ReturnDialogBean returnDialogBean) {
         new CircleDialog.Builder(this)
                 .setTitle(returnDialogBean.getTitle())
                 .configTitle(new ConfigTitle() {
@@ -641,10 +686,27 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
                 })
                 .setTextColor(Color.parseColor("#333333"))
                 .setWidth(0.7f)
-                .setNegative(returnDialogBean.getBtn().get(0), new OnMultiClickListener() {
+                .setNegative(returnDialogBean.getBtns().get(0).getLabel(), new OnMultiClickListener() {
                     @Override
                     public void onMultiClick(View v) {
-                        finish();
+                        String action = returnDialogBean.getBtns().get(0).getAction();
+                        if ("return.previous.page".equals(action)) {
+                            //返回上一页
+                            if (wvBanner.canGoBack()) {
+                                wvBanner.goBack();
+                            } else {
+                                finish();
+                            }
+                        } else if ("continue.to.perform".equals(action)) {
+                            //继续执行
+
+                        } else if ("determined.to.leave".equals(action)) {
+                            //确定离开
+                            finish();
+                        } else if ("open.new.page".equals(action)) {
+                            //新开页面
+                            wvBanner.loadUrl(returnDialogBean.getBtns().get(0).getH5Url());
+                        }
                     }
                 })
                 .configNegative(new ConfigButton() {
@@ -653,10 +715,26 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
                         params.textColor = Color.parseColor("#333333");
                     }
                 })
-                .setPositive(returnDialogBean.getBtn().get(1), new OnMultiClickListener() {
+                .setPositive(returnDialogBean.getBtns().get(1).getLabel(), new OnMultiClickListener() {
                     @Override
                     public void onMultiClick(View v) {
-
+                        String action = returnDialogBean.getBtns().get(1).getAction();
+                        if ("return.previous.page".equals(action)) {
+                            //返回上一页
+                            if (wvBanner.canGoBack()) {
+                                wvBanner.goBack();
+                            } else {
+                                finish();
+                            }
+                        } else if ("continue.to.perform".equals(action)) {
+                            //继续执行
+                        } else if ("determined.to.leave".equals(action)) {
+                            //确定离开
+                            finish();
+                        } else if ("open.new.page".equals(action)) {
+                            //新开页面
+                            wvBanner.loadUrl(returnDialogBean.getBtns().get(1).getH5Url());
+                        }
                     }
                 })
                 .configPositive(new ConfigButton() {

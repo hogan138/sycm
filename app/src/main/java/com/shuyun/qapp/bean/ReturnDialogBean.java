@@ -9,15 +9,15 @@ public class ReturnDialogBean {
 
     /**
      * show : true
-     * title : 您已经完成线上申请操作了么
-     * content : d大大大无无无无
-     * btn : ["已完成","未完成"]
+     * title : 确认要中途退出吗？
+     * content : 现在退出无法进入榜单哦
+     * btns : [{"label":"确认退出","action":"return.previous.page","h5Url":""},{"label":"继续答题","action":"continue.to.perform","h5Url":""}]
      */
 
     private boolean show;
     private String title;
     private String content;
-    private List<String> btn;
+    private List<BtnsBean> btns;
 
     public boolean isShow() {
         return show;
@@ -43,11 +43,47 @@ public class ReturnDialogBean {
         this.content = content;
     }
 
-    public List<String> getBtn() {
-        return btn;
+    public List<BtnsBean> getBtns() {
+        return btns;
     }
 
-    public void setBtn(List<String> btn) {
-        this.btn = btn;
+    public void setBtns(List<BtnsBean> btns) {
+        this.btns = btns;
+    }
+
+    public static class BtnsBean {
+        /**
+         * label : 确认退出
+         * action : return.previous.page
+         * h5Url :
+         */
+
+        private String label;
+        private String action;
+        private String h5Url;
+
+        public String getLabel() {
+            return label;
+        }
+
+        public void setLabel(String label) {
+            this.label = label;
+        }
+
+        public String getAction() {
+            return action;
+        }
+
+        public void setAction(String action) {
+            this.action = action;
+        }
+
+        public String getH5Url() {
+            return h5Url;
+        }
+
+        public void setH5Url(String h5Url) {
+            this.h5Url = h5Url;
+        }
     }
 }
