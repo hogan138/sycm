@@ -20,5 +20,5 @@
         android:paddingRight="@dimen/text_3"
         android:paddingTop="@dimen/text_4"
         android:textColor="@color/white"
-        android:textSize="@dimen/text_11" />
+        android:textSize="@dimen/text_10" />
 </RelativeLayout>

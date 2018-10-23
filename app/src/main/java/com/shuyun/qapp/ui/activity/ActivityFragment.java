@@ -245,7 +245,7 @@ public class ActivityFragment extends Fragment {
                     //h5
                     Intent intent = new Intent(mContext, WebBannerActivity.class);
                     intent.putExtra("url", h5Url);
-                    intent.putExtra("name", "全民共进");//名称 标题
+                    intent.putExtra("name", "");//名称 标题
                     startActivity(intent);
                 } else if (AppConst.INVITE.equals(action)) {
                     //邀请

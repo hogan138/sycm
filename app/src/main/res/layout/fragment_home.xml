@@ -81,6 +81,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/text_12"
                     android:layout_marginRight="@dimen/text_12"
+                    android:paddingTop="@dimen/text_2"
                     android:paddingBottom="@dimen/text_12">
 
                 </android.support.v7.widget.RecyclerView>

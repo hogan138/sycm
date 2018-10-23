@@ -25,6 +25,7 @@ import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.GlideUtils;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.view.RealNamePopupUtil;
+import com.shuyun.qapp.view.RoundImageView;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -58,7 +59,7 @@ public class ActivityRegionManager {
             int totalRow = Integer.valueOf(data.getRow()); //总行数
             int totalColumn = Integer.valueOf(data.getColumn()); //总列数
 
-            int spacing = 5; //间距
+            int spacing = 10; //间距
             int columnW = (width - 30 - (totalColumn - 1) * spacing) / totalColumn; //每列宽度
             //int rowH = (totalHeight - (totalRow - 1) * spacing) / totalRow; //每行高度
 
@@ -167,7 +168,7 @@ public class ActivityRegionManager {
                 } else if ("4".equals(template)) { //图片模板
                     view = LayoutInflater.from(context).inflate(R.layout.item_main_picture, null);
                     RelativeLayout rl_main4 = view.findViewById(R.id.rl_main);
-                    ImageView roundImageView = view.findViewById(R.id.iv_bg);
+                    RoundImageView roundImageView = view.findViewById(R.id.iv_bg);
                     new GlideImageLoader().onDisplayImage(context, roundImageView, icon);
                     rl_main4.setOnClickListener(new View.OnClickListener() {
                         @Override

@@ -102,19 +102,20 @@ public class LoginActivity extends BaseActivity {
 
 
     private static final String TAG = "LoginActivity";
+    private Context mContext = null;
 
     // 所需的全部权限
     static final String[] PERMISSIONS = new String[]{
             Manifest.permission.READ_PHONE_STATE,
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.CALL_PHONE,
-            android.Manifest.permission.READ_EXTERNAL_STORAGE,
-            android.Manifest.permission.SEND_SMS
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.SEND_SMS
     };
 
     private PermissionsChecker mPermissionsChecker; // 权限检测器
     private static final int REQUEST_CODE = 0; // 请求码
-
+    private Handler mHandler = new Handler();
     private int error = 0;
 
     @Override
@@ -122,6 +123,7 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);//输入法弹出布局上移
+        mContext = this;
         btnLogin.setEnabled(false);
         mPermissionsChecker = new PermissionsChecker(this);
         clearEditText(etPhoneNumber, ivClearPhoneNum);
@@ -156,14 +158,14 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
-        SharedPrefrenceTool.clear(LoginActivity.this);//清空首选项中的数据
+        SharedPrefrenceTool.clear(mContext);//清空首选项中的数据
 
         // 缺少权限时, 进入权限配置页面
         if (mPermissionsChecker.lacksPermissions(PERMISSIONS)) {
             startPermissionsActivity();
         }
 
-        SaveUserInfo.getInstance(LoginActivity.this).setUserInfo("login_phone", "");
+        SaveUserInfo.getInstance(mContext).setUserInfo("login_phone", "");
 
         /**
          * 友盟统计
@@ -223,29 +225,29 @@ public class LoginActivity extends BaseActivity {
             case R.id.tv_verify_login:
                 if (!EncodeAndStringTool.isStringEmpty(etPhoneNumber.getText().toString())) {
                     if (RegularTool.isMobileExact(etPhoneNumber.getText().toString())) {
-                        SaveUserInfo.getInstance(LoginActivity.this).setUserInfo("login_phone", etPhoneNumber.getText().toString());
+                        SaveUserInfo.getInstance(mContext).setUserInfo("login_phone", etPhoneNumber.getText().toString());
                     } else {
-                        SaveUserInfo.getInstance(LoginActivity.this).setUserInfo("login_phone", "");
+                        SaveUserInfo.getInstance(mContext).setUserInfo("login_phone", "");
                     }
                 }
-                Intent intent2 = new Intent(LoginActivity.this, RegisterPhoneActivity.class);
+                Intent intent2 = new Intent(mContext, RegisterPhoneActivity.class);
                 intent2.putExtra("name", "login");
                 startActivity(intent2);
                 break;
             case R.id.rl_register:
-                Intent intent1 = new Intent(LoginActivity.this, RegisterPhoneActivity.class);
+                Intent intent1 = new Intent(mContext, RegisterPhoneActivity.class);
                 intent1.putExtra("name", "register");
                 startActivity(intent1);
                 break;
             case R.id.tv_forget_pwd:
                 if (!EncodeAndStringTool.isStringEmpty(etPhoneNumber.getText().toString())) {
                     if (RegularTool.isMobileExact(etPhoneNumber.getText().toString())) {
-                        SaveUserInfo.getInstance(LoginActivity.this).setUserInfo("login_phone", etPhoneNumber.getText().toString());
+                        SaveUserInfo.getInstance(mContext).setUserInfo("login_phone", etPhoneNumber.getText().toString());
                     } else {
-                        SaveUserInfo.getInstance(LoginActivity.this).setUserInfo("login_phone", "");
+                        SaveUserInfo.getInstance(mContext).setUserInfo("login_phone", "");
                     }
                 }
-                Intent intent = new Intent(LoginActivity.this, RegisterPhoneActivity.class);
+                Intent intent = new Intent(mContext, RegisterPhoneActivity.class);
                 intent.putExtra("name", "changePwd");
                 startActivity(intent);
                 break;
@@ -259,7 +261,7 @@ public class LoginActivity extends BaseActivity {
                     String tsn = EncodeAndStringTool.getTsn(this);
                     String salt = EncodeAndStringTool.generateRandomString(12);
 
-                    SharedPrefrenceTool.put(LoginActivity.this, "salt", salt);
+                    SharedPrefrenceTool.put(mContext, "salt", salt);
                     //devId+appId+v+stamp+mode+account+tsn+salt+ appSecret+mdpwd
                     String signString = "" + AppConst.DEV_ID + AppConst.APP_ID + AppConst.V + curTime + 1 + phoneNum + tsn + salt + AppConst.APP_KEY + mdCode;
                     //将拼接的字符串转化为16进制MD5
@@ -277,11 +279,11 @@ public class LoginActivity extends BaseActivity {
                     loginInput.setAppId(AppConst.APP_ID);
                     loginInput.setV(AppConst.V);
                     loginInput.setStamp(curTime);
-                    loginInput.setAppVersion(APKVersionCodeTools.getVerName(LoginActivity.this));//app 当前版本号
+                    loginInput.setAppVersion(APKVersionCodeTools.getVerName(mContext));//app 当前版本号
                     loginInput.setCode(signCode);
                     String deviceId = SmAntiFraud.getDeviceId();
                     loginInput.setDeviceId(deviceId);
-                    loadLogin(LoginActivity.this, loginInput);
+                    loadLogin(mContext, loginInput);
                 }
                 break;
             case R.id.iv_wechat_login:
@@ -324,25 +326,30 @@ public class LoginActivity extends BaseActivity {
                         if (loginResponse.isSuccees()) {
                             LoginResponse loginResp = loginResponse.getDat();
                             if (!EncodeAndStringTool.isObjectEmpty(loginResp)) {
-                                SharedPrefrenceTool.put(LoginActivity.this, "token", loginResp.getToken());
-                                SharedPrefrenceTool.put(LoginActivity.this, "expire", loginResp.getExpire());//token的有效期
-                                SharedPrefrenceTool.put(LoginActivity.this, "key", loginResp.getKey());//对称加密的秘钥。
-                                SharedPrefrenceTool.put(LoginActivity.this, "bind", loginResp.getBind());//是否绑定用户。
-                                SharedPrefrenceTool.put(LoginActivity.this, "random", loginResp.getRandom());//登录成果后，平台随机生成的字符串
-                                AppConst.loadToken(LoginActivity.this);
+                                SharedPrefrenceTool.put(mContext, "token", loginResp.getToken());
+                                SharedPrefrenceTool.put(mContext, "expire", loginResp.getExpire());//token的有效期
+                                SharedPrefrenceTool.put(mContext, "key", loginResp.getKey());//对称加密的秘钥。
+                                SharedPrefrenceTool.put(mContext, "bind", loginResp.getBind());//是否绑定用户。
+                                SharedPrefrenceTool.put(mContext, "random", loginResp.getRandom());//登录成果后，平台随机生成的字符串
+                                AppConst.loadToken(mContext);
+                                //清空原先的别名
+                                JPushInterface.deleteAlias(mContext, 1);
                                 //设置别名
-                                JPushInterface.setAlias(LoginActivity.this, new Random().nextInt(), "");
-                                JPushInterface.setAlias(LoginActivity.this, new Random().nextInt(), etPhoneNumber.getText().toString());
-
+                                mHandler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        JPushInterface.setAlias(mContext, 2, etPhoneNumber.getText().toString());
+                                    }
+                                }, 1500);
                                 btnLogin.setEnabled(false);
 
                                 CustomLoadingFactory factory = new CustomLoadingFactory();
                                 LoadingBar.make(rlMain, factory).show();
-                                new Handler().postDelayed(new Runnable() {
+                                mHandler.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
                                         LoadingBar.cancel(rlMain);
-                                        Intent intent = new Intent(LoginActivity.this, HomePageActivity.class);
+                                        Intent intent = new Intent(mContext, HomePageActivity.class);
                                         startActivity(intent);
                                         finish();
                                     }
@@ -506,7 +513,7 @@ public class LoginActivity extends BaseActivity {
                 .setPositive("重置", new OnMultiClickListener() {
                     @Override
                     public void onMultiClick(View v) {
-                        Intent intent = new Intent(LoginActivity.this, RegisterPhoneActivity.class);
+                        Intent intent = new Intent(mContext, RegisterPhoneActivity.class);
                         intent.putExtra("name", "changePwd");
                         startActivity(intent);
                     }

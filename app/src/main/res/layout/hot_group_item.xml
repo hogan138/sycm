@@ -4,7 +4,7 @@
     android:id="@+id/rl_item"
     android:layout_width="match_parent"
     android:layout_height="120dp"
-    android:layout_marginTop="@dimen/text_11"
+    android:layout_marginTop="@dimen/text_6"
     android:background="@mipmap/home_group_one">
 
     <com.shuyun.qapp.view.RoundImageView
@@ -35,7 +35,8 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:textColor="@color/color_1"
-            android:textSize="@dimen/text_15" />
+            android:textSize="@dimen/text_15"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:id="@+id/ll_info"
@@ -62,7 +63,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:textColor="@color/color_35"
-                        android:textSize="@dimen/text_12" />
+                        android:textSize="@dimen/text_12"
+                         />
 
                     <TextView
                         android:id="@+id/tv_score"
@@ -71,7 +73,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_toRightOf="@+id/iv_group_bg"
                         android:textColor="@color/login_text"
-                        android:textSize="@dimen/text_12" />
+                        android:textSize="@dimen/text_11" />
 
                 </LinearLayout>
 
@@ -100,7 +102,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:textColor="@color/color_35"
-                        android:textSize="@dimen/text_12" />
+                        android:textSize="@dimen/text_12"
+                       />
 
                     <TextView
                         android:id="@+id/tv_cash"
@@ -109,7 +112,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_toRightOf="@+id/iv_group_bg"
                         android:textColor="@color/login_text"
-                        android:textSize="@dimen/text_12" />
+                        android:textSize="@dimen/text_11" />
 
                 </LinearLayout>
 
@@ -138,7 +141,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:textColor="@color/color_35"
-                        android:textSize="@dimen/text_12" />
+                        android:textSize="@dimen/text_12"
+                        />
 
                     <TextView
                         android:id="@+id/tv_right_number"
@@ -147,7 +151,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_toRightOf="@+id/iv_group_bg"
                         android:textColor="@color/login_text"
-                        android:textSize="@dimen/text_12" />
+                        android:textSize="@dimen/text_11" />
 
                 </LinearLayout>
 

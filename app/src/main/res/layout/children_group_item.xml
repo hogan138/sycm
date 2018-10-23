@@ -101,7 +101,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_toRightOf="@+id/iv_group_bg"
                     android:textColor="@color/login_text"
-                    android:textSize="@dimen/text_12" />
+                    android:textSize="@dimen/text_11" />
 
             </LinearLayout>
 
@@ -139,7 +139,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_toRightOf="@+id/iv_group_bg"
                     android:textColor="@color/login_text"
-                    android:textSize="@dimen/text_12" />
+                    android:textSize="@dimen/text_11" />
 
             </LinearLayout>
 
@@ -177,7 +177,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_toRightOf="@+id/iv_group_bg"
                     android:textColor="@color/login_text"
-                    android:textSize="@dimen/text_12" />
+                    android:textSize="@dimen/text_11" />
 
             </LinearLayout>
 

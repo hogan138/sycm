@@ -221,8 +221,8 @@ public class SystemSettingActivity extends BaseActivity {
                         //清空数据
                         SharedPrefrenceTool.clear(SystemSettingActivity.this);
 
-                        //设置别名为空
-                        JPushInterface.setAlias(SystemSettingActivity.this, new Random().nextInt(), "");
+                        //清空原先的别名
+                        JPushInterface.deleteAlias(SystemSettingActivity.this, 1);
 
                         MyActivityManager.getInstance().finishAllActivity();//销毁所有页面
                         startActivity(new Intent(SystemSettingActivity.this, LoginActivity.class));

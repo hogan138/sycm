@@ -21,8 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/text_10"
-                android:layout_marginRight="@dimen/text_10"
-                android:paddingTop="@dimen/text_10"></android.support.v7.widget.RecyclerView>
+                android:layout_marginRight="@dimen/text_10"></android.support.v7.widget.RecyclerView>
 
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 

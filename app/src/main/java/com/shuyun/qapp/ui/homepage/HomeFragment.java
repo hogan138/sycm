@@ -199,9 +199,6 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.tv_number2)
     TextView tvNumber2; //招商电话
 
-    private int SHARE_CHANNEL;
-    private static final String TAG = "HomeFragment";
-
     private Activity mContext;
     private GroupClassifyBean groupClassifyBean0;
     private GroupClassifyBean groupClassifyBean1;

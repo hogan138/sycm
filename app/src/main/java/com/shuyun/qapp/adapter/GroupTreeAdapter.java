@@ -55,7 +55,7 @@ public class GroupTreeAdapter extends RecyclerView.Adapter<GroupTreeAdapter.View
             holder.rlSort.setSelected(true);
             holder.tvSortName.setTextColor(mContext.getResources().getColor(R.color.color_3));
         } else {
-            holder.tvSortName.setTextColor(mContext.getResources().getColor(R.color.color_7));
+            holder.tvSortName.setTextColor(mContext.getResources().getColor(R.color.color_35));
             holder.rlSort.setSelected(false);
         }
         /**
