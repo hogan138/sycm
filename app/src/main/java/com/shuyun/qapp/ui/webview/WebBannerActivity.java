@@ -129,6 +129,7 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
             }
         });
         wvBanner.loadUrl(url);
+//        wvBanner.loadUrl("http://192.168.191.1:8080");
 
     }
 

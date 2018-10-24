@@ -149,12 +149,6 @@ public class ActivityFragment extends Fragment {
                                         refreshLayout.finishRefresh();
                                         refreshLayout.setLoadmoreFinished(false);
 
-                                        //进入动画
-                                        LayoutAnimationController controller = new LayoutAnimationController(MyLayoutAnimationHelper.getAnimationSetScaleBig());
-                                        controller.setDelay(0.1f);
-                                        rvActivity.setLayoutAnimation(controller);
-                                        rvActivity.scheduleLayoutAnimation();
-
                                     } else if (loadState == AppConst.STATE_MORE) {
                                         if (activityTabBeanlist1.size() == 0) {//没有数据了
                                             refreshLayout.finishLoadmore(); //

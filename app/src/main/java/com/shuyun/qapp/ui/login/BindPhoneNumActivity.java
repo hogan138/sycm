@@ -33,9 +33,12 @@ import com.shuyun.qapp.utils.ToastUtil;
 import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 
+import java.util.Random;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -161,7 +164,7 @@ public class BindPhoneNumActivity extends BaseActivity {
      */
     private void getVerficationCode(InputVerficationCodeBean verficationCodeBean) {
         ApiService apiService = BasePresenter.create(8000);
-        String inputbean =  JSON.toJSONString(verficationCodeBean);
+        String inputbean = JSON.toJSONString(verficationCodeBean);
         Log.i(TAG, "loadLogin: " + verficationCodeBean.toString());
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
         apiService.getCode(body)
@@ -216,7 +219,7 @@ public class BindPhoneNumActivity extends BaseActivity {
      * 绑定微信
      */
     private void bindWx() {
-        String phoneNumber = etPhoneNumber.getText().toString().trim();
+        final String phoneNumber = etPhoneNumber.getText().toString().trim();
         String code = etCode.getText().toString().trim();
         if (!EncodeAndStringTool.checkNull(phoneNumber, code)) {
         } else {
@@ -232,6 +235,11 @@ public class BindPhoneNumActivity extends BaseActivity {
                         @Override
                         public void onNext(DataResponse dataResponse) {
                             if (dataResponse.isSuccees()) {
+
+                                //设置别名
+                                JPushInterface.setAlias(BindPhoneNumActivity.this, new Random().nextInt(), "");
+                                JPushInterface.setAlias(BindPhoneNumActivity.this, new Random().nextInt(), phoneNumber);
+
                                 AppConst.loadToken(MyApplication.getAppContext());
                                 //绑定成功  存token值
                                 ToastUtil.showToast(BindPhoneNumActivity.this, "绑定成功");

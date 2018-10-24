@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.EncryptUtils;
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.ishumei.smantifraud.SmAntiFraud;
@@ -310,14 +311,11 @@ public class ChangePasswordActivity extends BaseActivity {
                                 SharedPrefrenceTool.put(ChangePasswordActivity.this, "random", changeResult.getRandom());//登录成果后，平台随机生成的字符串
                                 LoginResponse.User user = changeResult.getUser();
 
-                                SharedPrefrenceTool.put(ChangePasswordActivity.this, "share", user.getShare());//是否参与邀请分享 1——参与邀请
                                 AppConst.loadToken(ChangePasswordActivity.this);
-                                if (!EncodeAndStringTool.isStringEmpty(changeResult.getInvite())) {
-                                    SharedPrefrenceTool.put(ChangePasswordActivity.this, "invite", changeResult.getInvite());
-                                }
                                 Toast.makeText(ChangePasswordActivity.this, "修改密码成功！", Toast.LENGTH_SHORT).show();
 
                                 finish();
+                                KeyboardUtils.hideSoftInput(ChangePasswordActivity.this);
                             } else {
                                 tvErrorHint.setVisibility(View.VISIBLE);
                             }

@@ -333,14 +333,9 @@ public class LoginActivity extends BaseActivity {
                                 SharedPrefrenceTool.put(mContext, "random", loginResp.getRandom());//登录成果后，平台随机生成的字符串
                                 AppConst.loadToken(mContext);
                                 //清空原先的别名
-                                JPushInterface.deleteAlias(mContext, 1);
                                 //设置别名
-                                mHandler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        JPushInterface.setAlias(mContext, 2, etPhoneNumber.getText().toString());
-                                    }
-                                }, 1500);
+                                JPushInterface.setAlias(mContext, new Random().nextInt(), "");
+                                JPushInterface.setAlias(mContext, new Random().nextInt(), etPhoneNumber.getText().toString());
                                 btnLogin.setEnabled(false);
 
                                 CustomLoadingFactory factory = new CustomLoadingFactory();

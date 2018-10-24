@@ -79,7 +79,7 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
             //答题攻略
             if (!EncodeAndStringTool.isStringEmpty(childrenBean.getTag())) {
                 holder.tvSolvingStrategy.setVisibility(View.VISIBLE);
-                holder.tvSolvingStrategy.setText(childrenBean.getTag());
+                holder.tvSolvingStrategy.setText(childrenBean.getTag().replaceAll(" ", "\n"));
             } else {
                 holder.tvSolvingStrategy.setVisibility(View.GONE);
             }

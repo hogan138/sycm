@@ -271,7 +271,7 @@ public class VerifyCodeActivity extends BaseActivity {
             DataSupport.deleteAll(Msg.class);//清空数据库中消息
         }
         ApiService apiService = BasePresenter.create(8000);
-        final String inputbean =JSON.toJSONString(loginInput);
+        final String inputbean = JSON.toJSONString(loginInput);
         Log.i(TAG, "loadLogin: " + loginInput.toString());
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
         apiService.login(body)
@@ -293,7 +293,9 @@ public class VerifyCodeActivity extends BaseActivity {
                                 SharedPrefrenceTool.put(VerifyCodeActivity.this, "bind", loginResp.getBind());//是否绑定用户。
                                 SharedPrefrenceTool.put(VerifyCodeActivity.this, "random", loginResp.getRandom());//登录成果后，平台随机生成的字符串
                                 AppConst.loadToken(VerifyCodeActivity.this);
+
                                 //设置别名
+                                JPushInterface.setAlias(VerifyCodeActivity.this, new Random().nextInt(), "");
                                 JPushInterface.setAlias(VerifyCodeActivity.this, new Random().nextInt(), phone);
 
                                 if (mode == 2) {

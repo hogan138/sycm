@@ -24,6 +24,7 @@ import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.login.LoginActivity;
+import com.shuyun.qapp.ui.login.VerifyCodeActivity;
 import com.shuyun.qapp.ui.webview.WebPublicActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -222,7 +223,7 @@ public class SystemSettingActivity extends BaseActivity {
                         SharedPrefrenceTool.clear(SystemSettingActivity.this);
 
                         //清空原先的别名
-                        JPushInterface.deleteAlias(SystemSettingActivity.this, 1);
+                        JPushInterface.setAlias(SystemSettingActivity.this, new Random().nextInt(), "");
 
                         MyActivityManager.getInstance().finishAllActivity();//销毁所有页面
                         startActivity(new Intent(SystemSettingActivity.this, LoginActivity.class));

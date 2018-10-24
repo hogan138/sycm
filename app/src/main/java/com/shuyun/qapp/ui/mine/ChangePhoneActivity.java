@@ -27,9 +27,12 @@ import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ToastUtil;
 import com.umeng.analytics.MobclickAgent;
 
+import java.util.Random;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -202,6 +205,12 @@ public class ChangePhoneActivity extends BaseActivity {
                         @Override
                         public void onNext(DataResponse dataResponse) {
                             if (dataResponse.isSuccees()) {
+
+                                //清空原先的别名
+                                //设置别名
+                                JPushInterface.setAlias(ChangePhoneActivity.this, new Random().nextInt(), "");
+                                JPushInterface.setAlias(ChangePhoneActivity.this, new Random().nextInt(), phoneNumber);
+
                                 //绑定成功
                                 ToastUtil.showToast(ChangePhoneActivity.this, "更换手机号成功");
                                 SaveUserInfo.getInstance(ChangePhoneActivity.this).setUserInfo("phone", phoneNumber);
