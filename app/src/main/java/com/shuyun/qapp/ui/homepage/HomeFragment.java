@@ -356,12 +356,12 @@ public class HomeFragment extends Fragment {
                 break;
             case R.id.tv_number1: //客服电话
                 Intent intent = new Intent(Intent.ACTION_CALL);
-                intent.setData(Uri.parse("tel:" + "400-660-9258"));
+                intent.setData(Uri.parse("tel:" + "400-650-9258"));
                 startActivity(intent);
                 break;
             case R.id.tv_number2: //招商电话
                 Intent i = new Intent(Intent.ACTION_CALL);
-                i.setData(Uri.parse("tel:" + "0671-86875104"));
+                i.setData(Uri.parse("tel:" + "0571-86875104"));
                 startActivity(i);
                 break;
             default:

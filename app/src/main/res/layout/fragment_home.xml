@@ -172,7 +172,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/text_12"
-                    android:text="客服热线：400-660-9258"
+                    android:text="客服热线：400-650-9258"
                     android:textColor="@color/color_35"
                     android:textSize="@dimen/text_12" />
 
@@ -182,7 +182,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/text_12"
-                    android:text="招商热线：0671-86875104"
+                    android:text="招商热线：0571-86875104"
                     android:textColor="@color/color_35"
                     android:textSize="@dimen/text_12" />
 
