@@ -74,6 +74,7 @@ dependencies {
 
     //添加retrofit网络请求依赖
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+
     //compile 'com.google.code.gson:gson:2.8.2'
     compile 'com.squareup.retrofit2:converter-gson:2.4.0'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
@@ -139,8 +140,8 @@ dependencies {
     implementation files('libs/smantifraud.jar')
 
     //极光推送
-    implementation files('libs/jcore-android-1.2.3.jar')
-    implementation files('libs/jpush-android-3.1.5.jar')
+    implementation files('libs/jcore-android-1.2.5.jar')
+    implementation files('libs/jpush-android-3.1.6.jar')
 
     //侧滑返回
     implementation 'me.imid.swipebacklayout.lib:library:1.1.0'
@@ -153,4 +154,5 @@ dependencies {
 
     //json
     implementation 'com.alibaba:fastjson:1.1.70.android'
+
 }
