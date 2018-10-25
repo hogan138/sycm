@@ -133,7 +133,7 @@ public interface ApiService {
      * @return
      */
     @GET("/rest/act/exam/V3")
-    Observable<DataResponse<ApplyAnswer>> applyAnswer(@Query("groupId") int groupId, @Query("type") int type);
+    Observable<DataResponse<ApplyAnswer>> applyAnswer(@Query("groupId") int groupId, @Query("type") int type, @Query("battle") int battle);
 
     /**
      * 9、完成答题post请求,提交数据

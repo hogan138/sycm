@@ -119,12 +119,12 @@ public class ActivityFragment extends Fragment {
     }
 
     /**
-     * 用户答题记录
+     * 活动专区
      */
 
     List<ActivityTabBean.ResultBean> activityTabBeanlist = new ArrayList<>();
 
-    private void loadAnswerRecord(int currentPage) {
+    private void loadActivityList(int currentPage) {
         ApiService apiService = BasePresenter.create(8000);
         apiService.ActivityList(String.valueOf(currentPage), "20")
                 .subscribeOn(Schedulers.io())
@@ -158,18 +158,12 @@ public class ActivityFragment extends Fragment {
                                             activityTabAdapter.notifyDataSetChanged();
                                             refreshLayout.finishLoadmore();
                                             refreshLayout.setLoadmoreFinished(false);
-                                            //进入动画
-                                            LayoutAnimationController controller = new LayoutAnimationController(MyLayoutAnimationHelper.getAnimationSetScaleBig());
-                                            controller.setDelay(0.1f);
-                                            rvActivity.setLayoutAnimation(controller);
-                                            rvActivity.scheduleLayoutAnimation();
                                         }
                                     }
                                 } catch (Exception e) {
                                 }
                             } else {
                                 if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {
-
                                     ivActivityEmpty.setVisibility(View.VISIBLE);
                                 }
                                 refreshLayout.finishLoadmore();
@@ -200,21 +194,21 @@ public class ActivityFragment extends Fragment {
         loadState = AppConst.STATE_NORMAL;
         currentPage = 0;
 
-        loadAnswerRecord(currentPage);
+        loadActivityList(currentPage);
 
         refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 loadState = AppConst.STATE_MORE;
                 currentPage++;
-                loadAnswerRecord(currentPage);
+                loadActivityList(currentPage);
             }
 
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 loadState = AppConst.STATE_REFRESH;
                 currentPage = 0;
-                loadAnswerRecord(currentPage);
+                loadActivityList(currentPage);
             }
         });
 

@@ -352,7 +352,7 @@ public class AgainstActivity extends BaseActivity {
      */
     private void applyAnswer(int groupId) {
         ApiService apiService = BasePresenter.create(8000);
-        apiService.applyAnswer(groupId, 1)
+        apiService.applyAnswer(groupId, 1, type)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<DataResponse<ApplyAnswer>>() {
