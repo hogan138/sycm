@@ -53,6 +53,7 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
         tvRule.setOnClickListener(this);
         ivAddUserInfo.setOnClickListener(this);
 
+
         SpannableString ss = new SpannableString("最低提现金额为50元");
         // 新建一个属性对象,设置文字的大小
         AbsoluteSizeSpan ass = new AbsoluteSizeSpan(12, true);

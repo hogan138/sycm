@@ -486,8 +486,8 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                 startActivity(intent);
                 break;
             case R.id.rl_invite_share:
-                InviteSharePopupUtil.showSharedPop(mContext, llMineFragment);
-//                startActivity(new Intent(mContext, NewCashWithdrawActivity.class));
+//                InviteSharePopupUtil.showSharedPop(mContext, llMineFragment);
+                startActivity(new Intent(mContext, NewCashWithdrawActivity.class));
                 break;
             default:
                 break;

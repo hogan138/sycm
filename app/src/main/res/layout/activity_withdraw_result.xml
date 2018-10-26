@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,33 +10,33 @@
     <include layout="@layout/common_left_title" />
 
     <ImageView
-        android:id="@+id/iv_auth_result_icon"
-        android:layout_width="165dp"
-        android:layout_height="124dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/common_item_height"
-        android:src="@mipmap/finish" />
+        android:layout_marginTop="88.5dp"
+        android:src="@mipmap/withdraw_success_logo" />
 
     <TextView
-        android:id="@+id/tv_auth_rsult"
+        android:id="@+id/tv_rsult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/text_23"
         android:gravity="center_horizontal"
-        android:layout_marginTop="@dimen/text_20"
-        android:text="恭喜您\n身份认证成功"
+        android:text="完善成功"
         android:textColor="@color/color_2"
-        android:textSize="@dimen/text_15" />
+        android:textSize="@dimen/text_15"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/btn_sure"
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_40"
-        android:layout_marginLeft="@dimen/text_12"
-        android:layout_marginRight="@dimen/text_12"
+        android:layout_marginLeft="@dimen/text_15"
         android:layout_marginTop="40dp"
+        android:layout_marginRight="@dimen/text_15"
         android:background="@drawable/common_btn_bg_4"
         android:text="确定"
         android:textColor="@color/white"
-        android:textSize="@dimen/text_18" />
+        android:textSize="@dimen/text_15" />
 </LinearLayout>

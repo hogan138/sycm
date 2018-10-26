@@ -1,5 +1,6 @@
 package com.shuyun.qapp.ui.mine;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -53,6 +54,7 @@ public class AddWithdrawInfoActivity extends BaseActivity implements View.OnClic
                 finish();
                 break;
             case R.id.btn_enter:
+                startActivity(new Intent(AddWithdrawInfoActivity.this, WithdrawResultActivity.class));
                 break;
             case R.id.btn_contact_our:
                 break;

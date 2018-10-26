@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:id="@+id/rl_title"
-        android:layout_width="match_parent"
+        android:layout_width="68dp"
         android:layout_height="@dimen/common_item_height"
         android:background="@color/white">
 
@@ -22,7 +22,7 @@
                 android:layout_height="@dimen/text_20"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/text_18"
+                android:layout_marginLeft="@dimen/text_15"
                 android:src="@mipmap/backb" />
         </RelativeLayout>
 
