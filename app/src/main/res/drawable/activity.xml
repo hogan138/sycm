@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@mipmap/acitivity_tab_logo_gray" android:state_enabled="true" />
-    <item android:drawable="@mipmap/acitivity_tab_logo" android:state_enabled="false" />
+    <item android:drawable="@mipmap/activity_n" android:state_enabled="true" />
+    <item android:drawable="@mipmap/activity_s" android:state_enabled="false" />
 </selector>

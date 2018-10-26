@@ -15,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blankj.utilcode.constant.TimeConstants;
 import com.blankj.utilcode.util.TimeUtils;
@@ -290,14 +292,20 @@ public class HomeFragment extends Fragment {
         loadHomeGroups();
 
         /**
-         * 获取弹框信息
-         */
-        getDialogInfo();
-
-        /**
          * 获取活动配置信息
          */
         getConfigInfo();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {  //显示
+            /**
+             * 获取弹框信息
+             */
+            getDialogInfo();
+        }
     }
 
     @OnClick({R.id.iv_invite, R.id.iv_common_right_icon,
@@ -590,9 +598,14 @@ public class HomeFragment extends Fragment {
                     public void onNext(DataResponse<MainConfigBean> dataResponse) {
                         if (dataResponse.isSuccees()) {
                             MainConfigBean mainConfigBean = dataResponse.getDat();
-                            //动态添加布局
-                            activityRegion.removeAllViews();
-                            activityRegion.addView(ActivityRegionManager.getView(mContext, mainConfigBean, llHomeFragment));
+                            try {
+                                //动态添加布局
+                                activityRegion.removeAllViews();
+                                activityRegion.addView(ActivityRegionManager.getView(mContext, mainConfigBean, llHomeFragment));
+                            } catch (Exception e) {
+
+                            }
+
                         } else {
                             ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
                         }

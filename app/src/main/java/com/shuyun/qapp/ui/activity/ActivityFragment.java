@@ -110,7 +110,6 @@ public class ActivityFragment extends Fragment {
                 if (mContext instanceof HomePageActivity) {
                     HomePageActivity homePageActivity = (HomePageActivity) mContext;
                     homePageActivity.changeUi(0);
-                    homePageActivity.changeFragment(0);
                 }
                 break;
             default:

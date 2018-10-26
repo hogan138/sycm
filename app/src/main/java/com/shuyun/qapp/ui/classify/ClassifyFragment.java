@@ -95,7 +95,6 @@ public class ClassifyFragment extends Fragment {
                 if (mContext instanceof HomePageActivity) {
                     HomePageActivity homePageActivity = (HomePageActivity) mContext;
                     homePageActivity.changeUi(0);
-                    homePageActivity.changeFragment(0);
                 } else if (mContext instanceof ClassifyActivity) {
                     startActivity(new Intent(mContext, HomePageActivity.class));
                 }
@@ -225,10 +224,10 @@ public class ClassifyFragment extends Fragment {
             rvGroup.setLayoutManager(layoutManager2);
             rvGroup.setAdapter(childrenGroupAdapter);
             //进入动画
-            LayoutAnimationController controller = new LayoutAnimationController(MyLayoutAnimationHelper.getAnimationSetFromLeft());
-            controller.setDelay(0.5f);
-            rvGroup.setLayoutAnimation(controller);
-            rvGroup.scheduleLayoutAnimation();
+//            LayoutAnimationController controller = new LayoutAnimationController(MyLayoutAnimationHelper.getAnimationSetFromLeft());
+//            controller.setDelay(0.5f);
+//            rvGroup.setLayoutAnimation(controller);
+//            rvGroup.scheduleLayoutAnimation();
         } catch (Exception e) {
 
         }

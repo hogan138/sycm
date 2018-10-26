@@ -1,24 +1,31 @@
 package com.shuyun.qapp.ui.homepage;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 
 import com.blankj.utilcode.util.TimeUtils;
 import com.gyf.barlibrary.ImmersionBar;
@@ -26,30 +33,37 @@ import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.callback.ConfigDialog;
 import com.mylhyl.circledialog.params.DialogParams;
 import com.shuyun.qapp.R;
+import com.shuyun.qapp.adapter.MyHomeadapter;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.ActivityTimeBean;
 import com.shuyun.qapp.bean.AppVersionBean;
+import com.shuyun.qapp.bean.ConfigDialogBean;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.bean.InviteBean;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.activity.ActivityFragment;
 import com.shuyun.qapp.ui.classify.ClassifyFragment;
+import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
+import com.shuyun.qapp.ui.integral.IntegralMainActivity;
 import com.shuyun.qapp.ui.mine.MineFragment;
+import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
+import com.shuyun.qapp.ui.webview.WebAnswerActivity;
+import com.shuyun.qapp.ui.webview.WebBannerActivity;
+import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ExampleUtil;
+import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
-import com.shuyun.qapp.utils.SharedPrefrenceTool;
+import com.shuyun.qapp.view.RealNamePopupUtil;
+import com.shuyun.qapp.view.RoundImageView;
 import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -62,31 +76,39 @@ import io.reactivex.schedulers.Schedulers;
 import static com.shuyun.qapp.utils.EncodeAndStringTool.encryptMD5ToString;
 import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 
-public class HomePageActivity extends AppCompatActivity {
-
-    @BindView(R.id.home_fragment_container)
-    FrameLayout homeFragmentContainer;
-
-    /**
-     * 底部导航器
-     */
-    @BindView(R.id.home_bottome_switcher_container)
-    LinearLayout homeBottomeSwitcherContainer;
+public class HomePageActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener, ViewPager.OnPageChangeListener {
 
     /**
      * fragment容器
      */
     ArrayList<Fragment> fragments = new ArrayList<>();
+    @BindView(R.id.radio_main)
+    RadioButton radioMain;
+    @BindView(R.id.radio_classify)
+    RadioButton radioClassify;
+    @BindView(R.id.radio_activity)
+    RadioButton radioActivity;
+    @BindView(R.id.radio_mine)
+    RadioButton radioMine;
+    @BindView(R.id.ll_main)
+    LinearLayout llMain;
+    private FragmentManager fm;
+    @BindView(R.id.pager)
+    ViewPager pager;
+    @BindView(R.id.radioGroup1)
+    RadioGroup radioGroup1;
 
-    public static boolean isForeground = false;
-    @BindView(R.id.iv_logo)
-    ImageView ivLogo; //活动角标
+    public static boolean isForeground = false; //极光推送
+    int i = 0;//当前下标
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
         ButterKnife.bind(this);
+
+        pager.setOnPageChangeListener(this);
+        radioGroup1.setOnCheckedChangeListener(this);
 
         SharedPreferences sharedPreferences = getSharedPreferences("FirstRun", 0);
         Boolean first_run = sharedPreferences.getBoolean("First", true);
@@ -95,9 +117,6 @@ public class HomePageActivity extends AppCompatActivity {
         Boolean main_run = sharedPreferences.getBoolean("Main", true);
         sharedPreferences.edit().putBoolean("Main", true).commit();
 
-        init();
-        setListener();
-
         //初始化沉浸状态栏
         ImmersionBar.with(this).statusBarColor(R.color.white).statusBarDarkFont(true).fitsSystemWindows(true).init();
         MyActivityManager.getInstance().pushOneActivity(this);
@@ -105,9 +124,118 @@ public class HomePageActivity extends AppCompatActivity {
         //注册极光推送
         registerMessageReceiver();  // used for receive msg
 
+        //初始化数据
+        initDate();
 
     }
 
+    private void initDate() {
+        fragments = new ArrayList<Fragment>();
+        //实例化Fragment
+        HomeFragment fragmentOne = new HomeFragment();
+        ClassifyFragment fragmentTwo = new ClassifyFragment();
+        ActivityFragment fragmentThree = new ActivityFragment();
+        MineFragment fragmentFour = new MineFragment();
+
+        //添加到集合
+        fragments.add(fragmentOne);
+        fragments.add(fragmentTwo);
+        fragments.add(fragmentThree);
+        fragments.add(fragmentFour);
+
+
+        //得到getSupportFragmentManager()的管理器
+        fm = getSupportFragmentManager();
+        //得到适配器
+        MyHomeadapter myAdapter = new MyHomeadapter(fm, fragments, this);
+        //设置适配器
+        pager.setAdapter(myAdapter);
+        pager.setOffscreenPageLimit(3);
+
+    }
+
+    //ViewPager.OnPageChangeListener监听事件
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+
+        for (int i = 0; i < fragments.size(); i++) {
+            RadioButton radiobutton = (RadioButton) radioGroup1.getChildAt(i);
+            if (i == position) {
+                radiobutton.setChecked(true);
+                radiobutton.setEnabled(false);
+                //设置选中的颜色
+            } else {
+                radiobutton.setChecked(false);
+                radiobutton.setEnabled(true);
+            }
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    //RadioGroup的监听事件
+    @Override
+    public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
+
+        for (int j = 0; j < fragments.size(); j++) {
+            //得到radiobutton
+            RadioButton radiobutton = (RadioButton) radioGroup1.getChildAt(j);
+            int id = radiobutton.getId();
+            //判断radiobutton的id是否等于选中的id
+            if (radiobutton.getId() == i) {
+                //设置当前页
+                pager.setCurrentItem(j, false);
+
+                //改变状态栏颜色
+                if (j == 3) {
+                    ImmersionBar.with(this).statusBarColor(R.color.mine_top).statusBarDarkFont(true).fitsSystemWindows(true).init();
+                } else {
+                    ImmersionBar.with(this).statusBarColor(R.color.white).statusBarDarkFont(true).fitsSystemWindows(true).init();
+                }
+
+                //当前下标
+                i = j;
+
+                //获取最新活动显示角标
+                getActivityShow(i);
+
+                //点击活动专区
+                if (j == 2 && "1".equals(show)) {
+                    Drawable drawable = getResources().getDrawable(R.mipmap.activity_s);
+                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
+                    radioActivity.setCompoundDrawables(null, drawable, null, null);
+                    clickActivity();
+                } else if (j == 2) {
+                    Drawable drawable = getResources().getDrawable(R.mipmap.activity_s);
+                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
+                    radioActivity.setCompoundDrawables(null, drawable, null, null);
+                } else {
+                    Drawable drawable = getResources().getDrawable(R.mipmap.activity_n);
+                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
+                    radioActivity.setCompoundDrawables(null, drawable, null, null);
+                }
+
+                /**
+                 * 大家都在答
+                 */
+                AppConst.i = 0;
+
+            }
+        }
+    }
+
+    //更改Fragment
+    public void changeUi(int index) {
+        pager.setCurrentItem(index, false);
+    }
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -115,9 +243,9 @@ public class HomePageActivity extends AppCompatActivity {
         try {
             //领取答题次数
             if (intent.getStringExtra("from") != null && intent.getStringExtra("from").equals("msg")) {
-                onClickListener.onClick(homeBottomeSwitcherContainer.getChildAt(2));
+                changeUi(3);
             } else if (intent.getStringExtra("from") != null && intent.getStringExtra("from").equals("h5")) {  //我的奖品h5返回首页
-                onClickListener.onClick(homeBottomeSwitcherContainer.getChildAt(0));
+                changeUi(0);
             }
         } catch (Exception e) {
 
@@ -125,107 +253,8 @@ public class HomePageActivity extends AppCompatActivity {
 
     }
 
-    private void init() {
-        fragments.clear();
-        //添加fragment
-        fragments.add(new HomeFragment());
-        fragments.add(new ClassifyFragment());
-        fragments.add(new ActivityFragment());
-        fragments.add(new MineFragment());
-        onClickListener.onClick(homeBottomeSwitcherContainer.getChildAt(0));
-
-    }
-
-    /**
-     * 完成一个通用底部导航的处理
-     */
-    private void setListener() {
-        //所有孩子,不包括孙子
-        int childCount = homeBottomeSwitcherContainer.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            LinearLayout childAt = (LinearLayout) homeBottomeSwitcherContainer.getChildAt(i);
-            childAt.setOnClickListener(onClickListener);
-        }
-    }
-
-    private View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            int index = homeBottomeSwitcherContainer.indexOfChild(view);
-            changeUi(index);
-            changeFragment(index);
-
-            /**
-             * 大家都在答
-             */
-            AppConst.i = 0;
-
-            //点击活动专区
-            if (index == 2 && "1".equals(show)) {
-                //隐藏活动角标
-                ivLogo.setVisibility(View.GONE);
-                clickActivity();
-            } else {
-                //获取最新活动显示角标
-                getActivityShow();
-            }
-        }
-    };
-
-
-    /**
-     * 改变Index对应的孩子的状态，包括这个孩子中多有控件的状态（不可用状态：enable=false）
-     * 改变其他的孩子的状态，，包括这些孩子中多有控件的状态
-     *
-     * @param index
-     */
-    public void changeUi(int index) {
-
-        int childCount = homeBottomeSwitcherContainer.getChildCount();
-
-        for (int i = 0; i < childCount; i++) {
-            if (i == index) {
-                // 每个Item中的控件都需要切换状态,不可再点击了
-                setEnable(homeBottomeSwitcherContainer.getChildAt(i), false);
-
-            } else {
-                // 每个Item中的控件都需要切换状态,可以再点击
-                setEnable(homeBottomeSwitcherContainer.getChildAt(i), true);
-            }
-
-        }
-
-    }
-
-    public void changeFragment(int index) {
-        Fragment fragment = fragments.get(index);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.home_fragment_container, fragment)
-                .commit();
-
-    }
-
-    /**
-     * 将每个Item中的所用控件状态一同改变
-     * 由于我们处理一个通用的代码，那么Item可能会有很多层，所以我们需要使用递归
-     *
-     * @param item
-     * @param b
-     */
-    private void setEnable(View item, boolean b) {
-        item.setEnabled(b);
-        if (item instanceof ViewGroup) {
-            int childCount = ((ViewGroup) item).getChildCount();
-            for (int i = 0; i < childCount; i++) {
-                setEnable(((ViewGroup) item).getChildAt(i), b);
-            }
-        }
-    }
-
 
     //在activity或者fragment中添加友盟统计
-
     @Override
     public void onResume() {
         super.onResume();
@@ -233,26 +262,15 @@ public class HomePageActivity extends AppCompatActivity {
 
         StatService.onResume(this);
 
+        //获取最新活动显示角标
+        getActivityShow(i);
+
         try {
             //领取答题次数
             if (getIntent().getStringExtra("from") != null && getIntent().getStringExtra("from").equals("msg")) {
-                fragments.clear();
-                //添加fragment
-                fragments.add(new HomeFragment());
-                fragments.add(new ClassifyFragment());
-                fragments.add(new ActivityFragment());
-                fragments.add(new MineFragment());
-                onClickListener.onClick(homeBottomeSwitcherContainer.getChildAt(3));
-                setListener();
+                changeUi(3);
             } else if (getIntent().getStringExtra("from") != null && getIntent().getStringExtra("from").equals("h5")) {  //我的奖品h5返回首页
-                fragments.clear();
-                //添加fragment
-                fragments.add(new HomeFragment());
-                fragments.add(new ClassifyFragment());
-                fragments.add(new ActivityFragment());
-                fragments.add(new MineFragment());
-                onClickListener.onClick(homeBottomeSwitcherContainer.getChildAt(0));
-                setListener();
+                changeUi(0);
             }
         } catch (Exception e) {
 
@@ -354,23 +372,6 @@ public class HomePageActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        FragmentManager manager = getSupportFragmentManager();
-        Fragment fragment = manager.findFragmentById(R.id.home_fragment_container);
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-            if (fragment instanceof MineFragment) {
-                ((MineFragment) fragment).mineFragmentBack();
-                return true;
-            } else if (fragment instanceof HomeFragment) {
-                ((HomeFragment) fragment).homeFragmentBack();
-                return true;
-            }
-        }
-        return super.onKeyDown(keyCode, event);
-
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
 
@@ -419,7 +420,7 @@ public class HomePageActivity extends AppCompatActivity {
     //获取最新活动显示角标
     String show = "";
 
-    private void getActivityShow() {
+    private void getActivityShow(final int i) {
         ApiService apiService = BasePresenter.create(8000);
         apiService.getActivityShow()
                 .subscribeOn(Schedulers.io())
@@ -435,12 +436,19 @@ public class HomePageActivity extends AppCompatActivity {
                             ActivityTimeBean activityTimeBean = dataResponse.getDat();
                             if ("1".equals(activityTimeBean.getShow())) {
                                 show = "1";
-                                //显示活动角标
-                                ivLogo.setVisibility(View.VISIBLE);
+                                if (i == 2) {
+                                    //显示活动角标
+                                    Drawable drawable = getResources().getDrawable(R.mipmap.activity_s);
+                                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
+                                    radioActivity.setCompoundDrawables(null, drawable, null, null);
+                                } else {
+                                    //显示活动角标
+                                    Drawable drawable = getResources().getDrawable(R.mipmap.activity_n_red);
+                                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
+                                    radioActivity.setCompoundDrawables(null, drawable, null, null);
+                                }
                             } else {
                                 show = "0";
-                                //隐藏活动角标
-                                ivLogo.setVisibility(View.GONE);
                             }
 
                         } else {

@@ -12,10 +12,10 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
  */
 
 public class AppConst {
-        public static final String BASE_URL = "https://api-syksc.25876.com";///线上服务器
+    //        public static final String BASE_URL = "https://api-syksc.25876.com";///线上服务器
     //    public static final String BASE_URL = "http://192.168.3.250:8080";//:8002/公司内部服务器
 //    public static final String BASE_URL = "http://139.224.199.106:8080";//开发测试服务器
-//    public static final String BASE_URL = "http://192.168.3.137:8080";//测试环境
+    public static final String BASE_URL = "http://192.168.3.137:8080";//测试环境
 //    public static final String BASE_URL = "http://139.224.221.200:8080";//200
 
 

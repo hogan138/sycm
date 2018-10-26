@@ -1,148 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ll_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:id="@+id/ll_main"
     android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/home_fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_weight="1" />
 
-    <include layout="@layout/common_line_1" />
-
-    <LinearLayout
-        android:id="@+id/home_bottome_switcher_container"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/text_49"
-        android:layout_marginTop="@dimen/text_7"
+        android:layout_height="0.5dp"
+        android:background="@color/light_white" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup1"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:layout_alignBottom="@+id/pager"
+        android:layout_centerHorizontal="true"
         android:background="@color/white"
         android:orientation="horizontal">
 
-        <LinearLayout
+        <RadioButton
+            android:id="@+id/radio_main"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/text_12"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:button="@null"
+            android:checked="true"
+            android:drawableTop="@drawable/home"
+            android:drawablePadding="@dimen/text_4"
+            android:enabled="false"
+            android:gravity="center"
+            android:paddingTop="@dimen/text_5"
+            android:text="首页"
+            android:textColor="@color/home_bottom_tv_color"
+            android:textSize="@dimen/text_10"
+            android:textStyle="bold" />
 
-            <ImageView
-                android:layout_width="21dp"
-                android:layout_height="21dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="3dp"
-                android:src="@drawable/home" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/text_5"
-                android:layout_marginBottom="@dimen/text_7"
-                android:text="首页"
-                android:textColor="@color/home_bottom_tv_color"
-                android:textSize="@dimen/text_10"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <LinearLayout
+        <RadioButton
+            android:id="@+id/radio_classify"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:button="@null"
+            android:drawableTop="@drawable/classify"
+            android:drawablePadding="@dimen/text_4"
+            android:gravity="center"
+            android:paddingTop="@dimen/text_5"
+            android:text="分类"
+            android:textColor="@color/home_bottom_tv_color"
+            android:textSize="@dimen/text_10"
+            android:textStyle="bold" />
 
-            <ImageView
-                android:layout_width="21dp"
-                android:layout_height="21dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="3dp"
-                android:src="@drawable/classify" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/text_5"
-                android:layout_marginBottom="@dimen/text_7"
-                android:text="分类"
-                android:textColor="@color/home_bottom_tv_color"
-                android:textSize="@dimen/text_10"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
+        <RadioButton
+            android:id="@+id/radio_activity"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:button="@null"
+            android:drawableTop="@mipmap/activity_n"
+            android:drawablePadding="@dimen/text_4"
+            android:gravity="center"
+            android:paddingTop="@dimen/text_5"
+            android:text="活动"
+            android:textColor="@color/home_bottom_tv_color"
+            android:textSize="@dimen/text_10"
+            android:textStyle="bold" />
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/iv_activity"
-                    android:layout_width="21dp"
-                    android:layout_height="21dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="3dp"
-                    android:src="@drawable/activity" />
-
-                <ImageView
-                    android:id="@+id/iv_logo"
-                    android:layout_width="8dp"
-                    android:layout_height="8dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginLeft="8dp"
-                    android:background="@mipmap/tab_activity_tip" />
-
-            </FrameLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/text_5"
-                android:layout_marginBottom="@dimen/text_7"
-                android:text="活动"
-                android:textColor="@color/home_bottom_tv_color"
-                android:textSize="@dimen/text_10"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
+        <RadioButton
+            android:id="@+id/radio_mine"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/text_12"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="21dp"
-                android:layout_height="21dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="3dp"
-                android:src="@drawable/me" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/text_5"
-                android:layout_marginBottom="@dimen/text_7"
-                android:text="我的"
-                android:textColor="@color/home_bottom_tv_color"
-                android:textSize="@dimen/text_10"
-                android:textStyle="bold" />
-        </LinearLayout>
-    </LinearLayout>
+            android:button="@null"
+            android:drawableTop="@drawable/me"
+            android:drawablePadding="@dimen/text_4"
+            android:gravity="center"
+            android:paddingTop="@dimen/text_5"
+            android:text="我的"
+            android:textColor="@color/home_bottom_tv_color"
+            android:textSize="@dimen/text_10"
+            android:textStyle="bold" />
+    </RadioGroup>
 </LinearLayout>
-

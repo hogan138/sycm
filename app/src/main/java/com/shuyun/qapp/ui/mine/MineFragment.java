@@ -206,7 +206,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
             rlInviteShare.setVisibility(View.VISIBLE);
         }
         //初始化沉浸状态栏
-        ImmersionBar.with(this).statusBarColor(R.color.mine_top).statusBarDarkFont(true).fitsSystemWindows(true).init();
+        ImmersionBar.with(this).statusBarColor(R.color.white).statusBarDarkFont(true).fitsSystemWindows(true).init();
         /**
          * 注册极光推送监听
          */
