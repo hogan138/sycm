@@ -30,6 +30,6 @@
         android:layout_height="@dimen/text_12"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/text_12"
-        android:layout_marginTop="@dimen/text_17"
+        android:layout_marginTop="@dimen/text_18"
         android:src="@mipmap/gomore" />
 </RelativeLayout>

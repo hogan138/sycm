@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ll_real_name_auth"
+    android:id="@+id/ll_withdraw_info"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
@@ -23,7 +23,7 @@
             android:layout_height="20dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/text_15"
-            android:src="@mipmap/real_info_logo" />
+            android:src="@mipmap/withdraw_info_logo" />
 
         <TextView
 
@@ -32,7 +32,7 @@
             android:layout_marginLeft="@dimen/text_15"
             android:layout_toRightOf="@+id/iv_logo"
             android:gravity="center_vertical"
-            android:text="@string/real_name_auth"
+            android:text="提现信息"
             android:textColor="#000000"
             android:textSize="@dimen/text_15"
             android:textStyle="bold" />
@@ -42,7 +42,7 @@
             android:layout_height="50dp"
             android:layout_marginLeft="@dimen/text_9"
             android:gravity="center_vertical"
-            android:text="采用芝麻信用进行认证，更安全，有保障"
+            android:text="信息完善后，3个月不能进行更改"
             android:textColor="@color/login_text"
             android:textSize="@dimen/text_11" />
 
@@ -68,26 +68,26 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tv_real_info"
+                android:id="@+id/tv_withdraw_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/text_15"
-                android:text="@string/real_name_auth"
+                android:text="点击完善提现信息"
                 android:textColor="#000000"
                 android:textSize="@dimen/text_15"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tv_status"
+                android:id="@+id/tv_withdraw_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/text_42"
                 android:layout_toLeftOf="@+id/iv_more"
-                android:text="审核中"
-                android:textColor="#F53434"
+                android:text="已完善"
+                android:textColor="#0194ec"
                 android:textSize="@dimen/text_15" />
 
             <ImageView
@@ -101,14 +101,19 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/tv_description"
+            android:id="@+id/tv_withdraw_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/text_15"
             android:layout_marginBottom="@dimen/text_16"
-            android:text="认证成功后不可修改您的实名信息"
+            android:text="支持支付宝提现，快快补充提现信息哦"
             android:textColor="@color/login_text"
             android:textSize="@dimen/text_11" />
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_10"
+        android:background="@color/color_f5"></View>
 </LinearLayout>

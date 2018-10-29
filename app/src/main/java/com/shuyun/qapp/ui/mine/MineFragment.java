@@ -174,7 +174,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
 //        if (first_run) {
 //            sharedPreferences.edit().putBoolean("First", false).commit();
             //个人信息
-            loadMineHomeData();
+            loadMineHomeData1();
 //        } else {
 //        }
         }
@@ -242,7 +242,8 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
 
         }
 
-
+        //个人信息
+        loadMineHomeData();
     }
 
 
@@ -293,7 +294,6 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                                     } else {
                                         //未实名认证
                                         btnIsNameAuth.setBackgroundResource(R.mipmap.notpass);
-                                        RealNamePopupUtil.showAuthPop(mContext, llMineFragment);
                                     }
 
                                     tvTodayAnswerNum.setText("今日答题次数剩余: " + mineBean.getOpporitunity());
@@ -472,7 +472,6 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                 break;
             case R.id.rl_invite_share:
                 InviteSharePopupUtil.showSharedPop(mContext, llMineFragment);
-//                startActivity(new Intent(mContext, NewCashWithdrawActivity.class));
                 break;
             default:
                 break;
@@ -735,6 +734,56 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
         } else {
             mContext.finish();
         }
+    }
+
+
+    /**
+     * 获取到我的首界面数据
+     */
+
+    private void loadMineHomeData1() {
+        ApiService apiService = BasePresenter.create(8000);
+        apiService.getMineHomeData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<DataResponse<MineBean>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
+
+                    @Override
+                    public void onNext(DataResponse<MineBean> listDataResponse) {
+                        if (listDataResponse.isSuccees()) {
+                            mineBean = listDataResponse.getDat();
+                            if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
+                                try {
+                                    if (1 == mineBean.getCertification()) {
+                                    } else {
+                                        RealNamePopupUtil.showAuthPop(mContext, llMineFragment);
+                                    }
+
+                                } catch (Exception e) {
+
+                                }
+                            } else {
+                            }
+                        } else {
+                            ErrorCodeTools.errorCodePrompt(mContext, listDataResponse.getErr(), listDataResponse.getMsg());
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //保存错误信息
+                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
+                        return;
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
     }
 }
 

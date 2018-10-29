@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.shuyun.qapp.R;
@@ -78,6 +79,8 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
     @BindView(R.id.rl_main)
     RelativeLayout rlMain;
 
+    private int DELYED = 100;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +102,10 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
         tvMoney.setHint(new SpannedString(ss)); // 一定要进行转换,否则属性会消失
 
 
+        handler.postDelayed(runnable, DELYED); //每隔1s执行
+
+
+        //获取红包结合
         Bundle bundle = getIntent().getExtras();
         final String redId = bundle.getString("redId");
 
@@ -176,7 +183,29 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
             }
         }
 
+
     }
+
+
+    //定时器
+    private Handler handler = new Handler();
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                handler.postDelayed(this, DELYED);
+                if (redIdList.size() > 0) {
+                    btnEnter.setEnabled(true);
+                } else {
+                    btnEnter.setEnabled(false);
+                    tvMoney.setText("");
+                }
+            } catch (Exception e) {
+
+            }
+        }
+    };
+
 
     @Override
     public int intiLayout() {
@@ -211,13 +240,15 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
                 inputWithdrawalbean.setType(2);//1:现金提现;2:红包提现;
                 String[] redsId = new String[redIdList.size()];
                 redIdList.toArray(redsId);
+                inputWithdrawalbean.setReds(redsId);
                 /**
                  * 针对哪几个红包提现,多个红包id用逗号分隔
                  * 字符串数组
                  */
-                inputWithdrawalbean.setReds(redsId);
-                if (redIdList.size() > 0) {
-                    if (!EncodeAndStringTool.isStringEmpty(alipayAccount) && !EncodeAndStringTool.isStringEmpty(name) && !EncodeAndStringTool.isStringEmpty(moneyNumber)) {
+                if (EncodeAndStringTool.isStringEmpty(alipayAccount) || EncodeAndStringTool.isStringEmpty(name)) {
+                    ToastUtil.showToast(NewRedWithdrawActivity.this, "请先完善提现信息");
+                } else {
+                    if (redIdList.size() > 0) {
                         CustomLoadingFactory factory = new CustomLoadingFactory();
                         LoadingBar.make(rlMain, factory).show();
                         new Handler().postDelayed(new Runnable() {
@@ -226,9 +257,8 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
                                 redWithDrawal(inputWithdrawalbean);
                             }
                         }, 2000);
-
                     } else {
-                        ToastUtil.showToast(this, "您没有输入支付宝账户、姓名或提现金额,请重新输入!");
+                        ToastUtil.showToast(this, "请选择提现红包金额!");
                     }
                 }
                 break;

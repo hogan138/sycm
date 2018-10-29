@@ -7,24 +7,84 @@
     android:orientation="vertical">
     <!--标题-->
     <include layout="@layout/common_left_title" />
-    <!--修改头像-->
-    <include layout="@layout/change_head_icon" />
 
-    <include layout="@layout/common_line_6" />
-    <!--绑定手机-->
-    <include layout="@layout/bind_phone_num" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <include layout="@layout/common_line_6" />
-    <!--微信绑定-->
-    <include layout="@layout/bind_wechat" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <!--修改头像-->
+            <include layout="@layout/change_head_icon" />
 
-    <include layout="@layout/common_line_6" />
-    <!--实名认证-->
-    <include layout="@layout/real_name_auth" />
+            <include layout="@layout/common_line_6" />
+            <!--绑定手机-->
+            <include layout="@layout/bind_phone_num" />
 
-    <include layout="@layout/common_line_6" />
-    <!--修改密码-->
-    <include layout="@layout/modify_password_num" />
+            <include layout="@layout/common_line_6" />
+            <!--微信绑定-->
+            <include layout="@layout/bind_wechat" />
 
-    <include layout="@layout/common_line_6" />
+            <include layout="@layout/common_line_6" />
+
+            <!--修改密码-->
+            <include layout="@layout/modify_password_num" />
+
+            <!--实名认证-->
+            <include layout="@layout/real_name_auth" />
+
+            <!--提现信息-->
+            <include layout="@layout/withdraw_info" />
+
+            <!--底部信息-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="@dimen/text_15"
+                android:layout_marginBottom="@dimen/text_23"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/btn_contact_our"
+                    android:layout_width="150dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/common_contact_our_bg"
+                    android:stateListAnimator="@null"
+                    android:text="@string/contact_our"
+                    android:textColor="@color/color_4"
+                    android:textSize="@dimen/text_13" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/text_15"
+                    android:text="@string/tip_one"
+                    android:textColor="@color/login_text"
+                    android:textSize="@dimen/text_11" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/text_1"
+                    android:text="@string/tip_two"
+                    android:textColor="@color/login_text"
+                    android:textSize="@dimen/text_11" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/text_1"
+                    android:text="@string/tip_three"
+                    android:textColor="@color/login_text"
+                    android:textSize="@dimen/text_11" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

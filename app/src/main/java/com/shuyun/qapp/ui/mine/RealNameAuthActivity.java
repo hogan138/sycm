@@ -2,7 +2,6 @@ package com.shuyun.qapp.ui.mine;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,16 +9,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.TimeUtils;
-import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
+import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.AuthNameBean;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.LogUtil;
 import com.shuyun.qapp.utils.RegularTool;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
@@ -54,13 +51,24 @@ public class RealNameAuthActivity extends BaseActivity {
     EditText etRealName;//真实名字
     @BindView(R.id.et_id_card)
     EditText etIdCard;//身份证
-    private static final String TAG = "RealNameAuthActivity";
+    @BindView(R.id.tv_phone)
+    TextView tvPhone;
+    @BindView(R.id.tv_error_hint)
+    TextView tvErrorHint;
+    @BindView(R.id.tv_count)
+    TextView tvCount;
+
+    String phone = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         tvCommontitle.setText("实名认证");
+
+        phone = SaveUserInfo.getInstance(this).getUserInfo("phone");
+        //电话号码
+        tvPhone.setText(phone);
 
     }
 
@@ -118,7 +126,7 @@ public class RealNameAuthActivity extends BaseActivity {
                 });
     }
 
-    @OnClick({R.id.iv_back, R.id.btn_confirm})
+    @OnClick({R.id.iv_back, R.id.btn_confirm, R.id.btn_contact_our})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -137,7 +145,8 @@ public class RealNameAuthActivity extends BaseActivity {
                     ToastUtil.showToast(this, "您还没有输入姓名或身份证号,请重新输入!");
                 }
                 break;
-
+            case R.id.btn_contact_our:
+                break;
             default:
                 break;
         }

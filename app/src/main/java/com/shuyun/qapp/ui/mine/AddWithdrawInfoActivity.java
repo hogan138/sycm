@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 
@@ -15,7 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * 提现信息
+ * 新增提现信息
  */
 public class AddWithdrawInfoActivity extends BaseActivity implements View.OnClickListener {
 
@@ -52,6 +53,7 @@ public class AddWithdrawInfoActivity extends BaseActivity implements View.OnClic
         switch (v.getId()) {
             case R.id.rl_back:
                 finish();
+                KeyboardUtils.hideSoftInput(AddWithdrawInfoActivity.this);
                 break;
             case R.id.btn_enter:
                 Intent intent = new Intent(AddWithdrawInfoActivity.this, WithdrawResultActivity.class);

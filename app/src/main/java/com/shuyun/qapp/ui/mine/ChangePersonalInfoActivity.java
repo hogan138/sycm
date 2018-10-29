@@ -1,6 +1,7 @@
 package com.shuyun.qapp.ui.mine;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
@@ -18,12 +19,12 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.TimeUtils;
-import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.ui.login.ChangePasswordActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
@@ -63,8 +64,6 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
     RelativeLayout rlChangeHeadIcon;//修改头像item
     @BindView(R.id.rl_bind_phone_num)
     RelativeLayout rlBindPhoneNum;//绑定手机item
-    @BindView(R.id.rl_real_name_auth)
-    RelativeLayout rlRealNameAuth;//实名认证item
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;
     @BindView(R.id.tv_common_title)
@@ -84,6 +83,22 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
     RelativeLayout rlBindWechat;//微信绑定
     @BindView(R.id.tv_bind_status)
     TextView tvBindStatus;//微信绑定状态
+    @BindView(R.id.tv_real_info)
+    TextView tvRealInfo;
+    @BindView(R.id.tv_description)
+    TextView tvDescription;
+    @BindView(R.id.ll_real_name_auth)
+    LinearLayout llRealNameAuth;
+    @BindView(R.id.tv_withdraw_info)
+    TextView tvWithdrawInfo;
+    @BindView(R.id.tv_withdraw_status)
+    TextView tvWithdrawStatus;
+    @BindView(R.id.tv_withdraw_description)
+    TextView tvWithdrawDescription;
+    @BindView(R.id.ll_withdraw_info)
+    LinearLayout llWithdrawInfo;
+    @BindView(R.id.btn_contact_our)
+    Button btnContactOur;
 
 
     private boolean mIsShowing = false;
@@ -134,18 +149,21 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
         }
 
         tvPhoneNum.setText(SaveUserInfo.getInstance(this).getUserInfo("phone"));
-        int certInfo = Integer.parseInt(SaveUserInfo.getInstance(this).getUserInfo("cert"));
+        int status = Integer.parseInt(SaveUserInfo.getInstance(this).getUserInfo("cert"));
         String CertInfo = SaveUserInfo.getInstance(this).getUserInfo("certinfo");
-        if (1 == certInfo) {
-            tvStatus.setText(CertInfo);
-        } else if (2 == certInfo) {
+        if (1 == status) {
+            tvStatus.setText("认证成功");
+            tvStatus.setTextColor(Color.parseColor("#0194ec"));
+            tvRealInfo.setText(CertInfo);
+        } else if (2 == status) {
             tvStatus.setText("审核中");
-        } else if (0 == certInfo) {
-            tvStatus.setText("未实名认证");
+        } else if (0 == status) {
+            tvRealInfo.setText("点击进行认证");
+            tvStatus.setText("未认证");
+            tvStatus.setTextColor(Color.parseColor("#F53434"));
         } else {
             tvStatus.setText("未通过");
         }
-
 
         handler.post(runnable);
 
@@ -165,7 +183,8 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
     };
 
 
-    @OnClick({R.id.iv_back, R.id.rl_change_head_icon, R.id.rl_bind_phone_num, R.id.rl_bind_wechat, R.id.rl_modify_password, R.id.rl_real_name_auth})
+    @OnClick({R.id.iv_back, R.id.rl_change_head_icon, R.id.rl_bind_phone_num, R.id.rl_bind_wechat, R.id.rl_modify_password,
+            R.id.ll_real_name_auth, R.id.ll_withdraw_info, R.id.btn_contact_our})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -188,12 +207,11 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
                     //微信绑定弹窗
                     showWechatPop();
                 }
-
                 break;
-            case R.id.rl_modify_password:
+            case R.id.rl_modify_password: //修改密码
                 startActivity(new Intent(this, ChangePasswordActivity.class));
                 break;
-            case R.id.rl_real_name_auth:
+            case R.id.ll_real_name_auth: //实名认证
                 int certInfo = Integer.parseInt(SaveUserInfo.getInstance(this).getUserInfo("cert"));
                 if (certInfo == 1) {
                     ToastUtil.showToast(ChangePersonalInfoActivity.this, "实名认证成功后，暂不可再次修改");
@@ -202,6 +220,10 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
                 } else {
                     startActivity(new Intent(this, RealNameAuthActivity.class));
                 }
+                break;
+            case R.id.ll_withdraw_info: //提现信息
+                break;
+            case R.id.btn_contact_our: //联系客服
                 break;
             default:
                 break;

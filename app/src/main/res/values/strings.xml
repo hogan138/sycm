@@ -139,4 +139,5 @@
     <string name="add_info_tip_one">1、提现信息完善后，3个月内不可修改</string>
     <string name="add_info_tip_two">2、用户需自行保证支付宝绑定姓名和账户是否一致，请妥善填写</string>
     <string name="add_info_tip_three">3、支付宝相关信息不可被您的其他全民共进账号重复使用</string>
+    <string name="real_name_tip">1、实名认证一旦审核通过后，不可修改\n2、一个实名认证信息仅可绑定一个手机号\n3、实名信息需保证跟手机号匹配，并且手机号真实有效\n4、当日实名次数仅有3次，如3次全部认证失败，当日不可进行认证</string>
 </resources>

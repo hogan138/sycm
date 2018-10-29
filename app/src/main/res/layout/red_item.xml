@@ -11,6 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:text="0.36元"
         android:textColor="@color/color_37"
         android:textSize="@dimen/text_14" />

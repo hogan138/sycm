@@ -1,95 +1,230 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical"
-    tools:context="com.shuyun.qapp.ui.login.BindPhoneNumActivity">
-
-    <include layout="@layout/common_left_title" />
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="63.5dp"
-        android:layout_marginLeft="@dimen/text_12"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <include layout="@layout/common_left_title" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/text_30"
-            android:text="@string/real_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/text_36"
+            android:background="@color/color_f5"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/text_15"
+            android:text="采用芝麻信用进行认证，更安全，保证您的信息安全"
             android:textColor="@color/color_1"
-            android:textSize="@dimen/text_16" />
+            android:textSize="@dimen/text_12"
+            android:textStyle="bold" />
 
-        <!--真实名字-->
-        <EditText
-            android:id="@+id/et_realName"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/text_10"
-            android:layout_marginRight="@dimen/text_10"
-            android:layout_marginTop="@dimen/text_30"
-            android:layout_weight="1"
-            android:background="@null"
-            android:hint="@string/input_name"
-            android:textColor="@color/color_0"
-            android:textSize="@dimen/text_16" />
+            android:layout_marginTop="@dimen/text_12.5"
+            android:layout_marginBottom="12.5dp"
+            android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="@dimen/text_20"
-            android:layout_height="@dimen/text_20"
-            android:layout_alignParentRight="true"
+            <TextView
+                android:layout_width="131.5dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/text_15"
+                android:text="手机号"
+                android:textColor="@color/color_1"
+                android:textSize="@dimen/text_15"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="123456"
+                android:textColor="@color/login_text"
+                android:textSize="@dimen/text_14" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="@dimen/text_15"
             android:layout_marginRight="@dimen/text_15"
-            android:layout_marginTop="@dimen/text_30"
-            android:src="@mipmap/name" />
-    </LinearLayout>
+            android:background="#C8C7CC"></View>
 
-    <include layout="@layout/common_line_1" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_12.5"
+            android:layout_marginBottom="11.5dp"
+            android:orientation="horizontal">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="45.5dp"
-        android:layout_marginLeft="@dimen/text_12"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+            <TextView
+                android:layout_width="131.5dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/text_15"
+                android:text="@string/real_name"
+                android:textColor="@color/color_1"
+                android:textSize="@dimen/text_15"
+                android:textStyle="bold" />
 
+            <!--真实名字-->
+            <EditText
+                android:id="@+id/et_realName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/text_15"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="请输入姓名"
+                android:textColor="@color/login_text"
+                android:textColorHint="@color/login_text"
+                android:textSize="@dimen/text_14" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="@dimen/text_15"
+            android:layout_marginRight="@dimen/text_15"
+            android:background="#C8C7CC"></View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45.5dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="131.5dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/text_15"
+                android:text="身份证号码"
+                android:textColor="@color/color_1"
+                android:textSize="@dimen/text_15"
+                android:textStyle="bold" />
+            <!--身份证号码-->
+            <EditText
+                android:id="@+id/et_id_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/text_15"
+                android:background="@null"
+                android:hint="请输入身份证号"
+                android:textColor="@color/login_text"
+                android:textColorHint="@color/login_text"
+                android:textSize="@dimen/text_14" />
+            <!--获取验证码按钮,根据情况显示或者隐藏-->
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="@dimen/text_15"
+            android:layout_marginRight="@dimen/text_15"
+            android:background="#C8C7CC"></View>
+
+        <TextView
+            android:id="@+id/tv_error_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/text_15"
+            android:paddingTop="@dimen/text_12.5"
+            android:paddingRight="@dimen/text_15"
+            android:text="姓名和身份证号码不匹配"
+            android:textColor="#F53434"
+            android:textSize="@dimen/text_14"
+            android:textStyle="bold"
+            android:visibility="gone" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/auth"
+            android:lineSpacingExtra="3dp"
+            android:paddingLeft="@dimen/text_15"
+            android:paddingTop="@dimen/text_20"
+            android:paddingRight="@dimen/text_15"
+            android:paddingBottom="@dimen/text_18"
+            android:text="@string/real_name_tip"
             android:textColor="@color/color_1"
+            android:textSize="@dimen/text_12"
+            android:textStyle="bold" />
+
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/text_40"
+            android:layout_marginLeft="@dimen/common_margin"
+            android:layout_marginTop="12dp"
+            android:layout_marginRight="@dimen/common_margin"
+            android:background="@drawable/common_btn_bg_4"
+            android:text="确认"
+            android:textColor="@color/white"
             android:textSize="@dimen/text_16" />
-        <!--身份证号码-->
-        <EditText
-            android:id="@+id/et_id_card"
-            android:layout_width="0dp"
+
+        <TextView
+            android:id="@+id/tv_count"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/text_10"
-            android:layout_weight="1"
-            android:background="@null"
-            android:hint="@string/input_auth"
-            android:textColor="@color/color_0"
-            android:textSize="@dimen/text_16" />
-        <!--获取验证码按钮,根据情况显示或者隐藏-->
-
-
+            android:layout_marginTop="@dimen/text_12.5"
+            android:gravity="center_horizontal"
+            android:text="今日认证剩余次数：3次"
+            android:textColor="@color/color_4"
+            android:textSize="@dimen/text_13"
+            android:textStyle="bold" />
     </LinearLayout>
 
-    <include layout="@layout/common_line_1" />
-
-    <Button
-        android:id="@+id/btn_confirm"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/text_40"
-        android:layout_marginLeft="@dimen/common_margin"
-        android:layout_marginRight="@dimen/common_margin"
-        android:layout_marginTop="67dp"
-        android:background="@drawable/common_btn_bg_4"
-        android:text="@string/confirm"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_18" />
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/text_23"
+        android:orientation="vertical">
 
+        <Button
+            android:id="@+id/btn_contact_our"
+            android:layout_width="150dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/common_contact_our_bg"
+            android:stateListAnimator="@null"
+            android:text="@string/contact_our"
+            android:textColor="@color/color_4"
+            android:textSize="@dimen/text_13" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/text_15"
+            android:text="@string/tip_one"
+            android:textColor="@color/login_text"
+            android:textSize="@dimen/text_11" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/text_1"
+            android:text="@string/tip_two"
+            android:textColor="@color/login_text"
+            android:textSize="@dimen/text_11" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/text_1"
+            android:text="@string/tip_three"
+            android:textColor="@color/login_text"
+            android:textSize="@dimen/text_11" />
+    </LinearLayout>
+</RelativeLayout>

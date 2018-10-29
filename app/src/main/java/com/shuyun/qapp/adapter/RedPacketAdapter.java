@@ -47,7 +47,7 @@ public class RedPacketAdapter extends RecyclerView.Adapter<RedPacketAdapter.View
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final MinePrize minePrize = minePrizes.get(position);
-        holder.tvMoneyNum.setText(minePrize.getAmount());
+        holder.tvMoneyNum.setText(minePrize.getAmount() + "元");
         holder.itemView.setSelected(minePrize.selected);
         if (holder.itemView.isSelected()) {
             holder.tvMoneyNum.setTextColor(Color.parseColor("#ffffff"));

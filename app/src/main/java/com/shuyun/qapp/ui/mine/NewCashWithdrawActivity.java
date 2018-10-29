@@ -15,8 +15,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.shuyun.qapp.R;
@@ -71,13 +73,13 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
     RelativeLayout rlMain;
 
     private String cash;
-    private double myCash;
-    private String moneyNumber;
-    private String alipayAccount;
-    private String name;
+    private double myCash; //可提现金额
+    private String moneyNumber; //输入的金额
+    private double money = 0.0; //输入的金额转double
+    private String alipayAccount; //账户
+    private String name; //名称
     private InputWithdrawalbean inputWithdrawalbean;
 
-    private double money = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +96,7 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
          * 账户现金金额
          */
         cash = getIntent().getStringExtra("cash");
-        tvMyMoney.setHint("可提现金额" + cash + "元");//默认提示
+        tvMyMoney.setText("可提现金额" + cash + "元");//默认提示
 
         /**
          * 将账户现金金额改成浮点类型
@@ -127,6 +129,7 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
         switch (v.getId()) {
             case R.id.rl_back:
                 finish();
+                KeyboardUtils.hideSoftInput(NewCashWithdrawActivity.this);
                 break;
             case R.id.iv_add_user_info:
                 Intent intent = new Intent(NewCashWithdrawActivity.this, AddWithdrawInfoActivity.class);
@@ -140,27 +143,28 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
             case R.id.iv_clear_money:
                 tvMoney.setText("");
                 ivClearMoney.setVisibility(View.GONE);
+                btnEnter.setEnabled(false);
                 break;
             case R.id.btn_enter:
                 alipayAccount = "";//支付宝账户
                 name = "";//支付宝姓名
-                String[] reds = new String[]{};
-                inputWithdrawalbean = new InputWithdrawalbean(moneyNumber, 1, alipayAccount, name, reds);
-                if (myCash >= 50
-                        && money <= myCash
-                        && !EncodeAndStringTool.isStringEmpty(alipayAccount)
-                        && !EncodeAndStringTool.isStringEmpty(name)
-                        && !EncodeAndStringTool.isStringEmpty(moneyNumber)) {
-                    CustomLoadingFactory factory = new CustomLoadingFactory();
-                    LoadingBar.make(rlMain, factory).show();
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadApplyWithdrawal(inputWithdrawalbean);
-                        }
-                    }, 2000);
+                if (EncodeAndStringTool.isStringEmpty(alipayAccount) || EncodeAndStringTool.isStringEmpty(name)) {
+                    ToastUtil.showToast(NewCashWithdrawActivity.this, "请先完善提现信息");
                 } else {
-                    ToastUtil.showToast(NewCashWithdrawActivity.this, "您账户余额不足50元或您输入的金额大于账户余额,请您重新输入!");
+                    String[] reds = new String[]{};
+                    inputWithdrawalbean = new InputWithdrawalbean(moneyNumber, 1, alipayAccount, name, reds);
+                    if (myCash >= 50 && money <= myCash) {
+                        CustomLoadingFactory factory = new CustomLoadingFactory();
+                        LoadingBar.make(rlMain, factory).show();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                loadApplyWithdrawal(inputWithdrawalbean);
+                            }
+                        }, 2000);
+                    } else {
+                        ToastUtil.showToast(NewCashWithdrawActivity.this, "您账户余额不足50元或您输入的金额大于账户余额,请您重新输入!");
+                    }
                 }
                 break;
             default:
@@ -241,11 +245,24 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
                  * 0如果输入文字内容不为空,则显示清空editText内容的图标;
                  * 1如果输入文字内容不为空,则隐藏清空editText内容的图标;
                  */
+                if (!EncodeAndStringTool.isStringEmpty(et)) {
+                    clearPic.setVisibility(View.VISIBLE);
+                } else {
+                    clearPic.setVisibility(View.GONE);
+                }
+                /**
+                 * 0如果输入文字内容不为空,则显示清空editText内容的图标;
+                 * 1如果输入文字内容不为空,则隐藏清空editText内容的图标;
+                 */
                 if (editText.equals(tvMoney)) {
                     moneyNumber = tvMoney.getText().toString().trim();//提现金额
                     //输入文字中的状态
                     if (!EncodeAndStringTool.isStringEmpty(moneyNumber) && !".".equals(moneyNumber)) {
-                        money = Double.parseDouble(moneyNumber);
+                        try {
+                            money = Double.parseDouble(moneyNumber);
+                        } catch (Exception e) {
+
+                        }
                     }
                     if (money < 50 || money > myCash) {//小于50和大于余额 提现按钮不能点击
                         btnEnter.setEnabled(false);
