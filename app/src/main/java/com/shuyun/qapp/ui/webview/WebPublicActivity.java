@@ -79,6 +79,8 @@ public class WebPublicActivity extends BaseActivity {
             bulletin = intent.getStringExtra("bulletin");
         } else if ("cash_rule".equals(name)) {
             tvCommonTitle.setText("现金提现规则");
+        } else if ("red_rule".equals(name)) {
+            tvCommonTitle.setText("红包提现规则");
         }
 
         animationDrawable = (AnimationDrawable) animationIv.getDrawable();
@@ -179,6 +181,8 @@ public class WebPublicActivity extends BaseActivity {
             webView.loadUrl(AppConst.LOOK_RULES);//积分开宝箱规则
         } else if ("cash_rule".equals(name)) {
             webView.loadUrl(AppConst.CASH_WITHDRAW); //现金提现规则
+        } else if ("red_rule".equals(name)) {
+            webView.loadUrl(AppConst.RED_WITHDRAW); //红包提现规则
         }
 
         webView.setWebChromeClient(new WebChromeClient() {

@@ -53,6 +53,7 @@ import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
+import com.shuyun.qapp.ui.mine.NewRedWithdrawActivity;
 import com.shuyun.qapp.ui.mine.RedWithDrawActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
@@ -255,7 +256,7 @@ public class WebPrizeBoxActivity extends BaseActivity {
                                     redPrizeList.add(childMinePrize1);
                                 }
                                 if (!EncodeAndStringTool.isListEmpty(redPrizeList)) {
-                                    Intent intent = new Intent(WebPrizeBoxActivity.this, RedWithDrawActivity.class);
+                                    Intent intent = new Intent(WebPrizeBoxActivity.this, NewRedWithdrawActivity.class);
                                     Bundle bundle = new Bundle();
                                     bundle.putParcelableArrayList("redPrize", (ArrayList<? extends Parcelable>) redPrizeList);
                                     bundle.putString("redId", minePrize.getId());

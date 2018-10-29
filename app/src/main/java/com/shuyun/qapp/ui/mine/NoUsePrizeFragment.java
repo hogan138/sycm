@@ -163,7 +163,7 @@ NoUsePrizeFragment extends Fragment {
                             }
                         }
                         if (!EncodeAndStringTool.isListEmpty(redPrizeList)) {
-                            Intent intent = new Intent(getActivity(), RedWithDrawActivity.class);
+                            Intent intent = new Intent(getActivity(), NewRedWithdrawActivity.class);
                             Bundle bundle = new Bundle();
                             bundle.putParcelableArrayList("redPrize", (ArrayList<? extends Parcelable>) redPrizeList);
                             bundle.putString("redId", minePrize.getId());

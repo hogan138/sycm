@@ -5,17 +5,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.support.animation.SpringAnimation;
-import android.support.animation.SpringForce;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Html;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -37,7 +32,6 @@ import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.AnswerOpptyBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MineBean;
-import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.InformatListenner;
@@ -53,7 +47,6 @@ import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
-import com.shuyun.qapp.utils.ScannerUtils;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.ToastUtil;
 import com.shuyun.qapp.view.CircleImageView;
@@ -61,12 +54,6 @@ import com.shuyun.qapp.view.InviteSharePopupUtil;
 import com.shuyun.qapp.view.RealNamePopupUtil;
 import com.tencent.stat.StatConfig;
 import com.umeng.analytics.MobclickAgent;
-import com.umeng.socialize.ShareAction;
-import com.umeng.socialize.UMShareListener;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
-import com.umeng.socialize.media.UMWeb;
-import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
@@ -79,8 +66,6 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-
-import static com.blankj.utilcode.util.SizeUtils.dp2px;
 
 /**
  * 通用popupwindow
@@ -181,16 +166,18 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-
-//        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("FirstRun", 0);
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            //        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("FirstRun", 0);
 //        Boolean first_run = sharedPreferences.getBoolean("First", true);
 //        if (first_run) {
 //            sharedPreferences.edit().putBoolean("First", false).commit();
-        loadMineHome();
+            //个人信息
+            loadMineHomeData();
 //        } else {
 //        }
+        }
     }
 
     @Override
@@ -240,9 +227,6 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
         if (position != 0) {//根据修改的头像,变更头像
             ivHeaderPic.setImageResource(icon[position - 1]);
         }
-
-        loadMineHomeData();
-
         try {
             if (SaveUserInfo.getInstance(getActivity()).getUserInfo("action_msg") != null && SaveUserInfo.getInstance(getActivity()).getUserInfo("action_msg").equals("action_msg")) {
                 showAddAnswerNum();
@@ -309,6 +293,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                                     } else {
                                         //未实名认证
                                         btnIsNameAuth.setBackgroundResource(R.mipmap.notpass);
+                                        RealNamePopupUtil.showAuthPop(mContext, llMineFragment);
                                     }
 
                                     tvTodayAnswerNum.setText("今日答题次数剩余: " + mineBean.getOpporitunity());
@@ -422,7 +407,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                     //立即提现
                     if (mineBean.getCertification() == 1) {
                         if (1 == mineBean.getWithdraw()) {
-                            Intent intent1 = new Intent(mContext, CashWithdrawalActivity.class);
+                            Intent intent1 = new Intent(mContext, NewCashWithdrawActivity.class);
                             intent1.putExtra("cash", mineBean.getCash());
                             startActivity(intent1);
                         } else if (2 == mineBean.getWithdraw()) {
@@ -486,8 +471,8 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                 startActivity(intent);
                 break;
             case R.id.rl_invite_share:
-//                InviteSharePopupUtil.showSharedPop(mContext, llMineFragment);
-                startActivity(new Intent(mContext, NewCashWithdrawActivity.class));
+                InviteSharePopupUtil.showSharedPop(mContext, llMineFragment);
+//                startActivity(new Intent(mContext, NewCashWithdrawActivity.class));
                 break;
             default:
                 break;
@@ -739,62 +724,6 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
         }
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-    /**
-     * 获取到我的首界面数据
-     */
-    private void loadMineHome() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.getMineHomeData()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<MineBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse<MineBean> listDataResponse) {
-                        if (listDataResponse.isSuccees()) {
-                            mineBean = listDataResponse.getDat();
-                            if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
-
-                                try {
-                                    //是否实名认证
-                                    if (1 == mineBean.getCertification()) {
-                                        //已实名认证
-                                    } else {
-                                        //未实名认证
-                                        RealNamePopupUtil.showAuthPop(mContext, llMineFragment);
-                                    }
-
-                                } catch (Exception e) {
-
-                                }
-                            } else {
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(mContext, listDataResponse.getErr(), listDataResponse.getMsg());
-                        }
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                        return;
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
-    }
 
     /**
      * 监听我的界面返回键

@@ -23,7 +23,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/text_23"
         android:gravity="center_horizontal"
-        android:text="完善成功"
         android:textColor="@color/color_2"
         android:textSize="@dimen/text_15"
         android:textStyle="bold" />

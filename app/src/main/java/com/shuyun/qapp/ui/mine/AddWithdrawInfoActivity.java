@@ -54,7 +54,10 @@ public class AddWithdrawInfoActivity extends BaseActivity implements View.OnClic
                 finish();
                 break;
             case R.id.btn_enter:
-                startActivity(new Intent(AddWithdrawInfoActivity.this, WithdrawResultActivity.class));
+                Intent intent = new Intent(AddWithdrawInfoActivity.this, WithdrawResultActivity.class);
+                intent.putExtra("content", "add");
+                startActivity(intent);
+                finish();
                 break;
             case R.id.btn_contact_our:
                 break;

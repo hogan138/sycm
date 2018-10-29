@@ -57,7 +57,7 @@ import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.answer.AnswerHistoryActivity;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
-import com.shuyun.qapp.ui.mine.RedWithDrawActivity;
+import com.shuyun.qapp.ui.mine.NewRedWithdrawActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -320,7 +320,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                                     }
                                 }
                                 if (!EncodeAndStringTool.isListEmpty(redPrizeList)) {
-                                    Intent intent = new Intent(WebAnswerActivity.this, RedWithDrawActivity.class);
+                                    Intent intent = new Intent(WebAnswerActivity.this, NewRedWithdrawActivity.class);
                                     Bundle bundle = new Bundle();
                                     bundle.putParcelableArrayList("redPrize", (ArrayList<? extends Parcelable>) redPrizeList);
                                     bundle.putString("redId", minePrize.getId());

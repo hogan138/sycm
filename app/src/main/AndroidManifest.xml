@@ -441,7 +441,14 @@
         <activity
             android:name=".ui.mine.AddWithdrawInfoActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.mine.WithdrawResultActivity"></activity>
+        <!--提现结果-->
+        <activity
+            android:name=".ui.mine.WithdrawResultActivity"
+            android:screenOrientation="portrait" />
+        <!--红包提现-->
+        <activity
+            android:name=".ui.mine.NewRedWithdrawActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

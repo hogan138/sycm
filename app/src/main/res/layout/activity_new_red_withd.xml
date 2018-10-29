@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="现金提现"
+            android:text="红包提现"
             android:textColor="@color/color_0"
             android:textSize="@dimen/text_16" />
 
@@ -121,11 +121,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_15"
-            android:text="请输入提现金额"
+            android:text="请选择提现红包"
             android:textColor="@color/color_1"
             android:textSize="@dimen/text_15" />
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/text_15"
@@ -133,7 +133,6 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tv1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="¥"
@@ -144,28 +143,13 @@
                 android:id="@+id/tv_money"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/text_13"
-                android:layout_toRightOf="@+id/tv1"
                 android:background="@null"
-                android:digits="0123456789"
-                android:inputType="number"
-                android:singleLine="true"
                 android:textColor="@color/color_1"
                 android:textColorHint="@color/login_text"
                 android:textSize="@dimen/text_30" />
 
-            <ImageView
-                android:id="@+id/iv_clear_money"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/text_15"
-                android:src="@mipmap/cuowu1"
-                android:visibility="gone" />
-
-        </RelativeLayout>
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
@@ -176,15 +160,24 @@
             android:background="@color/color_28" />
 
         <TextView
-            android:id="@+id/tv_my_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/text_15"
             android:layout_marginTop="@dimen/text_8"
             android:layout_marginRight="@dimen/text_15"
-            android:text="可提现金额200.81元"
-            android:textColor="@color/login_text"
+            android:text="您有如下即时提现红包可以提现"
+            android:textColor="@color/color_1"
             android:textSize="@dimen/text_12" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_red_packet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_12"
+            android:layout_marginTop="@dimen/text_17">
+
+        </android.support.v7.widget.RecyclerView>
+
 
         <Button
             android:id="@+id/btn_enter"
@@ -194,7 +187,7 @@
             android:layout_marginTop="@dimen/text_29"
             android:layout_marginRight="@dimen/common_margin"
             android:background="@drawable/selector_cash_withdraw"
-            android:enabled="false"
+            android:enabled="true"
             android:text="立即提现"
             android:textColor="@color/white"
             android:textSize="@dimen/text_16" />

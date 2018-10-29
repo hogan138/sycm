@@ -16,7 +16,7 @@
 
         <RelativeLayout
             android:id="@+id/iv_back"
-            android:layout_width="wrap_content"
+            android:layout_width="68dp"
             android:layout_height="match_parent">
 
             <ImageView
@@ -25,7 +25,7 @@
                 android:layout_height="@dimen/text_20"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/text_18"
+                android:layout_marginLeft="@dimen/text_15"
                 android:src="@mipmap/backb" />
         </RelativeLayout>
 

@@ -1,6 +1,7 @@
 package com.shuyun.qapp.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,9 +47,13 @@ public class RedPacketAdapter extends RecyclerView.Adapter<RedPacketAdapter.View
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final MinePrize minePrize = minePrizes.get(position);
-        ImageLoaderManager.LoadImage(mContext, minePrize.getPicture(), holder.ivRedPacket, R.mipmap.zw02);
         holder.tvMoneyNum.setText(minePrize.getAmount());
         holder.itemView.setSelected(minePrize.selected);
+        if (holder.itemView.isSelected()) {
+            holder.tvMoneyNum.setTextColor(Color.parseColor("#ffffff"));
+        } else {
+            holder.tvMoneyNum.setTextColor(Color.parseColor("#0194ec"));
+        }
         /**
          * 红包点击事件
          */
@@ -59,6 +64,11 @@ public class RedPacketAdapter extends RecyclerView.Adapter<RedPacketAdapter.View
                     int position = holder.getLayoutPosition();
                     minePrize.selected = !minePrize.selected;
                     holder.itemView.setSelected(minePrize.selected);
+                    if (holder.itemView.isSelected()) {
+                        holder.tvMoneyNum.setTextColor(Color.parseColor("#ffffff"));
+                    } else {
+                        holder.tvMoneyNum.setTextColor(Color.parseColor("#0194ec"));
+                    }
                     mOnItemClickListener.onItemClick(holder.itemView, position);
                 }
             });
@@ -74,8 +84,6 @@ public class RedPacketAdapter extends RecyclerView.Adapter<RedPacketAdapter.View
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.iv_red_packet)
-        ImageView ivRedPacket;//红包图片
         @BindView(R.id.tv_money_num)
         TextView tvMoneyNum;//金额
 
