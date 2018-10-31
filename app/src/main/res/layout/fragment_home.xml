@@ -143,12 +143,26 @@
                     android:layout_marginLeft="@dimen/text_12"
                     android:layout_marginTop="@dimen/text_4"
                     android:layout_marginRight="@dimen/text_5"
-                    android:paddingBottom="@dimen/text_12">
+                   >
 
                 </android.support.v7.widget.RecyclerView>
             </RelativeLayout>
 
-            <include layout="@layout/group_sort" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:descendantFocusability="blocksDescendants">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_group_sort_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/text_12"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginRight="@dimen/text_5">
+
+                </android.support.v7.widget.RecyclerView>
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -161,7 +175,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/text_12"
                     android:text="客服热线：400-650-9258"
                     android:textColor="@color/color_35"
                     android:textSize="@dimen/text_12" />

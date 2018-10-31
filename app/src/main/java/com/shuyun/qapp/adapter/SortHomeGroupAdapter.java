@@ -1,17 +1,18 @@
 package com.shuyun.qapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.GroupBean;
-import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.bean.GroupClassifyBean;
+import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
@@ -23,18 +24,20 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.blankj.utilcode.util.ActivityUtils.startActivity;
+
 /**
- * 大家都在答题组列表
+ * 首页分类二级适配器
  */
 
-public class HotGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class SortHomeGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
     //题组分类集合
-    private List<GroupBean> groupBeans;
+    private List<GroupClassifyBean.ChildrenBean> childrenBeanList;
 
-    public HotGroupAdapter(List<GroupBean> groupBeans, Context mContext) {
-        this.groupBeans = groupBeans;
+    public SortHomeGroupAdapter(List<GroupClassifyBean.ChildrenBean> childrenBeanList, Context mContext) {
+        this.childrenBeanList = childrenBeanList;
         this.mContext = mContext;
         notifyDataSetChanged();
     }
@@ -54,24 +57,22 @@ public class HotGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        GroupBean groupBean = groupBeans.get(position);
+        final GroupClassifyBean.ChildrenBean childrenBean = childrenBeanList.get(position);
         try {
-            ((MyViewHolder) holder).tvGroupTitle.setText(groupBean.getName() + "");
-            ImageLoaderManager.LoadImage(mContext, groupBean.getPicture(), ((MyViewHolder) holder).ivGroupBg, R.mipmap.zw01);
-
+            ((MyViewHolder) holder).tvGroupTitle.setText(childrenBean.getName() + "");
+            ImageLoaderManager.LoadImage(mContext, childrenBean.getPicture(), ((MyViewHolder) holder).ivGroupBg, R.mipmap.zw01);
             /**
              * 同时不为null才可以点击
              */
-            if (!EncodeAndStringTool.isObjectEmpty(mOnItemClickListener)) {
-                ((MyViewHolder) holder).rlItem.setOnClickListener(new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v) {
-                        int position = holder.getLayoutPosition();
-                        mOnItemClickListener.onItemClick(((MyViewHolder) holder).rlItem, position);
-
-                    }
-                });
-            }
+            ((MyViewHolder) holder).rlItem.setOnClickListener(new OnMultiClickListener() {
+                @Override
+                public void onMultiClick(View v) {
+                    Intent intent = new Intent(mContext, WebAnswerActivity.class);
+                    intent.putExtra("groupId", childrenBean.getId());
+                    intent.putExtra("h5Url", childrenBean.getH5Url());
+                    startActivity(intent);
+                }
+            });
         } catch (Exception e) {
 
         }
@@ -79,7 +80,7 @@ public class HotGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemCount() {
-        return (groupBeans == null) ? 0 : groupBeans.size();
+        return (childrenBeanList == null) ? 0 : childrenBeanList.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
@@ -98,17 +99,4 @@ public class HotGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     }
 
-
-    GroupTreeAdapter.OnItemClickListener mOnItemClickListener;
-
-    /**
-     * 设置RecyclerView点击事件
-     */
-    public interface OnItemClickListener {
-        void onItemClick(View view, int position);
-    }
-
-    public void setOnItemClickLitsener(GroupTreeAdapter.OnItemClickListener mOnItemClickLitsener) {
-        this.mOnItemClickListener = mOnItemClickLitsener;
-    }
 }

@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.shuyun.qapp.R;
@@ -15,7 +14,7 @@ import com.shuyun.qapp.bean.GroupClassifyBean;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
-import com.shuyun.qapp.view.RoundImageView;
+import com.shuyun.qapp.view.OvalImageView;
 
 import java.util.List;
 
@@ -54,38 +53,27 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
 
         try {
             ImageLoaderManager.LoadImage(context, childrenBean.getPicture(), holder.ivGroup, R.mipmap.zw01);//题组图片
-
-            //百分比
-            if (!EncodeAndStringTool.isListEmpty(childrenBean.getTags())) {
-                holder.llInfo.setVisibility(View.VISIBLE);
-                holder.title1.setText(childrenBean.getTags().get(0).getTagName());
-                holder.title2.setText(childrenBean.getTags().get(1).getTagName());
-                holder.title3.setText(childrenBean.getTags().get(2).getTagName());
-                holder.tvScore.setText(childrenBean.getTags().get(0).getRemark());
-                holder.tvCash.setText(childrenBean.getTags().get(1).getRemark());
-                holder.tvRightNumber.setText(childrenBean.getTags().get(2).getRemark());
+            if (!EncodeAndStringTool.isStringEmpty(childrenBean.getMerchantName())) {
+                holder.tvCompany.setVisibility(View.VISIBLE);
+                holder.tvCompany.setText("出题方：" + childrenBean.getMerchantName()); //出题方
             } else {
-                holder.llInfo.setVisibility(View.GONE);
+                holder.tvCompany.setVisibility(View.GONE);
             }
 
-            //消耗答题次数
-            if (!EncodeAndStringTool.isStringEmpty(childrenBean.getOpportunityLabel())) {
-                holder.tvConsumeAnswerNum.setVisibility(View.VISIBLE);
-                holder.tvConsumeAnswerNum.setText(childrenBean.getOpportunityLabel());
+            if (childrenBean.isRecommend()) { //推荐标签
+                holder.recommendLogo.setVisibility(View.VISIBLE);
             } else {
-                holder.tvConsumeAnswerNum.setVisibility(View.GONE);
+                holder.recommendLogo.setVisibility(View.GONE);
             }
 
-            //答题攻略
-            if (!EncodeAndStringTool.isStringEmpty(childrenBean.getTag())) {
-                holder.tvSolvingStrategy.setVisibility(View.VISIBLE);
-                holder.tvSolvingStrategy.setText(childrenBean.getTag().replaceAll(" ", "\n"));
+            if (!EncodeAndStringTool.isStringEmpty(childrenBean.getRemark())) {
+                holder.tvTag.setVisibility(View.VISIBLE);
+                holder.tvTag.setText(childrenBean.getRemark().replaceAll(" ", "\n"));
             } else {
-                holder.tvSolvingStrategy.setVisibility(View.GONE);
+                holder.tvTag.setVisibility(View.GONE);
             }
 
-            holder.tvTheme.setText(childrenBean.getName());//题组名称
-
+            holder.tvTitle.setText(childrenBean.getName());
             if ((!EncodeAndStringTool.isObjectEmpty(mOnItemChildClickLitsener))) {
                 holder.itemView.setOnClickListener(new OnMultiClickListener() {
                     @Override
@@ -110,27 +98,15 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.iv_group)
-        RoundImageView ivGroup;//题组图片
-        @BindView(R.id.tv_consume_answer_num)
-        TextView tvConsumeAnswerNum;//不消耗答题次数
-        @BindView(R.id.tv_solving_strategy)
-        TextView tvSolvingStrategy;//有答题攻略 TODO
-        @BindView(R.id.tv_theme)
-        TextView tvTheme;//题组名字
-        @BindView(R.id.title1)
-        TextView title1;
-        @BindView(R.id.title2)
-        TextView title2;
-        @BindView(R.id.title3)
-        TextView title3;
-        @BindView(R.id.ll_info)
-        LinearLayout llInfo;
-        @BindView(R.id.tv_score)
-        TextView tvScore; //获得积分
-        @BindView(R.id.tv_cash)
-        TextView tvCash; //获得现金
-        @BindView(R.id.tv_right_number)
-        TextView tvRightNumber; //正确率
+        OvalImageView ivGroup;//题组图片
+        @BindView(R.id.tv_company)
+        TextView tvCompany; //出题方
+        @BindView(R.id.recommend_logo)
+        TextView recommendLogo; //推荐标签
+        @BindView(R.id.tv_tag)
+        TextView tvTag; //答题攻略
+        @BindView(R.id.tv_title)
+        TextView tvTitle; //标题
 
         public ViewHolder(View itemView) {
             super(itemView);

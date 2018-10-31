@@ -138,6 +138,26 @@ public class GroupClassifyBean {
         private String tag;//答题攻略
         private List<TagsBean> tags;  //积分、现金、准确率
 
+        //是否推荐
+        private boolean recommend;
+        private String remark;
+
+        public boolean isRecommend() {
+            return recommend;
+        }
+
+        public void setRecommend(boolean recommend) {
+            this.recommend = recommend;
+        }
+
+        public String getRemark() {
+            return remark;
+        }
+
+        public void setRemark(String remark) {
+            this.remark = remark;
+        }
+
         public String getTag() {
             return tag;
         }
@@ -145,6 +165,7 @@ public class GroupClassifyBean {
         public void setTag(String tag) {
             this.tag = tag;
         }
+
         public String getOpportunityLabel() {
             return opportunityLabel;
         }

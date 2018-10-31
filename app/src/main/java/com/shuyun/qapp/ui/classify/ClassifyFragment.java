@@ -59,7 +59,6 @@ public class ClassifyFragment extends Fragment {
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle;
     Unbinder unbinder;
-    private static final String TAG = "ClassifyFragment";
     private Activity mContext;
 
     @Override
@@ -223,11 +222,6 @@ public class ClassifyFragment extends Fragment {
             LinearLayoutManager layoutManager2 = new LinearLayoutManager(mContext);
             rvGroup.setLayoutManager(layoutManager2);
             rvGroup.setAdapter(childrenGroupAdapter);
-            //进入动画
-//            LayoutAnimationController controller = new LayoutAnimationController(MyLayoutAnimationHelper.getAnimationSetFromLeft());
-//            controller.setDelay(0.5f);
-//            rvGroup.setLayoutAnimation(controller);
-//            rvGroup.scheduleLayoutAnimation();
         } catch (Exception e) {
 
         }

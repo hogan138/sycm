@@ -2,185 +2,84 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="145dp"
+    android:layout_height="166dp"
     android:layout_marginLeft="@dimen/text_6"
     android:layout_marginTop="6dp"
     android:layout_marginRight="6dp"
     android:background="@mipmap/home_group_two"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="129dp">
 
-        <com.shuyun.qapp.view.RoundImageView
+        <com.shuyun.qapp.view.OvalImageView
             android:id="@+id/iv_group"
-            android:layout_width="120dp"
-            android:layout_height="86dp"
-            android:layout_marginLeft="@dimen/text_15"
-            android:layout_marginTop="@dimen/text_10"
+            android:layout_width="match_parent"
+            android:layout_height="129dp"
+            android:layout_marginLeft="@dimen/text_2"
+            android:layout_marginRight="@dimen/text_2"
             android:scaleType="centerCrop"
             android:src="@mipmap/home_group_two"
-            app:radius="@dimen/text_5"
             app:type="round" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
+            android:layout_height="129dp"
+            android:layout_marginLeft="@dimen/text_2"
+            android:layout_marginRight="@dimen/text_2"
+            android:background="@drawable/classify_gray_bg_image"></RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_company"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="13dp"
-            android:layout_marginTop="@dimen/text_10"
-            android:layout_marginRight="6dp"
-            android:orientation="vertical">
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/text_15"
+            android:layout_marginBottom="@dimen/text_3"
+            android:text="出题方："
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_11" />
 
-            <TextView
-                android:id="@+id/tv_theme"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:textColor="@color/color_1"
-                android:textSize="@dimen/text_15"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/recommend_logo"
+            android:layout_width="@dimen/text_30"
+            android:layout_height="@dimen/text_15"
+            android:layout_below="@+id/iv_group_bg1"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/text_12"
+            android:layout_marginRight="@dimen/text_12"
+            android:background="@mipmap/home_recommond_logo"
+            android:gravity="center"
+            android:text="推荐"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_10"
+            android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/tv_solving_strategy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:textColor="@color/login_text"
-                android:textSize="@dimen/text_11" />
+        <TextView
+            android:id="@+id/tv_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/recommend_logo"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/text_10"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="@dimen/text_12"
+            android:gravity="right"
+            android:lineSpacingExtra="@dimen/text_2"
+            android:text="答题功略"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_10" />
 
-            <TextView
-                android:id="@+id/tv_consume_answer_num"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="@dimen/text_5"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:textColor="@color/color_4"
-                android:textSize="@dimen/text_10" />
-        </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_info"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
-        android:layout_marginBottom="@dimen/text_7"
-        android:orientation="horizontal">
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/title1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="@color/color_35"
-                    android:textSize="@dimen/text_12" />
-
-                <TextView
-                    android:id="@+id/tv_score"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_toRightOf="@+id/iv_group_bg"
-                    android:textColor="@color/login_text"
-                    android:textSize="@dimen/text_11" />
-
-            </LinearLayout>
-
-        </RelativeLayout>
-
-        <View
-            android:layout_width="@dimen/text_0.5"
-            android:layout_height="23dp"
-            android:layout_gravity="center_vertical"
-            android:background="@color/color_36"></View>
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/title2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="@color/color_35"
-                    android:textSize="@dimen/text_12" />
-
-                <TextView
-                    android:id="@+id/tv_cash"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_toRightOf="@+id/iv_group_bg"
-                    android:textColor="@color/login_text"
-                    android:textSize="@dimen/text_11" />
-
-            </LinearLayout>
-
-        </RelativeLayout>
-
-        <View
-            android:layout_width="@dimen/text_0.5"
-            android:layout_height="23dp"
-            android:layout_gravity="center_vertical"
-            android:background="@color/color_36"></View>
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/title3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="@color/color_35"
-                    android:textSize="@dimen/text_12" />
-
-                <TextView
-                    android:id="@+id/tv_right_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_toRightOf="@+id/iv_group_bg"
-                    android:textColor="@color/login_text"
-                    android:textSize="@dimen/text_11" />
-
-            </LinearLayout>
-
-        </RelativeLayout>
-
-    </LinearLayout>
-
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/text_7"
+        android:text="标题"
+        android:textColor="@color/color_1"
+        android:textSize="@dimen/text_15" />
 </LinearLayout>

@@ -34,6 +34,7 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.GroupTreeAdapter;
 import com.shuyun.qapp.adapter.HomeBannerAdapter;
+import com.shuyun.qapp.adapter.HomeSortAdapter;
 import com.shuyun.qapp.adapter.HotGroupAdapter;
 import com.shuyun.qapp.adapter.MarkBannerAdapter;
 import com.shuyun.qapp.base.BasePresenter;
@@ -68,7 +69,6 @@ import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.GlideUtils;
 import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.NotificationsUtils;
 import com.shuyun.qapp.utils.OnMultiClickListener;
@@ -102,6 +102,8 @@ import io.reactivex.schedulers.Schedulers;
  * 首页
  */
 public class HomeFragment extends Fragment {
+    @BindView(R.id.tv_invite)
+    TextView tvInvite; //分享
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle;//标题
     @BindView(R.id.iv_common_right_icon)
@@ -114,72 +116,8 @@ public class HomeFragment extends Fragment {
     LinearLayout llMarqueeView; //跑马灯布局
     @BindView(R.id.marqueeView)
     MarqueeView marqueeView;//跑马灯
-    @BindView(R.id.rl_active)
-    RelativeLayout rlActive;//活动
-    @BindView(R.id.rl_life)
-    RelativeLayout rlLife;//生活
-    @BindView(R.id.rl_culture)
-    RelativeLayout rlCulture;//文学
-    @BindView(R.id.rl_video)
-    RelativeLayout rlVideo;//影视剧
-    @BindView(R.id.rl_music)
-    RelativeLayout rlMusic;//音乐
-    @BindView(R.id.rl_history)
-    RelativeLayout rlHistory;//历史
-    @BindView(R.id.rl_edu)
-    RelativeLayout rlEdu;//教育
-    @BindView(R.id.rl_more)
-    RelativeLayout rlMore;//更多
     @BindView(R.id.rv_hot_group)
     RecyclerView rvHotGroup;//热门题组
-    @BindView(R.id.iv_group_icon01)
-    ImageView ivGroupIcon01;//题组分类1
-    @BindView(R.id.tv_hot01)
-    TextView tvHot01;
-    @BindView(R.id.tv_group_name01)
-    TextView tvGroupName01;
-    @BindView(R.id.iv_group_icon02)
-    ImageView ivGroupIcon02;//题组分类2
-    @BindView(R.id.tv_hot02)
-    TextView tvHot02;
-    @BindView(R.id.tv_group_name02)
-    TextView tvGroupName02;
-    @BindView(R.id.iv_group_icon03)
-    ImageView ivGroupIcon03;//题组分类3
-    @BindView(R.id.tv_hot03)
-    TextView tvHot03;
-    @BindView(R.id.tv_group_name03)
-    TextView tvGroupName03;
-    @BindView(R.id.iv_group_icon04)
-    ImageView ivGroupIcon04;//题组分类4
-    @BindView(R.id.tv_hot04)
-    TextView tvHot04;
-    @BindView(R.id.tv_group_name04)
-    TextView tvGroupName04;
-    @BindView(R.id.iv_group_icon05)
-    ImageView ivGroupIcon05;//题组分类5
-    @BindView(R.id.tv_hot05)
-    TextView tvHot05;
-    @BindView(R.id.tv_group_name05)
-    TextView tvGroupName05;
-    @BindView(R.id.iv_group_icon06)
-    ImageView ivGroupIcon06;//题组分类6
-    @BindView(R.id.tv_hot06)
-    TextView tvHot06;
-    @BindView(R.id.tv_group_name06)
-    TextView tvGroupName06;
-    @BindView(R.id.iv_group_icon07)
-    ImageView ivGroupIcon07;//题组分类7
-    @BindView(R.id.tv_hot07)
-    TextView tvHot07;
-    @BindView(R.id.tv_group_name07)
-    TextView tvGroupName07;
-    @BindView(R.id.iv_more)
-    ImageView ivMore;//题组分类8
-    @BindView(R.id.tv_hot08)
-    TextView tvHot08;
-    @BindView(R.id.tv_group_name08)
-    TextView tvGroupName08;
     @BindView(R.id.iv_bx)
     ImageView ivBx;//宝箱抖动的动画
     Unbinder unbinder;
@@ -207,8 +145,20 @@ public class HomeFragment extends Fragment {
     RelativeLayout rlCommendOne; //推荐题组1
     @BindView(R.id.rl_commend_two)
     RelativeLayout rlCommendTwo; //推荐题组2
-    @BindView(R.id.tv_invite)
-    TextView tvInvite; //分享
+    @BindView(R.id.tv_group_tag1_one)
+    TextView tvGroupTag1One; //推荐题组1标签
+    @BindView(R.id.tv_group_tag1_two)
+    TextView tvGroupTag1Two;
+    @BindView(R.id.recommend_logo1)
+    TextView recommendLogo1;
+    @BindView(R.id.tv_group_tag2_one)
+    TextView tvGroupTag2One;  //推荐题组2标签
+    @BindView(R.id.tv_group_tag2_two)
+    TextView tvGroupTag2Two;
+    @BindView(R.id.recommend_logo2)
+    TextView recommendLogo2;
+    @BindView(R.id.rv_group_sort_group)
+    RecyclerView rvGroupSortGroup; //分类
 
 
     /**
@@ -217,13 +167,6 @@ public class HomeFragment extends Fragment {
     private List<GroupBean> groupBeans;
 
     private Activity mContext;
-    private GroupClassifyBean groupClassifyBean0;
-    private GroupClassifyBean groupClassifyBean1;
-    private GroupClassifyBean groupClassifyBean2;
-    private GroupClassifyBean groupClassifyBean3;
-    private GroupClassifyBean groupClassifyBean4;
-    private GroupClassifyBean groupClassifyBean5;
-    private GroupClassifyBean groupClassifyBean6;
     private MyReceiver msgReceiver;
 
     @Override
@@ -324,8 +267,6 @@ public class HomeFragment extends Fragment {
     }
 
     @OnClick({R.id.tv_invite, R.id.iv_common_right_icon,
-            R.id.rl_active, R.id.rl_life, R.id.rl_culture, R.id.rl_video,
-            R.id.rl_music, R.id.rl_history, R.id.rl_edu, R.id.rl_more,
             R.id.tv_number1, R.id.tv_number2, R.id.ll_change_group,
             R.id.rl_commend_one, R.id.rl_commend_two
     })
@@ -359,46 +300,6 @@ public class HomeFragment extends Fragment {
                     intent.putExtra("h5Url", recommendGroup2.getH5Url());
                     startActivity(intent);
                 }
-                break;
-            case R.id.rl_active://活动
-                Intent intent0 = new Intent(mContext, ClassifyActivity.class);
-                intent0.putExtra("id", groupClassifyBean0.getId());
-                startActivity(intent0);
-                break;
-            case R.id.rl_life://生活
-                Intent intent1 = new Intent(mContext, ClassifyActivity.class);
-                intent1.putExtra("id", groupClassifyBean1.getId());
-                startActivity(intent1);
-                break;
-            case R.id.rl_culture://文学
-                Intent intent2 = new Intent(mContext, ClassifyActivity.class);
-                intent2.putExtra("id", groupClassifyBean2.getId());
-                startActivity(intent2);
-                break;
-            case R.id.rl_video://影视剧
-                Intent intent3 = new Intent(mContext, ClassifyActivity.class);
-                intent3.putExtra("id", groupClassifyBean3.getId());
-                startActivity(intent3);
-                break;
-            case R.id.rl_music://音乐
-                Intent intent4 = new Intent(mContext, ClassifyActivity.class);
-                intent4.putExtra("id", groupClassifyBean4.getId());
-                startActivity(intent4);
-                break;
-            case R.id.rl_history://历史
-                Intent intent5 = new Intent(mContext, ClassifyActivity.class);
-                intent5.putExtra("id", groupClassifyBean5.getId());
-                startActivity(intent5);
-                break;
-            case R.id.rl_edu://教育
-                Intent intent6 = new Intent(mContext, ClassifyActivity.class);
-                intent6.putExtra("id", groupClassifyBean6.getId());
-                startActivity(intent6);
-                break;
-            case R.id.rl_more://更多
-                Intent intent7 = new Intent(mContext, ClassifyActivity.class);
-                intent7.putExtra("id", 0);
-                startActivity(intent7);
                 break;
             case R.id.tv_number1: //客服电话
                 Intent intent = new Intent(Intent.ACTION_CALL);
@@ -686,26 +587,12 @@ public class HomeFragment extends Fragment {
                                         if (!EncodeAndStringTool.isListEmpty(groupBeans)) {
                                             recommendIndex = 0;
                                             rollRecommendGroup();
+                                            if (groupBeans.size() == 2) {
+                                                llChangeGroup.setVisibility(View.GONE);
+                                            } else {
+                                                llChangeGroup.setVisibility(View.VISIBLE);
+                                            }
                                         }
-//                                        if (!EncodeAndStringTool.isListEmpty(groupBeans)) {
-//                                            rvRecomendGroup.setHasFixedSize(true);
-//                                            rvRecomendGroup.setNestedScrollingEnabled(false);
-//                                            RecommendGroupAdapter recommendGroupAdapter = new RecommendGroupAdapter(groupBeans, mContext);
-//                                            recommendGroupAdapter.setOnItemClickLitsener(new GroupTreeAdapter.OnItemClickListener() {
-//                                                @Override
-//                                                public void onItemClick(View view, int position) {
-//                                                    int groupId = groupBeans.get(position).getId();
-//                                                    Intent intent = new Intent(mContext, WebAnswerActivity.class);
-//                                                    intent.putExtra("groupId", groupId);
-//                                                    intent.putExtra("h5Url", groupBeans.get(position).getH5Url());
-//                                                    startActivity(intent);
-//                                                }
-//                                            });
-//
-//                                            GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1);
-//                                            rvRecomendGroup.setLayoutManager(gridLayoutManager);
-//                                            rvRecomendGroup.setAdapter(recommendGroupAdapter);
-//                                        }
                                     }
 
                                     if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getOften())) { //常答题组
@@ -775,46 +662,23 @@ public class HomeFragment extends Fragment {
                                         }
                                     }
                                     if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getTree())) {  //分类
+                                        final List<GroupClassifyBean> groupClassifyBeans = homeGroupsBean.getTree();
                                         try {
-                                            List<GroupClassifyBean> groupClassifyBeans = homeGroupsBean.getTree();
-                                            groupClassifyBean0 = groupClassifyBeans.get(0);
-                                            groupClassifyBean1 = groupClassifyBeans.get(1);
-                                            groupClassifyBean2 = groupClassifyBeans.get(2);
-                                            groupClassifyBean3 = groupClassifyBeans.get(3);
-                                            groupClassifyBean4 = groupClassifyBeans.get(4);
-                                            groupClassifyBean5 = groupClassifyBeans.get(5);
-                                            groupClassifyBean6 = groupClassifyBeans.get(6);
-                                            if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean0)) {
-                                                GlideUtils.LoadCircleImage(mContext, groupClassifyBean0.getPicture(), ivGroupIcon01);
-                                                tvGroupName01.setText(groupClassifyBean0.getName());
-                                            }
-                                            if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean1)) {
-                                                GlideUtils.LoadCircleImage(mContext, groupClassifyBean1.getPicture(), ivGroupIcon02);
-                                                tvGroupName02.setText(groupClassifyBean1.getName());
-                                            }
-                                            if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean2)) {
-                                                GlideUtils.LoadCircleImage(mContext, groupClassifyBean2.getPicture(), ivGroupIcon03);
-                                                tvGroupName03.setText(groupClassifyBean2.getName());
-                                            }
-                                            if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean3)) {
-                                                GlideUtils.LoadCircleImage(mContext, groupClassifyBean3.getPicture(), ivGroupIcon04);
-                                                tvGroupName04.setText(groupClassifyBean3.getName());
-                                            }
-                                            if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean4)) {
-                                                GlideUtils.LoadCircleImage(mContext, groupClassifyBean4.getPicture(), ivGroupIcon05);
-                                                tvGroupName05.setText(groupClassifyBean4.getName());
-                                            }
-                                            if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean5)) {
-                                                GlideUtils.LoadCircleImage(mContext, groupClassifyBean5.getPicture(), ivGroupIcon06);
-                                                tvGroupName06.setText(groupClassifyBean5.getName());
-                                            }
-                                            if (!EncodeAndStringTool.isObjectEmpty(groupClassifyBean6)) {
-                                                GlideUtils.LoadCircleImage(mContext, groupClassifyBean6.getPicture(), ivGroupIcon07);
-                                                tvGroupName07.setText(groupClassifyBean6.getName());
-                                            }
-                                            ivMore.setImageResource(R.mipmap.more);
-                                            tvGroupName08.setText("更多");
-
+                                            rvGroupSortGroup.setHasFixedSize(true);
+                                            rvGroupSortGroup.setNestedScrollingEnabled(false);
+                                            HomeSortAdapter hotGroupAdapter = new HomeSortAdapter(groupClassifyBeans, mContext);
+                                            hotGroupAdapter.setOnItemClickLitsener(new GroupTreeAdapter.OnItemClickListener() {
+                                                @Override
+                                                public void onItemClick(View view, int position) {
+                                                    int groupId = groupClassifyBeans.get(position).getId();
+                                                    Intent intent1 = new Intent(mContext, ClassifyActivity.class);
+                                                    intent1.putExtra("id", groupId);
+                                                    startActivity(intent1);
+                                                }
+                                            });
+                                            GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1);
+                                            rvGroupSortGroup.setLayoutManager(gridLayoutManager);
+                                            rvGroupSortGroup.setAdapter(hotGroupAdapter);
                                         } catch (Exception e) {
                                         }
                                     }
@@ -888,6 +752,36 @@ public class HomeFragment extends Fragment {
                 if (!EncodeAndStringTool.isStringEmpty(recommendGroup1.getPicture())) {
                     ImageLoaderManager.LoadImage(mContext, recommendGroup1.getPicture(), ivGroupBg1, R.mipmap.zw01);
                 }
+                if (recommendGroup1.isRecommend()) {
+                    recommendLogo1.setVisibility(View.VISIBLE);
+                } else {
+                    recommendLogo1.setVisibility(View.GONE);
+                }
+                if (!EncodeAndStringTool.isStringEmpty(recommendGroup1.getRemark())) {
+                    String[] temp = null;
+                    temp = recommendGroup1.getRemark().split(" ");
+                    if (temp.length == 0) {
+                        tvGroupTag1One.setVisibility(View.INVISIBLE);
+                        tvGroupTag1Two.setVisibility(View.INVISIBLE);
+                    } else if (temp.length == 1) {
+                        tvGroupTag1One.setVisibility(View.VISIBLE);
+                        tvGroupTag1One.setText(temp[0]);
+                        tvGroupTag1Two.setVisibility(View.INVISIBLE);
+                    } else if (temp.length == 2) {
+                        tvGroupTag1One.setVisibility(View.VISIBLE);
+                        tvGroupTag1One.setText(temp[0]);
+                        tvGroupTag1Two.setVisibility(View.VISIBLE);
+                        tvGroupTag1Two.setText(temp[1]);
+                    } else if (temp.length == 3) {
+                        tvGroupTag1One.setVisibility(View.VISIBLE);
+                        tvGroupTag1One.setText(temp[0] + "  " + temp[1]);
+                        tvGroupTag1Two.setVisibility(View.VISIBLE);
+                        tvGroupTag1Two.setText(temp[2]);
+                    }
+                } else {
+                    tvGroupTag1One.setVisibility(View.INVISIBLE);
+                    tvGroupTag1Two.setVisibility(View.INVISIBLE);
+                }
             }
             /**
              * 设置推荐右侧推荐题组的值,界面显示在推荐题组右侧
@@ -898,6 +792,36 @@ public class HomeFragment extends Fragment {
                 }
                 if (!EncodeAndStringTool.isStringEmpty(recommendGroup2.getPicture())) {
                     ImageLoaderManager.LoadImage(mContext, recommendGroup2.getPicture(), ivGroupBg2, R.mipmap.zw01);
+                }
+                if (recommendGroup2.isRecommend()) {
+                    recommendLogo2.setVisibility(View.VISIBLE);
+                } else {
+                    recommendLogo2.setVisibility(View.GONE);
+                }
+                if (!EncodeAndStringTool.isStringEmpty(recommendGroup2.getRemark())) {
+                    String[] temp = null;
+                    temp = recommendGroup2.getRemark().split(" ");
+                    if (temp.length == 0) {
+                        tvGroupTag2One.setVisibility(View.INVISIBLE);
+                        tvGroupTag2Two.setVisibility(View.INVISIBLE);
+                    } else if (temp.length == 1) {
+                        tvGroupTag2One.setVisibility(View.VISIBLE);
+                        tvGroupTag2One.setText(temp[0]);
+                        tvGroupTag2Two.setVisibility(View.INVISIBLE);
+                    } else if (temp.length == 2) {
+                        tvGroupTag2One.setVisibility(View.VISIBLE);
+                        tvGroupTag2One.setText(temp[0]);
+                        tvGroupTag2Two.setVisibility(View.VISIBLE);
+                        tvGroupTag2Two.setText(temp[1]);
+                    } else if (temp.length == 3) {
+                        tvGroupTag1One.setVisibility(View.VISIBLE);
+                        tvGroupTag2One.setText(temp[0] + "  " + temp[1]);
+                        tvGroupTag2Two.setVisibility(View.VISIBLE);
+                        tvGroupTag2Two.setText(temp[2]);
+                    }
+                } else {
+                    tvGroupTag2One.setVisibility(View.INVISIBLE);
+                    tvGroupTag2Two.setVisibility(View.INVISIBLE);
                 }
             }
         } catch (Exception e) {

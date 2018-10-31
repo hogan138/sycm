@@ -70,7 +70,8 @@
             android:gravity="center"
             android:text="推荐"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_10" />
+            android:textSize="@dimen/text_10"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -136,7 +137,8 @@
             android:gravity="center"
             android:text="推荐"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_10" />
+            android:textSize="@dimen/text_10"
+            android:visibility="gone" />
     </RelativeLayout>
 
 

@@ -8,7 +8,7 @@
     android:layout_marginRight="@dimen/text_8"
     android:background="@mipmap/home_group_all_bg">
 
-    <com.shuyun.qapp.view.RoundImageView
+    <com.shuyun.qapp.view.OvalImageView
         android:id="@+id/iv_group_bg"
         android:layout_width="match_parent"
         android:layout_height="104dp"
@@ -16,7 +16,6 @@
         android:layout_marginRight="@dimen/text_2"
         android:scaleType="centerCrop"
         android:src="@mipmap/zw01"
-        app:radius="@dimen/text_5"
         app:type="round" />
 
     <TextView
@@ -29,7 +28,6 @@
         android:singleLine="true"
         android:text="标题"
         android:textColor="@color/color_1"
-        android:textSize="@dimen/text_15"
-        android:textStyle="bold" />
+        android:textSize="@dimen/text_15" />
 
 </RelativeLayout>
