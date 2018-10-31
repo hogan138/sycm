@@ -8,26 +8,32 @@
     android:layout_marginRight="@dimen/text_8"
     android:background="@mipmap/home_group_all_bg">
 
-    <com.shuyun.qapp.view.OvalImageView
-        android:id="@+id/iv_group_bg"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="104dp"
-        android:layout_marginLeft="@dimen/text_2"
-        android:layout_marginRight="@dimen/text_2"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/zw01"
-        app:type="round" />
+        android:layout_height="match_parent"
+        android:background="?android:attr/selectableItemBackground">
 
-    <TextView
-        android:id="@+id/tv_group_title"
-        android:layout_width="match_parent"
-        android:layout_height="33dp"
-        android:layout_below="@+id/iv_group_bg"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:singleLine="true"
-        android:text="标题"
-        android:textColor="@color/color_1"
-        android:textSize="@dimen/text_15" />
+        <com.shuyun.qapp.view.OvalImageView
+            android:id="@+id/iv_group_bg"
+            android:layout_width="match_parent"
+            android:layout_height="104dp"
+            android:layout_marginLeft="@dimen/text_2"
+            android:layout_marginRight="@dimen/text_2"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/zw01"
+            app:type="round" />
+
+        <TextView
+            android:id="@+id/tv_group_title"
+            android:layout_width="match_parent"
+            android:layout_height="33dp"
+            android:layout_below="@+id/iv_group_bg"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="标题"
+            android:textColor="@color/color_1"
+            android:textSize="@dimen/text_15" />
+    </RelativeLayout>
 
 </RelativeLayout>
