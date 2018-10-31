@@ -57,6 +57,11 @@
             <!--banner轮播图-->
             <include layout="@layout/layout_banner" />
 
+            <!--推荐题组-->
+            <include layout="@layout/recommend_group_question" />
+
+            <include layout="@layout/recommend_group_item" />
+
             <!--活动布局-->
             <LinearLayout
                 android:id="@+id/activityRegion"
@@ -67,12 +72,10 @@
                 android:layout_marginRight="@dimen/text_15"
                 android:orientation="horizontal"></LinearLayout>
 
-            <!--推荐题组-->
-            <include layout="@layout/recommend_group_question" />
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:descendantFocusability="blocksDescendants">
 
                 <android.support.v7.widget.RecyclerView

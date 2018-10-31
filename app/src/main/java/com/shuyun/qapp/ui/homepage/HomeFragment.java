@@ -11,11 +11,11 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +27,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.blankj.utilcode.constant.TimeConstants;
 import com.blankj.utilcode.util.TimeUtils;
@@ -37,7 +36,6 @@ import com.shuyun.qapp.adapter.GroupTreeAdapter;
 import com.shuyun.qapp.adapter.HomeBannerAdapter;
 import com.shuyun.qapp.adapter.HotGroupAdapter;
 import com.shuyun.qapp.adapter.MarkBannerAdapter;
-import com.shuyun.qapp.adapter.RecommendGroupAdapter;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.BannerBean;
 import com.shuyun.qapp.bean.BannerItem;
@@ -68,7 +66,6 @@ import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.webview.WebBannerActivity;
 import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
-import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.GlideUtils;
@@ -79,6 +76,7 @@ import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.view.InviteSharePopupUtil;
+import com.shuyun.qapp.view.OvalImageView;
 import com.shuyun.qapp.view.RealNamePopupUtil;
 import com.shuyun.qapp.view.RoundImageView;
 import com.sunfusheng.marqueeview.MarqueeView;
@@ -91,7 +89,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import cn.kevin.banner.BannerAdapter;
 import cn.kevin.banner.BannerViewPager;
 import cn.kevin.banner.IBannerItem;
 import cn.kevin.banner.transformer.YZoomTransFormer;
@@ -200,6 +197,22 @@ public class HomeFragment extends Fragment {
     TextView tvNumber1;  //客服电话
     @BindView(R.id.tv_number2)
     TextView tvNumber2; //招商电话
+    @BindView(R.id.ll_change_group)
+    LinearLayout llChangeGroup;
+    @BindView(R.id.iv_group_bg1)
+    OvalImageView ivGroupBg1;
+    @BindView(R.id.tv_group_name1)
+    TextView tvGroupName1;
+    @BindView(R.id.iv_group_bg2)
+    OvalImageView ivGroupBg2;
+    @BindView(R.id.tv_group_name2)
+    TextView tvGroupName2;
+
+
+    /**
+     * 网络获取到推荐题组列表
+     */
+    private List<GroupBean> groupBeans;
 
     private Activity mContext;
     private GroupClassifyBean groupClassifyBean0;
@@ -311,7 +324,7 @@ public class HomeFragment extends Fragment {
     @OnClick({R.id.iv_invite, R.id.iv_common_right_icon,
             R.id.rl_active, R.id.rl_life, R.id.rl_culture, R.id.rl_video,
             R.id.rl_music, R.id.rl_history, R.id.rl_edu, R.id.rl_more,
-            R.id.tv_number1, R.id.tv_number2
+            R.id.tv_number1, R.id.tv_number2, R.id.ll_change_group
     })
     public void click(View view) {
         switch (view.getId()) {
@@ -321,6 +334,10 @@ public class HomeFragment extends Fragment {
             case R.id.iv_common_right_icon:
                 ivCommonRightIcon.setImageResource(R.mipmap.message_n);//右侧消息按钮;
                 startActivity(new Intent(mContext, InformationActivity.class));
+                break;
+            case R.id.ll_change_group:
+                //轮训换题组
+                rollRecommendGroup();
                 break;
             case R.id.rl_active://活动
                 Intent intent0 = new Intent(mContext, ClassifyActivity.class);
@@ -644,26 +661,30 @@ public class HomeFragment extends Fragment {
                                 final HomeGroupsBean homeGroupsBean = listDataResponse.getDat();
                                 if (!EncodeAndStringTool.isObjectEmpty(homeGroupsBean)) {
                                     if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getRecommend())) { //推荐题组
-                                        final List<GroupBean> groupBeans = homeGroupsBean.getRecommend();
+                                        groupBeans = homeGroupsBean.getRecommend();
                                         if (!EncodeAndStringTool.isListEmpty(groupBeans)) {
-                                            rvRecomendGroup.setHasFixedSize(true);
-                                            rvRecomendGroup.setNestedScrollingEnabled(false);
-                                            RecommendGroupAdapter recommendGroupAdapter = new RecommendGroupAdapter(groupBeans, mContext);
-                                            recommendGroupAdapter.setOnItemClickLitsener(new GroupTreeAdapter.OnItemClickListener() {
-                                                @Override
-                                                public void onItemClick(View view, int position) {
-                                                    int groupId = groupBeans.get(position).getId();
-                                                    Intent intent = new Intent(mContext, WebAnswerActivity.class);
-                                                    intent.putExtra("groupId", groupId);
-                                                    intent.putExtra("h5Url", groupBeans.get(position).getH5Url());
-                                                    startActivity(intent);
-                                                }
-                                            });
-
-                                            GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1);
-                                            rvRecomendGroup.setLayoutManager(gridLayoutManager);
-                                            rvRecomendGroup.setAdapter(recommendGroupAdapter);
+                                            recommendIndex = 0;
+                                            rollRecommendGroup();
                                         }
+//                                        if (!EncodeAndStringTool.isListEmpty(groupBeans)) {
+//                                            rvRecomendGroup.setHasFixedSize(true);
+//                                            rvRecomendGroup.setNestedScrollingEnabled(false);
+//                                            RecommendGroupAdapter recommendGroupAdapter = new RecommendGroupAdapter(groupBeans, mContext);
+//                                            recommendGroupAdapter.setOnItemClickLitsener(new GroupTreeAdapter.OnItemClickListener() {
+//                                                @Override
+//                                                public void onItemClick(View view, int position) {
+//                                                    int groupId = groupBeans.get(position).getId();
+//                                                    Intent intent = new Intent(mContext, WebAnswerActivity.class);
+//                                                    intent.putExtra("groupId", groupId);
+//                                                    intent.putExtra("h5Url", groupBeans.get(position).getH5Url());
+//                                                    startActivity(intent);
+//                                                }
+//                                            });
+//
+//                                            GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1);
+//                                            rvRecomendGroup.setLayoutManager(gridLayoutManager);
+//                                            rvRecomendGroup.setAdapter(recommendGroupAdapter);
+//                                        }
                                     }
 
                                     if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getOften())) { //常答题组
@@ -800,6 +821,67 @@ public class HomeFragment extends Fragment {
                     public void onComplete() {
                     }
                 });
+    }
+
+    GroupBean recommendGroup1;
+    GroupBean recommendGroup2;
+    int recommendIndex = 0;
+
+    /**
+     * 根据角标i的值,两个一组轮询推荐题组列表
+     */
+    private void rollRecommendGroup() {
+        /**
+         * 判断推荐题组数据是否为空
+         */
+        if (EncodeAndStringTool.isListEmpty(groupBeans)) {
+            return;
+        }
+        /**
+         * 如果角标大于等于推荐题组数据长度,将角标值为零
+         */
+        if (recommendIndex >= groupBeans.size()) {
+            recommendIndex = 0;
+        }
+        recommendGroup1 = groupBeans.get(recommendIndex);//获取角标处的推荐题组,显示在推荐题组左侧
+        /***
+         * 如果角标+1不大于推荐题组数据长度,获取角标+1处的推荐题组,显示在推荐题组右侧
+         * 否则获取角标为0处推荐题组数据,显示在推荐题组右侧,并将角标值为1
+         */
+        if (recommendIndex + 1 < groupBeans.size()) {
+            recommendGroup2 = groupBeans.get(recommendIndex + 1);
+            recommendIndex += 2;
+        } else {
+            recommendGroup2 = groupBeans.get(0);
+            recommendIndex = 1;
+        }
+
+        try {
+            /**
+             * 设置推荐左侧题组的值,界面显示在推荐题组左侧
+             */
+            if (!EncodeAndStringTool.isObjectEmpty(recommendGroup1)) {
+                if (!EncodeAndStringTool.isStringEmpty(recommendGroup1.getName())) {
+                    tvGroupName1.setText(recommendGroup1.getName() + "");
+                }
+                if (!EncodeAndStringTool.isStringEmpty(recommendGroup1.getPicture())) {
+                    ImageLoaderManager.LoadImage(mContext, recommendGroup1.getPicture(), ivGroupBg1, R.mipmap.zw01);
+                }
+            }
+            /**
+             * 设置推荐右侧推荐题组的值,界面显示在推荐题组右侧
+             */
+            if (!EncodeAndStringTool.isObjectEmpty(recommendGroup2)) {
+                if (!EncodeAndStringTool.isStringEmpty(recommendGroup2.getName())) {
+                    tvGroupName2.setText(recommendGroup2.getName() + "");
+                }
+                if (!EncodeAndStringTool.isStringEmpty(recommendGroup2.getPicture())) {
+                    ImageLoaderManager.LoadImage(mContext, recommendGroup2.getPicture(), ivGroupBg2, R.mipmap.zw01);
+                }
+            }
+        } catch (Exception e) {
+
+        }
     }
 
     /**
@@ -941,6 +1023,9 @@ public class HomeFragment extends Fragment {
         unbinder.unbind();
     }
 
+
+    CountDownTimer timer;
+
     @Override
     public void onResume() {
         super.onResume();
@@ -962,6 +1047,23 @@ public class HomeFragment extends Fragment {
          * 获取宝箱数量
          */
         loadTreasureBoxNum();
+
+        //5秒更新推荐题组
+        timer = new CountDownTimer(5 * 1000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                if (!EncodeAndStringTool.isListEmpty(groupBeans)) {
+                    //倒计时5秒切換一下推荐题组
+                    rollRecommendGroup();
+                }
+                timer.start();
+            }
+        }.start();
 
     }
 
