@@ -56,8 +56,6 @@ public class RecommendGroupAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         try {
             ((MyViewHolder) holder).tvGroupTitle.setText(groupBean.getName() + "");
             ImageLoaderManager.LoadImage(mContext, groupBean.getPicture(), ((MyViewHolder) holder).ivGroupBg, R.mipmap.zw01);
-            ((MyViewHolder) holder).ivRecommend.setVisibility(View.VISIBLE);
-
             //百分比
             if (!EncodeAndStringTool.isListEmpty(groupBean.getTags())) {
                 ((MyViewHolder) holder).llInfo.setVisibility(View.VISIBLE);
@@ -118,8 +116,6 @@ public class RecommendGroupAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         TextView tvGroupTitle;//题组标题
         @BindView(R.id.rl_item)
         RelativeLayout rlItem;
-        @BindView(R.id.iv_recommend)
-        ImageView ivRecommend;
         @BindView(R.id.ll_info)
         LinearLayout llInfo;
         @BindView(R.id.title1)

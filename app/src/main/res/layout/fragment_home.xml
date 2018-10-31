@@ -4,7 +4,7 @@
     android:id="@+id/ll_home_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_f5"
+    android:background="@color/white"
     tools:context="com.shuyun.qapp.ui.homepage.HomeFragment">
 
     <RelativeLayout
@@ -29,14 +29,15 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/text_12" />
 
-        <ImageView
-            android:id="@+id/iv_invite"
-            android:layout_width="@dimen/text_20"
+        <TextView
+            android:id="@+id/tv_invite"
+            android:layout_width="68dp"
             android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/text_15"
-            android:layout_toLeftOf="@+id/iv_common_right_icon"
-            android:src="@mipmap/share" />
+            android:gravity="center_vertical"
+            android:paddingLeft="16dp"
+            android:text="分享"
+            android:textColor="@color/color_1"
+            android:textSize="@dimen/text_15" />
 
         <View
             android:layout_width="match_parent"
@@ -68,34 +69,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/text_15"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="@dimen/text_15"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="@dimen/text_14"
                 android:orientation="horizontal"></LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:descendantFocusability="blocksDescendants">
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_recomend_group"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/text_12"
-                    android:layout_marginRight="@dimen/text_12"
-                    android:paddingTop="@dimen/text_2"
-                    android:paddingBottom="@dimen/text_12">
-
-                </android.support.v7.widget.RecyclerView>
-            </RelativeLayout>
-
-            <include layout="@layout/group_sort" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:background="@color/home_line" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -107,14 +83,14 @@
                     android:id="@+id/ll_often"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/text_10"
+                    android:layout_marginTop="@dimen/text_12"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="@dimen/text_5"
                         android:layout_height="@dimen/text_14"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/text_12"
+                        android:layout_marginLeft="@dimen/text_15"
                         android:layout_marginRight="@dimen/text_5"
                         android:background="@color/color_4" />
 
@@ -124,7 +100,7 @@
                         android:layout_gravity="center_vertical"
                         android:text="@string/home_always"
                         android:textColor="@color/color_0"
-                        android:textSize="@dimen/text_14" />
+                        android:textSize="@dimen/text_15" />
 
                 </LinearLayout>
 
@@ -140,9 +116,18 @@
                     app:point_drawable="@drawable/banner_selector"
                     app:point_gravity="bottom_center" />
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/color_f5"></View>
             <!--跑马灯效果-->
             <include layout="@layout/horse_race_lamp" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/color_f5"></View>
             <!--热门提组-->
             <include layout="@layout/hot_group_question_head" />
 
@@ -156,12 +141,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/text_12"
-                    android:layout_marginTop="@dimen/text_2"
-                    android:layout_marginRight="@dimen/text_12"
+                    android:layout_marginTop="@dimen/text_4"
+                    android:layout_marginRight="@dimen/text_5"
                     android:paddingBottom="@dimen/text_12">
 
                 </android.support.v7.widget.RecyclerView>
             </RelativeLayout>
+
+            <include layout="@layout/group_sort" />
 
             <LinearLayout
                 android:layout_width="match_parent"

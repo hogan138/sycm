@@ -183,10 +183,6 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.iv_bx)
     ImageView ivBx;//宝箱抖动的动画
     Unbinder unbinder;
-    @BindView(R.id.iv_invite)
-    ImageView ivInvite; //分享
-    @BindView(R.id.rv_recomend_group)
-    RecyclerView rvRecomendGroup; //推荐题组
     @BindView(R.id.ll_often)
     LinearLayout llOften; //常答题组title
     @BindView(R.id.always_banner)
@@ -198,7 +194,7 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.tv_number2)
     TextView tvNumber2; //招商电话
     @BindView(R.id.ll_change_group)
-    LinearLayout llChangeGroup;
+    LinearLayout llChangeGroup; //换一换
     @BindView(R.id.iv_group_bg1)
     OvalImageView ivGroupBg1;
     @BindView(R.id.tv_group_name1)
@@ -207,6 +203,12 @@ public class HomeFragment extends Fragment {
     OvalImageView ivGroupBg2;
     @BindView(R.id.tv_group_name2)
     TextView tvGroupName2;
+    @BindView(R.id.rl_commend_one)
+    RelativeLayout rlCommendOne; //推荐题组1
+    @BindView(R.id.rl_commend_two)
+    RelativeLayout rlCommendTwo; //推荐题组2
+    @BindView(R.id.tv_invite)
+    TextView tvInvite; //分享
 
 
     /**
@@ -246,9 +248,9 @@ public class HomeFragment extends Fragment {
          * 检测微信是否安装,如果没有安装,需不显示分享按钮;如果安装了微信则显示分享按钮.
          */
         if (!MyApplication.mWxApi.isWXAppInstalled()) {
-            ivInvite.setVisibility(View.GONE);
+            tvInvite.setVisibility(View.GONE);
         } else {
-            ivInvite.setVisibility(View.VISIBLE);
+            tvInvite.setVisibility(View.VISIBLE);
         }
         tvCommonTitle.setText("全民共进");
         ivCommonRightIcon.setImageResource(R.mipmap.message_n);//右侧消息按钮;
@@ -321,14 +323,15 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    @OnClick({R.id.iv_invite, R.id.iv_common_right_icon,
+    @OnClick({R.id.tv_invite, R.id.iv_common_right_icon,
             R.id.rl_active, R.id.rl_life, R.id.rl_culture, R.id.rl_video,
             R.id.rl_music, R.id.rl_history, R.id.rl_edu, R.id.rl_more,
-            R.id.tv_number1, R.id.tv_number2, R.id.ll_change_group
+            R.id.tv_number1, R.id.tv_number2, R.id.ll_change_group,
+            R.id.rl_commend_one, R.id.rl_commend_two
     })
     public void click(View view) {
         switch (view.getId()) {
-            case R.id.iv_invite://邀请分享
+            case R.id.tv_invite://邀请分享
                 InviteSharePopupUtil.showSharedPop(mContext, llHomeFragment);
                 break;
             case R.id.iv_common_right_icon:
@@ -338,6 +341,24 @@ public class HomeFragment extends Fragment {
             case R.id.ll_change_group:
                 //轮训换题组
                 rollRecommendGroup();
+                break;
+            case R.id.rl_commend_one://推荐题组一
+                if (!EncodeAndStringTool.isObjectEmpty(recommendGroup1)) {
+                    int groupId = recommendGroup1.getId();
+                    Intent intent = new Intent(mContext, WebAnswerActivity.class);
+                    intent.putExtra("groupId", groupId);
+                    intent.putExtra("h5Url", recommendGroup1.getH5Url());
+                    startActivity(intent);
+                }
+                break;
+            case R.id.rl_commend_two://推荐题组二
+                if (!EncodeAndStringTool.isObjectEmpty(recommendGroup2)) {
+                    int groupId = recommendGroup2.getId();
+                    Intent intent = new Intent(mContext, WebAnswerActivity.class);
+                    intent.putExtra("groupId", groupId);
+                    intent.putExtra("h5Url", recommendGroup2.getH5Url());
+                    startActivity(intent);
+                }
                 break;
             case R.id.rl_active://活动
                 Intent intent0 = new Intent(mContext, ClassifyActivity.class);
@@ -747,7 +768,7 @@ public class HomeFragment extends Fragment {
                                                 }
                                             });
 
-                                            GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1);
+                                            GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2);
                                             rvHotGroup.setLayoutManager(gridLayoutManager);
                                             rvHotGroup.setAdapter(hotGroupAdapter);
                                         } catch (Exception e) {
