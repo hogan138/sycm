@@ -53,7 +53,7 @@ public class GroupTreeAdapter extends RecyclerView.Adapter<GroupTreeAdapter.View
         ImageLoaderManager.LoadImage(mContext, classifyBean.getPicture(), holder.ivItem, R.mipmap.zw01);
         if (classifyBeans.get(position).isFlag()) {
             holder.rlSort.setSelected(true);
-            holder.tvSortName.setTextColor(mContext.getResources().getColor(R.color.color_3));
+            holder.tvSortName.setTextColor(mContext.getResources().getColor(R.color.color_35));
         } else {
             holder.tvSortName.setTextColor(mContext.getResources().getColor(R.color.color_35));
             holder.rlSort.setSelected(false);
@@ -65,7 +65,7 @@ public class GroupTreeAdapter extends RecyclerView.Adapter<GroupTreeAdapter.View
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(selectedPosition == position)
+                    if (selectedPosition == position)
                         return;
                     selectedPosition = position;
                     mOnItemClickListener.onItemClick(holder.itemView, position);

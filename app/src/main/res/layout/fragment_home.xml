@@ -108,7 +108,7 @@
                     android:id="@+id/always_banner"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/B_viewPager_02"
-                    android:layout_margin="@dimen/text_10"
+                    android:layout_margin="@dimen/text_15"
                     app:around_visible="true"
                     app:item_margin="12dp"
                     app:marginLeft="36dp"
@@ -142,8 +142,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/text_12"
                     android:layout_marginTop="@dimen/text_4"
-                    android:layout_marginRight="@dimen/text_5"
-                   >
+                    android:layout_marginRight="@dimen/text_5">
 
                 </android.support.v7.widget.RecyclerView>
             </RelativeLayout>

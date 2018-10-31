@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#f5f5f5"
+    android:orientation="vertical"
     tools:context="com.shuyun.qapp.ui.classify.ClassifyFragment">
 
     <include layout="@layout/common_left_title" />
@@ -17,6 +17,7 @@
             android:id="@+id/rv_group_sort"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/text_6"
             android:layout_weight="2">
 
         </android.support.v7.widget.RecyclerView>
