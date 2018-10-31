@@ -47,8 +47,8 @@
             android:layout_height="@dimen/text_15"
             android:layout_below="@+id/iv_group_bg1"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/text_12"
-            android:layout_marginRight="@dimen/text_12"
+            android:layout_marginTop="@dimen/text_11"
+            android:layout_marginRight="@dimen/text_11"
             android:background="@mipmap/home_recommond_logo"
             android:gravity="center"
             android:text="推荐"
@@ -62,14 +62,29 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/recommend_logo"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="@dimen/text_10"
             android:layout_marginTop="4dp"
-            android:layout_marginRight="@dimen/text_12"
+            android:layout_marginRight="@dimen/text_11"
             android:gravity="right"
             android:lineSpacingExtra="@dimen/text_2"
             android:text="答题功略"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_10" />
+            android:textSize="@dimen/text_10"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_tag1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/recommend_logo"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="11dp"
+            android:layout_marginRight="@dimen/text_11"
+            android:gravity="right"
+            android:lineSpacingExtra="@dimen/text_2"
+            android:text="答题功略"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_10"
+            android:visibility="gone" />
 
     </RelativeLayout>
 

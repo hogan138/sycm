@@ -67,13 +67,21 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
             }
 
             if (!EncodeAndStringTool.isStringEmpty(childrenBean.getRemark())) {
-                holder.tvTag.setVisibility(View.VISIBLE);
-                holder.tvTag.setText(childrenBean.getRemark().replaceAll(" ", "\n"));
+                if (childrenBean.isRecommend()) { //标签
+                    holder.tvTag.setVisibility(View.VISIBLE);
+                    holder.tvTag1.setVisibility(View.GONE);
+                    holder.tvTag.setText(childrenBean.getRemark().replaceAll(" ", "\n"));
+                } else {
+                    holder.tvTag.setVisibility(View.GONE);
+                    holder.tvTag1.setVisibility(View.VISIBLE);
+                    holder.tvTag1.setText(childrenBean.getRemark().replaceAll(" ", "\n"));
+                }
             } else {
                 holder.tvTag.setVisibility(View.GONE);
+                holder.tvTag1.setVisibility(View.GONE);
             }
 
-            holder.tvTitle.setText(childrenBean.getName());
+            holder.tvTitle.setText(childrenBean.getName()); //题组名称
             if ((!EncodeAndStringTool.isObjectEmpty(mOnItemChildClickLitsener))) {
                 holder.itemView.setOnClickListener(new OnMultiClickListener() {
                     @Override
@@ -107,6 +115,8 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
         TextView tvTag; //答题攻略
         @BindView(R.id.tv_title)
         TextView tvTitle; //标题
+        @BindView(R.id.tv_tag1)
+        TextView tvTag1; //标题1
 
         public ViewHolder(View itemView) {
             super(itemView);

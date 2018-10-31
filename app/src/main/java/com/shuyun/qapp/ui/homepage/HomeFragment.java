@@ -20,6 +20,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
@@ -133,6 +135,8 @@ public class HomeFragment extends Fragment {
     TextView tvNumber2; //招商电话
     @BindView(R.id.ll_change_group)
     LinearLayout llChangeGroup; //换一换
+    @BindView(R.id.iv_change)
+    ImageView ivChange; //环形图
     @BindView(R.id.iv_group_bg1)
     OvalImageView ivGroupBg1;
     @BindView(R.id.tv_group_name1)
@@ -280,6 +284,12 @@ public class HomeFragment extends Fragment {
                 startActivity(new Intent(mContext, InformationActivity.class));
                 break;
             case R.id.ll_change_group:
+                Animation circle_anim = AnimationUtils.loadAnimation(mContext, R.anim.anim_round_rotate);
+                LinearInterpolator interpolator = new LinearInterpolator();  //设置匀速旋转，在xml文件中设置会出现卡顿
+                circle_anim.setInterpolator(interpolator);
+                if (circle_anim != null) {
+                    ivChange.startAnimation(circle_anim);  //开始动画
+                }
                 //轮训换题组
                 rollRecommendGroup();
                 break;

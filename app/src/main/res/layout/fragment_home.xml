@@ -88,7 +88,7 @@
 
                     <ImageView
                         android:layout_width="@dimen/text_5"
-                        android:layout_height="@dimen/text_14"
+                        android:layout_height="@dimen/text_15"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/text_15"
                         android:layout_marginRight="@dimen/text_5"
