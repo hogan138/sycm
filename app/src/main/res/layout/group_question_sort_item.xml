@@ -2,33 +2,38 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rl_sort"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/common_item_height"
+    android:layout_height="@dimen/text_50"
     android:background="@drawable/selector_1">
 
-    <View
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#eeeeee" />
+        android:layout_height="match_parent"
+        android:background="?android:attr/selectableItemBackground">
 
-    <ImageView
-        android:id="@+id/iv_sort_item"
-        android:layout_width="@dimen/text_17"
-        android:layout_height="@dimen/text_17"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/text_12" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#eeeeee" />
 
-    <TextView
-        android:id="@+id/tv_sort_name"
-        android:layout_width="wrap_content"
-        android:layout_height="17dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/text_6"
-        android:layout_marginRight="6dp"
-        android:layout_toRightOf="@+id/iv_sort_item"
-        android:singleLine="true"
-        android:text="@string/active"
-        android:textColor="@color/color_7"
-        android:textSize="@dimen/text_13" />
+        <ImageView
+            android:id="@+id/iv_sort_item"
+            android:layout_width="@dimen/text_17"
+            android:layout_height="@dimen/text_17"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/text_12" />
 
+        <TextView
+            android:id="@+id/tv_sort_name"
+            android:layout_width="wrap_content"
+            android:layout_height="17dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/text_6"
+            android:layout_marginRight="6dp"
+            android:layout_toRightOf="@+id/iv_sort_item"
+            android:singleLine="true"
+            android:text="@string/active"
+            android:textColor="@color/color_7"
+            android:textSize="@dimen/text_13" />
+    </RelativeLayout>
 
 </RelativeLayout>

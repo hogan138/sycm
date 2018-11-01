@@ -1,0 +1,82 @@
+package com.shuyun.qapp.bean;
+
+/**
+ * 提现返回bean
+ */
+public class AddWithdrawResultBean {
+
+
+    /**
+     * stateName : 信息错误
+     * bankType : 1
+     * type : withdraw
+     * message : 提现信息与其他账号重复，如有疑问，请联系客服
+     * title : 请点击重新完善提现信息
+     * enabled : true
+     * status : 2
+     */
+
+    private String stateName;
+    private int bankType;
+    private String type;
+    private String message;
+    private String title;
+    private boolean enabled;
+    private int status;
+
+    public String getStateName() {
+        return stateName;
+    }
+
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
+    }
+
+    public int getBankType() {
+        return bankType;
+    }
+
+    public void setBankType(int bankType) {
+        this.bankType = bankType;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+}

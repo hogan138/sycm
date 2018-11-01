@@ -16,6 +16,15 @@ public class InputWithdrawalbean {
     private int type;//现金类型1:现金提现;2:红包提现
     private String cardNo;//支付宝账号
     private String realname;//支付宝账号名称
+    private String bankId;
+
+    public String getBankId() {
+        return bankId;
+    }
+
+    public void setBankId(String bankId) {
+        this.bankId = bankId;
+    }
 
     public String getAmount() {
         return amount;
@@ -68,6 +77,13 @@ public class InputWithdrawalbean {
         this.cardNo = cardNo;
         this.realname = realname;
         this.reds = reds;
+    }
+
+    public InputWithdrawalbean(String amount, int type, String[] reds, String bankId) {
+        this.amount = amount;
+        this.type = type;
+        this.reds = reds;
+        this.bankId = bankId;
     }
 
     @Override

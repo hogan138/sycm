@@ -113,6 +113,7 @@
             android:textSize="@dimen/text_15"
             android:textStyle="bold" />
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -129,17 +130,31 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
+                android:id="@+id/et_name"
+                android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/text_13"
                 android:background="@null"
+                android:ellipsize="end"
                 android:hint="请输入支付宝绑定姓名"
+                android:singleLine="true"
                 android:textColor="@color/login_text"
                 android:textColorHint="@color/login_text"
                 android:textSize="@dimen/text_14" />
 
+            <ImageView
+                android:id="@+id/iv_clear_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/text_12"
+                android:layout_marginRight="@dimen/text_19"
+                android:src="@mipmap/cuowu1"
+                android:visibility="gone" />
+
         </LinearLayout>
+
 
         <View
             android:layout_width="match_parent"
@@ -165,15 +180,28 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/tv_money"
-                android:layout_width="wrap_content"
+                android:id="@+id/et_account"
+                android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/text_13"
                 android:background="@null"
+                android:ellipsize="end"
                 android:hint="请输入支付宝账号"
+                android:singleLine="true"
                 android:textColor="@color/login_text"
                 android:textColorHint="@color/login_text"
                 android:textSize="@dimen/text_14" />
+
+            <ImageView
+                android:id="@+id/iv_clear_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/text_12"
+                android:layout_marginRight="@dimen/text_19"
+                android:src="@mipmap/cuowu1"
+                android:visibility="gone" />
 
         </LinearLayout>
 
@@ -191,7 +219,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/text_15"
             android:layout_marginTop="@dimen/text_17"
-            android:text="该支付宝已被其他全民共进账号绑定"
             android:textColor="#F53434"
             android:textSize="@dimen/text_14"
             android:visibility="gone" />

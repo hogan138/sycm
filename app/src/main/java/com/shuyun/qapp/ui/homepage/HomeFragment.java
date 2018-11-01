@@ -234,29 +234,7 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
-        /**
-         * 获取banner轮播数据
-         */
-        loadHomeBanners();
-        /**
-         * 获取全民播报
-         */
-        loadSystemInfo();
 
-        /**
-         * 邀请有奖
-         */
-        invite();
-
-        /**
-         * 首页题组
-         */
-        loadHomeGroups();
-
-        /**
-         * 获取活动配置信息
-         */
-        getConfigInfo();
     }
 
     @Override
@@ -267,6 +245,35 @@ public class HomeFragment extends Fragment {
              * 获取弹框信息
              */
             getDialogInfo();
+
+            /**
+             * 首页题组
+             */
+            loadHomeGroups();
+
+            /**
+             * 获取活动配置信息
+             */
+            getConfigInfo();
+
+            /**
+             * 获取banner轮播数据
+             */
+            loadHomeBanners();
+            /**
+             * 获取全民播报
+             */
+            loadSystemInfo();
+
+            /**
+             * 邀请有奖
+             */
+            invite();
+
+            /**
+             * 获取宝箱数量
+             */
+            loadTreasureBoxNum();
         }
     }
 
@@ -577,7 +584,7 @@ public class HomeFragment extends Fragment {
      */
     private void loadHomeGroups() {
         ApiService apiService = BasePresenter.create(8000);
-        apiService.getHomeGroups(APKVersionCodeTools.getVerName(mContext))
+        apiService.getHomeGroups("3.2.2")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<DataResponse<HomeGroupsBean>>() {
@@ -597,7 +604,7 @@ public class HomeFragment extends Fragment {
                                         if (!EncodeAndStringTool.isListEmpty(groupBeans)) {
                                             recommendIndex = 0;
                                             rollRecommendGroup();
-                                            if (groupBeans.size() == 2) {
+                                            if (groupBeans.size() <= 2) {
                                                 llChangeGroup.setVisibility(View.GONE);
                                             } else {
                                                 llChangeGroup.setVisibility(View.VISIBLE);
@@ -997,11 +1004,6 @@ public class HomeFragment extends Fragment {
             //如果通知栏未打开,弹出前往设置打开通知栏的弹窗
             dialogShow();
         }
-
-        /**
-         * 获取宝箱数量
-         */
-        loadTreasureBoxNum();
 
         //5秒更新推荐题组
         timer = new CountDownTimer(5 * 1000, 1000) {

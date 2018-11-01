@@ -28,11 +28,13 @@ import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.InputWithdrawalbean;
 import com.shuyun.qapp.bean.OutPutWithdraw;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.ui.webview.WebBannerActivity;
 import com.shuyun.qapp.ui.webview.WebPublicActivity;
 import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveErrorTxt;
+import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ToastUtil;
 
 import butterknife.BindView;
@@ -81,6 +83,8 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
     private InputWithdrawalbean inputWithdrawalbean;
 
 
+    private String bankId = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +95,7 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
         ivAddUserInfo.setOnClickListener(this);
         ivClearMoney.setOnClickListener(this);
         btnEnter.setOnClickListener(this);
+        btnContactOur.setOnClickListener(this);
 
         /**
          * 账户现金金额
@@ -146,13 +151,11 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
                 btnEnter.setEnabled(false);
                 break;
             case R.id.btn_enter:
-                alipayAccount = "";//支付宝账户
-                name = "";//支付宝姓名
-                if (EncodeAndStringTool.isStringEmpty(alipayAccount) || EncodeAndStringTool.isStringEmpty(name)) {
+                if (EncodeAndStringTool.isStringEmpty(bankId)) {
                     ToastUtil.showToast(NewCashWithdrawActivity.this, "请先完善提现信息");
                 } else {
                     String[] reds = new String[]{};
-                    inputWithdrawalbean = new InputWithdrawalbean(moneyNumber, 1, alipayAccount, name, reds);
+                    inputWithdrawalbean = new InputWithdrawalbean(moneyNumber, 1, reds, bankId);
                     if (myCash >= 50 && money <= myCash) {
                         CustomLoadingFactory factory = new CustomLoadingFactory();
                         LoadingBar.make(rlMain, factory).show();
@@ -166,6 +169,12 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
                         ToastUtil.showToast(NewCashWithdrawActivity.this, "您账户余额不足50元或您输入的金额大于账户余额,请您重新输入!");
                     }
                 }
+                break;
+            case R.id.btn_contact_our:
+                Intent i1 = new Intent(this, WebBannerActivity.class);
+                i1.putExtra("url", SaveUserInfo.getInstance(this).getUserInfo("contactUs_url"));
+                i1.putExtra("name", "联系客服");//名称 标题
+                startActivity(i1);
                 break;
             default:
                 break;

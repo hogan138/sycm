@@ -3,65 +3,87 @@ package com.shuyun.qapp.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
 /**
  * Created by sunxiao on 2018/5/5.
  */
 
-public class MineBean implements Parcelable{
+public class MineBean implements Parcelable {
+
 
     /**
-     * account : 13968696499
+     * id : 103
+     * account : 15868421563
+     * nickname : Android style
      * obt : 0
+     * header : http://5
+     * headerId : 5
      * status : 10
-     * certification : 1
-     * phone : 13968696499
-     * gender : 2
-     * cash : 31.38
-     * bp : 154
-     * opporitunity : 5
-     * withdraw : 0
-     * availablePrize : 1
+     * certification : 0
+     * phone : 15868421563
+     * gender : 0
+     * cash : 83.24
+     * bp : 7174
+     * opporitunity : 9967
+     * withdraw : 1
+     * availablePrize : 13
+     * upcommings : 0
      * messages : 0
+     * wxBind : 1
+     * wxHeader : http://thirdwx.qlogo.cn/mmopen/vi_32/Fq4vqQJao9JdSIlLfeww4mcXPSrRoYDDUrgEOJLOgg2xAXYylqhJlXcwt4c3Lb1odTV5r0ibQrpPhjlW7IVyWyw/132
+     * contactUs : http://192.168.3.137:8080/web/h5/contact.html
+     * datas : [{"stateName":"未完善","bankType":1,"type":"withdraw","title":"点击完善提现信息","message":"支持支付宝提现，快快补充提现信息哦","status":1}]
      */
 
-    private String account;//登录账号
-
-
-    private String nickname;//昵称
-    /**
-     * 是否参与公测
-     */
+    private int id;
+    private String account;
+    private String nickname;
     private int obt;
-    private String header;//头像图片
-    private int headerId;//头像id
-    private long id;
-
-    public MineBean(){
-
-    }
+    private String header;
+    private int headerId;
+    private int status;
+    private int certification;
+    private String phone;
+    private int gender;
+    private String cash;
+    private String bp;
+    private int opporitunity;
+    private int withdraw;
+    private int availablePrize;
+    private int upcommings;
+    private int messages;
+    private int wxBind;
+    private String wxHeader;
+    private String contactUs;
+    private List<DatasBean> datas;
 
     protected MineBean(Parcel in) {
+        id = in.readInt();
         account = in.readString();
         nickname = in.readString();
         obt = in.readInt();
         header = in.readString();
         headerId = in.readInt();
-        id = in.readLong();
         status = in.readInt();
         certification = in.readInt();
-        certInfo = in.readString();
-        opporitunity = in.readInt();
         phone = in.readString();
-        availablePrize = in.readInt();
-        upcommings = in.readLong();
         gender = in.readInt();
-        withdraw = in.readInt();
-        remark = in.readString();
         cash = in.readString();
         bp = in.readString();
+        opporitunity = in.readInt();
+        withdraw = in.readInt();
+        availablePrize = in.readInt();
+        upcommings = in.readInt();
         messages = in.readInt();
         wxBind = in.readInt();
         wxHeader = in.readString();
+        contactUs = in.readString();
+        datas = in.createTypedArrayList(DatasBean.CREATOR);
+    }
+
+    public MineBean() {
+
     }
 
     public static final Creator<MineBean> CREATOR = new Creator<MineBean>() {
@@ -76,61 +98,13 @@ public class MineBean implements Parcelable{
         }
     };
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
-
-    /**
-     * 10——正常
-     * 50——冻结
-     * 99——禁用
-     */
-    private int status;
-    /**
-     * 是否实名认证
-     * 0——未实名认证
-     * 1——已实名认证
-     * 2——审核中
-     * 3——未通过
-     * 4——拉黑
-     */
-    private int certification;
-    private String certInfo;//实名信息  新加
-
-    private int opporitunity;//剩余答题机会次数
-    private String phone;//绑定的手机号码
-    private int availablePrize;//未使用的奖品数量
-
-    private long upcommings;//快过期的奖品数量
-    /**
-     * 0——未知
-     * 1——男
-     * 2——女
-     */
-    private int gender;
-    /**
-     * 提现标志
-     * 0——不能提现
-     * 1——可以提现
-     * 2——提现中
-     */
-    private int withdraw;//提现标志
-    private String remark;//自定义备注
-    private String cash;//现金金额
-    private String bp;//积分数量
-    private int messages;//最新消息的数量,默认为0
-    /**
-     * 是否已经绑定微信
-     * 0——未绑定
-     * 1——已绑定
-     */
-    private int wxBind;
-
-    private String wxHeader;//微信头像地址
 
     public String getAccount() {
         return account;
@@ -188,22 +162,6 @@ public class MineBean implements Parcelable{
         this.certification = certification;
     }
 
-    public String getCertInfo() {
-        return certInfo;
-    }
-
-    public void setCertInfo(String certInfo) {
-        this.certInfo = certInfo;
-    }
-
-    public int getOpporitunity() {
-        return opporitunity;
-    }
-
-    public void setOpporitunity(int opporitunity) {
-        this.opporitunity = opporitunity;
-    }
-
     public String getPhone() {
         return phone;
     }
@@ -212,36 +170,12 @@ public class MineBean implements Parcelable{
         this.phone = phone;
     }
 
-    public int getAvailablePrize() {
-        return availablePrize;
-    }
-
-    public void setAvailablePrize(int availablePrize) {
-        this.availablePrize = availablePrize;
-    }
-
     public int getGender() {
         return gender;
     }
 
     public void setGender(int gender) {
         this.gender = gender;
-    }
-
-    public int getWithdraw() {
-        return withdraw;
-    }
-
-    public void setWithdraw(int withdraw) {
-        this.withdraw = withdraw;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
     }
 
     public String getCash() {
@@ -260,6 +194,38 @@ public class MineBean implements Parcelable{
         this.bp = bp;
     }
 
+    public int getOpporitunity() {
+        return opporitunity;
+    }
+
+    public void setOpporitunity(int opporitunity) {
+        this.opporitunity = opporitunity;
+    }
+
+    public int getWithdraw() {
+        return withdraw;
+    }
+
+    public void setWithdraw(int withdraw) {
+        this.withdraw = withdraw;
+    }
+
+    public int getAvailablePrize() {
+        return availablePrize;
+    }
+
+    public void setAvailablePrize(int availablePrize) {
+        this.availablePrize = availablePrize;
+    }
+
+    public int getUpcommings() {
+        return upcommings;
+    }
+
+    public void setUpcommings(int upcommings) {
+        this.upcommings = upcommings;
+    }
+
     public int getMessages() {
         return messages;
     }
@@ -268,28 +234,36 @@ public class MineBean implements Parcelable{
         this.messages = messages;
     }
 
-    public void setUpcommings(long upcommings) {
-        this.upcommings = upcommings;
+    public int getWxBind() {
+        return wxBind;
     }
 
     public void setWxBind(int wxBind) {
         this.wxBind = wxBind;
     }
 
+    public String getWxHeader() {
+        return wxHeader;
+    }
+
     public void setWxHeader(String wxHeader) {
         this.wxHeader = wxHeader;
     }
 
-    public long getUpcommings() {
-        return upcommings;
+    public String getContactUs() {
+        return contactUs;
     }
 
-    public int getWxBind() {
-        return wxBind;
+    public void setContactUs(String contactUs) {
+        this.contactUs = contactUs;
     }
 
-    public String getWxHeader() {
-        return wxHeader;
+    public List<DatasBean> getDatas() {
+        return datas;
+    }
+
+    public void setDatas(List<DatasBean> datas) {
+        this.datas = datas;
     }
 
     @Override
@@ -299,53 +273,143 @@ public class MineBean implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeString(account);
         dest.writeString(nickname);
         dest.writeInt(obt);
         dest.writeString(header);
         dest.writeInt(headerId);
-        dest.writeLong(id);
         dest.writeInt(status);
         dest.writeInt(certification);
-        dest.writeString(certInfo);
-        dest.writeInt(opporitunity);
         dest.writeString(phone);
-        dest.writeInt(availablePrize);
-        dest.writeLong(upcommings);
         dest.writeInt(gender);
-        dest.writeInt(withdraw);
-        dest.writeString(remark);
         dest.writeString(cash);
         dest.writeString(bp);
+        dest.writeInt(opporitunity);
+        dest.writeInt(withdraw);
+        dest.writeInt(availablePrize);
+        dest.writeInt(upcommings);
         dest.writeInt(messages);
         dest.writeInt(wxBind);
         dest.writeString(wxHeader);
+        dest.writeString(contactUs);
+        dest.writeTypedList(datas);
     }
 
-    @Override
-    public String toString() {
-        return "MineBean{" +
-                "account='" + account + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", obt=" + obt +
-                ", header='" + header + '\'' +
-                ", headerId=" + headerId +
-                ", id=" + id +
-                ", status=" + status +
-                ", certification=" + certification +
-                ", certInfo='" + certInfo + '\'' +
-                ", opporitunity=" + opporitunity +
-                ", phone='" + phone + '\'' +
-                ", availablePrize=" + availablePrize +
-                ", upcommings=" + upcommings +
-                ", gender=" + gender +
-                ", withdraw=" + withdraw +
-                ", remark='" + remark + '\'' +
-                ", cash='" + cash + '\'' +
-                ", bp='" + bp + '\'' +
-                ", messages=" + messages +
-                ", wxBind=" + wxBind +
-                ", wxHeader='" + wxHeader + '\'' +
-                '}';
+    public static class DatasBean implements Parcelable {
+        /**
+         * stateName : 未完善
+         * bankType : 1
+         * type : withdraw
+         * title : 点击完善提现信息
+         * message : 支持支付宝提现，快快补充提现信息哦
+         * status : 1
+         */
+
+        private String stateName;
+        private int bankType;
+        private String type;
+        private String title;
+        private String message;
+        private int status;
+        private boolean enabled;
+
+        public DatasBean() {
+
+        }
+
+        protected DatasBean(Parcel in) {
+            stateName = in.readString();
+            bankType = in.readInt();
+            type = in.readString();
+            title = in.readString();
+            message = in.readString();
+            status = in.readInt();
+            enabled = in.readByte() != 0;
+        }
+
+        public static final Creator<DatasBean> CREATOR = new Creator<DatasBean>() {
+            @Override
+            public DatasBean createFromParcel(Parcel in) {
+                return new DatasBean(in);
+            }
+
+            @Override
+            public DatasBean[] newArray(int size) {
+                return new DatasBean[size];
+            }
+        };
+
+        public String getStateName() {
+            return stateName;
+        }
+
+        public void setStateName(String stateName) {
+            this.stateName = stateName;
+        }
+
+        public int getBankType() {
+            return bankType;
+        }
+
+        public void setBankType(int bankType) {
+            this.bankType = bankType;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public boolean isEnabled() {
+            return enabled;
+        }
+
+        public void setEnabled(boolean enabled) {
+            this.enabled = enabled;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(stateName);
+            dest.writeInt(bankType);
+            dest.writeString(type);
+            dest.writeString(title);
+            dest.writeString(message);
+            dest.writeInt(status);
+            dest.writeByte((byte) (enabled ? 1 : 0));
+        }
     }
 }

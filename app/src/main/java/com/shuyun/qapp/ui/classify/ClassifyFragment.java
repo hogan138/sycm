@@ -81,10 +81,18 @@ public class ClassifyFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         tvCommonTitle.setText("题组分类");
 
-        loadGroupTree();
-
         //初始化沉浸状态栏
         ImmersionBar.with(this).statusBarColor(R.color.white).statusBarDarkFont(true).fitsSystemWindows(true).init();
+
+        loadGroupTree();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            loadGroupTree();
+        }
     }
 
     @OnClick({R.id.iv_back})

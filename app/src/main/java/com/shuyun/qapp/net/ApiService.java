@@ -4,6 +4,7 @@ package com.shuyun.qapp.net;
 import com.shuyun.qapp.bean.ActivityTabBean;
 import com.shuyun.qapp.bean.ActivityTimeBean;
 import com.shuyun.qapp.bean.AdBean;
+import com.shuyun.qapp.bean.AddWithdrawResultBean;
 import com.shuyun.qapp.bean.AnswerOpptyBean;
 import com.shuyun.qapp.bean.AnswerRecordBean;
 import com.shuyun.qapp.bean.AppVersionBean;
@@ -675,4 +676,10 @@ public interface ApiService {
 
     @GET("/rest/share")
     Observable<DataResponse<SharedBean>> SharedPublic1(@Query("channel") int channel, @Query("action") String action);
+
+    /**
+     * 74、提现信息完善
+     */
+    @POST("/rest/user/money/withdraw/submit")
+    Observable<DataResponse<AddWithdrawResultBean>> submitWithdrawInfo(@Body RequestBody body);
 }

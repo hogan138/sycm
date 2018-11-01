@@ -31,11 +31,13 @@ import com.shuyun.qapp.bean.InputWithdrawalbean;
 import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.bean.OutPutWithdraw;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.ui.webview.WebBannerActivity;
 import com.shuyun.qapp.ui.webview.WebPublicActivity;
 import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveErrorTxt;
+import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ToastUtil;
 
 import java.math.BigDecimal;
@@ -263,6 +265,10 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
                 }
                 break;
             case R.id.btn_contact_our:
+                Intent intent1 = new Intent(this, WebBannerActivity.class);
+                intent1.putExtra("url", SaveUserInfo.getInstance(this).getUserInfo("contactUs_url"));
+                intent1.putExtra("name", "联系客服");//名称 标题
+                startActivity(intent1);
                 break;
             default:
                 break;

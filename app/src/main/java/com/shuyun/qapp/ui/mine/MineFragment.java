@@ -38,6 +38,7 @@ import com.shuyun.qapp.net.InformatListenner;
 import com.shuyun.qapp.ui.homepage.InformationActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
 import com.shuyun.qapp.receiver.MyReceiver;
+import com.shuyun.qapp.ui.webview.WebBannerActivity;
 import com.shuyun.qapp.ui.webview.WebPublicActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
@@ -331,17 +332,19 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                                         tvThreePrizeExprized.setVisibility(View.GONE);
                                     }
 
-                                    SaveUserInfo.getInstance(getActivity()).setUserInfo("my_bp", mineBean.getBp() + "");
+                                    SaveUserInfo.getInstance(getActivity()).setUserInfo("my_bp", mineBean.getBp());
 
                                     //保存信息到本地
                                     SaveUserInfo.getInstance(mContext).setUserInfo("icon", mineBean.getHeaderId() + "");
                                     SaveUserInfo.getInstance(mContext).setUserInfo("icon1", mineBean.getHeader());
                                     SaveUserInfo.getInstance(mContext).setUserInfo("phone", mineBean.getPhone());
                                     SaveUserInfo.getInstance(mContext).setUserInfo("cert", mineBean.getCertification() + "");
-                                    SaveUserInfo.getInstance(mContext).setUserInfo("certinfo", mineBean.getCertInfo());
                                     SaveUserInfo.getInstance(mContext).setUserInfo("nickname", mineBean.getNickname());
                                     SaveUserInfo.getInstance(mContext).setUserInfo("wxBind", String.valueOf(mineBean.getWxBind()));
                                     SaveUserInfo.getInstance(mContext).setUserInfo("wxHeader", mineBean.getWxHeader());
+
+                                    //保存联系客服
+                                    SaveUserInfo.getInstance(mContext).setUserInfo("contactUs_url", mineBean.getContactUs());
 
                                 } catch (Exception e) {
 
@@ -466,8 +469,9 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                 startActivity(new Intent(mContext, SystemSettingActivity.class));
                 break;
             case R.id.rl_contact_us:
-                Intent intent = new Intent(mContext, WebPublicActivity.class);
-                intent.putExtra("name", "contanct");
+                Intent intent = new Intent(mContext, WebBannerActivity.class);
+                intent.putExtra("url", SaveUserInfo.getInstance(mContext).getUserInfo("contactUs_url"));
+                intent.putExtra("name", "联系客服");//名称 标题
                 startActivity(intent);
                 break;
             case R.id.rl_invite_share:

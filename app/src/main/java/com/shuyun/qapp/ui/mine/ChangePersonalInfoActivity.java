@@ -23,9 +23,11 @@ import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
+import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.ui.login.ChangePasswordActivity;
+import com.shuyun.qapp.ui.webview.WebBannerActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -74,23 +76,14 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
     ImageView ivHeaderPhoto;//头像
     @BindView(R.id.tv_phone_num)
     TextView tvPhoneNum;//手机号码
-    private static final String TAG = "ChangePersonalInfoActiv";
-    @BindView(R.id.tv_status)
-    TextView tvStatus;//是否实名认证
     @BindView(R.id.rl_modify_password)
     RelativeLayout rlModifyPassword;
     @BindView(R.id.rl_bind_wechat)
     RelativeLayout rlBindWechat;//微信绑定
     @BindView(R.id.tv_bind_status)
     TextView tvBindStatus;//微信绑定状态
-    @BindView(R.id.tv_real_info)
-    TextView tvRealInfo;
-    @BindView(R.id.tv_description)
-    TextView tvDescription;
     @BindView(R.id.ll_real_name_auth)
     LinearLayout llRealNameAuth;
-    @BindView(R.id.tv_withdraw_info)
-    TextView tvWithdrawInfo;
     @BindView(R.id.tv_withdraw_status)
     TextView tvWithdrawStatus;
     @BindView(R.id.tv_withdraw_description)
@@ -99,6 +92,14 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
     LinearLayout llWithdrawInfo;
     @BindView(R.id.btn_contact_our)
     Button btnContactOur;
+    @BindView(R.id.tv_real_title)
+    TextView tvRealTitle;
+    @BindView(R.id.tv_real_description)
+    TextView tvRealDescription;
+    @BindView(R.id.tv_withdraw_title)
+    TextView tvWithdrawTitle;
+    @BindView(R.id.tv_real_status)
+    TextView tvRealStatus; //实名认证状态
 
 
     private boolean mIsShowing = false;
@@ -144,27 +145,10 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
             ivHeaderPhoto.setImageResource(icon[head - 1]);//本地头像图片
         } else {
             //网络头像图片
-            ImageLoaderManager.LoadImage(this,
-                    SaveUserInfo.getInstance(this).getUserInfo("icon1"), ivHeaderPhoto, R.mipmap.head);
+            ImageLoaderManager.LoadImage(this, SaveUserInfo.getInstance(this).getUserInfo("icon1"), ivHeaderPhoto, R.mipmap.head);
         }
 
         tvPhoneNum.setText(SaveUserInfo.getInstance(this).getUserInfo("phone"));
-        int status = Integer.parseInt(SaveUserInfo.getInstance(this).getUserInfo("cert"));
-        String CertInfo = SaveUserInfo.getInstance(this).getUserInfo("certinfo");
-        if (1 == status) {
-            tvStatus.setText("认证成功");
-            tvStatus.setTextColor(Color.parseColor("#0194ec"));
-            tvRealInfo.setText(CertInfo);
-        } else if (2 == status) {
-            tvStatus.setText("审核中");
-        } else if (0 == status) {
-            tvRealInfo.setText("点击进行认证");
-            tvStatus.setText("未认证");
-            tvStatus.setTextColor(Color.parseColor("#F53434"));
-        } else {
-            tvStatus.setText("未通过");
-        }
-
         handler.post(runnable);
 
     }
@@ -212,18 +196,16 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
                 startActivity(new Intent(this, ChangePasswordActivity.class));
                 break;
             case R.id.ll_real_name_auth: //实名认证
-                int certInfo = Integer.parseInt(SaveUserInfo.getInstance(this).getUserInfo("cert"));
-                if (certInfo == 1) {
-                    ToastUtil.showToast(ChangePersonalInfoActivity.this, "实名认证成功后，暂不可再次修改");
-                } else if (certInfo == 2) {
-                    ToastUtil.showToast(ChangePersonalInfoActivity.this, "实名认证正在审核中,请您耐心等待");
-                } else {
-                    startActivity(new Intent(this, RealNameAuthActivity.class));
-                }
+                startActivity(new Intent(this, RealNameAuthActivity.class));
                 break;
             case R.id.ll_withdraw_info: //提现信息
+                startActivity(new Intent(this, AddWithdrawInfoActivity.class));
                 break;
             case R.id.btn_contact_our: //联系客服
+                Intent i = new Intent(this, WebBannerActivity.class);
+                i.putExtra("url", SaveUserInfo.getInstance(this).getUserInfo("contactUs_url"));
+                i.putExtra("name", "联系客服");//名称 标题
+                startActivity(i);
                 break;
             default:
                 break;
@@ -389,6 +371,8 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
         MobclickAgent.onResume(this); //统计时长
         StatService.onResume(this);
         initData();
+
+        loadMineHomeData1();
     }
 
     public void onPause() {
@@ -402,5 +386,72 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
     protected void onDestroy() {
         super.onDestroy();
         handler.removeCallbacks(runnable);
+    }
+
+    private void loadMineHomeData1() {
+        ApiService apiService = BasePresenter.create(8000);
+        apiService.getMineHomeData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<DataResponse<MineBean>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
+
+                    @Override
+                    public void onNext(DataResponse<MineBean> listDataResponse) {
+                        if (listDataResponse.isSuccees()) {
+                            MineBean mineBean = listDataResponse.getDat();
+                            if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
+                                try {
+                                    for (int i = 0; i < mineBean.getDatas().size(); i++) {
+                                        String status_name = mineBean.getDatas().get(i).getStateName();
+                                        String title = mineBean.getDatas().get(i).getTitle();
+                                        String message = mineBean.getDatas().get(i).getMessage();
+                                        int status = mineBean.getDatas().get(i).getStatus();
+                                        if ("withdraw".equals(mineBean.getDatas().get(i).getType())) {
+                                            //提现信息
+                                            tvWithdrawTitle.setText(title);
+                                            tvWithdrawStatus.setText(status_name);
+                                            tvWithdrawDescription.setText(message);
+                                            //更改颜色
+                                            if (status == 3) {
+                                                tvWithdrawStatus.setTextColor(Color.parseColor("#0194EC"));
+                                            } else {
+                                                tvWithdrawStatus.setTextColor(Color.parseColor("#F53434"));
+                                            }
+
+                                            //是否可以点击
+                                            if (mineBean.getDatas().get(i).isEnabled()) {
+                                                llWithdrawInfo.setEnabled(true);
+                                            } else {
+                                                llWithdrawInfo.setEnabled(false);
+                                            }
+                                        } else if ("cert".equals(mineBean.getDatas().get(i).getType())) {
+                                            //实名信息
+                                        }
+                                    }
+                                } catch (Exception e) {
+
+                                }
+                            } else {
+                            }
+                        } else {
+                            ErrorCodeTools.errorCodePrompt(ChangePersonalInfoActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //保存错误信息
+                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
+                        return;
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
     }
 }

@@ -20,7 +20,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 30022
-        versionName "3.2.2"
+        versionName "3.2.2"   //切换版本需更改首页题组
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         // Enabling multidex support.

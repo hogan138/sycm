@@ -76,14 +76,25 @@
                 android:id="@+id/et_realName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/text_15"
                 android:layout_weight="1"
                 android:background="@null"
+                android:ellipsize="end"
                 android:hint="请输入姓名"
+                android:singleLine="true"
                 android:textColor="@color/login_text"
                 android:textColorHint="@color/login_text"
                 android:textSize="@dimen/text_14" />
 
+            <ImageView
+                android:id="@+id/iv_clear_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/text_12"
+                android:layout_marginRight="@dimen/text_19"
+                android:src="@mipmap/cuowu1"
+                android:visibility="invisible" />
         </LinearLayout>
 
         <View
@@ -111,16 +122,27 @@
             <!--身份证号码-->
             <EditText
                 android:id="@+id/et_id_card"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/text_15"
+                android:layout_weight="1"
                 android:background="@null"
+                android:ellipsize="end"
                 android:hint="请输入身份证号"
+                android:singleLine="true"
                 android:textColor="@color/login_text"
                 android:textColorHint="@color/login_text"
                 android:textSize="@dimen/text_14" />
-            <!--获取验证码按钮,根据情况显示或者隐藏-->
 
+            <ImageView
+                android:id="@+id/iv_clear_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/text_12"
+                android:layout_marginRight="@dimen/text_19"
+                android:src="@mipmap/cuowu1"
+                android:visibility="invisible" />
 
         </LinearLayout>
 
