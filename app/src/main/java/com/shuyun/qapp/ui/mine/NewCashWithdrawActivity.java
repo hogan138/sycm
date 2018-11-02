@@ -1,6 +1,7 @@
 package com.shuyun.qapp.ui.mine;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -26,6 +27,7 @@ import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.InputWithdrawalbean;
+import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.bean.OutPutWithdraw;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.ui.webview.WebBannerActivity;
@@ -85,6 +87,8 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
 
     private String bankId = "";
 
+    private String cashRuls = "";   //现金提现规则
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,6 +134,15 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        //访问个人信息
+        loadMineHomeData();
+
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rl_back:
@@ -141,8 +154,9 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
                 startActivity(intent);
                 break;
             case R.id.tv_rule:
-                Intent i = new Intent(NewCashWithdrawActivity.this, WebPublicActivity.class);
-                i.putExtra("name", "cash_rule");
+                Intent i = new Intent(NewCashWithdrawActivity.this, WebBannerActivity.class);
+                i.putExtra("url", cashRuls);
+                i.putExtra("name", "现金提现");
                 startActivity(i);
                 break;
             case R.id.iv_clear_money:
@@ -200,7 +214,8 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
                             OutPutWithdraw outPutWithdraw = listDataResponse.getDat();
                             if (!EncodeAndStringTool.isObjectEmpty(outPutWithdraw)) {
                                 Intent intent = new Intent(NewCashWithdrawActivity.this, WithdrawResultActivity.class);
-                                intent.putExtra("content", "withdraw");
+                                intent.putExtra("from", "withdraw");
+                                intent.putExtra("remark", outPutWithdraw.getRemark());
                                 startActivity(intent);
                                 finish();
                             }
@@ -226,6 +241,62 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
 
     }
 
+    //加载个人信息
+    private void loadMineHomeData() {
+        ApiService apiService = BasePresenter.create(8000);
+        apiService.getMineHomeData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<DataResponse<MineBean>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
+
+                    @Override
+                    public void onNext(DataResponse<MineBean> listDataResponse) {
+                        if (listDataResponse.isSuccees()) {
+                            MineBean mineBean = listDataResponse.getDat();
+                            if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
+                                cashRuls = mineBean.getCashRuleUrl();
+                                try {
+                                    for (int i = 0; i < mineBean.getDatas().size(); i++) {
+                                        if ("withdraw".equals(mineBean.getDatas().get(i).getType())) {
+                                            //是否完善提现信息
+                                            if (mineBean.getDatas().get(i).isEnabled()) {
+                                                ivAddUserInfo.setVisibility(View.VISIBLE);
+                                                rlUserInfo.setVisibility(View.GONE);
+                                            } else {
+                                                bankId = mineBean.getDatas().get(i).getBankId();
+                                                String title = mineBean.getDatas().get(i).getTitle();
+                                                ivAddUserInfo.setVisibility(View.GONE);
+                                                rlUserInfo.setVisibility(View.VISIBLE);
+                                                tvNameAccount.setText(title.substring(4, title.length()).replace("|", "   "));
+                                            }
+                                        }
+                                    }
+                                } catch (Exception e) {
+
+                                }
+                            } else {
+                            }
+                        } else {
+                            ErrorCodeTools.errorCodePrompt(NewCashWithdrawActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //保存错误信息
+                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
+                        return;
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+    }
 
     /**
      * 给editext设置监听

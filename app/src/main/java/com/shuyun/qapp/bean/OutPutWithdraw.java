@@ -18,8 +18,9 @@ public class OutPutWithdraw implements Parcelable {
     private BigDecimal charge;//手续费
     private BigDecimal actual;//实际可到账金额 分
     private String time;//提现申请时间
+    private String remark;//描述
 
-    public OutPutWithdraw(){
+    public OutPutWithdraw() {
 
     }
 
@@ -68,6 +69,14 @@ public class OutPutWithdraw implements Parcelable {
 
     public String getTime() {
         return time;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     @Override

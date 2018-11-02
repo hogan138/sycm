@@ -55,8 +55,11 @@ public class MineBean implements Parcelable {
     private int messages;
     private int wxBind;
     private String wxHeader;
-    private String contactUs;
-    private List<DatasBean> datas;
+    private String contactUs; //联系客服地址
+    private List<DatasBean> datas;  //提现|实名信息
+    private String cashRuleUrl; //现金提现规则
+    private String redRuleUrl; //红包提现规则
+    private int certCount;//实名认证次数
 
     protected MineBean(Parcel in) {
         id = in.readInt();
@@ -80,6 +83,9 @@ public class MineBean implements Parcelable {
         wxHeader = in.readString();
         contactUs = in.readString();
         datas = in.createTypedArrayList(DatasBean.CREATOR);
+        cashRuleUrl = in.readString();
+        redRuleUrl = in.readString();
+        certCount = in.readInt();
     }
 
     public MineBean() {
@@ -266,6 +272,30 @@ public class MineBean implements Parcelable {
         this.datas = datas;
     }
 
+    public String getCashRuleUrl() {
+        return cashRuleUrl;
+    }
+
+    public void setCashRuleUrl(String cashRuleUrl) {
+        this.cashRuleUrl = cashRuleUrl;
+    }
+
+    public String getRedRuleUrl() {
+        return redRuleUrl;
+    }
+
+    public void setRedRuleUrl(String redRuleUrl) {
+        this.redRuleUrl = redRuleUrl;
+    }
+
+    public int getCertCount() {
+        return certCount;
+    }
+
+    public void setCertCount(int certCount) {
+        this.certCount = certCount;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -294,9 +324,13 @@ public class MineBean implements Parcelable {
         dest.writeString(wxHeader);
         dest.writeString(contactUs);
         dest.writeTypedList(datas);
+        dest.writeString(cashRuleUrl);
+        dest.writeString(redRuleUrl);
+        dest.writeInt(certCount);
     }
 
     public static class DatasBean implements Parcelable {
+
         /**
          * stateName : 未完善
          * bankType : 1
@@ -306,6 +340,7 @@ public class MineBean implements Parcelable {
          * status : 1
          */
 
+        private String bankId;
         private String stateName;
         private int bankType;
         private String type;
@@ -319,6 +354,7 @@ public class MineBean implements Parcelable {
         }
 
         protected DatasBean(Parcel in) {
+            bankId = in.readString();
             stateName = in.readString();
             bankType = in.readInt();
             type = in.readString();
@@ -339,6 +375,14 @@ public class MineBean implements Parcelable {
                 return new DatasBean[size];
             }
         };
+
+        public String getBankId() {
+            return bankId;
+        }
+
+        public void setBankId(String bankId) {
+            this.bankId = bankId;
+        }
 
         public String getStateName() {
             return stateName;
@@ -403,6 +447,7 @@ public class MineBean implements Parcelable {
 
         @Override
         public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(bankId);
             dest.writeString(stateName);
             dest.writeInt(bankType);
             dest.writeString(type);

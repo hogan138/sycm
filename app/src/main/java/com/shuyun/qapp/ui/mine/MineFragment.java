@@ -39,12 +39,12 @@ import com.shuyun.qapp.ui.homepage.InformationActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
 import com.shuyun.qapp.receiver.MyReceiver;
 import com.shuyun.qapp.ui.webview.WebBannerActivity;
-import com.shuyun.qapp.ui.webview.WebPublicActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ImageLoaderManager;
+import com.shuyun.qapp.utils.JumpTomap;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
@@ -176,6 +176,8 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
 //            sharedPreferences.edit().putBoolean("First", false).commit();
             //个人信息
             loadMineHomeData1();
+            //个人信息
+            loadMineHomeData();
 //        } else {
 //        }
         }
@@ -376,7 +378,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
             R.id.rl_system_set, R.id.rl_contact_us, R.id.rl_invite_share})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.iv_common_right_icon://TODO
+            case R.id.iv_common_right_icon:
                 ivCommonRightIcon.setImageResource(R.mipmap.messagew_n);//右侧消息按钮;
                 startActivity(new Intent(mContext, InformationActivity.class));
                 break;
@@ -462,19 +464,23 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                     startActivity(allPrize);
                 }
                 break;
-            case R.id.rl_answer_record:
+            case R.id.rl_answer_record: //成绩单
                 startActivity(new Intent(mContext, AnswerRecordActivity.class));
                 break;
-            case R.id.rl_system_set:
+            case R.id.rl_system_set: //系统设置
                 startActivity(new Intent(mContext, SystemSettingActivity.class));
                 break;
-            case R.id.rl_contact_us:
+            case R.id.rl_contact_us: //联系客服
                 Intent intent = new Intent(mContext, WebBannerActivity.class);
                 intent.putExtra("url", SaveUserInfo.getInstance(mContext).getUserInfo("contactUs_url"));
-                intent.putExtra("name", "联系客服");//名称 标题
+                intent.putExtra("name", "联系客服");
                 startActivity(intent);
+//                Intent intent = new Intent(mContext, WebBannerActivity.class);
+//                intent.putExtra("url", "https://openapi.alipay.com/gateway.do?alipay_sdk=alipay-sdk-java-3.3.49.ALL&app_id=2018041902582802&biz_content=%7B%22biz_no%22%3A%22ZM201811023000000454500346282074%22%7D&charset=UTF-8&format=json&method=zhima.customer.certification.certify&sign=aQy3yV9HiiRoZm4I7RXu3SKKgkEYP%2FHdxtf9HGHlhnlVeJjmEW7npaaBCYyyWFpxUNAcu%2BZwzGN8PKEiaTa5B8G1mmKRjGaETYgQwTUA6Ce8brkUnKtkBW%2Fy8KeAKJRJ9d77WR1ncO0N8DC7dFj8JeMF8%2BYCxY4b65CYyq4iNZCbKnr%2F8%2BWE%2BTT%2Fxcb%2BTW4L4Ek1GFsqi%2F0XA8%2Fg0cgNwfkOICoALbPrUlw5r4iqI3aJiE2MidxiSfFcg38iM8HDPUy6bR5tv21Li0w5EA%2FtH09r7iX5Zcv7EhiUzGxnbOU%2BJ4RGEkq9mJOxxzjkUckrJf8ilmNL7WvMq8EVMeO%2FHQ%3D%3D&sign_type=RSA2&timestamp=2018-11-02+14%3A42%3A22&version=1.0");
+//                intent.putExtra("name", "芝麻认证");
+//                startActivity(intent);
                 break;
-            case R.id.rl_invite_share:
+            case R.id.rl_invite_share: //分享
                 InviteSharePopupUtil.showSharedPop(mContext, llMineFragment);
                 break;
             default:

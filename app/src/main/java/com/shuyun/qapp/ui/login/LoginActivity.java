@@ -142,7 +142,11 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void startPermissionsActivity() {
-        PermissionsActivity.startActivityForResult(this, REQUEST_CODE, PERMISSIONS);
+        try {
+            PermissionsActivity.startActivityForResult(this, REQUEST_CODE, PERMISSIONS);
+        } catch (Exception e) {
+
+        }
 
     }
 

@@ -37,14 +37,14 @@ public class WithdrawResultActivity extends BaseActivity implements View.OnClick
 
         btnSure.setOnClickListener(this);
 
-        String content = getIntent().getStringExtra("content");
+        String content = getIntent().getStringExtra("from");
         if ("add".equals(content)) {
             //添加信息
             tvRsult.setText("完善成功");
             btnSure.setText("完成");
         } else if ("withdraw".equals(content)) {
             //提现结果
-            tvRsult.setText("提现申请已提交\n我们将在1～3个工作日处理您的提现申请");
+            tvRsult.setText(getIntent().getStringExtra("remark"));
             btnSure.setText("确定");
         }
     }

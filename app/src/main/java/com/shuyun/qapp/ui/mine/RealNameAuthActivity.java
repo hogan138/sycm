@@ -1,6 +1,7 @@
 package com.shuyun.qapp.ui.mine;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,14 +18,18 @@ import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.AuthNameBean;
 import com.shuyun.qapp.bean.DataResponse;
+import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.ui.webview.WebBannerActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.RegularTool;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
+import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.ToastUtil;
+import com.tencent.stat.StatConfig;
 import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 
@@ -86,6 +91,7 @@ public class RealNameAuthActivity extends BaseActivity {
         return R.layout.activity_real_name_auth;
     }
 
+
     /**
      * 实名认证
      *
@@ -108,12 +114,10 @@ public class RealNameAuthActivity extends BaseActivity {
                             AuthNameBean authNameBean = authNameBeanDataResponse.getDat();
                             //跳转到认证结果界面;
                             if (!EncodeAndStringTool.isObjectEmpty(authNameBean)) {
-                                Intent intent = new Intent(RealNameAuthActivity.this, AuthResultActivity.class);
-                                intent.putExtra("authName_result", authNameBean);
-                                startActivity(intent);
-                                SaveUserInfo.getInstance(RealNameAuthActivity.this).setUserInfo("certinfo", authNameBean.getCertInfo());
-                                SaveUserInfo.getInstance(RealNameAuthActivity.this).setUserInfo("cert", String.valueOf(authNameBean.getStatus()));
-                                finish();
+//                                Intent intent = new Intent(RealNameAuthActivity.this, AuthResultActivity.class);
+//                                intent.putExtra("authName_result", authNameBean);
+//                                startActivity(intent);
+//                                SaveUserInfo.getInstance(RealNameAuthActivity.this).setUserInfo("cert", String.valueOf(authNameBean.getStatus()));
                             } else {
                             }
                         } else {
@@ -177,11 +181,68 @@ public class RealNameAuthActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 获取到我的首界面数据
+     */
+    private void loadMineHomeData() {
+        ApiService apiService = BasePresenter.create(8000);
+        apiService.getMineHomeData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<DataResponse<MineBean>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
+
+                    @Override
+                    public void onNext(DataResponse<MineBean> listDataResponse) {
+                        if (listDataResponse.isSuccees()) {
+                            MineBean mineBean = listDataResponse.getDat();
+                            if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
+                                try {
+                                    int cerCount = mineBean.getCertCount();
+                                    tvCount.setText("今日认证剩余次数：" + cerCount + "次");
+                                    if (cerCount <= 0) {
+                                        btnConfirm.setText("今日认证次数已用完");
+                                        btnConfirm.setEnabled(false);
+                                        btnConfirm.setBackgroundResource(R.drawable.common_btn_bg_10);
+                                    } else {
+                                        btnConfirm.setText("确认");
+                                        btnConfirm.setEnabled(true);
+                                        btnConfirm.setBackgroundResource(R.drawable.common_btn_bg_4);
+                                    }
+                                } catch (Exception e) {
+
+                                }
+                            } else {
+                            }
+                        } else {
+                            ErrorCodeTools.errorCodePrompt(RealNameAuthActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //保存错误信息
+                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
+                        return;
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+    }
+
     //在activity或者fragment中添加友盟统计
     public void onResume() {
         super.onResume();
         MobclickAgent.onResume(this); //统计时长
         StatService.onResume(this);
+
+        //获取个人信息
+        loadMineHomeData();
     }
 
     public void onPause() {

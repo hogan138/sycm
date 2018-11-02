@@ -54,9 +54,6 @@ public class AuthResultActivity extends BaseActivity {
             if (1 == status) {
                 ivAuthResultIcon.setImageResource(R.mipmap.result_real_success);
                 tvAuthRsult.setText("认证成功");
-            } else if (2 == status) {
-                ivAuthResultIcon.setImageResource(R.mipmap.underway);
-                tvAuthRsult.setText("您已成功提交认证申请..\n预计将在24小时内审核完成");
             } else if (3 == status) {
                 ivAuthResultIcon.setImageResource(R.mipmap.result_real_fail);
                 tvAuthRsult.setText("认证失败\n姓名和身份证号码不匹配");

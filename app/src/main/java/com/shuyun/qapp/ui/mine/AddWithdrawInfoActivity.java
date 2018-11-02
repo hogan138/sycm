@@ -216,7 +216,7 @@ public class AddWithdrawInfoActivity extends BaseActivity implements View.OnClic
                     public void onNext(DataResponse<AddWithdrawResultBean> listDataResponse) {
                         if (listDataResponse.isSuccees()) {
                             Intent intent = new Intent(AddWithdrawInfoActivity.this, WithdrawResultActivity.class);
-                            intent.putExtra("content", "add");
+                            intent.putExtra("from", "add");
                             startActivity(intent);
                             finish();
                         } else {

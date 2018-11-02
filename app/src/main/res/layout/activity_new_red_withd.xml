@@ -72,7 +72,8 @@
             android:layout_marginLeft="@dimen/text_15"
             android:layout_marginRight="@dimen/text_15"
             android:layout_marginBottom="@dimen/text_20"
-            android:background="@mipmap/add_info_bg" />
+            android:background="@mipmap/add_info_bg"
+            android:visibility="gone" />
 
         <RelativeLayout
             android:id="@+id/rl_user_info"

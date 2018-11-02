@@ -1,6 +1,7 @@
 package com.shuyun.qapp.ui.webview;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -124,12 +125,23 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
         }
         wvBanner.setWebViewClient(new WebViewClient() {
             @Override
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                String url = request.getUrl().toString();
+                if (url.contains("platformapi/startapp")) {
+                    try {
+                        Intent intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
+                        intent.addCategory("android.intent.category.BROWSABLE");
+                        intent.setComponent(null);
+                        startActivity(intent);
+                    } catch (Exception e) {
+                    }
+                }
                 return false;
             }
         });
+
         wvBanner.loadUrl(url);
-//        wvBanner.loadUrl("http://192.168.191.1:8080");
 
     }
 

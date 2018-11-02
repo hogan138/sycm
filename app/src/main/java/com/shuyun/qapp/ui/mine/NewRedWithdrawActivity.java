@@ -28,6 +28,7 @@ import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.InputWithdrawalbean;
+import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.bean.OutPutWithdraw;
 import com.shuyun.qapp.net.ApiService;
@@ -82,6 +83,10 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
     RelativeLayout rlMain;
 
     private int DELYED = 100;
+
+    private String bankId = "";
+
+    private String redrules = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,14 +220,24 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        //访问个人信息
+        loadMineHomeData();
+
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rl_back:
                 finish();
                 break;
             case R.id.tv_rule:
-                Intent i = new Intent(NewRedWithdrawActivity.this, WebPublicActivity.class);
-                i.putExtra("name", "red_rule");
+                Intent i = new Intent(NewRedWithdrawActivity.this, WebBannerActivity.class);
+                i.putExtra("url", redrules);
+                i.putExtra("name", "红包提现");
                 startActivity(i);
                 break;
             case R.id.iv_add_user_info:
@@ -230,26 +245,17 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
                 startActivity(intent);
                 break;
             case R.id.btn_enter:
-                //立即提现
-                final InputWithdrawalbean inputWithdrawalbean = new InputWithdrawalbean();//针对哪几个红包提现,多个红包id用逗号分隔;
-                String alipayAccount = "";
-                String name = "";
-                String moneyNumber = tvMoney.getText().toString().trim();
-                //针对哪几个红包提现,多个红包id用逗号分隔;
-                inputWithdrawalbean.setCardNo(alipayAccount);//支付宝账号
-                inputWithdrawalbean.setRealname(name);//支付宝账号名称
-                inputWithdrawalbean.setAmount(moneyNumber);//提现金额
-                inputWithdrawalbean.setType(2);//1:现金提现;2:红包提现;
-                String[] redsId = new String[redIdList.size()];
-                redIdList.toArray(redsId);
-                inputWithdrawalbean.setReds(redsId);
                 /**
                  * 针对哪几个红包提现,多个红包id用逗号分隔
                  * 字符串数组
                  */
-                if (EncodeAndStringTool.isStringEmpty(alipayAccount) || EncodeAndStringTool.isStringEmpty(name)) {
+                if (EncodeAndStringTool.isStringEmpty(bankId)) {
                     ToastUtil.showToast(NewRedWithdrawActivity.this, "请先完善提现信息");
                 } else {
+                    String moneyNumber = tvMoney.getText().toString().trim();
+                    String[] redsId = new String[redIdList.size()];
+                    redIdList.toArray(redsId);
+                    final InputWithdrawalbean inputWithdrawalbean = new InputWithdrawalbean(moneyNumber, 2, redsId, bankId);//针对哪几个红包提现,多个红包id用逗号分隔;
                     if (redIdList.size() > 0) {
                         CustomLoadingFactory factory = new CustomLoadingFactory();
                         LoadingBar.make(rlMain, factory).show();
@@ -297,10 +303,14 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
                     public void onNext(DataResponse<OutPutWithdraw> dataResponse) {
                         LoadingBar.cancel(rlMain);
                         if (dataResponse.isSuccees()) {
-                            Intent intent = new Intent(NewRedWithdrawActivity.this, WithdrawResultActivity.class);
-                            intent.putExtra("content", "withdraw");
-                            startActivity(intent);
-                            finish();
+                            OutPutWithdraw outPutWithdraw = dataResponse.getDat();
+                            if (!EncodeAndStringTool.isObjectEmpty(outPutWithdraw)) {
+                                Intent intent = new Intent(NewRedWithdrawActivity.this, WithdrawResultActivity.class);
+                                intent.putExtra("from", "withdraw");
+                                intent.putExtra("remark", outPutWithdraw.getRemark());
+                                startActivity(intent);
+                                finish();
+                            }
                         } else {
                             ErrorCodeTools.errorCodePrompt(NewRedWithdrawActivity.this, dataResponse.getErr(), dataResponse.getMsg());
                         }
@@ -316,6 +326,64 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
                     @Override
                     public void onComplete() {
 
+                    }
+                });
+    }
+
+
+    //加载个人信息
+    private void loadMineHomeData() {
+        ApiService apiService = BasePresenter.create(8000);
+        apiService.getMineHomeData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<DataResponse<MineBean>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
+
+                    @Override
+                    public void onNext(DataResponse<MineBean> listDataResponse) {
+                        if (listDataResponse.isSuccees()) {
+                            MineBean mineBean = listDataResponse.getDat();
+                            if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
+                                redrules = mineBean.getRedRuleUrl();
+                                try {
+                                    for (int i = 0; i < mineBean.getDatas().size(); i++) {
+                                        if ("withdraw".equals(mineBean.getDatas().get(i).getType())) {
+                                            //是否完善提现信息
+                                            if (mineBean.getDatas().get(i).isEnabled()) {
+                                                ivAddUserInfo.setVisibility(View.VISIBLE);
+                                                rlUserInfo.setVisibility(View.GONE);
+                                            } else {
+                                                bankId = mineBean.getDatas().get(i).getBankId();
+                                                String title = mineBean.getDatas().get(i).getTitle();
+                                                ivAddUserInfo.setVisibility(View.GONE);
+                                                rlUserInfo.setVisibility(View.VISIBLE);
+                                                tvNameAccount.setText(title.substring(4, title.length()).replace("|", "   "));
+                                            }
+                                        }
+                                    }
+                                } catch (Exception e) {
+
+                                }
+                            } else {
+                            }
+                        } else {
+                            ErrorCodeTools.errorCodePrompt(NewRedWithdrawActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //保存错误信息
+                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
+                        return;
+                    }
+
+                    @Override
+                    public void onComplete() {
                     }
                 });
     }

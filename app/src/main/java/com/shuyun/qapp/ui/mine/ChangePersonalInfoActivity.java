@@ -2,6 +2,7 @@ package com.shuyun.qapp.ui.mine;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
@@ -420,7 +421,6 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
                                             } else {
                                                 tvWithdrawStatus.setTextColor(Color.parseColor("#F53434"));
                                             }
-
                                             //是否可以点击
                                             if (mineBean.getDatas().get(i).isEnabled()) {
                                                 llWithdrawInfo.setEnabled(true);
@@ -429,6 +429,22 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
                                             }
                                         } else if ("cert".equals(mineBean.getDatas().get(i).getType())) {
                                             //实名信息
+                                            tvRealTitle.setText(title);
+                                            tvRealStatus.setText(status_name);
+                                            tvRealDescription.setText(message);
+                                            //更改颜色
+                                            if (status == 3) {
+                                                tvRealStatus.setTextColor(Color.parseColor("#0194EC"));
+                                            } else {
+                                                tvRealStatus.setTextColor(Color.parseColor("#F53434"));
+                                            }
+                                            //是否可以点击
+                                            if (mineBean.getDatas().get(i).isEnabled()) {
+                                                llRealNameAuth.setEnabled(true);
+                                            } else {
+                                                llRealNameAuth.setEnabled(false);
+                                            }
+
                                         }
                                     }
                                 } catch (Exception e) {

@@ -72,7 +72,8 @@
             android:layout_marginLeft="@dimen/text_15"
             android:layout_marginRight="@dimen/text_15"
             android:layout_marginBottom="@dimen/text_20"
-            android:background="@mipmap/add_info_bg" />
+            android:background="@mipmap/add_info_bg"
+            android:visibility="gone" />
 
         <RelativeLayout
             android:id="@+id/rl_user_info"
@@ -145,8 +146,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/text_50"
                 android:layout_marginLeft="@dimen/text_13"
+                android:layout_marginRight="@dimen/text_50"
                 android:layout_toRightOf="@+id/tv1"
                 android:background="@null"
                 android:digits="0123456789."

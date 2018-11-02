@@ -831,7 +831,7 @@ public class HomeFragment extends Fragment {
                         tvGroupTag2Two.setVisibility(View.VISIBLE);
                         tvGroupTag2Two.setText(temp[1]);
                     } else if (temp.length == 3) {
-                        tvGroupTag1One.setVisibility(View.VISIBLE);
+                        tvGroupTag2One.setVisibility(View.VISIBLE);
                         tvGroupTag2One.setText(temp[0] + "  " + temp[1]);
                         tvGroupTag2Two.setVisibility(View.VISIBLE);
                         tvGroupTag2Two.setText(temp[2]);
@@ -1093,8 +1093,7 @@ public class HomeFragment extends Fragment {
                                     //题组
                                     if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.group_count").equals("")) {
                                         activitydialog(configDialogBean);
-                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.group_count", "" + 1)
-                                        ;
+                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.group_count", "" + 1);
                                     } else {
                                         if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.group_count"))) {
                                             activitydialog(configDialogBean);
@@ -1391,13 +1390,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-    }
-
-    /**
-     * 监听首界面返回键
-     */
-    public void homeFragmentBack() {
-        mContext.finish();
     }
 
 

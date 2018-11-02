@@ -162,8 +162,8 @@ public interface ApiService {
      * 12、实名认证/user-center
      */
 
-    @GET("/rest/user/cert")
-    Observable<DataResponse<AuthNameBean>> realNameAuth(@Query("realname") String realname, @Query("idcard") String idcard);
+    @GET("/rest/user/certificate/apply")
+    Observable<DataResponse<AuthNameBean>> realNameAuth(@Query("name") String realname, @Query("idCard") String idcard);
 
     /**
      * 13、获取我的奖品/user-center
@@ -180,7 +180,7 @@ public interface ApiService {
      * @return
      */
 
-    @POST("/rest/user/withdraw/v2")
+    @POST("/rest/user/money/withdraw/apply")
     Observable<DataResponse<OutPutWithdraw>> applyWithdrawal(@Body RequestBody body);
 
     /**

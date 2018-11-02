@@ -65,9 +65,7 @@ public class WebPublicActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         name = getIntent().getStringExtra("name");
-        if ("contanct".equals(name)) {
-            tvCommonTitle.setText("联系我们");
-        } else if ("useragree".equals(name)) {
+        if ("useragree".equals(name)) {
             tvCommonTitle.setText("用户协议");
         } else if ("about".equals(name)) {
             tvCommonTitle.setText("关于我们");
@@ -77,10 +75,6 @@ public class WebPublicActivity extends BaseActivity {
             tvCommonTitle.setText("活动规则");
             Intent intent = getIntent();
             bulletin = intent.getStringExtra("bulletin");
-        } else if ("cash_rule".equals(name)) {
-            tvCommonTitle.setText("现金提现规则");
-        } else if ("red_rule".equals(name)) {
-            tvCommonTitle.setText("红包提现规则");
         }
 
         animationDrawable = (AnimationDrawable) animationIv.getDrawable();
@@ -169,9 +163,7 @@ public class WebPublicActivity extends BaseActivity {
         webView.addJavascriptInterface(new JsInteration(), "android");
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 
-        if ("contanct".equals(name)) {
-            webView.loadUrl(AppConst.CONTACT_US); //联系我们
-        } else if ("useragree".equals(name)) {
+        if ("useragree".equals(name)) {
             webView.loadUrl(AppConst.USER_AGREEMENT); //用户协议
         } else if ("about".equals(name)) {
             webView.loadUrl(AppConst.ABOUT_US); //关于我们
@@ -179,10 +171,6 @@ public class WebPublicActivity extends BaseActivity {
             webView.loadUrl(SaveUserInfo.getInstance(WebPublicActivity.this).getUserInfo("h5_rule"));//积分夺宝规则
         } else if ("rules".equals(name)) {
             webView.loadUrl(AppConst.LOOK_RULES);//积分开宝箱规则
-        } else if ("cash_rule".equals(name)) {
-            webView.loadUrl(AppConst.CASH_WITHDRAW); //现金提现规则
-        } else if ("red_rule".equals(name)) {
-            webView.loadUrl(AppConst.RED_WITHDRAW); //红包提现规则
         }
 
         webView.setWebChromeClient(new WebChromeClient() {
