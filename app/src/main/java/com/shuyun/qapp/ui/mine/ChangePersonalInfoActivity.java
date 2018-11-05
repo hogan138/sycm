@@ -105,6 +105,9 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
 
     private boolean mIsShowing = false;
 
+
+    //实名信息
+    String real_info = "";
     /**
      * 底部gridView数据
      */
@@ -200,7 +203,9 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
                 startActivity(new Intent(this, RealNameAuthActivity.class));
                 break;
             case R.id.ll_withdraw_info: //提现信息
-                startActivity(new Intent(this, AddWithdrawInfoActivity.class));
+                Intent intent1 = new Intent(this, AddWithdrawInfoActivity.class);
+                intent1.putExtra("info", real_info);
+                startActivity(intent1);
                 break;
             case R.id.btn_contact_our: //联系客服
                 Intent i = new Intent(this, WebBannerActivity.class);
@@ -411,6 +416,9 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
                                         String message = mineBean.getDatas().get(i).getMessage();
                                         int status = mineBean.getDatas().get(i).getStatus();
                                         if ("withdraw".equals(mineBean.getDatas().get(i).getType())) {
+
+                                            real_info = title;
+
                                             //提现信息
                                             tvWithdrawTitle.setText(title);
                                             tvWithdrawStatus.setText(status_name);

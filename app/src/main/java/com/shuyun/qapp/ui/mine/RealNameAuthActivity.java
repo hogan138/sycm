@@ -13,17 +13,28 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.TimeUtils;
+import com.mylhyl.circledialog.CircleDialog;
+import com.mylhyl.circledialog.callback.ConfigButton;
+import com.mylhyl.circledialog.callback.ConfigDialog;
+import com.mylhyl.circledialog.callback.ConfigText;
+import com.mylhyl.circledialog.callback.ConfigTitle;
+import com.mylhyl.circledialog.params.ButtonParams;
+import com.mylhyl.circledialog.params.DialogParams;
+import com.mylhyl.circledialog.params.TextParams;
+import com.mylhyl.circledialog.params.TitleParams;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.AuthNameBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MineBean;
+import com.shuyun.qapp.bean.SubmitWithdrawInfoBean;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.ui.webview.WebBannerActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ImageLoaderManager;
+import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.RegularTool;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
@@ -112,13 +123,21 @@ public class RealNameAuthActivity extends BaseActivity {
                     public void onNext(DataResponse<AuthNameBean> authNameBeanDataResponse) {
                         if (authNameBeanDataResponse.isSuccees()) {
                             AuthNameBean authNameBean = authNameBeanDataResponse.getDat();
-                            //跳转到认证结果界面;
+                            //进行芝麻信用认证
                             if (!EncodeAndStringTool.isObjectEmpty(authNameBean)) {
+
+                                //显示查询弹框
+//                                ShowDialog();
+
+//                                Intent intent = new Intent(RealNameAuthActivity.this, WebBannerActivity.class);
+//                                intent.putExtra("url", "https://openapi.alipay.com/gateway.do?alipay_sdk=alipay-sdk-java-3.3.49.ALL&app_id=2018041902582802&biz_content=%7B%22biz_no%22%3A%22ZM201811023000000454500346282074%22%7D&charset=UTF-8&format=json&method=zhima.customer.certification.certify&sign=aQy3yV9HiiRoZm4I7RXu3SKKgkEYP%2FHdxtf9HGHlhnlVeJjmEW7npaaBCYyyWFpxUNAcu%2BZwzGN8PKEiaTa5B8G1mmKRjGaETYgQwTUA6Ce8brkUnKtkBW%2Fy8KeAKJRJ9d77WR1ncO0N8DC7dFj8JeMF8%2BYCxY4b65CYyq4iNZCbKnr%2F8%2BWE%2BTT%2Fxcb%2BTW4L4Ek1GFsqi%2F0XA8%2Fg0cgNwfkOICoALbPrUlw5r4iqI3aJiE2MidxiSfFcg38iM8HDPUy6bR5tv21Li0w5EA%2FtH09r7iX5Zcv7EhiUzGxnbOU%2BJ4RGEkq9mJOxxzjkUckrJf8ilmNL7WvMq8EVMeO%2FHQ%3D%3D&sign_type=RSA2&timestamp=2018-11-02+14%3A42%3A22&version=1.0");
+//                                intent.putExtra("name", "芝麻认证");
+//                                startActivity(intent);
+
 //                                Intent intent = new Intent(RealNameAuthActivity.this, AuthResultActivity.class);
 //                                intent.putExtra("authName_result", authNameBean);
 //                                startActivity(intent);
 //                                SaveUserInfo.getInstance(RealNameAuthActivity.this).setUserInfo("cert", String.valueOf(authNameBean.getStatus()));
-                            } else {
                             }
                         } else {
                             ErrorCodeTools.errorCodePrompt(RealNameAuthActivity.this, authNameBeanDataResponse.getErr(), authNameBeanDataResponse.getMsg());
@@ -179,6 +198,58 @@ public class RealNameAuthActivity extends BaseActivity {
             default:
                 break;
         }
+    }
+
+
+    private void ShowDialog() {
+
+        new CircleDialog.Builder(this)
+                .setTitle("")
+                .configTitle(new ConfigTitle() {
+                    @Override
+                    public void onConfig(TitleParams params) {
+                        params.textSize = 40;
+                    }
+                })
+                .setText("")
+                .configText(new ConfigText() {
+                    @Override
+                    public void onConfig(TextParams params) {
+                        params.textSize = 40;
+                        params.textColor = Color.parseColor("#666666");
+                    }
+                })
+                .setTextColor(Color.parseColor("#333333"))
+                .setWidth(0.7f)
+                .setPositive("确定", new OnMultiClickListener() {
+                    @Override
+                    public void onMultiClick(View v) {
+                    }
+                })
+                .configPositive(new ConfigButton() {
+                    @Override
+                    public void onConfig(ButtonParams params) {
+                        params.textColor = Color.parseColor("#333333");
+                    }
+                })
+                .setNegative("取消", new OnMultiClickListener() {
+                    @Override
+                    public void onMultiClick(View v) {
+                    }
+                })
+                .configNegative(new ConfigButton() {
+                    @Override
+                    public void onConfig(ButtonParams params) {
+                        params.textColor = Color.parseColor("#333333");
+                    }
+                })
+                .configDialog(new ConfigDialog() {
+                    @Override
+                    public void onConfig(DialogParams params) {
+                        params.animStyle = R.style.popwin_anim_style;
+                    }
+                })
+                .show();
     }
 
     /**

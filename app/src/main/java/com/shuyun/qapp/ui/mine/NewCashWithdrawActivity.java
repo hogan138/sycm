@@ -80,14 +80,14 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
     private double myCash; //可提现金额
     private String moneyNumber; //输入的金额
     private double money = 0.0; //输入的金额转double
-    private String alipayAccount; //账户
-    private String name; //名称
     private InputWithdrawalbean inputWithdrawalbean;
-
 
     private String bankId = "";
 
     private String cashRuls = "";   //现金提现规则
+
+    //实名信息
+    String real_info = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +100,7 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
         ivClearMoney.setOnClickListener(this);
         btnEnter.setOnClickListener(this);
         btnContactOur.setOnClickListener(this);
+        rlUserInfo.setOnClickListener(this);
 
         /**
          * 账户现金金额
@@ -150,8 +151,12 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
                 KeyboardUtils.hideSoftInput(NewCashWithdrawActivity.this);
                 break;
             case R.id.iv_add_user_info:
-                Intent intent = new Intent(NewCashWithdrawActivity.this, AddWithdrawInfoActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(NewCashWithdrawActivity.this, AddWithdrawInfoActivity.class));
+                break;
+            case R.id.rl_user_info:
+                Intent intent1 = new Intent(this, AddWithdrawInfoActivity.class);
+                intent1.putExtra("info", real_info);
+                startActivity(intent1);
                 break;
             case R.id.tv_rule:
                 Intent i = new Intent(NewCashWithdrawActivity.this, WebBannerActivity.class);
@@ -260,18 +265,25 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
                                 cashRuls = mineBean.getCashRuleUrl();
                                 try {
                                     for (int i = 0; i < mineBean.getDatas().size(); i++) {
-                                        if ("withdraw".equals(mineBean.getDatas().get(i).getType())) {
+                                        String type = mineBean.getDatas().get(i).getType();
+                                        int status = mineBean.getDatas().get(i).getStatus();
+                                        if (!EncodeAndStringTool.isStringEmpty(type) && "withdraw".equals(type) && status == 3) {
                                             //是否完善提现信息
+                                            bankId = mineBean.getDatas().get(i).getBankId();
+                                            String title = mineBean.getDatas().get(i).getTitle();
+                                            real_info = title;
+                                            ivAddUserInfo.setVisibility(View.GONE);
+                                            rlUserInfo.setVisibility(View.VISIBLE);
+                                            tvNameAccount.setText(title.substring(4, title.length()).replace("|", "   "));
                                             if (mineBean.getDatas().get(i).isEnabled()) {
-                                                ivAddUserInfo.setVisibility(View.VISIBLE);
-                                                rlUserInfo.setVisibility(View.GONE);
+                                                rlUserInfo.setEnabled(true);
                                             } else {
-                                                bankId = mineBean.getDatas().get(i).getBankId();
-                                                String title = mineBean.getDatas().get(i).getTitle();
-                                                ivAddUserInfo.setVisibility(View.GONE);
-                                                rlUserInfo.setVisibility(View.VISIBLE);
-                                                tvNameAccount.setText(title.substring(4, title.length()).replace("|", "   "));
+                                                rlUserInfo.setEnabled(false);
                                             }
+                                            return;
+                                        } else {
+                                            ivAddUserInfo.setVisibility(View.VISIBLE);
+                                            rlUserInfo.setVisibility(View.GONE);
                                         }
                                     }
                                 } catch (Exception e) {
@@ -344,6 +356,13 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
 
                         }
                     }
+
+                    if (money > myCash) {//输入金额大于账户余额,将金额改成账户余额
+                        moneyNumber = cash;
+                        tvMoney.setText(cash);
+                        tvMoney.setSelection(cash.length());
+                    }
+
                     if (money < 50 || money > myCash) {//小于50和大于余额 提现按钮不能点击
                         btnEnter.setEnabled(false);
                     } else {
@@ -368,12 +387,6 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
                     clearPic.setVisibility(View.VISIBLE);
                 } else if (!EncodeAndStringTool.isStringEmpty(et) && !hasFocus) {//不等于空,且失去焦点
                     clearPic.setVisibility(View.GONE);
-                    //对于金额Editext,如果输入金额不为空,且失去焦点
-                    if (editText.equals(tvMoney)) {
-                        if (money > myCash) {//输入金额大于账户余额,将金额改成账户余额
-                            moneyNumber = cash;
-                        }
-                    }
                 } else if (EncodeAndStringTool.isStringEmpty(et) && hasFocus) {
                     clearPic.setVisibility(View.GONE);
                 } else if (EncodeAndStringTool.isStringEmpty(et) && !hasFocus) {

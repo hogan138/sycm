@@ -88,6 +88,9 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
 
     private String redrules = "";
 
+    //实名信息
+    String real_info = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +101,7 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
         btnEnter.setOnClickListener(this);
         btnContactOur.setOnClickListener(this);
         tvMoney.setInputType(InputType.TYPE_NULL);
+        rlUserInfo.setOnClickListener(this);
 
         SpannableString ss = new SpannableString("请选择您要提现的红包");
         // 新建一个属性对象,设置文字的大小
@@ -241,7 +245,11 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
                 startActivity(i);
                 break;
             case R.id.iv_add_user_info:
-                Intent intent = new Intent(NewRedWithdrawActivity.this, AddWithdrawInfoActivity.class);
+                startActivity(new Intent(NewRedWithdrawActivity.this, AddWithdrawInfoActivity.class));
+                break;
+            case R.id.rl_user_info:
+                Intent intent = new Intent(this, AddWithdrawInfoActivity.class);
+                intent.putExtra("info", real_info);
                 startActivity(intent);
                 break;
             case R.id.btn_enter:
@@ -350,18 +358,25 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
                                 redrules = mineBean.getRedRuleUrl();
                                 try {
                                     for (int i = 0; i < mineBean.getDatas().size(); i++) {
-                                        if ("withdraw".equals(mineBean.getDatas().get(i).getType())) {
+                                        String type = mineBean.getDatas().get(i).getType();
+                                        int status = mineBean.getDatas().get(i).getStatus();
+                                        if (!EncodeAndStringTool.isStringEmpty(type) && "withdraw".equals(type) && status == 3) {
                                             //是否完善提现信息
+                                            bankId = mineBean.getDatas().get(i).getBankId();
+                                            String title = mineBean.getDatas().get(i).getTitle();
+                                            real_info = title;
+                                            ivAddUserInfo.setVisibility(View.GONE);
+                                            rlUserInfo.setVisibility(View.VISIBLE);
+                                            tvNameAccount.setText(title.substring(4, title.length()).replace("|", "   "));
                                             if (mineBean.getDatas().get(i).isEnabled()) {
-                                                ivAddUserInfo.setVisibility(View.VISIBLE);
-                                                rlUserInfo.setVisibility(View.GONE);
+                                                rlUserInfo.setEnabled(true);
                                             } else {
-                                                bankId = mineBean.getDatas().get(i).getBankId();
-                                                String title = mineBean.getDatas().get(i).getTitle();
-                                                ivAddUserInfo.setVisibility(View.GONE);
-                                                rlUserInfo.setVisibility(View.VISIBLE);
-                                                tvNameAccount.setText(title.substring(4, title.length()).replace("|", "   "));
+                                                rlUserInfo.setEnabled(false);
                                             }
+                                            return;
+                                        } else {
+                                            ivAddUserInfo.setVisibility(View.VISIBLE);
+                                            rlUserInfo.setVisibility(View.GONE);
                                         }
                                     }
                                 } catch (Exception e) {

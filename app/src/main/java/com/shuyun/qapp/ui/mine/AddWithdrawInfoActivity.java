@@ -43,6 +43,7 @@ import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
+import com.shuyun.qapp.utils.StringFilterUtil;
 import com.shuyun.qapp.utils.ToastUtil;
 
 import java.util.Random;
@@ -95,6 +96,23 @@ public class AddWithdrawInfoActivity extends BaseActivity implements View.OnClic
 
         addListener(etName, ivClearName);//给支付宝绑定姓名EditText设置变化监听事件
         addListener(etAccount, ivClearAccount);//给支付宝账户EditText设置变化监听事件
+
+        try {
+            String name = getIntent().getStringExtra("info").trim();
+            if (!EncodeAndStringTool.isStringEmpty(name) && name.indexOf("|") != -1) {
+                String[] temp = null;
+                temp = name.split("[|]");
+                if (temp.length >= 2) {
+                    etName.setText(temp[1]);
+                    etName.setSelection(temp[1].length());
+                    etAccount.setText(temp[2]);
+                    etAccount.setSelection(temp[2].length());
+                }
+            }
+        } catch (Exception e) {
+
+        }
+
     }
 
     @Override
@@ -121,14 +139,18 @@ public class AddWithdrawInfoActivity extends BaseActivity implements View.OnClic
                 String name = etName.getText().toString().trim();
                 String account = etAccount.getText().toString().trim();
                 if (!EncodeAndStringTool.isStringEmpty(name)) {
-                    if (!EncodeAndStringTool.isStringEmpty(account)) {
-                        if (!account.equals(stringFilter(account))) {
-                            ToastUtil.showToast(AddWithdrawInfoActivity.this, "请输入正确支付宝账号");
-                        } else {
-                            ShowDialog(name, account);
-                        }
+                    if (!name.equals(StringFilterUtil.stringFilter(name))) {
+                        ToastUtil.showToast(AddWithdrawInfoActivity.this, "请输入正确支付宝姓名");
                     } else {
-                        ToastUtil.showToast(AddWithdrawInfoActivity.this, "请输入支付宝账号");
+                        if (!EncodeAndStringTool.isStringEmpty(account)) {
+                            if (!account.equals(StringFilterUtil.stringFilter1(account))) {
+                                ToastUtil.showToast(AddWithdrawInfoActivity.this, "请输入正确支付宝账号");
+                            } else {
+                                ShowDialog(name, account);
+                            }
+                        } else {
+                            ToastUtil.showToast(AddWithdrawInfoActivity.this, "请输入支付宝账号");
+                        }
                     }
                 } else {
                     ToastUtil.showToast(AddWithdrawInfoActivity.this, "请输入姓名");
@@ -156,7 +178,7 @@ public class AddWithdrawInfoActivity extends BaseActivity implements View.OnClic
                         params.textSize = 40;
                     }
                 })
-                .setText("支付宝绑定姓名：{" + name + "}支付宝账号：{" + account + "}请确认信息无误")
+                .setText("支付宝绑定姓名：" + name + "\n支付宝账号：" + account + "\n请确认信息无误")
                 .configText(new ConfigText() {
                     @Override
                     public void onConfig(TextParams params) {
@@ -276,10 +298,19 @@ public class AddWithdrawInfoActivity extends BaseActivity implements View.OnClic
                 }
 
                 /**
+                 * 如果是给支付宝绑定姓名EditText设置变化监听事件,则做下面操作
+                 */
+                if (editText.equals(etName)) {
+                    if (!et.equals(StringFilterUtil.stringFilter(et))) {
+                        ToastUtil.showToast(AddWithdrawInfoActivity.this, "请输入正确支付宝姓名");
+                    }
+                }
+
+                /**
                  * 如果是给支付宝账户EditText设置变化监听事件,则做下面操作
                  */
                 if (editText.equals(etAccount)) {
-                    if (!et.equals(stringFilter(et))) {
+                    if (!et.equals(StringFilterUtil.stringFilter1(et))) {
                         ToastUtil.showToast(AddWithdrawInfoActivity.this, "请输入正确支付宝账号");
                     }
 
@@ -311,12 +342,5 @@ public class AddWithdrawInfoActivity extends BaseActivity implements View.OnClic
         });
     }
 
-    // 允许输入
-    public static String stringFilter(String str) throws PatternSyntaxException {
-        String regEx = "[^a-zA-Z0-9.@_]";
-        Pattern p = Pattern.compile(regEx);
-        Matcher m = p.matcher(str);
-        return m.replaceAll("").trim();
-    }
 
 }

@@ -682,4 +682,10 @@ public interface ApiService {
      */
     @POST("/rest/user/money/withdraw/submit")
     Observable<DataResponse<AddWithdrawResultBean>> submitWithdrawInfo(@Body RequestBody body);
+
+//    /**
+//     * 75、实名认证结果查询
+//     */
+//    @POST("/rest/user/money/withdraw/submit")
+//    Observable<DataResponse<AddWithdrawResultBean>> submitWithdrawInfo(@Body RequestBody body);
 }
