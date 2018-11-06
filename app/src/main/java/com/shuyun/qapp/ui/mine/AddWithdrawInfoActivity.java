@@ -178,7 +178,7 @@ public class AddWithdrawInfoActivity extends BaseActivity implements View.OnClic
                         params.textSize = 40;
                     }
                 })
-                .setText("支付宝绑定姓名：" + name + "\n支付宝账号：" + account + "\n请确认信息无误")
+                .setText("支付宝绑定姓名:" + name + "\n支付宝账号:" + account + "\n请确认信息无误")
                 .configText(new ConfigText() {
                     @Override
                     public void onConfig(TextParams params) {

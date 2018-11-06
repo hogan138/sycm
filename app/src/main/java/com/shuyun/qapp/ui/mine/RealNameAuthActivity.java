@@ -3,6 +3,7 @@ package com.shuyun.qapp.ui.mine;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -28,6 +29,7 @@ import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.AuthNameBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MineBean;
+import com.shuyun.qapp.bean.RealNameBean;
 import com.shuyun.qapp.bean.SubmitWithdrawInfoBean;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.ui.webview.WebBannerActivity;
@@ -80,6 +82,9 @@ public class RealNameAuthActivity extends BaseActivity {
 
     String phone = "";
 
+    String bizNo = ""; //认证编号
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,30 +119,33 @@ public class RealNameAuthActivity extends BaseActivity {
         apiService.realNameAuth(realName, etIdCard)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<AuthNameBean>>() {
+                .subscribe(new Observer<DataResponse<RealNameBean>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                     }
 
                     @Override
-                    public void onNext(DataResponse<AuthNameBean> authNameBeanDataResponse) {
+                    public void onNext(DataResponse<RealNameBean> authNameBeanDataResponse) {
                         if (authNameBeanDataResponse.isSuccees()) {
-                            AuthNameBean authNameBean = authNameBeanDataResponse.getDat();
+                            RealNameBean realNameBean = authNameBeanDataResponse.getDat();
                             //进行芝麻信用认证
-                            if (!EncodeAndStringTool.isObjectEmpty(authNameBean)) {
+                            if (!EncodeAndStringTool.isObjectEmpty(realNameBean)) {
 
-                                //显示查询弹框
-//                                ShowDialog();
+                                bizNo = realNameBean.getBizNo();
 
-//                                Intent intent = new Intent(RealNameAuthActivity.this, WebBannerActivity.class);
-//                                intent.putExtra("url", "https://openapi.alipay.com/gateway.do?alipay_sdk=alipay-sdk-java-3.3.49.ALL&app_id=2018041902582802&biz_content=%7B%22biz_no%22%3A%22ZM201811023000000454500346282074%22%7D&charset=UTF-8&format=json&method=zhima.customer.certification.certify&sign=aQy3yV9HiiRoZm4I7RXu3SKKgkEYP%2FHdxtf9HGHlhnlVeJjmEW7npaaBCYyyWFpxUNAcu%2BZwzGN8PKEiaTa5B8G1mmKRjGaETYgQwTUA6Ce8brkUnKtkBW%2Fy8KeAKJRJ9d77WR1ncO0N8DC7dFj8JeMF8%2BYCxY4b65CYyq4iNZCbKnr%2F8%2BWE%2BTT%2Fxcb%2BTW4L4Ek1GFsqi%2F0XA8%2Fg0cgNwfkOICoALbPrUlw5r4iqI3aJiE2MidxiSfFcg38iM8HDPUy6bR5tv21Li0w5EA%2FtH09r7iX5Zcv7EhiUzGxnbOU%2BJ4RGEkq9mJOxxzjkUckrJf8ilmNL7WvMq8EVMeO%2FHQ%3D%3D&sign_type=RSA2&timestamp=2018-11-02+14%3A42%3A22&version=1.0");
-//                                intent.putExtra("name", "芝麻认证");
-//                                startActivity(intent);
+                                Intent intent = new Intent(RealNameAuthActivity.this, WebBannerActivity.class);
+                                intent.putExtra("url", realNameBean.getBody());
+                                intent.putExtra("name", "芝麻认证");
+                                startActivity(intent);
 
-//                                Intent intent = new Intent(RealNameAuthActivity.this, AuthResultActivity.class);
-//                                intent.putExtra("authName_result", authNameBean);
-//                                startActivity(intent);
-//                                SaveUserInfo.getInstance(RealNameAuthActivity.this).setUserInfo("cert", String.valueOf(authNameBean.getStatus()));
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        //显示确认查询认证弹框
+                                        ShowDialog();
+                                    }
+                                }, 1000);
+
                             }
                         } else {
                             ErrorCodeTools.errorCodePrompt(RealNameAuthActivity.this, authNameBeanDataResponse.getErr(), authNameBeanDataResponse.getMsg());
@@ -149,7 +157,6 @@ public class RealNameAuthActivity extends BaseActivity {
                     public void onError(Throwable e) {
                         //保存错误信息
                         SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-
                     }
 
                     @Override
@@ -204,14 +211,14 @@ public class RealNameAuthActivity extends BaseActivity {
     private void ShowDialog() {
 
         new CircleDialog.Builder(this)
-                .setTitle("")
+                .setTitle("芝麻认证")
                 .configTitle(new ConfigTitle() {
                     @Override
                     public void onConfig(TitleParams params) {
                         params.textSize = 40;
                     }
                 })
-                .setText("")
+                .setText("你已经完成芝麻信用认证了吗")
                 .configText(new ConfigText() {
                     @Override
                     public void onConfig(TextParams params) {
@@ -224,6 +231,7 @@ public class RealNameAuthActivity extends BaseActivity {
                 .setPositive("确定", new OnMultiClickListener() {
                     @Override
                     public void onMultiClick(View v) {
+                        queryResult();
                     }
                 })
                 .configPositive(new ConfigButton() {
@@ -253,8 +261,64 @@ public class RealNameAuthActivity extends BaseActivity {
     }
 
     /**
+     * 实名认证结果查询
+     */
+    private void queryResult() {
+        ApiService apiService = BasePresenter.create(8000);
+        apiService.queryRealResult(bizNo)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<DataResponse<AuthNameBean>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
+
+                    @Override
+                    public void onNext(DataResponse<AuthNameBean> authNameBeanDataResponse) {
+                        if (authNameBeanDataResponse.isSuccees()) {
+                            AuthNameBean authNameBean = authNameBeanDataResponse.getDat();
+                            if (!EncodeAndStringTool.isObjectEmpty(authNameBean)) {
+                                SaveUserInfo.getInstance(RealNameAuthActivity.this).setUserInfo("cert", "1");
+                                Intent intent = new Intent(RealNameAuthActivity.this, AuthResultActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        } else {
+                            tvErrorHint.setVisibility(View.VISIBLE);
+                            tvErrorHint.setText(authNameBeanDataResponse.getMsg());
+                            if (cerCount <= 0) {
+                                btnConfirm.setText("今日认证次数已用完");
+                                btnConfirm.setEnabled(false);
+                                btnConfirm.setBackgroundResource(R.drawable.common_btn_bg_10);
+                            } else {
+                                btnConfirm.setText("重新认证");
+                                btnConfirm.setEnabled(true);
+                                btnConfirm.setBackgroundResource(R.drawable.common_btn_bg_4);
+                            }
+                            ErrorCodeTools.errorCodePrompt(RealNameAuthActivity.this, authNameBeanDataResponse.getErr(), authNameBeanDataResponse.getMsg());
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //保存错误信息
+                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+    }
+
+
+    /**
      * 获取到我的首界面数据
      */
+    int cerCount;
+
     private void loadMineHomeData() {
         ApiService apiService = BasePresenter.create(8000);
         apiService.getMineHomeData()
@@ -271,7 +335,7 @@ public class RealNameAuthActivity extends BaseActivity {
                             MineBean mineBean = listDataResponse.getDat();
                             if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
                                 try {
-                                    int cerCount = mineBean.getCertCount();
+                                    cerCount = mineBean.getCertCount();
                                     tvCount.setText("今日认证剩余次数：" + cerCount + "次");
                                     if (cerCount <= 0) {
                                         btnConfirm.setText("今日认证次数已用完");
@@ -285,7 +349,6 @@ public class RealNameAuthActivity extends BaseActivity {
                                 } catch (Exception e) {
 
                                 }
-                            } else {
                             }
                         } else {
                             ErrorCodeTools.errorCodePrompt(RealNameAuthActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());

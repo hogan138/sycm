@@ -27,6 +27,7 @@ import com.shuyun.qapp.bean.MatchTimeBean;
 import com.shuyun.qapp.bean.Msg;
 import com.shuyun.qapp.bean.PrizeDetailBean;
 import com.shuyun.qapp.bean.PrizeHistoryBean;
+import com.shuyun.qapp.bean.RealNameBean;
 import com.shuyun.qapp.bean.RobotShowBean;
 import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.bean.ApplyAnswer;
@@ -163,7 +164,7 @@ public interface ApiService {
      */
 
     @GET("/rest/user/certificate/apply")
-    Observable<DataResponse<AuthNameBean>> realNameAuth(@Query("name") String realname, @Query("idCard") String idcard);
+    Observable<DataResponse<RealNameBean>> realNameAuth(@Query("name") String realname, @Query("idCard") String idcard);
 
     /**
      * 13、获取我的奖品/user-center
@@ -683,9 +684,9 @@ public interface ApiService {
     @POST("/rest/user/money/withdraw/submit")
     Observable<DataResponse<AddWithdrawResultBean>> submitWithdrawInfo(@Body RequestBody body);
 
-//    /**
-//     * 75、实名认证结果查询
-//     */
-//    @POST("/rest/user/money/withdraw/submit")
-//    Observable<DataResponse<AddWithdrawResultBean>> submitWithdrawInfo(@Body RequestBody body);
+    /**
+     * 75、实名认证结果查询
+     */
+    @GET("/rest/user/certificate/query")
+    Observable<DataResponse<AuthNameBean>> queryRealResult(@Query("bizNo") String bizNo);
 }

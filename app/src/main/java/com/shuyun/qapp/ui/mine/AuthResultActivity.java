@@ -42,23 +42,6 @@ public class AuthResultActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         tvCommonTitle.setText("实名认证");
-        AuthNameBean authNameBean = getIntent().getParcelableExtra("authName_result");
-        if (!EncodeAndStringTool.isObjectEmpty(authNameBean)) {
-            /**
-             * 实名认证状态
-             * 1:已认证
-             * 2:审核中
-             * 3:未通过
-             */
-            int status = authNameBean.getStatus();
-            if (1 == status) {
-                ivAuthResultIcon.setImageResource(R.mipmap.result_real_success);
-                tvAuthRsult.setText("认证成功");
-            } else if (3 == status) {
-                ivAuthResultIcon.setImageResource(R.mipmap.result_real_fail);
-                tvAuthRsult.setText("认证失败\n姓名和身份证号码不匹配");
-            }
-        }
     }
 
     @Override
