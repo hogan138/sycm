@@ -80,7 +80,7 @@ public class RealNameAuthActivity extends BaseActivity {
     @BindView(R.id.iv_clear_id)
     ImageView ivClearId;
 
-    String phone = "";
+    String phone = "";//手机号
 
     String bizNo = ""; //认证编号
 
@@ -98,8 +98,6 @@ public class RealNameAuthActivity extends BaseActivity {
         addListener(etRealName, ivClearName);//给支付宝绑定姓名EditText设置变化监听事件
         addListener(etIdCard, ivClearId);//给支付宝账户EditText设置变化监听事件
 
-        //error_hint
-        //1.认证失败  2.实名信息重复绑定   3.姓名和身份证号码不匹配
     }
 
     @Override

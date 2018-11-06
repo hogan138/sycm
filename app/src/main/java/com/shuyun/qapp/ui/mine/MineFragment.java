@@ -68,6 +68,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.blankj.utilcode.util.ActivityUtils.startActivity;
+
 /**
  * 通用popupwindow
  * https://www.jianshu.com/p/9304d553aa67
@@ -396,7 +398,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                         //已实名认证
                     } else {
                         //未实名认证
-                        RealNamePopupUtil.showAuthPop(mContext, llMineFragment);
+                        startActivity(new Intent(mContext, RealNameAuthActivity.class));
                     }
                 }
                 break;
@@ -770,7 +772,6 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                                 } catch (Exception e) {
 
                                 }
-                            } else {
                             }
                         } else {
                             ErrorCodeTools.errorCodePrompt(mContext, listDataResponse.getErr(), listDataResponse.getMsg());
