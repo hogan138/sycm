@@ -270,11 +270,13 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
                                         if (!EncodeAndStringTool.isStringEmpty(type) && "withdraw".equals(type) && status == 3) {
                                             //是否完善提现信息
                                             bankId = mineBean.getDatas().get(i).getBankId();
-                                            String title = mineBean.getDatas().get(i).getTitle();
+                                            String title = mineBean.getDatas().get(i).getTitle().replaceAll(" ", "");
                                             real_info = title;
                                             ivAddUserInfo.setVisibility(View.GONE);
                                             rlUserInfo.setVisibility(View.VISIBLE);
-                                            tvNameAccount.setText(title.substring(4, title.length()).replace("|", "   "));
+                                            String[] args = title.split("[|]");
+                                            String str = args[1] + "   " + args[2];
+                                            tvNameAccount.setText(str);
                                             if (mineBean.getDatas().get(i).isEnabled()) {
                                                 rlUserInfo.setEnabled(true);
                                             } else {

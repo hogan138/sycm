@@ -1,8 +1,5 @@
 package com.shuyun.qapp.ui.homepage;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -19,13 +16,10 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 
 import com.blankj.utilcode.util.TimeUtils;
 import com.gyf.barlibrary.ImmersionBar;
@@ -37,30 +31,19 @@ import com.shuyun.qapp.adapter.MyHomeadapter;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.ActivityTimeBean;
 import com.shuyun.qapp.bean.AppVersionBean;
-import com.shuyun.qapp.bean.ConfigDialogBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.activity.ActivityFragment;
 import com.shuyun.qapp.ui.classify.ClassifyFragment;
-import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
-import com.shuyun.qapp.ui.integral.IntegralMainActivity;
 import com.shuyun.qapp.ui.mine.MineFragment;
-import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
-import com.shuyun.qapp.ui.webview.WebAnswerActivity;
-import com.shuyun.qapp.ui.webview.WebBannerActivity;
-import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ExampleUtil;
-import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
-import com.shuyun.qapp.utils.SaveUserInfo;
-import com.shuyun.qapp.view.RealNamePopupUtil;
-import com.shuyun.qapp.view.RoundImageView;
 import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 
@@ -104,6 +87,11 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_homepage);
         ButterKnife.bind(this);
 

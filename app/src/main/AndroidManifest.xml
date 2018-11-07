@@ -208,17 +208,30 @@
         <!-- 引导页 -->
         <activity
             android:name=".ui.welcome.SplashActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 首页 -->
         <activity
             android:name=".ui.homepage.HomePageActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
+            <!--通过浏览器Url启动app-->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="qapp"
+                    android:scheme="com.shuyun" />
+                <!--<a href="[scheme]://[host]/[path]?[query]">启动应用程序</a>-->
+            </intent-filter>
+
+        </activity>
         <!-- 登录页 -->
         <activity
             android:name=".ui.login.LoginActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 友盟Key -->
         <meta-data
@@ -238,100 +251,100 @@
         <!-- 绑定微信 -->
         <activity
             android:name=".ui.login.BindPhoneNumActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 消息页 -->
         <activity
             android:name=".ui.homepage.InformationActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 修改个人信息 -->
         <activity
             android:name=".ui.mine.ChangePersonalInfoActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 修改手机号 -->
         <activity
             android:name=".ui.mine.ChangePhoneNumActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 实名认证页面 -->
         <activity
             android:name=".ui.mine.RealNameAuthActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"></activity>
         <!-- 实名认证结果 -->
         <activity
             android:name=".ui.mine.AuthResultActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 账户记录 -->
         <activity
             android:name=".ui.mine.AccountRecordActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 现金提现 -->
         <activity
             android:name=".ui.mine.CashWithdrawalActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 系统设置 -->
         <activity
             android:name=".ui.mine.SystemSettingActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 联系我们 -->
         <activity
             android:name=".ui.webview.WebPublicActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 答题记录 -->
         <activity
             android:name=".ui.mine.AnswerRecordActivity"
             android:screenOrientation="portrait" />
-        <!-- android:launchMode="singleTask" -->
+        <!-- android:launchMode="singleTop" -->
         <!-- 我的奖品 -->
         <activity
             android:name=".ui.mine.MinePrizeActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 更换绑定手机号 -->
         <activity
             android:name=".ui.mine.ChangePhoneActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 答题历史 -->
         <activity
             android:name=".ui.answer.AnswerHistoryActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 红包 -->
         <activity
             android:name=".ui.mine.RedWithDrawActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 积分抽奖和宝箱开奖界面 -->
         <!-- 我的界面，反馈. -->
         <activity
             android:name=".ui.mine.FeedbackActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 现金提现结果页 -->
         <activity
             android:name=".ui.mine.CashResultActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 分类 -->
         <activity
             android:name=".ui.classify.ClassifyActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 分享有奖  短信支持 -->
         <!-- 抽奖规则 -->
         <!-- banner跳转页 -->
         <activity
             android:name=".ui.webview.WebBannerActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 更改密码 -->
         <activity
@@ -344,17 +357,17 @@
         <!-- 其他设置之账号注销 -->
         <activity
             android:name=".ui.mine.OtherSettingActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 账户注销规则 -->
         <activity
             android:name=".ui.mine.AccountLogoutActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 上传申请函 -->
         <activity
             android:name=".ui.mine.UploadLetterActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 摄像头拍照之内容提供器 -->
         <provider

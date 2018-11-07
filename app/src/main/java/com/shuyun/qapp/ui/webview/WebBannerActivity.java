@@ -134,6 +134,7 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
                         intent.addCategory("android.intent.category.BROWSABLE");
                         intent.setComponent(null);
                         startActivity(intent);
+                        finish();
                     } catch (Exception e) {
                     }
                 }

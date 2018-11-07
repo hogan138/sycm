@@ -2,6 +2,7 @@ package com.shuyun.qapp.ui.mine;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -14,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.TimeUtils;
+import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.callback.ConfigButton;
 import com.mylhyl.circledialog.callback.ConfigDialog;
@@ -30,19 +32,16 @@ import com.shuyun.qapp.bean.AuthNameBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.bean.RealNameBean;
-import com.shuyun.qapp.bean.SubmitWithdrawInfoBean;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.ui.webview.WebBannerActivity;
+import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.RegularTool;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
-import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.ToastUtil;
-import com.tencent.stat.StatConfig;
 import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 
@@ -58,7 +57,8 @@ import io.reactivex.schedulers.Schedulers;
  * 实名认证界面
  */
 public class RealNameAuthActivity extends BaseActivity {
-
+    @BindView(R.id.rl_main)
+    RelativeLayout rlMain;
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;
     @BindView(R.id.tv_common_title)
@@ -84,6 +84,9 @@ public class RealNameAuthActivity extends BaseActivity {
 
     String bizNo = ""; //认证编号
 
+    private Handler handler = new Handler();
+
+    private static final long time = 2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +127,7 @@ public class RealNameAuthActivity extends BaseActivity {
 
                     @Override
                     public void onNext(DataResponse<RealNameBean> authNameBeanDataResponse) {
+                        LoadingBar.cancel(rlMain);
                         if (authNameBeanDataResponse.isSuccees()) {
                             RealNameBean realNameBean = authNameBeanDataResponse.getDat();
                             //进行芝麻信用认证
@@ -131,18 +135,22 @@ public class RealNameAuthActivity extends BaseActivity {
 
                                 bizNo = realNameBean.getBizNo();
 
-                                Intent intent = new Intent(RealNameAuthActivity.this, WebBannerActivity.class);
-                                intent.putExtra("url", realNameBean.getBody());
-                                intent.putExtra("name", "芝麻认证");
+//                                Intent intent = new Intent(RealNameAuthActivity.this, WebBannerActivity.class);
+//                                intent.putExtra("url", realNameBean.getBody());
+//                                intent.putExtra("name", "芝麻认证");
+//                                startActivity(intent);
+                                Intent intent = new Intent();
+                                intent.setData(Uri.parse(realNameBean.getBody()));
+                                intent.setAction(Intent.ACTION_VIEW);
                                 startActivity(intent);
 
-                                new Handler().postDelayed(new Runnable() {
+                                handler.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
                                         //显示确认查询认证弹框
                                         ShowDialog();
                                     }
-                                }, 1000);
+                                }, time);
 
                             }
                         } else {
@@ -178,12 +186,19 @@ public class RealNameAuthActivity extends BaseActivity {
                 etIdCard.setText("");
                 break;
             case R.id.btn_confirm:
-                String realName = etRealName.getText().toString().trim();
-                String idCard = etIdCard.getText().toString().trim();
+                final String realName = etRealName.getText().toString().trim();
+                final String idCard = etIdCard.getText().toString().trim();
                 if (!EncodeAndStringTool.isStringEmpty(realName)) {
                     if (!EncodeAndStringTool.isStringEmpty(idCard)) {
                         if (RegularTool.isIDCard(idCard)) {
-                            loadAuthNameData(realName, idCard);
+                            CustomLoadingFactory factory = new CustomLoadingFactory();
+                            LoadingBar.make(rlMain, factory).show();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    loadAuthNameData(realName, idCard);
+                                }
+                            }, time);
                         } else {
                             ToastUtil.showToast(this, "请输入正确的身份证号码");
                         }
