@@ -31,6 +31,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.constant.TimeConstants;
+import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
@@ -584,7 +585,7 @@ public class HomeFragment extends Fragment {
      */
     private void loadHomeGroups() {
         ApiService apiService = BasePresenter.create(8000);
-        apiService.getHomeGroups("3.2.2")
+        apiService.getHomeGroups(AppUtils.getAppVersionName())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<DataResponse<HomeGroupsBean>>() {
@@ -723,6 +724,7 @@ public class HomeFragment extends Fragment {
                     public void onComplete() {
                     }
                 });
+
     }
 
     GroupBean recommendGroup1;

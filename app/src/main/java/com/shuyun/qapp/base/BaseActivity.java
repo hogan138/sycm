@@ -1,5 +1,7 @@
 package com.shuyun.qapp.base;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -37,6 +39,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         //设置布局
         setContentView(intiLayout());
+
+        //改变底部导航栏颜色
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            getWindow().setNavigationBarColor(Color.parseColor("#ffffff"));
+//        }
+
         //初始化控件
 //        initView();
         //设置数据
