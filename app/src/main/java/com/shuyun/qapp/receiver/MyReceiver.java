@@ -15,6 +15,8 @@ import com.shuyun.qapp.bean.PushBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.InformatListenner;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
+import com.shuyun.qapp.ui.mine.AddWithdrawInfoActivity;
+import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
 import com.shuyun.qapp.ui.webview.WebBannerActivity;
 import com.shuyun.qapp.ui.integral.MyPrizeActivity;
 import com.shuyun.qapp.ui.login.LoginActivity;
@@ -96,54 +98,55 @@ public class MyReceiver extends BroadcastReceiver {
                 } else {
                     PushBean pushBean = JSON.parseObject(bundle.getString(JPushInterface.EXTRA_EXTRA), PushBean.class);
                     Intent i;
+                    String action = pushBean.getPushAction();
                     //积分夺宝中奖通知
-                    if (pushBean.getPushAction().equals("push.integral.snatch.notify")) {
+                    if (("push.integral.snatch.notify").equals(action)) {
                         i = new Intent(context, MyPrizeActivity.class);
                         i.putExtras(bundle);
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(i);
-                    } else if (pushBean.getPushAction().equals("push.answer.get.notify")) {
+                    } else if (("push.answer.get.notify").equals(action)) {
                         SaveUserInfo.getInstance(context).setUserInfo("action_msg", "action_msg");
                         //每8小时可领取答题次数通知
                         i = new Intent(context, HomePageActivity.class);
                         i.putExtra("from", "msg");
                         context.startActivity(i);
-                    } else if (pushBean.getPushAction().equals("push.prize.expire.notify")) {
-                        //奖品快过期通知
+                    } else if (("push.prize.notity").equals(action) || ("push.prize.expire.notify").equals(action)) {
+                        // 奖品通知、奖品快过期通知
                         i = new Intent(context, MinePrizeActivity.class);
                         i.putExtra("status", 1);
                         i.putExtra("certification", SaveUserInfo.getInstance(context).getUserInfo("cert"));
                         context.startActivity(i);
-                    } else if (pushBean.getPushAction().equals("push.prize.notity")) {
-                        // 奖品通知
-                        i = new Intent(context, MinePrizeActivity.class);
-                        i.putExtra("status", 1);
-                        i.putExtra("certification", SaveUserInfo.getInstance(context).getUserInfo("cert"));
-                        context.startActivity(i);
-                    } else if (pushBean.getPushAction().equals("push.withdraw.success.notify")) {
+                    } else if (("push.withdraw.success.notify").equals(action)) {
                         //提现成功通知
                         i = new Intent(context, WebBannerActivity.class);
                         i.putExtra("url", pushBean.getPushData());
                         i.putExtra("name", "提现成功");//名称 标题
                         context.startActivity(i);
-                    } else if (pushBean.getPushAction().equals("push.withdraw.error.notify")) {
+                    } else if (("push.withdraw.error.notify").equals(action)) {
                         //提现失败通知
                         i = new Intent(context, WebBannerActivity.class);
                         i.putExtra("url", pushBean.getPushData());
                         i.putExtra("name", "提现失败");//名称 标题
                         context.startActivity(i);
-                    } else if (pushBean.getPushAction().equals("push.default")) {
+                    } else if (("push.default").equals(action)) {
                         //默认跳转h5
                         i = new Intent(context, WebBannerActivity.class);
                         i.putExtra("url", pushBean.getPushData());
                         i.putExtra("name", "全民共进");//名称 标题
                         context.startActivity(i);
-                    } else if (pushBean.getPushAction().equals("push.deliver.goods.notity")) {
+                    } else if (("push.deliver.goods.notity").equals(action)) {
                         //发货通知
                         i = new Intent(context, MinePrizeActivity.class);
                         i.putExtra("status", 2);
                         i.putExtra("certification", SaveUserInfo.getInstance(context).getUserInfo("cert"));
                         context.startActivity(i);
+                    } else if (("push.real").equals(action)) {
+                        //实名认证
+                        context.startActivity(new Intent(context, RealNameAuthActivity.class));
+                    } else if (("push.withdraw.info").equals(action)) {
+                        //完善提现信息
+                        context.startActivity(new Intent(context, AddWithdrawInfoActivity.class));
                     } else {
                         i = new Intent(context, HomePageActivity.class);
                         i.putExtras(bundle);

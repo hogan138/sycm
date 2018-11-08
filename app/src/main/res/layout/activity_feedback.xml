@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/text_12"
             android:layout_marginTop="@dimen/text_33"
-            android:text="真实名字:"
+            android:text="真实名字"
             android:textColor="@color/color_1"
             android:textSize="@dimen/text_15" />
 
@@ -27,9 +27,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/text_82"
-            android:layout_marginRight="@dimen/text_12"
             android:layout_marginTop="@dimen/text_33"
-            android:background="@null" />
+            android:layout_marginRight="@dimen/text_12"
+            android:background="@null"
+            android:hint="请输入真实姓名"
+            android:textSize="@dimen/text_15" />
     </RelativeLayout>
 
     <include layout="@layout/common_line_1" />
@@ -43,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/text_12"
-            android:text="联系方式:"
+            android:text="联系方式"
             android:textColor="@color/color_1"
             android:textSize="@dimen/text_15" />
 
@@ -55,7 +57,9 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/text_82"
             android:layout_marginRight="@dimen/text_12"
-            android:background="@null" />
+            android:background="@null"
+            android:hint="请输入联系方式"
+            android:textSize="@dimen/text_15" />
     </RelativeLayout>
 
     <include layout="@layout/common_line_1" />
@@ -69,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/text_12"
-            android:text="反馈内容:"
+            android:text="反馈内容"
             android:textColor="@color/color_1"
             android:textSize="@dimen/text_15" />
 
@@ -96,8 +100,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_40"
         android:layout_marginLeft="@dimen/text_12"
-        android:layout_marginRight="@dimen/text_12"
         android:layout_marginTop="@dimen/text_25"
+        android:layout_marginRight="@dimen/text_12"
         android:background="@drawable/common_btn_bg_4"
         android:text="提交"
         android:textColor="@color/white"

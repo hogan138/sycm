@@ -72,7 +72,7 @@ public class HomeSortAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
 
             List<GroupClassifyBean.ChildrenBean> childrenBeanList = groupClassifyBean.getChildren();
-            if (!EncodeAndStringTool.isListEmpty(childrenBeanList)) {   //大家都在答
+            if (!EncodeAndStringTool.isListEmpty(childrenBeanList)) {   //首页分类
                 try {
                     ((MyViewHolder) holder).rvSortGroup.setHasFixedSize(true);
                     ((MyViewHolder) holder).rvSortGroup.setNestedScrollingEnabled(false);

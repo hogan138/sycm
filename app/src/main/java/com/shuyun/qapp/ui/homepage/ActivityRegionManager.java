@@ -18,6 +18,7 @@ import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
 import com.shuyun.qapp.ui.integral.IntegralMainActivity;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
+import com.shuyun.qapp.ui.mine.AddWithdrawInfoActivity;
 import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.webview.WebBannerActivity;
@@ -253,10 +254,7 @@ public class ActivityRegionManager {
             }
         } else if (AppConst.WITHDRAW_INFO.equals(action)) {
             //提现信息
-            Intent i = new Intent(context, WebBannerActivity.class);
-            i.putExtra("url", h5Url);
-            i.putExtra("name", "提现");//名称 标题
-            startActivity(i);
+            startActivity(new Intent(context, AddWithdrawInfoActivity.class));
         } else if (AppConst.H5_EXTERNAL.equals(action)) {
             //跳转外部链接
             Uri uri = Uri.parse(h5Url);

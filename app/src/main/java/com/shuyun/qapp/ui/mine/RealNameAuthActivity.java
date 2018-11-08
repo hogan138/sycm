@@ -289,13 +289,9 @@ public class RealNameAuthActivity extends BaseActivity {
                     @Override
                     public void onNext(DataResponse<AuthNameBean> authNameBeanDataResponse) {
                         if (authNameBeanDataResponse.isSuccees()) {
-                            AuthNameBean authNameBean = authNameBeanDataResponse.getDat();
-                            if (!EncodeAndStringTool.isObjectEmpty(authNameBean)) {
-                                SaveUserInfo.getInstance(RealNameAuthActivity.this).setUserInfo("cert", "1");
-                                Intent intent = new Intent(RealNameAuthActivity.this, AuthResultActivity.class);
-                                startActivity(intent);
-                                finish();
-                            }
+                            SaveUserInfo.getInstance(RealNameAuthActivity.this).setUserInfo("cert", "1");
+                            startActivity(new Intent(RealNameAuthActivity.this, AuthResultActivity.class));
+                            finish();
                         } else {
                             tvErrorHint.setVisibility(View.VISIBLE);
                             tvErrorHint.setText(authNameBeanDataResponse.getMsg());
