@@ -33,7 +33,7 @@
                 android:layout_height="129dp"
                 android:layout_marginLeft="@dimen/text_2"
                 android:layout_marginRight="@dimen/text_2"
-                android:background="@drawable/classify_gray_bg_image"></RelativeLayout>
+                android:background="@drawable/classify_gray_bg_image"/>
 
             <TextView
                 android:id="@+id/tv_company"
