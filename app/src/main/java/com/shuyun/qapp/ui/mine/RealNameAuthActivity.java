@@ -64,7 +64,7 @@ public class RealNameAuthActivity extends BaseActivity {
     @BindView(R.id.tv_common_title)
     TextView tvCommontitle;//标题
     @BindView(R.id.btn_confirm)
-    Button btnConfirm;//确定
+    Button btnConfirm;//打开支付宝进行认证
     @BindView(R.id.et_realName)
     EditText etRealName;//真实名字
     @BindView(R.id.et_id_card)
@@ -351,7 +351,7 @@ public class RealNameAuthActivity extends BaseActivity {
                                         btnConfirm.setEnabled(false);
                                         btnConfirm.setBackgroundResource(R.drawable.common_btn_bg_10);
                                     } else {
-                                        btnConfirm.setText("确认");
+                                        btnConfirm.setText("打开支付宝进行认证");
                                         btnConfirm.setEnabled(true);
                                         btnConfirm.setBackgroundResource(R.drawable.common_btn_bg_4);
                                     }
