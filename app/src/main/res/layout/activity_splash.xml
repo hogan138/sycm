@@ -9,7 +9,6 @@
         android:id="@+id/iv_advertising"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
         android:layout_marginBottom="120dp"
         android:scaleType="fitXY" />
 
@@ -20,7 +19,6 @@
         android:layout_marginRight="30dp"
         android:layout_marginTop="30dp"
         android:background="@drawable/ad_skip_bg"
-        android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <TextView

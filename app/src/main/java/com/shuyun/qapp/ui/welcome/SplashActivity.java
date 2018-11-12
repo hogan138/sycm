@@ -59,22 +59,9 @@ public class SplashActivity extends AppCompatActivity {
 
         getAd();
 
-        //全屏显示
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         //初始化沉浸状态栏
         ImmersionBar.with(this).statusBarColor(R.color.white).statusBarDarkFont(true).fitsSystemWindows(true).init();
 
-        //适配刘海屏
-//        try {
-//            WindowManager.LayoutParams lp = getWindow().getAttributes();
-//            lp.layoutInDisplayCutoutMode
-//                    = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
-//            getWindow().setAttributes(lp);
-//        } catch (Exception e) {
-//
-//        }
     }
 
     private void getAd() {

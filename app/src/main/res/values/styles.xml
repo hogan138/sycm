@@ -99,4 +99,10 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <!--渐入渐出-->
+    <style name="popwin_style_alpha" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/popuwindows_alpha_in</item>
+        <item name="android:windowExitAnimation">@anim/popuwindows_alpha_out</item>
+    </style>
+
 </resources>
