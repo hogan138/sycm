@@ -25,6 +25,7 @@ import com.shuyun.qapp.ui.webview.WebBannerActivity;
 import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.GlideUtils;
 import com.shuyun.qapp.utils.SaveUserInfo;
+import com.shuyun.qapp.view.H5JumpUtil;
 import com.shuyun.qapp.view.RealNamePopupUtil;
 import com.shuyun.qapp.view.RoundImageView;
 
@@ -124,7 +125,11 @@ public class ActivityRegionManager {
                     rl_main1.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            actionTo(context, h5_url, action, content, layout);
+                            try {
+                                H5JumpUtil.dialogSkip(action, content, h5_url, context, layout);
+                            } catch (Exception e) {
+
+                            }
                         }
                     });
                 } else if ("2".equals(template)) { //答题对战
@@ -140,7 +145,11 @@ public class ActivityRegionManager {
                     rl_main2.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            actionTo(context, h5_url, action, content, layout);
+                            try {
+                                H5JumpUtil.dialogSkip(action, content, h5_url, context, layout);
+                            } catch (Exception e) {
+
+                            }
                         }
                     });
                 } else if ("3".equals(template)) { //每日任务
@@ -163,7 +172,11 @@ public class ActivityRegionManager {
                     rl_main3.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            actionTo(context, h5_url, action, content, layout);
+                            try {
+                                H5JumpUtil.dialogSkip(action, content, h5_url, context, layout);
+                            } catch (Exception e) {
+
+                            }
                         }
                     });
                 } else if ("4".equals(template)) { //图片模板
@@ -174,7 +187,11 @@ public class ActivityRegionManager {
                     rl_main4.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            actionTo(context, h5_url, action, content, layout);
+                            try {
+                                H5JumpUtil.dialogSkip(action, content, h5_url, context, layout);
+                            } catch (Exception e) {
+
+                            }
                         }
                     });
                 }
@@ -193,74 +210,6 @@ public class ActivityRegionManager {
 
         }
         return relativeLayout;
-    }
-
-    //跳转
-    public static void actionTo(Context context, String h5Url, String action, String content, View layout) {
-        if (AppConst.INVITE.equals(action)) {
-            //邀请
-            Intent intent = new Intent();
-            intent.setClass(context, WebBannerActivity.class);
-            intent.putExtra("url", h5Url);
-            intent.putExtra("name", "邀请分享");
-            startActivity(intent);
-        } else if (AppConst.AGAINST.equals(action)) {
-            //答题对战
-            startActivity(new Intent(context, MainAgainstActivity.class));
-        } else if (AppConst.TASK.equals(action)) {
-            //每日任务
-        } else if (AppConst.GROUP.equals(action)) {
-            //题组
-            Intent intent = new Intent(context, WebAnswerActivity.class);
-            intent.putExtra("groupId", Integer.parseInt(content));
-            intent.putExtra("h5Url", h5Url);
-            startActivity(intent);
-        } else if (AppConst.REAL.equals(action)) {
-            //实名认证
-            startActivity(new Intent(context, RealNameAuthActivity.class));
-        } else if (AppConst.H5.equals(action)) {
-            //h5
-            Intent intent = new Intent(context, WebBannerActivity.class);
-            intent.putExtra("url", h5Url);
-            intent.putExtra("name", "全民共进");//名称 标题
-            startActivity(intent);
-        } else if (AppConst.INTEGRAL.equals(action)) {
-            if (Integer.parseInt(SaveUserInfo.getInstance(context).getUserInfo("cert")) == 1) {
-                //积分兑换
-                //保存规则地址
-                SaveUserInfo.getInstance(context).setUserInfo("h5_rule", h5Url);
-                startActivity(new Intent(context, IntegralExchangeActivity.class));
-            } else {
-                RealNamePopupUtil.showAuthPop(context, layout);
-            }
-        } else if (AppConst.DEFAULT.equals(action)) {
-            //默认不跳转
-        } else if (AppConst.OPEN_BOX.equals(action)) {
-            if (Integer.parseInt(SaveUserInfo.getInstance(context).getUserInfo("cert")) == 1) {
-                //积分开宝箱
-                Intent intent = new Intent(context, WebPrizeBoxActivity.class);
-                intent.putExtra("main_box", "score_box");
-                intent.putExtra("h5Url", h5Url);
-                startActivity(intent);
-            } else {
-                RealNamePopupUtil.showAuthPop(context, layout);
-            }
-        } else if (AppConst.TREASURE.equals(action)) {
-            if (Integer.parseInt(SaveUserInfo.getInstance(context).getUserInfo("cert")) == 1) {
-                //积分夺宝
-                startActivity(new Intent(context, IntegralMainActivity.class));
-            } else {
-                RealNamePopupUtil.showAuthPop(context, layout);
-            }
-        } else if (AppConst.WITHDRAW_INFO.equals(action)) {
-            //提现信息
-            startActivity(new Intent(context, AddWithdrawInfoActivity.class));
-        } else if (AppConst.H5_EXTERNAL.equals(action)) {
-            //跳转外部链接
-            Uri uri = Uri.parse(h5Url);
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            startActivity(intent);
-        }
     }
 
     public static int dp2px(Context context, final float dpValue) {

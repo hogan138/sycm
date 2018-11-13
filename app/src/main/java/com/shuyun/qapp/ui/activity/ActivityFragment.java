@@ -45,6 +45,7 @@ import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
+import com.shuyun.qapp.view.H5JumpUtil;
 import com.shuyun.qapp.view.RealNamePopupUtil;
 import com.umeng.analytics.MobclickAgent;
 
@@ -234,75 +235,11 @@ public class ActivityFragment extends Fragment {
             @Override
             public void onItemChildClick(View view, int position) {
                 ActivityTabBean.ResultBean resultBean = activityTabBeanlist.get(position);
-                String action = resultBean.getBtnAction();
-                String h5Url = resultBean.getH5Url();
+                try {
+                    H5JumpUtil.dialogSkip(resultBean.getBtnAction(), resultBean.getContent(), resultBean.getH5Url(), mContext, llMain);
+                } catch (Exception e) {
 
-                if (AppConst.GROUP.equals(action)) {
-                    //题组
-                    Intent intent = new Intent(mContext, WebAnswerActivity.class);
-                    intent.putExtra("groupId", Integer.parseInt(resultBean.getContent().trim()));
-                    intent.putExtra("h5Url", h5Url);
-                    startActivity(intent);
-                } else if (AppConst.REAL.equals(action)) {
-                    //实名认证
-                    startActivity(new Intent(mContext, RealNameAuthActivity.class));
-                } else if (AppConst.H5.equals(action)) {
-                    //h5
-                    Intent intent = new Intent(mContext, WebBannerActivity.class);
-                    intent.putExtra("url", h5Url);
-                    intent.putExtra("name", "");//名称 标题
-                    startActivity(intent);
-                } else if (AppConst.INVITE.equals(action)) {
-                    //邀请
-                    Intent intent = new Intent();
-                    intent.setClass(mContext, WebBannerActivity.class);
-                    intent.putExtra("url", h5Url);
-                    intent.putExtra("name", "邀请分享");
-                    startActivity(intent);
-                } else if (AppConst.INTEGRAL.equals(action)) {
-                    if (Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("cert")) == 1) {
-                        //积分兑换
-                        startActivity(new Intent(mContext, IntegralExchangeActivity.class));
-                    } else {
-                        RealNamePopupUtil.showAuthPop(mContext, llMain);
-                    }
-                } else if (AppConst.AGAINST.equals(action)) {
-                    //答题对战
-                    startActivity(new Intent(mContext, MainAgainstActivity.class));
-                } else if (AppConst.TASK.equals(action)) {
-                    //每日任务
-                } else if (AppConst.DEFAULT.equals(action)) {
-                    //默认
-                } else if (AppConst.OPEN_BOX.equals(action)) {
-                    if (Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("cert")) == 1) {
-                        //积分开宝箱
-                        Intent intent = new Intent(mContext, WebPrizeBoxActivity.class);
-                        intent.putExtra("main_box", "score_box");
-                        intent.putExtra("h5Url", h5Url);
-                        startActivity(intent);
-                    } else {
-                        RealNamePopupUtil.showAuthPop(mContext, llMain);
-                    }
-                } else if (AppConst.TREASURE.equals(action)) {
-                    if (Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("cert")) == 1) {
-                        //积分夺宝
-                        //保存规则地址
-                        SaveUserInfo.getInstance(mContext).setUserInfo("h5_rule", h5Url);
-                        startActivity(new Intent(mContext, IntegralMainActivity.class));
-                    } else {
-                        RealNamePopupUtil.showAuthPop(mContext, llMain);
-                    }
-                } else if (AppConst.WITHDRAW_INFO.equals(action)) {
-                    //提现信息
-                    startActivity(new Intent(mContext, AddWithdrawInfoActivity.class));
-                } else if (AppConst.H5_EXTERNAL.equals(action)) {
-                    //外部链接
-                    Uri uri = Uri.parse(h5Url);
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    startActivity(intent);
                 }
-
-
             }
         });
         GridLayoutManager glManager = new GridLayoutManager(mContext, 1, LinearLayoutManager.VERTICAL, false);
@@ -314,13 +251,6 @@ public class ActivityFragment extends Fragment {
         super.onAttach(context);
         this.mContext = (Activity) context;
     }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd("ActivityFragment");
-    }
-
 
     @Override
     public void onDestroyView() {

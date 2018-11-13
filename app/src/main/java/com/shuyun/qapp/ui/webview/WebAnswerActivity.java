@@ -356,7 +356,11 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    H5JumpUtil.dialogSkip(h5JumpBean, WebAnswerActivity.this, llH5);
+                    try {
+                        H5JumpUtil.dialogSkip(h5JumpBean.getBtnAction(), h5JumpBean.getContent(), h5JumpBean.getH5Url(), WebAnswerActivity.this, llH5);
+                    } catch (Exception e) {
+
+                    }
                 }
             });
             Log.e("data", data);
@@ -414,7 +418,6 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
         }
         if (!EncodeAndStringTool.isStringEmpty(h5Url)) {
             wvAnswerHome.loadUrl(h5Url);
-//            wvAnswerHome.loadUrl("http://192.168.191.1:8080");
         } else {
             wvAnswerHome.loadUrl(AppConst.ANSWER);
         }

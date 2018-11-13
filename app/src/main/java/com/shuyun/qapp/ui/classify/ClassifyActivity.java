@@ -1,6 +1,8 @@
 package com.shuyun.qapp.ui.classify;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -20,6 +22,10 @@ public class ClassifyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_classify);
         //初始化沉浸状态栏
         ImmersionBar.with(this).statusBarColor(R.color.white).statusBarDarkFont(true).fitsSystemWindows(true).init();
+        //底部导航栏
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(Color.parseColor("#ffffff"));
+        }
     }
 
 

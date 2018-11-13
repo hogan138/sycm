@@ -307,7 +307,10 @@ public class WebPrizeBoxActivity extends BaseActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    H5JumpUtil.dialogSkip(h5JumpBean, WebPrizeBoxActivity.this, llWebBox);
+                    try {
+                        H5JumpUtil.dialogSkip(h5JumpBean.getBtnAction(), h5JumpBean.getContent(), h5JumpBean.getH5Url(), WebPrizeBoxActivity.this, llWebBox);
+                    } catch (Exception e) {
+                    }
                 }
             });
             Log.e("data", data);
@@ -369,7 +372,6 @@ public class WebPrizeBoxActivity extends BaseActivity {
             if (!EncodeAndStringTool.isStringEmpty(minePrize.getH5Url())) {
                 //我的奖品开宝箱
                 wvPrizeBox.loadUrl(minePrize.getH5Url());
-//                wvPrizeBox.loadUrl("http://192.168.191.1:8080?prize=1");
             } else {
                 //为空加载本地
                 wvPrizeBox.loadUrl(AppConst.BOX);
@@ -382,7 +384,6 @@ public class WebPrizeBoxActivity extends BaseActivity {
             } else {
                 //为空加载本地
                 wvPrizeBox.loadUrl(AppConst.BOX);
-//                wvPrizeBox.loadUrl("http://192.168.191.1:8080?prize=integral");
             }
         }
 

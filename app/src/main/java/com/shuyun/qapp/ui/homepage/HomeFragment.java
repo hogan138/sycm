@@ -2,14 +2,11 @@ package com.shuyun.qapp.ui.homepage;
 
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
@@ -24,7 +21,6 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -59,18 +55,12 @@ import com.shuyun.qapp.net.InformatListenner;
 import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.receiver.MyReceiver;
 import com.shuyun.qapp.ui.classify.ClassifyActivity;
-import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
-import com.shuyun.qapp.ui.integral.IntegralMainActivity;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
 import com.shuyun.qapp.ui.loader.GlideImageLoader1;
 import com.shuyun.qapp.ui.login.LoginActivity;
-import com.shuyun.qapp.ui.mine.AddWithdrawInfoActivity;
 import com.shuyun.qapp.ui.mine.MinePrizeActivity;
-import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
-import com.shuyun.qapp.ui.webview.WebBannerActivity;
 import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
-import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ImageLoaderManager;
@@ -79,10 +69,11 @@ import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
+import com.shuyun.qapp.view.H5JumpUtil;
 import com.shuyun.qapp.view.InviteSharePopupUtil;
+import com.shuyun.qapp.view.MainActivityDialogInfo;
+import com.shuyun.qapp.view.NotifyDialog;
 import com.shuyun.qapp.view.OvalImageView;
-import com.shuyun.qapp.view.RealNamePopupUtil;
-import com.shuyun.qapp.view.RoundImageView;
 import com.sunfusheng.marqueeview.MarqueeView;
 import com.umeng.analytics.MobclickAgent;
 
@@ -237,6 +228,11 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        /**
+         * 获取banner轮播数据
+         */
+        loadHomeBanners();
+
     }
 
     @Override
@@ -258,10 +254,6 @@ public class HomeFragment extends Fragment {
              */
             getConfigInfo();
 
-            /**
-             * 获取banner轮播数据
-             */
-            loadHomeBanners();
             /**
              * 获取全民播报
              */
@@ -378,78 +370,15 @@ public class HomeFragment extends Fragment {
                                                 if (data.ImageUrl().equals(bannerData.get(i).getPicture())) {
                                                     String action = bannerData.get(i).getAction();
                                                     String h5Url = bannerData.get(i).getH5Url();
-                                                    String name = bannerData.get(i).getName();
-                                                    if (AppConst.DEFAULT.equals(action)) {
-                                                        //默认不跳转
-                                                    } else if (AppConst.GROUP.equals(action)) {
-                                                        //题组 h5Url值
-                                                        Intent intent = new Intent(mContext, WebAnswerActivity.class);
-                                                        intent.putExtra("groupId", Integer.parseInt(bannerData.get(i).getContent().trim()));
-                                                        intent.putExtra("h5Url", h5Url);
-                                                        startActivity(intent);
-                                                    } else if (AppConst.REAL.equals(action)) {
-                                                        //实名认证
-                                                        startActivity(new Intent(mContext, RealNameAuthActivity.class));
-                                                    } else if (AppConst.H5.equals(action)) {
-                                                        //h5页面
-                                                        Intent intent = new Intent(mContext, WebBannerActivity.class);
-                                                        intent.putExtra("url", h5Url);
-                                                        intent.putExtra("name", name);//名称 标题
-                                                        startActivity(intent);
-                                                    } else if (AppConst.INVITE.equals(action)) {
-                                                        //邀请
-                                                        Intent intent = new Intent();
-                                                        intent.setClass(mContext, WebBannerActivity.class);
-                                                        intent.putExtra("url", h5Url);
-                                                        intent.putExtra("name", "邀请分享");
-                                                        startActivity(intent);
-                                                    } else if (AppConst.INTEGRAL.equals(action)) {
-                                                        if (Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("cert")) == 1) {
-                                                            //积分兑换
-                                                            //保存规则地址
-                                                            SaveUserInfo.getInstance(mContext).setUserInfo("h5_rule", h5Url);
-                                                            startActivity(new Intent(mContext, IntegralExchangeActivity.class));
-                                                        } else {
-                                                            RealNamePopupUtil.showAuthPop(mContext, llHomeFragment);
-                                                        }
-                                                    } else if (AppConst.OPEN_BOX.equals(action)) {
-                                                        if (Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("cert")) == 1) {
-                                                            //积分开宝箱
-                                                            Intent intent = new Intent(mContext, WebPrizeBoxActivity.class);
-                                                            intent.putExtra("main_box", "score_box");
-                                                            intent.putExtra("h5Url", h5Url);
-                                                            startActivity(intent);
-                                                        } else {
-                                                            RealNamePopupUtil.showAuthPop(mContext, llHomeFragment);
-                                                        }
-                                                    } else if (AppConst.TREASURE.equals(action)) {
-                                                        if (Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("cert")) == 1) {
-                                                            //积分夺宝
-                                                            startActivity(new Intent(mContext, IntegralMainActivity.class));
-                                                        } else {
-                                                            RealNamePopupUtil.showAuthPop(mContext, llHomeFragment);
-                                                        }
-                                                    } else if (AppConst.AGAINST.equals(action)) {
-                                                        //答题对战
-                                                        startActivity(new Intent(mContext, MainAgainstActivity.class));
-                                                    } else if (AppConst.TASK.equals(action)) {
-                                                        //每日任务
-                                                    } else if (AppConst.WITHDRAW_INFO.equals(action)) {
-                                                        //提现
-                                                        startActivity(new Intent(mContext, AddWithdrawInfoActivity.class));
-                                                    } else if (AppConst.H5_EXTERNAL.equals(action)) {
-                                                        //外部h5链接
-                                                        Uri uri = Uri.parse(h5Url);
-                                                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                                                        startActivity(intent);
+                                                    try {
+                                                        H5JumpUtil.dialogSkip(action, bannerData.get(i).getContent(), h5Url, mContext, llHomeFragment);
+                                                    } catch (Exception e) {
                                                     }
                                                 }
                                             }
                                         }
                                     });
-                                    mBannerView.setPageTransformer(true, new
-
-                                            YZoomTransFormer(.8f)); //banner动画
+                                    mBannerView.setPageTransformer(true, new YZoomTransFormer(.8f)); //banner动画
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -497,7 +426,6 @@ public class HomeFragment extends Fragment {
                                 try {
                                     llMarqueeView.setVisibility(View.VISIBLE);
                                 } catch (Exception e) {
-
                                 }
                                 /**
                                  * 跑马灯数据
@@ -522,7 +450,6 @@ public class HomeFragment extends Fragment {
                             ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
                         }
                     }
-
 
                     @Override
                     public void onError(Throwable e) {
@@ -558,9 +485,7 @@ public class HomeFragment extends Fragment {
                                 activityRegion.removeAllViews();
                                 activityRegion.addView(ActivityRegionManager.getView(mContext, mainConfigBean, llHomeFragment));
                             } catch (Exception e) {
-
                             }
-
                         } else {
                             ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
                         }
@@ -704,7 +629,6 @@ public class HomeFragment extends Fragment {
                                     }
                                 }
                             } catch (Exception e) {
-
                             }
                         } else {//错误码提示
                             if (listDataResponse.getErr().equals("U0001")) {
@@ -714,7 +638,6 @@ public class HomeFragment extends Fragment {
                         }
 
                     }
-
 
                     @Override
                     public void onError(Throwable e) {
@@ -970,7 +893,6 @@ public class HomeFragment extends Fragment {
 
                     }
 
-
                     @Override
                     public void onError(Throwable e) {
                         //保存错误信息
@@ -989,7 +911,6 @@ public class HomeFragment extends Fragment {
         unbinder.unbind();
     }
 
-
     CountDownTimer timer;
 
     @Override
@@ -1006,7 +927,7 @@ public class HomeFragment extends Fragment {
             long nowMills = TimeUtils.getNowMills();
             SharedPrefrenceTool.put(mContext, "nowMills", (long) nowMills);
             //如果通知栏未打开,弹出前往设置打开通知栏的弹窗
-            dialogShow();
+            NotifyDialog.dialogShow(mContext);
         }
 
         //5秒更新推荐题组
@@ -1028,55 +949,6 @@ public class HomeFragment extends Fragment {
 
     }
 
-
-    //开启通知弹出框
-    private void dialogShow() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.AlertDialog);
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        View view = inflater.inflate(R.layout.open_notification_popup, null);
-        RelativeLayout rl_close = view.findViewById(R.id.rl_close);
-        TextView tvOpenNotification = view.findViewById(R.id.tv_open_notification);
-        //builer.setView(v);//这里如果使用builer.setView(v)，自定义布局只会覆盖title和button之间的那部分
-        final Dialog dialog = builder.create();
-        dialog.show();
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(false);
-        dialog.getWindow().setContentView(view);//自定义布局应该在这里添加，要在dialog.show()的后面
-//        dialog.getWindow().setGravity(Gravity.CENTER);//可以设置显示的位置
-        rl_close.setOnClickListener(new OnMultiClickListener() {
-            @Override
-            public void onMultiClick(View v) {
-                if (dialog.isShowing()) {
-                    dialog.dismiss();
-                }
-            }
-        });
-        tvOpenNotification.setOnClickListener(new OnMultiClickListener() {
-            @Override
-            public void onMultiClick(View v) {
-                if (dialog.isShowing()) {
-                    dialog.dismiss();
-                    Intent localIntent = new Intent();
-                    localIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    if (Build.VERSION.SDK_INT >= 9) {
-                        localIntent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
-                        localIntent.setData(Uri.fromParts("package", mContext.getPackageName(), null));
-                    } else if (Build.VERSION.SDK_INT <= 8) {
-                        localIntent.setAction(Intent.ACTION_VIEW);
-
-                        localIntent.setClassName("com.android.settings",
-                                "com.android.settings.InstalledAppDetails");
-
-                        localIntent.putExtra("com.android.settings.ApplicationPkgName",
-                                mContext.getPackageName());
-                    }
-                    startActivity(localIntent);
-                }
-            }
-        });
-    }
-
-
     //获取活动弹框信息
     private void getDialogInfo() {
         ApiService apiService = BasePresenter.create(8000);
@@ -1093,143 +965,8 @@ public class HomeFragment extends Fragment {
                         if (dataResponse.isSuccees()) {
                             try {
                                 ConfigDialogBean configDialogBean = dataResponse.getDat();
-                                if (AppConst.GROUP.equals(configDialogBean.getBtnAction())) {
-                                    //题组
-                                    if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.group_count").equals("")) {
-                                        activitydialog(configDialogBean);
-                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.group_count", "" + 1);
-                                    } else {
-                                        if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.group_count"))) {
-                                            activitydialog(configDialogBean);
-                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.group_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.group_count")) + 1) + "");
-                                        }
-                                    }
-                                } else if (AppConst.REAL.equals(configDialogBean.getBtnAction())) {
-                                    //实名认证
-                                    if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.real_count").equals("")) {
-                                        activitydialog(configDialogBean);
-                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.real_count", "" + 1);
-                                    } else {
-                                        if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.real_count"))) {
-                                            activitydialog(configDialogBean);
-                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.real_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.real_count")) + 1) + "");
-                                        }
-                                    }
-                                } else if (AppConst.H5.equals(configDialogBean.getBtnAction())) {
-                                    //h5页面
-                                    if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.h5_count").equals("")) {
-                                        activitydialog(configDialogBean);
-                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.h5_count", "" + 1);
-                                    } else {
-                                        if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.h5_count"))) {
-                                            activitydialog(configDialogBean);
-                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.h5_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.h5_count")) + 1) + "");
-                                        }
-                                    }
-
-                                } else if (AppConst.INVITE.equals(configDialogBean.getBtnAction())) {
-                                    //邀请
-                                    if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.invite_count").equals("")) {
-                                        activitydialog(configDialogBean);
-                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.invite_count", "" + 1);
-                                    } else {
-                                        if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.invite_count"))) {
-                                            activitydialog(configDialogBean);
-                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.invite_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.invite_count")) + 1) + "");
-                                        }
-                                    }
-                                } else if (AppConst.INTEGRAL.equals(configDialogBean.getBtnAction())) {
-                                    //积分兑换
-                                    if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.integral_count").equals("")) {
-                                        activitydialog(configDialogBean);
-                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.integral_count", "" + 1);
-                                    } else {
-                                        if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.integral_count"))) {
-                                            activitydialog(configDialogBean);
-                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.integral_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.integral_count")) + 1) + "");
-                                        }
-                                    }
-                                } else if (AppConst.AGAINST.equals(configDialogBean.getBtnAction())) {
-                                    //答题对战
-                                    if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.answer.against_count").equals("")) {
-                                        activitydialog(configDialogBean);
-                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.answer.against_count", "" + 1);
-                                    } else {
-                                        if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.answer.against_count"))) {
-                                            activitydialog(configDialogBean);
-                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.answer.against_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.answer.against_count")) + 1) + "");
-                                        }
-                                    }
-                                } else if (AppConst.OPEN_BOX.equals(configDialogBean.getBtnAction())) {
-                                    //积分开宝箱
-                                    if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.integral.open.box_count").equals("")) {
-                                        activitydialog(configDialogBean);
-                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.integral.open.box_count", "" + 1);
-                                    } else {
-                                        if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.integral.open.box_count"))) {
-                                            activitydialog(configDialogBean);
-                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.integral.open.box_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.integral.open.box_count")) + 1) + "");
-                                        }
-                                    }
-                                } else if (AppConst.TREASURE.equals(configDialogBean.getBtnAction())) {
-                                    //积分夺宝
-                                    if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.integral.treasure_count").equals("")) {
-                                        activitydialog(configDialogBean);
-                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.integral.treasure_count", "" + 1);
-                                    } else {
-                                        if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.integral.treasure_count"))) {
-                                            activitydialog(configDialogBean);
-                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.integral.treasure_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.integral.treasure_count")) + 1) + "");
-                                        }
-                                    }
-                                } else if (AppConst.TASK.equals(configDialogBean.getBtnAction())) {
-                                    //每日任务
-                                    if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.day.task_count").equals("")) {
-                                        activitydialog(configDialogBean);
-                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.day.task_count", "" + 1);
-                                    } else {
-                                        if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.day.task_count"))) {
-                                            activitydialog(configDialogBean);
-                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.day.task_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.day.task_count")) + 1) + "");
-                                        }
-                                    }
-                                } else if (AppConst.WITHDRAW_INFO.equals(configDialogBean.getBtnAction())) {
-                                    //提现信息
-                                    if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.withdraw.info_count").equals("")) {
-                                        activitydialog(configDialogBean);
-                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.withdraw.info_count", "" + 1);
-                                    } else {
-                                        if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.withdraw.info_count"))) {
-                                            activitydialog(configDialogBean);
-                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.withdraw.info_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.withdraw.info_count")) + 1) + "");
-                                        }
-                                    }
-                                } else if (AppConst.H5_EXTERNAL.equals(configDialogBean.getBtnAction())) {
-                                    //跳转外部h5
-                                    if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.h5.external_count").equals("")) {
-                                        activitydialog(configDialogBean);
-                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.h5.external_count", "" + 1);
-                                    } else {
-                                        if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.h5.external_count"))) {
-                                            activitydialog(configDialogBean);
-                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.h5.external_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.h5.external_count")) + 1) + "");
-                                        }
-                                    }
-                                } else if (AppConst.DEFAULT.equals(configDialogBean.getBtnAction())) {
-                                    //默认不跳转
-                                    if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.default_count").equals("")) {
-                                        activitydialog(configDialogBean);
-                                        SaveUserInfo.getInstance(mContext).setUserInfo("action.default_count", "" + 1);
-                                    } else {
-                                        if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.default_count"))) {
-                                            activitydialog(configDialogBean);
-                                            SaveUserInfo.getInstance(mContext).setUserInfo("action.default_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.default_count")) + 1) + "");
-                                        }
-                                    }
-                                }
-
+                                MainActivityDialogInfo.info(configDialogBean, mContext, llHomeFragment);
                             } catch (Exception e) {
-
                             }
 
                         } else {
@@ -1237,7 +974,6 @@ public class HomeFragment extends Fragment {
                         }
 
                     }
-
 
                     @Override
                     public void onError(Throwable e) {
@@ -1250,149 +986,6 @@ public class HomeFragment extends Fragment {
                     }
                 });
     }
-
-    //活动弹框
-    Dialog dialog;
-
-    private void activitydialog(final ConfigDialogBean configDialogBean) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.AlertDialog);
-        final LayoutInflater inflater = LayoutInflater.from(mContext);
-        View view = inflater.inflate(R.layout.open_activity_popup, null);
-        RoundImageView iv_bg = view.findViewById(R.id.iv_bg);
-        RelativeLayout rl_close = view.findViewById(R.id.rl_close);
-        RelativeLayout rl_all = view.findViewById(R.id.rl_open_notification);
-        Button btn_enter = view.findViewById(R.id.btn_enter);
-        try {
-            //背景图
-            ImageLoaderManager.LoadImage(mContext, configDialogBean.getBaseImage(), iv_bg, R.mipmap.zw01);
-            if (configDialogBean.isShowBtn() == true) {
-                //显示按钮
-                btn_enter.setVisibility(View.VISIBLE);
-                btn_enter.setText(configDialogBean.getBtnLabel());
-            } else {
-                //隐藏按钮
-                btn_enter.setVisibility(View.GONE);
-            }
-        } catch (Exception e) {
-
-        }
-        dialog = builder.create();
-
-        if (dialog.isShowing()) {
-            return;
-        }
-
-        dialog.show();
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(false);
-        dialog.getWindow().setContentView(view);//自定义布局应该在这里添加，要在dialog.show()的后面
-        rl_close.setOnClickListener(new OnMultiClickListener() {
-            @Override
-            public void onMultiClick(View v) {
-                if (dialog.isShowing()) {
-                    dialog.dismiss();
-                }
-            }
-        });
-        btn_enter.setOnClickListener(new OnMultiClickListener() {
-            @Override
-            public void onMultiClick(View v) {
-                if (dialog.isShowing()) {
-                    dialog.dismiss();
-                    dialogSkip(configDialogBean);
-                }
-            }
-        });
-        rl_all.setOnClickListener(new OnMultiClickListener() {
-            @Override
-            public void onMultiClick(View v) {
-                if (dialog.isShowing()) {
-                    dialog.dismiss();
-                    dialogSkip(configDialogBean);
-                }
-            }
-        });
-    }
-
-    private void dialogSkip(ConfigDialogBean configDialogBean) {
-        String action = configDialogBean.getBtnAction();
-        if (AppConst.GROUP.equals(action)) {
-            //题组
-            Intent intent = new Intent(mContext, WebAnswerActivity.class);
-            intent.putExtra("groupId", Integer.parseInt(configDialogBean.getContent().trim()));
-            intent.putExtra("h5Url", configDialogBean.getH5Url());
-            startActivity(intent);
-        } else if (AppConst.REAL.equals(action)) {
-            //实名认证
-            startActivity(new Intent(mContext, RealNameAuthActivity.class));
-        } else if (AppConst.H5.equals(action)) {
-            //h5页面
-            Intent intent = new Intent(mContext, WebBannerActivity.class);
-            intent.putExtra("url", configDialogBean.getH5Url());
-            intent.putExtra("name", "全民共进");//名称 标题
-            startActivity(intent);
-        } else if (AppConst.INVITE.equals(action)) {
-            //邀请
-            Intent intent = new Intent();
-            intent.setClass(mContext, WebBannerActivity.class);
-            intent.putExtra("url", configDialogBean.getH5Url());
-            intent.putExtra("name", "邀请分享");
-            startActivity(intent);
-        } else if (AppConst.INTEGRAL.equals(action)) {
-            if (Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("cert")) == 1) {
-                //积分兑换
-                startActivity(new Intent(mContext, IntegralExchangeActivity.class));
-            } else {
-                RealNamePopupUtil.showAuthPop(mContext, llHomeFragment);
-            }
-        } else if (AppConst.AGAINST.equals(action)) {
-            //答题对战
-            startActivity(new Intent(mContext, MainAgainstActivity.class));
-        } else if (AppConst.OPEN_BOX.equals(action)) {
-            if (Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("cert")) == 1) {
-                //积分开宝箱
-                Intent intent = new Intent(mContext, WebPrizeBoxActivity.class);
-                intent.putExtra("main_box", "score_box");
-                intent.putExtra("h5Url", configDialogBean.getH5Url());
-                startActivity(intent);
-            } else {
-                RealNamePopupUtil.showAuthPop(mContext, llHomeFragment);
-            }
-        } else if (AppConst.TREASURE.equals(action)) {
-            if (Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("cert")) == 1) {
-                //积分夺宝
-                //保存规则地址
-                SaveUserInfo.getInstance(mContext).setUserInfo("h5_rule", configDialogBean.getH5Url());
-                startActivity(new Intent(mContext, IntegralMainActivity.class));
-            } else {
-                RealNamePopupUtil.showAuthPop(mContext, llHomeFragment);
-            }
-        } else if (AppConst.TASK.equals(action)) {
-            //每日任务
-        } else if (AppConst.WITHDRAW_INFO.equals(action)) {
-            //提现信息
-            startActivity(new Intent(mContext, AddWithdrawInfoActivity.class));
-        } else if (AppConst.H5_EXTERNAL.equals(action)) {
-            //外部链接
-            Uri uri = Uri.parse(configDialogBean.getH5Url());
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            startActivity(intent);
-        } else if (AppConst.DEFAULT.equals(action)) {
-            //默认不跳转
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd("HomeFragment");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
 
     @Override
     public void onDestroy() {

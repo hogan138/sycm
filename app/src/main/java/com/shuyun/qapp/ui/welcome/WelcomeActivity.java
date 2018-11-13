@@ -1,7 +1,10 @@
 package com.shuyun.qapp.ui.welcome;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
@@ -14,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.TimeUtils;
@@ -87,6 +91,10 @@ public class WelcomeActivity extends Activity {
 
         //初始化沉浸状态栏
         ImmersionBar.with(this).statusBarColor(R.color.white).statusBarDarkFont(true).fitsSystemWindows(true).init();
+        //底部导航栏
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(Color.parseColor("#ffffff"));
+        }
 
         //保存登录状态
         SaveUserInfo.getInstance(this).setUserInfo("LOGIN_MODE", String.valueOf(LOGIN_MODE));
@@ -166,85 +174,77 @@ public class WelcomeActivity extends Activity {
      * 广告popupWindow
      */
     public void showPop() {
-        View upView = LayoutInflater.from(WelcomeActivity.this).inflate(R.layout.activity_splash, null);
-        //测量View的宽高
-        CommonPopUtil.measureWidthAndHeight(upView);
-        popupWindow = new CommonPopupWindow.Builder(WelcomeActivity.this)
-                .setView(R.layout.activity_splash)
-                .setWidthAndHeight(upView.getMeasuredWidth(), upView.getMeasuredHeight())
-                .setOutsideTouchable(false)
-                .setAnimationStyle(R.style.popwin_style_alpha)//设置渐入渐出动画
-                //设置子View点击事件
-                .setViewOnclickListener(new CommonPopupWindow.ViewInterface() {
-                    @Override
-                    public void getChildView(View view, int layoutResId) {
-                        switch (layoutResId) {
-                            case R.layout.activity_splash:
-                                ImageView ivAdvertising = view.findViewById(R.id.iv_advertising);
-                                TextView tv_skip = view.findViewById(R.id.tv_skip);
-                                ImageLoaderManager.LoadImage(WelcomeActivity.this, adBean.getAd().get(0).getUrl(), ivAdvertising, R.mipmap.zw01);
-                                final int model = adBean.getAd().get(0).getModel();
-                                final String content = adBean.getAd().get(0).getContent();
-                                final Long expire = (Long) SharedPrefrenceTool.get(WelcomeActivity.this, "expire", System.currentTimeMillis());//token的有效时间
-                                final long currentTimeMillis = System.currentTimeMillis();
-                                ivAdvertising.setOnClickListener(new OnMultiClickListener() {
-                                    @Override
-                                    public void onMultiClick(View v) {
-                                        if (model == 3) {//题组跳转
-                                            if (!EncodeAndStringTool.isStringEmpty(content)) {
-                                                if (!AppConst.isLogon() || currentTimeMillis >= expire) {
-                                                    //拉起登录界面
-                                                    Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
-                                                    startActivity(intent);
-                                                    finish();
-                                                    return;
-                                                } else {
-                                                    Intent intent = new Intent(WelcomeActivity.this, WebAnswerActivity.class);
-                                                    intent.putExtra("groupId", Integer.parseInt(content));
-                                                    intent.putExtra("from", "splash");
-                                                    intent.putExtra("h5Url", adBean.getExamUrl());
-                                                    startActivity(intent);
-                                                    finish();
-                                                }
-                                                timer.cancel();
-                                            }
-                                        } else if (model == 2) {//内部链接
-                                            if (!EncodeAndStringTool.isStringEmpty(content)) {
-                                                Intent intent = new Intent(WelcomeActivity.this, WebBannerActivity.class);
-                                                intent.putExtra("url", content);
-                                                intent.putExtra("name", "全民共进");
-                                                intent.putExtra("from", "splash");
-                                                startActivity(intent);
-                                                finish();
-                                                timer.cancel();
-                                            }
-                                        } else if (model == 1) {//外部链接
-                                            if (!EncodeAndStringTool.isStringEmpty(content)) {
-                                                Uri uri = Uri.parse(content);
-                                                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                                                startActivity(intent);
-                                                finish();
-                                                timer.cancel();
-                                            }
-                                        } else if (model == 0) {
-                                            skip();
-                                        }
-                                    }
-                                });
-                                tv_skip.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        skip();
-                                    }
-                                });
-                                break;
-                            default:
-                                break;
+        AlertDialog.Builder builder = new AlertDialog.Builder(WelcomeActivity.this, R.style.AlertDialog);
+        LayoutInflater inflater = LayoutInflater.from(WelcomeActivity.this);
+        View view = inflater.inflate(R.layout.activity_splash, null);
+        ImageView ivAdvertising = view.findViewById(R.id.iv_advertising);
+        TextView tv_skip = view.findViewById(R.id.tv_skip);
+        ImageLoaderManager.LoadImage(WelcomeActivity.this, adBean.getAd().get(0).getUrl(), ivAdvertising, R.mipmap.zw01);
+        final int model = adBean.getAd().get(0).getModel();
+        final String content = adBean.getAd().get(0).getContent();
+        final Long expire = (Long) SharedPrefrenceTool.get(WelcomeActivity.this, "expire", System.currentTimeMillis());//token的有效时间
+        final long currentTimeMillis = System.currentTimeMillis();
+        ivAdvertising.setOnClickListener(new OnMultiClickListener() {
+            @Override
+            public void onMultiClick(View v) {
+                if (model == 3) {//题组跳转
+                    if (!EncodeAndStringTool.isStringEmpty(content)) {
+                        if (!AppConst.isLogon() || currentTimeMillis >= expire) {
+                            //拉起登录界面
+                            Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                            return;
+                        } else {
+                            Intent intent = new Intent(WelcomeActivity.this, WebAnswerActivity.class);
+                            intent.putExtra("groupId", Integer.parseInt(content));
+                            intent.putExtra("from", "splash");
+                            intent.putExtra("h5Url", adBean.getExamUrl());
+                            startActivity(intent);
+                            finish();
                         }
+                        timer.cancel();
                     }
-                })
-                .create();
-        popupWindow.showAtLocation(flMain, Gravity.CENTER, 0, 0);
+                } else if (model == 2) {//内部链接
+                    if (!EncodeAndStringTool.isStringEmpty(content)) {
+                        Intent intent = new Intent(WelcomeActivity.this, WebBannerActivity.class);
+                        intent.putExtra("url", content);
+                        intent.putExtra("name", "全民共进");
+                        intent.putExtra("from", "splash");
+                        startActivity(intent);
+                        finish();
+                        timer.cancel();
+                    }
+                } else if (model == 1) {//外部链接
+                    if (!EncodeAndStringTool.isStringEmpty(content)) {
+                        Uri uri = Uri.parse(content);
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent);
+                        finish();
+                        timer.cancel();
+                    }
+                } else if (model == 0) {
+                    skip();
+                }
+            }
+        });
+        tv_skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                skip();
+            }
+        });
+        final Dialog dialog = builder.create();
+        dialog.show();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.getWindow().setContentView(view);//自定义布局应该在这里添加，要在dialog.show()的后面
+        dialog.getWindow().setWindowAnimations(R.style.popwin_style_alpha);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            dialog.getWindow().setStatusBarColor(Color.parseColor("#ffffff"));
+            dialog.getWindow().setNavigationBarColor(Color.parseColor("#ffffff"));
+        }
+
     }
 
     private void initTime() {

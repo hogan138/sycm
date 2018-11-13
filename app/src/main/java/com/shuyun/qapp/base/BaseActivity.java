@@ -41,6 +41,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 //        }
         //初始化沉浸状态栏
         ImmersionBar.with(this).statusBarColor(R.color.white).statusBarDarkFont(true).fitsSystemWindows(true).init();
+        //底部导航栏
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(Color.parseColor("#ffffff"));
+        }
 
         //设置布局
         setContentView(intiLayout());

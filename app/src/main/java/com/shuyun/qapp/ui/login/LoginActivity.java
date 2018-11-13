@@ -222,9 +222,7 @@ public class LoginActivity extends BaseActivity {
                 isLogin();
                 break;
             case R.id.iv_is_show_pwd:
-                if (etPassword.getText().length() != 0) {
-                    isShowPwd(etPassword);
-                }
+                isShowPwd(etPassword);
                 break;
             case R.id.tv_verify_login:
                 if (!EncodeAndStringTool.isStringEmpty(etPhoneNumber.getText().toString())) {
@@ -473,9 +471,7 @@ public class LoginActivity extends BaseActivity {
         if (pwd.getInputType() == type) {
             pwd.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
             pwd.setSelection(pwd.getText().length());
-            if (etPassword.getText().length() != 0) {
-                ivIsShowPwd.setImageResource(R.drawable.show_pwd);
-            }
+            ivIsShowPwd.setImageResource(R.drawable.show_pwd);
         } else {
             pwd.setInputType(type);
             pwd.setSelection(pwd.getText().length());

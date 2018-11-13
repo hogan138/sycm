@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
 
-import com.shuyun.qapp.bean.H5JumpBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.homepage.MainAgainstActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
@@ -22,13 +21,11 @@ import com.shuyun.qapp.utils.SaveUserInfo;
  */
 public class H5JumpUtil {
 
-    public static void dialogSkip(H5JumpBean h5JumpBean, Context context, View view) {
-        String action = h5JumpBean.getBtnAction();
-        String h5Url = h5JumpBean.getH5Url();
+    public static void dialogSkip(String action, String content, String h5Url, Context context, View view) {
         if (AppConst.GROUP.equals(action)) {
             //题组
             Intent intent = new Intent(context, WebAnswerActivity.class);
-            intent.putExtra("groupId", Integer.parseInt(h5JumpBean.getContent()));
+            intent.putExtra("groupId", Integer.parseInt(content));
             intent.putExtra("h5Url", h5Url);
             context.startActivity(intent);
         } else if (AppConst.REAL.equals(action)) {
@@ -38,14 +35,14 @@ public class H5JumpUtil {
             //h5页面
             Intent intent = new Intent(context, WebBannerActivity.class);
             intent.putExtra("url", h5Url);
-            intent.putExtra("name", "全民共进");//名称 标题
+            intent.putExtra("name", "");//名称 标题
             context.startActivity(intent);
         } else if (AppConst.INVITE.equals(action)) {
             //邀请
             Intent intent = new Intent();
             intent.setClass(context, WebBannerActivity.class);
             intent.putExtra("url", h5Url);
-            intent.putExtra("name", "邀请分享");
+            intent.putExtra("name", "");
             context.startActivity(intent);
         } else if (AppConst.INTEGRAL.equals(action)) {
             if (Integer.parseInt(SaveUserInfo.getInstance(context).getUserInfo("cert")) == 1) {

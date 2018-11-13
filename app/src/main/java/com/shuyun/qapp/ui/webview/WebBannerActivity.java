@@ -530,7 +530,10 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    H5JumpUtil.dialogSkip(h5JumpBean, WebBannerActivity.this, rlMain);
+                    try {
+                        H5JumpUtil.dialogSkip(h5JumpBean.getBtnAction(), h5JumpBean.getContent(), h5JumpBean.getH5Url(), WebBannerActivity.this, rlMain);
+                    } catch (Exception e) {
+                    }
                 }
             });
             Log.e("data", data);
