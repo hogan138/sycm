@@ -97,7 +97,7 @@ public class WelcomeActivity extends Activity {
                 //获取广告
                 getAd();
             }
-        }, 0);
+        }, 1600);
     }
 
     AdBean adBean; //广告bean
