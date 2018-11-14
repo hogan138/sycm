@@ -51,17 +51,15 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 
 /**
  * 微信登录之后绑定手机号
- * bug
- * S0001 没有找到验证码申请记录
  */
 public class BindPhoneNumActivity extends BaseActivity {
 
     @BindView(R.id.et_phone_number)
     EditText etPhoneNumber;//手机号
     @BindView(R.id.et_code)
-    EditText etCode;
+    EditText etCode; //验证码
     @BindView(R.id.btn_get_code1)
-    Button btnGetCode1;
+    Button btnGetCode1;//获取验证码
     @BindView(R.id.tv_60_second)
     TextView tv60Second;
     @BindView(R.id.ll_code_container)

@@ -19,11 +19,11 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.AccountRecordAdapter;
 import com.shuyun.qapp.animation.MyLayoutAnimationHelper;
+import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.AccountBean;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveErrorTxt;
@@ -42,9 +42,7 @@ import io.reactivex.schedulers.Schedulers;
 
 /**
  * 现金账户Fragment
- * <p>
  * 2018/6/9
- * <p>
  * ganquan
  */
 public class CashFragment extends Fragment {
@@ -174,8 +172,4 @@ public class CashFragment extends Fragment {
         MobclickAgent.onPageEnd("MineFragment");
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
 }

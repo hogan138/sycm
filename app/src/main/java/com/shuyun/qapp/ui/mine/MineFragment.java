@@ -146,18 +146,12 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
 
 
     public MineFragment() {
-        // Required empty public constructor
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         this.mContext = (Activity) context;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -172,16 +166,10 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            //        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("FirstRun", 0);
-//        Boolean first_run = sharedPreferences.getBoolean("First", true);
-//        if (first_run) {
-//            sharedPreferences.edit().putBoolean("First", false).commit();
-            //个人信息
+            //是否实名认证
             loadMineHomeData1();
             //个人信息
             loadMineHomeData();
-//        } else {
-//        }
         }
     }
 
@@ -244,7 +232,6 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
 
             }
         } catch (Exception e) {
-
         }
 
         //个人信息
@@ -255,7 +242,6 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
     /**
      * 获取到我的首界面数据
      */
-
     private void loadMineHomeData() {
         ApiService apiService = BasePresenter.create(8000);
         apiService.getMineHomeData()
@@ -380,8 +366,8 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
             R.id.rl_system_set, R.id.rl_contact_us, R.id.rl_invite_share})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.iv_common_right_icon:
-                ivCommonRightIcon.setImageResource(R.mipmap.messagew_n);//右侧消息按钮;
+            case R.id.iv_common_right_icon: //右侧消息按钮;
+                ivCommonRightIcon.setImageResource(R.mipmap.messagew_n);
                 startActivity(new Intent(mContext, InformationActivity.class));
                 break;
             case R.id.iv_header_pic://点击头像和修改个人信息走相同的逻辑
@@ -402,15 +388,14 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                     }
                 }
                 break;
-            case R.id.tv_add_answer_num:
+            case R.id.tv_add_answer_num: //增加答题次数
                 showAddAnswerNum();
                 break;
-            case R.id.tv_check_account_record:
+            case R.id.tv_check_account_record:   //账户记录
                 startActivity(new Intent(mContext, AccountRecordActivity.class));
                 break;
-            case R.id.btn_immedicate_withdrawal:
+            case R.id.btn_immedicate_withdrawal:  //立即提现
                 if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
-                    //立即提现
                     if (mineBean.getCertification() == 1) {
                         if (1 == mineBean.getWithdraw()) {
                             Intent intent1 = new Intent(mContext, NewCashWithdrawActivity.class);
@@ -425,7 +410,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
 
                 }
                 break;
-            case R.id.btn_immedicate_use:
+            case R.id.btn_immedicate_use: //积分使用
                 if (mineBean.getCertification() == 1) {
                     Intent intent = new Intent(mContext, IntegralExchangeActivity.class);
                     startActivity(intent);
@@ -433,7 +418,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                     RealNamePopupUtil.showAuthPop(mContext, llMineFragment);
                 }
                 break;
-            case R.id.iv_not_use:
+            case R.id.iv_not_use: //未使用
                 if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
                     Intent notUse = new Intent(mContext, MinePrizeActivity.class);
                     notUse.putExtra("status", 1);
@@ -441,7 +426,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                     startActivity(notUse);
                 }
                 break;
-            case R.id.iv_already_use:
+            case R.id.iv_already_use: //使用中
                 if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
                     Intent alreadyUse = new Intent(mContext, MinePrizeActivity.class);
                     alreadyUse.putExtra("certification", mineBean.getCertification());//是否实名认证
@@ -449,7 +434,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                     startActivity(alreadyUse);
                 }
                 break;
-            case R.id.iv_out_of_date:
+            case R.id.iv_out_of_date: //已使用
                 if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
                     Intent outOfDate = new Intent(mContext, MinePrizeActivity.class);
                     outOfDate.putExtra("certification", mineBean.getCertification());//是否实名认证
@@ -457,7 +442,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                     startActivity(outOfDate);
                 }
                 break;
-            case R.id.iv_all_prize:
+            case R.id.iv_all_prize: //全部
                 if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
                     Intent allPrize = new Intent(mContext, MinePrizeActivity.class);
                     allPrize.putExtra("certification", mineBean.getCertification());//是否实名认证
@@ -712,11 +697,6 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
@@ -730,24 +710,9 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
         }
     }
 
-
-    /**
-     * 监听我的界面返回键
-     */
-    public void mineFragmentBack() {
-        if (!EncodeAndStringTool.isObjectEmpty(popupWindow)) {
-            popupWindow.dismiss();
-            popupWindow = null;
-        } else {
-            mContext.finish();
-        }
-    }
-
-
     /**
      * 获取到我的首界面数据
      */
-
     private void loadMineHomeData1() {
         ApiService apiService = BasePresenter.create(8000);
         apiService.getMineHomeData()

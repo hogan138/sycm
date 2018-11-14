@@ -1,11 +1,6 @@
 package com.shuyun.qapp.ui.mine;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,16 +19,14 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.PrizeAdapter;
 import com.shuyun.qapp.animation.MyLayoutAnimationHelper;
+import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MinePrize;
-import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveErrorTxt;
-import com.shuyun.qapp.utils.SaveUserInfo;
-import com.shuyun.qapp.utils.ToastUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -48,7 +41,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * 已使用Fragment
+ * 我的奖品已使用Fragment
  * 2018/6/9
  * ganquan
  */
@@ -115,10 +108,8 @@ public class UsePrizeFragment extends Fragment {
 
     /**
      * 获取到我的奖品
-     * 加上分页加载的功能
      *
      * @param status 1:未使用奖品;2:已使用奖品;3:已过期;0:全部奖品4:快过期
-     * @param page
      */
 
     List<MinePrize> minePrizeList = new ArrayList<>();
@@ -201,8 +192,4 @@ public class UsePrizeFragment extends Fragment {
         MobclickAgent.onPageEnd("MineFragment");
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
 }

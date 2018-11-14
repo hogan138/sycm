@@ -135,10 +135,6 @@ public class RealNameAuthActivity extends BaseActivity {
 
                                 bizNo = realNameBean.getBizNo();
 
-//                                Intent intent = new Intent(RealNameAuthActivity.this, WebBannerActivity.class);
-//                                intent.putExtra("url", realNameBean.getBody());
-//                                intent.putExtra("name", "芝麻认证");
-//                                startActivity(intent);
                                 Intent intent = new Intent();
                                 intent.setData(Uri.parse(realNameBean.getBody()));
                                 intent.setAction(Intent.ACTION_VIEW);
@@ -177,15 +173,15 @@ public class RealNameAuthActivity extends BaseActivity {
             case R.id.iv_back:
                 finish();
                 break;
-            case R.id.iv_clear_name:
+            case R.id.iv_clear_name: //清除姓名
                 ivClearName.setVisibility(View.INVISIBLE);
                 etRealName.setText("");
                 break;
-            case R.id.iv_clear_id:
+            case R.id.iv_clear_id: //清除id
                 ivClearId.setVisibility(View.INVISIBLE);
                 etIdCard.setText("");
                 break;
-            case R.id.btn_confirm:
+            case R.id.btn_confirm: //确定
                 final String realName = etRealName.getText().toString().trim();
                 final String idCard = etIdCard.getText().toString().trim();
                 if (!EncodeAndStringTool.isStringEmpty(realName)) {
@@ -209,7 +205,7 @@ public class RealNameAuthActivity extends BaseActivity {
                     ToastUtil.showToast(this, "请输入姓名");
                 }
                 break;
-            case R.id.btn_contact_our:
+            case R.id.btn_contact_our: //联系我们
                 Intent i = new Intent(this, WebBannerActivity.class);
                 i.putExtra("url", SaveUserInfo.getInstance(this).getUserInfo("contactUs_url"));
                 i.putExtra("name", "联系客服");//名称 标题

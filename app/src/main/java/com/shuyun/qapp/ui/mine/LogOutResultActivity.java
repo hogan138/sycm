@@ -1,9 +1,7 @@
 package com.shuyun.qapp.ui.mine;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -16,7 +14,6 @@ import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.LogUtil;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 
 import butterknife.BindView;
@@ -27,6 +24,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * 账户注销结果页
+ */
 public class LogOutResultActivity extends BaseActivity {
 
     @BindView(R.id.iv_left_back)
@@ -60,7 +60,7 @@ public class LogOutResultActivity extends BaseActivity {
                 //确定
                 finish();
                 break;
-            case R.id.btn_cancel:
+            case R.id.btn_cancel: //撤销注销申请
                 removeCondition();
                 break;
             default:

@@ -1,9 +1,7 @@
 package com.shuyun.qapp.ui.homepage;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,29 +12,17 @@ import android.widget.TextView;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.MainConfigBean;
-import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
-import com.shuyun.qapp.ui.integral.IntegralMainActivity;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
-import com.shuyun.qapp.ui.mine.AddWithdrawInfoActivity;
-import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
-import com.shuyun.qapp.ui.webview.WebAnswerActivity;
-import com.shuyun.qapp.ui.webview.WebBannerActivity;
-import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.GlideUtils;
-import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.view.H5JumpUtil;
-import com.shuyun.qapp.view.RealNamePopupUtil;
 import com.shuyun.qapp.view.RoundImageView;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.blankj.utilcode.util.ActivityUtils.startActivity;
-
 /**
- * 活动区域封装
+ * 首页活动区域封装
  */
 public class ActivityRegionManager {
 

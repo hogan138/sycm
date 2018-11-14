@@ -1,4 +1,4 @@
-package com.shuyun.qapp.ui.homepage;
+package com.shuyun.qapp.ui.against;
 
 
 import android.content.Intent;
@@ -9,7 +9,6 @@ import android.support.animation.SpringAnimation;
 import android.support.animation.SpringForce;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +20,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.TimeUtils;
+import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.FreeGroupAdapter;
 import com.shuyun.qapp.animation.MyLayoutAnimationHelper;
-import com.shuyun.qapp.net.MyApplication;
-import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
@@ -32,6 +30,7 @@ import com.shuyun.qapp.bean.GroupAgainstBean;
 import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;

@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.utils.OnMultiClickListener;
-
 /**
  * 首页通知弹框
  */

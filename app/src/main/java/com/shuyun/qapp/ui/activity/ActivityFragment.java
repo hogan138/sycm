@@ -2,8 +2,6 @@ package com.shuyun.qapp.ui.activity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,10 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.TimeUtils;
@@ -26,27 +22,16 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.ActivityTabAdapter;
-import com.shuyun.qapp.animation.MyLayoutAnimationHelper;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.ActivityTabBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
-import com.shuyun.qapp.ui.homepage.MainAgainstActivity;
-import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
-import com.shuyun.qapp.ui.integral.IntegralMainActivity;
-import com.shuyun.qapp.ui.mine.AddWithdrawInfoActivity;
-import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
-import com.shuyun.qapp.ui.webview.WebAnswerActivity;
-import com.shuyun.qapp.ui.webview.WebBannerActivity;
-import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveErrorTxt;
-import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.view.H5JumpUtil;
-import com.shuyun.qapp.view.RealNamePopupUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -61,24 +46,20 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.blankj.utilcode.util.ActivityUtils.startActivity;
-
 /**
  * 活动Fragment
  */
 public class ActivityFragment extends Fragment {
 
-    @BindView(R.id.iv_back)
-    RelativeLayout ivBack;
     @BindView(R.id.tv_common_title)
-    TextView tvCommonTitle;
+    TextView tvCommonTitle; //标题文字
     Unbinder unbinder;
     @BindView(R.id.rv_activity)
-    RecyclerView rvActivity;
+    RecyclerView rvActivity; //recycleview
     @BindView(R.id.refreshLayout)
-    SmartRefreshLayout refreshLayout;
+    SmartRefreshLayout refreshLayout; //上拉加载、下拉刷新
     @BindView(R.id.iv_activity_empty)
-    ImageView ivActivityEmpty;
+    ImageView ivActivityEmpty; //空白图
     @BindView(R.id.ll_main)
     LinearLayout llMain;
     private Activity mContext;
@@ -86,7 +67,7 @@ public class ActivityFragment extends Fragment {
     private int loadState = AppConst.STATE_NORMAL;
     private int currentPage = 0;
 
-    ActivityTabAdapter activityTabAdapter;
+    ActivityTabAdapter activityTabAdapter; //活动适配器
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -104,13 +85,12 @@ public class ActivityFragment extends Fragment {
         //初始化沉浸状态栏
         ImmersionBar.with(this).statusBarColor(R.color.white).statusBarDarkFont(true).fitsSystemWindows(true).init();
 
-
     }
 
     @OnClick({R.id.iv_back})
     public void click(View view) {
         switch (view.getId()) {
-            case R.id.iv_back:
+            case R.id.iv_back: //返回
                 if (mContext instanceof HomePageActivity) {
                     HomePageActivity homePageActivity = (HomePageActivity) mContext;
                     homePageActivity.changeUi(0);
@@ -124,7 +104,6 @@ public class ActivityFragment extends Fragment {
     /**
      * 活动专区
      */
-
     List<ActivityTabBean.ResultBean> activityTabBeanlist = new ArrayList<>();
 
     private void loadActivityList(int currentPage) {
@@ -194,6 +173,7 @@ public class ActivityFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
+            //显示刷新活动数据
             loadInfo();
         }
     }
@@ -204,6 +184,7 @@ public class ActivityFragment extends Fragment {
         super.onResume();
         MobclickAgent.onPageStart("ActivityFragment");
 
+        //加载活动数据
         loadInfo();
 
     }

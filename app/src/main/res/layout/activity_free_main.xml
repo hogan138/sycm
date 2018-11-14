@@ -6,7 +6,7 @@
     android:background="@color/white"
     android:id="@+id/ll_free_main"
     android:orientation="vertical"
-    tools:context="com.shuyun.qapp.ui.homepage.FreeMainActivity">
+    tools:context="com.shuyun.qapp.ui.against.FreeMainActivity">
 
     <include layout="@layout/common_title" />
 

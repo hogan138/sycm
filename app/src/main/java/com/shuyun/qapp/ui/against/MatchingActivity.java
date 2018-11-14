@@ -1,4 +1,4 @@
-package com.shuyun.qapp.ui.homepage;
+package com.shuyun.qapp.ui.against;
 
 
 import android.content.Intent;
@@ -45,7 +45,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * 匹配对手
+ * 答题对战----匹配对手
  */
 
 public class MatchingActivity extends BaseActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface {
@@ -269,7 +269,7 @@ public class MatchingActivity extends BaseActivity implements View.OnClickListen
                             }
 
                         } else {//错误码提示
-                            ErrorCodeTools.errorCodePrompt(MatchingActivity.this, listDataResponse.getErr(),listDataResponse.getMsg());
+                            ErrorCodeTools.errorCodePrompt(MatchingActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
                         }
                     }
 
@@ -318,8 +318,8 @@ public class MatchingActivity extends BaseActivity implements View.OnClickListen
     protected void onResume() {
         super.onResume();
 
+        //获取到用户匹配时长信息
         loadMatchInfo();
-
 
     }
 
@@ -346,7 +346,7 @@ public class MatchingActivity extends BaseActivity implements View.OnClickListen
                             Toast.makeText(MatchingActivity.this, "对不起，您的积分不足！", Toast.LENGTH_SHORT).show();
                             finish();
                         } else {//错误码提示
-                            ErrorCodeTools.errorCodePrompt(MatchingActivity.this, listDataResponse.getErr(),listDataResponse.getMsg());
+                            ErrorCodeTools.errorCodePrompt(MatchingActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
                         }
                     }
 
@@ -384,6 +384,7 @@ public class MatchingActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void onPause() {
         super.onPause();
+        //取消handler回调
         cancleHandler();
     }
 

@@ -44,11 +44,10 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * 兑换记录
+ * 积分夺宝----兑换记录
  */
 public class PrizeHistoryFragment extends Fragment implements View.OnClickListener {
 
-    Unbinder unbinder;
     @BindView(R.id.tv_name)
     TextView tvName;
     @BindView(R.id.tv_content)
@@ -71,6 +70,8 @@ public class PrizeHistoryFragment extends Fragment implements View.OnClickListen
     private int page = 0;
 
     private int type = 0;
+
+    Unbinder unbinder;
 
     PrizeHistoryAdapter freeGroupAdapter;
 
@@ -190,7 +191,7 @@ public class PrizeHistoryFragment extends Fragment implements View.OnClickListen
 
 
     /**
-     * 奖券记录
+     * 奖券兑换记录
      */
     List<ExchangeHistoryBean.TreasureUserChangeDataListBean> treasureUserChangeDataListBeanList = new ArrayList<>();
 
@@ -269,11 +270,6 @@ public class PrizeHistoryFragment extends Fragment implements View.OnClickListen
     public void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd("MineFragment");
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
     }
 
 }

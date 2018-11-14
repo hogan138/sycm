@@ -22,9 +22,7 @@ import com.shuyun.qapp.bean.AppVersionBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.login.LoginActivity;
-import com.shuyun.qapp.ui.login.VerifyCodeActivity;
 import com.shuyun.qapp.ui.webview.WebPublicActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -34,7 +32,6 @@ import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
-import com.shuyun.qapp.view.MyGalleryView;
 import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 
@@ -93,6 +90,7 @@ public class SystemSettingActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.rl_use_info:
+                //更改用户信息
                 Intent intent = new Intent(SystemSettingActivity.this, ChangePersonalInfoActivity.class);
                 startActivity(intent);
                 //用户信息
@@ -108,16 +106,17 @@ public class SystemSettingActivity extends BaseActivity {
                 startActivity(new Intent(this, FeedbackActivity.class));
                 break;
             case R.id.rl_version:
+                //版本更新
                 updateVersion();
                 break;
             case R.id.rl_other_set:
-                //其他设置 TODO
+                //其他设置
                 startActivity(new Intent(this, OtherSettingActivity.class));
                 break;
             case R.id.btn_exit_login:
+                //退出登录
                 exitLoginDialog();
                 break;
-            //反馈建议
             default:
                 break;
         }

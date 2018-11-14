@@ -5,9 +5,8 @@ import android.view.View;
 import android.widget.PopupWindow;
 
 /**
- * Created by sunxiao on 2018/5/4.
+ * popuwindows
  */
-
 
 public class CommonPopupWindow extends PopupWindow {
     final PopupController controller;

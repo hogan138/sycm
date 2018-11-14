@@ -19,7 +19,7 @@ import android.widget.ImageView;
 
 @SuppressLint("AppCompatCustomView")
 public class CircleImageView extends ImageView {
-//有一个问题,当我把它放在列表项中, 然后列表上面有一个edittext用来filter, 结果发现该自定义imageview本该被edittext挡住, 结果却绘制在edittext之上
+    //有一个问题,当我把它放在列表项中, 然后列表上面有一个edittext用来filter, 结果发现该自定义imageview本该被edittext挡住, 结果却绘制在edittext之上
 //初步判断是由canvas.clipPath(path, Region.Op.REPLACE);引起的,它把第一次不存在的部分也画了
 //解决方案: REPLACE(覆盖) 改为 INTERSECT(交集)
     private Paint paint = null;
@@ -41,12 +41,6 @@ public class CircleImageView extends ImageView {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
     }
-
-    // public CircleImageView(Context context, AttributeSet attrs, int
-    // defStyleAttr, int defStyleRes) {
-    // super(context, attrs, defStyleAttr, defStyleRes);
-    // init(context, attrs);
-    // }
 
     private void init(Context context, AttributeSet attrs) {
         paint = new Paint();

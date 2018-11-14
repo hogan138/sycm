@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.ui.homepage.PermissionsActivity;
+import com.shuyun.qapp.ui.login.PermissionsActivity;
 import com.shuyun.qapp.utils.PermissionsChecker;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.tencent.stat.StatService;
@@ -29,7 +29,6 @@ import com.umeng.analytics.MobclickAgent;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
 
 /**
  * 公用的静态webview

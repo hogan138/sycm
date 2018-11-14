@@ -8,13 +8,12 @@ import android.widget.TextView;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.utils.OnMultiClickListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * 提现成功页面
+ * 现金提现成功页面
  */
 public class WithdrawResultActivity extends BaseActivity implements View.OnClickListener {
 

@@ -15,11 +15,11 @@ import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
+import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.InputVerficationCodeBean;
-import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveErrorTxt;
@@ -44,7 +44,7 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.encryptMD5ToString;
 import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 
 /**
- * TODO更换绑定手机号
+ * 更换绑定手机号
  */
 public class ChangePhoneActivity extends BaseActivity {
 
@@ -52,7 +52,6 @@ public class ChangePhoneActivity extends BaseActivity {
     RelativeLayout ivBack;
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle;
-    private static final String TAG = "ChangePhoneActivity";
     @BindView(R.id.et_phone_num)
     EditText etPhoneNum;//输入的手机号
     @BindView(R.id.et_new_code)
@@ -63,6 +62,8 @@ public class ChangePhoneActivity extends BaseActivity {
     TextView tvCodeError2;//验证码错误
     @BindView(R.id.btn_sure2)
     Button btnSure2;//确定绑定手机号
+
+    private static final String TAG = "ChangePhoneActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,12 +124,7 @@ public class ChangePhoneActivity extends BaseActivity {
     }
 
     /**
-     * 获取到验证码
-     */
-    /**
      * 获取验证码
-     *
-     * @param verficationCodeBean post json body
      */
     private void getCodeNum(InputVerficationCodeBean verficationCodeBean) {
         ApiService apiService = BasePresenter.create(8000);

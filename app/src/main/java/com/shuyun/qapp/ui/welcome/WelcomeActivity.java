@@ -5,19 +5,16 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.TimeUtils;
@@ -32,8 +29,6 @@ import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.webview.WebBannerActivity;
-import com.shuyun.qapp.utils.CommonPopUtil;
-import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ImageLoaderManager;
@@ -63,13 +58,11 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 public class WelcomeActivity extends Activity {
     private static int LOGIN_MODE = 1;
 
-    private static CommonPopupWindow popupWindow;
     @BindView(R.id.fl_main)
     FrameLayout flMain;
 
-    CountDownTimer timer;
+    CountDownTimer timer; //倒计时
     long time;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,7 +164,7 @@ public class WelcomeActivity extends Activity {
 
 
     /**
-     * 广告popupWindow
+     * 广告弹框
      */
     public void showPop() {
         AlertDialog.Builder builder = new AlertDialog.Builder(WelcomeActivity.this, R.style.AlertDialog);

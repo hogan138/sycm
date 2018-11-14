@@ -70,7 +70,7 @@ import io.reactivex.schedulers.Schedulers;
 import static com.blankj.utilcode.util.SizeUtils.dp2px;
 
 /**
- * 宝贝详情
+ * 积分夺宝----宝贝详情
  */
 public class PrizeDetailsActivity extends BaseActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface {
 
@@ -323,7 +323,7 @@ public class PrizeDetailsActivity extends BaseActivity implements View.OnClickLi
                         if (dataResponse.isSuccees()) {
                             startActivity(new Intent(PrizeDetailsActivity.this, ExchangeResultActivity.class));
                         } else {
-                            ErrorCodeTools.errorCodePrompt(PrizeDetailsActivity.this, dataResponse.getErr(),dataResponse.getMsg());
+                            ErrorCodeTools.errorCodePrompt(PrizeDetailsActivity.this, dataResponse.getErr(), dataResponse.getMsg());
                         }
                     }
 
@@ -559,7 +559,7 @@ public class PrizeDetailsActivity extends BaseActivity implements View.OnClickLi
                                 }
                             }
                         } else {
-                            ErrorCodeTools.errorCodePrompt(PrizeDetailsActivity.this, dataResponse.getErr(),dataResponse.getMsg());
+                            ErrorCodeTools.errorCodePrompt(PrizeDetailsActivity.this, dataResponse.getErr(), dataResponse.getMsg());
                         }
                     }
 

@@ -1,18 +1,14 @@
 package com.shuyun.qapp.ui.mine;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.bean.AuthNameBean;
-import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 
@@ -21,7 +17,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 实名认证
+ * 实名认证结果页
  */
 public class AuthResultActivity extends BaseActivity {
 
@@ -30,12 +26,7 @@ public class AuthResultActivity extends BaseActivity {
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle;
     @BindView(R.id.btn_sure)
-    Button btnSure;
-    @BindView(R.id.iv_auth_result_icon)
-    ImageView ivAuthResultIcon;//实名结果图片
-    @BindView(R.id.tv_auth_rsult)
-    TextView tvAuthRsult;//认证结果提示信息
-
+    Button btnSure; //确认
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

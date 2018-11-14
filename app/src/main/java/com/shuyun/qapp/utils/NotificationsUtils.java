@@ -12,7 +12,6 @@ import java.lang.reflect.Method;
  * 项目名称：QMGJ
  * 创建人：${ganquan}
  * 创建日期：2018/6/20 16:31
- * <p>
  * 通知栏是否打开工具类
  */
 public class NotificationsUtils {

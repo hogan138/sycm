@@ -50,8 +50,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * 使用中Fragment
- * 2018/6/9
+ * 我的奖品使用中Fragment
  * ganquan
  */
 public class UseInPrizeFragment extends Fragment {
@@ -67,7 +66,7 @@ public class UseInPrizeFragment extends Fragment {
     private int loadState = AppConst.STATE_NORMAL;
     private int currentPage = 0;
 
-    PrizeAdapter prizeAdapter;
+    PrizeAdapter prizeAdapter; //奖品适配器
 
     @Nullable
     @Override
@@ -307,8 +306,4 @@ public class UseInPrizeFragment extends Fragment {
                 });
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
 }

@@ -12,8 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.LayoutAnimationController;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.TimeUtils;
@@ -21,13 +19,12 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.ChildrenGroupAdapter;
 import com.shuyun.qapp.adapter.GroupTreeAdapter;
-import com.shuyun.qapp.animation.MyLayoutAnimationHelper;
+import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.GroupClassifyBean;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.net.ApiService;
-import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
+import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveErrorTxt;
@@ -45,8 +42,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * A simple {@link Fragment} subclass.
- * 根据点进来的位置 选中换图片;根据点的位置换图片;
+ * 分类
  */
 public class ClassifyFragment extends Fragment {
 
@@ -54,8 +50,6 @@ public class ClassifyFragment extends Fragment {
     RecyclerView rvGroupSort;//左侧题组分类RecyclerView
     @BindView(R.id.rv_group)
     RecyclerView rvGroup;//右侧题组RecyclerView
-    @BindView(R.id.iv_back)
-    RelativeLayout ivBack;
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle;
     Unbinder unbinder;
@@ -84,6 +78,7 @@ public class ClassifyFragment extends Fragment {
         //初始化沉浸状态栏
         ImmersionBar.with(this).statusBarColor(R.color.white).statusBarDarkFont(true).fitsSystemWindows(true).init();
 
+        //请求分类数据
         loadGroupTree();
     }
 
@@ -91,6 +86,7 @@ public class ClassifyFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
+            //刷新分类数据
             loadGroupTree();
         }
     }
@@ -98,7 +94,7 @@ public class ClassifyFragment extends Fragment {
     @OnClick({R.id.iv_back})
     public void click(View view) {
         switch (view.getId()) {
-            case R.id.iv_back:
+            case R.id.iv_back: //返回键
                 if (mContext instanceof HomePageActivity) {
                     HomePageActivity homePageActivity = (HomePageActivity) mContext;
                     homePageActivity.changeUi(0);
@@ -109,11 +105,6 @@ public class ClassifyFragment extends Fragment {
             default:
                 break;
         }
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     /**
@@ -155,7 +146,9 @@ public class ClassifyFragment extends Fragment {
                                     classifyBeans.get(0).setFlag(true);
                                     refreshRightGroup(0, classifyBeans);
                                 }
-                                //左侧分类列表点击事件
+                                /**
+                                 * 左侧分类列表点击事件
+                                 */
                                 groupTreeAdapter.setOnItemClickLitsener(new GroupTreeAdapter.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(View view, int position) {
@@ -184,7 +177,6 @@ public class ClassifyFragment extends Fragment {
 
                                 }
 
-                            } else {
                             }
                         } else {
                             ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
@@ -236,16 +228,10 @@ public class ClassifyFragment extends Fragment {
 
     }
 
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
     @Override
     public void onResume() {
         super.onResume();
-        MobclickAgent.onPageStart("ClassifyFragment"); //统计页面，"MainScreen"为页面名称，可自定义
+        MobclickAgent.onPageStart("ClassifyFragment");
     }
 
     @Override

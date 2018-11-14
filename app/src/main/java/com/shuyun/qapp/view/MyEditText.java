@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 /**
- * Created by bruce on 2017/10/4.
+ * 验证码输入框
  */
 
 public class MyEditText extends AppCompatEditText {

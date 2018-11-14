@@ -21,7 +21,7 @@ import com.shuyun.qapp.R;
  * 项目名称：QMGJ
  * 创建人：${ganquan}
  * 创建日期：2018/7/31 16:30
- * 倒计时
+ * 倒计时控件
  */
 @SuppressLint("HandlerLeak")
 public class RushBuyCountDownTimerView extends LinearLayout {

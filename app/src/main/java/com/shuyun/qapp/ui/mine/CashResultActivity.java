@@ -19,16 +19,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * 红包提现结果页
+ */
 public class CashResultActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;//返回
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle;//标题
-    @BindView(R.id.iv_cash_result_icon)
-    ImageView ivCashResultIcon;
-    @BindView(R.id.tv_cash_hint)
-    TextView tvCashHint;//提现结果提示
     @BindView(R.id.btn_sure3)
     Button btnSure3;
 

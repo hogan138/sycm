@@ -42,7 +42,7 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.encryptMD5ToString;
 import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 
 /**
- * 更改手机号
+ * 更改手机号---验证老手机号
  */
 public class ChangePhoneNumActivity extends BaseActivity {
 
@@ -134,7 +134,7 @@ public class ChangePhoneNumActivity extends BaseActivity {
      */
     private void getCodeNum(InputVerficationCodeBean verficationCodeBean) {
         ApiService apiService = BasePresenter.create(8000);
-        String inputbean =  JSON.toJSONString(verficationCodeBean);
+        String inputbean = JSON.toJSONString(verficationCodeBean);
         Log.i(TAG, "loadLogin: " + verficationCodeBean.toString());
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
         apiService.getCode(body)

@@ -14,7 +14,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * 兑换结果页
+ * 积分夺宝兑换结果页
  */
 public class ExchangeResultActivity extends BaseActivity {
 

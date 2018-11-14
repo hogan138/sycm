@@ -24,7 +24,6 @@ import butterknife.OnClick;
 
 /**
  * 账户记录
- * 分页加载
  */
 public class AccountRecordActivity extends BaseActivity {
     @BindView(R.id.iv_back)
@@ -44,7 +43,6 @@ public class AccountRecordActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         tvCommonTitle.setText("账户记录");
-
 
         //添加标题
         initTitile();

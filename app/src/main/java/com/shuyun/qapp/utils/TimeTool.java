@@ -1,28 +1,14 @@
 package com.shuyun.qapp.utils;
 
 
-import android.annotation.SuppressLint;
-import android.util.Log;
-
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
-
-
-import static android.icu.text.DateTimePatternGenerator.DAY;
-import static java.util.Calendar.HOUR;
-
 
 /**
  * Created by sunxiao on 2018/5/8.
  * 时间工具类
  */
-
 public class TimeTool {
 
     /**
@@ -40,16 +26,6 @@ public class TimeTool {
         SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
         return formatter.format(currentTime);
     }
-
-//
-//    public static Date stringToDate(String dateStr, String dateFormat) {
-//        SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
-//        try {
-//            return formatter.parse(dateStr);
-//        } catch (ParseException e) {
-//            return null;
-//        }
-//    }
 
     /**
      * 返回时间格式
@@ -70,7 +46,6 @@ public class TimeTool {
     }
 
 
-
     /**
      * 返回时间格式
      *
@@ -89,7 +64,7 @@ public class TimeTool {
      * @param Time
      * @return
      */
-    public static String getCommTime(String Time,String format) {
+    public static String getCommTime(String Time, String format) {
         Date currentTime = new Date(Long.parseLong(Time));
         SimpleDateFormat formatter = new SimpleDateFormat(format);
         return formatter.format(currentTime);

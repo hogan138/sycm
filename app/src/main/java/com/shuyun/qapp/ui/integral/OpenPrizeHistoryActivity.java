@@ -38,7 +38,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * 开奖历史
+ * 积分夺宝----开奖历史
  */
 public class OpenPrizeHistoryActivity extends BaseActivity {
 

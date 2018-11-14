@@ -16,14 +16,14 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.TimeUtils;
 import com.shuyun.qapp.R;
+import com.shuyun.qapp.adapter.InfomationAdapter;
 import com.shuyun.qapp.base.BaseActivity;
+import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.Msg;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.net.ApiService;
-import com.shuyun.qapp.ui.webview.WebAnswerActivity;
-import com.shuyun.qapp.adapter.InfomationAdapter;
 import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
+import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.webview.WebBannerActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
@@ -239,7 +239,6 @@ public class InformationActivity extends BaseActivity implements CommonPopupWind
                 }
                 break;
             case R.id.iv_right_icon:
-                //popupwindow实现
                 showMsgPopupwindow();
                 break;
             default:
@@ -321,7 +320,6 @@ public class InformationActivity extends BaseActivity implements CommonPopupWind
     }
 
     //在activity或者fragment中添加友盟统计
-
     public void onPause() {
         super.onPause();
         MobclickAgent.onPause(this); //统计时长

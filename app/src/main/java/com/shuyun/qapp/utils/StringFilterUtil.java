@@ -4,6 +4,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+/**
+ * @param
+ * @method
+ * @description 可输入字符监听
+ * @date:
+ * @author: ganquan
+ * @return
+ */
 public class StringFilterUtil {
 
     // 只允许字母、数字和汉字

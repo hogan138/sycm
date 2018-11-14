@@ -206,10 +206,6 @@
             </intent-filter>
         </activity>
         <!-- 引导页 -->
-        <activity
-            android:name=".ui.welcome.SplashActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
         <!-- 首页 -->
         <activity
             android:name=".ui.homepage.HomePageActivity"
@@ -284,10 +280,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 现金提现 -->
-        <activity
-            android:name=".ui.mine.CashWithdrawalActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
         <!-- 系统设置 -->
         <activity
             android:name=".ui.mine.SystemSettingActivity"
@@ -318,10 +310,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 红包 -->
-        <activity
-            android:name=".ui.mine.RedWithDrawActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
         <!-- 积分抽奖和宝箱开奖界面 -->
         <!-- 我的界面，反馈. -->
         <activity
@@ -351,7 +339,7 @@
             android:screenOrientation="portrait" />
         <!-- 动态权限 -->
         <activity
-            android:name=".ui.homepage.PermissionsActivity"
+            android:name=".ui.login.PermissionsActivity"
             android:screenOrientation="portrait" />
         <!-- 其他设置之账号注销 -->
         <activity
@@ -381,27 +369,27 @@
 
         <!-- 答题对战首页 -->
         <activity
-            android:name=".ui.homepage.MainAgainstActivity"
+            android:name=".ui.against.MainAgainstActivity"
             android:screenOrientation="portrait" />
         <!-- 自由对战首页 -->
         <activity
-            android:name=".ui.homepage.FreeMainActivity"
+            android:name=".ui.against.FreeMainActivity"
             android:screenOrientation="portrait" />
         <!-- 自由对战题组详情 -->
         <activity
-            android:name=".ui.homepage.FreeDetailActivity"
+            android:name=".ui.against.FreeDetailActivity"
             android:screenOrientation="portrait" />
         <!-- 匹配对手 -->
         <activity
-            android:name=".ui.homepage.MatchingActivity"
+            android:name=".ui.against.MatchingActivity"
             android:screenOrientation="portrait" />
         <!-- 答题对战 -->
         <activity
-            android:name=".ui.homepage.AgainstActivity"
+            android:name=".ui.against.AgainstActivity"
             android:screenOrientation="portrait" />
         <!-- 答题对战结果页 -->
         <activity
-            android:name=".ui.homepage.AgainstResultActivity"
+            android:name=".ui.against.AgainstResultActivity"
             android:screenOrientation="portrait" />
         <!-- 账号注销结果页 -->
         <activity

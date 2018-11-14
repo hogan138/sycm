@@ -42,18 +42,19 @@ import com.mylhyl.circledialog.params.ButtonParams;
 import com.mylhyl.circledialog.params.DialogParams;
 import com.mylhyl.circledialog.params.TextParams;
 import com.mylhyl.circledialog.params.TitleParams;
+import com.shuyun.qapp.R;
+import com.shuyun.qapp.base.BaseActivity;
+import com.shuyun.qapp.base.BasePresenter;
+import com.shuyun.qapp.bean.AnswerOpptyBean;
+import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.H5JumpBean;
 import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.bean.ReturnDialogBean;
-import com.shuyun.qapp.net.MyApplication;
-import com.shuyun.qapp.R;
-import com.shuyun.qapp.base.*;
-import com.shuyun.qapp.bean.AnswerOpptyBean;
-import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.bean.WebAnswerHomeBean;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.ui.answer.AnswerHistoryActivity;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
@@ -82,8 +83,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
 
-import com.shuyun.qapp.base.BaseActivity;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -95,14 +94,14 @@ import io.reactivex.schedulers.Schedulers;
 import static com.blankj.utilcode.util.SizeUtils.dp2px;
 
 /**
- * H5答题页
+ * H5答题页webview
  */
 public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow.ViewInterface {
 
     @BindView(R.id.iv_common_left_icon)
     RelativeLayout ivCommonLeftIcon;
     @BindView(R.id.tv_common_title)
-    TextView tvCommonTitle;
+    TextView tvCommonTitle; //答题标题
     @BindView(R.id.iv_right_icon)
     ImageView ivRightIcon;
     @BindView(R.id.wv_answer_home)
@@ -110,8 +109,9 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
     WebAnswerHomeBean answerHomeBean = new WebAnswerHomeBean();
     @BindView(R.id.ll_h5)
     LinearLayout llH5;
-    private int groupId;
-    private String h5Url;
+
+    private int groupId; //题组Id
+    private String h5Url; //h5url
     private static final String TAG = "WebAnswerActivity";
     private String splash = "";
 

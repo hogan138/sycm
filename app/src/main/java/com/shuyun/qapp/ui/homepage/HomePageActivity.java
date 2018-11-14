@@ -33,19 +33,20 @@ import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.ActivityTimeBean;
 import com.shuyun.qapp.bean.AppVersionBean;
 import com.shuyun.qapp.bean.DataResponse;
+import com.shuyun.qapp.bean.InviteBean;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.activity.ActivityFragment;
 import com.shuyun.qapp.ui.classify.ClassifyFragment;
 import com.shuyun.qapp.ui.mine.MineFragment;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
-import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ExampleUtil;
 import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
+import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 
@@ -61,28 +62,31 @@ import io.reactivex.schedulers.Schedulers;
 import static com.shuyun.qapp.utils.EncodeAndStringTool.encryptMD5ToString;
 import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 
+/**
+ * 主页面activity
+ */
 public class HomePageActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener, ViewPager.OnPageChangeListener {
+
+    @BindView(R.id.radioGroup1)
+    RadioGroup radioGroup1;
+    @BindView(R.id.radio_main)
+    RadioButton radioMain; //首页
+    @BindView(R.id.radio_classify)
+    RadioButton radioClassify; //分类
+    @BindView(R.id.radio_activity)
+    RadioButton radioActivity; //活动
+    @BindView(R.id.radio_mine)
+    RadioButton radioMine; //我的
+    @BindView(R.id.ll_main)
+    LinearLayout llMain;
+    @BindView(R.id.pager)
+    ViewPager pager;
 
     /**
      * fragment容器
      */
-    ArrayList<Fragment> fragments = new ArrayList<>();
-    @BindView(R.id.radio_main)
-    RadioButton radioMain;
-    @BindView(R.id.radio_classify)
-    RadioButton radioClassify;
-    @BindView(R.id.radio_activity)
-    RadioButton radioActivity;
-    @BindView(R.id.radio_mine)
-    RadioButton radioMine;
-    @BindView(R.id.ll_main)
-    LinearLayout llMain;
     private FragmentManager fm;
-    @BindView(R.id.pager)
-    ViewPager pager;
-    @BindView(R.id.radioGroup1)
-    RadioGroup radioGroup1;
-
+    ArrayList<Fragment> fragments = new ArrayList<>();
     public static boolean isForeground = false; //极光推送
     int i = 0;//当前下标
 
@@ -101,9 +105,6 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
         radioGroup1.setOnCheckedChangeListener(this);
 
         SharedPreferences sharedPreferences = getSharedPreferences("FirstRun", 0);
-        Boolean first_run = sharedPreferences.getBoolean("First", true);
-        sharedPreferences.edit().putBoolean("First", true).commit();
-
         Boolean main_run = sharedPreferences.getBoolean("Main", true);
         sharedPreferences.edit().putBoolean("Main", true).commit();
 
@@ -116,10 +117,15 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
         MyActivityManager.getInstance().pushOneActivity(this);
 
         //注册极光推送
-        registerMessageReceiver();  // used for receive msg
+        registerMessageReceiver();
 
         //初始化数据
         initDate();
+
+        /**
+         * 邀请有奖
+         */
+        invite();
 
     }
 
@@ -182,7 +188,6 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
         for (int j = 0; j < fragments.size(); j++) {
             //得到radiobutton
             RadioButton radiobutton = (RadioButton) radioGroup1.getChildAt(j);
-            int id = radiobutton.getId();
             //判断radiobutton的id是否等于选中的id
             if (radiobutton.getId() == i) {
                 //设置当前页
@@ -271,6 +276,7 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
         }
 
         isForeground = true;
+
         //版本更新
         updateVersion();
 
@@ -279,7 +285,6 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
     }
 
     //更新版本
-
     private void updateVersion() {
         long curTime = System.currentTimeMillis();
         String signString = "" + AppConst.DEV_ID + AppConst.APP_ID + AppConst.V + curTime + APKVersionCodeTools.getVerName(this) + AppConst.APP_KEY;
@@ -370,9 +375,6 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
         super.onDestroy();
 
         SharedPreferences sharedPreferences = getSharedPreferences("FirstRun", 0);
-        Boolean first_run = sharedPreferences.getBoolean("First", true);
-        sharedPreferences.edit().putBoolean("First", true).commit();
-
         Boolean main_run = sharedPreferences.getBoolean("Main", true);
         sharedPreferences.edit().putBoolean("Main", true).commit();
     }
@@ -497,4 +499,46 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
                 });
     }
 
+    //邀请有奖
+    private void invite() {
+        ApiService apiService = BasePresenter.create(8000);
+        apiService.prizeShare()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<DataResponse<InviteBean>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
+
+                    @Override
+                    public void onNext(DataResponse<InviteBean> dataResponse) {
+                        if (dataResponse.isSuccees()) {
+                            InviteBean inviteBean = dataResponse.getDat();
+                            //邀请有奖
+                            try {
+                                if (inviteBean.getShare() == 1) {
+                                    SharedPrefrenceTool.put(HomePageActivity.this, "share", inviteBean.getShare());//是否参与邀请分享 1——参与邀请
+                                } else {
+                                    SharedPrefrenceTool.put(HomePageActivity.this, "share", inviteBean.getShare());//是否参与邀请分享 1——参与邀请
+                                }
+                            } catch (Exception e) {
+
+                            }
+                        } else {
+                            ErrorCodeTools.errorCodePrompt(HomePageActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //保存错误信息
+                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+    }
 }

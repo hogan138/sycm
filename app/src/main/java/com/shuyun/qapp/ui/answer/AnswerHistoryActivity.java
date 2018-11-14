@@ -59,15 +59,14 @@ public class AnswerHistoryActivity extends BaseActivity implements CommonPopupWi
 
     @BindView(R.id.ll_answer_history)
     LinearLayout llAnswerHistory;
-    @BindView(R.id.iv_back)
-    RelativeLayout ivBack;
     @BindView(R.id.tv_common_title)
-    TextView tvCommonTitle;
+    TextView tvCommonTitle; //答题标题
     @BindView(R.id.rv_error_answer)
-    RecyclerView rvErrorAnswer;
+    RecyclerView rvErrorAnswer; //recycleview
 
     CommonPopupWindow popupWindow;
-    private String answerId;
+    private String answerId; //答题id
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,7 +182,7 @@ public class AnswerHistoryActivity extends BaseActivity implements CommonPopupWi
     @OnClick({R.id.iv_back})
     public void click(View view) {
         switch (view.getId()) {
-            case R.id.iv_back:
+            case R.id.iv_back: //返回键
                 finish();
                 break;
             default:
@@ -196,7 +195,7 @@ public class AnswerHistoryActivity extends BaseActivity implements CommonPopupWi
     @Override
     public void getChildView(View view, int layoutResId) {
         switch (layoutResId) {
-            case R.layout.feedback_popupwindow:
+            case R.layout.feedback_popupwindow: //反馈弹窗
                 ImageView ivClose = view.findViewById(R.id.iv_close_icon2);
                 final TextView commitFeedBack = view.findViewById(R.id.tv_commit_feedback);
                 RadioGroup rgFeedBack = view.findViewById(R.id.rg_feedback);
@@ -250,7 +249,7 @@ public class AnswerHistoryActivity extends BaseActivity implements CommonPopupWi
     }
 
     /**
-     * 答题题目反馈 返回99999
+     * 答题题目反馈
      *
      * @param positionId
      */

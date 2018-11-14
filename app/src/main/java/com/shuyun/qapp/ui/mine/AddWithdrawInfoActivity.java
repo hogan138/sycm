@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.TimeUtils;
-import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.callback.ConfigButton;
 import com.mylhyl.circledialog.callback.ConfigDialog;
@@ -30,30 +29,19 @@ import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.AddWithdrawResultBean;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.bean.InputWithdrawalbean;
-import com.shuyun.qapp.bean.OutPutWithdraw;
 import com.shuyun.qapp.bean.SubmitWithdrawInfoBean;
 import com.shuyun.qapp.net.ApiService;
-import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.webview.WebBannerActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
-import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.StringFilterUtil;
 import com.shuyun.qapp.utils.ToastUtil;
 
-import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.jpush.android.api.JPushInterface;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -69,19 +57,19 @@ public class AddWithdrawInfoActivity extends BaseActivity implements View.OnClic
     @BindView(R.id.rl_back)
     RelativeLayout rlBack;
     @BindView(R.id.btn_enter)
-    Button btnEnter;
+    Button btnEnter; //确定
     @BindView(R.id.btn_contact_our)
-    Button btnContactOur;
+    Button btnContactOur; //联系客服
     @BindView(R.id.tv_error_hint)
-    TextView tvErrorHint;
+    TextView tvErrorHint; //错误文字
     @BindView(R.id.iv_clear_name)
-    ImageView ivClearName;
+    ImageView ivClearName; //清除姓名logo
     @BindView(R.id.iv_clear_account)
-    ImageView ivClearAccount;
+    ImageView ivClearAccount; //清除账号logo
     @BindView(R.id.et_name)
-    EditText etName;
+    EditText etName; //姓名
     @BindView(R.id.et_account)
-    EditText etAccount;
+    EditText etAccount; //账号
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,19 +111,19 @@ public class AddWithdrawInfoActivity extends BaseActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.rl_back:
+            case R.id.rl_back: //返回键
                 finish();
                 KeyboardUtils.hideSoftInput(AddWithdrawInfoActivity.this);
                 break;
-            case R.id.iv_clear_name:
+            case R.id.iv_clear_name: //清除姓名
                 etName.setText("");
                 ivClearName.setVisibility(View.GONE);
                 break;
-            case R.id.iv_clear_account:
+            case R.id.iv_clear_account: //清除账号
                 etAccount.setText("");
                 ivClearAccount.setVisibility(View.GONE);
                 break;
-            case R.id.btn_enter:
+            case R.id.btn_enter: //确定
                 String name = etName.getText().toString().trim();
                 String account = etAccount.getText().toString().trim();
                 if (!EncodeAndStringTool.isStringEmpty(name)) {
@@ -146,6 +134,7 @@ public class AddWithdrawInfoActivity extends BaseActivity implements View.OnClic
                             if (!account.equals(StringFilterUtil.stringFilter1(account))) {
                                 ToastUtil.showToast(AddWithdrawInfoActivity.this, "请输入正确支付宝账号");
                             } else {
+                                //显示确认信息弹框
                                 ShowDialog(name, account);
                             }
                         } else {
@@ -156,7 +145,7 @@ public class AddWithdrawInfoActivity extends BaseActivity implements View.OnClic
                     ToastUtil.showToast(AddWithdrawInfoActivity.this, "请输入姓名");
                 }
                 break;
-            case R.id.btn_contact_our:
+            case R.id.btn_contact_our: //联系客服
                 Intent i = new Intent(this, WebBannerActivity.class);
                 i.putExtra("url", SaveUserInfo.getInstance(this).getUserInfo("contactUs_url"));
                 i.putExtra("name", "联系客服");//名称 标题

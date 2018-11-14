@@ -5,18 +5,12 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.TimeUtils;
-import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.MyPagerAdapter;
 import com.shuyun.qapp.base.BaseActivity;
@@ -24,12 +18,9 @@ import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.net.ApiService;
-import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.LogUtil;
-import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.umeng.analytics.MobclickAgent;
@@ -47,7 +38,6 @@ import io.reactivex.schedulers.Schedulers;
 
 /**
  * 我的奖品界面
- * <p>
  * 修改于：2018/6/9
  */
 public class MinePrizeActivity extends BaseActivity {
@@ -144,7 +134,6 @@ public class MinePrizeActivity extends BaseActivity {
                     popupWindow = null;
                 } else {
                     super.onBackPressed();
-//                    finish();
                 }
                 break;
             default:
@@ -166,7 +155,6 @@ public class MinePrizeActivity extends BaseActivity {
             popupWindow = null;
         } else {
             super.onBackPressed();
-//            finish();
         }
     }
 

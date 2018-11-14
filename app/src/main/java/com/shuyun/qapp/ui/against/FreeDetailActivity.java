@@ -1,4 +1,4 @@
-package com.shuyun.qapp.ui.homepage;
+package com.shuyun.qapp.ui.against;
 
 
 import android.content.Intent;
@@ -21,7 +21,6 @@ import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.bean.MainAgainstBean;
 import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
@@ -30,9 +29,11 @@ import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.ScannerUtils;
+import com.shuyun.qapp.view.RoundImageView;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -50,66 +51,56 @@ import io.reactivex.schedulers.Schedulers;
 import static com.blankj.utilcode.util.SizeUtils.dp2px;
 
 /**
- * 答题对战首页
+ * 自由对战专题详情
  */
-
-public class MainAgainstActivity extends BaseActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface {
+public class FreeDetailActivity extends BaseActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface {
 
 
     @BindView(R.id.iv_left_icon)
     ImageView ivLeftIcon;
+    @BindView(R.id.iv_common_left_icon)
+    RelativeLayout ivCommonLeftIcon;
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle;
     @BindView(R.id.iv_right_icon)
     ImageView ivRightIcon;
-    @BindView(R.id.iv_common_left_icon)
-    RelativeLayout ivCommonLeftIcon;
-    @BindView(R.id.ll_main)
-    LinearLayout llMain;
-    @BindView(R.id.rl_free)
-    RelativeLayout rlFree;
-    @BindView(R.id.rl_new)
-    RelativeLayout rlNew;
-    @BindView(R.id.rl_common)
-    RelativeLayout rlCommon;
-    @BindView(R.id.rl_high)
-    RelativeLayout rlHigh;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
+    @BindView(R.id.iv_image)
+    RoundImageView ivImage;
+    @BindView(R.id.rl_start_matching)
+    RelativeLayout rlStartMatching;
     @BindView(R.id.tv_content)
     TextView tvContent;
     @BindView(R.id.tv_score)
     TextView tvScore;
-    @BindView(R.id.tv_new_score)
-    TextView tvNewScore;
-    @BindView(R.id.tv_common_score)
-    TextView tvCommonScore;
-    @BindView(R.id.tv_high_score)
-    TextView tvHighScore;
+    @BindView(R.id.ll_free_detail)
+    LinearLayout llFreeDetail;
 
-    private int my_score = 0;
-    private int new_score = 0;
-    private int common_score = 0;
-    private int high_score = 0;
+    int type;
 
     @Override
     public int intiLayout() {
-        return R.layout.activity_main_against;
+        return R.layout.activity_free_detail;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
 
         ivCommonLeftIcon.setOnClickListener(this);
-        tvCommonTitle.setText("答题对战");
         ivLeftIcon.setImageResource(R.mipmap.backb);//左侧返回
 
-        ivRightIcon.setOnClickListener(this);
+        type = getIntent().getIntExtra("type", 0);
+        tvCommonTitle.setText(getIntent().getStringExtra("name"));
 
-        rlFree.setOnClickListener(this);
-        rlNew.setOnClickListener(this);
-        rlCommon.setOnClickListener(this);
-        rlHigh.setOnClickListener(this);
+        if (getIntent().getStringExtra("score").equals("")) {
+            tvScore.setText("不消耗积分");
+        } else {
+            tvScore.setText("消耗积分：" + getIntent().getStringExtra("score"));
+        }
 
         /**
          * 检测微信是否安装,如果没有安装,需不显示分享按钮;如果安装了微信则显示分享按钮.
@@ -120,19 +111,17 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
             ivRightIcon.setVisibility(View.VISIBLE);
             ivRightIcon.setImageResource(R.mipmap.share);//右侧分享
         }
-    }
+        ivRightIcon.setOnClickListener(this);
+        rlStartMatching.setOnClickListener(this);
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+        ImageLoaderManager.LoadImage(FreeDetailActivity.this, getIntent().getStringExtra("image"), ivImage, R.mipmap.zw01);
+        tvTitle.setText(getIntent().getStringExtra("name"));
+        tvContent.setText(getIntent().getStringExtra("description"));
 
-        //获取答题对战首页
-        getInfo();
     }
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent();
         switch (v.getId()) {
             case R.id.iv_common_left_icon:
                 if (!EncodeAndStringTool.isObjectEmpty(popupWindow)) {
@@ -149,132 +138,28 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
             case R.id.iv_right_icon:
                 showSharedPop();
                 break;
-            case R.id.rl_free:
-                intent.putExtra("title", "自由对战");
-                intent.putExtra("score", "");
-                intent.putExtra("type", 0);
-                intent.setClass(MainAgainstActivity.this, FreeMainActivity.class);
+            case R.id.rl_start_matching:
+                Intent intent = new Intent(FreeDetailActivity.this, MatchingActivity.class);
+                intent.putExtra("type", type);
+                intent.putExtra("groupId", getIntent().getIntExtra("groupId", 0));
+                intent.putExtra("from", "common");
+                intent.putExtra("name", getIntent().getStringExtra("name"));
+                intent.putExtra("score", getIntent().getStringExtra("score"));
                 startActivity(intent);
-                break;
-            case R.id.rl_new:
-                if (my_score >= new_score) {
-                    intent.putExtra("title", "新手场");
-                    intent.putExtra("score", "" + new_score);
-                    intent.putExtra("type", 1);
-                    intent.setClass(MainAgainstActivity.this, FreeMainActivity.class);
-                    startActivity(intent);
-                } else {
-                    showPopupWindows();
-                }
-
-                break;
-            case R.id.rl_common:
-                //普通场
-                if (my_score >= common_score) {
-                    intent.putExtra("title", "普通场");
-                    intent.putExtra("score", "" + common_score);
-                    intent.putExtra("type", 2);
-                    intent.setClass(MainAgainstActivity.this, FreeMainActivity.class);
-                    startActivity(intent);
-                } else {
-                    showPopupWindows();
-                }
-                break;
-            case R.id.rl_high:
-                //高级场
-                if (my_score >= high_score) {
-                    intent.putExtra("title", "高级场");
-                    intent.putExtra("score", "" + high_score);
-                    intent.putExtra("type", 3);
-                    intent.setClass(MainAgainstActivity.this, FreeMainActivity.class);
-                    startActivity(intent);
-                } else {
-                    showPopupWindows();
-                }
                 break;
             default:
                 break;
         }
     }
 
-    public void getInfo() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.mainAgainst()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<MainAgainstBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse<MainAgainstBean> loginResponse) {
-                        MainAgainstBean mainAgainstBean = loginResponse.getDat();
-                        if (loginResponse.isSuccees()) {
-                            tvScore.setText("我的积分：" + mainAgainstBean.getBattleUserBP());
-                            tvContent.setText(mainAgainstBean.getBattleRule().replace("</br>", "\n"));
-                            my_score = mainAgainstBean.getBattleUserBP();//用户积分
-                            new_score = mainAgainstBean.getNovice();//新手场次积分
-                            common_score = mainAgainstBean.getIntermediate();//中级场次积分
-                            high_score = mainAgainstBean.getAdvanced();//高级场次积分
-                            tvNewScore.setText("消耗积分：" + new_score);
-                            tvCommonScore.setText("消耗积分：" + common_score);
-                            tvHighScore.setText("消耗积分：" + high_score);
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(MainAgainstActivity.this, loginResponse.getErr(), loginResponse.getMsg());
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-
-    }
 
     CommonPopupWindow popupWindow;
-
-    /**
-     * 积分不足弹窗
-     */
-    public void showPopupWindows() {
-        if (popupWindow != null && popupWindow.isShowing()) return;
-        View upView = LayoutInflater.from(MainAgainstActivity.this).inflate(R.layout.againes_no_score_popupwindow, null);
-        //测量View的宽高
-        CommonPopUtil.measureWidthAndHeight(upView);
-        popupWindow = new CommonPopupWindow.Builder(MainAgainstActivity.this)
-                .setView(R.layout.againes_no_score_popupwindow)
-                .setWidthAndHeight(upView.getMeasuredWidth(), ViewGroup.LayoutParams.WRAP_CONTENT)
-                .setBackGroundLevel(0.5f)//取值范围0.0f-1.0f 值越小越暗
-                .setOutsideTouchable(true)
-                .setAnimationStyle(R.style.popwin_anim_style)//设置动画
-                //设置子View点击事件
-                .setViewOnclickListener(this)
-                .create();
-        popupWindow.showAtLocation(llMain, Gravity.CENTER, 0, 0);
-    }
-
     private int SHARE_CHANNEL;
 
     @Override
     public void getChildView(View view, int layoutResId) {
         switch (layoutResId) {
-            case R.layout.againes_no_score_popupwindow:
-                final ImageView iv_close = view.findViewById(R.id.iv_close);
-                iv_close.setOnClickListener(new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v) {
-                        popupWindow.dismiss();
-                    }
-                });
-                break;
+
             case R.layout.share_popupwindow:
                 final LinearLayout ll_share = view.findViewById(R.id.ll_share);
                 SpringAnimation signUpBtnAnimY = new SpringAnimation(ll_share, SpringAnimation.TRANSLATION_Y, 0);
@@ -337,7 +222,7 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
                     @Override
                     public void onMultiClick(View v) {
                         //保存二维码
-                        ScannerUtils.saveImageToGallery(MainAgainstActivity.this, createViewBitmap(ll_view), ScannerUtils.ScannerType.MEDIA);
+                        ScannerUtils.saveImageToGallery(FreeDetailActivity.this, createViewBitmap(ll_view), ScannerUtils.ScannerType.MEDIA);
                         popupWindow.dismiss();
                     }
                 });
@@ -375,7 +260,7 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
                 .setViewOnclickListener(this)
                 .create();
 
-        popupWindow.showAtLocation(llMain, Gravity.BOTTOM, 0, 0);
+        popupWindow.showAtLocation(llFreeDetail, Gravity.BOTTOM, 0, 0);
     }
 
     /**
@@ -395,7 +280,7 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
                 //设置子View点击事件
                 .setViewOnclickListener(this)
                 .create();
-        popupWindow.showAtLocation(llMain, Gravity.CENTER, 0, 0);
+        popupWindow.showAtLocation(llFreeDetail, Gravity.CENTER, 0, 0);
     }
 
     /**
@@ -429,7 +314,7 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
                                 }
                             }
                         } else {
-                            ErrorCodeTools.errorCodePrompt(MainAgainstActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                            ErrorCodeTools.errorCodePrompt(FreeDetailActivity.this, dataResponse.getErr(),dataResponse.getMsg());
                         }
                     }
 
@@ -451,7 +336,7 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
      *
      * @param sharedBean
      */
-    private void wechatShare(final SharedBean sharedBean) {
+    private void wechatShare(final SharedBean sharedBean) {//String url, String content, String title  .getUrl(), sharedBean.getContent(), sharedBean.getTitle()
         SHARE_MEDIA media = SHARE_MEDIA.WEIXIN;
         if (SHARE_CHANNEL == AppConst.SHARE_MEDIA_WEIXIN) {//微信
             media = SHARE_MEDIA.WEIXIN;
@@ -534,7 +419,7 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
                         if (dataResponse.isSuccees()) {
 
                         } else {
-                            ErrorCodeTools.errorCodePrompt(MainAgainstActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                            ErrorCodeTools.errorCodePrompt(FreeDetailActivity.this, dataResponse.getErr(),dataResponse.getMsg());
                         }
                     }
 
@@ -551,7 +436,6 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
                 });
     }
 
-
     @Override
     public void onBackPressed() {
         if (!EncodeAndStringTool.isObjectEmpty(popupWindow)) {
@@ -565,6 +449,5 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
             super.onBackPressed();
         }
     }
-
 
 }

@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:orientation="vertical"
     android:id="@+id/ll_free_detail"
-    tools:context="com.shuyun.qapp.ui.homepage.FreeDetailActivity">
+    tools:context="com.shuyun.qapp.ui.against.FreeDetailActivity">
 
     <include layout="@layout/common_title" />
 

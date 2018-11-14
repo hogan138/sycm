@@ -6,7 +6,6 @@ import android.widget.TextView;
  * 项目名称：QMGJ
  * 创建人：${ganquan}
  * 创建日期：2018/6/22 10:39
- * <p>
  * textview轮询
  */
 public class TiaoZiView {
@@ -27,9 +26,7 @@ public class TiaoZiView {
         startTv(n);//开启线程
     }
 
-
     public static void startTv(final int n) {
-
         new Thread(
                 new Runnable() {
                     @Override
@@ -51,14 +48,10 @@ public class TiaoZiView {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-
-
                     }
                 }
 
         ).start();
-
-
     }
 
 }

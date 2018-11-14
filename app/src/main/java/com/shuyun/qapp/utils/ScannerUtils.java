@@ -20,7 +20,6 @@ import java.io.FileOutputStream;
  * 项目名称：QMGJ
  * 创建人：gq
  * 创建日期：2018/6/11 10:49
- * <p>
  * 图片相关
  */
 public class ScannerUtils {

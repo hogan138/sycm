@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.view.View;
 
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.ui.homepage.MainAgainstActivity;
+import com.shuyun.qapp.ui.against.MainAgainstActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
 import com.shuyun.qapp.ui.integral.IntegralMainActivity;
 import com.shuyun.qapp.ui.mine.AddWithdrawInfoActivity;

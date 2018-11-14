@@ -9,7 +9,6 @@ import java.io.RandomAccessFile;
  * 项目名称：QMGJ
  * 创建人：Administrator
  * 创建日期：2018/6/14 17:19
- *
  * 保存错误日志
  */
 public class SaveErrorTxt {

@@ -1,6 +1,7 @@
-package com.shuyun.qapp.ui.homepage;
+package com.shuyun.qapp.ui.against;
 
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -68,20 +69,18 @@ import okhttp3.RequestBody;
 
 public class AgainstActivity extends BaseActivity {
 
-    @BindView(R.id.iv_back)
-    RelativeLayout ivBack;
     @BindView(R.id.tv_common_title)
-    TextView tvCommonTitle;
+    TextView tvCommonTitle; //标题
     @BindView(R.id.btn_answer1)
-    RadioButton btnAnswer1;
+    RadioButton btnAnswer1; //选项一
     @BindView(R.id.btn_answer2)
-    RadioButton btnAnswer2;
+    RadioButton btnAnswer2; //选项二
     @BindView(R.id.btn_answer3)
-    RadioButton btnAnswer3;
+    RadioButton btnAnswer3; //选项三
     @BindView(R.id.btn_answer4)
-    RadioButton btnAnswer4;
+    RadioButton btnAnswer4; //选项四
     @BindView(R.id.pb_progress)
-    ProgressBar pbProgress;
+    ProgressBar pbProgress; //答题进度条
     @BindView(R.id.tv_page_end)
     TextView tvPageEnd;//第几题,共有多少题
     @BindView(R.id.tv_question)
@@ -93,29 +92,29 @@ public class AgainstActivity extends BaseActivity {
     @BindView(R.id.tv_count_down)
     TextView tvCountDown;//倒计时文字
     @BindView(R.id.circle_view)
-    CircleProgressView circleView;
+    CircleProgressView circleView; //倒计时进度
     @BindView(R.id.tv_anim)
-    TextView tvAnim;
+    TextView tvAnim; //生成题目倒计时文字
     @BindView(R.id.iv_head_mine)
-    CircleImageView ivHeadMine;
+    CircleImageView ivHeadMine; //自己头像
     @BindView(R.id.tv_mine_phone)
-    TextView tvMinePhone;
+    TextView tvMinePhone; //自己手机号
     @BindView(R.id.tv_mine_score)
-    TextView tvMineScore;
+    TextView tvMineScore;//自己分数
     @BindView(R.id.iv_head_it)
-    CircleImageView ivHeadIt;
+    CircleImageView ivHeadIt; //机器人头像
     @BindView(R.id.tv_it_phone)
-    TextView tvItPhone;
+    TextView tvItPhone; //机器人手机号
     @BindView(R.id.tv_it_score)
-    TextView tvItScore;
+    TextView tvItScore; //机器人分数
     @BindView(R.id.btn1_left_iv)
-    ImageView btn1LeftIv;
+    ImageView btn1LeftIv;//选项一左图片
     @BindView(R.id.btn2_left_iv)
-    ImageView btn2LeftIv;
+    ImageView btn2LeftIv; //选项二左图片
     @BindView(R.id.btn3_left_iv)
-    ImageView btn3LeftIv;
+    ImageView btn3LeftIv; //选项三左图片
     @BindView(R.id.btn4_left_iv)
-    ImageView btn4LeftIv;
+    ImageView btn4LeftIv; //选项四左图片
     @BindView(R.id.ll_question_options)
     LinearLayout llQuestionOptions;
     private static final String TAG = "AgainstActivity";
@@ -181,9 +180,11 @@ public class AgainstActivity extends BaseActivity {
      */
     Animation mAnimation = null;
 
+    @SuppressLint("HandlerLeak")
     private Handler timehandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+            //设置按钮不可点击
             disableAllOptionButton();
             if (mapAnswerButton.isEmpty()) {
                 mapAnswerButton.put(R.id.btn_answer1, btnAnswer1);
@@ -242,6 +243,7 @@ public class AgainstActivity extends BaseActivity {
         ivBottom.setAnimation(mAnimation);
         mAnimation.start();
 
+        //生成题目倒计时
         timehandler.sendEmptyMessageDelayed(0, 4000);
         CountDownTimer timer = new CountDownTimer(4 * 1000, 1000) {
             @Override

@@ -2,7 +2,6 @@ package com.shuyun.qapp.ui.mine;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -10,24 +9,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.TimeUtils;
-import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
-import com.shuyun.qapp.bean.AppVersionBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.net.ApiService;
-import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.ui.homepage.HomePageActivity;
-import com.shuyun.qapp.utils.APKVersionCodeTools;
-import com.shuyun.qapp.utils.EncodeAndStringTool;
-import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.ListDataSave;
-import com.shuyun.qapp.utils.LogUtil;
 import com.shuyun.qapp.utils.SaveErrorTxt;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,9 +23,6 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-
-import static com.shuyun.qapp.utils.EncodeAndStringTool.encryptMD5ToString;
-import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 
 /**
  * 其他设置
@@ -121,10 +105,7 @@ public class OtherSettingActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
         tvCommonTitle.setText("其他设置");
-
-        Log.e("token", AppConst.TOKEN);
     }
 }

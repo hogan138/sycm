@@ -45,7 +45,6 @@ import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.GroupBean;
 import com.shuyun.qapp.bean.GroupClassifyBean;
 import com.shuyun.qapp.bean.HomeGroupsBean;
-import com.shuyun.qapp.bean.InviteBean;
 import com.shuyun.qapp.bean.MainConfigBean;
 import com.shuyun.qapp.bean.MarkBannerItem;
 import com.shuyun.qapp.bean.SystemInfo;
@@ -121,7 +120,7 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.always_banner)
     BannerViewPager alwaysBanner; //常答轮播题组
     @BindView(R.id.activityRegion)
-    LinearLayout activityRegion;
+    LinearLayout activityRegion;//自定义区域布局
     @BindView(R.id.tv_number1)
     TextView tvNumber1;  //客服电话
     @BindView(R.id.tv_number2)
@@ -131,29 +130,29 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.iv_change)
     ImageView ivChange; //环形图
     @BindView(R.id.iv_group_bg1)
-    OvalImageView ivGroupBg1;
+    OvalImageView ivGroupBg1; //推荐题组图片1
     @BindView(R.id.tv_group_name1)
-    TextView tvGroupName1;
+    TextView tvGroupName1; //推荐题组名称1
     @BindView(R.id.iv_group_bg2)
-    OvalImageView ivGroupBg2;
+    OvalImageView ivGroupBg2; //推荐题组图片2
     @BindView(R.id.tv_group_name2)
-    TextView tvGroupName2;
+    TextView tvGroupName2;//推荐题组名称2
     @BindView(R.id.rl_commend_one)
-    RelativeLayout rlCommendOne; //推荐题组1
+    RelativeLayout rlCommendOne; //推荐题组1布局
     @BindView(R.id.rl_commend_two)
-    RelativeLayout rlCommendTwo; //推荐题组2
+    RelativeLayout rlCommendTwo; //推荐题组2布局
     @BindView(R.id.tv_group_tag1_one)
-    TextView tvGroupTag1One; //推荐题组1标签
+    TextView tvGroupTag1One; //推荐题组1标签文字
     @BindView(R.id.tv_group_tag1_two)
     TextView tvGroupTag1Two;
-    @BindView(R.id.recommend_logo1)
-    TextView recommendLogo1;
+    @BindView(R.id.recommend_logo1)//logo推荐题组1
+            TextView recommendLogo1;
     @BindView(R.id.tv_group_tag2_one)
-    TextView tvGroupTag2One;  //推荐题组2标签
+    TextView tvGroupTag2One;  //推荐题组2标签文字
     @BindView(R.id.tv_group_tag2_two)
     TextView tvGroupTag2Two;
-    @BindView(R.id.recommend_logo2)
-    TextView recommendLogo2;
+    @BindView(R.id.recommend_logo2)//logo推荐题组2
+            TextView recommendLogo2;
     @BindView(R.id.rv_group_sort_group)
     RecyclerView rvGroupSortGroup; //分类
 
@@ -197,7 +196,9 @@ public class HomeFragment extends Fragment {
 
         //初始化沉浸状态栏
         ImmersionBar.with(this).statusBarColor(R.color.white).statusBarDarkFont(true).fitsSystemWindows(true).init();
-        Long expire = (Long) SharedPrefrenceTool.get(mContext, "expire", System.currentTimeMillis());//token的有效时间
+
+        //token的有效时间
+        Long expire = (Long) SharedPrefrenceTool.get(mContext, "expire", System.currentTimeMillis());
         long currentTimeMillis = System.currentTimeMillis();
         if (!AppConst.isLogon() || currentTimeMillis >= expire) {
             //拉起登录界面
@@ -260,11 +261,6 @@ public class HomeFragment extends Fragment {
             loadSystemInfo();
 
             /**
-             * 邀请有奖
-             */
-            invite();
-
-            /**
              * 获取宝箱数量
              */
             loadTreasureBoxNum();
@@ -280,11 +276,11 @@ public class HomeFragment extends Fragment {
             case R.id.tv_invite://邀请分享
                 InviteSharePopupUtil.showSharedPop(mContext, llHomeFragment);
                 break;
-            case R.id.iv_common_right_icon:
-                ivCommonRightIcon.setImageResource(R.mipmap.message_n);//右侧消息按钮;
+            case R.id.iv_common_right_icon://右侧消息按钮
+                ivCommonRightIcon.setImageResource(R.mipmap.message_n);
                 startActivity(new Intent(mContext, InformationActivity.class));
                 break;
-            case R.id.ll_change_group:
+            case R.id.ll_change_group: //换一换
                 Animation circle_anim = AnimationUtils.loadAnimation(mContext, R.anim.anim_round_rotate);
                 LinearInterpolator interpolator = new LinearInterpolator();  //设置匀速旋转，在xml文件中设置会出现卡顿
                 circle_anim.setInterpolator(interpolator);
@@ -425,16 +421,13 @@ public class HomeFragment extends Fragment {
                             if (!EncodeAndStringTool.isListEmpty(systemInfos)) {
                                 try {
                                     llMarqueeView.setVisibility(View.VISIBLE);
-                                } catch (Exception e) {
-                                }
-                                /**
-                                 * 跑马灯数据
-                                 */
-                                List<String> info = new ArrayList<>();
-                                for (int i = 0; i < systemInfos.size(); i++) {
-                                    info.add(systemInfos.get(i).getMsg());
-                                }
-                                try {
+                                    /**
+                                     * 跑马灯数据
+                                     */
+                                    List<String> info = new ArrayList<>();
+                                    for (int i = 0; i < systemInfos.size(); i++) {
+                                        info.add(systemInfos.get(i).getMsg());
+                                    }
                                     if (!EncodeAndStringTool.isListEmpty(info)) {
                                         marqueeView.startWithList(info);
                                     }
@@ -846,52 +839,6 @@ public class HomeFragment extends Fragment {
 
                     }
 
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
-    }
-
-    String invite_h5Url = "";
-
-    //邀请有奖
-    private void invite() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.prizeShare()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<InviteBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse<InviteBean> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            InviteBean inviteBean = dataResponse.getDat();
-                            //邀请有奖
-                            try {
-                                if (inviteBean.getShare() == 1) {
-                                    invite_h5Url = inviteBean.getH5Url();
-                                    SharedPrefrenceTool.put(mContext, "share", inviteBean.getShare());//是否参与邀请分享 1——参与邀请
-                                } else {
-                                    SharedPrefrenceTool.put(mContext, "share", inviteBean.getShare());//是否参与邀请分享 1——参与邀请
-                                }
-                            } catch (Exception e) {
-
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
-                        }
-
-                    }
 
                     @Override
                     public void onError(Throwable e) {

@@ -38,7 +38,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * 我的奖券
+ * 积分夺宝---我的奖券
  */
 
 public class MyPrizeActivity extends BaseActivity {
@@ -58,7 +58,7 @@ public class MyPrizeActivity extends BaseActivity {
     private int loadState = AppConst.STATE_NORMAL;
     private int currentPage = 0;
 
-    MyPrizeAdapter myPrizeAdapter;
+    MyPrizeAdapter myPrizeAdapter; //我的奖券
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +114,7 @@ public class MyPrizeActivity extends BaseActivity {
 
     private void loadIntegralCurrent() {
         ApiService apiService = BasePresenter.create(8000);
-        apiService.getMyPrize(currentPage)//分页加载0
+        apiService.getMyPrize(currentPage)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<DataResponse<List<ExchangeMyPrizeBean>>>() {

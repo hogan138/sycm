@@ -1,4 +1,4 @@
-package com.shuyun.qapp.ui.homepage;
+package com.shuyun.qapp.ui.against;
 
 
 import android.content.Intent;
@@ -20,23 +20,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.TimeUtils;
-import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
+import com.shuyun.qapp.base.BasePresenter;
+import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.SharedBean;
+import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.ui.answer.AnswerHistoryActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
+import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.OnMultiClickListener;
+import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.ScannerUtils;
 import com.shuyun.qapp.view.CircleImageView;
-import com.shuyun.qapp.base.BasePresenter;
-import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.net.ApiService;
-import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -64,7 +64,7 @@ public class AgainstResultActivity extends BaseActivity implements View.OnClickL
     @BindView(R.id.iv_common_left_icon)
     RelativeLayout ivCommonLeftIcon;
     @BindView(R.id.tv_common_title)
-    TextView tvCommonTitle;
+    TextView tvCommonTitle; //标题文字
     @BindView(R.id.iv_right_icon)
     ImageView ivRightIcon;
     @BindView(R.id.iv_status)
@@ -212,7 +212,7 @@ public class AgainstResultActivity extends BaseActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_common_left_icon:
+            case R.id.iv_common_left_icon: //返回键
                 if (!EncodeAndStringTool.isObjectEmpty(popupWindow)) {
                     if (popupWindow.isShowing()) {
                         popupWindow.dismiss();
@@ -224,14 +224,13 @@ public class AgainstResultActivity extends BaseActivity implements View.OnClickL
                     finish();
                 }
                 break;
-            case R.id.iv_right_icon:
+            case R.id.iv_right_icon: //分享
                 showSharedPop();
                 break;
-
-            case R.id.rl_again:
+            case R.id.rl_again://再来一局
                 finish();
                 break;
-            case R.id.btn_look_fail:
+            case R.id.btn_look_fail: //查看错题
                 Intent intent = new Intent(this, AnswerHistoryActivity.class);
                 intent.putExtra("answer_id", answerId);
                 intent.putExtra("title", tvCommonTitle.getText().toString());

@@ -7,6 +7,7 @@ import java.util.Stack;
 
 /**
  * 创建人：${ganquan}
+ * activity管理类
  */
 public class MyActivityManager {
 

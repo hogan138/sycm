@@ -10,6 +10,9 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
 import com.umeng.analytics.MobclickAgent;
 
+/**
+ * 首页查看更多分类界面
+ */
 public class ClassifyActivity extends AppCompatActivity {
 
     @Override

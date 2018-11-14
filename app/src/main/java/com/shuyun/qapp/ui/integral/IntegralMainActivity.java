@@ -42,7 +42,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * 积分夺宝首页
+ * 积分夺宝
  */
 
 public class IntegralMainActivity extends BaseActivity implements View.OnClickListener {
@@ -168,11 +168,6 @@ public class IntegralMainActivity extends BaseActivity implements View.OnClickLi
                                     rvAllGift.setAdapter(integralAllPrizeAdapter);
                                     refreshLayout.finishRefresh();
                                     refreshLayout.setLoadmoreFinished(false);
-                                    //进入动画
-//                                    LayoutAnimationController controller = new LayoutAnimationController(MyLayoutAnimationHelper.getAnimationSetScaleBig());
-//                                    controller.setDelay(0.1f);
-//                                    rvAllGift.setLayoutAnimation(controller);
-//                                    rvAllGift.scheduleLayoutAnimation();
                                     if (integralAllPrizeBeanList1.size() <= 4) {
                                         scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
                                             @Override

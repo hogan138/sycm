@@ -1,6 +1,7 @@
 package com.shuyun.qapp.ui.webview;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -72,11 +73,11 @@ import butterknife.OnClick;
 public class WebBannerActivity extends BaseActivity implements CommonPopupWindow.ViewInterface {
 
     @BindView(R.id.wv_banner)
-    WebView wvBanner;
+    WebView wvBanner; //webview
     @BindView(R.id.rl_main)
     RelativeLayout rlMain;
     @BindView(R.id.iv_back)
-    RelativeLayout ivBack;
+    RelativeLayout ivBack; //返回键
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle;
     @BindView(R.id.tv_right)
@@ -228,6 +229,7 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
         }
     }
 
+    @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {

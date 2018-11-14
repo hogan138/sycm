@@ -42,9 +42,7 @@ import io.reactivex.schedulers.Schedulers;
 
 /**
  * 积分账户Fragment
- * <p>
  * 2018/6/9
- * <p>
  * ganquan
  */
 public class IntegralFragment extends Fragment {
@@ -60,7 +58,7 @@ public class IntegralFragment extends Fragment {
     private int loadState = AppConst.STATE_NORMAL;
     private int currentPage = 0;
 
-    AccountRecordAdapter recordAdapter;
+    AccountRecordAdapter recordAdapter; //账户记录适配器
 
     @Nullable
     @Override
@@ -174,8 +172,4 @@ public class IntegralFragment extends Fragment {
         MobclickAgent.onPageEnd("MineFragment");
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
 }

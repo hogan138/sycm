@@ -33,7 +33,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * 积分兑换
+ * 积分兑换首页
  */
 public class IntegralExchangeActivity extends BaseActivity implements View.OnClickListener {
 

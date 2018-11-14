@@ -11,7 +11,14 @@ import android.widget.TextView;
 
 import com.shuyun.qapp.R;
 
-
+/**
+ * @param
+ * @method
+ * @description 验证码登录view
+ * @date:
+ * @author: ganquan
+ * @return
+ */
 public class VerifyCodeView extends RelativeLayout {
     private EditText editText;
     private TextView[] textViews;

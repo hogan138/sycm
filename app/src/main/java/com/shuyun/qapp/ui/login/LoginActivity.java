@@ -38,8 +38,6 @@ import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
-import com.shuyun.qapp.ui.homepage.PermissionsActivity;
-import com.shuyun.qapp.ui.mine.SystemSettingActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -92,7 +90,7 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.btn_login)
     Button btnLogin;//登录按钮
     @BindView(R.id.rl_register)
-    RelativeLayout rlRegister;
+    RelativeLayout rlRegister;//注册
     @BindView(R.id.iv_wechat_login)
     ImageView ivWechatLogin;//微信登录按钮
     @BindView(R.id.ll_other_login)
@@ -169,6 +167,7 @@ public class LoginActivity extends BaseActivity {
             startPermissionsActivity();
         }
 
+        //手机号置为空
         SaveUserInfo.getInstance(mContext).setUserInfo("login_phone", "");
 
         /**
@@ -211,20 +210,20 @@ public class LoginActivity extends BaseActivity {
             R.id.iv_is_show_pwd, R.id.tv_forget_pwd, R.id.btn_login, R.id.iv_wechat_login, R.id.rl_register, R.id.tv_verify_login})
     public void click(View view) {
         switch (view.getId()) {
-            case R.id.iv_clear_phone_num:
+            case R.id.iv_clear_phone_num: //清空手机号
                 etPhoneNumber.setText("");
                 ivClearPhoneNum.setVisibility(View.GONE);
                 isLogin();
                 break;
-            case R.id.iv_clear_pwd:
+            case R.id.iv_clear_pwd://清空密码
                 etPassword.setText("");
                 ivClearPwd.setVisibility(View.GONE);
                 isLogin();
                 break;
-            case R.id.iv_is_show_pwd:
+            case R.id.iv_is_show_pwd: //密码显示隐藏切换
                 isShowPwd(etPassword);
                 break;
-            case R.id.tv_verify_login:
+            case R.id.tv_verify_login:  //验证码登录
                 if (!EncodeAndStringTool.isStringEmpty(etPhoneNumber.getText().toString())) {
                     if (RegularTool.isMobileExact(etPhoneNumber.getText().toString())) {
                         SaveUserInfo.getInstance(mContext).setUserInfo("login_phone", etPhoneNumber.getText().toString());
@@ -236,12 +235,12 @@ public class LoginActivity extends BaseActivity {
                 intent2.putExtra("name", "login");
                 startActivity(intent2);
                 break;
-            case R.id.rl_register:
+            case R.id.rl_register: //注册
                 Intent intent1 = new Intent(mContext, RegisterPhoneActivity.class);
                 intent1.putExtra("name", "register");
                 startActivity(intent1);
                 break;
-            case R.id.tv_forget_pwd:
+            case R.id.tv_forget_pwd: //忘记密码
                 if (!EncodeAndStringTool.isStringEmpty(etPhoneNumber.getText().toString())) {
                     if (RegularTool.isMobileExact(etPhoneNumber.getText().toString())) {
                         SaveUserInfo.getInstance(mContext).setUserInfo("login_phone", etPhoneNumber.getText().toString());
@@ -253,7 +252,7 @@ public class LoginActivity extends BaseActivity {
                 intent.putExtra("name", "changePwd");
                 startActivity(intent);
                 break;
-            case R.id.btn_login:
+            case R.id.btn_login: //登录
                 String phoneNum = etPhoneNumber.getText().toString().trim();
                 String password = etPassword.getText().toString();
                 boolean checkPwd = EncodeAndStringTool.checkNull(phoneNum, password);
@@ -288,7 +287,7 @@ public class LoginActivity extends BaseActivity {
                     loadLogin(mContext, loginInput);
                 }
                 break;
-            case R.id.iv_wechat_login:
+            case R.id.iv_wechat_login: //微信登录
                 wxLogin();
                 finish();
                 break;
@@ -500,6 +499,7 @@ public class LoginActivity extends BaseActivity {
                 .show();
     }
 
+    //重置密码弹框
     private void updatePasswordDialog() {
         new CircleDialog.Builder(this)
                 .setText("密码错误，是否重置密码？")

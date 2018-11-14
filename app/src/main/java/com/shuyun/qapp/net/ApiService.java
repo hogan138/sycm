@@ -59,7 +59,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
- * Created by sunxiao on 2018/4/11.
+ * 接口地址
  */
 
 public interface ApiService {

@@ -10,14 +10,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * 打字机效果
+ * 描述：打字机效果
+ * 创建人：ganquan
  */
 @SuppressLint("AppCompatCustomView")
 public class PrinterTextView extends TextView {
-    /**
-     * TAG
-     */
-    private static final String TAG = "PrinterTextView";
     /**
      * 默认打字字符
      */

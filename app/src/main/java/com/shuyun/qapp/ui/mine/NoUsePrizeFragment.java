@@ -54,7 +54,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * 未使用Fragment
+ * 我的奖品未使用Fragment
  * 2018/6/9
  * ganquan
  */
@@ -352,10 +352,5 @@ NoUsePrizeFragment extends Fragment {
                     public void onComplete() {
                     }
                 });
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
     }
 }

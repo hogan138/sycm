@@ -54,7 +54,6 @@ public class FeedbackActivity extends BaseActivity {
     EditText etFeedContent;//反馈内容
     @BindView(R.id.btn_commit)
     Button btnCommit;//提交
-    private static final String TAG = "FeedbackActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,9 +123,7 @@ public class FeedbackActivity extends BaseActivity {
     }
 
     /**
-     * 反馈建议 99999
-     *
-     * @param feedBackSuggestBean
+     * 反馈建议99999
      */
     private void loadFeedBack(FeedBackSuggestBean feedBackSuggestBean) {
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), JSON.toJSONString(feedBackSuggestBean));
