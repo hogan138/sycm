@@ -51,11 +51,11 @@ public class ActivityTabAdapter extends RecyclerView.Adapter<ActivityTabAdapter.
         if (resultBean.isStop() == true) {
             //已结束
             holder.llEnd.setVisibility(View.VISIBLE);
-            holder.rlActivityItem.setEnabled(false);
+//            holder.rlActivityItem.setEnabled(false);
         } else {
             //正常
             holder.llEnd.setVisibility(View.GONE);
-            holder.rlActivityItem.setEnabled(true);
+//            holder.rlActivityItem.setEnabled(true);
         }
 
         holder.rlActivityItem.setOnClickListener(new OnMultiClickListener() {

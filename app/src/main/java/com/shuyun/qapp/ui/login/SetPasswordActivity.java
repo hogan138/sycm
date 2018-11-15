@@ -48,7 +48,7 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.encryptMD5ToString;
 import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 
 /**
- * 设置密码
+ * 忘记密码、设置密码
  */
 public class SetPasswordActivity extends BaseActivity implements View.OnClickListener {
 
@@ -148,9 +148,7 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
         if (pwd.getInputType() == type) {
             pwd.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
             pwd.setSelection(pwd.getText().length());
-            if (etPassword.getText().length() != 0) {
-                ivIsShowPwd.setImageResource(R.drawable.show_pwd);
-            }
+            ivIsShowPwd.setImageResource(R.drawable.show_pwd);
         } else {
             pwd.setInputType(type);
             pwd.setSelection(pwd.getText().length());
@@ -199,9 +197,7 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
                 MyActivityManager.getInstance().finishAllActivity();
                 break;
             case R.id.iv_is_show_pwd:
-                if (etPassword.getText().length() != 0) {
-                    isShowPwd(etPassword);
-                }
+                isShowPwd(etPassword);
                 break;
             case R.id.btn_finish:
                 if (getIntent().getStringExtra("name").equals("changePwd")) {

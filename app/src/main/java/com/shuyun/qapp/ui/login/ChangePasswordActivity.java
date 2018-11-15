@@ -58,7 +58,7 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.encryptMD5ToString;
 import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 
 /**
- * 忘记密码
+ * 修改密码
  */
 public class ChangePasswordActivity extends BaseActivity {
 
@@ -134,9 +134,7 @@ public class ChangePasswordActivity extends BaseActivity {
                 ivClearPwd.setVisibility(View.GONE);
                 break;
             case R.id.iv_is_show_pwd:
-                if (etPassword.getText().length() != 0) {
-                    isShowPwd(etPassword);
-                }
+                isShowPwd(etPassword);
                 break;
             case R.id.btn_get_code1:
                 String phoneNum0 = etPhoneNumber.getText().toString().trim();
@@ -388,9 +386,7 @@ public class ChangePasswordActivity extends BaseActivity {
         if (pwd.getInputType() == type) {
             pwd.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
             pwd.setSelection(pwd.getText().length());
-            if (etPassword.getText().length() != 0) {
-                ivIsShowPwd.setImageResource(R.drawable.show_pwd);
-            }
+            ivIsShowPwd.setImageResource(R.drawable.show_pwd);
         } else {
             pwd.setInputType(type);
             pwd.setSelection(pwd.getText().length());
