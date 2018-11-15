@@ -31,7 +31,7 @@ import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.bean.OutPutWithdraw;
 import com.shuyun.qapp.net.ApiService;
-import com.shuyun.qapp.ui.webview.WebBannerActivity;
+import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
@@ -237,7 +237,7 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
                 finish();
                 break;
             case R.id.tv_rule:
-                Intent i = new Intent(NewRedWithdrawActivity.this, WebBannerActivity.class);
+                Intent i = new Intent(NewRedWithdrawActivity.this, WebH5Activity.class);
                 i.putExtra("url", redrules);
                 i.putExtra("name", "红包提现");
                 startActivity(i);
@@ -277,7 +277,7 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
                 }
                 break;
             case R.id.btn_contact_our:
-                Intent intent1 = new Intent(this, WebBannerActivity.class);
+                Intent intent1 = new Intent(this, WebH5Activity.class);
                 intent1.putExtra("url", SaveUserInfo.getInstance(this).getUserInfo("contactUs_url"));
                 intent1.putExtra("name", "联系客服");//名称 标题
                 startActivity(intent1);

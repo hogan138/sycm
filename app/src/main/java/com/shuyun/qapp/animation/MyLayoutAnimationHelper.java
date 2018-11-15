@@ -12,13 +12,8 @@ import android.view.animation.TranslateAnimation;
 
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
 
-
 /**
- * @version Created by haibozheng on 2016/12/7.
- * @Author Zheng Haibo
- * @Blog github.com/nuptboyzhb
- * @Company Alibaba Group
- * @Description MyLayoutAnimationHelper
+ * Recycleview进入动画
  */
 public class MyLayoutAnimationHelper {
 

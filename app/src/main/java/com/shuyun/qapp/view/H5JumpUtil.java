@@ -12,7 +12,7 @@ import com.shuyun.qapp.ui.integral.IntegralMainActivity;
 import com.shuyun.qapp.ui.mine.AddWithdrawInfoActivity;
 import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
-import com.shuyun.qapp.ui.webview.WebBannerActivity;
+import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.SaveUserInfo;
 
@@ -33,14 +33,14 @@ public class H5JumpUtil {
             context.startActivity(new Intent(context, RealNameAuthActivity.class));
         } else if (AppConst.H5.equals(action)) {
             //h5页面
-            Intent intent = new Intent(context, WebBannerActivity.class);
+            Intent intent = new Intent(context, WebH5Activity.class);
             intent.putExtra("url", h5Url);
             intent.putExtra("name", "");//名称 标题
             context.startActivity(intent);
         } else if (AppConst.INVITE.equals(action)) {
             //邀请
             Intent intent = new Intent();
-            intent.setClass(context, WebBannerActivity.class);
+            intent.setClass(context, WebH5Activity.class);
             intent.putExtra("url", h5Url);
             intent.putExtra("name", "");
             context.startActivity(intent);

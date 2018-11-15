@@ -44,15 +44,6 @@ public class WebPublicActivity extends BaseActivity {
     @BindView(R.id.animation_iv)
     ImageView animationIv;
 
-    // 打电话所需的全部权限
-    static final String[] PERMISSIONS = new String[]{
-            Manifest.permission.CALL_PHONE,
-
-    };
-
-    private PermissionsChecker mPermissionsChecker; // 权限检测器
-    private static final int REQUEST_CODE = 0; // 请求码
-
     private String bulletin;
     AnimationDrawable animationDrawable;
 
@@ -181,23 +172,6 @@ public class WebPublicActivity extends BaseActivity {
                 }
             }
         });
-        mPermissionsChecker = new PermissionsChecker(this);
-        if (mPermissionsChecker.lacksPermissions(PERMISSIONS)) {
-            startPermissionsActivity();
-        }
-    }
-
-    private void startPermissionsActivity() {
-        PermissionsActivity.startActivityForResult(this, REQUEST_CODE, PERMISSIONS);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // 拒绝时, 关闭页面, 缺少主要权限, 无法运行
-        if (requestCode == REQUEST_CODE && resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
-            finish();
-        }
     }
 
     public void onPause() {

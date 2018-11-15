@@ -33,7 +33,7 @@ import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.bean.RealNameBean;
 import com.shuyun.qapp.net.ApiService;
-import com.shuyun.qapp.ui.webview.WebBannerActivity;
+import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
@@ -206,7 +206,7 @@ public class RealNameAuthActivity extends BaseActivity {
                 }
                 break;
             case R.id.btn_contact_our: //联系我们
-                Intent i = new Intent(this, WebBannerActivity.class);
+                Intent i = new Intent(this, WebH5Activity.class);
                 i.putExtra("url", SaveUserInfo.getInstance(this).getUserInfo("contactUs_url"));
                 i.putExtra("name", "联系客服");//名称 标题
                 startActivity(i);

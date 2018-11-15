@@ -16,7 +16,6 @@ import cn.kevin.banner.ImageLoader;
 
 /**
  * 扩展角标
- * 项目名称：android
  * 创建人：${ganquan}
  * 创建日期：2018/9/19 18:07
  */
@@ -31,13 +30,13 @@ public class MarkBannerAdapter extends BannerAdapter {
     @Override
     protected View createView(Context context, IBannerItem item) {
 
-        MarkBannerItem markBannerItem = (MarkBannerItem)item;
+        MarkBannerItem markBannerItem = (MarkBannerItem) item;
 
-        RelativeLayout view = (RelativeLayout)LayoutInflater.from(context).inflate(R.layout.mark_banner_layout, null);
+        RelativeLayout view = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.mark_banner_layout, null);
 
         ImageView itemView = view.findViewById(R.id.imageView);
         itemView.setScaleType(ImageView.ScaleType.FIT_XY);
-        if(imageLoader != null) {
+        if (imageLoader != null) {
             imageLoader.onDisplayImage(context, itemView, item.ImageUrl());
         }
 

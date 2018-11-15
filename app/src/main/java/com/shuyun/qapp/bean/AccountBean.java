@@ -1,7 +1,5 @@
 package com.shuyun.qapp.bean;
 
-import java.util.List;
-
 /**
  * Created by sunxiao on 2018/5/7.
  * 现金流水和积分流水记录共用的javaBean

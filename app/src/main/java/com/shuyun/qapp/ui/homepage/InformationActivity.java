@@ -24,7 +24,7 @@ import com.shuyun.qapp.bean.Msg;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
-import com.shuyun.qapp.ui.webview.WebBannerActivity;
+import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -205,7 +205,7 @@ public class InformationActivity extends BaseActivity implements CommonPopupWind
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(intent);
                 } else if (msg.getType() == 3) {//内部链接
-                    Intent intent = new Intent(InformationActivity.this, WebBannerActivity.class);
+                    Intent intent = new Intent(InformationActivity.this, WebH5Activity.class);
                     intent.putExtra("url", msg.getUrl());
                     intent.putExtra("name", msg.getTitle());
                     startActivity(intent);

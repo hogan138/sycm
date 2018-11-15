@@ -3,7 +3,7 @@ package com.shuyun.qapp.bean;
 import java.util.List;
 
 /**
- * Created by sunxiao on 2018/5/11.
+ * 分类题组bean
  */
 
 public class GroupClassifyBean {

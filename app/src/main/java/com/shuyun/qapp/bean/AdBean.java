@@ -3,7 +3,7 @@ package com.shuyun.qapp.bean;
 import java.util.List;
 
 /**
- * Created by sunxiao on 2018/5/23.
+ * 广告页面bean
  */
 
 public class AdBean {

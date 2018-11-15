@@ -214,7 +214,7 @@ public class WebPrizeBoxActivity extends BaseActivity {
                     MinePrize minePrize = new Gson().fromJson(prizeData, MinePrize.class);
                     if (minePrize.getActionType().equals("action.h5.url")) {
                         //实物
-                        Intent intent = new Intent(WebPrizeBoxActivity.this, WebBannerActivity.class);
+                        Intent intent = new Intent(WebPrizeBoxActivity.this, WebH5Activity.class);
                         intent.putExtra("id", minePrize.getId());
                         intent.putExtra("url", minePrize.getH5Url());
                         intent.putExtra("name", minePrize.getName());

@@ -1,10 +1,7 @@
 package com.shuyun.qapp.base;
 
-import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.net.RetryAndChangeIpInterceptor;
-import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ListDataSave;
 
 import java.io.IOException;

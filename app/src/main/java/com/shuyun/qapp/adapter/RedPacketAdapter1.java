@@ -6,12 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.MinePrize;
-import com.shuyun.qapp.utils.ImageLoaderManager;
 
 import java.util.List;
 
@@ -19,7 +17,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by sunxiao on 2018/5/11.
  * 红包提现 红包列表
  */
 

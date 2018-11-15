@@ -107,8 +107,7 @@ public class LoginActivity extends BaseActivity {
             Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.CALL_PHONE,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.SEND_SMS
+            Manifest.permission.READ_EXTERNAL_STORAGE
     };
 
     private PermissionsChecker mPermissionsChecker; // 权限检测器

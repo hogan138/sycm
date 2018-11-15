@@ -303,7 +303,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                     MinePrize minePrize = new Gson().fromJson(prizeData, MinePrize.class);
                     if (minePrize.getActionType().equals("action.h5.url")) {
                         //实物
-                        Intent intent = new Intent(WebAnswerActivity.this, WebBannerActivity.class);
+                        Intent intent = new Intent(WebAnswerActivity.this, WebH5Activity.class);
                         intent.putExtra("id", minePrize.getId());
                         intent.putExtra("url", minePrize.getH5Url());
                         intent.putExtra("name", minePrize.getName());

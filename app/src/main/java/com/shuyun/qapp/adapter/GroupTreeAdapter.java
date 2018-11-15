@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.GroupClassifyBean;
 import com.shuyun.qapp.utils.ImageLoaderManager;
-import com.shuyun.qapp.utils.OnMultiClickListener;
 
 import java.util.List;
 
@@ -20,8 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by MrSun on 2018/4/25.
- * 题组分类左侧适配器
+ * 分类题组左侧适配器
  */
 
 public class GroupTreeAdapter extends RecyclerView.Adapter<GroupTreeAdapter.ViewHolder> {

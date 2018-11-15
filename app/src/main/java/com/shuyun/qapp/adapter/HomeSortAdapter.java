@@ -69,10 +69,16 @@ public class HomeSortAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             List<GroupClassifyBean.ChildrenBean> childrenBeanList = groupClassifyBean.getChildren();
             if (!EncodeAndStringTool.isListEmpty(childrenBeanList)) {   //首页分类
                 try {
+                    //解决数据加载不完的问题
                     ((MyViewHolder) holder).rvSortGroup.setHasFixedSize(true);
                     ((MyViewHolder) holder).rvSortGroup.setNestedScrollingEnabled(false);
                     SortHomeGroupAdapter hotGroupAdapter = new SortHomeGroupAdapter(childrenBeanList, mContext);
-                    GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2);
+                    GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2) {
+                        @Override
+                        public boolean canScrollVertically() { //禁止layout垂直滑动
+                            return false;
+                        }
+                    };
                     ((MyViewHolder) holder).rvSortGroup.setLayoutManager(gridLayoutManager);
                     ((MyViewHolder) holder).rvSortGroup.setAdapter(hotGroupAdapter);
                 } catch (Exception e) {

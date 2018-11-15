@@ -3,6 +3,7 @@ package com.shuyun.qapp.bean;
 /**
  * 项目名称：QMGJ
  * 创建人：${ganquan}
+ * 微信信息bean
  * 创建日期：2018/7/3 9:49
  */
 public class UserWxInfo {

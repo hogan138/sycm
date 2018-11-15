@@ -34,17 +34,16 @@ import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.net.InformatListenner;
+import com.shuyun.qapp.utils.InformatListenner;
 import com.shuyun.qapp.ui.homepage.InformationActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
 import com.shuyun.qapp.receiver.MyReceiver;
-import com.shuyun.qapp.ui.webview.WebBannerActivity;
+import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ImageLoaderManager;
-import com.shuyun.qapp.utils.JumpTomap;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
@@ -457,7 +456,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                 startActivity(new Intent(mContext, SystemSettingActivity.class));
                 break;
             case R.id.rl_contact_us: //联系客服
-                Intent intent = new Intent(mContext, WebBannerActivity.class);
+                Intent intent = new Intent(mContext, WebH5Activity.class);
                 intent.putExtra("url", SaveUserInfo.getInstance(mContext).getUserInfo("contactUs_url"));
                 intent.putExtra("name", "联系客服");
                 startActivity(intent);

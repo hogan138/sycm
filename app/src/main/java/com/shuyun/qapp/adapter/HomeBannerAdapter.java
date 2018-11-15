@@ -10,7 +10,6 @@ import cn.kevin.banner.ImageLoader;
 
 /**
  * 首页banner
- * 项目名称：android
  * 创建人：${ganquan}
  * 创建日期：2018/9/19 18:07
  */

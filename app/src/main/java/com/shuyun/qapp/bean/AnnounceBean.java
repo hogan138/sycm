@@ -3,7 +3,7 @@ package com.shuyun.qapp.bean;
 import java.util.List;
 
 /**
- * Created by sunxiao on 2018/5/19.
+ * 获取积分抽奖活动信息bean
  */
 
 public class AnnounceBean {

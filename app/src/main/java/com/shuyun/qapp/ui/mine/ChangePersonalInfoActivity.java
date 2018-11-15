@@ -27,7 +27,7 @@ import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.ui.login.ChangePasswordActivity;
-import com.shuyun.qapp.ui.webview.WebBannerActivity;
+import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -206,7 +206,7 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
                 startActivity(intent1);
                 break;
             case R.id.btn_contact_our: //联系客服
-                Intent i = new Intent(this, WebBannerActivity.class);
+                Intent i = new Intent(this, WebH5Activity.class);
                 i.putExtra("url", SaveUserInfo.getInstance(this).getUserInfo("contactUs_url"));
                 i.putExtra("name", "联系客服");//名称 标题
                 startActivity(i);

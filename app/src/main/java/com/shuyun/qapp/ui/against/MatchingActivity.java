@@ -85,6 +85,7 @@ public class MatchingActivity extends BaseActivity implements View.OnClickListen
     ImageView ivBottom;
     @BindView(R.id.tv_title)
     TextView tvTitle;
+
     //头像图标
     private int[] icon = new int[]{R.mipmap.header02, R.mipmap.header03, R.mipmap.header04,
             R.mipmap.header05, R.mipmap.header06, R.mipmap.header07, R.mipmap.header08, R.mipmap.header09};
@@ -96,9 +97,11 @@ public class MatchingActivity extends BaseActivity implements View.OnClickListen
     //搜索动画
     private String s = "...";
     private TiaoZiView tiaoziView;
+
     //vs动画handler
     Handler handlerVs = new Handler();
     Runnable vsRunnable;
+
     //搜索文字动画handler
     Handler handler = new Handler();
     Runnable runnable = new Runnable() {
@@ -138,7 +141,6 @@ public class MatchingActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
 
         ivCommonLeftIcon.setOnClickListener(this);

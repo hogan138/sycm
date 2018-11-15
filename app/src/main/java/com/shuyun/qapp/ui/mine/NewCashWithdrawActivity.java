@@ -28,7 +28,7 @@ import com.shuyun.qapp.bean.InputWithdrawalbean;
 import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.bean.OutPutWithdraw;
 import com.shuyun.qapp.net.ApiService;
-import com.shuyun.qapp.ui.webview.WebBannerActivity;
+import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
@@ -156,7 +156,7 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
                 startActivity(intent1);
                 break;
             case R.id.tv_rule:
-                Intent i = new Intent(NewCashWithdrawActivity.this, WebBannerActivity.class);
+                Intent i = new Intent(NewCashWithdrawActivity.this, WebH5Activity.class);
                 i.putExtra("url", cashRuls);
                 i.putExtra("name", "现金提现");
                 startActivity(i);
@@ -187,7 +187,7 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
                 }
                 break;
             case R.id.btn_contact_our:
-                Intent i1 = new Intent(this, WebBannerActivity.class);
+                Intent i1 = new Intent(this, WebH5Activity.class);
                 i1.putExtra("url", SaveUserInfo.getInstance(this).getUserInfo("contactUs_url"));
                 i1.putExtra("name", "联系客服");//名称 标题
                 startActivity(i1);

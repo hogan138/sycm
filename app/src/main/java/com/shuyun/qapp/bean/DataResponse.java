@@ -1,7 +1,7 @@
 package com.shuyun.qapp.bean;
 
 /**
- * Created by sunxiao on 2018/5/3.
+ * 公用bean封装
  */
 
 public class DataResponse<T> {
@@ -36,7 +36,7 @@ public class DataResponse<T> {
                 '}';
     }
 
-    public boolean isSuccees(){
+    public boolean isSuccees() {
         return "00000".equals(err);
     }
 }

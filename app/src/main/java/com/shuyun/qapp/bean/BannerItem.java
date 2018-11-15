@@ -5,6 +5,7 @@ import cn.kevin.banner.IBannerItem;
 
 /**
  * 创建日期：2017/7/18.
+ * 首页banner
  *
  * @author yangjinhai
  */

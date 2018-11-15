@@ -1,10 +1,9 @@
 package com.shuyun.qapp.bean;
 
-import org.litepal.annotation.Column;
 import org.litepal.crud.DataSupport;
 
 /**
- * Created by sunxiao on 2018/6/1.
+ * 系统消息bean
  */
 
 public class Msg extends DataSupport {

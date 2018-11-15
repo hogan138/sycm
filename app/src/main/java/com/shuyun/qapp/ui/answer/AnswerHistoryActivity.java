@@ -12,23 +12,21 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.shuyun.qapp.adapter.AnswerHistoryAdapter;
-import com.shuyun.qapp.animation.MyLayoutAnimationHelper;
-import com.shuyun.qapp.base.BaseActivity;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.shuyun.qapp.R;
-import com.shuyun.qapp.base.*;
-import com.shuyun.qapp.bean.AnswerHistoryBean;
+import com.shuyun.qapp.adapter.AnswerHistoryAdapter;
+import com.shuyun.qapp.adapter.GroupTreeAdapter;
+import com.shuyun.qapp.animation.MyLayoutAnimationHelper;
+import com.shuyun.qapp.base.BaseActivity;
+import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.LookAnswerResultBean;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.adapter.GroupTreeAdapter;
 import com.shuyun.qapp.utils.Base64Utils;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
@@ -41,7 +39,6 @@ import com.shuyun.qapp.utils.ToastUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import java.security.PrivateKey;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;

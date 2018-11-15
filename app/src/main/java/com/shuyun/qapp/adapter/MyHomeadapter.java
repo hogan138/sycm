@@ -8,7 +8,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.List;
 
-
+/**
+ * 主页面tab适配器
+ */
 public class MyHomeadapter extends FragmentPagerAdapter {
     private List<Fragment> fragments;
     private Context context;

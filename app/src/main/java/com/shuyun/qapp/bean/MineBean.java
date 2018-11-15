@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import java.util.List;
 
 /**
- * Created by sunxiao on 2018/5/5.
+ * 用户信息bean
  */
 
 public class MineBean implements Parcelable {

@@ -13,11 +13,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.bean.PushBean;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.net.InformatListenner;
+import com.shuyun.qapp.ui.webview.WebH5Activity;
+import com.shuyun.qapp.utils.InformatListenner;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.mine.AddWithdrawInfoActivity;
 import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
-import com.shuyun.qapp.ui.webview.WebBannerActivity;
 import com.shuyun.qapp.ui.integral.MyPrizeActivity;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.mine.MinePrizeActivity;
@@ -32,7 +32,6 @@ import cn.jpush.android.api.JPushInterface;
 
 /**
  * 自定义接收器
- * <p>
  * 如果不定义这个 Receiver，则：
  * 1) 默认用户会打开主界面
  * 2) 接收不到自定义消息
@@ -119,19 +118,19 @@ public class MyReceiver extends BroadcastReceiver {
                         context.startActivity(i);
                     } else if (("push.withdraw.success.notify").equals(action)) {
                         //提现成功通知
-                        i = new Intent(context, WebBannerActivity.class);
+                        i = new Intent(context, WebH5Activity.class);
                         i.putExtra("url", pushBean.getPushData());
                         i.putExtra("name", "提现成功");//名称 标题
                         context.startActivity(i);
                     } else if (("push.withdraw.error.notify").equals(action)) {
                         //提现失败通知
-                        i = new Intent(context, WebBannerActivity.class);
+                        i = new Intent(context, WebH5Activity.class);
                         i.putExtra("url", pushBean.getPushData());
                         i.putExtra("name", "提现失败");//名称 标题
                         context.startActivity(i);
                     } else if (("push.default").equals(action)) {
                         //默认跳转h5
-                        i = new Intent(context, WebBannerActivity.class);
+                        i = new Intent(context, WebH5Activity.class);
                         i.putExtra("url", pushBean.getPushData());
                         i.putExtra("name", "全民共进");//名称 标题
                         context.startActivity(i);

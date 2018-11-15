@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * Created by sunxiao on 2018/6/28.
+ * 宝箱bean
  */
 
 

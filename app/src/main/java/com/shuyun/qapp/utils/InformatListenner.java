@@ -1,4 +1,4 @@
-package com.shuyun.qapp.net;
+package com.shuyun.qapp.utils;
 
 /**
  * Created by sunxiao on 2018/6/1.

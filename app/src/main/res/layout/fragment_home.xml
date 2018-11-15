@@ -8,6 +8,7 @@
     tools:context="com.shuyun.qapp.ui.homepage.HomeFragment">
 
     <RelativeLayout
+        android:id="@+id/rl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/common_item_height"
         android:background="@color/white">
@@ -49,7 +50,7 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp">
+        android:layout_below="@+id/rl_title">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -71,7 +72,7 @@
                 android:layout_marginLeft="@dimen/text_15"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="@dimen/text_14"
-                android:orientation="horizontal"></LinearLayout>
+                android:orientation="horizontal" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -123,14 +124,14 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
-                android:background="@color/color_f5"></View>
+                android:background="@color/color_f5" />
             <!--跑马灯效果-->
             <include layout="@layout/horse_race_lamp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
-                android:background="@color/color_f5"></View>
+                android:background="@color/color_f5" />
             <!--热门提组-->
             <include layout="@layout/hot_group_question_head" />
 

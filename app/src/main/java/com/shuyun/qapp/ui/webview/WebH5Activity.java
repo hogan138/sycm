@@ -70,7 +70,7 @@ import butterknife.OnClick;
  * h5页面（广告、首页邀请、首页轮播图、首页弹框、极光推送消息、消息列表、票务、招商银行）
  */
 
-public class WebBannerActivity extends BaseActivity implements CommonPopupWindow.ViewInterface {
+public class WebH5Activity extends BaseActivity implements CommonPopupWindow.ViewInterface {
 
     @BindView(R.id.wv_banner)
     WebView wvBanner; //webview
@@ -187,7 +187,7 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
                     if (!EncodeAndStringTool.isStringEmpty(splash)) {
                         if (splash.equals("splash")) {
                             finish();
-                            Intent intent = new Intent(WebBannerActivity.this, HomePageActivity.class);
+                            Intent intent = new Intent(WebH5Activity.this, HomePageActivity.class);
                             startActivity(intent);
                         }
                     } else {
@@ -216,7 +216,7 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
             if (!EncodeAndStringTool.isStringEmpty(splash)) {
                 if (splash.equals("splash")) {
                     finish();
-                    Intent intent = new Intent(WebBannerActivity.this, HomePageActivity.class);
+                    Intent intent = new Intent(WebH5Activity.this, HomePageActivity.class);
                     startActivity(intent);
                 }
             } else {
@@ -241,7 +241,7 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
                     if (!MyApplication.mWxApi.isWXAppInstalled()) {
 
                     } else {
-                        InviteSharePopupUtil.showSharedPop(WebBannerActivity.this, rlMain);
+                        InviteSharePopupUtil.showSharedPop(WebH5Activity.this, rlMain);
                     }
                     break;
                 default:
@@ -316,7 +316,7 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
                             ivRightIcon.setOnClickListener(new OnMultiClickListener() {
                                 @Override
                                 public void onMultiClick(View v) {
-                                    SharePopupUtil.showSharedPop(config, WebBannerActivity.this, rlMain);
+                                    SharePopupUtil.showSharedPop(config, WebH5Activity.this, rlMain);
                                 }
                             });
                         }
@@ -371,7 +371,7 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    ErrorCodeTools.errorCodePrompt(WebBannerActivity.this, err, msg);
+                    ErrorCodeTools.errorCodePrompt(WebH5Activity.this, err, msg);
                 }
             });
         }
@@ -387,9 +387,9 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (JumpTomap.isAvilible(WebBannerActivity.this, "com.tencent.map")
-                            || JumpTomap.isAvilible(WebBannerActivity.this, "com.baidu.BaiduMap")
-                            || JumpTomap.isAvilible(WebBannerActivity.this, "com.autonavi.minimap")) {
+                    if (JumpTomap.isAvilible(WebH5Activity.this, "com.tencent.map")
+                            || JumpTomap.isAvilible(WebH5Activity.this, "com.baidu.BaiduMap")
+                            || JumpTomap.isAvilible(WebH5Activity.this, "com.autonavi.minimap")) {
                         showToMap();
                     } else {
                         showDialog();
@@ -436,7 +436,7 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
                 @Override
                 public void run() {
                     finish();
-                    Intent intent = new Intent(WebBannerActivity.this, HomePageActivity.class);
+                    Intent intent = new Intent(WebH5Activity.this, HomePageActivity.class);
                     intent.putExtra("from", "h5");
                     startActivity(intent);
                 }
@@ -451,7 +451,7 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    startActivity(new Intent(WebBannerActivity.this, AccountRecordActivity.class));
+                    startActivity(new Intent(WebH5Activity.this, AccountRecordActivity.class));
                 }
             });
         }
@@ -495,7 +495,7 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        SharePopupUtil.showSharedPop(config, WebBannerActivity.this, rlMain);
+                        SharePopupUtil.showSharedPop(config, WebH5Activity.this, rlMain);
                     }
                 });
             }
@@ -533,7 +533,7 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
                 @Override
                 public void run() {
                     try {
-                        H5JumpUtil.dialogSkip(h5JumpBean.getBtnAction(), h5JumpBean.getContent(), h5JumpBean.getH5Url(), WebBannerActivity.this, rlMain);
+                        H5JumpUtil.dialogSkip(h5JumpBean.getBtnAction(), h5JumpBean.getContent(), h5JumpBean.getH5Url(), WebH5Activity.this, rlMain);
                     } catch (Exception e) {
                     }
                 }
@@ -563,7 +563,7 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
      * @param phoneNum
      */
     private void call(final String phoneNum) {
-        WebBannerActivity.this.runOnUiThread(new Runnable() {
+        WebH5Activity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 /**
@@ -571,7 +571,7 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
                  */
                 Intent intent = new Intent(Intent.ACTION_CALL);
                 intent.setData(Uri.parse("tel:" + phoneNum));
-                if (ActivityCompat.checkSelfPermission(WebBannerActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(WebH5Activity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
                 startActivity(intent);
@@ -586,11 +586,11 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
 
     public void showToMap() {
         if ((!EncodeAndStringTool.isObjectEmpty(popupWindow)) && popupWindow.isShowing()) return;
-        View upView = LayoutInflater.from(WebBannerActivity.this).inflate(R.layout.share_map_popupwindow, null);
+        View upView = LayoutInflater.from(WebH5Activity.this).inflate(R.layout.share_map_popupwindow, null);
         //测量View的宽高
         CommonPopUtil.measureWidthAndHeight(upView);
         //设置子View点击事件
-        popupWindow = new CommonPopupWindow.Builder(WebBannerActivity.this)
+        popupWindow = new CommonPopupWindow.Builder(WebH5Activity.this)
                 .setView(R.layout.share_map_popupwindow)
                 .setWidthAndHeight(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                 .setBackGroundLevel(0.5f)//取值范围0.0f-1.0f 值越小越暗
@@ -619,37 +619,37 @@ public class WebBannerActivity extends BaseActivity implements CommonPopupWindow
                         }
                     }
                 });
-                if (JumpTomap.isAvilible(WebBannerActivity.this, "com.tencent.map")) {
+                if (JumpTomap.isAvilible(WebH5Activity.this, "com.tencent.map")) {
                     //腾讯地图
                     tv_tencent.setVisibility(View.VISIBLE);
                     tv_tencent.setOnClickListener(new OnMultiClickListener() {
                         @Override
                         public void onMultiClick(View v) {
-                            JumpTomap.goToTencent(WebBannerActivity.this, Name, Latitude, Longitude);
+                            JumpTomap.goToTencent(WebH5Activity.this, Name, Latitude, Longitude);
                         }
                     });
                 } else {
                     tv_tencent.setVisibility(View.GONE);
                 }
-                if (JumpTomap.isAvilible(WebBannerActivity.this, "com.baidu.BaiduMap")) {
+                if (JumpTomap.isAvilible(WebH5Activity.this, "com.baidu.BaiduMap")) {
                     //百度地图
                     tv_baidu.setVisibility(View.VISIBLE);
                     tv_baidu.setOnClickListener(new OnMultiClickListener() {
                         @Override
                         public void onMultiClick(View v) {
-                            JumpTomap.goToBaidu(WebBannerActivity.this, Name);
+                            JumpTomap.goToBaidu(WebH5Activity.this, Name);
                         }
                     });
                 } else {
                     tv_baidu.setVisibility(View.GONE);
                 }
-                if (JumpTomap.isAvilible(WebBannerActivity.this, "com.autonavi.minimap")) {
+                if (JumpTomap.isAvilible(WebH5Activity.this, "com.autonavi.minimap")) {
                     //高德地图
                     tv_gaode.setVisibility(View.VISIBLE);
                     tv_gaode.setOnClickListener(new OnMultiClickListener() {
                         @Override
                         public void onMultiClick(View v) {
-                            JumpTomap.goToGaode(WebBannerActivity.this, Name);
+                            JumpTomap.goToGaode(WebH5Activity.this, Name);
                         }
                     });
                 } else {

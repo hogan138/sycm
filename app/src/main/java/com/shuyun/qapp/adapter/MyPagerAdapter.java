@@ -10,7 +10,6 @@ import java.util.List;
  * 项目名称：QMGJ
  * 创建人：gq
  * 创建日期：2018/6/9 18:16
- * <p>
  * 公用Fragment适配器
  */
 public class MyPagerAdapter extends FragmentPagerAdapter {

@@ -3,7 +3,7 @@ package com.shuyun.qapp.bean;
 import java.io.Serializable;
 
 /**
- * Created by sunxiao on 2018/5/3.
+ * 登录返回
  */
 
 public class LoginResponse implements Serializable {

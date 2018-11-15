@@ -55,7 +55,6 @@ import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.OnMultiClickListener;
-import com.shuyun.qapp.utils.PermissionsChecker;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.ScannerUtils;
 
@@ -86,12 +85,6 @@ public class UploadLetterActivity extends BaseActivity implements CommonPopupWin
     @BindView(R.id.ll_letter)
     LinearLayout llLetter;//申请函
 
-    // 打开相册所需的全部权限
-    static final String[] PERMISSIONS = new String[]{
-            Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    private PermissionsChecker mPermissionsChecker; // 权限检测器
-    private static final int REQUEST_CODE = 0; // 请求码
-
     private Dialog dialog;
     private ImageView mImageView;
 
@@ -100,14 +93,6 @@ public class UploadLetterActivity extends BaseActivity implements CommonPopupWin
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         tvCommonTitle.setText("上传申请函");
-
-        mPermissionsChecker = new PermissionsChecker(this);
-        /**
-         * 如果缺少权限,则申请运行时权限
-         */
-        if (mPermissionsChecker.lacksPermissions(PERMISSIONS)) {
-            startPermissionsActivity();
-        }
 
         //大图所依附的dialog
         dialog = new Dialog(UploadLetterActivity.this, R.style.imageDialog);
@@ -142,11 +127,6 @@ public class UploadLetterActivity extends BaseActivity implements CommonPopupWin
 
 
     }
-
-    private void startPermissionsActivity() {
-        PermissionsActivity.startActivityForResult(this, REQUEST_CODE, PERMISSIONS);
-    }
-
 
     @Override
     public int intiLayout() {
@@ -324,12 +304,6 @@ public class UploadLetterActivity extends BaseActivity implements CommonPopupWin
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }
-                break;
-            case REQUEST_CODE:
-                // 拒绝时, 关闭页面, 缺少主要权限, 无法运行
-                if (resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
-                    finish();
                 }
                 break;
             case CHOOSE_PHOTO:

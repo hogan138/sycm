@@ -28,7 +28,7 @@ import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
-import com.shuyun.qapp.ui.webview.WebBannerActivity;
+import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ImageLoaderManager;
@@ -200,7 +200,7 @@ public class WelcomeActivity extends Activity {
                     }
                 } else if (model == 2) {//内部链接
                     if (!EncodeAndStringTool.isStringEmpty(content)) {
-                        Intent intent = new Intent(WelcomeActivity.this, WebBannerActivity.class);
+                        Intent intent = new Intent(WelcomeActivity.this, WebH5Activity.class);
                         intent.putExtra("url", content);
                         intent.putExtra("name", "全民共进");
                         intent.putExtra("from", "splash");

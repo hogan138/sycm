@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.constant.TimeConstants;
 import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
@@ -50,7 +51,7 @@ import com.shuyun.qapp.bean.MarkBannerItem;
 import com.shuyun.qapp.bean.SystemInfo;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.net.InformatListenner;
+import com.shuyun.qapp.utils.InformatListenner;
 import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.receiver.MyReceiver;
 import com.shuyun.qapp.ui.classify.ClassifyActivity;
@@ -145,14 +146,14 @@ public class HomeFragment extends Fragment {
     TextView tvGroupTag1One; //推荐题组1标签文字
     @BindView(R.id.tv_group_tag1_two)
     TextView tvGroupTag1Two;
-    @BindView(R.id.recommend_logo1)//logo推荐题组1
-            TextView recommendLogo1;
+    @BindView(R.id.recommend_logo1)
+    TextView recommendLogo1;
     @BindView(R.id.tv_group_tag2_one)
     TextView tvGroupTag2One;  //推荐题组2标签文字
     @BindView(R.id.tv_group_tag2_two)
     TextView tvGroupTag2Two;
-    @BindView(R.id.recommend_logo2)//logo推荐题组2
-            TextView recommendLogo2;
+    @BindView(R.id.recommend_logo2)
+    TextView recommendLogo2;
     @BindView(R.id.rv_group_sort_group)
     RecyclerView rvGroupSortGroup; //分类
 
@@ -587,10 +588,16 @@ public class HomeFragment extends Fragment {
                                                 }
                                             });
 
-                                            GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2);
+                                            GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2) {
+                                                @Override
+                                                public boolean canScrollVertically() {//禁止layout垂直滑动
+                                                    return false;
+                                                }
+                                            };
                                             gridLayoutManager.setSmoothScrollbarEnabled(true);
                                             gridLayoutManager.setAutoMeasureEnabled(true);
                                             rvHotGroup.setLayoutManager(gridLayoutManager);
+                                            //解决数据加载不完的问题
                                             rvHotGroup.setHasFixedSize(true);
                                             rvHotGroup.setNestedScrollingEnabled(false);
                                             rvHotGroup.setAdapter(hotGroupAdapter);
@@ -610,10 +617,16 @@ public class HomeFragment extends Fragment {
                                                     startActivity(intent1);
                                                 }
                                             });
-                                            GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1);
+                                            GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1) {
+                                                @Override
+                                                public boolean canScrollVertically() {//禁止layout垂直滑动
+                                                    return false;
+                                                }
+                                            };
                                             gridLayoutManager.setSmoothScrollbarEnabled(true);
                                             gridLayoutManager.setAutoMeasureEnabled(true);
                                             rvGroupSortGroup.setLayoutManager(gridLayoutManager);
+                                            //解决数据加载不完的问题
                                             rvGroupSortGroup.setHasFixedSize(true);
                                             rvGroupSortGroup.setNestedScrollingEnabled(false);
                                             rvGroupSortGroup.setAdapter(hotGroupAdapter);

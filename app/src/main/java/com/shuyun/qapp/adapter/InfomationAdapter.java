@@ -20,7 +20,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by MrSun on 2018/4/25.
  * 消息适配器
  */
 

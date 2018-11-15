@@ -6,7 +6,6 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
-
 import com.blankj.utilcode.util.Utils;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -19,9 +18,7 @@ import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.shuyun.qapp.R;
-import com.shuyun.qapp.net.AppConst;
-
-import com.shuyun.qapp.net.CrashHandler;
+import com.shuyun.qapp.utils.CrashHandler;
 import com.shuyun.qapp.utils.MTACrashModule;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -37,7 +34,6 @@ import com.umeng.socialize.PlatformConfig;
 
 import org.litepal.LitePal;
 import org.litepal.tablemanager.Connector;
-
 
 import cn.jpush.android.api.JPushInterface;
 

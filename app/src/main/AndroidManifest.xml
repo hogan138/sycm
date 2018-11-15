@@ -29,20 +29,20 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
 
     <!-- 其他权限 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+     <uses-permission android:name="android.permission.SEND_SMS" />-->
 
     <application
         android:name=".net.MyApplication"
@@ -54,11 +54,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Base">
 
-        <!--
-              <meta-data
-              android:name="android.notch_support"
-              android:value="true" />
-        -->
         <!-- Rich push 核心功能 since 2.0.6 -->
         <activity
             android:name="cn.jpush.android.ui.PopWinActivity"
@@ -174,17 +169,11 @@
         <meta-data
             android:name="JPUSH_APPKEY"
             android:value="16442304c7edaf12fc39ca9c" /> <!-- </>值来自开发者平台取得的AppKey -->
-
-
         <!-- 腾讯统计 -->
         <!-- 请将value改为MTA分配的appkey < -->
         <meta-data
             android:name="TA_APPKEY"
             android:value="Aqc1105860265" />
-        <!-- 请将value改为app发布对应的渠道，不同的发布渠道使用不同的名字 < -->
-        <!-- <meta-data -->
-        <!-- android:name="InstallChannel" -->
-        <!-- android:value="应用宝" /> -->
         <!-- 注意：若填写的渠道为纯数字字符串类型，请不要超过int表示的范围！ < -->
         <!-- MID3.5(mid-sdk-3.5.jar) 以上版本请务必增加此配置 -->
         <provider
@@ -196,9 +185,6 @@
         <activity
             android:name=".ui.welcome.WelcomeActivity"
             android:screenOrientation="portrait">
-
-            <!-- android:theme="@style/welcome" -->
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -214,6 +200,7 @@
             <!--通过浏览器Url启动app-->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
@@ -238,7 +225,6 @@
             android:name="UMENG_CHANNEL"
             android:value="Channel ID" />
         <!-- 微信 -->
-        <!-- android:screenOrientation="portrait"Android 8不能加 -->
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -268,7 +254,7 @@
         <activity
             android:name=".ui.mine.RealNameAuthActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <!-- 实名认证结果 -->
         <activity
             android:name=".ui.mine.AuthResultActivity"
@@ -279,7 +265,6 @@
             android:name=".ui.mine.AccountRecordActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <!-- 现金提现 -->
         <!-- 系统设置 -->
         <activity
             android:name=".ui.mine.SystemSettingActivity"
@@ -309,8 +294,6 @@
             android:name=".ui.answer.AnswerHistoryActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <!-- 红包 -->
-        <!-- 积分抽奖和宝箱开奖界面 -->
         <!-- 我的界面，反馈. -->
         <activity
             android:name=".ui.mine.FeedbackActivity"
@@ -326,11 +309,9 @@
             android:name=".ui.classify.ClassifyActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <!-- 分享有奖  短信支持 -->
-        <!-- 抽奖规则 -->
-        <!-- banner跳转页 -->
+        <!-- H5跳转页面 -->
         <activity
-            android:name=".ui.webview.WebBannerActivity"
+            android:name=".ui.webview.WebH5Activity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <!-- 更改密码 -->
@@ -366,7 +347,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
         <!-- 答题对战首页 -->
         <activity
             android:name=".ui.against.MainAgainstActivity"

@@ -20,7 +20,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by sunxiao on 2018/5/11.
  * 红包提现 红包列表
  */
 
