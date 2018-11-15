@@ -1,6 +1,5 @@
 package com.shuyun.qapp.ui.mine;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -26,6 +25,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -44,14 +44,15 @@ import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.blankj.utilcode.util.TimeUtils;
+import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.net.ApiService;
-import com.shuyun.qapp.ui.login.PermissionsActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
+import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.OnMultiClickListener;
@@ -84,6 +85,8 @@ public class UploadLetterActivity extends BaseActivity implements CommonPopupWin
     ImageView ivCamera;//拍照或相册中选择的图片
     @BindView(R.id.ll_letter)
     LinearLayout llLetter;//申请函
+    @BindView(R.id.btn_next)
+    Button btnNext;
 
     private Dialog dialog;
     private ImageView mImageView;
@@ -150,8 +153,12 @@ public class UploadLetterActivity extends BaseActivity implements CommonPopupWin
                 break;
             case R.id.btn_next:
                 if (!EncodeAndStringTool.isStringEmpty(imagePath)) {
+                    CustomLoadingFactory factory = new CustomLoadingFactory();
+                    LoadingBar.make(llLetter, factory).show();
+                    btnNext.setEnabled(false);
                     //上传图片到阿里云
                     initOss(imagePath);
+
                 } else {
                     Toast.makeText(this, "申请函不能为空", Toast.LENGTH_SHORT).show();
                 }
@@ -484,6 +491,8 @@ public class UploadLetterActivity extends BaseActivity implements CommonPopupWin
 
                     @Override
                     public void onNext(DataResponse loginResponse) {
+                        LoadingBar.cancel(llLetter);
+                        btnNext.setEnabled(true);
                         if (loginResponse.isSuccees()) {
                             if (loginResponse.getErr().equals("00000")) {
                                 finish();
