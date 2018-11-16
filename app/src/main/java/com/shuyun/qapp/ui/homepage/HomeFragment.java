@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
@@ -28,7 +27,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.constant.TimeConstants;
 import com.blankj.utilcode.util.AppUtils;
-import com.blankj.utilcode.util.KeyboardUtils;
+import com.blankj.utilcode.util.PhoneUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
@@ -51,7 +50,6 @@ import com.shuyun.qapp.bean.MarkBannerItem;
 import com.shuyun.qapp.bean.SystemInfo;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.utils.InformatListenner;
 import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.receiver.MyReceiver;
 import com.shuyun.qapp.ui.classify.ClassifyActivity;
@@ -64,6 +62,7 @@ import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ImageLoaderManager;
+import com.shuyun.qapp.utils.InformatListenner;
 import com.shuyun.qapp.utils.NotificationsUtils;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
@@ -74,6 +73,7 @@ import com.shuyun.qapp.view.InviteSharePopupUtil;
 import com.shuyun.qapp.view.MainActivityDialogInfo;
 import com.shuyun.qapp.view.NotifyDialog;
 import com.shuyun.qapp.view.OvalImageView;
+import com.shuyun.qapp.view.ViewPagerScroller;
 import com.sunfusheng.marqueeview.MarqueeView;
 import com.umeng.analytics.MobclickAgent;
 
@@ -235,6 +235,11 @@ public class HomeFragment extends Fragment {
          */
         loadHomeBanners();
 
+        /**
+         * 获取全民播报
+         */
+        loadSystemInfo();
+
     }
 
     @Override
@@ -255,11 +260,6 @@ public class HomeFragment extends Fragment {
              * 获取活动配置信息
              */
             getConfigInfo();
-
-            /**
-             * 获取全民播报
-             */
-            loadSystemInfo();
 
             /**
              * 获取宝箱数量
@@ -310,14 +310,10 @@ public class HomeFragment extends Fragment {
                 }
                 break;
             case R.id.tv_number1: //客服电话
-                Intent intent = new Intent(Intent.ACTION_CALL);
-                intent.setData(Uri.parse("tel:" + "400-650-9258"));
-                startActivity(intent);
+                PhoneUtils.dial("400-650-9258");
                 break;
             case R.id.tv_number2: //招商电话
-                Intent i = new Intent(Intent.ACTION_CALL);
-                i.setData(Uri.parse("tel:" + "0571-86875104"));
-                startActivity(i);
+                PhoneUtils.dial("0571-86875104");
                 break;
             default:
                 break;
@@ -359,6 +355,10 @@ public class HomeFragment extends Fragment {
                                     ViewGroup.LayoutParams params = mViewpager.getLayoutParams();
                                     params.height = getResources().getDimensionPixelSize(R.dimen.viewPager_01);
                                     mViewpager.setLayoutParams(params);
+                                    //设置时间，时间越长，速度越慢
+                                    ViewPagerScroller pagerScroller = new ViewPagerScroller(getActivity());
+                                    pagerScroller.setScrollDuration(400);
+                                    pagerScroller.initViewPagerScroll(mViewpager);
 
                                     mBannerView.setBannerItemClick(new BannerViewPager.OnBannerItemClick<IBannerItem>() {
                                         @Override
@@ -551,6 +551,10 @@ public class HomeFragment extends Fragment {
                                         ViewGroup.LayoutParams params = mViewpager1.getLayoutParams();
                                         params.height = getResources().getDimensionPixelSize(R.dimen.viewPager_02);
                                         mViewpager1.setLayoutParams(params);
+                                        //设置时间，时间越长，速度越慢
+                                        ViewPagerScroller pagerScroller = new ViewPagerScroller(getActivity());
+                                        pagerScroller.setScrollDuration(400);
+                                        pagerScroller.initViewPagerScroll(mViewpager1);
 
                                         alwaysBanner.setBannerItemClick(new BannerViewPager.OnBannerItemClick<IBannerItem>() {
                                             @Override

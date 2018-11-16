@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.PhoneUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.net.AppConst;
@@ -132,12 +133,7 @@ public class WebPublicActivity extends BaseActivity {
                 /**
                  * 调用系统打电话
                  */
-                Intent intent = new Intent(Intent.ACTION_CALL);
-                intent.setData(Uri.parse("tel:" + phoneNum));
-                if (ActivityCompat.checkSelfPermission(WebPublicActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    return;
-                }
-                startActivity(intent);
+                PhoneUtils.dial(phoneNum);
             }
         });
     }

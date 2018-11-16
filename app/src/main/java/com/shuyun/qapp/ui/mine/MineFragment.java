@@ -26,7 +26,6 @@ import android.widget.Toast;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.gyf.barlibrary.ImmersionBar;
-import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.AnswerOpptyBean;
@@ -34,16 +33,17 @@ import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.utils.InformatListenner;
+import com.shuyun.qapp.net.MyApplication;
+import com.shuyun.qapp.receiver.MyReceiver;
 import com.shuyun.qapp.ui.homepage.InformationActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
-import com.shuyun.qapp.receiver.MyReceiver;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ImageLoaderManager;
+import com.shuyun.qapp.utils.InformatListenner;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
@@ -66,8 +66,6 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-
-import static com.blankj.utilcode.util.ActivityUtils.startActivity;
 
 /**
  * 通用popupwindow

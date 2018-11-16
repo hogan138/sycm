@@ -30,6 +30,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.blankj.utilcode.util.PhoneUtils;
 import com.google.gson.Gson;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.mylhyl.circledialog.CircleDialog;
@@ -569,12 +570,7 @@ public class WebH5Activity extends BaseActivity implements CommonPopupWindow.Vie
                 /**
                  * 调用系统打电话
                  */
-                Intent intent = new Intent(Intent.ACTION_CALL);
-                intent.setData(Uri.parse("tel:" + phoneNum));
-                if (ActivityCompat.checkSelfPermission(WebH5Activity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    return;
-                }
-                startActivity(intent);
+                PhoneUtils.dial(phoneNum);
             }
         });
     }
