@@ -19,8 +19,8 @@ android {
         applicationId "com.shuyun.qapp"
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 30023
-        versionName "3.2.3"
+        versionCode 30024
+        versionName "3.2.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         // Enabling multidex support.
@@ -32,7 +32,7 @@ android {
             // 混淆
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            debuggable = false
+            debuggable = true
             signingConfig signingConfigs.release
         }
         debug {
