@@ -63,6 +63,7 @@ import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.InformatListenner;
+import com.shuyun.qapp.utils.NetUtils;
 import com.shuyun.qapp.utils.NotificationsUtils;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
@@ -231,11 +232,6 @@ public class HomeFragment extends Fragment {
         });
 
         /**
-         * 获取banner轮播数据
-         */
-        loadHomeBanners();
-
-        /**
          * 获取全民播报
          */
         loadSystemInfo();
@@ -246,6 +242,12 @@ public class HomeFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {  //显示
+
+            /**
+             * 获取banner轮播数据
+             */
+            loadHomeBanners();
+
             /**
              * 获取弹框信息
              */
