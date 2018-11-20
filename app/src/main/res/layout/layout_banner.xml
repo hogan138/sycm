@@ -3,17 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/text_10"
     android:orientation="vertical">
 
     <cn.kevin.banner.BannerViewPager
         android:id="@+id/banner"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/B_viewPager_01"
-        app:around_visible="true"
-        app:item_margin="5dp"
-        app:marginLeft="20dp"
-        app:marginRight="20dp"
-        app:point_drawable="@drawable/banner_selector"
+        android:layout_height="170dp"
+        app:around_visible="false"
+        app:point_drawable="@drawable/banner_selector1"
         app:point_gravity="bottom_center" />
 </LinearLayout>

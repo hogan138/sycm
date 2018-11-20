@@ -49,6 +49,7 @@ import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
+import com.shuyun.qapp.utils.StatusBarUtil;
 import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 
@@ -103,6 +104,21 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
         setContentView(R.layout.activity_homepage);
         ButterKnife.bind(this);
 
+        //沉浸式代码配置
+        //当FitsSystemWindows设置 true 时，会在屏幕最上方预留出状态栏高度的 padding
+        StatusBarUtil.setRootViewFitsSystemWindows(this, true);
+        //设置状态栏透明
+        StatusBarUtil.setTranslucentStatus(this);
+        //一般的手机的状态栏文字和图标都是白色的, 可如果你的应用也是纯白色的, 或导致状态栏文字看不清
+        //所以如果你是这种情况,请使用以下代码, 设置状态使用深色文字图标风格, 否则你可以选择性注释掉这个if内容
+        if (!StatusBarUtil.setStatusBarDarkTheme(this, true)) {
+            //如果不支持设置深色风格 为了兼容总不能让状态栏白白的看不清, 于是设置一个状态栏颜色为半透明,
+            //这样半透明+白=灰, 状态栏的文字能看得清
+            StatusBarUtil.setStatusBarColor(this, 0x55000000);
+        }
+        //用来设置整体下移，状态栏沉浸
+        StatusBarUtil.setRootViewFitsSystemWindows(this, false);
+
         pager.setOnPageChangeListener(this);
         radioGroup1.setOnCheckedChangeListener(this);
 
@@ -110,8 +126,6 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
         Boolean main_run = sharedPreferences.getBoolean("Main", true);
         sharedPreferences.edit().putBoolean("Main", true).commit();
 
-        //初始化沉浸状态栏
-        ImmersionBar.with(this).statusBarColor(R.color.white).statusBarDarkFont(true).fitsSystemWindows(true).init();
         //底部导航栏
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setNavigationBarColor(Color.parseColor("#ffffff"));
@@ -194,13 +208,6 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
             if (radiobutton.getId() == i) {
                 //设置当前页
                 pager.setCurrentItem(j, false);
-
-                //改变状态栏颜色
-                if (j == 3) {
-                    ImmersionBar.with(this).statusBarColor(R.color.mine_top).statusBarDarkFont(true).fitsSystemWindows(true).init();
-                } else {
-                    ImmersionBar.with(this).statusBarColor(R.color.white).statusBarDarkFont(true).fitsSystemWindows(true).init();
-                }
 
                 //当前下标
                 i = j;

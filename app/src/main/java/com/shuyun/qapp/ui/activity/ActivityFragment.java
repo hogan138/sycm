@@ -82,9 +82,6 @@ public class ActivityFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         tvCommonTitle.setText("活动专区");
 
-        //初始化沉浸状态栏
-        ImmersionBar.with(this).statusBarColor(R.color.white).statusBarDarkFont(true).fitsSystemWindows(true).init();
-
     }
 
     @OnClick({R.id.iv_back})

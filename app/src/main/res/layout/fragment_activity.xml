@@ -5,7 +5,45 @@
     android:background="#ffffff"
     android:orientation="vertical">
 
-    <include layout="@layout/common_left_title" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/white"
+        android:paddingTop="@dimen/text_35">
+
+        <RelativeLayout
+            android:id="@+id/iv_back"
+            android:layout_width="68dp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_left_back"
+                android:layout_width="@dimen/text_20"
+                android:layout_height="@dimen/text_20"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/text_15"
+                android:src="@mipmap/backb" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_common_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/text_40"
+            android:layout_marginRight="@dimen/text_40"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/color_0"
+            android:textSize="@dimen/text_16" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/light_white" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

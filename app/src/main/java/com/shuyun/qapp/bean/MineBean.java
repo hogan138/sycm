@@ -36,7 +36,7 @@ public class MineBean implements Parcelable {
      * datas : [{"stateName":"未完善","bankType":1,"type":"withdraw","title":"点击完善提现信息","message":"支持支付宝提现，快快补充提现信息哦","status":1}]
      */
 
-    private int id;
+    private Long id;
     private String account;
     private String nickname;
     private int obt;
@@ -62,7 +62,7 @@ public class MineBean implements Parcelable {
     private int certCount;//实名认证次数
 
     protected MineBean(Parcel in) {
-        id = in.readInt();
+        id = in.readLong();
         account = in.readString();
         nickname = in.readString();
         obt = in.readInt();
@@ -104,11 +104,11 @@ public class MineBean implements Parcelable {
         }
     };
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -303,7 +303,7 @@ public class MineBean implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
+        dest.writeLong(id);
         dest.writeString(account);
         dest.writeString(nickname);
         dest.writeInt(obt);

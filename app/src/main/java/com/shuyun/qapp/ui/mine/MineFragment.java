@@ -25,7 +25,6 @@ import android.widget.Toast;
 
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.TimeUtils;
-import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.AnswerOpptyBean;
@@ -35,6 +34,7 @@ import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.receiver.MyReceiver;
+import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.homepage.InformationActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
@@ -128,6 +128,8 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
     private static final String TAG2 = "MineFragment2";
     @BindView(R.id.tv_three_prize_exprized)
     TextView tvThreePrizeExprized;
+    @BindView(R.id.rl_back)
+    RelativeLayout rlBack; //返回键
     private CommonPopupWindow popupWindow;
 
     //图标
@@ -182,8 +184,6 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
         } else {
             rlInviteShare.setVisibility(View.VISIBLE);
         }
-        //初始化沉浸状态栏
-        ImmersionBar.with(this).statusBarColor(R.color.white).statusBarDarkFont(true).fitsSystemWindows(true).init();
         /**
          * 注册极光推送监听
          */
@@ -357,12 +357,18 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                 });
     }
 
-    @OnClick({R.id.iv_common_right_icon, R.id.iv_header_pic, R.id.rl_header, R.id.tv_change_personal_info, R.id.btn_is_name_auth,
+    @OnClick({R.id.rl_back, R.id.iv_common_right_icon, R.id.iv_header_pic, R.id.rl_header, R.id.tv_change_personal_info, R.id.btn_is_name_auth,
             R.id.tv_add_answer_num, R.id.tv_check_account_record, R.id.btn_immedicate_withdrawal, R.id.btn_immedicate_use,
             R.id.iv_not_use, R.id.iv_already_use, R.id.iv_out_of_date, R.id.iv_all_prize, R.id.rl_answer_record,
             R.id.rl_system_set, R.id.rl_contact_us, R.id.rl_invite_share})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.rl_back:
+                if (mContext instanceof HomePageActivity) {
+                    HomePageActivity homePageActivity = (HomePageActivity) mContext;
+                    homePageActivity.changeUi(0);
+                }
+                break;
             case R.id.iv_common_right_icon: //右侧消息按钮;
                 ivCommonRightIcon.setImageResource(R.mipmap.messagew_n);
                 startActivity(new Intent(mContext, InformationActivity.class));

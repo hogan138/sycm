@@ -6,10 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,10 +32,8 @@ import com.blankj.utilcode.constant.TimeConstants;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.PhoneUtils;
 import com.blankj.utilcode.util.TimeUtils;
-import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.GroupTreeAdapter;
-import com.shuyun.qapp.adapter.HomeBannerAdapter;
 import com.shuyun.qapp.adapter.HomeSortAdapter;
 import com.shuyun.qapp.adapter.HotGroupAdapter;
 import com.shuyun.qapp.adapter.MarkBannerAdapter;
@@ -63,7 +64,6 @@ import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.InformatListenner;
-import com.shuyun.qapp.utils.NetUtils;
 import com.shuyun.qapp.utils.NotificationsUtils;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
@@ -85,13 +85,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import cn.kevin.banner.BannerAdapter;
 import cn.kevin.banner.BannerViewPager;
 import cn.kevin.banner.IBannerItem;
-import cn.kevin.banner.transformer.YZoomTransFormer;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
+import static com.blankj.utilcode.util.ConvertUtils.dp2px;
 
 
 /**
@@ -157,6 +159,10 @@ public class HomeFragment extends Fragment {
     TextView recommendLogo2;
     @BindView(R.id.rv_group_sort_group)
     RecyclerView rvGroupSortGroup; //分类
+    @BindView(R.id.scrollView)
+    NestedScrollView scrollView; //ScrollView
+    @BindView(R.id.rl_title)
+    RelativeLayout rlTitle; //标题栏
 
 
     /**
@@ -194,10 +200,7 @@ public class HomeFragment extends Fragment {
             tvInvite.setVisibility(View.VISIBLE);
         }
         tvCommonTitle.setText("全民共进");
-        ivCommonRightIcon.setImageResource(R.mipmap.message_n);//右侧消息按钮;
-
-        //初始化沉浸状态栏
-        ImmersionBar.with(this).statusBarColor(R.color.white).statusBarDarkFont(true).fitsSystemWindows(true).init();
+        ivCommonRightIcon.setImageResource(R.mipmap.messagew_n);//右侧消息按钮;
 
         //token的有效时间
         Long expire = (Long) SharedPrefrenceTool.get(mContext, "expire", System.currentTimeMillis());
@@ -230,6 +233,36 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
+
+        // scrollview滚动监听
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    if (scrollY > dp2px(60)) {
+                        tvInvite.setTextColor(Color.parseColor("#333333"));
+                        ivCommonRightIcon.setImageResource(R.mipmap.message_n);//右侧消息按钮;
+                        tvCommonTitle.setVisibility(View.VISIBLE);
+                    } else {
+                        tvInvite.setTextColor(Color.parseColor("#ffffff"));
+                        ivCommonRightIcon.setImageResource(R.mipmap.messagew_n);//右侧消息按钮;
+                        tvCommonTitle.setVisibility(View.GONE);
+                    }
+
+                    //顶部栏颜色渐变
+                    if (scrollY <= 0) {
+                        rlTitle.setBackgroundColor(Color.argb((int) 0, 255, 255, 255));//AGB由相关工具获得，或者美工提供
+                    } else if (scrollY > 0 && scrollY <= dp2px(130)) {
+                        float scale = (float) scrollY / dp2px(130);
+                        float alpha = (255 * scale);
+                        // 只是layout背景透明
+                        rlTitle.setBackgroundColor(Color.argb((int) alpha, 255, 255, 255));
+                    } else {
+                        rlTitle.setBackgroundColor(Color.argb((int) 255, 255, 255, 255));
+                    }
+                }
+            });
+        }
 
         /**
          * 获取全民播报
@@ -280,7 +313,7 @@ public class HomeFragment extends Fragment {
                 InviteSharePopupUtil.showSharedPop(mContext, llHomeFragment);
                 break;
             case R.id.iv_common_right_icon://右侧消息按钮
-                ivCommonRightIcon.setImageResource(R.mipmap.message_n);
+//                ivCommonRightIcon.setImageResource(R.mipmap.message_n);
                 startActivity(new Intent(mContext, InformationActivity.class));
                 break;
             case R.id.ll_change_group: //换一换
@@ -342,8 +375,7 @@ public class HomeFragment extends Fragment {
                                 final List<BannerBean> bannerData = listDataResponse.getDat();
                                 if (!EncodeAndStringTool.isListEmpty(bannerData)) {
                                     //设置轮播图
-//                                    BannerAdapter adapter = new BannerAdapter(new GlideImageLoader());
-                                    HomeBannerAdapter adapter = new HomeBannerAdapter(new GlideImageLoader1());
+                                    BannerAdapter adapter = new BannerAdapter(new GlideImageLoader1());
                                     List<IBannerItem> list = new ArrayList<>();
                                     for (int i = 0; i < bannerData.size(); i++) {
                                         list.add(new BannerItem(bannerData.get(i).getPicture()));
@@ -354,9 +386,9 @@ public class HomeFragment extends Fragment {
                                     //设置index 在viewpager下面
                                     ViewPager mViewpager = (ViewPager) mBannerView.getChildAt(0);
                                     //为ViewPager设置高度
-                                    ViewGroup.LayoutParams params = mViewpager.getLayoutParams();
-                                    params.height = getResources().getDimensionPixelSize(R.dimen.viewPager_01);
-                                    mViewpager.setLayoutParams(params);
+//                                    ViewGroup.LayoutParams params = mViewpager.getLayoutParams();
+//                                    params.height = getResources().getDimensionPixelSize(R.dimen.viewPager_01);
+//                                    mViewpager.setLayoutParams(params);
                                     //设置时间，时间越长，速度越慢
                                     ViewPagerScroller pagerScroller = new ViewPagerScroller(getActivity());
                                     pagerScroller.setScrollDuration(400);
@@ -377,7 +409,7 @@ public class HomeFragment extends Fragment {
                                             }
                                         }
                                     });
-                                    mBannerView.setPageTransformer(true, new YZoomTransFormer(.8f)); //banner动画
+//                                    mBannerView.setPageTransformer(true, new YZoomTransFormer(.8f)); //banner动画
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();

@@ -1,26 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/common_item_height"
-    android:background="#12B9BE">
+    android:layout_height="70dp"
+    android:background="#12B9BE"
+    android:paddingTop="@dimen/text_35">
 
+    <RelativeLayout
+        android:id="@+id/rl_back"
+        android:layout_width="68dp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_left_back"
+            android:layout_width="@dimen/text_20"
+            android:layout_height="@dimen/text_20"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/text_15"
+            android:src="@mipmap/mine_back" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_common_title1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
         android:text="@string/app_name"
-        android:textColor="@color/color_0"
+        android:textColor="@color/white"
         android:textSize="@dimen/text_16" />
 
 
     <ImageView
         android:id="@+id/iv_common_right_icon"
         android:layout_width="@dimen/text_20"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/text_2"
         android:layout_marginRight="@dimen/text_18"
         android:src="@mipmap/messagew_n" />
 

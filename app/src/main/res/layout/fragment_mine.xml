@@ -19,8 +19,6 @@
 
             <include layout="@layout/mine_head" />
 
-            <include layout="@layout/common_line_3" />
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -55,9 +53,6 @@
                     android:textColor="@color/color_4"
                     android:textSize="@dimen/text_12" />
             </RelativeLayout>
-
-            <include layout="@layout/cash" />
-
 
             <include layout="@layout/common_line_1" />
 

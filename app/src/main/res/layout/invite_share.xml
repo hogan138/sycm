@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/text_15"
         android:layout_marginLeft="@dimen/text_12"
-        android:text="分享全民共进"
+        android:text="分享"
         android:textSize="@dimen/text_14"
         android:textColor="@color/color_0"/>
     <ImageView

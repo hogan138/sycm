@@ -2,35 +2,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/text_10">
+    android:layout_marginTop="@dimen/text_20">
 
-    <LinearLayout
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginLeft="@dimen/text_15"
+        android:text="@string/question_group"
+        android:textColor="@color/color_0"
+        android:textSize="@dimen/text_20"
+        android:textStyle="bold" />
 
-        <ImageView
-            android:layout_width="@dimen/text_5"
-            android:layout_height="@dimen/text_15"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/text_15"
-            android:layout_marginRight="@dimen/text_5"
-            android:background="@color/color_4" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="@string/question_group"
-            android:textColor="@color/color_0"
-            android:textSize="@dimen/text_15" />
-
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_change_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_2"
         android:layout_alignParentRight="true"
         android:orientation="horizontal">
 

@@ -54,17 +54,17 @@
 
 
     <string name="withdraw_deposit">提现</string>
-    <string name="change_account"><u>修改</u></string>
+    <string name="change_account">修改</string>
     <string name="name_auth">已实名认证</string>
     <string name="go_name_auth">前往实名认证</string>
     <string name="surplus_number">今日答题次数剩余:0</string>
-    <string name="add_answer_num"><u>增加答题次数</u></string>
+    <string name="add_answer_num">增加答题次数</string>
     <string name="mine_account">我的账户</string>
     <string name="check_account_record"><u>查看账户记录</u></string>
     <string name="cash">现金</string>
     <string name="balance">余额: ￥666</string>
     <string name="balance1">余额: 888888</string>
-    <string name="hint">普通账户满50即可提现</string>
+    <string name="hint">满50即可提现</string>
     <string name="hint1">用于兑换道具,抽奖,可随时使用</string>
     <string name="immedicate_withdrawal">立即\n提现</string>
     <string name="immedicate_use">立即\n使用</string>
