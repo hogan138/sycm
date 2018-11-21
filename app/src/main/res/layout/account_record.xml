@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rl_answer_record"
+    android:id="@+id/rl_account_record"
     android:layout_width="match_parent"
     android:layout_height="43.5dp"
     android:layout_gravity="center_vertical">
@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/text_12"
         android:layout_marginTop="@dimen/text_15"
-        android:text="@string/transcript"
+        android:text="@string/account_record"
         android:textColor="@color/color_0"
         android:textSize="@dimen/text_14" />
 

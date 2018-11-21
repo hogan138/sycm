@@ -97,14 +97,14 @@ public class MinePrizeActivity extends BaseActivity {
         mTitleList.add("未使用");
         mTitleList.add("使用中");
         mTitleList.add("已使用");
-        mTitleList.add("全部");
+//        mTitleList.add("全部");
         //设置tablayout模式
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         //tablayout获取集合中的名称
         tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(0)));
         tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(1)));
         tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(2)));
-        tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(3)));
+//        tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(3)));
     }
 
     private void initFragment() {
@@ -112,7 +112,7 @@ public class MinePrizeActivity extends BaseActivity {
         mFragmentList.add(new NoUsePrizeFragment().newInstance(mineBean.getCertification()));
         mFragmentList.add(new UseInPrizeFragment().newInstance(mineBean.getCertification()));
         mFragmentList.add(new UsePrizeFragment().newInstance(mineBean.getCertification()));
-        mFragmentList.add(new AllPrizeFragment().newInstance(mineBean.getCertification()));
+//        mFragmentList.add(new AllPrizeFragment().newInstance(mineBean.getCertification()));
 
     }
 
@@ -191,8 +191,6 @@ public class MinePrizeActivity extends BaseActivity {
                                 vp.setCurrentItem(1);
                             } else if (status == 3) { //已使用
                                 vp.setCurrentItem(2);
-                            } else if (status == 0) { //全部
-                                vp.setCurrentItem(3);
                             }
 
                         } else {

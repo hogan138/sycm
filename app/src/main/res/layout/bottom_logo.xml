@@ -10,8 +10,5 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/text_10"
         android:layout_marginBottom="@dimen/text_10"
-        android:src="@mipmap/watermark"
-        android:visibility="gone" />
-    <!--android:layout_width="65dp"-->
-    <!--android:layout_height="15dp"-->
+        android:src="@mipmap/watermark" />
 </LinearLayout>

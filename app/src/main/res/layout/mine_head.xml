@@ -3,95 +3,106 @@
     android:id="@+id/rl_header"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#fbfbfb">
+    android:background="#f8f8f8">
 
     <RelativeLayout
+        android:id="@+id/rl_top"
         android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/mine_bg">
 
         <RelativeLayout
             android:id="@+id/rl_head"
-            android:layout_width="@dimen/text_70"
-            android:layout_height="@dimen/text_70"
-            android:layout_marginLeft="@dimen/text_12"
-            android:layout_marginTop="@dimen/text_5"
+            android:layout_width="@dimen/text_90"
+            android:layout_height="@dimen/text_90"
+            android:layout_centerHorizontal="true"
             android:background="@mipmap/head_bg">
 
             <com.shuyun.qapp.view.CircleImageView
                 android:id="@+id/iv_header_pic"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_centerInParent="true" />
         </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/iv_real_logo"
+            android:layout_width="100dp"
+            android:layout_height="29dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/text_10"
+            android:layout_marginRight="@dimen/text_15"
+            android:src="@mipmap/mine_real_logo" />
 
         <TextView
             android:id="@+id/tv_phone_num1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/text_17"
-            android:layout_marginTop="17dp"
-            android:layout_toRightOf="@+id/rl_head"
+            android:layout_below="@+id/rl_head"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:text="1111111111111"
             android:textColor="@color/white"
             android:textSize="@dimen/text_14"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tv_change_personal_info"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/ll_add"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_phone_num1"
-            android:layout_marginLeft="@dimen/text_17"
-            android:layout_marginTop="@dimen/text_10"
-            android:layout_toRightOf="@+id/rl_head"
-            android:text="@string/change_account"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_11" />
-
-        <Button
-            android:id="@+id/btn_is_name_auth"
-            android:layout_width="119dp"
-            android:layout_height="35dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginRight="@dimen/text_12"
-            android:layout_marginBottom="63dp"
-            android:background="@mipmap/notpass"
-            android:gravity="center"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/tv_today_answer_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/rl_head"
-            android:layout_marginLeft="@dimen/text_12"
             android:layout_marginTop="@dimen/text_8"
-            android:layout_marginBottom="@dimen/text_15"
-            android:text="@string/surplus_number"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_14"
-            android:textStyle="bold" />
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_add_answer_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/rl_head"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/text_8"
-            android:layout_marginRight="@dimen/text_12"
-            android:gravity="center_vertical"
-            android:text="@string/add_answer_num"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_11" />
+            <TextView
+                android:id="@+id/tv_today_answer_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rl_head"
+                android:layout_marginLeft="@dimen/text_12"
+                android:text="@string/surplus_number"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_14"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_add_answer_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_5"
+                android:text="@string/add_answer_num"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_12" />
+        </LinearLayout>
+
+        <com.shuyun.qapp.view.WaveView3
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@+id/ll_add" />
+
+        <com.shuyun.qapp.view.WaveView2
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@+id/ll_add" />
+
+        <com.shuyun.qapp.view.WaveView1
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@+id/ll_add" />
+
+        <com.shuyun.qapp.view.WaveView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@+id/ll_add" />
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_withdraw"
         android:layout_width="match_parent"
         android:layout_height="55dp"
+        android:layout_below="@+id/rl_top"
         android:layout_marginLeft="@dimen/text_17"
-        android:layout_marginTop="105dp"
         android:layout_marginRight="@dimen/text_17"
         android:layout_marginBottom="@dimen/text_10"
         android:background="@mipmap/mine_withdraw_bg"
@@ -106,7 +117,7 @@
             android:layout_marginTop="@dimen/text_8"
             android:layout_toRightOf="@+id/iv_cash"
             android:text="@string/cash"
-            android:textColor="@color/color_0"
+            android:textColor="@color/color_1"
             android:textSize="@dimen/text_14" />
 
         <TextView
@@ -116,7 +127,7 @@
             android:layout_marginLeft="@dimen/text_5"
             android:layout_marginTop="@dimen/text_8"
             android:layout_toRightOf="@+id/tv_withdraw_text"
-            android:textColor="@color/color_0"
+            android:textColor="@color/color_1"
             android:textSize="@dimen/text_14"
             android:textStyle="bold" />
 
@@ -128,18 +139,139 @@
             android:layout_marginTop="@dimen/text_4"
             android:text="@string/hint"
             android:textColor="#9b9b9b"
-            android:textSize="@dimen/text_11" />
+            android:textSize="@dimen/text_10" />
 
         <Button
             android:id="@+id/btn_immedicate_withdrawal"
-            android:layout_width="70dp"
+            android:layout_width="71dp"
             android:layout_height="25dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/text_12"
-            android:background="@drawable/selector_3"
+            android:background="@drawable/mine_withdraw_btn_selector"
             android:text="@string/immedicate_withdrawal"
             android:textColor="@color/white"
             android:textSize="@dimen/text_12" />
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_main"
+        android:layout_width="match_parent"
+        android:layout_height="87dp"
+        android:layout_below="@+id/rl_withdraw"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/ll_score"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/text_25"
+                android:layout_height="@dimen/text_20"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/text_15"
+                android:src="@mipmap/mine_score_logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/text_5"
+                android:text="积分"
+                android:textColor="@color/color_1"
+                android:textSize="@dimen/text_14" />
+
+            <TextView
+                android:id="@+id/tv_integral_balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/text_2"
+                android:text="可用积分："
+                android:textColor="@color/color_9b"
+                android:textSize="@dimen/text_12"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_gift"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/text_25"
+                android:layout_height="@dimen/text_20"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/text_15"
+                android:src="@mipmap/mine_gift_logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/text_5"
+                android:text="奖品"
+                android:textColor="@color/color_1"
+                android:textSize="@dimen/text_14" />
+
+            <TextView
+                android:id="@+id/tv_gift_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/text_2"
+                android:text="可用奖品："
+                android:textColor="@color/color_9b"
+                android:textSize="@dimen/text_12"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_tools"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/text_25"
+                android:layout_height="@dimen/text_20"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/text_15"
+                android:src="@mipmap/mine_tools_logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/text_5"
+                android:text="道具"
+                android:textColor="@color/color_1"
+                android:textSize="@dimen/text_14" />
+
+            <TextView
+                android:id="@+id/tv_tools_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/text_2"
+                android:text="可用道具：100"
+                android:textColor="@color/color_9b"
+                android:textSize="@dimen/text_12"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_10"
+        android:layout_below="@id/ll_main"
+        android:background="#f8f8f8"></View>
 </RelativeLayout>

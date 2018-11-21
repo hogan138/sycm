@@ -10,7 +10,6 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Html;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -76,43 +75,20 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
 
     @BindView(R.id.ll_mine_fragment)
     LinearLayout llMineFragment;
-    @BindView(R.id.tv_common_title1)
-    TextView tvCommonTitle1;//标题
     @BindView(R.id.iv_common_right_icon)
     ImageView ivCommonRightIcon;//右边消息按钮
     @BindView(R.id.iv_header_pic)
     CircleImageView ivHeaderPic;//头像
     @BindView(R.id.tv_phone_num1)
     TextView tvPhoneNum1;//账号
-    @BindView(R.id.tv_change_personal_info)
-    TextView tvChangePersonalInfo;//修改个人信息
-    @BindView(R.id.btn_is_name_auth)
-    Button btnIsNameAuth;//是否实名认证按钮
     @BindView(R.id.tv_today_answer_num)
     TextView tvTodayAnswerNum;//今日剩余答题次数
     @BindView(R.id.tv_add_answer_num)
     TextView tvAddAnswerNum;//增加答题次数
-    @BindView(R.id.tv_check_account_record)
-    TextView tvCheckAccountRecord;//查看账户记录
     @BindView(R.id.tv_balance)
     TextView tvBalance;//余额
     @BindView(R.id.btn_immedicate_withdrawal)
     Button btnImmedicateWithdrawal;//立即提现
-    @BindView(R.id.tv_integral_balance)
-    TextView tvIntegralBalance;//积分数量
-    @BindView(R.id.btn_immedicate_use)
-    Button btnImmedicateUse;//立即使用
-    @BindView(R.id.iv_not_use)
-    ImageView ivNotUse;//未使用奖品按钮
-    @BindView(R.id.tv_num)
-    TextView tvNum;//未使用奖品数量
-    @BindView(R.id.iv_already_use)
-    ImageView ivAlreadyUse;//已使用奖品按钮
-    @BindView(R.id.iv_out_of_date)
-    ImageView ivOutOfDate;//已过期奖品
-    @BindView(R.id.iv_all_prize)
-    ImageView ivAllPrize;//全部奖品
-
     @BindView(R.id.rl_answer_record)
     RelativeLayout rlAnswerRecord;//答题记录
     @BindView(R.id.rl_system_set)
@@ -124,12 +100,22 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
     @BindView(R.id.rl_invite_share)
     RelativeLayout rlInviteShare;
     Unbinder unbinder;
-    private static final String TAG = "MineFragment";
-    private static final String TAG2 = "MineFragment2";
-    @BindView(R.id.tv_three_prize_exprized)
-    TextView tvThreePrizeExprized;
     @BindView(R.id.rl_back)
     RelativeLayout rlBack; //返回键
+    @BindView(R.id.iv_real_logo)
+    ImageView ivRealLogo;//实名认证logo
+    @BindView(R.id.tv_integral_balance)
+    TextView tvIntegralBalance;//积分数量
+    @BindView(R.id.ll_score)
+    LinearLayout llScore; //积分
+    @BindView(R.id.tv_gift_num)
+    TextView tvGiftNum; //奖品数量
+    @BindView(R.id.ll_gift)
+    LinearLayout llGift; //奖品
+    @BindView(R.id.tv_tools_num)
+    TextView tvToolsNum; //道具数量
+    @BindView(R.id.ll_tools)
+    LinearLayout llTools; //道具
     private CommonPopupWindow popupWindow;
 
     //图标
@@ -175,7 +161,6 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        tvCommonTitle1.setText("我的");
         /**
          * 检测微信是否安装,如果没有安装,需不显示分享按钮;如果安装了微信则显示分享按钮.
          */
@@ -278,12 +263,11 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                                     SharedPrefrenceTool.put(mContext, "certification", isCertification);
                                     if (1 == mineBean.getCertification()) {
                                         //已实名认证
-                                        btnIsNameAuth.setBackgroundResource(R.mipmap.pass);
+                                        ivRealLogo.setVisibility(View.GONE);
                                     } else {
                                         //未实名认证
-                                        btnIsNameAuth.setBackgroundResource(R.mipmap.notpass);
+                                        ivRealLogo.setVisibility(View.VISIBLE);
                                     }
-
                                     tvTodayAnswerNum.setText("今日答题次数剩余: " + mineBean.getOpporitunity());
                                     tvBalance.setText("余额:￥" + mineBean.getCash());
                                     if (!EncodeAndStringTool.isStringEmpty(mineBean.getCash())) {
@@ -298,26 +282,20 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                                     }
                                     if (!EncodeAndStringTool.isStringEmpty(mineBean.getBp())) {
                                         SharedPrefrenceTool.put(mContext, "bp", mineBean.getBp());
-                                        if (Integer.parseInt(mineBean.getBp()) > 0) {
-                                            btnImmedicateUse.setEnabled(true);
-                                        } else {
-                                            btnImmedicateUse.setEnabled(false);
-                                        }
                                     }
-                                    tvIntegralBalance.setText("余额:" + mineBean.getBp());
+                                    tvIntegralBalance.setText("可用积分：" + mineBean.getBp());
 
                                     if (mineBean.getAvailablePrize() > 0) {
-                                        tvNum.setVisibility(View.VISIBLE);
-                                        tvNum.setText("+" + mineBean.getAvailablePrize());//未使用奖品数
+                                        tvGiftNum.setText("可用奖品：" + mineBean.getAvailablePrize());//可使用奖品数
                                     } else {
-                                        tvNum.setVisibility(View.GONE);
+                                        tvGiftNum.setText("可用奖品：0");//未使用奖品数
                                     }
 
-                                    if (mineBean.getUpcommings() > 0) {
-                                        tvThreePrizeExprized.setText(mineBean.getUpcommings() + "件奖品快过期");
-                                    } else {
-                                        tvThreePrizeExprized.setVisibility(View.GONE);
-                                    }
+//                                    if (mineBean.getUpcommings() > 0) {
+//                                        tvThreePrizeExprized.setText(mineBean.getUpcommings() + "件奖品快过期");
+//                                    } else {
+//                                        tvThreePrizeExprized.setVisibility(View.GONE);
+//                                    }
 
                                     SaveUserInfo.getInstance(getActivity()).setUserInfo("my_bp", mineBean.getBp());
 
@@ -357,10 +335,9 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                 });
     }
 
-    @OnClick({R.id.rl_back, R.id.iv_common_right_icon, R.id.iv_header_pic, R.id.rl_header, R.id.tv_change_personal_info, R.id.btn_is_name_auth,
-            R.id.tv_add_answer_num, R.id.tv_check_account_record, R.id.btn_immedicate_withdrawal, R.id.btn_immedicate_use,
-            R.id.iv_not_use, R.id.iv_already_use, R.id.iv_out_of_date, R.id.iv_all_prize, R.id.rl_answer_record,
-            R.id.rl_system_set, R.id.rl_contact_us, R.id.rl_invite_share})
+    @OnClick({R.id.rl_back, R.id.iv_common_right_icon, R.id.iv_header_pic, R.id.rl_header, R.id.iv_real_logo,
+            R.id.tv_add_answer_num, R.id.rl_account_record, R.id.btn_immedicate_withdrawal, R.id.ll_score, R.id.ll_gift, R.id.ll_tools,
+            R.id.rl_answer_record, R.id.rl_system_set, R.id.rl_contact_us, R.id.rl_invite_share})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_back:
@@ -375,26 +352,19 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                 break;
             case R.id.iv_header_pic://点击头像和修改个人信息走相同的逻辑
             case R.id.rl_header://点击头布局都跳转到修改个人信息页面
-            case R.id.tv_change_personal_info:
                 if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
                     Intent intent = new Intent(mContext, ChangePersonalInfoActivity.class);
                     startActivity(intent);
                 }
                 break;
-            case R.id.btn_is_name_auth://前往实名认证
-                if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
-                    if (1 == mineBean.getCertification()) {
-                        //已实名认证
-                    } else {
-                        //未实名认证
-                        startActivity(new Intent(mContext, RealNameAuthActivity.class));
-                    }
-                }
+            case R.id.iv_real_logo://前往实名认证
+                //未实名认证
+                startActivity(new Intent(mContext, RealNameAuthActivity.class));
                 break;
             case R.id.tv_add_answer_num: //增加答题次数
                 showAddAnswerNum();
                 break;
-            case R.id.tv_check_account_record:   //账户记录
+            case R.id.rl_account_record:   //账户记录
                 startActivity(new Intent(mContext, AccountRecordActivity.class));
                 break;
             case R.id.btn_immedicate_withdrawal:  //立即提现
@@ -413,7 +383,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
 
                 }
                 break;
-            case R.id.btn_immedicate_use: //积分使用
+            case R.id.ll_score: //积分使用
                 if (mineBean.getCertification() == 1) {
                     Intent intent = new Intent(mContext, IntegralExchangeActivity.class);
                     startActivity(intent);
@@ -421,7 +391,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                     RealNamePopupUtil.showAuthPop(mContext, llMineFragment);
                 }
                 break;
-            case R.id.iv_not_use: //未使用
+            case R.id.ll_gift: //奖品
                 if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
                     Intent notUse = new Intent(mContext, MinePrizeActivity.class);
                     notUse.putExtra("status", 1);
@@ -429,29 +399,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                     startActivity(notUse);
                 }
                 break;
-            case R.id.iv_already_use: //使用中
-                if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
-                    Intent alreadyUse = new Intent(mContext, MinePrizeActivity.class);
-                    alreadyUse.putExtra("certification", mineBean.getCertification());//是否实名认证
-                    alreadyUse.putExtra("status", 2);
-                    startActivity(alreadyUse);
-                }
-                break;
-            case R.id.iv_out_of_date: //已使用
-                if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
-                    Intent outOfDate = new Intent(mContext, MinePrizeActivity.class);
-                    outOfDate.putExtra("certification", mineBean.getCertification());//是否实名认证
-                    outOfDate.putExtra("status", 3);
-                    startActivity(outOfDate);
-                }
-                break;
-            case R.id.iv_all_prize: //全部
-                if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
-                    Intent allPrize = new Intent(mContext, MinePrizeActivity.class);
-                    allPrize.putExtra("certification", mineBean.getCertification());//是否实名认证
-                    allPrize.putExtra("status", 0);
-                    startActivity(allPrize);
-                }
+            case R.id.ll_tools://道具
                 break;
             case R.id.rl_answer_record: //成绩单
                 startActivity(new Intent(mContext, AnswerRecordActivity.class));
@@ -477,6 +425,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
 
     TextView tvRemainderTime;
     Button btnGetImmedicate;
+    ImageView add_answernum_logo;
 
     /**
      * 增加答题次数弹窗
@@ -505,10 +454,10 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
         switch (layoutResId) {
             case R.layout.add_answer_num_popupwindow:
                 ImageView ivClose0 = view.findViewById(R.id.iv_close_icon0);
+                add_answernum_logo = view.findViewById(R.id.iv_logo);
                 btnGetImmedicate = view.findViewById(R.id.btn_get_immedicate);
                 tvRemainderTime = view.findViewById(R.id.tv_remainder_time);
                 loadAnswerOpptyRemainder();
-                Button btnIntegrationPrize = view.findViewById(R.id.btn_integration_prize);
                 ivClose0.setOnClickListener(new OnMultiClickListener() {
                     @Override
                     public void onMultiClick(View v) {
@@ -524,27 +473,6 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                             loadAnswerOppty();
                         } else {
                             Toast.makeText(mContext, "网络链接失败，请检查网络链接！", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-                btnIntegrationPrize.setOnClickListener(new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v) {
-                        if (popupWindow != null && popupWindow.isShowing()) {
-                            popupWindow.dismiss();
-                        }
-                        /**
-                         * 是否实名认证
-                         * 0——未实名认证
-                         * 1——已实名认证
-                         * 2——审核中
-                         * 3——未通过
-                         * 4——拉黑
-                         */
-                        if (mineBean.getCertification() == 1) {
-                            startActivity(new Intent(mContext, IntegralExchangeActivity.class));
-                        } else {
-                            RealNamePopupUtil.showAuthPop(mContext, llMineFragment);
                         }
                     }
                 });
@@ -576,8 +504,10 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                             if (!EncodeAndStringTool.isStringEmpty(remainderTime)) {
                                 if (remainderTime.equals("0")) {
                                     btnGetImmedicate.setEnabled(true);
+                                    add_answernum_logo.setBackgroundResource(R.mipmap.new_add_answernum_s);
                                 } else {
                                     btnGetImmedicate.setEnabled(false);
+                                    add_answernum_logo.setBackgroundResource(R.mipmap.new_add_answernum_n);
                                     long time = Long.parseLong(remainderTime);
                                     countDown(time);
                                 }
@@ -624,6 +554,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                             answerOpptyBean = dataResponse.getDat();
                             if (!EncodeAndStringTool.isObjectEmpty(answerOpptyBean)) {
                                 btnGetImmedicate.setEnabled(false);
+                                add_answernum_logo.setBackgroundResource(R.mipmap.new_add_answernum_n);
                                 answerOpptyBean.getRemainder();
                                 countDown(answerOpptyBean.getRemainder());
                                 /**
@@ -664,8 +595,8 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                 SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");//初始化Formatter的转换格式。
                 formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
                 String hms = formatter.format(millisUntilFinished);
-                String time = "需等待<font color='#227fc5'>" + hms + "</font>后\n可获取一次答题次数";
-                tvRemainderTime.setText(Html.fromHtml(time));
+                String time = "需等待" + hms + "后获取次数";
+                tvRemainderTime.setText(time);
             }
 
             @Override

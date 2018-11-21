@@ -729,6 +729,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
 
     TextView tvRemainderTime;
     Button btnGetImmedicate;
+    ImageView add_answernum_logo;
 
     /**
      * 增加答题次数弹窗
@@ -846,10 +847,10 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                 break;
             case R.layout.add_answer_num_popupwindow:
                 ImageView ivClose0 = view.findViewById(R.id.iv_close_icon0);
+                add_answernum_logo = view.findViewById(R.id.iv_logo);
                 btnGetImmedicate = view.findViewById(R.id.btn_get_immedicate);
                 tvRemainderTime = view.findViewById(R.id.tv_remainder_time);
                 loadAnswerOpptyRemainder();
-                Button btnIntegrationPrize = view.findViewById(R.id.btn_integration_prize);
                 ivClose0.setOnClickListener(new OnMultiClickListener() {
                     @Override
                     public void onMultiClick(View v) {
@@ -865,33 +866,6 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                             loadAnswerOppty();
                         } else {
                             Toast.makeText(WebAnswerActivity.this, "网络链接失败，请检查网络链接！", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-                btnIntegrationPrize.setOnClickListener(new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v) {
-                        if (commonPopupWindow != null && commonPopupWindow.isShowing()) {
-                            commonPopupWindow.dismiss();
-                        }
-                        /**TODO
-                         * 是否实名认证
-                         * 0——未实名认证
-                         * 1——已实名认证
-                         * 2——审核中
-                         * 3——未通过
-                         * 4——拉黑
-                         */
-                        String cert = SaveUserInfo.getInstance(WebAnswerActivity.this).getUserInfo("cert");
-                        if (!EncodeAndStringTool.isStringEmpty(cert)) {
-                            certification = Integer.parseInt(cert);
-                        }
-                        if (certification == 1) {//groupDetail.getCertification()
-                            startActivity(new Intent(WebAnswerActivity.this, IntegralExchangeActivity.class));
-                        } else if (certification == 2) {
-                            ToastUtil.showToast(WebAnswerActivity.this, "您已成功提交认证申请..\n预计将在24小时内审核完成");
-                        } else {
-                            RealNamePopupUtil.showAuthPop(WebAnswerActivity.this, llH5);
                         }
                     }
                 });
@@ -933,8 +907,10 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                             if (!EncodeAndStringTool.isStringEmpty(remainderTime)) {
                                 if (remainderTime.equals("0")) {
                                     btnGetImmedicate.setEnabled(true);
+                                    add_answernum_logo.setBackgroundResource(R.mipmap.new_add_answernum_s);
                                 } else {
                                     btnGetImmedicate.setEnabled(false);
+                                    add_answernum_logo.setBackgroundResource(R.mipmap.new_add_answernum_n);
                                     long time = Long.parseLong(remainderTime);
                                     countDown(time);
                                 }
@@ -973,8 +949,8 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                 SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");//初始化Formatter的转换格式。
                 formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
                 String hms = formatter.format(millisUntilFinished);
-                String time = "需等待<font color='#227fc5'>" + hms + "</font>后\n可获取一次答题次数";
-                tvRemainderTime.setText(Html.fromHtml(time));
+                String time = "需等待" + hms + "后获取次数";
+                tvRemainderTime.setText(time);
             }
 
             @Override
@@ -1006,6 +982,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                             answerOpptyBean = dataResponse.getDat();
                             if (!EncodeAndStringTool.isObjectEmpty(answerOpptyBean)) {
                                 btnGetImmedicate.setEnabled(false);
+                                add_answernum_logo.setBackgroundResource(R.mipmap.new_add_answernum_n);
                                 answerOpptyBean.getRemainder();
                                 /**
                                  * 增加答题次数之后重新请求并刷新数据,让用户可以答题TODO 调用H5页面

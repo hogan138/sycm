@@ -1,81 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="@dimen/text_265"
-    android:layout_height="286dp"
-    android:background="@drawable/popupwindow_bg"
-    android:layout_gravity="center"
-    android:orientation="horizontal">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="280dp"
+    android:layout_height="310dp"
+    android:layout_gravity="center">
 
-    <RelativeLayout
-        android:layout_width="132.5dp"
-        android:layout_height="match_parent"
-        android:background="@mipmap/receive">
+    <ImageView
+        android:layout_width="280dp"
+        android:layout_height="310dp"
+        android:src="@mipmap/new_popupwindow_bg" />
 
-        <TextView
-            android:id="@+id/tv_remainder_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/btn_get_immedicate"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="@dimen/text_22"
-            android:text="每间隔8小时可获\n取一次答题次数"
-            android:textColor="@color/color_18"
-            android:textSize="@dimen/text_12" />
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/text_25" />
 
-        <Button
-            android:id="@+id/btn_get_immedicate"
-            android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="45dp"
-            android:layout_marginLeft="@dimen/text_11"
-            android:layout_marginRight="@dimen/text_11"
-            android:layout_marginTop="28dp"
-            android:background="@drawable/selector_5"
-            android:text="立即领取"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_15" />
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/text_15"
+        android:layout_marginTop="115dp"
+        android:layout_marginRight="@dimen/text_15"
+        android:gravity="center_horizontal"
+        android:text="每间隔8小时可获取1次\n答题次数"
+        android:textColor="@color/color_0"
+        android:textSize="@dimen/text_17" />
 
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/tv_remainder_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/text_15"
+        android:layout_marginTop="@dimen/text_44"
+        android:layout_marginRight="@dimen/text_15"
+        android:gravity="center_horizontal"
+        android:text="当前有答题次数可获取"
+        android:textColor="@color/color_4"
+        android:textSize="@dimen/text_17" />
+
+    <Button
+        android:id="@+id/btn_get_immedicate"
+        android:layout_width="@dimen/text_150"
+        android:layout_height="35dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/add_answernum_btn_selector"
+        android:text="领取答题次数"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_15" />
 
 
-    <RelativeLayout
-        android:layout_width="132.5dp"
-        android:layout_height="match_parent"
-        android:background="@mipmap/chou">
+    <ImageView
+        android:id="@+id/iv_close_icon0"
+        android:layout_width="@dimen/text_25"
+        android:layout_height="@dimen/text_25"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="88dp"
+        android:layout_marginRight="@dimen/text_8"
+        android:src="@mipmap/new_popupwindow_delete" />
 
-        <ImageView
-            android:id="@+id/iv_close_icon0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:src="@mipmap/dialog_close" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/btn_integration_prize"
-            android:layout_marginRight="@dimen/text_22"
-            android:layout_centerHorizontal="true"
-            android:text="您还可以通过积分抽奖方式获取答题次数哦"
-            android:textColor="@color/color_18"
-            android:textSize="@dimen/text_12" />
-        <!--圆角5dp 可点击颜色#227fc5 不可点击颜色#898989 -->
-        <Button
-            android:id="@+id/btn_integration_prize"
-            android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="45dp"
-            android:layout_marginLeft="@dimen/text_11"
-            android:layout_marginRight="@dimen/text_11"
-            android:layout_marginTop="28dp"
-            android:background="@drawable/selector_5"
-            android:text="积分抽奖"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_15" />
-
-    </RelativeLayout>
-
-</LinearLayout>
+</RelativeLayout>
