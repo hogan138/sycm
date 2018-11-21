@@ -34,7 +34,7 @@
             <include layout="@layout/contact_us" />
 
             <include layout="@layout/common_line_1" />
-            <!--分享邀请全名共进-->
+
             <include layout="@layout/invite_share" />
 
             <include layout="@layout/bottom_logo" />

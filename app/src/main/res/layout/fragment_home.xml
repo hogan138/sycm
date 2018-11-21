@@ -25,6 +25,44 @@
 
             <include layout="@layout/recommend_group_item" />
 
+            <!--广告-->
+            <RelativeLayout
+                android:id="@+id/rl_ad"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/text_55"
+                android:layout_marginLeft="@dimen/text_15"
+                android:layout_marginTop="@dimen/text_15"
+                android:layout_marginRight="@dimen/text_15"
+                android:background="@mipmap/home_ad_bg">
+
+                <ImageView
+                    android:id="@+id/iv_ad_logo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/text_10"
+                    android:src="@mipmap/home_ad_logo" />
+
+                <ImageView
+                    android:id="@+id/iv_ad_point"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/text_10"
+                    android:layout_marginRight="@dimen/text_15"
+                    android:src="@mipmap/home_ad_point" />
+
+                <com.shuyun.qapp.view.VerticalScrollTextView
+                    android:id="@+id/scroll_ad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/text_14"
+                    android:layout_toLeftOf="@+id/iv_ad_point"
+                    android:layout_toRightOf="@+id/iv_ad_logo"></com.shuyun.qapp.view.VerticalScrollTextView>
+            </RelativeLayout>
+
             <!--活动布局-->
             <LinearLayout
                 android:id="@+id/activityRegion"

@@ -83,12 +83,12 @@
 
         <com.shuyun.qapp.view.WaveView2
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="55dp"
             android:layout_below="@+id/ll_add" />
 
         <com.shuyun.qapp.view.WaveView1
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="58dp"
             android:layout_below="@+id/ll_add" />
 
         <com.shuyun.qapp.view.WaveView

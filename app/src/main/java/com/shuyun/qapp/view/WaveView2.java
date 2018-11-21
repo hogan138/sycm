@@ -48,7 +48,7 @@ public class WaveView2 extends View {
                 postInvalidate();
             }
         });
-        mAnimator.setDuration(1600);
+        mAnimator.setDuration(2800);
         mAnimator.setRepeatCount(ValueAnimator.INFINITE);
         mAnimator.start();
     }

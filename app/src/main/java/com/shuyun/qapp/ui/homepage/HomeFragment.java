@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blankj.utilcode.constant.TimeConstants;
 import com.blankj.utilcode.util.AppUtils;
@@ -74,6 +75,7 @@ import com.shuyun.qapp.view.InviteSharePopupUtil;
 import com.shuyun.qapp.view.MainActivityDialogInfo;
 import com.shuyun.qapp.view.NotifyDialog;
 import com.shuyun.qapp.view.OvalImageView;
+import com.shuyun.qapp.view.VerticalScrollTextView;
 import com.shuyun.qapp.view.ViewPagerScroller;
 import com.sunfusheng.marqueeview.MarqueeView;
 import com.umeng.analytics.MobclickAgent;
@@ -163,7 +165,8 @@ public class HomeFragment extends Fragment {
     NestedScrollView scrollView; //ScrollView
     @BindView(R.id.rl_title)
     RelativeLayout rlTitle; //标题栏
-
+    @BindView(R.id.scroll_ad)
+    VerticalScrollTextView scrollAd;
 
     /**
      * 网络获取到推荐题组列表
@@ -268,6 +271,23 @@ public class HomeFragment extends Fragment {
          * 获取全民播报
          */
         loadSystemInfo();
+
+        //公告
+        List<String> info = new ArrayList<>();
+        info.add("<p>全民共进挑战赛火热开启<br><span style=\"color:blue\">90秒内答题冲榜，上榜得好礼！详情速戳</span></p>");
+        info.add("<p><span style=\"color:red\">全民共进</span>挑战赛火热开启<br>90秒内答题冲榜，上榜得好礼！详情速戳</p>");
+        scrollAd.setTextList(info);
+        scrollAd.setMaxLines(2);
+        scrollAd.setTextStillTime(2000);
+        scrollAd.makeView();
+        scrollAd.setAnimTime(300);
+        scrollAd.startAutoScroll();
+        scrollAd.setOnItemClickListener(new VerticalScrollTextView.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Toast.makeText(mContext, "你点击了" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
@@ -465,6 +485,12 @@ public class HomeFragment extends Fragment {
                                     }
                                     if (!EncodeAndStringTool.isListEmpty(info)) {
                                         marqueeView.startWithList(info);
+                                        marqueeView.setOnItemClickListener(new MarqueeView.OnItemClickListener() {
+                                            @Override
+                                            public void onItemClick(int position, TextView textView) {
+//                                                Toast.makeText(mContext, "你点击了" + textView.getText().toString(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
                                     }
                                 } catch (Exception e) {
                                 }
