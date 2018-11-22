@@ -35,6 +35,7 @@ import com.blankj.utilcode.util.PhoneUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.GroupTreeAdapter;
+import com.shuyun.qapp.adapter.HomeBannerAdapter;
 import com.shuyun.qapp.adapter.HomeSortAdapter;
 import com.shuyun.qapp.adapter.HotGroupAdapter;
 import com.shuyun.qapp.adapter.MarkBannerAdapter;
@@ -91,6 +92,7 @@ import butterknife.Unbinder;
 import cn.kevin.banner.BannerAdapter;
 import cn.kevin.banner.BannerViewPager;
 import cn.kevin.banner.IBannerItem;
+import cn.kevin.banner.transformer.YZoomTransFormer;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -356,7 +358,8 @@ public class HomeFragment extends Fragment {
                                 final List<BannerBean> bannerData = listDataResponse.getDat();
                                 if (!EncodeAndStringTool.isListEmpty(bannerData)) {
                                     //设置轮播图
-                                    BannerAdapter adapter = new BannerAdapter(new GlideImageLoader1());
+//                                    BannerAdapter adapter = new BannerAdapter(new GlideImageLoader());
+                                    HomeBannerAdapter adapter = new HomeBannerAdapter(new GlideImageLoader1());
                                     List<IBannerItem> list = new ArrayList<>();
                                     for (int i = 0; i < bannerData.size(); i++) {
                                         list.add(new BannerItem(bannerData.get(i).getPicture()));
@@ -366,6 +369,10 @@ public class HomeFragment extends Fragment {
 
                                     //设置index 在viewpager下面
                                     ViewPager mViewpager = (ViewPager) mBannerView.getChildAt(0);
+                                    //为ViewPager设置高度
+                                    ViewGroup.LayoutParams params = mViewpager.getLayoutParams();
+                                    params.height = getResources().getDimensionPixelSize(R.dimen.viewPager_01);
+                                    mViewpager.setLayoutParams(params);
                                     //设置时间，时间越长，速度越慢
                                     ViewPagerScroller pagerScroller = new ViewPagerScroller(getActivity());
                                     pagerScroller.setScrollDuration(400);
@@ -386,6 +393,7 @@ public class HomeFragment extends Fragment {
                                             }
                                         }
                                     });
+                                    mBannerView.setPageTransformer(true, new YZoomTransFormer(.8f)); //banner动画
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();

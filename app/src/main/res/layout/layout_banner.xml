@@ -8,8 +8,11 @@
     <cn.kevin.banner.BannerViewPager
         android:id="@+id/banner"
         android:layout_width="match_parent"
-        android:layout_height="170dp"
-        app:around_visible="false"
-        app:point_drawable="@drawable/banner_selector1"
+        android:layout_height="@dimen/B_viewPager_01"
+        app:around_visible="true"
+        app:item_margin="5dp"
+        app:marginLeft="20dp"
+        app:marginRight="20dp"
+        app:point_drawable="@drawable/banner_selector"
         app:point_gravity="bottom_center" />
 </LinearLayout>

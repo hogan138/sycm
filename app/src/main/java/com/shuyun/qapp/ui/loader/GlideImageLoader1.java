@@ -25,7 +25,7 @@ public class GlideImageLoader1 implements ImageLoader {
     public void onDisplayImage(Context context, ImageView imageView, String url) {
 
         Glide.with(context).load(url)
-//                .transform(new CenterCrop(context), new GlideRoundTransform(context, 4))
+                .transform(new CenterCrop(context), new GlideRoundTransform(context, 4))
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imageView);
 
