@@ -141,4 +141,12 @@
     <string name="add_info_tip_two">2、用户需自行保证支付宝绑定姓名和账户是否一致，请妥善填写</string>
     <string name="add_info_tip_three">3、支付宝相关信息不可被您的其他全民共进账号重复使用</string>
     <string name="real_name_tip">1、实名认证一旦审核通过后，不可修改\n2、一个实名认证信息仅可绑定一个手机号\n3、实名信息需保证跟手机号匹配，并且手机号真实有效\n4、当日实名次数仅有3次，如3次全部认证失败，当日不可进行认证</string>
+
+    <!--实名认证弹框文字描述-->
+    <string name="real_main_describe">认证通过后方可进行提现,\n兑换奖品等操作哦~</string>
+    <string name="real_withdraw_describe">认证通过后方可进行提现\n操作哦~</string>
+    <string name="real_openbox_describe">认证通过后才可以打开\n该宝箱哦~</string>
+    <string name="real_baby_describe">认证通过后方可参与\n夺宝哦~</string>
+    <string name="real_gift_describe">认证通过后才能使用\n该奖品哦~</string>
+
 </resources>

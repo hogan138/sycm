@@ -8,7 +8,7 @@ import org.litepal.crud.DataSupport;
 
 public class Msg extends DataSupport {
 
-    private int id;//消息id
+    private Long id;//消息id
     /**
      * 消息类型
      * 0——不跳转
@@ -71,7 +71,7 @@ public class Msg extends DataSupport {
         this.time = time;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -99,7 +99,7 @@ public class Msg extends DataSupport {
         return time;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 

@@ -41,6 +41,7 @@ import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.webview.WebDetailFragment;
+import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.CustomLoadingFactory;
@@ -50,6 +51,7 @@ import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ScannerUtils;
+import com.shuyun.qapp.view.RealNamePopupUtil;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -179,7 +181,12 @@ public class PrizeDetailsActivity extends BaseActivity implements View.OnClickLi
                 finish();
                 break;
             case R.id.rl_exchange:
-                ExchangeDialog();
+                if (Integer.parseInt(SaveUserInfo.getInstance(PrizeDetailsActivity.this).getUserInfo("cert")) == 1) {
+                    ExchangeDialog();
+                } else {
+                    //显示实名认证弹窗
+                    RealNamePopupUtil.showAuthPop(PrizeDetailsActivity.this, rlMain, getString(R.string.real_baby_describe));
+                }
                 break;
             case R.id.iv_right_icon:
                 //分享
@@ -489,7 +496,8 @@ public class PrizeDetailsActivity extends BaseActivity implements View.OnClickLi
     CommonPopupWindow popupWindow;
 
     public void showSharedPop() {
-        if ((!EncodeAndStringTool.isObjectEmpty(popupWindow)) && popupWindow.isShowing()) return;
+        if ((!EncodeAndStringTool.isObjectEmpty(popupWindow)) && popupWindow.isShowing())
+            return;
         View upView = LayoutInflater.from(this).inflate(R.layout.share_popupwindow, null);
         //测量View的宽高
         CommonPopUtil.measureWidthAndHeight(upView);
@@ -653,7 +661,7 @@ public class PrizeDetailsActivity extends BaseActivity implements View.OnClickLi
      * @param result  分享结果1:分享成功;2:分享失败
      * @param channel 1:微信朋友圈 2:微信好友
      */
-    private void loadSharedSure(int id, int result, int channel) {
+    private void loadSharedSure(Long id, int result, int channel) {
         ApiService apiService = BasePresenter.create(8000);
         apiService.sharedConfirm(id, result, channel)
                 .subscribeOn(Schedulers.io())

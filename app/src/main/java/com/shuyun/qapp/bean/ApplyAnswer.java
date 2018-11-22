@@ -135,15 +135,15 @@ public class ApplyAnswer {
              * picture : null
              */
 
-            private int id;//选项id
+            private Long id;//选项id
             private String title;//选项标题
             private String picture;//选项图片
 
-            public int getId() {
+            public Long getId() {
                 return id;
             }
 
-            public void setId(int id) {
+            public void setId(Long id) {
                 this.id = id;
             }
 

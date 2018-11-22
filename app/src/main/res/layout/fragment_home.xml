@@ -7,11 +7,46 @@
     android:background="@color/white"
     tools:context="com.shuyun.qapp.ui.homepage.HomeFragment">
 
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="#ffffff"
+        android:paddingTop="35dp">
+
+        <TextView
+            android:id="@+id/tv_common_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/color_0"
+            android:textSize="@dimen/text_16" />
+
+
+        <ImageView
+            android:id="@+id/iv_common_right_icon"
+            android:layout_width="@dimen/text_20"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/text_15" />
+
+        <TextView
+            android:id="@+id/tv_invite"
+            android:layout_width="68dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:text="分享"
+            android:textColor="@color/color_1"
+            android:textSize="@dimen/text_15" />
+
+    </RelativeLayout>
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rl_title">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,7 +68,8 @@
                 android:layout_marginLeft="@dimen/text_15"
                 android:layout_marginTop="@dimen/text_15"
                 android:layout_marginRight="@dimen/text_15"
-                android:background="@mipmap/home_ad_bg">
+                android:background="@mipmap/home_ad_bg"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/iv_ad_logo"
@@ -202,41 +238,6 @@
 
     </android.support.v4.widget.NestedScrollView>
 
-    <RelativeLayout
-        android:id="@+id/rl_title"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="#00333333"
-        android:paddingTop="35dp">
-
-        <TextView
-            android:id="@+id/tv_common_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:textColor="@color/color_0"
-            android:textSize="@dimen/text_16"
-            android:visibility="gone" />
-
-
-        <ImageView
-            android:id="@+id/iv_common_right_icon"
-            android:layout_width="@dimen/text_20"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/text_12" />
-
-        <TextView
-            android:id="@+id/tv_invite"
-            android:layout_width="68dp"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:paddingLeft="16dp"
-            android:text="分享"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_15" />
-
-    </RelativeLayout>
 
     <ImageView
         android:id="@+id/iv_bx"

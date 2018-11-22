@@ -23,6 +23,7 @@ import com.shuyun.qapp.bean.GroupAgainstBean;
 import com.shuyun.qapp.bean.GroupClassifyBean;
 import com.shuyun.qapp.bean.GroupDetail;
 import com.shuyun.qapp.bean.HomeGroupsBean;
+import com.shuyun.qapp.bean.HomeNoticeBean;
 import com.shuyun.qapp.bean.IntegralAllPrizeBean;
 import com.shuyun.qapp.bean.IntegralExchangeBean;
 import com.shuyun.qapp.bean.IntegralPrizeBean;
@@ -329,7 +330,7 @@ public interface ApiService {
      * @return
      */
     @GET("/rest/share/{id}/confirm")
-    Observable<DataResponse> sharedConfirm(@Path("id") int id, @Query("result") int result, @Query("channel") int channel);
+    Observable<DataResponse> sharedConfirm(@Path("id") Long id, @Query("result") int result, @Query("channel") int channel);
 
     /**
      * 29、获取题组树
@@ -688,4 +689,10 @@ public interface ApiService {
      */
     @GET("/rest/user/certificate/query")
     Observable<DataResponse<AuthNameBean>> queryRealResult(@Query("bizNo") String bizNo);
+
+    /**
+     * 76、首页公告
+     */
+    @GET("/rest/home/notice")
+    Observable<DataResponse<List<HomeNoticeBean>>> homeNotice();
 }

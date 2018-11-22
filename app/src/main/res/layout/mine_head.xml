@@ -51,9 +51,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_phone_num1"
-            android:layout_marginTop="@dimen/text_8"
             android:gravity="center_horizontal"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/text_8">
 
             <TextView
                 android:id="@+id/tv_today_answer_num"
@@ -78,22 +78,22 @@
 
         <com.shuyun.qapp.view.WaveView3
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="70dp"
             android:layout_below="@+id/ll_add" />
 
         <com.shuyun.qapp.view.WaveView2
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="70dp"
             android:layout_below="@+id/ll_add" />
 
         <com.shuyun.qapp.view.WaveView1
             android:layout_width="match_parent"
-            android:layout_height="58dp"
+            android:layout_height="70dp"
             android:layout_below="@+id/ll_add" />
 
         <com.shuyun.qapp.view.WaveView
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="70dp"
             android:layout_below="@+id/ll_add" />
     </RelativeLayout>
 

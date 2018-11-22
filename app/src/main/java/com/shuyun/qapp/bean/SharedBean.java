@@ -21,7 +21,7 @@ public class SharedBean {
      * url : http://wx.25876.com/share/h5/exam?p=%7B%22inviter%22%3A130%2C%22exam%22%3A%224d9cb6ccbf2d431294cee783c31c37fb%22%2C%22group%22%3A108%7D
      */
 
-    private int id;//分享id
+    private Long id;//分享id
     private String title;//分享文案标题
     private String content;//分享文案内容
     private String url;//分享的网页地址
@@ -46,11 +46,11 @@ public class SharedBean {
         return picture;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

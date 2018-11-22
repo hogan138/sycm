@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
@@ -25,7 +26,7 @@ public class RealNamePopupUtil {
     /**
      * 实名认证popupWindow
      */
-    public static void showAuthPop(final Context context, View view) {
+    public static void showAuthPop(final Context context, View view, final String describe) {
         if (popupWindow != null && popupWindow.isShowing())
             return;
         View upView = LayoutInflater.from(context).inflate(R.layout.real_name_auth_popupwindow, null);
@@ -44,6 +45,8 @@ public class RealNamePopupUtil {
                         switch (layoutResId) {
                             case R.layout.real_name_auth_popupwindow:
                                 ImageView ivClose1 = view.findViewById(R.id.iv_close_icon1);
+                                TextView tv_hint = view.findViewById(R.id.tv_hint);
+                                tv_hint.setText(describe);
                                 Button btnRealNameAuth = view.findViewById(R.id.btn_real_name_auth1);
                                 ivClose1.setOnClickListener(new OnMultiClickListener() {
                                     @Override

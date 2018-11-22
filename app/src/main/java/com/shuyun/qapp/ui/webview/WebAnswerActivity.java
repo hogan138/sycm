@@ -331,16 +331,11 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                             }
                         } else {
                             //显示实名认证弹窗
-                            RealNamePopupUtil.showAuthPop(WebAnswerActivity.this, llH5);
+                            RealNamePopupUtil.showAuthPop(WebAnswerActivity.this, llH5, getString(R.string.real_gift_describe));
                         }
                     } else if (minePrize.getActionType().equals("action.bp.use")) {
-                        if (Integer.parseInt(SaveUserInfo.getInstance(WebAnswerActivity.this).getUserInfo("cert")) == 1) {
-                            //积分
-                            startActivity(new Intent(WebAnswerActivity.this, IntegralExchangeActivity.class));
-                        } else {
-                            //显示实名认证弹窗
-                            RealNamePopupUtil.showAuthPop(WebAnswerActivity.this, llH5);
-                        }
+                        //积分
+                        startActivity(new Intent(WebAnswerActivity.this, IntegralExchangeActivity.class));
                     }
                 }
             });
@@ -694,7 +689,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
      * @param result  分享结果1:分享成功;2:分享失败
      * @param channel 1:微信朋友圈 2:微信好友
      */
-    private void loadSharedSure(int id, int result, int channel) {
+    private void loadSharedSure(Long id, int result, int channel) {
         ApiService apiService = BasePresenter.create(8000);
         apiService.sharedConfirm(id, result, channel)
                 .subscribeOn(Schedulers.io())

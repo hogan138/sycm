@@ -240,16 +240,11 @@ public class WebPrizeBoxActivity extends BaseActivity {
                             }
                         } else {
                             //显示实名认证弹窗
-                            RealNamePopupUtil.showAuthPop(getApplicationContext(), llWebBox);
+                            RealNamePopupUtil.showAuthPop(getApplicationContext(), llWebBox, getString(R.string.real_gift_describe));
                         }
                     } else if (minePrize.getActionType().equals("action.bp.use")) {
-                        if (Integer.parseInt(SaveUserInfo.getInstance(WebPrizeBoxActivity.this).getUserInfo("cert")) == 1) {
-                            //积分
-                            startActivity(new Intent(WebPrizeBoxActivity.this, IntegralExchangeActivity.class));
-                        } else {
-                            //显示实名认证弹窗
-                            RealNamePopupUtil.showAuthPop(getApplicationContext(), llWebBox);
-                        }
+                        //积分
+                        startActivity(new Intent(WebPrizeBoxActivity.this, IntegralExchangeActivity.class));
 
                     }
                 }

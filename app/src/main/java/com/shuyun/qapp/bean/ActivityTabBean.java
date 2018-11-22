@@ -44,7 +44,7 @@ public class ActivityTabBean {
         private String h5Url;
         private boolean stop;
         private String baseImage;
-        private int id;
+        private Long id;
         private String btnAction;
         private String content;
 
@@ -80,11 +80,11 @@ public class ActivityTabBean {
             this.baseImage = baseImage;
         }
 
-        public int getId() {
+        public Long getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(Long id) {
             this.id = id;
         }
 

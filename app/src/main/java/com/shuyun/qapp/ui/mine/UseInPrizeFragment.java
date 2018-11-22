@@ -125,25 +125,21 @@ public class UseInPrizeFragment extends Fragment {
                         intent.putExtra("name", minePrize.getName());
                         startActivity(intent);
                     } else {
-                        RealNamePopupUtil.showAuthPop(getContext(), ((MinePrizeActivity) getActivity()).llPrize);
+                        RealNamePopupUtil.showAuthPop(getContext(), ((MinePrizeActivity) getActivity()).llPrize, getString(R.string.real_gift_describe));
                     }
                 } else if (minePrize.getActionType().equals("action.use.record")) {
                     //红包
                     if (Integer.parseInt(SaveUserInfo.getInstance(getActivity()).getUserInfo("cert")) == 1) {
                         startActivity(new Intent(getActivity(), CashResultActivity.class));
                     } else {
-                        RealNamePopupUtil.showAuthPop(getContext(), ((MinePrizeActivity) getActivity()).llPrize);
+                        RealNamePopupUtil.showAuthPop(getContext(), ((MinePrizeActivity) getActivity()).llPrize, getString(R.string.real_gift_describe));
                     }
                 } else if (minePrize.getActionType().equals("action.open.box")) {
-                    if (Integer.parseInt(SaveUserInfo.getInstance(getActivity()).getUserInfo("cert")) == 1) {
-                        //宝箱
-                        Intent intent = new Intent(getActivity(), WebPrizeBoxActivity.class);
-                        intent.putExtra("ChildMinePrize", minePrize);
-                        intent.putExtra("main_box", "my_prize");
-                        startActivity(intent);
-                    } else {
-                        RealNamePopupUtil.showAuthPop(getContext(), ((MinePrizeActivity) getActivity()).llPrize);
-                    }
+                    //宝箱
+                    Intent intent = new Intent(getActivity(), WebPrizeBoxActivity.class);
+                    intent.putExtra("ChildMinePrize", minePrize);
+                    intent.putExtra("main_box", "my_prize");
+                    startActivity(intent);
                 } else {
                     //暂不支持 实物和电子卷 提示用户去下载新版本
                     showDownloadAppDialog();

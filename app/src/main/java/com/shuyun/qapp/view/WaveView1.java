@@ -23,7 +23,7 @@ public class WaveView1 extends View {
     private int height = 0;
     private int baseLine = 0;// 基线，用于控制水位上涨的，这里是写死了没动，你可以不断的设置改变。
     private Paint mPaint;
-    private int waveHeight = 100;// 波浪的最高度
+    private int waveHeight = 120;// 波浪的最高度
     private int waveWidth;//波长
     private float offset = 0f;//偏移量
 
@@ -48,7 +48,7 @@ public class WaveView1 extends View {
                 postInvalidate();
             }
         });
-        mAnimator.setDuration(3100);
+        mAnimator.setDuration(6000);
         mAnimator.setRepeatCount(ValueAnimator.INFINITE);
         mAnimator.start();
     }

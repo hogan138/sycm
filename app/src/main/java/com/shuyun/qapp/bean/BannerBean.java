@@ -6,7 +6,7 @@ package com.shuyun.qapp.bean;
 
 public class BannerBean {
 
-    private int id;
+    private Long id;
     private String name;//名称
     private String description;//描述
     private String remark;//描述
@@ -29,7 +29,7 @@ public class BannerBean {
         return h5Url;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 

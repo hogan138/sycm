@@ -312,7 +312,7 @@ public class InviteSharePopupUtil {
      * @param result  分享结果1:分享成功;2:分享失败
      * @param channel 1:微信朋友圈 2:微信好友
      */
-    private static void loadSharedSure(int id, int result, int channel, final Context context) {
+    private static void loadSharedSure(Long id, int result, int channel, final Context context) {
         ApiService apiService = BasePresenter.create(8000);
         apiService.sharedConfirm(id, result, channel)
                 .subscribeOn(Schedulers.io())

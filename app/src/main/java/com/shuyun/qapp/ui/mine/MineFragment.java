@@ -83,8 +83,6 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
     TextView tvPhoneNum1;//账号
     @BindView(R.id.tv_today_answer_num)
     TextView tvTodayAnswerNum;//今日剩余答题次数
-    @BindView(R.id.tv_add_answer_num)
-    TextView tvAddAnswerNum;//增加答题次数
     @BindView(R.id.tv_balance)
     TextView tvBalance;//余额
     @BindView(R.id.btn_immedicate_withdrawal)
@@ -116,6 +114,8 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
     TextView tvToolsNum; //道具数量
     @BindView(R.id.ll_tools)
     LinearLayout llTools; //道具
+    @BindView(R.id.ll_add)
+    LinearLayout llAdd;//增加答题次数
     private CommonPopupWindow popupWindow;
 
     //图标
@@ -291,12 +291,6 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                                         tvGiftNum.setText("可用奖品：0");//未使用奖品数
                                     }
 
-//                                    if (mineBean.getUpcommings() > 0) {
-//                                        tvThreePrizeExprized.setText(mineBean.getUpcommings() + "件奖品快过期");
-//                                    } else {
-//                                        tvThreePrizeExprized.setVisibility(View.GONE);
-//                                    }
-
                                     SaveUserInfo.getInstance(getActivity()).setUserInfo("my_bp", mineBean.getBp());
 
                                     //保存信息到本地
@@ -336,7 +330,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
     }
 
     @OnClick({R.id.rl_back, R.id.iv_common_right_icon, R.id.iv_header_pic, R.id.rl_header, R.id.iv_real_logo,
-            R.id.tv_add_answer_num, R.id.rl_account_record, R.id.btn_immedicate_withdrawal, R.id.ll_score, R.id.ll_gift, R.id.ll_tools,
+            R.id.ll_add, R.id.rl_account_record, R.id.btn_immedicate_withdrawal, R.id.ll_score, R.id.ll_gift, R.id.ll_tools,
             R.id.rl_answer_record, R.id.rl_system_set, R.id.rl_contact_us, R.id.rl_invite_share})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -361,7 +355,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                 //未实名认证
                 startActivity(new Intent(mContext, RealNameAuthActivity.class));
                 break;
-            case R.id.tv_add_answer_num: //增加答题次数
+            case R.id.ll_add: //增加答题次数
                 showAddAnswerNum();
                 break;
             case R.id.rl_account_record:   //账户记录
@@ -378,18 +372,14 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                             ToastUtil.showToast(mContext, "您有一笔资金正在提现中,请耐心等待...");
                         }
                     } else {
-                        RealNamePopupUtil.showAuthPop(mContext, llMineFragment);
+                        RealNamePopupUtil.showAuthPop(mContext, llMineFragment, getString(R.string.real_withdraw_describe));
                     }
 
                 }
                 break;
             case R.id.ll_score: //积分使用
-                if (mineBean.getCertification() == 1) {
-                    Intent intent = new Intent(mContext, IntegralExchangeActivity.class);
-                    startActivity(intent);
-                } else {
-                    RealNamePopupUtil.showAuthPop(mContext, llMineFragment);
-                }
+                Intent intent = new Intent(mContext, IntegralExchangeActivity.class);
+                startActivity(intent);
                 break;
             case R.id.ll_gift: //奖品
                 if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
@@ -408,10 +398,10 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                 startActivity(new Intent(mContext, SystemSettingActivity.class));
                 break;
             case R.id.rl_contact_us: //联系客服
-                Intent intent = new Intent(mContext, WebH5Activity.class);
-                intent.putExtra("url", SaveUserInfo.getInstance(mContext).getUserInfo("contactUs_url"));
-                intent.putExtra("name", "联系客服");
-                startActivity(intent);
+                Intent in = new Intent(mContext, WebH5Activity.class);
+                in.putExtra("url", SaveUserInfo.getInstance(mContext).getUserInfo("contactUs_url"));
+                in.putExtra("name", "联系客服");
+                startActivity(in);
                 break;
             case R.id.rl_invite_share: //分享
                 InviteSharePopupUtil.showSharedPop(mContext, llMineFragment);
@@ -439,7 +429,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                 .setView(R.layout.add_answer_num_popupwindow)
                 .setWidthAndHeight(upView.getMeasuredWidth(), upView.getMeasuredHeight())
                 .setBackGroundLevel(0.5f)//取值范围0.0f-1.0f 值越小越暗
-                .setOutsideTouchable(true)
+                .setOutsideTouchable(false)
                 .setAnimationStyle(R.style.popwin_anim_style)//设置动画
                 //设置子View点击事件
                 .setViewOnclickListener(this)
@@ -463,6 +453,11 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                     public void onMultiClick(View v) {
                         if (popupWindow != null && popupWindow.isShowing()) {
                             popupWindow.dismiss();
+                            try {
+                                timer.cancel();
+                            } catch (Exception e) {
+
+                            }
                         }
                     }
                 });
@@ -484,7 +479,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
 
 
     /**
-     * 答题机会领取剩余时长TODO
+     * 答题机会领取
      * U0004  答题机会已到上限
      */
     private void loadAnswerOpptyRemainder() {
@@ -509,9 +504,13 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                                     btnGetImmedicate.setEnabled(false);
                                     add_answernum_logo.setBackgroundResource(R.mipmap.new_add_answernum_n);
                                     long time = Long.parseLong(remainderTime);
-                                    countDown(time);
+                                    try {
+                                        countDown(time);
+                                    } catch (Exception e) {
+
+                                    }
+
                                 }
-                            } else {
                             }
                         } else {
                             ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
@@ -556,12 +555,15 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                                 btnGetImmedicate.setEnabled(false);
                                 add_answernum_logo.setBackgroundResource(R.mipmap.new_add_answernum_n);
                                 answerOpptyBean.getRemainder();
-                                countDown(answerOpptyBean.getRemainder());
+                                try {
+                                    countDown(answerOpptyBean.getRemainder());
+                                } catch (Exception e) {
+
+                                }
                                 /**
                                  * 领取答题机会之后需要刷新数据
                                  */
                                 loadMineHomeData();
-                            } else {
                             }
                         } else {
                             ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
@@ -665,7 +667,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                                 try {
                                     if (1 == mineBean.getCertification()) {
                                     } else {
-                                        RealNamePopupUtil.showAuthPop(mContext, llMineFragment);
+                                        RealNamePopupUtil.showAuthPop(mContext, llMineFragment, getString(R.string.real_main_describe));
                                     }
 
                                 } catch (Exception e) {
@@ -690,5 +692,6 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                     }
                 });
     }
+
 }
 

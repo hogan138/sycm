@@ -47,6 +47,7 @@ import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.GroupBean;
 import com.shuyun.qapp.bean.GroupClassifyBean;
 import com.shuyun.qapp.bean.HomeGroupsBean;
+import com.shuyun.qapp.bean.HomeNoticeBean;
 import com.shuyun.qapp.bean.MainConfigBean;
 import com.shuyun.qapp.bean.MarkBannerItem;
 import com.shuyun.qapp.bean.SystemInfo;
@@ -166,7 +167,9 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.rl_title)
     RelativeLayout rlTitle; //标题栏
     @BindView(R.id.scroll_ad)
-    VerticalScrollTextView scrollAd;
+    VerticalScrollTextView scrollAd; //公告
+    @BindView(R.id.rl_ad)
+    RelativeLayout rlAd; //公告布局
 
     /**
      * 网络获取到推荐题组列表
@@ -203,7 +206,7 @@ public class HomeFragment extends Fragment {
             tvInvite.setVisibility(View.VISIBLE);
         }
         tvCommonTitle.setText("全民共进");
-        ivCommonRightIcon.setImageResource(R.mipmap.messagew_n);//右侧消息按钮;
+        ivCommonRightIcon.setImageResource(R.mipmap.message_n);//右侧消息按钮;
 
         //token的有效时间
         Long expire = (Long) SharedPrefrenceTool.get(mContext, "expire", System.currentTimeMillis());
@@ -237,57 +240,10 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        // scrollview滚动监听
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                @Override
-                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                    if (scrollY > dp2px(60)) {
-                        tvInvite.setTextColor(Color.parseColor("#333333"));
-                        ivCommonRightIcon.setImageResource(R.mipmap.message_n);//右侧消息按钮;
-                        tvCommonTitle.setVisibility(View.VISIBLE);
-                    } else {
-                        tvInvite.setTextColor(Color.parseColor("#ffffff"));
-                        ivCommonRightIcon.setImageResource(R.mipmap.messagew_n);//右侧消息按钮;
-                        tvCommonTitle.setVisibility(View.GONE);
-                    }
-
-                    //顶部栏颜色渐变
-                    if (scrollY <= 0) {
-                        rlTitle.setBackgroundColor(Color.argb((int) 0, 255, 255, 255));//AGB由相关工具获得，或者美工提供
-                    } else if (scrollY > 0 && scrollY <= dp2px(130)) {
-                        float scale = (float) scrollY / dp2px(130);
-                        float alpha = (255 * scale);
-                        // 只是layout背景透明
-                        rlTitle.setBackgroundColor(Color.argb((int) alpha, 255, 255, 255));
-                    } else {
-                        rlTitle.setBackgroundColor(Color.argb((int) 255, 255, 255, 255));
-                    }
-                }
-            });
-        }
-
         /**
          * 获取全民播报
          */
         loadSystemInfo();
-
-        //公告
-        List<String> info = new ArrayList<>();
-        info.add("<p>全民共进挑战赛火热开启<br><span style=\"color:blue\">90秒内答题冲榜，上榜得好礼！详情速戳</span></p>");
-        info.add("<p><span style=\"color:red\">全民共进</span>挑战赛火热开启<br>90秒内答题冲榜，上榜得好礼！详情速戳</p>");
-        scrollAd.setTextList(info);
-        scrollAd.setMaxLines(2);
-        scrollAd.setTextStillTime(2000);
-        scrollAd.makeView();
-        scrollAd.setAnimTime(300);
-        scrollAd.startAutoScroll();
-        scrollAd.setOnItemClickListener(new VerticalScrollTextView.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Toast.makeText(mContext, "你点击了" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
 
     }
 
@@ -300,6 +256,11 @@ public class HomeFragment extends Fragment {
              * 获取banner轮播数据
              */
             loadHomeBanners();
+
+            /**
+             * 获取公告信息
+             */
+            getNoticeInfo();
 
             /**
              * 获取弹框信息
@@ -333,7 +294,7 @@ public class HomeFragment extends Fragment {
                 InviteSharePopupUtil.showSharedPop(mContext, llHomeFragment);
                 break;
             case R.id.iv_common_right_icon://右侧消息按钮
-//                ivCommonRightIcon.setImageResource(R.mipmap.message_n);
+                ivCommonRightIcon.setImageResource(R.mipmap.message_n);
                 startActivity(new Intent(mContext, InformationActivity.class));
                 break;
             case R.id.ll_change_group: //换一换
@@ -405,10 +366,6 @@ public class HomeFragment extends Fragment {
 
                                     //设置index 在viewpager下面
                                     ViewPager mViewpager = (ViewPager) mBannerView.getChildAt(0);
-                                    //为ViewPager设置高度
-//                                    ViewGroup.LayoutParams params = mViewpager.getLayoutParams();
-//                                    params.height = getResources().getDimensionPixelSize(R.dimen.viewPager_01);
-//                                    mViewpager.setLayoutParams(params);
                                     //设置时间，时间越长，速度越慢
                                     ViewPagerScroller pagerScroller = new ViewPagerScroller(getActivity());
                                     pagerScroller.setScrollDuration(400);
@@ -429,7 +386,6 @@ public class HomeFragment extends Fragment {
                                             }
                                         }
                                     });
-//                                    mBannerView.setPageTransformer(true, new YZoomTransFormer(.8f)); //banner动画
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -1009,6 +965,97 @@ public class HomeFragment extends Fragment {
                     public void onComplete() {
                     }
                 });
+    }
+
+
+    //获取公告信息
+    private void getNoticeInfo() {
+        ApiService apiService = BasePresenter.create(8000);
+        apiService.homeNotice()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<DataResponse<List<HomeNoticeBean>>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
+
+                    @Override
+                    public void onNext(DataResponse<List<HomeNoticeBean>> dataResponse) {
+                        if (dataResponse.isSuccees()) {
+                            try {
+                                if (!EncodeAndStringTool.isObjectEmpty(dataResponse.getDat())) {
+                                    rlAd.setVisibility(View.VISIBLE);
+                                    final List<HomeNoticeBean> homeNoticeBeanList = dataResponse.getDat();
+                                    //公告
+                                    List<String> info = new ArrayList<>();
+                                    for (int i = 0; i < homeNoticeBeanList.size(); i++) {
+                                        info.add(homeNoticeBeanList.get(i).getContent());
+                                    }
+                                    scrollAd.setTextList(info);
+                                    scrollAd.setMaxLines(2);
+                                    scrollAd.setTextStillTime(3000);
+                                    scrollAd.makeView();
+                                    scrollAd.setAnimTime(300);
+                                    scrollAd.startAutoScroll();
+                                    scrollAd.setOnItemClickListener(new VerticalScrollTextView.OnItemClickListener() {
+                                        @Override
+                                        public void onItemClick(int position) {
+                                            H5JumpUtil.dialogSkip(homeNoticeBeanList.get(position).getAction(), homeNoticeBeanList.get(position).getGroupId(), homeNoticeBeanList.get(position).getH5Url(), mContext, llHomeFragment);
+                                        }
+                                    });
+                                } else {
+                                    rlAd.setVisibility(View.GONE);
+                                }
+                            } catch (Exception e) {
+                            }
+
+                        } else {
+                            ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //保存错误信息
+                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+    }
+
+    // scrollview滚动监听
+    private void changeTitle() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    if (scrollY > dp2px(60)) {
+                        tvInvite.setTextColor(Color.parseColor("#333333"));
+                        ivCommonRightIcon.setImageResource(R.mipmap.message_n);//右侧消息按钮;
+                        tvCommonTitle.setVisibility(View.VISIBLE);
+                    } else {
+                        tvInvite.setTextColor(Color.parseColor("#ffffff"));
+                        ivCommonRightIcon.setImageResource(R.mipmap.messagew_n);//右侧消息按钮;
+                        tvCommonTitle.setVisibility(View.GONE);
+                    }
+                    //顶部栏颜色渐变
+                    if (scrollY <= 0) {
+                        rlTitle.setBackgroundColor(Color.argb((int) 0, 255, 255, 255));//AGB由相关工具获得，或者美工提供
+                    } else if (scrollY > 0 && scrollY <= dp2px(130)) {
+                        float scale = (float) scrollY / dp2px(130);
+                        float alpha = (255 * scale);
+                        // 只是layout背景透明
+                        rlTitle.setBackgroundColor(Color.argb((int) alpha, 255, 255, 255));
+                    } else {
+                        rlTitle.setBackgroundColor(Color.argb((int) 255, 255, 255, 255));
+                    }
+                }
+            });
+        }
     }
 
     @Override

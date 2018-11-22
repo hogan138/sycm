@@ -8,7 +8,7 @@ package com.shuyun.qapp.bean;
  */
 public class GroupAgainstBean {
 
-    private int id; // 题组id
+    private Long id; // 题组id
     private String name; // 题组名称
     private String picture; // 题组的标签
     private int guideId; // 答题指南id，null或者0表示没有答题指南
@@ -17,11 +17,11 @@ public class GroupAgainstBean {
     private String description; //描述
 
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

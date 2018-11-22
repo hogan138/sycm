@@ -125,7 +125,7 @@ public class CompleteAnswerResponse implements Parcelable {
         private String mainImage;
         private String longImage;
         private String shortImage;
-        private int id;
+        private Long id;
         private double worthLower;
         private double worthUpper;
 
@@ -140,7 +140,7 @@ public class CompleteAnswerResponse implements Parcelable {
             mainImage = in.readString();
             longImage = in.readString();
             shortImage = in.readString();
-            id = in.readInt();
+            id = in.readLong();
             worthLower = in.readDouble();
             worthUpper = in.readDouble();
         }
@@ -213,11 +213,11 @@ public class CompleteAnswerResponse implements Parcelable {
             this.shortImage = shortImage;
         }
 
-        public int getId() {
+        public Long getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(Long id) {
             this.id = id;
         }
 
@@ -251,7 +251,7 @@ public class CompleteAnswerResponse implements Parcelable {
             dest.writeString(mainImage);
             dest.writeString(longImage);
             dest.writeString(shortImage);
-            dest.writeInt(id);
+            dest.writeLong(id);
             dest.writeDouble(worthLower);
             dest.writeDouble(worthUpper);
         }

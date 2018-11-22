@@ -66,7 +66,7 @@ public class AnnounceBean {
         private String mainImage;
         private String longImage;
         private String shortImage;
-        private int id;
+        private Long id;
         private double worthLower;
         private double worthUpper;
 
@@ -126,11 +126,11 @@ public class AnnounceBean {
             this.shortImage = shortImage;
         }
 
-        public int getId() {
+        public Long getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(Long id) {
             this.id = id;
         }
 

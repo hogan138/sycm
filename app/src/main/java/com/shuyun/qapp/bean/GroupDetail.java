@@ -33,7 +33,7 @@ public class GroupDetail implements Parcelable{
      * activity : {"name":"系统默认活动","merchantName":"舒云传媒","showRule":1,"showGuide":0,"rule":{"bulletin":null},"xrule":[{"id":1,"name":"连续3天答题正确抽奖","description":null,"remark":null}]}
      */
 
-    private int id;//题组id
+    private Long id;//题组id
     private String name;//题组名称
     private String description;//题组描述
     private String remark;//题组备注
@@ -77,7 +77,7 @@ public class GroupDetail implements Parcelable{
     }
 
     protected GroupDetail(Parcel in) {
-        id = in.readInt();
+        id = in.readLong();
         name = in.readString();
         description = in.readString();
         remark = in.readString();
@@ -124,7 +124,7 @@ public class GroupDetail implements Parcelable{
         return won;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -205,7 +205,7 @@ public class GroupDetail implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
+        dest.writeLong(id);
         dest.writeString(name);
         dest.writeString(description);
         dest.writeString(remark);
@@ -236,7 +236,7 @@ public class GroupDetail implements Parcelable{
          */
 
         private String name;//活动名称
-        private int id;//活动id
+        private Long id;//活动id
         private String merchantName;//商户名称
         private int showRule;//是否强化显示规则0:不显示;1:显示
         private int showGuide;//是否展现指南0:不显示;1:显示
@@ -249,7 +249,7 @@ public class GroupDetail implements Parcelable{
 
         protected ActivityBean(Parcel in) {
             name = in.readString();
-            id = in.readInt();
+            id = in.readLong();
             merchantName = in.readString();
             showRule = in.readInt();
             showGuide = in.readInt();
@@ -260,7 +260,7 @@ public class GroupDetail implements Parcelable{
         @Override
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeString(name);
-            dest.writeInt(id);
+            dest.writeLong(id);
             dest.writeString(merchantName);
             dest.writeInt(showRule);
             dest.writeInt(showGuide);
@@ -289,7 +289,7 @@ public class GroupDetail implements Parcelable{
             return name;
         }
 
-        public int getId() {
+        public Long getId() {
             return id;
         }
 
@@ -409,7 +409,7 @@ public class GroupDetail implements Parcelable{
              * remark : null
              */
 
-            private int id;//扩展规则id
+            private Long id;//扩展规则id
             private String name;//扩展规则名称
             private String description;//扩展规则描述
             private String remark;//扩展规则备注
@@ -420,7 +420,7 @@ public class GroupDetail implements Parcelable{
             }
 
             protected XruleBean(Parcel in) {
-                id = in.readInt();
+                id = in.readLong();
                 name = in.readString();
                 description = in.readString();
                 remark = in.readString();
@@ -439,7 +439,7 @@ public class GroupDetail implements Parcelable{
                 }
             };
 
-            public int getId() {
+            public Long getId() {
                 return id;
             }
 
@@ -477,7 +477,7 @@ public class GroupDetail implements Parcelable{
 
             @Override
             public void writeToParcel(Parcel dest, int flags) {
-                dest.writeInt(id);
+                dest.writeLong(id);
                 dest.writeString(name);
                 dest.writeString(description);
                 dest.writeString(remark);

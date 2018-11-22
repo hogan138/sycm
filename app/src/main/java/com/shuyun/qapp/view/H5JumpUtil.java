@@ -45,34 +45,22 @@ public class H5JumpUtil {
             intent.putExtra("name", "");
             context.startActivity(intent);
         } else if (AppConst.INTEGRAL.equals(action)) {
-            if (Integer.parseInt(SaveUserInfo.getInstance(context).getUserInfo("cert")) == 1) {
-                //积分兑换
-                context.startActivity(new Intent(context, IntegralExchangeActivity.class));
-            } else {
-                RealNamePopupUtil.showAuthPop(context, view);
-            }
+            //积分兑换
+            context.startActivity(new Intent(context, IntegralExchangeActivity.class));
         } else if (AppConst.AGAINST.equals(action)) {
             //答题对战
             context.startActivity(new Intent(context, MainAgainstActivity.class));
         } else if (AppConst.OPEN_BOX.equals(action)) {
-            if (Integer.parseInt(SaveUserInfo.getInstance(context).getUserInfo("cert")) == 1) {
-                //积分开宝箱
-                Intent intent = new Intent(context, WebPrizeBoxActivity.class);
-                intent.putExtra("main_box", "score_box");
-                intent.putExtra("h5Url", h5Url);
-                context.startActivity(intent);
-            } else {
-                RealNamePopupUtil.showAuthPop(context, view);
-            }
+            //积分开宝箱
+            Intent intent = new Intent(context, WebPrizeBoxActivity.class);
+            intent.putExtra("main_box", "score_box");
+            intent.putExtra("h5Url", h5Url);
+            context.startActivity(intent);
         } else if (AppConst.TREASURE.equals(action)) {
-            if (Integer.parseInt(SaveUserInfo.getInstance(context).getUserInfo("cert")) == 1) {
-                //积分夺宝
-                //保存规则地址
-                SaveUserInfo.getInstance(context).setUserInfo("h5_rule", h5Url);
-                context.startActivity(new Intent(context, IntegralMainActivity.class));
-            } else {
-                RealNamePopupUtil.showAuthPop(context, view);
-            }
+            //积分夺宝
+            //保存规则地址
+            SaveUserInfo.getInstance(context).setUserInfo("h5_rule", h5Url);
+            context.startActivity(new Intent(context, IntegralMainActivity.class));
         } else if (AppConst.TASK.equals(action)) {
             //每日任务
         } else if (AppConst.WITHDRAW_INFO.equals(action)) {

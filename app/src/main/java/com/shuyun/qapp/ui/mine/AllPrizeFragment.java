@@ -34,9 +34,7 @@ import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveErrorTxt;
-import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ToastUtil;
-import com.shuyun.qapp.view.RealNamePopupUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -131,54 +129,38 @@ public class AllPrizeFragment extends Fragment {
                     minePrizeList.remove(position);
                     rvPrize.setAdapter(prizeAdapter);
                 } else if (minePrize.getActionType().equals("action.h5.url") || minePrize.getActionType().equals("action.use.loading")) {
-                    if (Integer.parseInt(SaveUserInfo.getInstance(getActivity()).getUserInfo("cert")) == 1) {
-                        //票务
-                        Intent intent = new Intent(getActivity(), WebH5Activity.class);
-                        intent.putExtra("id", minePrize.getId());
-                        intent.putExtra("url", minePrize.getH5Url());
-                        intent.putExtra("name", minePrize.getName());
-                        startActivity(intent);
-                    } else {
-                        RealNamePopupUtil.showAuthPop(getContext(), ((MinePrizeActivity) getActivity()).llPrize);
-                    }
+                    //票务
+                    Intent intent = new Intent(getActivity(), WebH5Activity.class);
+                    intent.putExtra("id", minePrize.getId());
+                    intent.putExtra("url", minePrize.getH5Url());
+                    intent.putExtra("name", minePrize.getName());
+                    startActivity(intent);
                 } else if (minePrize.getActionType().equals("action.withdraw")) {
-                    if (Integer.parseInt(SaveUserInfo.getInstance(getActivity()).getUserInfo("cert")) == 1) {
-                        List<MinePrize> redPrizeList = new ArrayList<>();
-                        //红包
-                        for (int i = 0; i < minePrizeList.size(); i++) {
-                            MinePrize minePrize1 = minePrizeList.get(i);
-                            if (minePrizeList.get(i).getActionType().equals("action.withdraw")) {
-                                redPrizeList.add(minePrize1);
-                            }
+                    List<MinePrize> redPrizeList = new ArrayList<>();
+                    //红包
+                    for (int i = 0; i < minePrizeList.size(); i++) {
+                        MinePrize minePrize1 = minePrizeList.get(i);
+                        if (minePrizeList.get(i).getActionType().equals("action.withdraw")) {
+                            redPrizeList.add(minePrize1);
                         }
-                        if (!EncodeAndStringTool.isListEmpty(redPrizeList)) {
-                            Intent intent = new Intent(getActivity(), NewRedWithdrawActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putParcelableArrayList("redPrize", (ArrayList<? extends Parcelable>) redPrizeList);
-                            bundle.putString("redId", minePrize.getId());
-                            bundle.putString("from", "prize");
-                            intent.putExtras(bundle);
-                            startActivity(intent);
-                        }
-                    } else {
-                        RealNamePopupUtil.showAuthPop(getContext(), ((MinePrizeActivity) getActivity()).llPrize);
+                    }
+                    if (!EncodeAndStringTool.isListEmpty(redPrizeList)) {
+                        Intent intent = new Intent(getActivity(), NewRedWithdrawActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelableArrayList("redPrize", (ArrayList<? extends Parcelable>) redPrizeList);
+                        bundle.putString("redId", minePrize.getId());
+                        bundle.putString("from", "prize");
+                        intent.putExtras(bundle);
+                        startActivity(intent);
                     }
                 } else if (minePrize.getActionType().equals("action.use.record")) {
-                    if (Integer.parseInt(SaveUserInfo.getInstance(getActivity()).getUserInfo("cert")) == 1) {
-                        startActivity(new Intent(getActivity(), CashResultActivity.class));
-                    } else {
-                        RealNamePopupUtil.showAuthPop(getContext(), ((MinePrizeActivity) getActivity()).llPrize);
-                    }
+                    startActivity(new Intent(getActivity(), CashResultActivity.class));
                 } else if (minePrize.getActionType().equals("action.open.box")) {
-                    if (Integer.parseInt(SaveUserInfo.getInstance(getActivity()).getUserInfo("cert")) == 1) {
-                        //宝箱
-                        Intent intent = new Intent(getActivity(), WebPrizeBoxActivity.class);
-                        intent.putExtra("ChildMinePrize", minePrize);
-                        intent.putExtra("main_box", "my_prize");
-                        startActivity(intent);
-                    } else {
-                        RealNamePopupUtil.showAuthPop(getContext(), ((MinePrizeActivity) getActivity()).llPrize);
-                    }
+                    //宝箱
+                    Intent intent = new Intent(getActivity(), WebPrizeBoxActivity.class);
+                    intent.putExtra("ChildMinePrize", minePrize);
+                    intent.putExtra("main_box", "my_prize");
+                    startActivity(intent);
                 } else {
                     //暂不支持 实物和电子卷 提示用户去下载新版本
                     showDownloadAppDialog();

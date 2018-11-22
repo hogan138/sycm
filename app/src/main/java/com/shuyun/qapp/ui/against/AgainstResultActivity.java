@@ -495,7 +495,7 @@ public class AgainstResultActivity extends BaseActivity implements View.OnClickL
      * @param result  分享结果1:分享成功;2:分享失败
      * @param channel 1:微信朋友圈 2:微信好友
      */
-    private void loadSharedSure(int id, int result, int channel) {
+    private void loadSharedSure(Long id, int result, int channel) {
         ApiService apiService = BasePresenter.create(8000);
         apiService.sharedConfirm(id, result, channel)
                 .subscribeOn(Schedulers.io())
