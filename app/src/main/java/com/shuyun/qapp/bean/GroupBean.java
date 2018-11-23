@@ -21,7 +21,7 @@ public class GroupBean {
      * opportunityLabel : 不消耗答题次数
      */
 
-    private int id;//题组id
+    private Long id;//题组id
     private String name;//题组名称
     private int parentId;//上级题组
     private String picture;//题组主图
@@ -63,11 +63,11 @@ public class GroupBean {
         this.tag = tag;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

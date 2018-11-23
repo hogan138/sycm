@@ -135,7 +135,7 @@ public interface ApiService {
      * @return
      */
     @GET("/rest/act/exam/V3")
-    Observable<DataResponse<ApplyAnswer>> applyAnswer(@Query("groupId") int groupId, @Query("type") int type, @Query("battle") int battle);
+    Observable<DataResponse<ApplyAnswer>> applyAnswer(@Query("groupId") Long groupId, @Query("type") int type, @Query("battle") int battle);
 
     /**
      * 9、完成答题post请求,提交数据
@@ -352,7 +352,7 @@ public interface ApiService {
      * /activity-center
      */
     @GET("/rest/act/q/{id}/fb")
-    Observable<DataResponse> getAnswerFeedBack(@Path("id") int id, @Query("feedbackId") int feedbackId);
+    Observable<DataResponse> getAnswerFeedBack(@Path("id") Long id, @Query("feedbackId") int feedbackId);
 
 
     /**
@@ -424,7 +424,7 @@ public interface ApiService {
      * @return
      */
     @GET("/rest/share/group")
-    Observable<DataResponse<SharedBean>> groupShared(@Query("channel") int channel, @Query("id") int id);
+    Observable<DataResponse<SharedBean>> groupShared(@Query("channel") int channel, @Query("id") Long id);
 
     /**
      * 40、获取推送消息

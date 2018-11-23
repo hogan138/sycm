@@ -129,7 +129,7 @@ public class ClassifyFragment extends Fragment {
                                 final CenterLayoutManager centerLayoutManager = new CenterLayoutManager(getActivity());
 
                                 if (mContext instanceof ClassifyActivity) {
-                                    int id = mContext.getIntent().getIntExtra("id", 0);
+                                    Long id = mContext.getIntent().getLongExtra("id", 0);
                                     for (int i = 0; i < classifyBeans.size(); i++) {
                                         if (classifyBeans.get(i).getId() == id) {
                                             classifyBeans.get(i).setFlag(true);

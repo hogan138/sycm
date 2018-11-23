@@ -64,6 +64,18 @@ public class TimeTool {
      * @param Time
      * @return
      */
+    public static String getTime1(String Time) {
+        Date currentTime = new Date(Long.parseLong(Time));
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd");
+        return formatter.format(currentTime);
+    }
+
+    /**
+     * 返回时间格式
+     *
+     * @param Time
+     * @return
+     */
     public static String getCommTime(String Time, String format) {
         Date currentTime = new Date(Long.parseLong(Time));
         SimpleDateFormat formatter = new SimpleDateFormat(format);

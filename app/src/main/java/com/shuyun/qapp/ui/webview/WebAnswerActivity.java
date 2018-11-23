@@ -110,7 +110,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
     @BindView(R.id.ll_h5)
     LinearLayout llH5;
 
-    private int groupId; //题组Id
+    private Long groupId; //题组Id
     private String h5Url; //h5url
     private static final String TAG = "WebAnswerActivity";
     private String splash = "";
@@ -387,7 +387,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
 
         Intent intent = getIntent();
         splash = intent.getStringExtra("from");
-        groupId = intent.getIntExtra("groupId", 0);
+        groupId = intent.getLongExtra("groupId", 0);
         h5Url = intent.getStringExtra("h5Url");
 
         //是否参与邀请分享 1——参与邀请
@@ -528,7 +528,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
      */
     SharedBean sharedBean1;
 
-    private void loadGroupShared(final int channl, int groupId) {
+    private void loadGroupShared(final int channl, Long groupId) {
         ApiService apiService = BasePresenter.create(8000);
         apiService.groupShared(channl, groupId)
                 .subscribeOn(Schedulers.io())

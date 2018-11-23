@@ -61,7 +61,7 @@ public class ApplyAnswer {
          * options : [{"id":37922,"title":"孟浩然","picture":null},{"id":37920,"title":"岑 参","picture":null},{"id":37921,"title":"王 维","picture":null},{"id":37919,"title":"高 适","picture":null}]
          */
 
-        private int id;//题目id
+        private Long id;//题目id
         private String title;//题目标题
         private String picture;//题目的图片
         /**
@@ -88,11 +88,11 @@ public class ApplyAnswer {
             return type;
         }
 
-        public int getId() {
+        public Long getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(Long id) {
             this.id = id;
         }
 

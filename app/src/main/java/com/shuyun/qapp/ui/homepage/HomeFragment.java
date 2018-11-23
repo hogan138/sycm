@@ -247,6 +247,7 @@ public class HomeFragment extends Fragment {
          */
         loadSystemInfo();
 
+
     }
 
     @Override
@@ -283,6 +284,7 @@ public class HomeFragment extends Fragment {
              * 获取宝箱数量
              */
             loadTreasureBoxNum();
+        } else {
         }
     }
 
@@ -311,7 +313,7 @@ public class HomeFragment extends Fragment {
                 break;
             case R.id.rl_commend_one://推荐题组一
                 if (!EncodeAndStringTool.isObjectEmpty(recommendGroup1)) {
-                    int groupId = recommendGroup1.getId();
+                    Long groupId = recommendGroup1.getId();
                     Intent intent = new Intent(mContext, WebAnswerActivity.class);
                     intent.putExtra("groupId", groupId);
                     intent.putExtra("h5Url", recommendGroup1.getH5Url());
@@ -320,7 +322,7 @@ public class HomeFragment extends Fragment {
                 break;
             case R.id.rl_commend_two://推荐题组二
                 if (!EncodeAndStringTool.isObjectEmpty(recommendGroup2)) {
-                    int groupId = recommendGroup2.getId();
+                    Long groupId = recommendGroup2.getId();
                     Intent intent = new Intent(mContext, WebAnswerActivity.class);
                     intent.putExtra("groupId", groupId);
                     intent.putExtra("h5Url", recommendGroup2.getH5Url());
@@ -449,12 +451,6 @@ public class HomeFragment extends Fragment {
                                     }
                                     if (!EncodeAndStringTool.isListEmpty(info)) {
                                         marqueeView.startWithList(info);
-                                        marqueeView.setOnItemClickListener(new MarqueeView.OnItemClickListener() {
-                                            @Override
-                                            public void onItemClick(int position, TextView textView) {
-//                                                Toast.makeText(mContext, "你点击了" + textView.getText().toString(), Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
                                     }
                                 } catch (Exception e) {
                                 }
@@ -608,7 +604,7 @@ public class HomeFragment extends Fragment {
                                             hotGroupAdapter.setOnItemClickLitsener(new GroupTreeAdapter.OnItemClickListener() {
                                                 @Override
                                                 public void onItemClick(View view, int position) {
-                                                    int groupId = groupData.get(position).getId();
+                                                    Long groupId = groupData.get(position).getId();
                                                     Intent intent = new Intent(mContext, WebAnswerActivity.class);
                                                     intent.putExtra("groupId", groupId);
                                                     intent.putExtra("h5Url", groupData.get(position).getH5Url());
@@ -639,7 +635,7 @@ public class HomeFragment extends Fragment {
                                             hotGroupAdapter.setOnItemClickLitsener(new GroupTreeAdapter.OnItemClickListener() {
                                                 @Override
                                                 public void onItemClick(View view, int position) {
-                                                    int groupId = groupClassifyBeans.get(position).getId();
+                                                    Long groupId = groupClassifyBeans.get(position).getId();
                                                     Intent intent1 = new Intent(mContext, ClassifyActivity.class);
                                                     intent1.putExtra("id", groupId);
                                                     startActivity(intent1);
@@ -995,6 +991,7 @@ public class HomeFragment extends Fragment {
                                     rlAd.setVisibility(View.VISIBLE);
                                     final List<HomeNoticeBean> homeNoticeBeanList = dataResponse.getDat();
                                     //公告
+
                                     List<String> info = new ArrayList<>();
                                     for (int i = 0; i < homeNoticeBeanList.size(); i++) {
                                         info.add(homeNoticeBeanList.get(i).getContent());
@@ -1069,6 +1066,12 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        try {
+            scrollAd.stopAutoScroll();
+        } catch (Exception e) {
+
+        }
+
         if (msgReceiver != null) {
             mContext.unregisterReceiver(msgReceiver);
         }

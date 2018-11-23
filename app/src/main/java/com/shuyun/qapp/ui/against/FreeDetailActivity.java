@@ -141,7 +141,7 @@ public class FreeDetailActivity extends BaseActivity implements View.OnClickList
             case R.id.rl_start_matching:
                 Intent intent = new Intent(FreeDetailActivity.this, MatchingActivity.class);
                 intent.putExtra("type", type);
-                intent.putExtra("groupId", getIntent().getIntExtra("groupId", 0));
+                intent.putExtra("groupId", getIntent().getLongExtra("groupId", 0));
                 intent.putExtra("from", "common");
                 intent.putExtra("name", getIntent().getStringExtra("name"));
                 intent.putExtra("score", getIntent().getStringExtra("score"));

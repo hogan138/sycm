@@ -9,75 +9,107 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginLeft="@dimen/text_12"
-        android:layout_marginRight="@dimen/text_15"
         android:layout_marginTop="@dimen/text_15"
+        android:layout_marginRight="@dimen/text_15"
         android:scaleType="centerCrop"
         android:src="@mipmap/zw02"
         app:type="round" />
-    <!--标题-->
-    <TextView
-        android:id="@+id/tv_common_title"
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/text_15"
-        android:layout_marginRight="12dp"
         android:layout_toRightOf="@+id/iv_prize_icon"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:text="答题答题宝箱答题宝箱答题宝箱答题宝箱答题宝箱宝箱"
-        android:textColor="@color/color_1"
-        android:textSize="@dimen/text_14"
-        android:textStyle="bold" />
-    <!--到期时间-->
-    <TextView
-        android:id="@+id/tv_expiration_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_common_title"
-        android:layout_marginTop="@dimen/text_5"
-        android:layout_toRightOf="@+id/iv_prize_icon"
-        android:textColor="#ED5A3F"
-        android:textSize="@dimen/text_11"
-        android:textStyle="bold" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_almost_expired"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_common_title"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="@dimen/text_7"
-        android:layout_toRightOf="@+id/tv_expiration_time"
-        android:background="@drawable/common_text_bg_5"
-        android:paddingLeft="@dimen/text_4"
-        android:paddingRight="@dimen/text_4"
-        android:text="快过期"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_8" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <!--标题-->
+            <TextView
+                android:id="@+id/tv_common_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="答题答题"
+                android:textColor="@color/color_1"
+                android:textSize="@dimen/text_15"
+                android:textStyle="bold" />
 
-    <!--内容-->
-    <TextView
-        android:id="@+id/tv_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_expiration_time"
-        android:layout_marginRight="80dp"
-        android:layout_marginTop="@dimen/text_5"
-        android:layout_toRightOf="@+id/iv_prize_icon"
-        android:ellipsize="end"
-        android:lines="2"
-        android:text="@string/about_us"
-        android:textColor="@color/color_2"
-        android:textSize="@dimen/text_11" />
+            <TextView
+                android:id="@+id/tv_almost_expired"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="12dp"
+                android:background="@drawable/common_text_bg_5"
+                android:paddingLeft="@dimen/text_6"
+                android:paddingRight="@dimen/text_6"
+                android:text="快到期"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_12"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_use_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="12dp"
+                android:background="@drawable/common_gift_use_text_bg"
+                android:paddingLeft="@dimen/text_6"
+                android:paddingRight="@dimen/text_6"
+                android:text="已使用"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_12"
+                android:visibility="gone" />
+        </LinearLayout>
+        <!--使用中状态-->
+        <TextView
+            android:id="@+id/tv_use_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_3"
+            android:layout_toRightOf="@+id/iv_prize_icon"
+            android:textColor="#0194ec"
+            android:textSize="@dimen/text_12" />
+        <!--内容-->
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_expiration_time"
+            android:layout_marginTop="@dimen/text_3"
+            android:layout_marginRight="80dp"
+            android:layout_toRightOf="@+id/iv_prize_icon"
+            android:ellipsize="end"
+            android:lines="2"
+            android:text="@string/about_us"
+            android:textColor="@color/login_text"
+            android:textSize="@dimen/text_12" />
+        <!--到期时间-->
+        <TextView
+            android:id="@+id/tv_expiration_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_3"
+            android:layout_toRightOf="@+id/iv_prize_icon"
+            android:textColor="#ED5A3F"
+            android:textSize="@dimen/text_12" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_open"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="@dimen/text_15"
+        android:layout_alignParentBottom="true"
         android:layout_marginRight="@dimen/text_12"
+        android:layout_marginBottom="@dimen/text_15"
         android:background="@drawable/selector_3"
         android:gravity="center"
         android:textColor="@color/white"
@@ -87,5 +119,7 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/text_15"
+        android:layout_marginRight="@dimen/text_15"
         android:background="@color/light_white" />
 </RelativeLayout>

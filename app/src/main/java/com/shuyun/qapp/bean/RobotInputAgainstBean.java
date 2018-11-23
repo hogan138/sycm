@@ -21,13 +21,13 @@ public class RobotInputAgainstBean {
      */
 
     private int type; //场次
-    private int questionId; //上一题目题目id
+    private Long questionId; //上一题目题目id
     private int userScore; //用户分数
     private int robotScore; //机器人分数
     private String robotId; //机器人id
     private String userOptionId; //用户选项id
     private double userConst; //用户耗时
-    private int nextQuestionId; //当前题目id
+    private Long nextQuestionId; //当前题目id
     private String questionArry; //选项id
     private int isLast;
     private String robotOptionId; //机器人选项id
@@ -73,11 +73,11 @@ public class RobotInputAgainstBean {
         this.type = type;
     }
 
-    public int getQuestionId() {
+    public Long getQuestionId() {
         return questionId;
     }
 
-    public void setQuestionId(int questionId) {
+    public void setQuestionId(Long questionId) {
         this.questionId = questionId;
     }
 
@@ -121,11 +121,11 @@ public class RobotInputAgainstBean {
         this.userConst = userConst;
     }
 
-    public int getNextQuestionId() {
+    public Long getNextQuestionId() {
         return nextQuestionId;
     }
 
-    public void setNextQuestionId(int nextQuestionId) {
+    public void setNextQuestionId(Long nextQuestionId) {
         this.nextQuestionId = nextQuestionId;
     }
 }

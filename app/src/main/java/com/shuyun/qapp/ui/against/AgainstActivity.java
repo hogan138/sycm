@@ -195,7 +195,7 @@ public class AgainstActivity extends BaseActivity {
 
             if (getIntent().getStringExtra("from").equals("common")) {
                 //普通答题
-                applyAnswer(getIntent().getIntExtra("groupId", 0));
+                applyAnswer(getIntent().getLongExtra("groupId", 0));
             } else if (getIntent().getStringExtra("from").equals("random")) {
                 //随机题目
                 randomGroup();
@@ -352,7 +352,7 @@ public class AgainstActivity extends BaseActivity {
     /**
      * 申请答题
      */
-    private void applyAnswer(int groupId) {
+    private void applyAnswer(Long groupId) {
         ApiService apiService = BasePresenter.create(8000);
         apiService.applyAnswer(groupId, 1, type)
                 .subscribeOn(Schedulers.io())
@@ -727,12 +727,12 @@ public class AgainstActivity extends BaseActivity {
         }
     }
 
-    private int questionId = 0; //上一题目题目id
+    private Long questionId = Long.valueOf(0); //上一题目题目id
     private int userScore = 0; //用户积分
     private int robotScore = 0; //机器人积分
     private String robotId = ""; //机器人id
     private String userOptionId = "0"; //用户选项id
-    private int nextQuestionId = 0; //当前题目id
+    private Long nextQuestionId = Long.valueOf(0); //当前题目id
     private double userCont = 0; //用户耗时
     private String robotOptionId = "";
 
@@ -811,7 +811,7 @@ public class AgainstActivity extends BaseActivity {
 
                 if (position == 0) {
                     //上一题目的id
-                    questionId = 0;
+                    questionId = Long.valueOf(0);
                 } else {
                     //上一题目的id
                     questionId = questionsBeans.get(position - 1).getId();

@@ -53,14 +53,6 @@ public class MinePrizeActivity extends BaseActivity {
     @BindView(R.id.ll_prize)
     LinearLayout llPrize;
 
-    /**
-     * 是否实名认证
-     * 0——未实名认证
-     * 1——已实名认证
-     * 2——审核中
-     * 3——未通过
-     * 4——拉黑
-     */
     private int status;
 
     private List<Fragment> mFragmentList;

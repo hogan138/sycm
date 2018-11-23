@@ -83,7 +83,7 @@ public class AnswerHistoryActivity extends BaseActivity implements CommonPopupWi
         return R.layout.activity_answer_history;
     }
 
-    private int questionId = 0;
+    private Long questionId = Long.valueOf(0);
 
     /**
      * 查看答题结果 TODO adapter 中不要为数字
@@ -265,7 +265,7 @@ public class AnswerHistoryActivity extends BaseActivity implements CommonPopupWi
                         public void onNext(DataResponse dataResponse) {
                             if (dataResponse.isSuccees()) {
                                 ToastUtil.showToast(AnswerHistoryActivity.this, "提交成功!");
-                                questionId = 0;
+                                questionId = Long.valueOf(0);
                             } else {
                                 ErrorCodeTools.errorCodePrompt(AnswerHistoryActivity.this, dataResponse.getErr(), dataResponse.getMsg());
                             }
@@ -274,7 +274,7 @@ public class AnswerHistoryActivity extends BaseActivity implements CommonPopupWi
 
                         @Override
                         public void onError(Throwable e) {
-                            questionId = 0;
+                            questionId = Long.valueOf(0);
                             //保存错误信息
                             SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
                             return;
@@ -283,7 +283,7 @@ public class AnswerHistoryActivity extends BaseActivity implements CommonPopupWi
                         @Override
                         public void onComplete() {
                             popupWindow.dismiss();
-                            questionId = 0;
+                            questionId = Long.valueOf(0);
                         }
                     });
         } else {

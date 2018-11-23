@@ -201,7 +201,7 @@ public class MatchingActivity extends BaseActivity implements View.OnClickListen
                                             intent.putExtra("type", type);
                                             intent.putExtra("name", name);
                                             intent.putExtra("from", getIntent().getStringExtra("from"));
-                                            intent.putExtra("groupId", getIntent().getIntExtra("groupId", 0));
+                                            intent.putExtra("groupId", getIntent().getLongExtra("groupId", 0));
                                             intent.putExtra("my_head", matchTimeBean.getUser().getHeaderId());
                                             intent.putExtra("my_phone", matchTimeBean.getUser().getPhone());
                                             intent.putExtra("it_head", matchTimeBean.getRobotPic());

@@ -1,7 +1,6 @@
 package com.shuyun.qapp.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +39,7 @@ public class PrizeAdapter extends RecyclerView.Adapter<PrizeAdapter.ViewHolder> 
     }
 
     @Override
-    public PrizeAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = layoutInflater.inflate(R.layout.mine_prize_item1, parent, false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
@@ -57,40 +56,43 @@ public class PrizeAdapter extends RecyclerView.Adapter<PrizeAdapter.ViewHolder> 
             holder.tvTitle.setText(minePrize.getName());
         }
 
+        //快到期
         if (minePrize.getStatus() == 1 && minePrize.getUpcomming() == 1) {
             holder.tvAlmostExpired.setVisibility(View.VISIBLE);
-            holder.tvAlmostExpired.setText("快过期");
         } else {
-            holder.tvAlmostExpired.setText("");
-            holder.tvAlmostExpired.setVisibility(View.INVISIBLE);
+            holder.tvAlmostExpired.setVisibility(View.GONE);
         }
 
-        //使用中
+        //使用中状态
         if (!EncodeAndStringTool.isStringEmpty(minePrize.getSubstatusName()) && minePrize.getStatus() == 4) {
-            holder.tvExpirationTime.setText(minePrize.getSubstatusName());
-            holder.tvExpirationTime.setTextColor(Color.parseColor("#0194EC"));
-        } else if (!EncodeAndStringTool.isStringEmpty(minePrize.getExpireTime()) && !minePrize.getExpireTime().equals("0") && minePrize.getStatus() != 4) {
-            String time = TimeTool.getTime(minePrize.getExpireTime());
-            holder.tvExpirationTime.setText("到期时间：" + time);//格式化时间
-            holder.tvExpirationTime.setTextColor(Color.parseColor("#ED5A3F"));
+            holder.tvUseStatus.setVisibility(View.VISIBLE);
+            holder.tvUseStatus.setText(minePrize.getSubstatusName());
         } else {
-            holder.tvExpirationTime.setText("");
-            holder.tvExpirationTime.setVisibility(View.VISIBLE);
+            holder.tvUseStatus.setVisibility(View.GONE);
         }
 
-        holder.tvOpen.setText(minePrize.getActionTypeLabel());
+        //显示到期时间
+        if (!EncodeAndStringTool.isStringEmpty(minePrize.getExpireTime()) && !minePrize.getExpireTime().equals("0") && minePrize.getStatus() != 4) {
+            holder.tvExpirationTime.setVisibility(View.VISIBLE);
+            String time = TimeTool.getTime1(minePrize.getExpireTime());
+            holder.tvExpirationTime.setText("到期日期：" + time);//格式化时间
+        } else {
+            holder.tvExpirationTime.setVisibility(View.GONE);
+        }
+
         //按钮名称
+        holder.tvOpen.setText(minePrize.getActionTypeLabel());
         if (minePrize.getStatus() == 1 || minePrize.getStatus() == 4) {
             holder.tvOpen.setEnabled(true);
+            holder.tvUseLogo.setVisibility(View.GONE);
         } else {
             holder.tvOpen.setEnabled(false);
+            holder.tvUseLogo.setVisibility(View.VISIBLE);
         }
 
+        //内容
         holder.tvContent.setText(TextviewUtil.ToDBC(minePrize.getDescription()));
 
-        /**
-         * 奖品状态为正常(未用,且未到期时才可以点击)
-         */
         holder.tvOpen.setOnClickListener(new OnMultiClickListener() {
             @Override
             public void onMultiClick(View v) {
@@ -122,6 +124,10 @@ public class PrizeAdapter extends RecyclerView.Adapter<PrizeAdapter.ViewHolder> 
         TextView tvContent;
         @BindView(R.id.tv_open)
         TextView tvOpen;
+        @BindView(R.id.tv_use_status)
+        TextView tvUseStatus;
+        @BindView(R.id.tv_use_logo)
+        TextView tvUseLogo;
 
         public ViewHolder(View itemView) {
             super(itemView);

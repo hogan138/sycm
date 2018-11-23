@@ -21,7 +21,7 @@ public class GroupClassifyBean {
      * parentId : 0
      * children : [{"id":234,"name":"全民大探班40期","parentId":1,"opportunity":1}]
      */
-    private int id;//题组id 0表示活动的题组
+    private Long id;//题组id
     private String name;//题组名称
     private int opportunity;//消耗答题机会次数0:表示不消耗答题机会次数
     private int parentId;//上级题组
@@ -31,7 +31,7 @@ public class GroupClassifyBean {
     private String merchantName;//题组参与的活动商户名称
     private List<ChildrenBean> children;
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -67,7 +67,7 @@ public class GroupClassifyBean {
         this.children = children;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -125,7 +125,7 @@ public class GroupClassifyBean {
          * parentId : 1
          * opportunity : 1
          */
-        private int id;//题组id 0表示活动的题组
+        private Long id;//题组id
         private String name;//题组名称
         private int opportunity;//消耗答题机会次数0:表示不消耗答题机会次数
         private int parentId;//上级题组
@@ -190,7 +190,7 @@ public class GroupClassifyBean {
             this.h5Url = h5Url;
         }
 
-        public void setId(int id) {
+        public void setId(Long id) {
             this.id = id;
         }
 
@@ -222,7 +222,7 @@ public class GroupClassifyBean {
             this.merchantName = merchantName;
         }
 
-        public int getId() {
+        public Long getId() {
             return id;
         }
 

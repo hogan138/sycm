@@ -114,7 +114,7 @@ public class LookAnswerResultBean {
          * options : [{"id":2120,"title":"上海戏剧学院","orderNo":4},{"id":2121,"title":"中国传媒大学","orderNo":1},{"id":2118,"title":"中央戏剧学院","orderNo":3},{"id":2119,"title":"北京电影学院","orderNo":2}]
          */
 
-        private int id;//题目id
+        private Long id;//题目id
         private String title;//题目标题
         private String description;//题目描述
         private String remark;//题目备注
@@ -140,7 +140,7 @@ public class LookAnswerResultBean {
         private List<PictureBean> picture;//题目的图片 type=2有效
         private List<OptionsBean> options;//题目的选项
 
-        public int getId() {
+        public Long getId() {
             return id;
         }
 

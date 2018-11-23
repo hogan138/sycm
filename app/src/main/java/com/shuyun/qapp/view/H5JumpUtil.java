@@ -25,7 +25,7 @@ public class H5JumpUtil {
         if (AppConst.GROUP.equals(action)) {
             //题组
             Intent intent = new Intent(context, WebAnswerActivity.class);
-            intent.putExtra("groupId", Integer.parseInt(content));
+            intent.putExtra("groupId", Long.parseLong(content));
             intent.putExtra("h5Url", h5Url);
             context.startActivity(intent);
         } else if (AppConst.REAL.equals(action)) {
