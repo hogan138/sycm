@@ -96,7 +96,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/text_14"
                     android:layout_toLeftOf="@+id/iv_ad_point"
-                    android:layout_toRightOf="@+id/iv_ad_logo"></com.shuyun.qapp.view.VerticalScrollTextView>
+                    android:layout_toRightOf="@+id/iv_ad_logo"/>
             </RelativeLayout>
 
             <!--活动布局-->

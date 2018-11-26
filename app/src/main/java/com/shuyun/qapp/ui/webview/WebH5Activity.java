@@ -1,17 +1,14 @@
 package com.shuyun.qapp.ui.webview;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.ActivityCompat;
 import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.Gravity;

@@ -1,5 +1,6 @@
 package com.shuyun.qapp.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
@@ -93,6 +94,7 @@ public class VerticalScrollTextView extends TextSwitcher implements ViewSwitcher
      *
      * @param time
      */
+    @SuppressLint("HandlerLeak")
     public void setTextStillTime(final long time) {
         handler = new Handler() {
             @Override
@@ -137,7 +139,7 @@ public class VerticalScrollTextView extends TextSwitcher implements ViewSwitcher
     /**
      * 停止滚动
      */
-    public void stopAutoScroll() {
+    public static void stopAutoScroll() {
         handler.sendEmptyMessage(FLAG_STOP_AUTO_SCROLL);
     }
 
@@ -151,6 +153,7 @@ public class VerticalScrollTextView extends TextSwitcher implements ViewSwitcher
         t.setTextSize(mTextSize);
         t.setEllipsize(TextUtils.TruncateAt.END);
         t.setClickable(true);
+        t.setLineSpacing(1.2f, 1.2f);
         t.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

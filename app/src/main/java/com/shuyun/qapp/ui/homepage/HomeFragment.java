@@ -15,6 +15,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +29,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.blankj.utilcode.constant.TimeConstants;
 import com.blankj.utilcode.util.AppUtils;
@@ -89,7 +90,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import cn.kevin.banner.BannerAdapter;
 import cn.kevin.banner.BannerViewPager;
 import cn.kevin.banner.IBannerItem;
 import cn.kevin.banner.transformer.YZoomTransFormer;
@@ -998,7 +998,7 @@ public class HomeFragment extends Fragment {
                                     }
                                     scrollAd.setTextList(info);
                                     scrollAd.setMaxLines(2);
-                                    scrollAd.setTextStillTime(3000);
+                                    scrollAd.setTextStillTime(2000);
                                     scrollAd.makeView();
                                     scrollAd.setAnimTime(300);
                                     scrollAd.startAutoScroll();
@@ -1066,16 +1066,11 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        try {
-            scrollAd.stopAutoScroll();
-        } catch (Exception e) {
-
-        }
-
         if (msgReceiver != null) {
             mContext.unregisterReceiver(msgReceiver);
         }
     }
+
 }
 
 

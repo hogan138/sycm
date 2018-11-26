@@ -17,6 +17,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -50,6 +51,7 @@ import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.StatusBarUtil;
+import com.shuyun.qapp.view.VerticalScrollTextView;
 import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 
@@ -386,9 +388,19 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
         SharedPreferences sharedPreferences = getSharedPreferences("FirstRun", 0);
         Boolean main_run = sharedPreferences.getBoolean("Main", true);
         sharedPreferences.edit().putBoolean("Main", true).commit();
+
     }
 
-    //for receive customer msg from jpush server
+    @Override
+    public void onBackPressed() {
+        try {
+            VerticalScrollTextView.stopAutoScroll(); //停止全民公告滚动
+        } catch (Exception e) {
+        }
+        super.onBackPressed();
+    }
+
+    //极光推送
     private MessageReceiver mMessageReceiver;
     public static final String MESSAGE_RECEIVED_ACTION = "com.shuyun.qapp.MESSAGE_RECEIVED_ACTION";
     public static final String KEY_TITLE = "title";

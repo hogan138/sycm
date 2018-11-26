@@ -14,9 +14,9 @@ import com.blankj.utilcode.util.TimeUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.MyPagerAdapter;
 import com.shuyun.qapp.base.BaseActivity;
+import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MineBean;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -52,6 +52,8 @@ public class MinePrizeActivity extends BaseActivity {
     ViewPager vp;
     @BindView(R.id.ll_prize)
     LinearLayout llPrize;
+    @BindView(R.id.tv_box_record)
+    TextView tvBoxRecord; //宝箱记录
 
     private int status;
 
