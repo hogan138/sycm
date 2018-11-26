@@ -73,51 +73,47 @@ public class AnswerHistoryAdapter extends RecyclerView.Adapter<AnswerHistoryAdap
                     e.printStackTrace();
                 }
 
-
                 if (questionsBean.getResult() == 1) {
                     holder.ivIsCorrect.setImageResource(R.mipmap.duihuao);
-                } else {
-                    //回答错误
+                } else {  //回答错误
                     holder.ivIsCorrect.setImageResource(R.mipmap.cuohao);
                 }
 
-                if (!EncodeAndStringTool.isStringEmpty(questionsBean.getAnswer())) {
-                    if (questionsBean.getAnswer().equals("0") || questionsBean.getResult() == -1) {
-                        holder.tvYourAnswer.setText("您的答案:超时未答或中途异常");
-                        holder.tvYourAnswer.setTextColor(context.getResources().getColor(R.color.color_20));
-                    }
-                } else {
+                //超时未答
+                if (questionsBean.getResult() == -1
+                        || EncodeAndStringTool.isStringEmpty(questionsBean.getAnswer())
+                        || "0".equals(questionsBean.getAnswer())) {
                     holder.tvYourAnswer.setText("您的答案:超时未答或中途异常");
                     holder.tvYourAnswer.setTextColor(context.getResources().getColor(R.color.color_20));
                 }
 
                 for (int i = 0; i < optionsBeans.size(); i++) {
-
+                    LookAnswerResultBean.QuestionsBean.OptionsBean optionsBean = optionsBeans.get(i);
                     String title = "";
                     //私钥解密
                     try {
                         PrivateKey private_key = RSAUtils.loadPrivateKey(AppConst.private_key);
-                        byte[] decryptByte = RSAUtils.decryptDataPrivateKey(Base64Utils.decode(optionsBeans.get(i).getTitle()), private_key);
+                        byte[] decryptByte = RSAUtils.decryptDataPrivateKey(Base64Utils.decode(optionsBean.getTitle()), private_key);
                         title = new String(decryptByte); //选项名称
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
-                    if (!EncodeAndStringTool.isStringEmpty(oks)) {
-                        if (oks.equals(optionsBeans.get(i).getId())) {
-                            holder.tvRightAnswer1.setText("正确答案:" + title);//正确答案
-                        }
+                    //显示正确答案
+                    if (optionsBean.getId().equals(oks)) {
+                        holder.tvRightAnswer1.setText("正确答案:" + title);
                     }
 
-                    if (!EncodeAndStringTool.isStringEmpty(questionsBean.getAnswer())) {
-                        if (questionsBean.getAnswer().equals(optionsBeans.get(i).getId())) {
-                            holder.tvYourAnswer.setText("您的答案:" + title);
-                        }
-                        if (questionsBean.getAnswer().equals(oks)) {
-                            holder.tvYourAnswer.setTextColor(context.getResources().getColor(R.color.color_4));
-                        } else {
-                            holder.tvYourAnswer.setTextColor(context.getResources().getColor(R.color.color_20));
-                        }
+                    //显示用户答案
+                    if (optionsBean.getId().equals(questionsBean.getAnswer())) {
+                        holder.tvYourAnswer.setText("您的答案:" + title);
+                    }
+
+                    //用户答案颜色
+                    if (oks.equals(questionsBean.getAnswer())) {
+                        holder.tvYourAnswer.setTextColor(context.getResources().getColor(R.color.color_4));
+                    } else {
+                        holder.tvYourAnswer.setTextColor(context.getResources().getColor(R.color.color_20));
                     }
 
                 }

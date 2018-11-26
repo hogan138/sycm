@@ -55,7 +55,7 @@ public class AnswerRecordAdapter extends RecyclerView.Adapter<AnswerRecordAdapte
         if (!EncodeAndStringTool.isStringEmpty(answerRecordBean.getTitle())) {
             holder.tvTitle.setText(answerRecordBean.getTitle());
         }
-        holder.tvAccuracy.setText(answerRecordBean.getAccuracy() + "%");
+        holder.tvAccuracy.setText("正确率:" + answerRecordBean.getAccuracy() + "%");
         if (!answerRecordBean.getTime().equals("0")) {
             holder.tvTime.setText("时间:" + getTime(answerRecordBean.getTime()));
         }
