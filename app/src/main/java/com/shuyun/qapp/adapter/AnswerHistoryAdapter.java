@@ -23,8 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by sunxiao on 2018/4/25.
- * 奖品适配器
+ * 答题历史适配器
  */
 
 public class AnswerHistoryAdapter extends RecyclerView.Adapter<AnswerHistoryAdapter.ViewHolder> {
@@ -82,6 +81,16 @@ public class AnswerHistoryAdapter extends RecyclerView.Adapter<AnswerHistoryAdap
                     holder.ivIsCorrect.setImageResource(R.mipmap.cuohao);
                 }
 
+                if (!EncodeAndStringTool.isStringEmpty(questionsBean.getAnswer())) {
+                    if (questionsBean.getAnswer().equals("0") || questionsBean.getResult() == -1) {
+                        holder.tvYourAnswer.setText("您的答案:超时未答或中途异常");
+                        holder.tvYourAnswer.setTextColor(context.getResources().getColor(R.color.color_20));
+                    }
+                } else {
+                    holder.tvYourAnswer.setText("您的答案:超时未答或中途异常");
+                    holder.tvYourAnswer.setTextColor(context.getResources().getColor(R.color.color_20));
+                }
+
                 for (int i = 0; i < optionsBeans.size(); i++) {
 
                     String title = "";
@@ -102,23 +111,13 @@ public class AnswerHistoryAdapter extends RecyclerView.Adapter<AnswerHistoryAdap
 
                     if (!EncodeAndStringTool.isStringEmpty(questionsBean.getAnswer())) {
                         if (questionsBean.getAnswer().equals(optionsBeans.get(i).getId())) {
-                            if (questionsBean.getAnswer().equals(oks)) {
-                                holder.tvYourAnswer.setText("您的答案:" + title);//回答正确
-                                holder.tvYourAnswer.setTextColor(context.getResources().getColor(R.color.color_4));
-                            } else {
-                                holder.tvYourAnswer.setText("您的答案:" + title);//回答错误
-                                holder.tvYourAnswer.setTextColor(context.getResources().getColor(R.color.color_20));
-                            }
-                        } else if (questionsBean.getAnswer().equals("0")) {
-                            holder.tvYourAnswer.setText("您的答案:超时未答或中途异常");
-                            holder.tvYourAnswer.setTextColor(context.getResources().getColor(R.color.color_20));
-                        } else if (questionsBean.getResult() == -1) {
-                            holder.tvYourAnswer.setText("您的答案:超时未答或中途异常");
+                            holder.tvYourAnswer.setText("您的答案:" + title);
+                        }
+                        if (questionsBean.getAnswer().equals(oks)) {
+                            holder.tvYourAnswer.setTextColor(context.getResources().getColor(R.color.color_4));
+                        } else {
                             holder.tvYourAnswer.setTextColor(context.getResources().getColor(R.color.color_20));
                         }
-                    } else {
-                        holder.tvYourAnswer.setText("您的答案:超时未答或中途异常");
-                        holder.tvYourAnswer.setTextColor(context.getResources().getColor(R.color.color_20));
                     }
 
                 }
