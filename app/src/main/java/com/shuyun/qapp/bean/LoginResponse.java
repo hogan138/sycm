@@ -16,6 +16,34 @@ public class LoginResponse implements Serializable {
     private User user;//对象
     private boolean setPwd;
 
+    private String openId;
+    private String wxName;
+    private String wxHeadUrl;
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
+
+    public String getWxName() {
+        return wxName;
+    }
+
+    public void setWxName(String wxName) {
+        this.wxName = wxName;
+    }
+
+    public String getWxHeadUrl() {
+        return wxHeadUrl;
+    }
+
+    public void setWxHeadUrl(String wxHeadUrl) {
+        this.wxHeadUrl = wxHeadUrl;
+    }
+
     public boolean isSetPwd() {
         return setPwd;
     }
@@ -86,6 +114,15 @@ public class LoginResponse implements Serializable {
         private String headerId;//用户的头像
         private int ob;//是否参与公测 1——参与公测
         private int share;//是否参与邀请分享   1——参与邀请
+        private Long id;
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
 
         public void setNickname(String nickname) {
             this.nickname = nickname;

@@ -40,6 +40,7 @@ import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.activity.ActivityFragment;
 import com.shuyun.qapp.ui.classify.ClassifyFragment;
+import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.mine.AddWithdrawInfoActivity;
 import com.shuyun.qapp.ui.mine.MineFragment;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
@@ -218,7 +219,7 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
                 getActivityShow(i);
 
                 //点击活动专区
-                if (j == 2 && "1".equals(show)) {
+                if (j == 2 && "1".equals(show)) { //未点过红色角标
                     Drawable drawable = getResources().getDrawable(R.mipmap.activity_s);
                     drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
                     radioActivity.setCompoundDrawables(null, drawable, null, null);
@@ -393,14 +394,15 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
 
     @Override
     public void onBackPressed() {
-        try {
-            VerticalScrollTextView.stopAutoScroll(); //停止全民公告滚动
-        } catch (Exception e) {
-        }
         super.onBackPressed();
+        try {
+            VerticalScrollTextView.stopAutoScroll();
+        } catch (Exception e) {
+
+        }
     }
 
-    //极光推送
+    //for receive customer msg from jpush server
     private MessageReceiver mMessageReceiver;
     public static final String MESSAGE_RECEIVED_ACTION = "com.shuyun.qapp.MESSAGE_RECEIVED_ACTION";
     public static final String KEY_TITLE = "title";

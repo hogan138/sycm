@@ -220,6 +220,7 @@ public class SystemSettingActivity extends BaseActivity {
                     public void onMultiClick(View v) {
                         //清空数据
                         SharedPrefrenceTool.clear(SystemSettingActivity.this);
+                        AppConst.loadToken(SystemSettingActivity.this);
 
                         //清空原先的别名
                         JPushInterface.setAlias(SystemSettingActivity.this, new Random().nextInt(), "");

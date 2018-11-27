@@ -175,27 +175,25 @@ public class WelcomeActivity extends Activity {
         ImageLoaderManager.LoadImage(WelcomeActivity.this, adBean.getAd().get(0).getUrl(), ivAdvertising, R.mipmap.zw01);
         final int model = adBean.getAd().get(0).getModel();
         final String content = adBean.getAd().get(0).getContent();
-        final Long expire = (Long) SharedPrefrenceTool.get(WelcomeActivity.this, "expire", System.currentTimeMillis());//token的有效时间
-        final long currentTimeMillis = System.currentTimeMillis();
         ivAdvertising.setOnClickListener(new OnMultiClickListener() {
             @Override
             public void onMultiClick(View v) {
                 if (model == 3) {//题组跳转
                     if (!EncodeAndStringTool.isStringEmpty(content)) {
-                        if (!AppConst.isLogon() || currentTimeMillis >= expire) {
-                            //拉起登录界面
-                            Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                            finish();
-                            return;
-                        } else {
-                            Intent intent = new Intent(WelcomeActivity.this, WebAnswerActivity.class);
-                            intent.putExtra("groupId", Integer.parseInt(content));
-                            intent.putExtra("from", "splash");
-                            intent.putExtra("h5Url", adBean.getExamUrl());
-                            startActivity(intent);
-                            finish();
-                        }
+//                        if (!AppConst.isLogon() || currentTimeMillis >= expire) {
+//                            //拉起登录界面
+//                            Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
+//                            startActivity(intent);
+//                            finish();
+//                            return;
+//                        } else {
+                        Intent intent = new Intent(WelcomeActivity.this, WebAnswerActivity.class);
+                        intent.putExtra("groupId", Integer.parseInt(content));
+                        intent.putExtra("from", "splash");
+                        intent.putExtra("h5Url", adBean.getExamUrl());
+                        startActivity(intent);
+                        finish();
+//                        }
                         timer.cancel();
                     }
                 } else if (model == 2) {//内部链接
@@ -257,18 +255,16 @@ public class WelcomeActivity extends Activity {
 
     //跳转
     private void skip() {
-        Long expire = (Long) SharedPrefrenceTool.get(WelcomeActivity.this, "expire", System.currentTimeMillis());//token的有效时间
-        long currentTimeMillis = System.currentTimeMillis();
-        if (!AppConst.isLogon() || currentTimeMillis >= expire) {
-            //拉起登录界面
-            Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            Intent intent = new Intent(WelcomeActivity.this, HomePageActivity.class);
-            startActivity(intent);
-            finish();
-        }
+//        String token = (String) SharedPrefrenceTool.get(WelcomeActivity.this, "token", "");
+//        if (EncodeAndStringTool.isStringEmpty(token)) {
+//            //拉起登录界面
+//            Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
+//            startActivity(intent);
+//            finish();
+//        }
+        Intent intent = new Intent(WelcomeActivity.this, HomePageActivity.class);
+        startActivity(intent);
+        finish();
         timer.cancel();
     }
 

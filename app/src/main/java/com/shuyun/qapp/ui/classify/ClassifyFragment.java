@@ -131,7 +131,7 @@ public class ClassifyFragment extends Fragment {
                                 if (mContext instanceof ClassifyActivity) {
                                     Long id = mContext.getIntent().getLongExtra("id", 0);
                                     for (int i = 0; i < classifyBeans.size(); i++) {
-                                        if (classifyBeans.get(i).getId() == id) {
+                                        if (classifyBeans.get(i).getId().longValue() == id.longValue()) {
                                             classifyBeans.get(i).setFlag(true);
                                             refreshRightGroup(i, classifyBeans);
                                         } else if (id == 0) {

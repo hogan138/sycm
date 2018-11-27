@@ -240,7 +240,6 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
                                     finish();
                                 }
 
-                            } else {
                             }
                         } else {
                             ErrorCodeTools.errorCodePrompt(mContext, loginResponse.getErr(), loginResponse.getMsg());

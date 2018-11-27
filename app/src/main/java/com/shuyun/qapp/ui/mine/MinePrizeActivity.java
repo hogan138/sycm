@@ -38,7 +38,6 @@ import io.reactivex.schedulers.Schedulers;
 
 /**
  * 我的奖品界面
- * 修改于：2018/6/9
  */
 public class MinePrizeActivity extends BaseActivity {
 
@@ -119,7 +118,7 @@ public class MinePrizeActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.iv_back})
+    @OnClick({R.id.iv_back, R.id.tv_box_record})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -129,6 +128,9 @@ public class MinePrizeActivity extends BaseActivity {
                 } else {
                     super.onBackPressed();
                 }
+                break;
+            case R.id.tv_box_record: //宝箱记录
+
                 break;
             default:
                 break;

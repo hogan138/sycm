@@ -89,14 +89,18 @@
                     android:layout_marginRight="@dimen/text_15"
                     android:src="@mipmap/home_ad_point" />
 
-                <com.shuyun.qapp.view.VerticalScrollTextView
+                <com.shuyun.qapp.view.TextBannerView
                     android:id="@+id/scroll_ad"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/text_14"
                     android:layout_toLeftOf="@+id/iv_ad_point"
-                    android:layout_toRightOf="@+id/iv_ad_logo"/>
+                    android:layout_toRightOf="@+id/iv_ad_logo"
+                    app:setDirection="bottom_to_top"
+                    app:setGravity="left"
+                    app:setTextSize="@dimen/text_12" />
+
             </RelativeLayout>
 
             <!--活动布局-->

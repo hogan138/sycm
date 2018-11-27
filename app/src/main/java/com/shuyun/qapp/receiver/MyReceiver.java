@@ -87,9 +87,7 @@ public class MyReceiver extends BroadcastReceiver {
                 /**
                  * 如果收到极光消息0:更换图标,调接口;1:存储到本地,
                  */
-                Long expire = (Long) SharedPrefrenceTool.get(context, "expire", System.currentTimeMillis());//token的有效时间
-                long currentTimeMillis = System.currentTimeMillis();
-                if (!AppConst.isLogon() || currentTimeMillis >= expire) {
+                if ("".equals((String) SharedPrefrenceTool.get(context, "token", ""))) {
                     //拉起登录界面
                     Intent i = new Intent(context, LoginActivity.class);
                     MyApplication.getAppContext().startActivity(i);

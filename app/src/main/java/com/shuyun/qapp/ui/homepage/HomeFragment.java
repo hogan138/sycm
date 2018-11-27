@@ -15,8 +15,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blankj.utilcode.constant.TimeConstants;
 import com.blankj.utilcode.util.AppUtils;
@@ -60,7 +59,6 @@ import com.shuyun.qapp.receiver.MyReceiver;
 import com.shuyun.qapp.ui.classify.ClassifyActivity;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
 import com.shuyun.qapp.ui.loader.GlideImageLoader1;
-import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.mine.MinePrizeActivity;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
@@ -74,10 +72,12 @@ import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.view.H5JumpUtil;
+import com.shuyun.qapp.view.ITextBannerItemClickListener;
 import com.shuyun.qapp.view.InviteSharePopupUtil;
 import com.shuyun.qapp.view.MainActivityDialogInfo;
 import com.shuyun.qapp.view.NotifyDialog;
 import com.shuyun.qapp.view.OvalImageView;
+import com.shuyun.qapp.view.TextBannerView;
 import com.shuyun.qapp.view.VerticalScrollTextView;
 import com.shuyun.qapp.view.ViewPagerScroller;
 import com.sunfusheng.marqueeview.MarqueeView;
@@ -169,7 +169,7 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.rl_title)
     RelativeLayout rlTitle; //标题栏
     @BindView(R.id.scroll_ad)
-    VerticalScrollTextView scrollAd; //公告
+    TextBannerView scrollAd; //公告
     @BindView(R.id.rl_ad)
     RelativeLayout rlAd; //公告布局
 
@@ -211,15 +211,14 @@ public class HomeFragment extends Fragment {
         ivCommonRightIcon.setImageResource(R.mipmap.message_n);//右侧消息按钮;
 
         //token的有效时间
-        Long expire = (Long) SharedPrefrenceTool.get(mContext, "expire", System.currentTimeMillis());
-        long currentTimeMillis = System.currentTimeMillis();
-        if (!AppConst.isLogon() || currentTimeMillis >= expire) {
-            //拉起登录界面
-            Intent intent = new Intent(mContext, LoginActivity.class);
-            startActivity(intent);
-            mContext.finish();
-            return;
-        }
+//        String token = (String) SharedPrefrenceTool.get(mContext, "token", "");
+//        if (EncodeAndStringTool.isStringEmpty(token)) {
+        //拉起登录界面
+//            Intent intent = new Intent(mContext, LoginActivity.class);
+//            startActivity(intent);
+//            mContext.finish();
+//            return;
+//        }
 
         /**
          * 注册极光推送监听
@@ -246,8 +245,6 @@ public class HomeFragment extends Fragment {
          * 获取全民播报
          */
         loadSystemInfo();
-
-
     }
 
     @Override
@@ -996,15 +993,11 @@ public class HomeFragment extends Fragment {
                                     for (int i = 0; i < homeNoticeBeanList.size(); i++) {
                                         info.add(homeNoticeBeanList.get(i).getContent());
                                     }
-                                    scrollAd.setTextList(info);
-                                    scrollAd.setMaxLines(2);
-                                    scrollAd.setTextStillTime(2000);
-                                    scrollAd.makeView();
-                                    scrollAd.setAnimTime(300);
-                                    scrollAd.startAutoScroll();
-                                    scrollAd.setOnItemClickListener(new VerticalScrollTextView.OnItemClickListener() {
+                                    scrollAd.setDatas(info);
+                                    //设置TextBannerView点击监听事件，返回点击的data数据, 和position位置
+                                    scrollAd.setItemOnClickListener(new ITextBannerItemClickListener() {
                                         @Override
-                                        public void onItemClick(int position) {
+                                        public void onItemClick(String data, int position) {
                                             H5JumpUtil.dialogSkip(homeNoticeBeanList.get(position).getAction(), homeNoticeBeanList.get(position).getGroupId(), homeNoticeBeanList.get(position).getH5Url(), mContext, llHomeFragment);
                                         }
                                     });
