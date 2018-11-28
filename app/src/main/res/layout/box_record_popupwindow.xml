@@ -46,7 +46,6 @@
         android:layout_marginTop="@dimen/text_54"
         android:layout_marginRight="@dimen/text_25"
         android:layout_marginBottom="@dimen/text_25"
-        android:lineSpacingExtra="@dimen/text_8"
         android:scrollbars="vertical"
         android:textColor="@color/color_93"
         android:textSize="@dimen/text_13" />
