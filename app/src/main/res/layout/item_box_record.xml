@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="90dp">
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/text_22"
+        android:textColor="@color/color_b2"
+        android:textSize="@dimen/text_12" />
+
+    <ImageView
+        android:id="@+id/iv_line"
+        android:layout_width="@dimen/text_20"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/text_16"
+        android:layout_toRightOf="@+id/tv_date" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_75"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/text_15"
+        android:layout_marginRight="@dimen/text_15"
+        android:layout_toRightOf="@+id/iv_line"
+        android:background="@mipmap/box_record_bg">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_17"
+            android:layout_marginTop="@dimen/text_17"
+            android:layout_marginRight="@dimen/text_17"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/color_0"
+                android:textSize="@dimen/text_14" />
+
+            <TextView
+                android:id="@+id/tv_remark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_5"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/color_93"
+                android:textSize="@dimen/text_12" />
+
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

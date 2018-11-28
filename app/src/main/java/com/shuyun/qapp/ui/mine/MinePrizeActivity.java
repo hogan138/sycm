@@ -130,7 +130,7 @@ public class MinePrizeActivity extends BaseActivity {
                 }
                 break;
             case R.id.tv_box_record: //宝箱记录
-
+                startActivity(new Intent(MinePrizeActivity.this, BoxRecordActivity.class));
                 break;
             default:
                 break;

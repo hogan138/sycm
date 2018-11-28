@@ -64,4 +64,6 @@
     <color name="select_normal">#151515</color>
     <color name="select_blue">#b2def9</color>
     <color name="color_9b">#9b9b9b</color>
+    <color name="color_b2">#b2b2b2</color>
+    <color name="color_93">#939393</color>
 </resources>

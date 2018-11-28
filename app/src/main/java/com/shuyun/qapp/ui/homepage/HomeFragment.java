@@ -27,7 +27,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.blankj.utilcode.constant.TimeConstants;
 import com.blankj.utilcode.util.AppUtils;
@@ -78,7 +77,6 @@ import com.shuyun.qapp.view.MainActivityDialogInfo;
 import com.shuyun.qapp.view.NotifyDialog;
 import com.shuyun.qapp.view.OvalImageView;
 import com.shuyun.qapp.view.TextBannerView;
-import com.shuyun.qapp.view.VerticalScrollTextView;
 import com.shuyun.qapp.view.ViewPagerScroller;
 import com.sunfusheng.marqueeview.MarqueeView;
 import com.umeng.analytics.MobclickAgent;
@@ -281,7 +279,6 @@ public class HomeFragment extends Fragment {
              * 获取宝箱数量
              */
             loadTreasureBoxNum();
-        } else {
         }
     }
 

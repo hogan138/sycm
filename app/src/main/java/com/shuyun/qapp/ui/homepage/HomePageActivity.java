@@ -17,15 +17,12 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.TimeUtils;
-import com.gyf.barlibrary.ImmersionBar;
 import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.callback.ConfigDialog;
 import com.mylhyl.circledialog.params.DialogParams;
@@ -40,8 +37,6 @@ import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.activity.ActivityFragment;
 import com.shuyun.qapp.ui.classify.ClassifyFragment;
-import com.shuyun.qapp.ui.login.LoginActivity;
-import com.shuyun.qapp.ui.mine.AddWithdrawInfoActivity;
 import com.shuyun.qapp.ui.mine.MineFragment;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -52,7 +47,6 @@ import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.StatusBarUtil;
-import com.shuyun.qapp.view.VerticalScrollTextView;
 import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 
@@ -390,16 +384,6 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
         Boolean main_run = sharedPreferences.getBoolean("Main", true);
         sharedPreferences.edit().putBoolean("Main", true).commit();
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        try {
-            VerticalScrollTextView.stopAutoScroll();
-        } catch (Exception e) {
-
-        }
     }
 
     //for receive customer msg from jpush server

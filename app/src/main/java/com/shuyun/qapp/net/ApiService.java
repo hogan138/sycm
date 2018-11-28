@@ -14,6 +14,7 @@ import com.shuyun.qapp.bean.ApplyAnswer;
 import com.shuyun.qapp.bean.AuthNameBean;
 import com.shuyun.qapp.bean.BannerBean;
 import com.shuyun.qapp.bean.BoxBean;
+import com.shuyun.qapp.bean.BoxRecordBean;
 import com.shuyun.qapp.bean.CompleteAnswerResponse;
 import com.shuyun.qapp.bean.ConfigDialogBean;
 import com.shuyun.qapp.bean.DataResponse;
@@ -695,4 +696,10 @@ public interface ApiService {
      */
     @GET("/rest/home/notice")
     Observable<DataResponse<List<HomeNoticeBean>>> homeNotice();
+
+    /**
+     * 77、宝箱记录
+     */
+    @GET("/rest/user/boxflow")
+    Observable<DataResponse<List<BoxRecordBean>>> boxRecord(@Query("page") int page);
 }
