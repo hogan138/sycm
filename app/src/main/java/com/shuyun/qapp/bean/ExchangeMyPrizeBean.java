@@ -20,14 +20,14 @@ public class ExchangeMyPrizeBean {
      * scheduleStatus : 0
      */
 
-    private int scheduleId;
+    private Long scheduleId;
     private String prizeName;
     private String mainPic;
     private long endTime;
-    private int schedule;
-    private int participate;
-    private int userTicketCount;
-    private int scheduleStatus;
+    private Long schedule;
+    private Long participate;
+    private Long userTicketCount;
+    private Long scheduleStatus;
     private String h5Url;
 
     public String getH5Url() {
@@ -38,11 +38,11 @@ public class ExchangeMyPrizeBean {
         this.h5Url = h5Url;
     }
 
-    public int getScheduleId() {
+    public Long getScheduleId() {
         return scheduleId;
     }
 
-    public void setScheduleId(int scheduleId) {
+    public void setScheduleId(Long scheduleId) {
         this.scheduleId = scheduleId;
     }
 
@@ -70,35 +70,35 @@ public class ExchangeMyPrizeBean {
         this.endTime = endTime;
     }
 
-    public int getSchedule() {
+    public Long getSchedule() {
         return schedule;
     }
 
-    public void setSchedule(int schedule) {
+    public void setSchedule(Long schedule) {
         this.schedule = schedule;
     }
 
-    public int getParticipate() {
+    public Long getParticipate() {
         return participate;
     }
 
-    public void setParticipate(int participate) {
+    public void setParticipate(Long participate) {
         this.participate = participate;
     }
 
-    public int getUserTicketCount() {
+    public Long getUserTicketCount() {
         return userTicketCount;
     }
 
-    public void setUserTicketCount(int userTicketCount) {
+    public void setUserTicketCount(Long userTicketCount) {
         this.userTicketCount = userTicketCount;
     }
 
-    public int getScheduleStatus() {
+    public Long getScheduleStatus() {
         return scheduleStatus;
     }
 
-    public void setScheduleStatus(int scheduleStatus) {
+    public void setScheduleStatus(Long scheduleStatus) {
         this.scheduleStatus = scheduleStatus;
     }
 }

@@ -24,7 +24,7 @@ public class ConfigDialogBean {
     private String btnAction;
     private String h5Url;
     private String content;
-    private int count;
+    private Long count;
 
     public String getBaseImage() {
         return baseImage;
@@ -74,11 +74,11 @@ public class ConfigDialogBean {
         this.content = content;
     }
 
-    public int getCount() {
+    public Long getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    public void setCount(Long count) {
         this.count = count;
     }
 }

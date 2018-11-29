@@ -20,15 +20,15 @@ public class IntegralAllPrizeBean {
      * bpcons : 200
      */
 
-    private int scheduleId; //档期id
+    private Long scheduleId; //档期id
     private String prizeName; //奖品名称
     private String mainPic; //主图
     private long endTime; //结束时间
-    private int schedule; //期号
-    private int count; //奖品数量
-    private int scheduleStatus; //开奖状态
-    private int bpcons; //消耗积分
-    private int participate; //参与人数
+    private Long schedule; //期号
+    private Long count; //奖品数量
+    private Long scheduleStatus; //开奖状态
+    private Long bpcons; //消耗积分
+    private Long participate; //参与人数
     private String h5Url;
 
     public String getH5Url() {
@@ -40,11 +40,11 @@ public class IntegralAllPrizeBean {
     }
 
 
-    public int getScheduleId() {
+    public Long getScheduleId() {
         return scheduleId;
     }
 
-    public void setScheduleId(int scheduleId) {
+    public void setScheduleId(Long scheduleId) {
         this.scheduleId = scheduleId;
     }
 
@@ -72,43 +72,43 @@ public class IntegralAllPrizeBean {
         this.endTime = endTime;
     }
 
-    public int getSchedule() {
+    public Long getSchedule() {
         return schedule;
     }
 
-    public void setSchedule(int schedule) {
+    public void setSchedule(Long schedule) {
         this.schedule = schedule;
     }
 
-    public int getCount() {
+    public Long getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    public void setCount(Long count) {
         this.count = count;
     }
 
-    public int getScheduleStatus() {
+    public Long getScheduleStatus() {
         return scheduleStatus;
     }
 
-    public void setScheduleStatus(int scheduleStatus) {
+    public void setScheduleStatus(Long scheduleStatus) {
         this.scheduleStatus = scheduleStatus;
     }
 
-    public int getBpcons() {
+    public Long getBpcons() {
         return bpcons;
     }
 
-    public void setBpcons(int bpcons) {
+    public void setBpcons(Long bpcons) {
         this.bpcons = bpcons;
     }
 
-    public int getParticipate() {
+    public Long getParticipate() {
         return participate;
     }
 
-    public void setParticipate(int participate) {
+    public void setParticipate(Long participate) {
         this.participate = participate;
     }
 }

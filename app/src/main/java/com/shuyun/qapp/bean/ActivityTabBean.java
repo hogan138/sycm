@@ -13,14 +13,14 @@ public class ActivityTabBean {
      * total : 1
      */
 
-    private int total;
+    private Long total;
     private List<ResultBean> result;
 
-    public int getTotal() {
+    public Long getTotal() {
         return total;
     }
 
-    public void setTotal(int total) {
+    public void setTotal(Long total) {
         this.total = total;
     }
 

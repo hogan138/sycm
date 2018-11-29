@@ -7,10 +7,10 @@ package com.shuyun.qapp.bean;
 
 public class AnswerOpptyBean {
 
-    private int oppty;//用户当前的答题机会次数
+    private Long oppty;//用户当前的答题机会次数
     private long remainder;//距离下次领取时长
 
-    public int getOppty() {
+    public Long getOppty() {
         return oppty;
     }
 

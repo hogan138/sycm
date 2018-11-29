@@ -429,7 +429,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                 .setView(R.layout.add_answer_num_popupwindow)
                 .setWidthAndHeight(upView.getMeasuredWidth(), upView.getMeasuredHeight())
                 .setBackGroundLevel(0.5f)//取值范围0.0f-1.0f 值越小越暗
-                .setOutsideTouchable(false)
+                .setOutsideTouchable(true)
                 .setAnimationStyle(R.style.popwin_anim_style)//设置动画
                 //设置子View点击事件
                 .setViewOnclickListener(this)

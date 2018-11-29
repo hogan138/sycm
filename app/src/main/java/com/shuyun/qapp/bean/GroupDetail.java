@@ -52,14 +52,14 @@ public class GroupDetail implements Parcelable{
      * 99——下线;
      * -1——废除
      */
-    private int status;
+    private Long status;
     /**
      * 用户剩余的答题次数
      * 0表示没有答题次数了。如果是限制了每日答题次数的,
      * 则该值不能超过每日答题次数限制数量
      */
-    private int opportunity;
-    private int won;//用户今日答对次数
+    private Long opportunity;
+    private Long won;//用户今日答对次数
     /**
      * 用户实名认证标志
      * 0——未实名认证
@@ -68,7 +68,7 @@ public class GroupDetail implements Parcelable{
      * 3——未通过
      * 4——拉黑
      */
-    private int certification;
+    private Long certification;
     private ActivityBean activity;//该题组参加的活动中当前运营中的活动
     private Guide guide;//题组指南
 
@@ -88,10 +88,10 @@ public class GroupDetail implements Parcelable{
         bindImage = in.readString();
         shareTitle = in.readString();
         shareContent = in.readString();
-        status = in.readInt();
-        opportunity = in.readInt();
-        won = in.readInt();
-        certification = in.readInt();
+        status = in.readLong();
+        opportunity = in.readLong();
+        won = in.readLong();
+        certification = in.readLong();
         activity = in.readParcelable(ActivityBean.class.getClassLoader());
         guide = in.readParcelable(Guide.class.getClassLoader());
     }
@@ -108,19 +108,19 @@ public class GroupDetail implements Parcelable{
         }
     };
 
-    public int getCertification() {
+    public Long getCertification() {
         return certification;
     }
 
-    public int getStatus() {
+    public Long getStatus() {
         return status;
     }
 
-    public int getOpportunity() {
+    public Long getOpportunity() {
         return opportunity;
     }
 
-    public int getWon() {
+    public Long getWon() {
         return won;
     }
 
@@ -216,10 +216,10 @@ public class GroupDetail implements Parcelable{
         dest.writeString(bindImage);
         dest.writeString(shareTitle);
         dest.writeString(shareContent);
-        dest.writeInt(status);
-        dest.writeInt(opportunity);
-        dest.writeInt(won);
-        dest.writeInt(certification);
+        dest.writeLong(status);
+        dest.writeLong(opportunity);
+        dest.writeLong(won);
+        dest.writeLong(certification);
         dest.writeParcelable(activity, flags);
         dest.writeParcelable(guide, flags);
     }
@@ -238,8 +238,8 @@ public class GroupDetail implements Parcelable{
         private String name;//活动名称
         private Long id;//活动id
         private String merchantName;//商户名称
-        private int showRule;//是否强化显示规则0:不显示;1:显示
-        private int showGuide;//是否展现指南0:不显示;1:显示
+        private Long showRule;//是否强化显示规则0:不显示;1:显示
+        private Long showGuide;//是否展现指南0:不显示;1:显示
         private RuleBean rule;//活动适用的规则
         private List<XruleBean> xrule;//扩展规则
 
@@ -251,8 +251,8 @@ public class GroupDetail implements Parcelable{
             name = in.readString();
             id = in.readLong();
             merchantName = in.readString();
-            showRule = in.readInt();
-            showGuide = in.readInt();
+            showRule = in.readLong();
+            showGuide = in.readLong();
             rule = in.readParcelable(RuleBean.class.getClassLoader());
             xrule = in.createTypedArrayList(XruleBean.CREATOR);
         }
@@ -262,8 +262,8 @@ public class GroupDetail implements Parcelable{
             dest.writeString(name);
             dest.writeLong(id);
             dest.writeString(merchantName);
-            dest.writeInt(showRule);
-            dest.writeInt(showGuide);
+            dest.writeLong(showRule);
+            dest.writeLong(showGuide);
             dest.writeParcelable(rule, flags);
             dest.writeTypedList(xrule);
         }
@@ -297,11 +297,11 @@ public class GroupDetail implements Parcelable{
             return merchantName;
         }
 
-        public int getShowRule() {
+        public Long getShowRule() {
             return showRule;
         }
 
-        public int getShowGuide() {
+        public Long getShowGuide() {
             return showGuide;
         }
 

@@ -58,15 +58,13 @@ public class BoxRecordAdapter extends RecyclerView.Adapter<BoxRecordAdapter.View
             holder.ivLine.setBackgroundResource(R.mipmap.box_record_middle);
         }
 
-        if (!EncodeAndStringTool.isObjectEmpty(mOnItemChildClickLitsener)) {
-            holder.itemView.setOnClickListener(new OnMultiClickListener() {
-                @Override
-                public void onMultiClick(View v) {
-                    int position = holder.getLayoutPosition();
-                    mOnItemChildClickLitsener.onItemChildClick(holder.itemView, position);
-                }
-            });
-        }
+        holder.itemView.setOnClickListener(new OnMultiClickListener() {
+            @Override
+            public void onMultiClick(View v) {
+                int position = holder.getLayoutPosition();
+                mOnItemChildClickLitsener.onItemChildClick(holder.itemView, position);
+            }
+        });
 
     }
 

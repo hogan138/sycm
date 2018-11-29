@@ -113,7 +113,7 @@ public class ErrorCodeTools {
             return false;
         } else if (err.equals("TAU01") || err.equals("TAU02") || err.equals("TAU03") || err.equals("TAU04") || err.equals("TAU05")
                 || err.equals("TAU06") || err.equals("TAU07") || err.equals("TAU08") || err.equals("TAU09") || err.equals("TAU10")
-                ) {
+                || err.equals("TAU11")) {
             //头部的认证属性中，jwt的授权token已经失效,跳登录页
             ToastUtil.showToast(mContext, "登录状态不对,请重新登录");
             Intent intent = new Intent(mContext, LoginActivity.class);

@@ -156,7 +156,7 @@ public class ChangePhoneNumActivity extends BaseActivity {
 
                                 @Override
                                 public void onTick(long millisUntilFinished) {
-                                    btnGetCode.setText(String.format("%d S", millisUntilFinished / 1000));
+                                    btnGetCode.setText(String.format("%dS", millisUntilFinished / 1000));
                                 }
 
                                 @Override

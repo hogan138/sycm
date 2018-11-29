@@ -110,9 +110,7 @@ public class BoxRecordActivity extends BaseActivity {
                 BoxRecordBean boxRecordBean = boxRecordBeanList.get(position);
                 String title = boxRecordBean.getTitle();
                 String remark = boxRecordBean.getRemark();
-                if (!EncodeAndStringTool.isStringEmpty(remark)) {
-                    showPop(title, remark);
-                }
+                showPop(title, remark);
             }
         });
         GridLayoutManager glManager = new GridLayoutManager(BoxRecordActivity.this, 1, LinearLayoutManager.VERTICAL, false);
@@ -138,7 +136,7 @@ public class BoxRecordActivity extends BaseActivity {
                             final List<BoxRecordBean> boxRecordBeanList1 = dataResponse.getDat();
                             if (!EncodeAndStringTool.isListEmpty(boxRecordBeanList1) && boxRecordBeanList1.size() > 0) {
                                 ivPrizeEmpty.setVisibility(View.GONE);
-                                if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {//首次加載||下拉刷新
+                                if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {//首次加载||下拉刷新
                                     boxRecordBeanList.clear();
                                     boxRecordBeanList.addAll(boxRecordBeanList1);
                                     rvBoxRecord.setAdapter(boxRecordAdapter);
@@ -188,8 +186,6 @@ public class BoxRecordActivity extends BaseActivity {
      * 详情popupWindow
      */
     public void showPop(final String title1, final String remark) {
-        if (popupWindow != null && popupWindow.isShowing())
-            return;
         View upView = LayoutInflater.from(BoxRecordActivity.this).inflate(R.layout.box_record_popupwindow, null);
         //测量View的宽高
         CommonPopUtil.measureWidthAndHeight(upView);
@@ -214,10 +210,7 @@ public class BoxRecordActivity extends BaseActivity {
                                 ivClose.setOnClickListener(new OnMultiClickListener() {
                                     @Override
                                     public void onMultiClick(View v) {
-                                        if (popupWindow != null && popupWindow.isShowing()) {
-                                            popupWindow.dismiss();
-                                            popupWindow = null;
-                                        }
+                                        popupWindow.dismiss();
                                     }
                                 });
                                 break;

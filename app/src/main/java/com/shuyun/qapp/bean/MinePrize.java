@@ -37,30 +37,31 @@ public class MinePrize implements Parcelable {
      */
 
     private String name;
-    private int type;
+    private Long type;
     private String description;
-    private int mode;
+    private Long mode;
     private String picture;
     private String mainImage;
     private String longImage;
     private String id;
-    private int ruleId;
+    private Long ruleId;
     private String expireTime;
     private String validTime;
-    private int status;
-    private int upcomming;
+    private Long status;
+    private Long upcomming;
     private String amount;
     private String bulletin;
     private List<PrizesBean> prizes;
     private long beat0;//正确击败人次
     private double beatRate;//击败人次的比例
     private double accuracy;//正确率
-    private int source;//奖品来源
+    private Long source;//奖品来源
     private String substatusName;
     private String h5Url;
     private int orginal;
     private long scheduleId;
     private long orderId;
+    private long activityId;//活动id
     public boolean selected = false;
     private String content;
     private String openPicture;//开奖使用的图片
@@ -68,41 +69,44 @@ public class MinePrize implements Parcelable {
     private String actionTypeLabel;//按钮名称
     private List<ChildMinePrize> groups; //红包集合
 
-    public MinePrize(){
+    public MinePrize() {
 
     }
+
     protected MinePrize(Parcel in) {
         name = in.readString();
-        type = in.readInt();
+        type = in.readLong();
         description = in.readString();
-        mode = in.readInt();
+        mode = in.readLong();
         picture = in.readString();
         mainImage = in.readString();
         longImage = in.readString();
         id = in.readString();
-        ruleId = in.readInt();
+        ruleId = in.readLong();
         expireTime = in.readString();
         validTime = in.readString();
-        status = in.readInt();
-        upcomming = in.readInt();
+        status = in.readLong();
+        upcomming = in.readLong();
         amount = in.readString();
         bulletin = in.readString();
         prizes = in.createTypedArrayList(PrizesBean.CREATOR);
         beat0 = in.readLong();
         beatRate = in.readDouble();
         accuracy = in.readDouble();
-        source = in.readInt();
+        source = in.readLong();
         substatusName = in.readString();
         h5Url = in.readString();
         orginal = in.readInt();
         scheduleId = in.readLong();
         orderId = in.readLong();
+        activityId = in.readLong();
         selected = in.readByte() != 0;
         content = in.readString();
         openPicture = in.readString();
         actionType = in.readString();
         actionTypeLabel = in.readString();
         groups = in.createTypedArrayList(ChildMinePrize.CREATOR);
+
     }
 
     public static final Creator<MinePrize> CREATOR = new Creator<MinePrize>() {
@@ -125,11 +129,11 @@ public class MinePrize implements Parcelable {
         this.name = name;
     }
 
-    public int getType() {
+    public Long getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(Long type) {
         this.type = type;
     }
 
@@ -141,11 +145,11 @@ public class MinePrize implements Parcelable {
         this.description = description;
     }
 
-    public int getMode() {
+    public Long getMode() {
         return mode;
     }
 
-    public void setMode(int mode) {
+    public void setMode(Long mode) {
         this.mode = mode;
     }
 
@@ -181,11 +185,11 @@ public class MinePrize implements Parcelable {
         this.id = id;
     }
 
-    public int getRuleId() {
+    public Long getRuleId() {
         return ruleId;
     }
 
-    public void setRuleId(int ruleId) {
+    public void setRuleId(Long ruleId) {
         this.ruleId = ruleId;
     }
 
@@ -205,19 +209,19 @@ public class MinePrize implements Parcelable {
         this.validTime = validTime;
     }
 
-    public int getStatus() {
+    public Long getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Long status) {
         this.status = status;
     }
 
-    public int getUpcomming() {
+    public Long getUpcomming() {
         return upcomming;
     }
 
-    public void setUpcomming(int upcomming) {
+    public void setUpcomming(Long upcomming) {
         this.upcomming = upcomming;
     }
 
@@ -269,11 +273,11 @@ public class MinePrize implements Parcelable {
         this.accuracy = accuracy;
     }
 
-    public int getSource() {
+    public Long getSource() {
         return source;
     }
 
-    public void setSource(int source) {
+    public void setSource(Long source) {
         this.source = source;
     }
 
@@ -315,6 +319,14 @@ public class MinePrize implements Parcelable {
 
     public void setOrderId(long orderId) {
         this.orderId = orderId;
+    }
+
+    public long getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(long activityId) {
+        this.activityId = activityId;
     }
 
     public boolean isSelected() {
@@ -373,30 +385,31 @@ public class MinePrize implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
-        dest.writeInt(type);
+        dest.writeLong(type);
         dest.writeString(description);
-        dest.writeInt(mode);
+        dest.writeLong(mode);
         dest.writeString(picture);
         dest.writeString(mainImage);
         dest.writeString(longImage);
         dest.writeString(id);
-        dest.writeInt(ruleId);
+        dest.writeLong(ruleId);
         dest.writeString(expireTime);
         dest.writeString(validTime);
-        dest.writeInt(status);
-        dest.writeInt(upcomming);
+        dest.writeLong(status);
+        dest.writeLong(upcomming);
         dest.writeString(amount);
         dest.writeString(bulletin);
         dest.writeTypedList(prizes);
         dest.writeLong(beat0);
         dest.writeDouble(beatRate);
         dest.writeDouble(accuracy);
-        dest.writeInt(source);
+        dest.writeLong(source);
         dest.writeString(substatusName);
         dest.writeString(h5Url);
-        dest.writeInt(orginal);
+        dest.writeLong(orginal);
         dest.writeLong(scheduleId);
         dest.writeLong(orderId);
+        dest.writeLong(activityId);
         dest.writeByte((byte) (selected ? 1 : 0));
         dest.writeString(content);
         dest.writeString(openPicture);
@@ -421,8 +434,8 @@ public class MinePrize implements Parcelable {
          */
 
         private String showName;
-        private int type;
-        private int mode;
+        private Long type;
+        private Long mode;
         private String purpose;
         private String mainImage;
         private String longImage;
@@ -437,8 +450,8 @@ public class MinePrize implements Parcelable {
 
         protected PrizesBean(Parcel in) {
             showName = in.readString();
-            type = in.readInt();
-            mode = in.readInt();
+            type = in.readLong();
+            mode = in.readLong();
             purpose = in.readString();
             mainImage = in.readString();
             longImage = in.readString();
@@ -468,19 +481,19 @@ public class MinePrize implements Parcelable {
             this.showName = name;
         }
 
-        public int getType() {
+        public Long getType() {
             return type;
         }
 
-        public void setType(int type) {
+        public void setType(Long type) {
             this.type = type;
         }
 
-        public int getMode() {
+        public Long getMode() {
             return mode;
         }
 
-        public void setMode(int mode) {
+        public void setMode(Long mode) {
             this.mode = mode;
         }
 
@@ -548,8 +561,8 @@ public class MinePrize implements Parcelable {
         @Override
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeString(showName);
-            dest.writeInt(type);
-            dest.writeInt(mode);
+            dest.writeLong(type);
+            dest.writeLong(mode);
             dest.writeString(purpose);
             dest.writeString(mainImage);
             dest.writeString(longImage);
@@ -590,29 +603,29 @@ public class MinePrize implements Parcelable {
          */
 
         private String name;
-        private int type;
+        private Long type;
         private String description;
-        private int mode;
+        private Long mode;
         private String picture;
         private String mainImage;
         private String longImage;
         private String shortImage;
         private String id;
-        private int prizeId;
-        private int ruleId;
+        private Long prizeId;
+        private Long ruleId;
         private String expireTime;
-        private int validTime;
-        private int status;
-        private int substatus;
-        private int upcomming;
+        private Long validTime;
+        private Long status;
+        private Long substatus;
+        private Long upcomming;
         private String amount;
-        private int beat;
-        private int beatRate;
-        private int accuracy;
-        private int original;
-        private int source;
-        private int scheduleId;
-        private int orderId;
+        private Long beat;
+        private Long beatRate;
+        private Long accuracy;
+        private Long original;
+        private Long source;
+        private Long scheduleId;
+        private Long orderId;
         public boolean selected = false;
         private String actionType; //动作值
         private String actionTypeLabel;//按钮名称
@@ -641,11 +654,11 @@ public class MinePrize implements Parcelable {
             this.name = name;
         }
 
-        public int getType() {
+        public Long getType() {
             return type;
         }
 
-        public void setType(int type) {
+        public void setType(Long type) {
             this.type = type;
         }
 
@@ -657,11 +670,11 @@ public class MinePrize implements Parcelable {
             this.description = description;
         }
 
-        public int getMode() {
+        public Long getMode() {
             return mode;
         }
 
-        public void setMode(int mode) {
+        public void setMode(Long mode) {
             this.mode = mode;
         }
 
@@ -705,19 +718,19 @@ public class MinePrize implements Parcelable {
             this.id = id;
         }
 
-        public int getPrizeId() {
+        public Long getPrizeId() {
             return prizeId;
         }
 
-        public void setPrizeId(int prizeId) {
+        public void setPrizeId(Long prizeId) {
             this.prizeId = prizeId;
         }
 
-        public int getRuleId() {
+        public Long getRuleId() {
             return ruleId;
         }
 
-        public void setRuleId(int ruleId) {
+        public void setRuleId(Long ruleId) {
             this.ruleId = ruleId;
         }
 
@@ -729,35 +742,35 @@ public class MinePrize implements Parcelable {
             this.expireTime = expireTime;
         }
 
-        public int getValidTime() {
+        public Long getValidTime() {
             return validTime;
         }
 
-        public void setValidTime(int validTime) {
+        public void setValidTime(Long validTime) {
             this.validTime = validTime;
         }
 
-        public int getStatus() {
+        public Long getStatus() {
             return status;
         }
 
-        public void setStatus(int status) {
+        public void setStatus(Long status) {
             this.status = status;
         }
 
-        public int getSubstatus() {
+        public Long getSubstatus() {
             return substatus;
         }
 
-        public void setSubstatus(int substatus) {
+        public void setSubstatus(Long substatus) {
             this.substatus = substatus;
         }
 
-        public int getUpcomming() {
+        public Long getUpcomming() {
             return upcomming;
         }
 
-        public void setUpcomming(int upcomming) {
+        public void setUpcomming(Long upcomming) {
             this.upcomming = upcomming;
         }
 
@@ -769,59 +782,59 @@ public class MinePrize implements Parcelable {
             this.amount = amount;
         }
 
-        public int getBeat() {
+        public Long getBeat() {
             return beat;
         }
 
-        public void setBeat(int beat) {
+        public void setBeat(Long beat) {
             this.beat = beat;
         }
 
-        public int getBeatRate() {
+        public Long getBeatRate() {
             return beatRate;
         }
 
-        public void setBeatRate(int beatRate) {
+        public void setBeatRate(Long beatRate) {
             this.beatRate = beatRate;
         }
 
-        public int getAccuracy() {
+        public Long getAccuracy() {
             return accuracy;
         }
 
-        public void setAccuracy(int accuracy) {
+        public void setAccuracy(Long accuracy) {
             this.accuracy = accuracy;
         }
 
-        public int getOriginal() {
+        public Long getOriginal() {
             return original;
         }
 
-        public void setOriginal(int original) {
+        public void setOriginal(Long original) {
             this.original = original;
         }
 
-        public int getSource() {
+        public Long getSource() {
             return source;
         }
 
-        public void setSource(int source) {
+        public void setSource(Long source) {
             this.source = source;
         }
 
-        public int getScheduleId() {
+        public Long getScheduleId() {
             return scheduleId;
         }
 
-        public void setScheduleId(int scheduleId) {
+        public void setScheduleId(Long scheduleId) {
             this.scheduleId = scheduleId;
         }
 
-        public int getOrderId() {
+        public Long getOrderId() {
             return orderId;
         }
 
-        public void setOrderId(int orderId) {
+        public void setOrderId(Long orderId) {
             this.orderId = orderId;
         }
 
@@ -837,34 +850,35 @@ public class MinePrize implements Parcelable {
             return CREATOR;
         }
 
-        public ChildMinePrize(){
+        public ChildMinePrize() {
 
         }
+
         protected ChildMinePrize(Parcel in) {
             name = in.readString();
-            type = in.readInt();
+            type = in.readLong();
             description = in.readString();
-            mode = in.readInt();
+            mode = in.readLong();
             picture = in.readString();
             mainImage = in.readString();
             longImage = in.readString();
             shortImage = in.readString();
             id = in.readString();
-            prizeId = in.readInt();
-            ruleId = in.readInt();
+            prizeId = in.readLong();
+            ruleId = in.readLong();
             expireTime = in.readString();
-            validTime = in.readInt();
-            status = in.readInt();
-            substatus = in.readInt();
-            upcomming = in.readInt();
+            validTime = in.readLong();
+            status = in.readLong();
+            substatus = in.readLong();
+            upcomming = in.readLong();
             amount = in.readString();
-            beat = in.readInt();
-            beatRate = in.readInt();
-            accuracy = in.readInt();
-            original = in.readInt();
-            source = in.readInt();
-            scheduleId = in.readInt();
-            orderId = in.readInt();
+            beat = in.readLong();
+            beatRate = in.readLong();
+            accuracy = in.readLong();
+            original = in.readLong();
+            source = in.readLong();
+            scheduleId = in.readLong();
+            orderId = in.readLong();
             selected = in.readByte() != 0;
             actionType = in.readString();
             actionTypeLabel = in.readString();
@@ -890,29 +904,29 @@ public class MinePrize implements Parcelable {
         @Override
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeString(name);
-            dest.writeInt(type);
+            dest.writeLong(type);
             dest.writeString(description);
-            dest.writeInt(mode);
+            dest.writeLong(mode);
             dest.writeString(picture);
             dest.writeString(mainImage);
             dest.writeString(longImage);
             dest.writeString(shortImage);
             dest.writeString(id);
-            dest.writeInt(prizeId);
-            dest.writeInt(ruleId);
+            dest.writeLong(prizeId);
+            dest.writeLong(ruleId);
             dest.writeString(expireTime);
-            dest.writeInt(validTime);
-            dest.writeInt(status);
-            dest.writeInt(substatus);
-            dest.writeInt(upcomming);
+            dest.writeLong(validTime);
+            dest.writeLong(status);
+            dest.writeLong(substatus);
+            dest.writeLong(upcomming);
             dest.writeString(amount);
-            dest.writeInt(beat);
-            dest.writeInt(beatRate);
-            dest.writeInt(accuracy);
-            dest.writeInt(original);
-            dest.writeInt(source);
-            dest.writeInt(scheduleId);
-            dest.writeInt(orderId);
+            dest.writeLong(beat);
+            dest.writeLong(beatRate);
+            dest.writeLong(accuracy);
+            dest.writeLong(original);
+            dest.writeLong(source);
+            dest.writeLong(scheduleId);
+            dest.writeLong(orderId);
             dest.writeByte((byte) (selected ? 1 : 0));
             dest.writeString(actionType);
             dest.writeString(actionTypeLabel);

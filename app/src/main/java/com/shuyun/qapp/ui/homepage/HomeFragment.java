@@ -814,10 +814,11 @@ public class HomeFragment extends Fragment {
                     public void onNext(DataResponse<BoxBean> dataResponse) {
                         if (dataResponse.isSuccees()) {
                             BoxBean boxBean = dataResponse.getDat();
+
                             if (!EncodeAndStringTool.isObjectEmpty(boxBean)) {
                                 try {
-                                    if (boxBean.getCount() > 0) {//如果宝箱数量大于0,首页左下角显示宝箱摇晃动画
-                                        if (boxBean.getCount() == 1 && boxBean.getSource() == 3) {
+                                    if (boxBean.getCount() > 0) {
+                                        if (boxBean.getCount() == 1 && boxBean.getSource() == 3) {//从微信获取且只有一个宝箱，直接跳开宝箱页面
                                             SharedPreferences sharedPreferences = getActivity().getSharedPreferences("FirstRun", 0);
                                             Boolean first_run = sharedPreferences.getBoolean("Main", true);
                                             if (first_run) {
@@ -827,7 +828,7 @@ public class HomeFragment extends Fragment {
                                                 intent.putExtra("main_box", "main_box");
                                                 startActivity(intent);
                                             }
-                                        } else {
+                                        } else {//如果宝箱数量大于0,首页左下角显示宝箱摇晃动画
                                             ivBx.setVisibility(View.VISIBLE);
                                             TranslateAnimation animation = new TranslateAnimation(5, -5, 0, 0);
                                             animation.setInterpolator(new OvershootInterpolator());
@@ -845,7 +846,12 @@ public class HomeFragment extends Fragment {
                                             });
                                         }
                                     } else {
-                                        ivBx.setVisibility(View.GONE);
+                                        try {
+                                            ivBx.clearAnimation();
+                                            ivBx.setVisibility(View.GONE);
+                                        } catch (Exception e) {
+
+                                        }
                                     }
 
                                     //是否实名认证
@@ -924,6 +930,11 @@ public class HomeFragment extends Fragment {
                 timer.start();
             }
         }.start();
+
+        /**
+         * 获取宝箱数量
+         */
+        loadTreasureBoxNum();
 
     }
 

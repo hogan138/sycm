@@ -11,9 +11,9 @@ public class GroupAgainstBean {
     private Long id; //题组id
     private String name; // 题组名称
     private String picture; // 题组的标签
-    private int guideId; // 答题指南id，null或者0表示没有答题指南
+    private Long guideId; // 答题指南id，null或者0表示没有答题指南
     private String merchantName; // 题组参与活动的发起方名称
-    private int sorting; // 排序
+    private Long sorting; // 排序
     private String description; //描述
 
 
@@ -41,11 +41,11 @@ public class GroupAgainstBean {
         this.picture = picture;
     }
 
-    public int getGuideId() {
+    public Long getGuideId() {
         return guideId;
     }
 
-    public void setGuideId(int guideId) {
+    public void setGuideId(Long guideId) {
         this.guideId = guideId;
     }
 
@@ -57,11 +57,11 @@ public class GroupAgainstBean {
         this.merchantName = merchantName;
     }
 
-    public int getSorting() {
+    public Long getSorting() {
         return sorting;
     }
 
-    public void setSorting(int sorting) {
+    public void setSorting(Long sorting) {
         this.sorting = sorting;
     }
 

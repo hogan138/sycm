@@ -8,7 +8,7 @@ package com.shuyun.qapp.bean;
 public class AnswerRecordBean {
 
     private String id;//答题id
-    private int groupId;//题组id
+    private Long groupId;//题组id
     private String picture;//题组主图
     private String time;//答题时间
     private double accuracy;//正确率
@@ -19,13 +19,13 @@ public class AnswerRecordBean {
      * 0——未中奖
      * 1——中奖
      */
-    private int result;
+    private Long result;
 
     public void setId(String id) {
         this.id = id;
     }
 
-    public void setGroupId(int groupId) {
+    public void setGroupId(Long groupId) {
         this.groupId = groupId;
     }
 
@@ -45,7 +45,7 @@ public class AnswerRecordBean {
         this.merchantName = merchantName;
     }
 
-    public void setResult(int result) {
+    public void setResult(Long result) {
         this.result = result;
     }
 
@@ -53,7 +53,7 @@ public class AnswerRecordBean {
         return id;
     }
 
-    public int getGroupId() {
+    public Long getGroupId() {
         return groupId;
     }
 
@@ -73,7 +73,7 @@ public class AnswerRecordBean {
         return merchantName;
     }
 
-    public int getResult() {
+    public Long getResult() {
         return result;
     }
 

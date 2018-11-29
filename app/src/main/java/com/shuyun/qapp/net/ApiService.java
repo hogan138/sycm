@@ -6,7 +6,6 @@ import com.shuyun.qapp.bean.ActivityTabBean;
 import com.shuyun.qapp.bean.ActivityTimeBean;
 import com.shuyun.qapp.bean.AdBean;
 import com.shuyun.qapp.bean.AddWithdrawResultBean;
-import com.shuyun.qapp.bean.AnnounceBean;
 import com.shuyun.qapp.bean.AnswerOpptyBean;
 import com.shuyun.qapp.bean.AnswerRecordBean;
 import com.shuyun.qapp.bean.AppVersionBean;
@@ -27,7 +26,6 @@ import com.shuyun.qapp.bean.HomeGroupsBean;
 import com.shuyun.qapp.bean.HomeNoticeBean;
 import com.shuyun.qapp.bean.IntegralAllPrizeBean;
 import com.shuyun.qapp.bean.IntegralExchangeBean;
-import com.shuyun.qapp.bean.IntegralPrizeBean;
 import com.shuyun.qapp.bean.InviteBean;
 import com.shuyun.qapp.bean.LoginResponse;
 import com.shuyun.qapp.bean.LookAnswerResultBean;
@@ -199,7 +197,7 @@ public interface ApiService {
      * 16、获取积分抽奖活动信息 /activity-center
      */
     @GET("/rest/act/bp/lucky/info")
-    Observable<DataResponse<AnnounceBean>> getIntegralDrawInfo();
+    Observable<DataResponse<String>> getIntegralDrawInfo();
 
     /**
      * 17、查询积分流水记录
@@ -257,8 +255,8 @@ public interface ApiService {
      * @param deviceId 设备id  数美sdk返回的设备id
      * @return
      */
-    @GET("/rest/act/bp/lucky")
-    Observable<DataResponse<IntegralPrizeBean>> integralDraw(@Query("deviceId") String deviceId);
+//    @GET("/rest/act/bp/lucky")
+//    Observable<DataResponse<String>> integralDraw(@Query("deviceId") String deviceId);
 
     /**
      * 22、打开宝箱

@@ -224,7 +224,7 @@ public class ChangePasswordActivity extends BaseActivity {
 
                                 @Override
                                 public void onTick(long millisUntilFinished) {
-                                    tv60Second.setText(String.format("%d S", millisUntilFinished / 1000));
+                                    tv60Second.setText(String.format("%dS", millisUntilFinished / 1000));
                                 }
 
                                 @Override

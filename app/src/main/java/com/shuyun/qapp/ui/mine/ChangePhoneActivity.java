@@ -150,7 +150,7 @@ public class ChangePhoneActivity extends BaseActivity {
                                 new CountDownTimer(60 * 1000, 1000) {
                                     @Override
                                     public void onTick(long millisUntilFinished) {
-                                        btnGetCode2.setText(String.format("%d S", millisUntilFinished / 1000));
+                                        btnGetCode2.setText(String.format("%dS", millisUntilFinished / 1000));
 
                                     }
 
@@ -212,9 +212,8 @@ public class ChangePhoneActivity extends BaseActivity {
                                 SaveUserInfo.getInstance(ChangePhoneActivity.this).setUserInfo("phone", phoneNumber);
                                 finish();
                             } else if (dataResponse.getErr().equals("U0002")) {
-                                ToastUtil.showToast(ChangePhoneActivity.this, "手机号码已经被其它用户绑定");
+                                ToastUtil.showToast(ChangePhoneActivity.this, dataResponse.getMsg());
                             } else {
-                                ToastUtil.showToast(ChangePhoneActivity.this, "更换手机号失败");
                                 ErrorCodeTools.errorCodePrompt(ChangePhoneActivity.this, dataResponse.getErr(), dataResponse.getMsg());
                             }
 

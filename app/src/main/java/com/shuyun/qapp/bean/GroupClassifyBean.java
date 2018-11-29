@@ -23,11 +23,11 @@ public class GroupClassifyBean {
      */
     private Long id;//题组id
     private String name;//题组名称
-    private int opportunity;//消耗答题机会次数0:表示不消耗答题机会次数
-    private int parentId;//上级题组
+    private Long opportunity;//消耗答题机会次数0:表示不消耗答题机会次数
+    private Long parentId;//上级题组
     private String picture;//题组主图
     private boolean isFlag;//是否点击选中
-    private int guideId;//指南id
+    private Long guideId;//指南id
     private String merchantName;//题组参与的活动商户名称
     private List<ChildrenBean> children;
 
@@ -39,11 +39,11 @@ public class GroupClassifyBean {
         this.name = name;
     }
 
-    public void setOpportunity(int opportunity) {
+    public void setOpportunity(Long opportunity) {
         this.opportunity = opportunity;
     }
 
-    public void setParentId(int parentId) {
+    public void setParentId(Long parentId) {
         this.parentId = parentId;
     }
 
@@ -55,7 +55,7 @@ public class GroupClassifyBean {
         isFlag = flag;
     }
 
-    public void setGuideId(int guideId) {
+    public void setGuideId(Long guideId) {
         this.guideId = guideId;
     }
 
@@ -75,11 +75,11 @@ public class GroupClassifyBean {
         return name;
     }
 
-    public int getOpportunity() {
+    public Long getOpportunity() {
         return opportunity;
     }
 
-    public int getParentId() {
+    public Long getParentId() {
         return parentId;
     }
 
@@ -91,7 +91,7 @@ public class GroupClassifyBean {
         return isFlag;
     }
 
-    public int getGuideId() {
+    public Long getGuideId() {
         return guideId;
     }
 
@@ -127,11 +127,11 @@ public class GroupClassifyBean {
          */
         private Long id;//题组id
         private String name;//题组名称
-        private int opportunity;//消耗答题机会次数0:表示不消耗答题机会次数
-        private int parentId;//上级题组
+        private Long opportunity;//消耗答题机会次数0:表示不消耗答题机会次数
+        private Long parentId;//上级题组
         private String picture;//题组主图
         private boolean isFlag;//是否点击选中
-        private int guideId;//指南id
+        private Long guideId;//指南id
         private String merchantName;//题组参与的活动商户名称
         private String h5Url; //答题url
         private String opportunityLabel; //不消耗答题次数
@@ -198,11 +198,11 @@ public class GroupClassifyBean {
             this.name = name;
         }
 
-        public void setOpportunity(int opportunity) {
+        public void setOpportunity(Long opportunity) {
             this.opportunity = opportunity;
         }
 
-        public void setParentId(int parentId) {
+        public void setParentId(Long parentId) {
             this.parentId = parentId;
         }
 
@@ -214,7 +214,7 @@ public class GroupClassifyBean {
             isFlag = flag;
         }
 
-        public void setGuideId(int guideId) {
+        public void setGuideId(Long guideId) {
             this.guideId = guideId;
         }
 
@@ -230,11 +230,11 @@ public class GroupClassifyBean {
             return name;
         }
 
-        public int getOpportunity() {
+        public Long getOpportunity() {
             return opportunity;
         }
 
-        public int getParentId() {
+        public Long getParentId() {
             return parentId;
         }
 
@@ -246,7 +246,7 @@ public class GroupClassifyBean {
             return isFlag;
         }
 
-        public int getGuideId() {
+        public Long getGuideId() {
             return guideId;
         }
 

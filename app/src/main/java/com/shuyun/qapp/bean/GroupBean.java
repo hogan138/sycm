@@ -23,12 +23,12 @@ public class GroupBean {
 
     private Long id;//题组id
     private String name;//题组名称
-    private int parentId;//上级题组
+    private Long parentId;//上级题组
     private String picture;//题组主图
-    private int opportunity;//消耗答题机会次数
-    private int guideId;//指南id
+    private Long opportunity;//消耗答题机会次数
+    private Long guideId;//指南id
     private String merchantName;//题组参与的活动商户名称
-    private int sorting;
+    private Long sorting;
     private String h5Url; //答题url
     private String opportunityLabel; //不消耗答题次数
     private String tag; //答题攻略
@@ -79,11 +79,11 @@ public class GroupBean {
         this.name = name;
     }
 
-    public int getParentId() {
+    public Long getParentId() {
         return parentId;
     }
 
-    public void setParentId(int parentId) {
+    public void setParentId(Long parentId) {
         this.parentId = parentId;
     }
 
@@ -95,19 +95,19 @@ public class GroupBean {
         this.picture = picture;
     }
 
-    public int getOpportunity() {
+    public Long getOpportunity() {
         return opportunity;
     }
 
-    public void setOpportunity(int opportunity) {
+    public void setOpportunity(Long opportunity) {
         this.opportunity = opportunity;
     }
 
-    public int getGuideId() {
+    public Long getGuideId() {
         return guideId;
     }
 
-    public void setGuideId(int guideId) {
+    public void setGuideId(Long guideId) {
         this.guideId = guideId;
     }
 
@@ -119,11 +119,11 @@ public class GroupBean {
         this.merchantName = merchantName;
     }
 
-    public int getSorting() {
+    public Long getSorting() {
         return sorting;
     }
 
-    public void setSorting(int sorting) {
+    public void setSorting(Long sorting) {
         this.sorting = sorting;
     }
 
@@ -158,15 +158,15 @@ public class GroupBean {
          * tagName : 获得积分
          */
 
-        private int groupId;
+        private Long groupId;
         private String remark;
         private String tagName;
 
-        public int getGroupId() {
+        public Long getGroupId() {
             return groupId;
         }
 
-        public void setGroupId(int groupId) {
+        public void setGroupId(Long groupId) {
             this.groupId = groupId;
         }
 

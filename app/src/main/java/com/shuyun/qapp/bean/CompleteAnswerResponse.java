@@ -11,15 +11,15 @@ import java.util.List;
  */
 
 public class CompleteAnswerResponse implements Parcelable {
-    private int total;//答题实际回答的数量
-    private int status;//答题的最终状态
+    private Long total;//答题实际回答的数量
+    private Long status;//答题的最终状态
     private String id;//答题id
-    private int correct;//回答正确的数量
-    private int error;//回答错误的数量
-    private int timeout;//超时回答的数量
+    private Long correct;//回答正确的数量
+    private Long error;//回答错误的数量
+    private Long timeout;//超时回答的数量
     private double accuracy;//答题正确率
     private float difficulty;//题目平均难度系数
-    private int result;//答题结果0:未中奖;1:中奖
+    private Long result;//答题结果0:未中奖;1:中奖
     private float worth;//奖品的价值
     private String bulletin;//开奖公告
     private List<MinePrize> prize;//中奖的奖品
@@ -31,15 +31,15 @@ public class CompleteAnswerResponse implements Parcelable {
 
     }
     protected CompleteAnswerResponse(Parcel in) {
-        total = in.readInt();
-        status = in.readInt();
+        total = in.readLong();
+        status = in.readLong();
         id = in.readString();
-        correct = in.readInt();
-        error = in.readInt();
-        timeout = in.readInt();
+        correct = in.readLong();
+        error = in.readLong();
+        timeout = in.readLong();
         accuracy = in.readDouble();
         difficulty = in.readFloat();
-        result = in.readInt();
+        result = in.readLong();
         worth = in.readFloat();
         bulletin = in.readString();
         prize = in.createTypedArrayList(MinePrize.CREATOR);
@@ -51,15 +51,15 @@ public class CompleteAnswerResponse implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(total);
-        dest.writeInt(status);
+        dest.writeLong(total);
+        dest.writeLong(status);
         dest.writeString(id);
-        dest.writeInt(correct);
-        dest.writeInt(error);
-        dest.writeInt(timeout);
+        dest.writeLong(correct);
+        dest.writeLong(error);
+        dest.writeLong(timeout);
         dest.writeDouble(accuracy);
         dest.writeFloat(difficulty);
-        dest.writeInt(result);
+        dest.writeLong(result);
         dest.writeFloat(worth);
         dest.writeString(bulletin);
         dest.writeTypedList(prize);
@@ -119,8 +119,8 @@ public class CompleteAnswerResponse implements Parcelable {
          */
 
         private String showName;
-        private int type;
-        private int mode;
+        private Long type;
+        private Long mode;
         private String purpose;
         private String mainImage;
         private String longImage;
@@ -134,8 +134,8 @@ public class CompleteAnswerResponse implements Parcelable {
         }
         protected PrizesBean(Parcel in) {
             showName = in.readString();
-            type = in.readInt();
-            mode = in.readInt();
+            type = in.readLong();
+            mode = in.readLong();
             purpose = in.readString();
             mainImage = in.readString();
             longImage = in.readString();
@@ -165,19 +165,19 @@ public class CompleteAnswerResponse implements Parcelable {
             this.showName = name;
         }
 
-        public int getType() {
+        public Long getType() {
             return type;
         }
 
-        public void setType(int type) {
+        public void setType(Long type) {
             this.type = type;
         }
 
-        public int getMode() {
+        public Long getMode() {
             return mode;
         }
 
-        public void setMode(int mode) {
+        public void setMode(Long mode) {
             this.mode = mode;
         }
 
@@ -245,8 +245,8 @@ public class CompleteAnswerResponse implements Parcelable {
         @Override
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeString(showName);
-            dest.writeInt(type);
-            dest.writeInt(mode);
+            dest.writeLong(type);
+            dest.writeLong(mode);
             dest.writeString(purpose);
             dest.writeString(mainImage);
             dest.writeString(longImage);
@@ -257,11 +257,11 @@ public class CompleteAnswerResponse implements Parcelable {
         }
     }
 
-    public int getTotal() {
+    public Long getTotal() {
         return total;
     }
 
-    public int getStatus() {
+    public Long getStatus() {
         return status;
     }
 
@@ -269,15 +269,15 @@ public class CompleteAnswerResponse implements Parcelable {
         return id;
     }
 
-    public int getCorrect() {
+    public Long getCorrect() {
         return correct;
     }
 
-    public int getError() {
+    public Long getError() {
         return error;
     }
 
-    public int getTimeout() {
+    public Long getTimeout() {
         return timeout;
     }
 
@@ -289,7 +289,7 @@ public class CompleteAnswerResponse implements Parcelable {
         return difficulty;
     }
 
-    public int getResult() {
+    public Long getResult() {
         return result;
     }
 

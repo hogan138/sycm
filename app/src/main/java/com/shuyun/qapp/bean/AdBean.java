@@ -7,7 +7,7 @@ import java.util.List;
  */
 
 public class AdBean {
-    private int timeout;//倒计时，秒  0表示需要手动跳过
+    private Long timeout;//倒计时，秒  0表示需要手动跳过
     private List<AdInfo> ad;//广告信息
 
     private String boxUrl; //开宝箱的H5跳转地址
@@ -36,7 +36,7 @@ public class AdBean {
          * 1——图片
          * 2——网页
          */
-        private int type;
+        private Long type;
         /**
          * 广告地址
          * 图片或者网页地址
@@ -51,7 +51,7 @@ public class AdBean {
         private int model;
         private String content;//跳转的地址
 
-        public void setType(int type) {
+        public void setType(Long type) {
             this.type = type;
         }
 
@@ -67,7 +67,7 @@ public class AdBean {
             this.content = content;
         }
 
-        public int getType() {
+        public Long getType() {
             return type;
         }
 
@@ -94,7 +94,7 @@ public class AdBean {
         }
     }
 
-    public void setTimeout(int timeout) {
+    public void setTimeout(Long timeout) {
         this.timeout = timeout;
     }
 
@@ -102,7 +102,7 @@ public class AdBean {
         this.ad = ad;
     }
 
-    public int getTimeout() {
+    public Long getTimeout() {
         return timeout;
     }
 

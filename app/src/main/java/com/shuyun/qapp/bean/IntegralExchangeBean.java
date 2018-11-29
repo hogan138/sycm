@@ -17,8 +17,8 @@ public class IntegralExchangeBean {
      * luckyConsBp : 100
      */
 
-    private int userBp;
-    private int luckyConsBp;
+    private Long userBp;
+    private Long luckyConsBp;
     private List<String> luckyPicList;
     private List<String> treasurePicList;
     private String ruleUrl;
@@ -40,19 +40,19 @@ public class IntegralExchangeBean {
         this.ruleUrl = ruleUrl;
     }
 
-    public int getUserBp() {
+    public Long getUserBp() {
         return userBp;
     }
 
-    public void setUserBp(int userBp) {
+    public void setUserBp(Long userBp) {
         this.userBp = userBp;
     }
 
-    public int getLuckyConsBp() {
+    public Long getLuckyConsBp() {
         return luckyConsBp;
     }
 
-    public void setLuckyConsBp(int luckyConsBp) {
+    public void setLuckyConsBp(Long luckyConsBp) {
         this.luckyConsBp = luckyConsBp;
     }
 

@@ -12,8 +12,8 @@ import java.util.List;
 
 
 public class BoxBean implements Parcelable {
-    private int count = 0; // 宝箱数量
-    private int source = 0; // 宝箱来源，仅当count=1时有效
+    private Long count;// 宝箱数量
+    private Long source; // 宝箱来源，仅当count=1时有效
     private List<PrizeInfo> prizes;
     private String id; // 宝箱id，当source=3有效
     private String bulletin; // 奖品的规则公告，仅针对宝箱有效
@@ -36,8 +36,8 @@ public class BoxBean implements Parcelable {
     }
 
     protected BoxBean(Parcel in) {
-        count = in.readInt();
-        source = in.readInt();
+        count = in.readLong();
+        source = in.readLong();
         prizes = in.createTypedArrayList(PrizeInfo.CREATOR);
         id = in.readString();
         bulletin = in.readString();
@@ -88,19 +88,19 @@ public class BoxBean implements Parcelable {
         this.h5Url = h5Url;
     }
 
-    public int getCount() {
+    public Long getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    public void setCount(Long count) {
         this.count = count;
     }
 
-    public int getSource() {
+    public Long getSource() {
         return source;
     }
 
-    public void setSource(int source) {
+    public void setSource(Long source) {
         this.source = source;
     }
 
@@ -233,8 +233,8 @@ public class BoxBean implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(count);
-        dest.writeInt(source);
+        dest.writeLong(count);
+        dest.writeLong(source);
         dest.writeTypedList(prizes);
         dest.writeString(id);
         dest.writeString(bulletin);
