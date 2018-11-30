@@ -2,6 +2,7 @@ package com.shuyun.qapp.ui.mine;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.TimeUtils;
+import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
@@ -30,6 +32,7 @@ import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
+import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveErrorTxt;
@@ -85,9 +88,17 @@ public class MyPropsActivity extends BaseActivity {
             @Override
             public void onItemChildClick(View view, int position) {
                 MyPropsBean myPropsBean = myPropsBeanList.get(position);
-                String mode = myPropsBean.getPrizeMode();
-                //使用道具
-                useProps(mode);
+                final String mode = myPropsBean.getPrizeMode();
+                CustomLoadingFactory factory = new CustomLoadingFactory();
+                LoadingBar.make(llMain, factory).show();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //使用道具
+                        useProps(mode);
+                    }
+                }, 2000);
+
             }
         });
         LinearLayoutManager layoutManager = new LinearLayoutManager(MyPropsActivity.this);
@@ -161,6 +172,7 @@ public class MyPropsActivity extends BaseActivity {
 
                     @Override
                     public void onNext(DataResponse<Object> DataResponse) {
+                        LoadingBar.cancel(llMain);
                         if (DataResponse.isSuccees()) {
                             Toast.makeText(MyPropsActivity.this, "道具使用成功", Toast.LENGTH_SHORT).show();
 

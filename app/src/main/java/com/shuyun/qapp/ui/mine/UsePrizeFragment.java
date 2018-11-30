@@ -136,11 +136,6 @@ public class UsePrizeFragment extends Fragment {
                                     rvPrize.setAdapter(prizeAdapter);
                                     refreshLayout.finishRefresh();
                                     refreshLayout.setLoadmoreFinished(false);
-                                    //进入动画
-                                    LayoutAnimationController controller = new LayoutAnimationController(MyLayoutAnimationHelper.getAnimationSetFromRight());
-                                    controller.setDelay(0.3f);
-                                    rvPrize.setLayoutAnimation(controller);
-                                    rvPrize.scheduleLayoutAnimation();
                                 } else if (loadState == AppConst.STATE_MORE) {
                                     if (minePrizeList1.size() == 0) {//没有数据了
                                         refreshLayout.finishLoadmore(); //

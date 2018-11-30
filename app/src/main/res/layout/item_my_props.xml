@@ -15,10 +15,24 @@
         android:src="@mipmap/zw02"
         app:type="round" />
 
+    <TextView
+        android:id="@+id/tv_open"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/text_35"
+        android:layout_marginRight="@dimen/text_15"
+        android:layout_marginBottom="@dimen/text_15"
+        android:background="@drawable/selector_3"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/text_17"
+        android:layout_toLeftOf="@+id/tv_open"
         android:layout_toRightOf="@+id/iv_icon"
         android:orientation="vertical">
 
@@ -56,7 +70,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_expiration_time"
             android:layout_marginTop="@dimen/text_7"
-            android:layout_marginRight="80dp"
             android:layout_toRightOf="@+id/iv_prize_icon"
             android:ellipsize="end"
             android:singleLine="true"
@@ -68,7 +81,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/text_10"
-            android:layout_marginRight="80dp"
             android:layout_toRightOf="@+id/iv_prize_icon"
             android:ellipsize="end"
             android:singleLine="true"
@@ -76,18 +88,6 @@
             android:textSize="@dimen/text_12" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_open"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/text_35"
-        android:layout_marginRight="@dimen/text_15"
-        android:layout_marginBottom="@dimen/text_15"
-        android:background="@drawable/selector_3"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:textSize="12sp" />
 
     <View
         android:layout_width="match_parent"
