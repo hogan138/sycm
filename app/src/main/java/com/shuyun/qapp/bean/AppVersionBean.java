@@ -15,7 +15,7 @@ public class AppVersionBean {
      * 1——推荐升级
      * 2——强制升级
      */
-    private int mode;
+    private Long mode;
     private String url;//升级的跳转地址(有升级时必需)
 
     private List<String> apis;//接口的轮询地址(数组)
@@ -47,11 +47,11 @@ public class AppVersionBean {
         this.appVersion = appVersion;
     }
 
-    public int getMode() {
+    public Long getMode() {
         return mode;
     }
 
-    public void setMode(int mode) {
+    public void setMode(Long mode) {
         this.mode = mode;
     }
 

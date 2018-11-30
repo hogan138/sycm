@@ -17,7 +17,7 @@ public class Msg extends DataSupport {
      * 3——内部h5
      * 4——实名认证
      */
-    private int type;
+    private Long type;
     private String title;//消息的标题
     /**
      * 消息的内容
@@ -47,7 +47,7 @@ public class Msg extends DataSupport {
         this.h5Url = h5Url;
     }
 
-    public void setType(int type) {
+    public void setType(Long type) {
         this.type = type;
     }
 
@@ -75,7 +75,7 @@ public class Msg extends DataSupport {
         this.id = id;
     }
 
-    public int getType() {
+    public Long getType() {
         return type;
     }
 

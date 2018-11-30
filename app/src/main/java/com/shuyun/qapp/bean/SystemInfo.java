@@ -6,11 +6,11 @@ package com.shuyun.qapp.bean;
  */
 
 public class SystemInfo {
-    private int type;//消息类型  1——中奖消息
+    private Long type;//消息类型  1——中奖消息
     private String msg;//消息内容
     private String time;//消息时间
 
-    public int getType() {
+    public Long getType() {
         return type;
     }
 

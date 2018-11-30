@@ -222,7 +222,7 @@ public class PrizeDetailsActivity extends BaseActivity implements View.OnClickLi
                                 tvScore.setText(prizeDetailBean.getUserBP() + "");
                                 tvReduceScore.setText("消耗" + prizeDetailBean.getBpcons() + "积分");
 
-                                if (prizeDetailBean.getUserBP() >= prizeDetailBean.getBpcons()) {
+                                if (prizeDetailBean.getUserBP().longValue() >= prizeDetailBean.getBpcons().longValue()) {
                                     //可以兑换
                                     rlExchange.setBackgroundColor(Color.parseColor("#0194ec"));
                                     rlExchange.setClickable(true);
@@ -278,7 +278,7 @@ public class PrizeDetailsActivity extends BaseActivity implements View.OnClickLi
                                 tvScore.setText(prizeDetailBean.getUserBP() + "");
                                 tvReduceScore.setText("消耗" + prizeDetailBean.getBpcons() + "积分");
 
-                                if (prizeDetailBean.getUserBP() >= prizeDetailBean.getBpcons()) {
+                                if (prizeDetailBean.getUserBP().longValue() >= prizeDetailBean.getBpcons().longValue()) {
                                     //可以兑换
                                     rlExchange.setBackgroundColor(Color.parseColor("#0194ec"));
                                     rlExchange.setClickable(true);

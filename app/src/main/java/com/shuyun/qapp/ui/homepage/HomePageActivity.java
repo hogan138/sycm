@@ -316,7 +316,7 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
                         if (loginResponse.isSuccees()) {
                             AppVersionBean appVersionBean = loginResponse.getDat();
                             if (!EncodeAndStringTool.isObjectEmpty(appVersionBean)) {
-                                int mode = appVersionBean.getMode();
+                                Long mode = appVersionBean.getMode();
                                 if (mode == 0) {
                                 } else if (mode == 1) {
                                 } else if (mode == 2) {

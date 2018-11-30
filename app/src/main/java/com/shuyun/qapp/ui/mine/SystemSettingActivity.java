@@ -148,7 +148,7 @@ public class SystemSettingActivity extends BaseActivity {
                         if (loginResponse.isSuccees()) {
                             AppVersionBean appVersionBean = loginResponse.getDat();
                             if (!EncodeAndStringTool.isObjectEmpty(appVersionBean)) {
-                                int mode = appVersionBean.getMode();
+                                Long mode = appVersionBean.getMode();
                                 if (mode == 0) {
                                     Toast.makeText(SystemSettingActivity.this, "当前已是最新版本", Toast.LENGTH_SHORT).show();
                                 } else if (mode == 1) {

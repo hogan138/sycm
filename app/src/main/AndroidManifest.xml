@@ -439,7 +439,11 @@
         <activity
             android:name=".ui.mine.NewRedWithdrawActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.mine.BoxRecordActivity"></activity>
+        <!-- 宝箱记录 -->
+        <activity
+            android:name=".ui.mine.BoxRecordActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.mine.MyPropsActivity"></activity>
     </application>
 
 </manifest>

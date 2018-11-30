@@ -3,7 +3,6 @@ package com.shuyun.qapp.bean;
 import java.util.List;
 
 /**
- * Created by sunxiao on 2018/5/21.
  * 查看答题结果返回数据
  */
 
@@ -29,12 +28,12 @@ public class LookAnswerResultBean {
      * questions : [{"id":532,"title":"请问《画壁》的主演孙俪毕业于哪个院校？","orderNo":2,"result":0,"oks":"2120","answer":"2121","examTime":1526875504680,"finishTime":1526875506688,"options":[{"id":2120,"title":"上海戏剧学院","orderNo":4},{"id":2121,"title":"中国传媒大学","orderNo":1},{"id":2118,"title":"中央戏剧学院","orderNo":3},{"id":2119,"title":"北京电影学院","orderNo":2}]},{"id":26969,"title":"乒乓球十九世纪始于哪个国家？","orderNo":1,"result":0,"oks":"96487","answer":"96484","examTime":1526875503651,"finishTime":1526875504680,"options":[{"id":96484,"title":"中国","orderNo":1},{"id":96486,"title":"法国","orderNo":2},{"id":96485,"title":"瑞典","orderNo":4},{"id":96487,"title":"英国","orderNo":3}]},{"id":26977,"title":"我国发现最早的纸币是在哪个时期？","orderNo":3,"result":0,"oks":"96507","answer":"96508","examTime":1526875506688,"finishTime":1526875510295,"options":[{"id":96508,"title":"元朝","orderNo":1},{"id":96506,"title":"唐朝","orderNo":3},{"id":96507,"title":"宋朝","orderNo":4},{"id":96509,"title":"明朝","orderNo":2}]}]
      */
 
-    private int total;//答题实际回答的数量
-    private int actual;//答题实际回答的数量
+    private Long total;//答题实际回答的数量
+    private Long actual;//答题实际回答的数量
     private double accuracy;//答题正确率
-    private int correct;//回答正确的数量
-    private int error;//回答错误的数量
-    private int timeout;//超时未回答的数量
+    private Long correct;//回答正确的数量
+    private Long error;//回答错误的数量
+    private Long timeout;//超时未回答的数量
     private long examTime;//开始答题时间
     private long finishTime;//完成答题时间 可能为空（中途退出）
     /**
@@ -42,14 +41,14 @@ public class LookAnswerResultBean {
      * 0——未中奖
      * 1——中奖了
      */
-    private int result;
+    private Long result;
     private List<QuestionsBean> questions;
 
-    public int getTotal() {
+    public Long getTotal() {
         return total;
     }
 
-    public int getActual() {
+    public Long getActual() {
         return actual;
     }
 
@@ -57,15 +56,15 @@ public class LookAnswerResultBean {
         return accuracy;
     }
 
-    public int getCorrect() {
+    public Long getCorrect() {
         return correct;
     }
 
-    public int getError() {
+    public Long getError() {
         return error;
     }
 
-    public int getTimeout() {
+    public Long getTimeout() {
         return timeout;
     }
 
@@ -77,7 +76,7 @@ public class LookAnswerResultBean {
         return finishTime;
     }
 
-    public int getResult() {
+    public Long getResult() {
         return result;
     }
 
@@ -123,8 +122,8 @@ public class LookAnswerResultBean {
          * 1——文本题目
          * 2——图文题目
          */
-        private int type;
-        private int orderNo;//题目的排序 从1开始排序
+        private Long type;
+        private Long orderNo;//题目的排序 从1开始排序
         /**
          * 答题结果
          * 0——错误
@@ -132,7 +131,7 @@ public class LookAnswerResultBean {
          * -1——超时
          * 空——中途异常
          */
-        private int result;
+        private Long result;
         private String oks;//正确答案
         private String answer;//回答的选项
         private long examTime;//本题目开始答题时间
@@ -156,15 +155,15 @@ public class LookAnswerResultBean {
             return remark;
         }
 
-        public int getType() {
+        public Long getType() {
             return type;
         }
 
-        public int getOrderNo() {
+        public Long getOrderNo() {
             return orderNo;
         }
 
-        public int getResult() {
+        public Long getResult() {
             return result;
         }
 
@@ -238,7 +237,7 @@ public class LookAnswerResultBean {
             private String description;//选项描述
             private String remark;//选项备注
             private String picture;//选项图片
-            private int orderNo;//选项的排序
+            private Long orderNo;//选项的排序
 
             public String getId() {
                 return id;
@@ -260,7 +259,7 @@ public class LookAnswerResultBean {
                 return picture;
             }
 
-            public int getOrderNo() {
+            public Long getOrderNo() {
                 return orderNo;
             }
 

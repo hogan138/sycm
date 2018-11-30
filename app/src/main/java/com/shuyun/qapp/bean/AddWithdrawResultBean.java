@@ -17,12 +17,12 @@ public class AddWithdrawResultBean {
      */
 
     private String stateName;
-    private int bankType;
+    private Long bankType;
     private String type;
     private String message;
     private String title;
     private boolean enabled;
-    private int status;
+    private Long status;
 
     public String getStateName() {
         return stateName;
@@ -32,11 +32,11 @@ public class AddWithdrawResultBean {
         this.stateName = stateName;
     }
 
-    public int getBankType() {
+    public Long getBankType() {
         return bankType;
     }
 
-    public void setBankType(int bankType) {
+    public void setBankType(Long bankType) {
         this.bankType = bankType;
     }
 
@@ -72,11 +72,11 @@ public class AddWithdrawResultBean {
         this.enabled = enabled;
     }
 
-    public int getStatus() {
+    public Long getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Long status) {
         this.status = status;
     }
 }

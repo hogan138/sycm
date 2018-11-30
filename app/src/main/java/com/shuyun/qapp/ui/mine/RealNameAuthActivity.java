@@ -322,7 +322,7 @@ public class RealNameAuthActivity extends BaseActivity {
     /**
      * 获取到我的首界面数据
      */
-    int cerCount;
+    Long cerCount;
 
     private void loadMineHomeData() {
         ApiService apiService = BasePresenter.create(8000);

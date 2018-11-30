@@ -21,7 +21,6 @@ import com.shuyun.qapp.bean.ExchangeHistoryBean;
 import com.shuyun.qapp.bean.ExchangeMyPrizeBean;
 import com.shuyun.qapp.bean.GroupAgainstBean;
 import com.shuyun.qapp.bean.GroupClassifyBean;
-import com.shuyun.qapp.bean.GroupDetail;
 import com.shuyun.qapp.bean.HomeGroupsBean;
 import com.shuyun.qapp.bean.HomeNoticeBean;
 import com.shuyun.qapp.bean.IntegralAllPrizeBean;
@@ -35,6 +34,7 @@ import com.shuyun.qapp.bean.MatchTimeBean;
 import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.bean.Msg;
+import com.shuyun.qapp.bean.MyPropsBean;
 import com.shuyun.qapp.bean.OutPutWithdraw;
 import com.shuyun.qapp.bean.PrizeDetailBean;
 import com.shuyun.qapp.bean.PrizeHistoryBean;
@@ -42,10 +42,7 @@ import com.shuyun.qapp.bean.RealNameBean;
 import com.shuyun.qapp.bean.RobotShowBean;
 import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.bean.SystemInfo;
-import com.shuyun.qapp.bean.ThreeFinishBean;
-import com.shuyun.qapp.bean.ThreeTimePrize;
 import com.shuyun.qapp.bean.UserWxInfo;
-import com.shuyun.qapp.bean.XruleActivityPrizeBean;
 
 import java.util.List;
 
@@ -93,8 +90,8 @@ public interface ApiService {
      * @return
      * @Query("act") int act  该题组参与的活动id
      */
-    @GET("/rest/act/known/group/{id}")
-    Observable<DataResponse<GroupDetail>> getGroupDetails(@Path("id") int id);
+//    @GET("/rest/act/known/group/{id}")
+//    Observable<DataResponse<String>> getGroupDetails(@Path("id") int id);
 
     /**
      * 5、答题活动的中奖扩展规则答题情况TODO
@@ -103,8 +100,8 @@ public interface ApiService {
      * @param id
      * @return
      */
-    @GET("/rest/act/exam/xrule/act/{id}")
-    Observable<DataResponse<ThreeTimePrize>> getXruleAnswerInfo(@Path("id") int id);
+//    @GET("/rest/act/exam/xrule/act/{id}")
+//    Observable<DataResponse<String>> getXruleAnswerInfo(@Path("id") int id);
 
     /**
      * 6、扩展活动抽奖TODO
@@ -114,8 +111,8 @@ public interface ApiService {
      * @param act
      * @return
      */
-    @GET("/rest/act/x/lucky")
-    Observable<DataResponse<XruleActivityPrizeBean>> getXruleActivityPrize(@Query("act") int act, @Query("deviceId") String deviceId);
+//    @GET("/rest/act/x/lucky")
+//    Observable<DataResponse<String>> getXruleActivityPrize(@Query("act") int act, @Query("deviceId") String deviceId);
 
     /**
      * 7、获取扩展抽奖活动信息TODO
@@ -124,8 +121,8 @@ public interface ApiService {
      * @param act
      * @return
      */
-    @GET("/rest/act/x/lucky/info")
-    Observable<DataResponse<ThreeFinishBean>> getXruleActivityPrizeInfo(@Query("act") int act);
+//    @GET("/rest/act/x/lucky/info")
+//    Observable<DataResponse<String>> getXruleActivityPrizeInfo(@Query("act") int act);
 
     /**
      * 8、申请答题
@@ -196,8 +193,8 @@ public interface ApiService {
      * /activity-center/rest/act/bp/lucky/info
      * 16、获取积分抽奖活动信息 /activity-center
      */
-    @GET("/rest/act/bp/lucky/info")
-    Observable<DataResponse<String>> getIntegralDrawInfo();
+//    @GET("/rest/act/bp/lucky/info")
+//    Observable<DataResponse<String>> getIntegralDrawInfo();
 
     /**
      * 17、查询积分流水记录
@@ -227,8 +224,8 @@ public interface ApiService {
      * @param code  验证码
      * @return
      */
-    @GET("/rest/user/phone/bind")
-    Observable<DataResponse> bindPhomeNum(@Query("phone") String phone, @Query("code") String code);
+//    @GET("/rest/user/phone/bind")
+//    Observable<DataResponse> bindPhomeNum(@Query("phone") String phone, @Query("code") String code);
 
     /**
      * 20、用户变更头像
@@ -700,4 +697,16 @@ public interface ApiService {
      */
     @GET("/rest/user/boxflow")
     Observable<DataResponse<List<BoxRecordBean>>> boxRecord(@Query("page") int page);
+
+    /**
+     * 78、我的道具列表
+     */
+    @GET("/rest/user/prop/list")
+    Observable<DataResponse<List<MyPropsBean>>> MyProps();
+
+    /**
+     * 79、使用道具
+     */
+    @GET("/rest/user/prop/use")
+    Observable<DataResponse<Object>> useProps(@Query("mode") String mode);
 }

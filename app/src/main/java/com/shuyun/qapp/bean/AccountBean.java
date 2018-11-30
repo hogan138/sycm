@@ -1,7 +1,6 @@
 package com.shuyun.qapp.bean;
 
 /**
- * Created by sunxiao on 2018/5/7.
  * 现金流水和积分流水记录共用的javaBean
  */
 
@@ -15,13 +14,13 @@ public class AccountBean {
     /**
      * 现金来源1:宝箱;3:提现
      */
-    private int source;
+    private Long source;
     /**
      * 现金金额 精确到分
      * 积分个数
      */
     private String amount;
-    private int status;//流水状态
+    private Long status;//流水状态
     private String time;//流水时间
     private String name;//名称
 
@@ -33,7 +32,7 @@ public class AccountBean {
         this.name = name;
     }
 
-    public void setSource(int source) {
+    public void setSource(Long source) {
         this.source = source;
     }
 
@@ -41,7 +40,7 @@ public class AccountBean {
         this.amount = amount;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Long status) {
         this.status = status;
     }
 
@@ -60,7 +59,7 @@ public class AccountBean {
      */
     private int way;
 
-    public int getSource() {
+    public Long getSource() {
         return source;
     }
 
@@ -68,7 +67,7 @@ public class AccountBean {
         return amount;
     }
 
-    public int getStatus() {
+    public Long getStatus() {
         return status;
     }
 

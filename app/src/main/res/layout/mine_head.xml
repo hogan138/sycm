@@ -261,7 +261,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/text_2"
-                android:text="可用道具：100"
+                android:text="可用道具："
                 android:textColor="@color/color_9b"
                 android:textSize="@dimen/text_12"
                 android:textStyle="bold" />

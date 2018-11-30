@@ -406,7 +406,7 @@ public class MinePrize implements Parcelable {
         dest.writeLong(source);
         dest.writeString(substatusName);
         dest.writeString(h5Url);
-        dest.writeLong(orginal);
+        dest.writeInt(orginal);
         dest.writeLong(scheduleId);
         dest.writeLong(orderId);
         dest.writeLong(activityId);

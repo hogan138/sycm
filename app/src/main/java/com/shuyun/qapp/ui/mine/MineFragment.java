@@ -283,13 +283,12 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                                     if (!EncodeAndStringTool.isStringEmpty(mineBean.getBp())) {
                                         SharedPrefrenceTool.put(mContext, "bp", mineBean.getBp());
                                     }
+
                                     tvIntegralBalance.setText("可用积分：" + mineBean.getBp());
 
-                                    if (mineBean.getAvailablePrize() > 0) {
-                                        tvGiftNum.setText("可用奖品：" + mineBean.getAvailablePrize());//可使用奖品数
-                                    } else {
-                                        tvGiftNum.setText("可用奖品：0");//未使用奖品数
-                                    }
+                                    tvGiftNum.setText("可用奖品：" + mineBean.getAvailablePrize());//可使用奖品数
+
+                                    tvToolsNum.setText("可用道具：" + mineBean.getPropCount());
 
                                     SaveUserInfo.getInstance(getActivity()).setUserInfo("my_bp", mineBean.getBp());
 
@@ -390,6 +389,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                 }
                 break;
             case R.id.ll_tools://道具
+                startActivity(new Intent(mContext, MyPropsActivity.class));
                 break;
             case R.id.rl_answer_record: //成绩单
                 startActivity(new Intent(mContext, AnswerRecordActivity.class));

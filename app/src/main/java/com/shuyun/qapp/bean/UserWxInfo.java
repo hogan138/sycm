@@ -9,7 +9,7 @@ package com.shuyun.qapp.bean;
 public class UserWxInfo {
 
     private String nickname; // 昵称
-    private int wxBind; // 是否已经绑定微信
+    private Long wxBind; // 是否已经绑定微信
     private String wxHeader; // 微信头像
 
     public String getNickname() {
@@ -20,11 +20,11 @@ public class UserWxInfo {
         this.nickname = nickname;
     }
 
-    public int getWxBind() {
+    public Long getWxBind() {
         return wxBind;
     }
 
-    public void setWxBind(int wxBind) {
+    public void setWxBind(Long wxBind) {
         this.wxBind = wxBind;
     }
 

@@ -412,7 +412,7 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
                                         String status_name = mineBean.getDatas().get(i).getStateName();
                                         String title = mineBean.getDatas().get(i).getTitle();
                                         String message = mineBean.getDatas().get(i).getMessage();
-                                        int status = mineBean.getDatas().get(i).getStatus();
+                                        Long status = mineBean.getDatas().get(i).getStatus();
                                         if ("withdraw".equals(mineBean.getDatas().get(i).getType())) {
 
                                             real_info = title;

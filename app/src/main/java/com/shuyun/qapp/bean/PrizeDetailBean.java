@@ -25,13 +25,13 @@ public class PrizeDetailBean {
     private String prizeName;
     private String mainPic;
     private long endTime;
-    private int schedule;
-    private int participate;
-    private int count;
+    private Long schedule;
+    private Long participate;
+    private Long count;
     private String prizePurpose;
-    private int scheduleStatus;
-    private int userBP;
-    private int bpcons;
+    private Long scheduleStatus;
+    private Long userBP;
+    private Long bpcons;
 
     public String getPrizeName() {
         return prizeName;
@@ -57,27 +57,27 @@ public class PrizeDetailBean {
         this.endTime = endTime;
     }
 
-    public int getSchedule() {
+    public Long getSchedule() {
         return schedule;
     }
 
-    public void setSchedule(int schedule) {
+    public void setSchedule(Long schedule) {
         this.schedule = schedule;
     }
 
-    public int getParticipate() {
+    public Long getParticipate() {
         return participate;
     }
 
-    public void setParticipate(int participate) {
+    public void setParticipate(Long participate) {
         this.participate = participate;
     }
 
-    public int getCount() {
+    public Long getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    public void setCount(Long count) {
         this.count = count;
     }
 
@@ -89,27 +89,27 @@ public class PrizeDetailBean {
         this.prizePurpose = prizePurpose;
     }
 
-    public int getScheduleStatus() {
+    public Long getScheduleStatus() {
         return scheduleStatus;
     }
 
-    public void setScheduleStatus(int scheduleStatus) {
+    public void setScheduleStatus(Long scheduleStatus) {
         this.scheduleStatus = scheduleStatus;
     }
 
-    public int getUserBP() {
+    public Long getUserBP() {
         return userBP;
     }
 
-    public void setUserBP(int userBP) {
+    public void setUserBP(Long userBP) {
         this.userBP = userBP;
     }
 
-    public int getBpcons() {
+    public Long getBpcons() {
         return bpcons;
     }
 
-    public void setBpcons(int bpcons) {
+    public void setBpcons(Long bpcons) {
         this.bpcons = bpcons;
     }
 }

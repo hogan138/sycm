@@ -357,7 +357,7 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
                                 try {
                                     for (int i = 0; i < mineBean.getDatas().size(); i++) {
                                         String type = mineBean.getDatas().get(i).getType();
-                                        int status = mineBean.getDatas().get(i).getStatus();
+                                        Long status = mineBean.getDatas().get(i).getStatus();
                                         if (!EncodeAndStringTool.isStringEmpty(type) && "withdraw".equals(type) && status == 3) {
                                             //是否完善提现信息
                                             bankId = mineBean.getDatas().get(i).getBankId();

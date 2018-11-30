@@ -76,13 +76,6 @@ NoUsePrizeFragment extends Fragment {
     private int currentPage = 0;
 
     PrizeAdapter prizeAdapter;
-    private Activity mContext;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        this.mContext = (Activity) context;
-    }
 
     @Nullable
     @Override

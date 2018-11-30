@@ -2,285 +2,284 @@ package com.shuyun.qapp.bean;
 
 
 /**
- * Created by sunxiao on 2018/7/9.
  * 用户匹配时长
  */
 
 public class MatchTimeBean {
 
 
+    /**
+     * user : {"account":"15868421563","nickname":"Gan","obt":0,"header":"http://3","headerId":3,"status":10,"certification":1,"certInfo":"甘* 4113**********4255","phone":"15868421563","gender":0,"cash":20.26,"bp":99044,"opporitunity":9986,"withdraw":0,"availablePrize":61,"upcommings":0,"messages":0,"wxBind":1,"wxHeader":"http://thirdwx.qlogo.cn/mmopen/vi_32/BiblaKjthHdwdPlYf8rFuJXEYddjCKn5JW0icwgAuh8TKVKheIjN09iaSvxQEWdoKjK8QdcuRW8nDR4qrhKhKA8UA/132"}
+     * robotPic : 0
+     * robotAccount : 155****2971
+     * matchTime : 4
+     */
+
+    private UserBean user;
+    private int robotPic;//机器人头像
+    private String robotAccount;//机器人账号
+    private int matchTime;//匹配时间
+
+    public UserBean getUser() {
+        return user;
+    }
+
+    public void setUser(UserBean user) {
+        this.user = user;
+    }
+
+    public int getRobotPic() {
+        return robotPic;
+    }
+
+    public void setRobotPic(int robotPic) {
+        this.robotPic = robotPic;
+    }
+
+    public String getRobotAccount() {
+        return robotAccount;
+    }
+
+    public void setRobotAccount(String robotAccount) {
+        this.robotAccount = robotAccount;
+    }
+
+    public int getMatchTime() {
+        return matchTime;
+    }
+
+    public void setMatchTime(int matchTime) {
+        this.matchTime = matchTime;
+    }
+
+    public static class UserBean {
         /**
-         * user : {"account":"15868421563","nickname":"Gan","obt":0,"header":"http://3","headerId":3,"status":10,"certification":1,"certInfo":"甘* 4113**********4255","phone":"15868421563","gender":0,"cash":20.26,"bp":99044,"opporitunity":9986,"withdraw":0,"availablePrize":61,"upcommings":0,"messages":0,"wxBind":1,"wxHeader":"http://thirdwx.qlogo.cn/mmopen/vi_32/BiblaKjthHdwdPlYf8rFuJXEYddjCKn5JW0icwgAuh8TKVKheIjN09iaSvxQEWdoKjK8QdcuRW8nDR4qrhKhKA8UA/132"}
-         * robotPic : 0
-         * robotAccount : 155****2971
-         * matchTime : 4
+         * account : 15868421563
+         * nickname : Gan
+         * obt : 0
+         * header : http://3
+         * headerId : 3
+         * status : 10
+         * certification : 1
+         * certInfo : 甘* 4113**********4255
+         * phone : 15868421563
+         * gender : 0
+         * cash : 20.26
+         * bp : 99044
+         * opporitunity : 9986
+         * withdraw : 0
+         * availablePrize : 61
+         * upcommings : 0
+         * messages : 0
+         * wxBind : 1
+         * wxHeader : http://thirdwx.qlogo.cn/mmopen/vi_32/BiblaKjthHdwdPlYf8rFuJXEYddjCKn5JW0icwgAuh8TKVKheIjN09iaSvxQEWdoKjK8QdcuRW8nDR4qrhKhKA8UA/132
          */
 
-        private UserBean user;
-        private int robotPic;//机器人头像
-        private String robotAccount;//机器人账号
-        private int matchTime;//匹配时间
+        private String account;//账号
+        private String nickname;
+        private Long obt;
+        private String header;
+        private int headerId;//头像id
+        private Long status;
+        private int certification;
+        private String certInfo;
+        private String phone;
+        private Long gender;
+        private double cash;
+        private Long bp;//积分
+        private Long opporitunity;
+        private Long withdraw;
+        private Long availablePrize;
+        private Long upcommings;
+        private Long messages;
+        private Long wxBind;
+        private String wxHeader;
 
-        public UserBean getUser() {
-                return user;
+        public String getAccount() {
+            return account;
         }
 
-        public void setUser(UserBean user) {
-                this.user = user;
+        public void setAccount(String account) {
+            this.account = account;
         }
 
-        public int getRobotPic() {
-                return robotPic;
+        public String getNickname() {
+            return nickname;
         }
 
-        public void setRobotPic(int robotPic) {
-                this.robotPic = robotPic;
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
         }
 
-        public String getRobotAccount() {
-                return robotAccount;
+        public Long getObt() {
+            return obt;
         }
 
-        public void setRobotAccount(String robotAccount) {
-                this.robotAccount = robotAccount;
+        public void setObt(Long obt) {
+            this.obt = obt;
         }
 
-        public int getMatchTime() {
-                return matchTime;
+        public String getHeader() {
+            return header;
         }
 
-        public void setMatchTime(int matchTime) {
-                this.matchTime = matchTime;
+        public void setHeader(String header) {
+            this.header = header;
         }
 
-        public static class UserBean {
-                /**
-                 * account : 15868421563
-                 * nickname : Gan
-                 * obt : 0
-                 * header : http://3
-                 * headerId : 3
-                 * status : 10
-                 * certification : 1
-                 * certInfo : 甘* 4113**********4255
-                 * phone : 15868421563
-                 * gender : 0
-                 * cash : 20.26
-                 * bp : 99044
-                 * opporitunity : 9986
-                 * withdraw : 0
-                 * availablePrize : 61
-                 * upcommings : 0
-                 * messages : 0
-                 * wxBind : 1
-                 * wxHeader : http://thirdwx.qlogo.cn/mmopen/vi_32/BiblaKjthHdwdPlYf8rFuJXEYddjCKn5JW0icwgAuh8TKVKheIjN09iaSvxQEWdoKjK8QdcuRW8nDR4qrhKhKA8UA/132
-                 */
+        public int getHeaderId() {
+            return headerId;
+        }
 
-                private String account;//账号
-                private String nickname;
-                private int obt;
-                private String header;
-                private int headerId;//头像id
-                private int status;
-                private int certification;
-                private String certInfo;
-                private String phone;
-                private int gender;
-                private double cash;
-                private int bp;//积分
-                private int opporitunity;
-                private int withdraw;
-                private int availablePrize;
-                private int upcommings;
-                private int messages;
-                private int wxBind;
-                private String wxHeader;
+        public void setHeaderId(int headerId) {
+            this.headerId = headerId;
+        }
 
-                public String getAccount() {
-                        return account;
-                }
+        public Long getStatus() {
+            return status;
+        }
 
-                public void setAccount(String account) {
-                        this.account = account;
-                }
+        public void setStatus(Long status) {
+            this.status = status;
+        }
 
-                public String getNickname() {
-                        return nickname;
-                }
+        public int getCertification() {
+            return certification;
+        }
 
-                public void setNickname(String nickname) {
-                        this.nickname = nickname;
-                }
+        public void setCertification(int certification) {
+            this.certification = certification;
+        }
 
-                public int getObt() {
-                        return obt;
-                }
+        public String getCertInfo() {
+            return certInfo;
+        }
 
-                public void setObt(int obt) {
-                        this.obt = obt;
-                }
+        public void setCertInfo(String certInfo) {
+            this.certInfo = certInfo;
+        }
 
-                public String getHeader() {
-                        return header;
-                }
+        public String getPhone() {
+            return phone;
+        }
 
-                public void setHeader(String header) {
-                        this.header = header;
-                }
+        public void setPhone(String phone) {
+            this.phone = phone;
+        }
 
-                public int getHeaderId() {
-                        return headerId;
-                }
+        public Long getGender() {
+            return gender;
+        }
 
-                public void setHeaderId(int headerId) {
-                        this.headerId = headerId;
-                }
+        public void setGender(Long gender) {
+            this.gender = gender;
+        }
 
-                public int getStatus() {
-                        return status;
-                }
+        public double getCash() {
+            return cash;
+        }
 
-                public void setStatus(int status) {
-                        this.status = status;
-                }
+        public void setCash(double cash) {
+            this.cash = cash;
+        }
 
-                public int getCertification() {
-                        return certification;
-                }
+        public Long getBp() {
+            return bp;
+        }
 
-                public void setCertification(int certification) {
-                        this.certification = certification;
-                }
+        public void setBp(Long bp) {
+            this.bp = bp;
+        }
 
-                public String getCertInfo() {
-                        return certInfo;
-                }
+        public Long getOpporitunity() {
+            return opporitunity;
+        }
 
-                public void setCertInfo(String certInfo) {
-                        this.certInfo = certInfo;
-                }
+        public void setOpporitunity(Long opporitunity) {
+            this.opporitunity = opporitunity;
+        }
 
-                public String getPhone() {
-                        return phone;
-                }
+        public Long getWithdraw() {
+            return withdraw;
+        }
 
-                public void setPhone(String phone) {
-                        this.phone = phone;
-                }
+        public void setWithdraw(Long withdraw) {
+            this.withdraw = withdraw;
+        }
 
-                public int getGender() {
-                        return gender;
-                }
+        public Long getAvailablePrize() {
+            return availablePrize;
+        }
 
-                public void setGender(int gender) {
-                        this.gender = gender;
-                }
+        public void setAvailablePrize(Long availablePrize) {
+            this.availablePrize = availablePrize;
+        }
 
-                public double getCash() {
-                        return cash;
-                }
+        public Long getUpcommings() {
+            return upcommings;
+        }
 
-                public void setCash(double cash) {
-                        this.cash = cash;
-                }
+        public void setUpcommings(Long upcommings) {
+            this.upcommings = upcommings;
+        }
 
-                public int getBp() {
-                        return bp;
-                }
+        public Long getMessages() {
+            return messages;
+        }
 
-                public void setBp(int bp) {
-                        this.bp = bp;
-                }
+        public void setMessages(Long messages) {
+            this.messages = messages;
+        }
 
-                public int getOpporitunity() {
-                        return opporitunity;
-                }
+        public Long getWxBind() {
+            return wxBind;
+        }
 
-                public void setOpporitunity(int opporitunity) {
-                        this.opporitunity = opporitunity;
-                }
+        public void setWxBind(Long wxBind) {
+            this.wxBind = wxBind;
+        }
 
-                public int getWithdraw() {
-                        return withdraw;
-                }
+        public String getWxHeader() {
+            return wxHeader;
+        }
 
-                public void setWithdraw(int withdraw) {
-                        this.withdraw = withdraw;
-                }
-
-                public int getAvailablePrize() {
-                        return availablePrize;
-                }
-
-                public void setAvailablePrize(int availablePrize) {
-                        this.availablePrize = availablePrize;
-                }
-
-                public int getUpcommings() {
-                        return upcommings;
-                }
-
-                public void setUpcommings(int upcommings) {
-                        this.upcommings = upcommings;
-                }
-
-                public int getMessages() {
-                        return messages;
-                }
-
-                public void setMessages(int messages) {
-                        this.messages = messages;
-                }
-
-                public int getWxBind() {
-                        return wxBind;
-                }
-
-                public void setWxBind(int wxBind) {
-                        this.wxBind = wxBind;
-                }
-
-                public String getWxHeader() {
-                        return wxHeader;
-                }
-
-                public void setWxHeader(String wxHeader) {
-                        this.wxHeader = wxHeader;
-                }
-
-                @Override
-                public String toString() {
-                        return "UserBean{" +
-                                "account='" + account + '\'' +
-                                ", nickname='" + nickname + '\'' +
-                                ", obt=" + obt +
-                                ", header='" + header + '\'' +
-                                ", headerId=" + headerId +
-                                ", status=" + status +
-                                ", certification=" + certification +
-                                ", certInfo='" + certInfo + '\'' +
-                                ", phone='" + phone + '\'' +
-                                ", gender=" + gender +
-                                ", cash=" + cash +
-                                ", bp=" + bp +
-                                ", opporitunity=" + opporitunity +
-                                ", withdraw=" + withdraw +
-                                ", availablePrize=" + availablePrize +
-                                ", upcommings=" + upcommings +
-                                ", messages=" + messages +
-                                ", wxBind=" + wxBind +
-                                ", wxHeader='" + wxHeader + '\'' +
-                                '}';
-                }
+        public void setWxHeader(String wxHeader) {
+            this.wxHeader = wxHeader;
         }
 
         @Override
         public String toString() {
-                return "MatchTimeBean{" +
-                        "user=" + user +
-                        ", robotPic=" + robotPic +
-                        ", robotAccount='" + robotAccount + '\'' +
-                        ", matchTime=" + matchTime +
-                        '}';
+            return "UserBean{" +
+                    "account='" + account + '\'' +
+                    ", nickname='" + nickname + '\'' +
+                    ", obt=" + obt +
+                    ", header='" + header + '\'' +
+                    ", headerId=" + headerId +
+                    ", status=" + status +
+                    ", certification=" + certification +
+                    ", certInfo='" + certInfo + '\'' +
+                    ", phone='" + phone + '\'' +
+                    ", gender=" + gender +
+                    ", cash=" + cash +
+                    ", bp=" + bp +
+                    ", opporitunity=" + opporitunity +
+                    ", withdraw=" + withdraw +
+                    ", availablePrize=" + availablePrize +
+                    ", upcommings=" + upcommings +
+                    ", messages=" + messages +
+                    ", wxBind=" + wxBind +
+                    ", wxHeader='" + wxHeader + '\'' +
+                    '}';
         }
+    }
+
+    @Override
+    public String toString() {
+        return "MatchTimeBean{" +
+                "user=" + user +
+                ", robotPic=" + robotPic +
+                ", robotAccount='" + robotAccount + '\'' +
+                ", matchTime=" + matchTime +
+                '}';
+    }
 }

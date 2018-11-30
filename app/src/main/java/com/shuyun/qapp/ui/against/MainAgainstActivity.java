@@ -85,10 +85,10 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
     @BindView(R.id.tv_high_score)
     TextView tvHighScore;
 
-    private int my_score = 0;
-    private int new_score = 0;
-    private int common_score = 0;
-    private int high_score = 0;
+    private Long my_score;
+    private Long new_score;
+    private Long common_score;
+    private Long high_score;
 
     @Override
     public int intiLayout() {

@@ -173,7 +173,7 @@ public class WelcomeActivity extends Activity {
         ImageView ivAdvertising = view.findViewById(R.id.iv_advertising);
         TextView tv_skip = view.findViewById(R.id.tv_skip);
         ImageLoaderManager.LoadImage(WelcomeActivity.this, adBean.getAd().get(0).getUrl(), ivAdvertising, R.mipmap.zw01);
-        final int model = adBean.getAd().get(0).getModel();
+        final Long model = adBean.getAd().get(0).getModel();
         final String content = adBean.getAd().get(0).getContent();
         ivAdvertising.setOnClickListener(new OnMultiClickListener() {
             @Override

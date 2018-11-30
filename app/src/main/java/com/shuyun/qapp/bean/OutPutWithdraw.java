@@ -13,8 +13,8 @@ import java.math.BigDecimal;
 public class OutPutWithdraw implements Parcelable {
     private String id;
     private BigDecimal amount;
-    private int type;//现金类型1:现金提现;2:红包提现
-    private int status; //状态2:提现审核中;1:提现成功;3:审核未通过;
+    private Long type;//现金类型1:现金提现;2:红包提现
+    private Long status; //状态2:提现审核中;1:提现成功;3:审核未通过;
     private BigDecimal charge;//手续费
     private BigDecimal actual;//实际可到账金额 分
     private String time;//提现申请时间
@@ -26,8 +26,8 @@ public class OutPutWithdraw implements Parcelable {
 
     protected OutPutWithdraw(Parcel in) {
         id = in.readString();
-        type = in.readInt();
-        status = in.readInt();
+        type = in.readLong();
+        status = in.readLong();
         time = in.readString();
     }
 
@@ -51,11 +51,11 @@ public class OutPutWithdraw implements Parcelable {
         return amount;
     }
 
-    public int getType() {
+    public Long getType() {
         return type;
     }
 
-    public int getStatus() {
+    public Long getStatus() {
         return status;
     }
 
@@ -100,8 +100,8 @@ public class OutPutWithdraw implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
-        dest.writeInt(type);
-        dest.writeInt(status);
+        dest.writeLong(type);
+        dest.writeLong(status);
         dest.writeString(time);
     }
 }

@@ -13,16 +13,16 @@ public class RealNameBean {
      * status : succeed
      */
 
-    private int certCount;
+    private Long certCount;
     private String bizNo;
     private String body;
     private String status;
 
-    public int getCertCount() {
+    public Long getCertCount() {
         return certCount;
     }
 
-    public void setCertCount(int certCount) {
+    public void setCertCount(Long certCount) {
         this.certCount = certCount;
     }
 

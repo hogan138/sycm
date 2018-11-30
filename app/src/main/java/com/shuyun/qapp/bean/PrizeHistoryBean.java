@@ -17,11 +17,11 @@ public class PrizeHistoryBean {
      * ticketNum : er63wg35wys34gert
      */
 
-    private int scheduleId;
+    private Long scheduleId;
     private String prizeName;
     private String mainPic;
     private long endTime;
-    private int schedule;
+    private Long schedule;
     private String ticketNum;
     private String h5Url;
 
@@ -33,11 +33,11 @@ public class PrizeHistoryBean {
         this.h5Url = h5Url;
     }
 
-    public int getScheduleId() {
+    public Long getScheduleId() {
         return scheduleId;
     }
 
-    public void setScheduleId(int scheduleId) {
+    public void setScheduleId(Long scheduleId) {
         this.scheduleId = scheduleId;
     }
 
@@ -65,11 +65,11 @@ public class PrizeHistoryBean {
         this.endTime = endTime;
     }
 
-    public int getSchedule() {
+    public Long getSchedule() {
         return schedule;
     }
 
-    public void setSchedule(int schedule) {
+    public void setSchedule(Long schedule) {
         this.schedule = schedule;
     }
 

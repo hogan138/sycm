@@ -39,53 +39,55 @@ public class MineBean implements Parcelable {
     private Long id;
     private String account;
     private String nickname;
-    private int obt;
+    private Long obt;
     private String header;
     private int headerId;
-    private int status;
+    private Long status;
     private int certification;
     private String phone;
-    private int gender;
+    private Long gender;
     private String cash;
     private String bp;
-    private int opporitunity;
-    private int withdraw;
-    private int availablePrize;
-    private int upcommings;
-    private int messages;
-    private int wxBind;
+    private Long opporitunity;
+    private Long withdraw;
+    private Long availablePrize; //奖品数量
+    private Long upcommings;
+    private Long propCount;//我的道具数量
+    private Long messages;
+    private Long wxBind;
     private String wxHeader;
     private String contactUs; //联系客服地址
     private List<DatasBean> datas;  //提现|实名信息
     private String cashRuleUrl; //现金提现规则
     private String redRuleUrl; //红包提现规则
-    private int certCount;//实名认证次数
+    private Long certCount;//实名认证次数
 
     protected MineBean(Parcel in) {
         id = in.readLong();
         account = in.readString();
         nickname = in.readString();
-        obt = in.readInt();
+        obt = in.readLong();
         header = in.readString();
         headerId = in.readInt();
-        status = in.readInt();
+        status = in.readLong();
         certification = in.readInt();
         phone = in.readString();
-        gender = in.readInt();
+        gender = in.readLong();
         cash = in.readString();
         bp = in.readString();
-        opporitunity = in.readInt();
-        withdraw = in.readInt();
-        availablePrize = in.readInt();
-        upcommings = in.readInt();
-        messages = in.readInt();
-        wxBind = in.readInt();
+        opporitunity = in.readLong();
+        withdraw = in.readLong();
+        availablePrize = in.readLong();
+        upcommings = in.readLong();
+        propCount = in.readLong();
+        messages = in.readLong();
+        wxBind = in.readLong();
         wxHeader = in.readString();
         contactUs = in.readString();
         datas = in.createTypedArrayList(DatasBean.CREATOR);
         cashRuleUrl = in.readString();
         redRuleUrl = in.readString();
-        certCount = in.readInt();
+        certCount = in.readLong();
     }
 
     public MineBean() {
@@ -103,6 +105,14 @@ public class MineBean implements Parcelable {
             return new MineBean[size];
         }
     };
+
+    public Long getPropCount() {
+        return propCount;
+    }
+
+    public void setPropCount(Long propCount) {
+        this.propCount = propCount;
+    }
 
     public long getId() {
         return id;
@@ -128,11 +138,11 @@ public class MineBean implements Parcelable {
         this.nickname = nickname;
     }
 
-    public int getObt() {
+    public Long getObt() {
         return obt;
     }
 
-    public void setObt(int obt) {
+    public void setObt(Long obt) {
         this.obt = obt;
     }
 
@@ -152,11 +162,11 @@ public class MineBean implements Parcelable {
         this.headerId = headerId;
     }
 
-    public int getStatus() {
+    public Long getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Long status) {
         this.status = status;
     }
 
@@ -176,11 +186,11 @@ public class MineBean implements Parcelable {
         this.phone = phone;
     }
 
-    public int getGender() {
+    public Long getGender() {
         return gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(Long gender) {
         this.gender = gender;
     }
 
@@ -200,51 +210,51 @@ public class MineBean implements Parcelable {
         this.bp = bp;
     }
 
-    public int getOpporitunity() {
+    public Long getOpporitunity() {
         return opporitunity;
     }
 
-    public void setOpporitunity(int opporitunity) {
+    public void setOpporitunity(Long opporitunity) {
         this.opporitunity = opporitunity;
     }
 
-    public int getWithdraw() {
+    public Long getWithdraw() {
         return withdraw;
     }
 
-    public void setWithdraw(int withdraw) {
+    public void setWithdraw(Long withdraw) {
         this.withdraw = withdraw;
     }
 
-    public int getAvailablePrize() {
+    public Long getAvailablePrize() {
         return availablePrize;
     }
 
-    public void setAvailablePrize(int availablePrize) {
+    public void setAvailablePrize(Long availablePrize) {
         this.availablePrize = availablePrize;
     }
 
-    public int getUpcommings() {
+    public Long getUpcommings() {
         return upcommings;
     }
 
-    public void setUpcommings(int upcommings) {
+    public void setUpcommings(Long upcommings) {
         this.upcommings = upcommings;
     }
 
-    public int getMessages() {
+    public Long getMessages() {
         return messages;
     }
 
-    public void setMessages(int messages) {
+    public void setMessages(Long messages) {
         this.messages = messages;
     }
 
-    public int getWxBind() {
+    public Long getWxBind() {
         return wxBind;
     }
 
-    public void setWxBind(int wxBind) {
+    public void setWxBind(Long wxBind) {
         this.wxBind = wxBind;
     }
 
@@ -288,11 +298,11 @@ public class MineBean implements Parcelable {
         this.redRuleUrl = redRuleUrl;
     }
 
-    public int getCertCount() {
+    public Long getCertCount() {
         return certCount;
     }
 
-    public void setCertCount(int certCount) {
+    public void setCertCount(Long certCount) {
         this.certCount = certCount;
     }
 
@@ -306,27 +316,28 @@ public class MineBean implements Parcelable {
         dest.writeLong(id);
         dest.writeString(account);
         dest.writeString(nickname);
-        dest.writeInt(obt);
+        dest.writeLong(obt);
         dest.writeString(header);
         dest.writeInt(headerId);
-        dest.writeInt(status);
-        dest.writeInt(certification);
+        dest.writeLong(status);
+        dest.writeLong(certification);
         dest.writeString(phone);
-        dest.writeInt(gender);
+        dest.writeLong(gender);
         dest.writeString(cash);
         dest.writeString(bp);
-        dest.writeInt(opporitunity);
-        dest.writeInt(withdraw);
-        dest.writeInt(availablePrize);
-        dest.writeInt(upcommings);
-        dest.writeInt(messages);
-        dest.writeInt(wxBind);
+        dest.writeLong(opporitunity);
+        dest.writeLong(withdraw);
+        dest.writeLong(availablePrize);
+        dest.writeLong(upcommings);
+        dest.writeLong(propCount);
+        dest.writeLong(messages);
+        dest.writeLong(wxBind);
         dest.writeString(wxHeader);
         dest.writeString(contactUs);
         dest.writeTypedList(datas);
         dest.writeString(cashRuleUrl);
         dest.writeString(redRuleUrl);
-        dest.writeInt(certCount);
+        dest.writeLong(certCount);
     }
 
     public static class DatasBean implements Parcelable {
@@ -342,11 +353,11 @@ public class MineBean implements Parcelable {
 
         private String bankId;
         private String stateName;
-        private int bankType;
+        private Long bankType;
         private String type;
         private String title;
         private String message;
-        private int status;
+        private Long status;
         private boolean enabled;
 
         public DatasBean() {
@@ -356,11 +367,11 @@ public class MineBean implements Parcelable {
         protected DatasBean(Parcel in) {
             bankId = in.readString();
             stateName = in.readString();
-            bankType = in.readInt();
+            bankType = in.readLong();
             type = in.readString();
             title = in.readString();
             message = in.readString();
-            status = in.readInt();
+            status = in.readLong();
             enabled = in.readByte() != 0;
         }
 
@@ -392,11 +403,11 @@ public class MineBean implements Parcelable {
             this.stateName = stateName;
         }
 
-        public int getBankType() {
+        public Long getBankType() {
             return bankType;
         }
 
-        public void setBankType(int bankType) {
+        public void setBankType(Long bankType) {
             this.bankType = bankType;
         }
 
@@ -424,11 +435,11 @@ public class MineBean implements Parcelable {
             this.message = message;
         }
 
-        public int getStatus() {
+        public Long getStatus() {
             return status;
         }
 
-        public void setStatus(int status) {
+        public void setStatus(Long status) {
             this.status = status;
         }
 
@@ -449,11 +460,11 @@ public class MineBean implements Parcelable {
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeString(bankId);
             dest.writeString(stateName);
-            dest.writeInt(bankType);
+            dest.writeLong(bankType);
             dest.writeString(type);
             dest.writeString(title);
             dest.writeString(message);
-            dest.writeInt(status);
+            dest.writeLong(status);
             dest.writeByte((byte) (enabled ? 1 : 0));
         }
     }

@@ -18,10 +18,10 @@ public class MainAgainstBean {
      */
 
     private String battleRule;//对战规则
-    private int battleUserBP;//用户积分
-    private int novice;//新手场次积分
-    private int intermediate;//中级场次积分
-    private int advanced;//高级场次积分
+    private Long battleUserBP;//用户积分
+    private Long novice;//新手场次积分
+    private Long intermediate;//中级场次积分
+    private Long advanced;//高级场次积分
 
     public String getBattleRule() {
         return battleRule;
@@ -31,35 +31,35 @@ public class MainAgainstBean {
         this.battleRule = battleRule;
     }
 
-    public int getBattleUserBP() {
+    public Long getBattleUserBP() {
         return battleUserBP;
     }
 
-    public void setBattleUserBP(int battleUserBP) {
+    public void setBattleUserBP(Long battleUserBP) {
         this.battleUserBP = battleUserBP;
     }
 
-    public int getNovice() {
+    public Long getNovice() {
         return novice;
     }
 
-    public void setNovice(int novice) {
+    public void setNovice(Long novice) {
         this.novice = novice;
     }
 
-    public int getIntermediate() {
+    public Long getIntermediate() {
         return intermediate;
     }
 
-    public void setIntermediate(int intermediate) {
+    public void setIntermediate(Long intermediate) {
         this.intermediate = intermediate;
     }
 
-    public int getAdvanced() {
+    public Long getAdvanced() {
         return advanced;
     }
 
-    public void setAdvanced(int advanced) {
+    public void setAdvanced(Long advanced) {
         this.advanced = advanced;
     }
 }

@@ -48,7 +48,7 @@ public class AdBean {
          * 2——内部链接
          * 3——题组跳转
          */
-        private int model;
+        private Long model;
         private String content;//跳转的地址
 
         public void setType(Long type) {
@@ -59,7 +59,7 @@ public class AdBean {
             this.url = url;
         }
 
-        public void setModel(int model) {
+        public void setModel(Long model) {
             this.model = model;
         }
 
@@ -75,7 +75,7 @@ public class AdBean {
             return url;
         }
 
-        public int getModel() {
+        public Long getModel() {
             return model;
         }
 
