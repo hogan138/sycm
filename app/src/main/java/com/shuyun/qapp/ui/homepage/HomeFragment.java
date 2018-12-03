@@ -208,16 +208,6 @@ public class HomeFragment extends Fragment {
         tvCommonTitle.setText("全民共进");
         ivCommonRightIcon.setImageResource(R.mipmap.message_n);//右侧消息按钮;
 
-        //token的有效时间
-//        String token = (String) SharedPrefrenceTool.get(mContext, "token", "");
-//        if (EncodeAndStringTool.isStringEmpty(token)) {
-        //拉起登录界面
-//            Intent intent = new Intent(mContext, LoginActivity.class);
-//            startActivity(intent);
-//            mContext.finish();
-//            return;
-//        }
-
         /**
          * 注册极光推送监听
          */
@@ -239,16 +229,17 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        /**
-         * 获取全民播报
-         */
-        loadSystemInfo();
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {  //显示
+
+            /**
+             * 获取全民播报
+             */
+            loadSystemInfo();
 
             /**
              * 获取banner轮播数据
@@ -278,7 +269,14 @@ public class HomeFragment extends Fragment {
             /**
              * 获取宝箱数量
              */
-            loadTreasureBoxNum();
+            try {
+                if (!EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(getActivity().getApplicationContext(), "token", ""))) {
+                    loadTreasureBoxNum();
+                }
+            } catch (Exception e) {
+
+            }
+
         }
     }
 
@@ -381,8 +379,9 @@ public class HomeFragment extends Fragment {
                                                 if (data.ImageUrl().equals(bannerData.get(i).getPicture())) {
                                                     String action = bannerData.get(i).getAction();
                                                     String h5Url = bannerData.get(i).getH5Url();
+                                                    Long is_Login = bannerData.get(i).getIsLogin();
                                                     try {
-                                                        H5JumpUtil.dialogSkip(action, bannerData.get(i).getContent(), h5Url, mContext, llHomeFragment);
+                                                        H5JumpUtil.dialogSkip(action, bannerData.get(i).getContent(), h5Url, mContext, llHomeFragment, is_Login);
                                                     } catch (Exception e) {
                                                     }
                                                 }
@@ -934,7 +933,19 @@ public class HomeFragment extends Fragment {
         /**
          * 获取宝箱数量
          */
-        loadTreasureBoxNum();
+        try {
+            if (!EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(getActivity().getApplicationContext(), "token", ""))) {
+                loadTreasureBoxNum();
+
+                /**
+                 * 首页题组
+                 */
+                loadHomeGroups();
+            }
+        } catch (Exception e) {
+
+        }
+
 
     }
 
@@ -1006,7 +1017,7 @@ public class HomeFragment extends Fragment {
                                     scrollAd.setItemOnClickListener(new ITextBannerItemClickListener() {
                                         @Override
                                         public void onItemClick(String data, int position) {
-                                            H5JumpUtil.dialogSkip(homeNoticeBeanList.get(position).getAction(), homeNoticeBeanList.get(position).getGroupId(), homeNoticeBeanList.get(position).getH5Url(), mContext, llHomeFragment);
+                                            H5JumpUtil.dialogSkip(homeNoticeBeanList.get(position).getAction(), homeNoticeBeanList.get(position).getGroupId(), homeNoticeBeanList.get(position).getH5Url(), mContext, llHomeFragment, homeNoticeBeanList.get(position).getIsLogin());
                                         }
                                     });
                                 } else {

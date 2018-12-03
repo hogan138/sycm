@@ -25,6 +25,15 @@ public class ConfigDialogBean {
     private String h5Url;
     private String content;
     private Long count;
+    private Long isLogin;
+
+    public Long getIsLogin() {
+        return isLogin;
+    }
+
+    public void setIsLogin(Long isLogin) {
+        this.isLogin = isLogin;
+    }
 
     public String getBaseImage() {
         return baseImage;

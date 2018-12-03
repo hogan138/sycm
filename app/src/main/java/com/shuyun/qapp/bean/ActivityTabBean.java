@@ -47,6 +47,15 @@ public class ActivityTabBean {
         private Long id;
         private String btnAction;
         private String content;
+        private Long isLogin;
+
+        public Long getIsLogin() {
+            return isLogin;
+        }
+
+        public void setIsLogin(Long isLogin) {
+            this.isLogin = isLogin;
+        }
 
         public String getContent() {
             return content;

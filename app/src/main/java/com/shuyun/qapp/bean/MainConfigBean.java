@@ -80,6 +80,15 @@ public class MainConfigBean {
         private String title;
         private String height;
         private String content;
+        private Long isLogin;
+
+        public Long getIsLogin() {
+            return isLogin;
+        }
+
+        public void setIsLogin(Long isLogin) {
+            this.isLogin = isLogin;
+        }
 
         public String getContent() {
             return content;

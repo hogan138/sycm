@@ -193,7 +193,7 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
                 isLogin();
                 break;
             case R.id.tv_rigth_title:
-                startActivity(new Intent(SetPasswordActivity.this, HomePageActivity.class));
+//                startActivity(new Intent(SetPasswordActivity.this, HomePageActivity.class));
                 MyActivityManager.getInstance().finishAllActivity();
                 break;
             case R.id.iv_is_show_pwd:
@@ -273,7 +273,7 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
                                 AppConst.loadToken(SetPasswordActivity.this);
 
                                 MyActivityManager.getInstance().finishAllActivity();
-                                startActivity(new Intent(SetPasswordActivity.this, HomePageActivity.class));
+//                                startActivity(new Intent(SetPasswordActivity.this, HomePageActivity.class));
                             }
                         } else {
                             ErrorCodeTools.errorCodePrompt(SetPasswordActivity.this, loginResponse.getErr(), loginResponse.getMsg());
@@ -318,7 +318,7 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
                     public void onNext(DataResponse<String> dataResponse) {
                         if (dataResponse.isSuccees()) {
                             MyActivityManager.getInstance().finishAllActivity();
-                            startActivity(new Intent(SetPasswordActivity.this, HomePageActivity.class));
+//                            startActivity(new Intent(SetPasswordActivity.this, HomePageActivity.class));
                         } else {
                             ErrorCodeTools.errorCodePrompt(SetPasswordActivity.this, dataResponse.getErr(), dataResponse.getMsg());
                         }

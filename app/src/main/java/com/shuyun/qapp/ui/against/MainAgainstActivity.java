@@ -26,13 +26,17 @@ import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.MyApplication;
+import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
+import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.ScannerUtils;
+import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -48,6 +52,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.blankj.utilcode.util.SizeUtils.dp2px;
+import static com.shuyun.qapp.net.MyApplication.getAppContext;
 
 /**
  * 答题对战首页
@@ -119,6 +124,20 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
         } else {
             ivRightIcon.setVisibility(View.VISIBLE);
             ivRightIcon.setImageResource(R.mipmap.share);//右侧分享
+        }
+
+        AppConst.loadToken(getAppContext());
+        MyActivityManager.getInstance().pushOneActivity(this);
+        try {
+            //是否需要登录
+            Long is_Login = getIntent().getLongExtra("isLogin", 0);
+            if (is_Login == 1) {
+                if (EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(MainAgainstActivity.this, "token", ""))) {
+                    startActivity(new Intent(MainAgainstActivity.this, LoginActivity.class));
+                }
+            }
+        } catch (Exception e) {
+
         }
     }
 

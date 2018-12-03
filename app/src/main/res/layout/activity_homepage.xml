@@ -1,27 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:background="@color/white">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@id/view"
         android:layout_weight="1" />
 
     <View
+        android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/text_50"
         android:background="@color/light_white" />
+
+    <ImageView
+        android:id="@+id/iv_no_login_logo"
+        android:layout_width="@dimen/text_126"
+        android:layout_height="39dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="9dp"
+        android:layout_marginBottom="@dimen/text_55"
+        android:src="@mipmap/main_no_login_logo"
+        android:visibility="gone" />
 
     <RadioGroup
         android:id="@+id/radioGroup1"
         android:layout_width="match_parent"
         android:layout_height="49dp"
-        android:layout_alignBottom="@+id/pager"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@color/white"
         android:orientation="horizontal">
@@ -85,4 +99,4 @@
             android:textSize="@dimen/text_10"
             android:textStyle="bold" />
     </RadioGroup>
-</LinearLayout>
+</RelativeLayout>

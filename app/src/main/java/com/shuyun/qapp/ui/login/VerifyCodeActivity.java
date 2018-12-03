@@ -318,7 +318,7 @@ public class VerifyCodeActivity extends BaseActivity {
                                                     LoadingBar.cancel(llMain);
                                                     MyActivityManager.getInstance().finishAllActivity();
                                                     //验证码登录
-                                                    startActivity(new Intent(VerifyCodeActivity.this, HomePageActivity.class));
+//                                                    startActivity(new Intent(VerifyCodeActivity.this, HomePageActivity.class));
                                                 }
                                             }, 2000);
                                         }

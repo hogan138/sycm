@@ -49,13 +49,16 @@ import com.shuyun.qapp.bean.WebAnswerHomeBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
+import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.mine.AccountRecordActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.JumpTomap;
+import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
+import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.view.H5JumpUtil;
 import com.shuyun.qapp.view.InviteSharePopupUtil;
 import com.shuyun.qapp.view.SharePopupUtil;
@@ -104,6 +107,19 @@ public class WebH5Activity extends BaseActivity implements CommonPopupWindow.Vie
         ButterKnife.bind(this);
 
         initData();
+
+        MyActivityManager.getInstance().pushOneActivity(this);
+        try {
+            //是否需要登录
+            Long is_Login = getIntent().getLongExtra("isLogin", 0);
+            if (is_Login == 1) {
+                if (EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(WebH5Activity.this, "token", ""))) {
+                    startActivity(new Intent(WebH5Activity.this, LoginActivity.class));
+                }
+            }
+        } catch (Exception e) {
+
+        }
 
         answerHomeBean.setToken(AppConst.TOKEN);
         answerHomeBean.setRandom(AppConst.RANDOM);
@@ -531,7 +547,7 @@ public class WebH5Activity extends BaseActivity implements CommonPopupWindow.Vie
                 @Override
                 public void run() {
                     try {
-                        H5JumpUtil.dialogSkip(h5JumpBean.getBtnAction(), h5JumpBean.getContent(), h5JumpBean.getH5Url(), WebH5Activity.this, rlMain);
+                        H5JumpUtil.dialogSkip(h5JumpBean.getBtnAction(), h5JumpBean.getContent(), h5JumpBean.getH5Url(), WebH5Activity.this, rlMain, Long.valueOf(0));
                     } catch (Exception e) {
                     }
                 }

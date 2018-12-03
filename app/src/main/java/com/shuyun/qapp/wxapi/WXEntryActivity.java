@@ -204,7 +204,7 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
             DataSupport.deleteAll(Msg.class);//清空数据库中消息
         }
         ApiService apiService = BasePresenter.create(8000);
-        final String inputbean =  JSON.toJSONString(loginInput);
+        final String inputbean = JSON.toJSONString(loginInput);
         Log.i(TAG, "loadLogin: " + loginInput.toString());
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
         apiService.login(body)
@@ -225,7 +225,7 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
                                 SharedPrefrenceTool.put(getAppContext(), "key", loginResp.getKey());//对称加密的秘钥。
                                 SharedPrefrenceTool.put(getAppContext(), "bind", loginResp.getBind());//是否绑定用户。
                                 SharedPrefrenceTool.put(getAppContext(), "random", loginResp.getRandom());//登录成果后，平台随机生成的字符串
-                                AppConst.loadToken(getAppContext());
+                                AppConst.loadToken(WXEntryActivity.this);
                                 if (!EncodeAndStringTool.isStringEmpty(loginResp.getInvite())) {
                                     SharedPrefrenceTool.put(getAppContext(), "invite", loginResp.getInvite());
                                 }
@@ -235,8 +235,6 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
                                     startActivity(intent);
                                     finish();
                                 } else if (1 == loginResp.getBind()) {
-                                    Intent intent = new Intent(WXEntryActivity.this, HomePageActivity.class);
-                                    startActivity(intent);
                                     finish();
                                 }
 

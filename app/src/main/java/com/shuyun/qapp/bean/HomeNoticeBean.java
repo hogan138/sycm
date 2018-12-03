@@ -21,6 +21,15 @@ public class HomeNoticeBean {
     private String h5Url;
     private String content;
     private String groupId;
+    private Long isLogin;
+
+    public Long getIsLogin() {
+        return isLogin;
+    }
+
+    public void setIsLogin(Long isLogin) {
+        this.isLogin = isLogin;
+    }
 
     public String getAction() {
         return action;

@@ -217,7 +217,10 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
         }
 
         //个人信息
-        loadMineHomeData();
+        if (!EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(mContext, "token", ""))) {
+            loadMineHomeData();
+        }
+
     }
 
 

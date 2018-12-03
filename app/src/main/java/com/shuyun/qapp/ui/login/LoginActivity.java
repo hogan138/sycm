@@ -15,10 +15,11 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.ishumei.smantifraud.SmAntiFraud;
@@ -37,7 +38,7 @@ import com.shuyun.qapp.bean.Msg;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.MyApplication;
-import com.shuyun.qapp.ui.homepage.HomePageActivity;
+import com.shuyun.qapp.ui.mine.AddWithdrawInfoActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -91,15 +92,16 @@ public class LoginActivity extends BaseActivity {
     Button btnLogin;//登录按钮
     @BindView(R.id.rl_register)
     RelativeLayout rlRegister;//注册
-    @BindView(R.id.iv_wechat_login)
-    ImageView ivWechatLogin;//微信登录按钮
-    @BindView(R.id.ll_other_login)
-    LinearLayout llOtherLogin;//其他登录方式
     @BindView(R.id.rl_main)
     RelativeLayout rlMain;
+    @BindView(R.id.rl_close)
+    RelativeLayout rlClose; //关闭
+    @BindView(R.id.tv_weixin_logo)
+    TextView tvWeixinLogo; //微信登录
 
 
     private static final String TAG = "LoginActivity";
+
     private Context mContext = null;
 
     // 所需的全部权限
@@ -126,8 +128,7 @@ public class LoginActivity extends BaseActivity {
         clearEditText(etPhoneNumber, ivClearPhoneNum);
         clearEditText(etPassword, ivClearPwd);
         if (!MyApplication.mWxApi.isWXAppInstalled()) {
-            ivWechatLogin.setVisibility(View.GONE);
-            llOtherLogin.setVisibility(View.GONE);
+            tvWeixinLogo.setVisibility(View.GONE);
         }
 
         MyActivityManager.getInstance().pushOneActivity(this);
@@ -205,10 +206,14 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.et_phone_number, R.id.et_password, R.id.iv_clear_phone_num, R.id.iv_clear_pwd,
-            R.id.iv_is_show_pwd, R.id.tv_forget_pwd, R.id.btn_login, R.id.iv_wechat_login, R.id.rl_register, R.id.tv_verify_login})
+    @OnClick({R.id.et_phone_number, R.id.et_password, R.id.iv_clear_phone_num, R.id.iv_clear_pwd, R.id.rl_close,
+            R.id.iv_is_show_pwd, R.id.tv_forget_pwd, R.id.btn_login, R.id.tv_weixin_logo, R.id.rl_register, R.id.tv_verify_login})
     public void click(View view) {
         switch (view.getId()) {
+            case R.id.rl_close:
+                MyActivityManager.getInstance().finishAllActivity();
+                finish();
+                break;
             case R.id.iv_clear_phone_num: //清空手机号
                 etPhoneNumber.setText("");
                 ivClearPhoneNum.setVisibility(View.GONE);
@@ -286,7 +291,7 @@ public class LoginActivity extends BaseActivity {
                     loadLogin(mContext, loginInput);
                 }
                 break;
-            case R.id.iv_wechat_login: //微信登录
+            case R.id.tv_weixin_logo: //微信登录
                 wxLogin();
                 finish();
                 break;
@@ -344,14 +349,11 @@ public class LoginActivity extends BaseActivity {
                                     @Override
                                     public void run() {
                                         LoadingBar.cancel(rlMain);
-                                        Intent intent = new Intent(mContext, HomePageActivity.class);
-                                        startActivity(intent);
+                                        KeyboardUtils.hideSoftInput(LoginActivity.this);
                                         finish();
                                     }
                                 }, 2000);
 
-
-                            } else {
                             }
                         } else {
                             if (loginResponse.getErr().equals("TAU11")) {
@@ -533,6 +535,12 @@ public class LoginActivity extends BaseActivity {
                 .show();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        MyActivityManager.getInstance().finishAllActivity();
+        finish();
+    }
 }
 
 

@@ -93,6 +93,7 @@ public class ActivityRegionManager {
                 final String action = datasBean.getAction(); //跳转action
                 final String h5_url = datasBean.getH5Url(); //跳转地址
                 final String content = datasBean.getContent();//题组id
+                final Long is_Login = datasBean.getIsLogin();//是否需要登录
 
                 //计算 top left
                 int x = xList[colD - 1];
@@ -112,7 +113,7 @@ public class ActivityRegionManager {
                         @Override
                         public void onClick(View view) {
                             try {
-                                H5JumpUtil.dialogSkip(action, content, h5_url, context, layout);
+                                H5JumpUtil.dialogSkip(action, content, h5_url, context, layout, is_Login);
                             } catch (Exception e) {
 
                             }
@@ -132,7 +133,7 @@ public class ActivityRegionManager {
                         @Override
                         public void onClick(View view) {
                             try {
-                                H5JumpUtil.dialogSkip(action, content, h5_url, context, layout);
+                                H5JumpUtil.dialogSkip(action, content, h5_url, context, layout, is_Login);
                             } catch (Exception e) {
 
                             }
@@ -159,7 +160,7 @@ public class ActivityRegionManager {
                         @Override
                         public void onClick(View view) {
                             try {
-                                H5JumpUtil.dialogSkip(action, content, h5_url, context, layout);
+                                H5JumpUtil.dialogSkip(action, content, h5_url, context, layout, is_Login);
                             } catch (Exception e) {
 
                             }
@@ -174,7 +175,7 @@ public class ActivityRegionManager {
                         @Override
                         public void onClick(View view) {
                             try {
-                                H5JumpUtil.dialogSkip(action, content, h5_url, context, layout);
+                                H5JumpUtil.dialogSkip(action, content, h5_url, context, layout, is_Login);
                             } catch (Exception e) {
 
                             }

@@ -175,25 +175,19 @@ public class WelcomeActivity extends Activity {
         ImageLoaderManager.LoadImage(WelcomeActivity.this, adBean.getAd().get(0).getUrl(), ivAdvertising, R.mipmap.zw01);
         final Long model = adBean.getAd().get(0).getModel();
         final String content = adBean.getAd().get(0).getContent();
+        final Long isLogin = adBean.getAd().get(0).getIsLogin();
         ivAdvertising.setOnClickListener(new OnMultiClickListener() {
             @Override
             public void onMultiClick(View v) {
                 if (model == 3) {//题组跳转
                     if (!EncodeAndStringTool.isStringEmpty(content)) {
-//                        if (!AppConst.isLogon() || currentTimeMillis >= expire) {
-//                            //拉起登录界面
-//                            Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
-//                            startActivity(intent);
-//                            finish();
-//                            return;
-//                        } else {
                         Intent intent = new Intent(WelcomeActivity.this, WebAnswerActivity.class);
                         intent.putExtra("groupId", Integer.parseInt(content));
                         intent.putExtra("from", "splash");
                         intent.putExtra("h5Url", adBean.getExamUrl());
+                        intent.putExtra("isLogin", isLogin);
                         startActivity(intent);
                         finish();
-//                        }
                         timer.cancel();
                     }
                 } else if (model == 2) {//内部链接
@@ -202,6 +196,7 @@ public class WelcomeActivity extends Activity {
                         intent.putExtra("url", content);
                         intent.putExtra("name", "全民共进");
                         intent.putExtra("from", "splash");
+                        intent.putExtra("isLogin", isLogin);
                         startActivity(intent);
                         finish();
                         timer.cancel();
@@ -255,13 +250,6 @@ public class WelcomeActivity extends Activity {
 
     //跳转
     private void skip() {
-//        String token = (String) SharedPrefrenceTool.get(WelcomeActivity.this, "token", "");
-//        if (EncodeAndStringTool.isStringEmpty(token)) {
-//            //拉起登录界面
-//            Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
-//            startActivity(intent);
-//            finish();
-//        }
         Intent intent = new Intent(WelcomeActivity.this, HomePageActivity.class);
         startActivity(intent);
         finish();

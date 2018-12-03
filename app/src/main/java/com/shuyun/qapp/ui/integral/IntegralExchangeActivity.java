@@ -18,12 +18,16 @@ import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.IntegralExchangeBean;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.ui.login.LoginActivity;
+import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.GlideUtils;
+import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
+import com.shuyun.qapp.utils.SharedPrefrenceTool;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,6 +71,19 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
         rlStartBox.setOnClickListener(this);
         rlStartBaby.setOnClickListener(this);
 
+        MyActivityManager.getInstance().pushOneActivity(this);
+        try {
+            //是否需要登录
+            Long is_Login = getIntent().getLongExtra("isLogin", 0);
+            if (is_Login == 1) {
+                if (EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(IntegralExchangeActivity.this, "token", ""))) {
+                    startActivity(new Intent(IntegralExchangeActivity.this, LoginActivity.class));
+                }
+            }
+        } catch (Exception e) {
+
+        }
+
     }
 
     @Override
@@ -75,6 +92,7 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
 
         //获取积分信息
         getInfo();
+
 
     }
 

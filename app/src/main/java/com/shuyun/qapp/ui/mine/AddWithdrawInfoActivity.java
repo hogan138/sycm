@@ -31,12 +31,16 @@ import com.shuyun.qapp.bean.AddWithdrawResultBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.SubmitWithdrawInfoBean;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.ui.integral.IntegralMainActivity;
+import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
+import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.StringFilterUtil;
 import com.shuyun.qapp.utils.ToastUtil;
 
@@ -81,6 +85,19 @@ public class AddWithdrawInfoActivity extends BaseActivity implements View.OnClic
         btnContactOur.setOnClickListener(this);
         ivClearName.setOnClickListener(this);
         ivClearAccount.setOnClickListener(this);
+
+        MyActivityManager.getInstance().pushOneActivity(this);
+        try {
+            //是否需要登录
+            Long is_Login = getIntent().getLongExtra("isLogin", 0);
+            if (is_Login == 1) {
+                if (EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(AddWithdrawInfoActivity.this, "token", ""))) {
+                    startActivity(new Intent(AddWithdrawInfoActivity.this, LoginActivity.class));
+                }
+            }
+        } catch (Exception e) {
+
+        }
 
         addListener(etName, ivClearName);//给支付宝绑定姓名EditText设置变化监听事件
         addListener(etAccount, ivClearAccount);//给支付宝账户EditText设置变化监听事件

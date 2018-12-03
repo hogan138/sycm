@@ -41,7 +41,6 @@
             android:layout_below="@+id/rl_head"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
-            android:text="1111111111111"
             android:textColor="@color/white"
             android:textSize="@dimen/text_14"
             android:textStyle="bold" />

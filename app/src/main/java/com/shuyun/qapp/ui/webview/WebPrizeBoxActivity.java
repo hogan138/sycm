@@ -42,11 +42,14 @@ import com.shuyun.qapp.bean.WebAnswerHomeBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
+import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.mine.NewRedWithdrawActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
+import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.view.H5JumpUtil;
 import com.shuyun.qapp.view.InviteSharePopupUtil;
 import com.shuyun.qapp.view.RealNamePopupUtil;
@@ -276,7 +279,7 @@ public class WebPrizeBoxActivity extends BaseActivity {
                 @Override
                 public void run() {
                     try {
-                        H5JumpUtil.dialogSkip(h5JumpBean.getBtnAction(), h5JumpBean.getContent(), h5JumpBean.getH5Url(), WebPrizeBoxActivity.this, llWebBox);
+                        H5JumpUtil.dialogSkip(h5JumpBean.getBtnAction(), h5JumpBean.getContent(), h5JumpBean.getH5Url(), WebPrizeBoxActivity.this, llWebBox, Long.valueOf(0));
                     } catch (Exception e) {
                     }
                 }
@@ -306,6 +309,19 @@ public class WebPrizeBoxActivity extends BaseActivity {
             //我的奖品
             minePrize = intent.getParcelableExtra("ChildMinePrize");
             boxBean = intent.getParcelableExtra("BoxBean");
+        } catch (Exception e) {
+
+        }
+
+        MyActivityManager.getInstance().pushOneActivity(this);
+        try {
+            //是否需要登录
+            Long is_Login = getIntent().getLongExtra("isLogin", 0);
+            if (is_Login == 1) {
+                if (EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(WebPrizeBoxActivity.this, "token", ""))) {
+                    startActivity(new Intent(WebPrizeBoxActivity.this, LoginActivity.class));
+                }
+            }
         } catch (Exception e) {
 
         }

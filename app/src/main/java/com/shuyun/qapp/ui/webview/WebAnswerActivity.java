@@ -58,11 +58,13 @@ import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.ui.answer.AnswerHistoryActivity;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
+import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.mine.NewRedWithdrawActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
@@ -352,7 +354,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                 @Override
                 public void run() {
                     try {
-                        H5JumpUtil.dialogSkip(h5JumpBean.getBtnAction(), h5JumpBean.getContent(), h5JumpBean.getH5Url(), WebAnswerActivity.this, llH5);
+                        H5JumpUtil.dialogSkip(h5JumpBean.getBtnAction(), h5JumpBean.getContent(), h5JumpBean.getH5Url(), WebAnswerActivity.this, llH5, Long.valueOf(0));
                     } catch (Exception e) {
 
                     }
@@ -389,6 +391,15 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
         splash = intent.getStringExtra("from");
         groupId = intent.getLongExtra("groupId", 0);
         h5Url = intent.getStringExtra("h5Url");
+
+        MyActivityManager.getInstance().pushOneActivity(this);
+        //是否需要登录
+        Long is_Login = getIntent().getLongExtra("isLogin", 0);
+        if (is_Login == 1) {
+            if (EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(WebAnswerActivity.this, "token", ""))) {
+                startActivity(new Intent(WebAnswerActivity.this, LoginActivity.class));
+            }
+        }
 
         //是否参与邀请分享 1——参与邀请
         Integer share = (Integer) SharedPrefrenceTool.get(this, "share", (Integer) 0);

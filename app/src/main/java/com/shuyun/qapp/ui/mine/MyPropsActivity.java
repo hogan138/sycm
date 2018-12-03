@@ -97,7 +97,7 @@ public class MyPropsActivity extends BaseActivity {
                         //使用道具
                         useProps(mode);
                     }
-                }, 2000);
+                }, 1000);
 
             }
         });

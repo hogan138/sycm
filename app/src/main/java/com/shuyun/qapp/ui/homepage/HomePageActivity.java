@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +19,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -37,6 +39,7 @@ import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.activity.ActivityFragment;
 import com.shuyun.qapp.ui.classify.ClassifyFragment;
+import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.mine.MineFragment;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -77,10 +80,10 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
     RadioButton radioActivity; //活动
     @BindView(R.id.radio_mine)
     RadioButton radioMine; //我的
-    @BindView(R.id.ll_main)
-    LinearLayout llMain;
     @BindView(R.id.pager)
     ViewPager pager;
+    @BindView(R.id.iv_no_login_logo)
+    ImageView ivNoLoginLogo; //未登陆logo
 
     /**
      * fragment容器
@@ -127,7 +130,6 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setNavigationBarColor(Color.parseColor("#ffffff"));
         }
-        MyActivityManager.getInstance().pushOneActivity(this);
 
         //注册极光推送
         registerMessageReceiver();
@@ -138,8 +140,9 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
         /**
          * 邀请有奖
          */
-        invite();
-
+        if (!EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(HomePageActivity.this, "token", ""))) {
+            invite();
+        }
     }
 
     private void initDate() {
@@ -161,9 +164,9 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
         fm = getSupportFragmentManager();
         //得到适配器
         MyHomeadapter myAdapter = new MyHomeadapter(fm, fragments, this);
+        pager.setOffscreenPageLimit(4);
         //设置适配器
         pager.setAdapter(myAdapter);
-        pager.setOffscreenPageLimit(3);
 
     }
 
@@ -195,6 +198,8 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
     }
 
     //RadioGroup的监听事件
+    private int index = 0;
+
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
 
@@ -209,15 +214,19 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
                 //当前下标
                 i = j;
 
+                index = j;
+
                 //获取最新活动显示角标
                 getActivityShow(i);
 
                 //点击活动专区
                 if (j == 2 && "1".equals(show)) { //未点过红色角标
-                    Drawable drawable = getResources().getDrawable(R.mipmap.activity_s);
-                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
-                    radioActivity.setCompoundDrawables(null, drawable, null, null);
-                    clickActivity();
+                    if (!EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(HomePageActivity.this, "token", ""))) {
+                        Drawable drawable = getResources().getDrawable(R.mipmap.activity_s);
+                        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
+                        radioActivity.setCompoundDrawables(null, drawable, null, null);
+                        clickActivity();
+                    }
                 } else if (j == 2) {
                     Drawable drawable = getResources().getDrawable(R.mipmap.activity_s);
                     drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
@@ -288,7 +297,27 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
 
         Log.e("token", AppConst.TOKEN + "--------" + AppConst.sycm());
 
+
+        handler.postDelayed(runnable, 500);
+
     }
+
+    Handler handler = new Handler();
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            //是否未登陆
+            if (EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(HomePageActivity.this, "token", ""))) {
+                ivNoLoginLogo.setVisibility(View.VISIBLE);
+                if (index == 3) {
+                    changeUi(0);
+                }
+            } else {
+                ivNoLoginLogo.setVisibility(View.GONE);
+            }
+            handler.post(runnable);
+        }
+    };
 
     //更新版本
     private void updateVersion() {
@@ -445,10 +474,17 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
                                     drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
                                     radioActivity.setCompoundDrawables(null, drawable, null, null);
                                 } else {
-                                    //显示活动角标
-                                    Drawable drawable = getResources().getDrawable(R.mipmap.activity_n_red);
-                                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
-                                    radioActivity.setCompoundDrawables(null, drawable, null, null);
+                                    if (index == 2) {
+                                        Drawable drawable = getResources().getDrawable(R.mipmap.activity_s);
+                                        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
+                                        radioActivity.setCompoundDrawables(null, drawable, null, null);
+                                    } else {
+                                        //显示活动角标
+                                        Drawable drawable = getResources().getDrawable(R.mipmap.activity_n_red);
+                                        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
+                                        radioActivity.setCompoundDrawables(null, drawable, null, null);
+                                    }
+
                                 }
                             } else {
                                 show = "0";

@@ -29,6 +29,7 @@ import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.tencent.stat.StatService;
@@ -77,6 +78,8 @@ public class InformationActivity extends BaseActivity implements CommonPopupWind
         ivLeftIcon.setImageResource(R.mipmap.guanbi);
         tvInformationTitle.setText("消息");
         ivRightIcon.setImageResource(R.mipmap.messager);
+
+        MyActivityManager.getInstance().pushOneActivity(this);
 
         loadMsg();
 

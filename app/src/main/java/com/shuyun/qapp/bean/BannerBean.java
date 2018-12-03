@@ -16,6 +16,15 @@ public class BannerBean {
     private String h5Url; //答题url
     private String action;
     private String content;
+    private Long isLogin;
+
+    public Long getIsLogin() {
+        return isLogin;
+    }
+
+    public void setIsLogin(Long isLogin) {
+        this.isLogin = isLogin;
+    }
 
     public String getAction() {
         return action;

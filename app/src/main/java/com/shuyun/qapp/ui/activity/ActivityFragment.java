@@ -214,7 +214,7 @@ public class ActivityFragment extends Fragment {
             public void onItemChildClick(View view, int position) {
                 ActivityTabBean.ResultBean resultBean = activityTabBeanlist.get(position);
                 try {
-                    H5JumpUtil.dialogSkip(resultBean.getBtnAction(), resultBean.getContent(), resultBean.getH5Url(), mContext, llMain);
+                    H5JumpUtil.dialogSkip(resultBean.getBtnAction(), resultBean.getContent(), resultBean.getH5Url(), mContext, llMain, resultBean.getIsLogin());
                 } catch (Exception e) {
 
                 }

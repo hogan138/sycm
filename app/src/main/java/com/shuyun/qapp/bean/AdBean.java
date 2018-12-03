@@ -50,6 +50,15 @@ public class AdBean {
          */
         private Long model;
         private String content;//跳转的地址
+        private Long isLogin;
+
+        public Long getIsLogin() {
+            return isLogin;
+        }
+
+        public void setIsLogin(Long isLogin) {
+            this.isLogin = isLogin;
+        }
 
         public void setType(Long type) {
             this.type = type;
