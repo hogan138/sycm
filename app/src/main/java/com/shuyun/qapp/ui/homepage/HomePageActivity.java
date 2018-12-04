@@ -19,6 +19,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.OvershootInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -143,6 +146,14 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
         if (!EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(HomePageActivity.this, "token", ""))) {
             invite();
         }
+
+        ivNoLoginLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeUi(3);
+                index = 3;
+            }
+        });
     }
 
     private void initDate() {
@@ -299,6 +310,24 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
 
 
         handler.postDelayed(runnable, 500);
+        //开启登录logo动画
+        TranslateAnimation animation = new TranslateAnimation(0, 0, 10, -10);
+        animation.setInterpolator(new OvershootInterpolator());
+        animation.setDuration(500);
+        animation.setRepeatCount(Animation.INFINITE);
+        animation.setRepeatMode(Animation.REVERSE);
+        ivNoLoginLogo.startAnimation(animation);
+
+        if (EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(HomePageActivity.this, "token", ""))) {
+            if (index == 3) {
+                changeUi(0); //未登录返回切换到首页
+                index = 0;
+            }
+        } else {
+            if (index == 3) {  //登录后切换到我的
+                changeUi(3);
+            }
+        }
 
     }
 
@@ -309,11 +338,13 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
             //是否未登陆
             if (EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(HomePageActivity.this, "token", ""))) {
                 ivNoLoginLogo.setVisibility(View.VISIBLE);
-                if (index == 3) {
-                    changeUi(0);
-                }
             } else {
-                ivNoLoginLogo.setVisibility(View.GONE);
+                try {
+                    ivNoLoginLogo.setVisibility(View.GONE);
+                    ivNoLoginLogo.clearAnimation();
+                } catch (Exception e) {
+
+                }
             }
             handler.post(runnable);
         }

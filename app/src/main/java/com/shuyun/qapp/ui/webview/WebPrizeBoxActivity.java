@@ -43,6 +43,7 @@ import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
 import com.shuyun.qapp.ui.login.LoginActivity;
+import com.shuyun.qapp.ui.mine.MinePrizeActivity;
 import com.shuyun.qapp.ui.mine.NewRedWithdrawActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
@@ -295,6 +296,25 @@ public class WebPrizeBoxActivity extends BaseActivity {
             returnDialogBean = new Gson().fromJson(data, ReturnDialogBean.class);
             show = returnDialogBean.isShow();
             Log.e("data", data);
+        }
+
+
+        /**
+         * h5调用是否实名认证
+         */
+        public boolean jsCertState() {
+            if (Integer.parseInt(SaveUserInfo.getInstance(WebPrizeBoxActivity.this).getUserInfo("cert")) == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        /**
+         * 实名认证弹框
+         */
+        public void jsCertDialog() {
+            RealNamePopupUtil.showAuthPop(WebPrizeBoxActivity.this, llWebBox, getString(R.string.real_openbox_describe));
         }
 
     }

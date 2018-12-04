@@ -176,11 +176,6 @@ public class AnswerRecordActivity extends BaseActivity {
                                         answerRecordAdapter.notifyDataSetChanged();
                                         refreshLayout.finishLoadmore();
                                         refreshLayout.setLoadmoreFinished(false);
-                                        //进入动画
-                                        LayoutAnimationController controller = new LayoutAnimationController(MyLayoutAnimationHelper.getAnimationSetScaleBig());
-                                        controller.setDelay(0.1f);
-                                        rvAnswerRecord.setLayoutAnimation(controller);
-                                        rvAnswerRecord.scheduleLayoutAnimation();
                                     }
                                 }
 

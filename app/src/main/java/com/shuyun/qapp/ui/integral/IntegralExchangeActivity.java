@@ -37,7 +37,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * 积分兑换首页
+ * 积分中心
  */
 public class IntegralExchangeActivity extends BaseActivity implements View.OnClickListener {
 
@@ -66,7 +66,7 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        tvCommonTitle.setText("积分兑换");
+        tvCommonTitle.setText("积分中心");
         ivBack.setOnClickListener(this);
         rlStartBox.setOnClickListener(this);
         rlStartBaby.setOnClickListener(this);

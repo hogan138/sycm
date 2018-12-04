@@ -597,7 +597,6 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
 
                     @Override
                     public void onNext(DataResponse<SharedBean> dataResponse) {
-                        Log.i(TAG, "loadAnswerShared==onNext: " + dataResponse.toString());
                         if (dataResponse.isSuccees()) {
                             SharedBean sharedBean = dataResponse.getDat();
                             if (!EncodeAndStringTool.isObjectEmpty(sharedBean)) {

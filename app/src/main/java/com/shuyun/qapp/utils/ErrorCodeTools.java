@@ -3,7 +3,9 @@ package com.shuyun.qapp.utils;
 import android.content.Context;
 import android.content.Intent;
 
+import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.login.LoginActivity;
+import com.shuyun.qapp.ui.mine.SystemSettingActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -114,7 +116,9 @@ public class ErrorCodeTools {
         } else if (err.equals("TAU01") || err.equals("TAU02") || err.equals("TAU03") || err.equals("TAU04") || err.equals("TAU05")
                 || err.equals("TAU06") || err.equals("TAU07") || err.equals("TAU08") || err.equals("TAU09") || err.equals("TAU10")
                 || err.equals("TAU11") || err.equals("TAU12")) {
-//            ToastUtil.showToast(mContext, "您还没有登录，请先登录吧！");
+            //清空数据
+            SharedPrefrenceTool.clear(mContext);
+            AppConst.loadToken(mContext);
             Intent intent = new Intent(mContext, LoginActivity.class);
             mContext.startActivity(intent);
             return false;

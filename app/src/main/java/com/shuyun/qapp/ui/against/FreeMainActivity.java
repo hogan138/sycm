@@ -202,11 +202,6 @@ public class FreeMainActivity extends BaseActivity implements View.OnClickListen
                                 GridLayoutManager gridLayoutManager = new GridLayoutManager(FreeMainActivity.this, 1);
                                 rvAgainstGroup.setLayoutManager(gridLayoutManager);
                                 rvAgainstGroup.setAdapter(freeGroupAdapter);
-                                //进入动画
-                                LayoutAnimationController controller = new LayoutAnimationController(MyLayoutAnimationHelper.getAnimationSetScaleBig());
-                                controller.setDelay(0.7f);
-                                rvAgainstGroup.setLayoutAnimation(controller);
-                                rvAgainstGroup.scheduleLayoutAnimation();
                             } catch (Exception e) {
 
                             }

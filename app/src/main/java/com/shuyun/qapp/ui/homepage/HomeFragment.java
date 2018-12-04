@@ -270,8 +270,15 @@ public class HomeFragment extends Fragment {
              * 获取宝箱数量
              */
             try {
-                if (!EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(getActivity().getApplicationContext(), "token", ""))) {
+                if (!EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(getContext(), "token", ""))) {
                     loadTreasureBoxNum();
+                } else {
+                    try {
+                        ivBx.clearAnimation();
+                        ivBx.setVisibility(View.GONE);
+                    } catch (Exception e) {
+
+                    }
                 }
             } catch (Exception e) {
 
@@ -388,7 +395,7 @@ public class HomeFragment extends Fragment {
                                             }
                                         }
                                     });
-                                    mBannerView.setPageTransformer(true, new YZoomTransFormer(.8f)); //banner动画
+                                    mBannerView.setPageTransformer(true, new YZoomTransFormer(0.9f)); //banner动画
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -934,13 +941,19 @@ public class HomeFragment extends Fragment {
          * 获取宝箱数量
          */
         try {
-            if (!EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(getActivity().getApplicationContext(), "token", ""))) {
+            if (!EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(getContext(), "token", ""))) {
                 loadTreasureBoxNum();
-
                 /**
                  * 首页题组
                  */
                 loadHomeGroups();
+            } else {
+                try {
+                    ivBx.clearAnimation();
+                    ivBx.setVisibility(View.GONE);
+                } catch (Exception e) {
+
+                }
             }
         } catch (Exception e) {
 
