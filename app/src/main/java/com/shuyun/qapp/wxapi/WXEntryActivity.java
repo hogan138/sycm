@@ -122,7 +122,15 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
                                 loginInput.setStamp(curTime);
                                 loginInput.setAppVersion(APKVersionCodeTools.getVerName(WXEntryActivity.this));
                                 loginInput.setCode(signCode);
+                                try {
+                                    //是否是答题免登陆，传入答卷id
+                                    String examId = SaveUserInfo.getInstance(WXEntryActivity.this).getUserInfo("answer_exam_id");
+                                    if (!EncodeAndStringTool.isStringEmpty(examId)) {
+                                        loginInput.setExamId(examId);
+                                    }
+                                } catch (Exception e) {
 
+                                }
                                 String deviceId = SmAntiFraud.getDeviceId();
                                 loginInput.setDeviceId(deviceId);
                                 runOnUiThread(new Runnable() {
@@ -226,6 +234,16 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
                                 SharedPrefrenceTool.put(getAppContext(), "bind", loginResp.getBind());//是否绑定用户。
                                 SharedPrefrenceTool.put(getAppContext(), "random", loginResp.getRandom());//登录成果后，平台随机生成的字符串
                                 AppConst.loadToken(WXEntryActivity.this);
+
+                                try {
+                                    //答题免登录返回宝箱id
+                                    if (!EncodeAndStringTool.isStringEmpty(loginResp.getBoxId())) {
+                                        SharedPrefrenceTool.put(mContext, "boxId", loginResp.getBoxId());
+                                    }
+                                } catch (Exception e) {
+
+                                }
+
                                 if (!EncodeAndStringTool.isStringEmpty(loginResp.getInvite())) {
                                     SharedPrefrenceTool.put(getAppContext(), "invite", loginResp.getInvite());
                                 }

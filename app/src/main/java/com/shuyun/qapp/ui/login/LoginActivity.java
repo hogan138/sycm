@@ -228,6 +228,8 @@ public class LoginActivity extends BaseActivity {
                 isShowPwd(etPassword);
                 break;
             case R.id.tv_verify_login:  //验证码登录
+                //是否是答题免登陆，传入答卷id
+                isAnswerLogin();
                 if (!EncodeAndStringTool.isStringEmpty(etPhoneNumber.getText().toString())) {
                     if (RegularTool.isMobileExact(etPhoneNumber.getText().toString())) {
                         SaveUserInfo.getInstance(mContext).setUserInfo("login_phone", etPhoneNumber.getText().toString());
@@ -240,6 +242,8 @@ public class LoginActivity extends BaseActivity {
                 startActivity(intent2);
                 break;
             case R.id.rl_register: //注册
+                //是否是答题免登陆，传入答卷id
+                isAnswerLogin();
                 Intent intent1 = new Intent(mContext, RegisterPhoneActivity.class);
                 intent1.putExtra("name", "register");
                 startActivity(intent1);
@@ -301,6 +305,8 @@ public class LoginActivity extends BaseActivity {
                 }
                 break;
             case R.id.tv_weixin_logo: //微信登录
+                //是否是答题免登陆，传入答卷id
+                isAnswerLogin();
                 wxLogin();
                 finish();
                 break;
@@ -308,6 +314,20 @@ public class LoginActivity extends BaseActivity {
                 break;
 
         }
+    }
+
+
+    //是否是答题免登陆，传入答卷id
+    private void isAnswerLogin() {
+        try {
+            String examId = getIntent().getStringExtra("examId");
+            if (!EncodeAndStringTool.isStringEmpty(examId)) {
+                SaveUserInfo.getInstance(LoginActivity.this).setUserInfo("answer_exam_id", examId);
+            }
+        } catch (Exception e) {
+
+        }
+
     }
 
 

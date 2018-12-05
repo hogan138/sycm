@@ -40,6 +40,7 @@ import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.view.VerifyCodeView;
+import com.shuyun.qapp.wxapi.WXEntryActivity;
 
 import org.litepal.crud.DataSupport;
 
@@ -166,6 +167,15 @@ public class VerifyCodeActivity extends BaseActivity {
         loginInput.setCode(signCode);
         String deviceId = SmAntiFraud.getDeviceId();
         loginInput.setDeviceId(deviceId);
+        try {
+            //是否是答题免登陆，传入答卷id
+            String examId = SaveUserInfo.getInstance(VerifyCodeActivity.this).getUserInfo("answer_exam_id");
+            if (!EncodeAndStringTool.isStringEmpty(examId)) {
+                loginInput.setExamId(examId);
+            }
+        } catch (Exception e) {
+
+        }
         loadLogin(VerifyCodeActivity.this, loginInput, mode);
     }
 
@@ -293,6 +303,15 @@ public class VerifyCodeActivity extends BaseActivity {
                                 SharedPrefrenceTool.put(VerifyCodeActivity.this, "bind", loginResp.getBind());//是否绑定用户。
                                 SharedPrefrenceTool.put(VerifyCodeActivity.this, "random", loginResp.getRandom());//登录成果后，平台随机生成的字符串
                                 AppConst.loadToken(VerifyCodeActivity.this);
+
+                                try {
+                                    //答题免登录返回宝箱id
+                                    if (!EncodeAndStringTool.isStringEmpty(loginResp.getBoxId())) {
+                                        SharedPrefrenceTool.put(mContext, "boxId", loginResp.getBoxId());
+                                    }
+                                } catch (Exception e) {
+
+                                }
 
                                 //设置别名
                                 JPushInterface.setAlias(VerifyCodeActivity.this, new Random().nextInt(), "");
