@@ -19,6 +19,15 @@ public class LoginResponse implements Serializable {
     private String openId;
     private String wxName;
     private String wxHeadUrl;
+    private String boxId; //宝箱ID
+
+    public String getBoxId() {
+        return boxId;
+    }
+
+    public void setBoxId(String boxId) {
+        this.boxId = boxId;
+    }
 
     public String getOpenId() {
         return openId;

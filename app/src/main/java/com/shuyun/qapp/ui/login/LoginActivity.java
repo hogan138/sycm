@@ -288,6 +288,15 @@ public class LoginActivity extends BaseActivity {
                     loginInput.setCode(signCode);
                     String deviceId = SmAntiFraud.getDeviceId();
                     loginInput.setDeviceId(deviceId);
+                    try {
+                        //是否是答题免登陆，传入答卷id
+                        String examId = getIntent().getStringExtra("examId");
+                        if (!EncodeAndStringTool.isStringEmpty(examId)) {
+                            loginInput.setExamId(examId);
+                        }
+                    } catch (Exception e) {
+
+                    }
                     loadLogin(mContext, loginInput);
                 }
                 break;
@@ -337,6 +346,16 @@ public class LoginActivity extends BaseActivity {
                                 SharedPrefrenceTool.put(mContext, "bind", loginResp.getBind());//是否绑定用户。
                                 SharedPrefrenceTool.put(mContext, "random", loginResp.getRandom());//登录成果后，平台随机生成的字符串
                                 AppConst.loadToken(mContext);
+
+                                try {
+                                    //答题免登录返回宝箱id
+                                    if (!EncodeAndStringTool.isStringEmpty(loginResp.getBoxId())) {
+                                        SharedPrefrenceTool.put(mContext, "boxId", loginResp.getBoxId());
+                                    }
+                                } catch (Exception e) {
+
+                                }
+
                                 //清空原先的别名
                                 //设置别名
                                 JPushInterface.setAlias(mContext, new Random().nextInt(), "");

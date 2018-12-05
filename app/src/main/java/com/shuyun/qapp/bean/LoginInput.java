@@ -23,6 +23,15 @@ public class LoginInput {
     private long stamp;//当前的时间戳
     private String code;//签名计算的code
     private String deviceId;//设备id  数美sdk得到的设备id
+    private String examId;//答题免登录传入的答卷id
+
+    public String getExamId() {
+        return examId;
+    }
+
+    public void setExamId(String examId) {
+        this.examId = examId;
+    }
 
     public void setAppVersion(String appVersion) {
         this.appVersion = appVersion;

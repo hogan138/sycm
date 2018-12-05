@@ -160,6 +160,26 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
         }
 
         /**
+         * h5调用app登录
+         */
+        @JavascriptInterface
+        public void jsLogin(String action, final String value) {
+
+            if ("exam".equals(action)) {
+                //答题
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent();
+                        intent.putExtra("examId", value);
+                        intent.setClass(WebAnswerActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    }
+                });
+            }
+        }
+
+        /**
          * 增加答题次数弹窗
          *
          * @param wCertification
@@ -378,6 +398,9 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+
+        SharedPrefrenceTool.put(WebAnswerActivity.this, "boxId", "");//清空答题免登录返回宝箱id
+
         /**
          * 检测微信是否安装,如果没有安装,需不显示分享按钮,如果安装了,需要显示分享按钮
          */
@@ -426,6 +449,18 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
             wvAnswerHome.loadUrl(h5Url);
         } else {
             wvAnswerHome.loadUrl(AppConst.ANSWER);
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //登录成功，调用h5方法,，传递boxId给h5
+        String boxId = (String) SharedPrefrenceTool.get(WebAnswerActivity.this, "boxId", "");
+        if (!EncodeAndStringTool.isStringEmpty(boxId)) {
+            wvAnswerHome.loadUrl("javascript:jsLoginCallback(" + "exam," + boxId + ") ");
         }
 
     }

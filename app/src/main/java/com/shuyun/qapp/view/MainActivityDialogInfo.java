@@ -207,7 +207,7 @@ public class MainActivityDialogInfo {
                 if (dialog.isShowing()) {
                     dialog.dismiss();
                     try {
-                        H5JumpUtil.dialogSkip(configDialogBean.getBtnAction(), configDialogBean.getContent(), configDialogBean.getH5Url(), mContext, llHomeFragment, Long.valueOf(0));
+                        H5JumpUtil.dialogSkip(configDialogBean.getBtnAction(), configDialogBean.getContent(), configDialogBean.getH5Url(), mContext, llHomeFragment, configDialogBean.getIsLogin());
                     } catch (Exception e) {
 
                     }
@@ -220,7 +220,7 @@ public class MainActivityDialogInfo {
                 if (dialog.isShowing()) {
                     dialog.dismiss();
                     try {
-                        H5JumpUtil.dialogSkip(configDialogBean.getBtnAction(), configDialogBean.getContent(), configDialogBean.getH5Url(), mContext, llHomeFragment, Long.valueOf(0));
+                        H5JumpUtil.dialogSkip(configDialogBean.getBtnAction(), configDialogBean.getContent(), configDialogBean.getH5Url(), mContext, llHomeFragment, configDialogBean.getIsLogin());
                     } catch (Exception e) {
 
                     }

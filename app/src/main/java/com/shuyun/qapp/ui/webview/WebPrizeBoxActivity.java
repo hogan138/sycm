@@ -302,6 +302,7 @@ public class WebPrizeBoxActivity extends BaseActivity {
         /**
          * h5调用是否实名认证
          */
+        @JavascriptInterface
         public boolean jsCertState() {
             if (Integer.parseInt(SaveUserInfo.getInstance(WebPrizeBoxActivity.this).getUserInfo("cert")) == 1) {
                 return true;
@@ -313,8 +314,14 @@ public class WebPrizeBoxActivity extends BaseActivity {
         /**
          * 实名认证弹框
          */
+        @JavascriptInterface
         public void jsCertDialog() {
-            RealNamePopupUtil.showAuthPop(WebPrizeBoxActivity.this, llWebBox, getString(R.string.real_openbox_describe));
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    RealNamePopupUtil.showAuthPop(WebPrizeBoxActivity.this, llWebBox, getString(R.string.real_openbox_describe));
+                }
+            });
         }
 
     }
