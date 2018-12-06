@@ -241,7 +241,7 @@ public class BindPhoneNumActivity extends BaseActivity {
                                 AppConst.loadToken(MyApplication.getAppContext());
                                 //绑定成功  存token值
                                 ToastUtil.showToast(BindPhoneNumActivity.this, "绑定成功");
-                                startActivity(new Intent(BindPhoneNumActivity.this, HomePageActivity.class));
+//                                startActivity(new Intent(BindPhoneNumActivity.this, HomePageActivity.class));
                                 finish();
                             } else {
                                 ErrorCodeTools.errorCodePrompt(BindPhoneNumActivity.this, dataResponse.getErr(), dataResponse.getMsg());

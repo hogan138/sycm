@@ -31,6 +31,7 @@ import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.MyActivityManager;
+import com.shuyun.qapp.utils.MyActivityManager1;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
@@ -71,7 +72,7 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        MyActivityManager.getInstance().pushOneActivity(this);
+        MyActivityManager1.getInstance().pushOneActivity(this);
         btnFinish.setEnabled(false);
         clearEditText(etPassword, ivClearPwd);
         rlBack.setOnClickListener(this);
@@ -194,7 +195,7 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.tv_rigth_title:
 //                startActivity(new Intent(SetPasswordActivity.this, HomePageActivity.class));
-                MyActivityManager.getInstance().finishAllActivity();
+                MyActivityManager1.getInstance().finishAllActivity();
                 break;
             case R.id.iv_is_show_pwd:
                 isShowPwd(etPassword);
@@ -281,7 +282,7 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
 
                                 }
 
-                                MyActivityManager.getInstance().finishAllActivity();
+                                MyActivityManager1.getInstance().finishAllActivity();
 //                                startActivity(new Intent(SetPasswordActivity.this, HomePageActivity.class));
                             }
                         } else {
@@ -326,7 +327,7 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
                     @Override
                     public void onNext(DataResponse<String> dataResponse) {
                         if (dataResponse.isSuccees()) {
-                            MyActivityManager.getInstance().finishAllActivity();
+                            MyActivityManager1.getInstance().finishAllActivity();
 //                            startActivity(new Intent(SetPasswordActivity.this, HomePageActivity.class));
                         } else {
                             ErrorCodeTools.errorCodePrompt(SetPasswordActivity.this, dataResponse.getErr(), dataResponse.getMsg());

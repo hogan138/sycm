@@ -26,7 +26,6 @@ import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.MyApplication;
-import com.shuyun.qapp.ui.login.ChangePasswordActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;

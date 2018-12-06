@@ -23,6 +23,7 @@ import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MainAgainstBean;
 import com.shuyun.qapp.bean.SharedBean;
+import com.shuyun.qapp.event.MessageEvent;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.MyApplication;
@@ -43,6 +44,10 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -139,12 +144,16 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
         } catch (Exception e) {
 
         }
+
+        //获取答题对战首页
+        getInfo();
+
+        EventBus.getDefault().register(this);
+
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(MessageEvent messageEvent) {
         //获取答题对战首页
         getInfo();
     }
@@ -585,5 +594,11 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
 }

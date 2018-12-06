@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.ishumei.smantifraud.SmAntiFraud;
@@ -30,11 +31,13 @@ import com.shuyun.qapp.bean.Msg;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
+import com.shuyun.qapp.ui.mine.AddWithdrawInfoActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.MyActivityManager;
+import com.shuyun.qapp.utils.MyActivityManager1;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
@@ -88,7 +91,7 @@ public class VerifyCodeActivity extends BaseActivity {
             }
         });
 
-        MyActivityManager.getInstance().pushOneActivity(this);
+        MyActivityManager1.getInstance().pushOneActivity(this);
         phone = getIntent().getStringExtra("phone");
         tvPhone.setText(phone);
         verifyCodeView.setInputCompleteListener(new VerifyCodeView.InputCompleteListener() {
@@ -230,6 +233,7 @@ public class VerifyCodeActivity extends BaseActivity {
                     @Override
                     public void onNext(DataResponse<String> loginResponse) {
                         if (loginResponse.isSuccees()) {
+                            KeyboardUtils.showSoftInput(VerifyCodeActivity.this);
                             //显示60s倒计时
                             tvSendCode.setEnabled(false);
                             new CountDownTimer(120 * 1000, 1000) {
@@ -335,7 +339,7 @@ public class VerifyCodeActivity extends BaseActivity {
                                                 @Override
                                                 public void run() {
                                                     LoadingBar.cancel(llMain);
-                                                    MyActivityManager.getInstance().finishAllActivity();
+                                                    MyActivityManager1.getInstance().finishAllActivity();
                                                     //验证码登录
 //                                                    startActivity(new Intent(VerifyCodeActivity.this, HomePageActivity.class));
                                                 }

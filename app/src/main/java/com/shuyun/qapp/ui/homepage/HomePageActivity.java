@@ -38,6 +38,7 @@ import com.shuyun.qapp.bean.ActivityTimeBean;
 import com.shuyun.qapp.bean.AppVersionBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.InviteBean;
+import com.shuyun.qapp.event.MessageEvent;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.activity.ActivityFragment;
@@ -51,10 +52,16 @@ import com.shuyun.qapp.utils.ExampleUtil;
 import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
+import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.StatusBarUtil;
+import com.shuyun.qapp.wxapi.WXEntryActivity;
 import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -107,6 +114,8 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
         setContentView(R.layout.activity_homepage);
         ButterKnife.bind(this);
 
+        EventBus.getDefault().register(this);
+
         //沉浸式代码配置
         //当FitsSystemWindows设置 true 时，会在屏幕最上方预留出状态栏高度的 padding
         StatusBarUtil.setRootViewFitsSystemWindows(this, true);
@@ -147,6 +156,7 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
             invite();
         }
 
+        //点击登录logo
         ivNoLoginLogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -436,6 +446,15 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
         isForeground = false;
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(MessageEvent messageEvent) {
+        if ("3".equals(messageEvent.getMessage())) { //个人信息微信登录返回
+            changeUi(3);
+        }
+    }
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -443,6 +462,10 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
         SharedPreferences sharedPreferences = getSharedPreferences("FirstRun", 0);
         Boolean main_run = sharedPreferences.getBoolean("Main", true);
         sharedPreferences.edit().putBoolean("Main", true).commit();
+
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
 
     }
 
@@ -615,4 +638,5 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
                     }
                 });
     }
+
 }

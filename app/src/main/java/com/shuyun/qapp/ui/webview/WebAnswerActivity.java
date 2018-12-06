@@ -52,6 +52,7 @@ import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.bean.ReturnDialogBean;
 import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.bean.WebAnswerHomeBean;
+import com.shuyun.qapp.event.MessageEvent;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.MyApplication;
@@ -79,6 +80,10 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -177,6 +182,31 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                     }
                 });
             }
+        }
+
+        /**
+         * h5调用是否实名认证
+         */
+        @JavascriptInterface
+        public boolean jsCertState() {
+            if (Integer.parseInt(SaveUserInfo.getInstance(WebAnswerActivity.this).getUserInfo("cert")) == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        /**
+         * 实名认证弹框
+         */
+        @JavascriptInterface
+        public void jsCertDialog() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    RealNamePopupUtil.showAuthPop(WebAnswerActivity.this, llH5, getString(R.string.real_openbox_describe));
+                }
+            });
         }
 
         /**
@@ -451,6 +481,8 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
             wvAnswerHome.loadUrl(AppConst.ANSWER);
         }
 
+        EventBus.getDefault().register(this);
+
     }
 
     @Override
@@ -463,6 +495,23 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
             wvAnswerHome.loadUrl("javascript:jsLoginCallback(" + "exam," + boxId + ") ");
         }
 
+    }
+
+    //接收微信登录返回的宝箱id
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(MessageEvent messageEvent) {
+        if (!EncodeAndStringTool.isStringEmpty(messageEvent.getMessage())) {
+            wvAnswerHome.loadUrl("javascript:jsLoginCallback(" + "exam," + messageEvent.getMessage() + ") ");
+        }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     @Override

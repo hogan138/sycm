@@ -313,6 +313,9 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                             } else {
                             }
                         } else {
+                            if ("TAU12".equals(listDataResponse.getErr())) {
+                                SaveUserInfo.getInstance(getContext()).setUserInfo("home_mine", "3");
+                            }
                             ErrorCodeTools.errorCodePrompt(mContext, listDataResponse.getErr(), listDataResponse.getMsg());
                         }
 
@@ -678,6 +681,9 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                                 }
                             }
                         } else {
+                            if ("TAU12".equals(listDataResponse.getErr())) {
+                                SaveUserInfo.getInstance(getContext()).setUserInfo("home_mine", "3");
+                            }
                             ErrorCodeTools.errorCodePrompt(mContext, listDataResponse.getErr(), listDataResponse.getMsg());
                         }
 

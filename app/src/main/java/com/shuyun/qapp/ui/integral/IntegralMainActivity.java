@@ -24,6 +24,7 @@ import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.IntegralAllPrizeBean;
+import com.shuyun.qapp.event.MessageEvent;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.login.LoginActivity;
@@ -34,6 +35,10 @@ import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +93,8 @@ public class IntegralMainActivity extends BaseActivity implements View.OnClickLi
         tvRule.setOnClickListener(this);
 
         MyActivityManager.getInstance().pushOneActivity(this);
+
+        EventBus.getDefault().register(this);
         try {
             //是否需要登录
             Long is_Login = getIntent().getLongExtra("isLogin", 0);
@@ -99,12 +106,6 @@ public class IntegralMainActivity extends BaseActivity implements View.OnClickLi
         } catch (Exception e) {
 
         }
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
 
         integralAllPrizeAdapter = new IntegralAllPrizeAdapter(IntegralMainActivity.this, integralAllPrizeBeanList);
         LinearLayoutManager manager = new LinearLayoutManager(IntegralMainActivity.this);
@@ -129,6 +130,12 @@ public class IntegralMainActivity extends BaseActivity implements View.OnClickLi
         });
 
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(MessageEvent messageEvent) {
+        loadIntegralCurrent();//要做分页操作
+    }
+
 
     @Override
     public int intiLayout() {
@@ -250,5 +257,13 @@ public class IntegralMainActivity extends BaseActivity implements View.OnClickLi
                     public void onComplete() {
                     }
                 });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 }

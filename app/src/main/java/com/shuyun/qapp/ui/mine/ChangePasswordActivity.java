@@ -1,4 +1,4 @@
-package com.shuyun.qapp.ui.login;
+package com.shuyun.qapp.ui.mine;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;

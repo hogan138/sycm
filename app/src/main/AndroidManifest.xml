@@ -319,7 +319,7 @@
             android:screenOrientation="portrait" />
         <!-- 更改密码 -->
         <activity
-            android:name=".ui.login.ChangePasswordActivity"
+            android:name=".ui.mine.ChangePasswordActivity"
             android:screenOrientation="portrait" />
         <!-- 动态权限 -->
         <activity

@@ -21,6 +21,7 @@ import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.ui.webview.WebPublicActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.MyActivityManager;
+import com.shuyun.qapp.utils.MyActivityManager1;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.RegularTool;
 import com.shuyun.qapp.utils.SaveUserInfo;
@@ -57,7 +58,7 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
 
         btnNext.setEnabled(false);
 
-        MyActivityManager.getInstance().pushOneActivity(this);
+        MyActivityManager1.getInstance().pushOneActivity(this);
 
         clearEditText(etPhoneNumber, ivClearPhoneNum);
 

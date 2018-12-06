@@ -9,6 +9,7 @@ import android.util.Log;
 import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.TimeUtils;
 import com.ishumei.smantifraud.SmAntiFraud;
+import com.shuyun.qapp.event.MessageEvent;
 import com.shuyun.qapp.net.MyApplication;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.LoginInput;
@@ -34,6 +35,7 @@ import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.umeng.socialize.weixin.view.WXCallbackActivity;
 
+import org.greenrobot.eventbus.EventBus;
 import org.litepal.crud.DataSupport;
 
 import io.reactivex.Observer;
@@ -235,14 +237,6 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
                                 SharedPrefrenceTool.put(getAppContext(), "random", loginResp.getRandom());//登录成果后，平台随机生成的字符串
                                 AppConst.loadToken(WXEntryActivity.this);
 
-                                try {
-                                    //答题免登录返回宝箱id
-                                    if (!EncodeAndStringTool.isStringEmpty(loginResp.getBoxId())) {
-                                        SharedPrefrenceTool.put(mContext, "boxId", loginResp.getBoxId());
-                                    }
-                                } catch (Exception e) {
-
-                                }
 
                                 if (!EncodeAndStringTool.isStringEmpty(loginResp.getInvite())) {
                                     SharedPrefrenceTool.put(getAppContext(), "invite", loginResp.getInvite());
@@ -254,6 +248,22 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
                                     finish();
                                 } else if (1 == loginResp.getBind()) {
                                     finish();
+                                    if ("3".equals(SaveUserInfo.getInstance(WXEntryActivity.this).getUserInfo("home_mine"))) {//来自个人信息微信登录
+                                        EventBus.getDefault().post(new MessageEvent("3"));
+                                        SaveUserInfo.getInstance(WXEntryActivity.this).setUserInfo("home_mine", "");
+                                    } else {
+                                        try {
+                                            //答题免登录返回宝箱id
+                                            if (!EncodeAndStringTool.isStringEmpty(loginResp.getBoxId())) {
+                                                SharedPrefrenceTool.put(mContext, "boxId", loginResp.getBoxId());
+                                            }
+                                            EventBus.getDefault().post(new MessageEvent(loginResp.getBoxId()));
+                                        } catch (Exception e) {
+
+                                        }
+
+                                    }
+
                                 }
 
                             }

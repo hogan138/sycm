@@ -44,6 +44,7 @@ import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.MyActivityManager;
+import com.shuyun.qapp.utils.MyActivityManager1;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.PermissionsChecker;
 import com.shuyun.qapp.utils.RegularTool;
@@ -51,6 +52,7 @@ import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.ToastUtil;
+import com.shuyun.qapp.wxapi.WXEntryActivity;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
@@ -131,7 +133,7 @@ public class LoginActivity extends BaseActivity {
             tvWeixinLogo.setVisibility(View.GONE);
         }
 
-        MyActivityManager.getInstance().pushOneActivity(this);
+        MyActivityManager1.getInstance().pushOneActivity(this);
     }
 
     @Override
@@ -212,6 +214,7 @@ public class LoginActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.rl_close:
                 MyActivityManager.getInstance().finishAllActivity();
+                SaveUserInfo.getInstance(LoginActivity.this).setUserInfo("home_mine", "");
                 finish();
                 break;
             case R.id.iv_clear_phone_num: //清空手机号
@@ -249,6 +252,8 @@ public class LoginActivity extends BaseActivity {
                 startActivity(intent1);
                 break;
             case R.id.tv_forget_pwd: //忘记密码
+                //是否是答题免登陆，传入答卷id
+                isAnswerLogin();
                 if (!EncodeAndStringTool.isStringEmpty(etPhoneNumber.getText().toString())) {
                     if (RegularTool.isMobileExact(etPhoneNumber.getText().toString())) {
                         SaveUserInfo.getInstance(mContext).setUserInfo("login_phone", etPhoneNumber.getText().toString());
@@ -578,6 +583,7 @@ public class LoginActivity extends BaseActivity {
     public void onBackPressed() {
         super.onBackPressed();
         MyActivityManager.getInstance().finishAllActivity();
+        SaveUserInfo.getInstance(LoginActivity.this).setUserInfo("home_mine", "");
         finish();
     }
 }
