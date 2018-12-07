@@ -93,22 +93,6 @@ public class AppConst {
      */
     public static final String ABOUT_US = "https://api-syksc.25876.com/h5/about.html";
     /**
-     * 联系我们
-     */
-    public static final String CONTACT_US = "https://api-syksc.25876.com/h5/contact.html";
-    /**
-     * 现金提现
-     */
-    public static final String CASH_WITHDRAW = "https://api-syksc.25876.com/h5/forward.html";
-    /**
-     * 即时红包提现
-     */
-    public static final String RED_WITHDRAW = "https://api-syksc.25876.com/h5/forward.html?now=1";
-    /**
-     * 分享
-     */
-    public static final String SHARE = "https://api-syksc.25876.com/h5/index.html/invitation";
-    /**
      * 活动规则
      */
     public static final String LOOK_RULES = "https://api-syksc.25876.com/h5/static.html#/text";

@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
@@ -376,6 +377,8 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
         initData();
 
         loadMineHomeData1();
+
+        KeyboardUtils.hideSoftInput(ChangePersonalInfoActivity.this);
     }
 
     public void onPause() {
