@@ -221,6 +221,9 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
     //RadioGroup的监听事件
     private int index = 0;
 
+    //记录上一个下标
+    private int last_index = 0;
+
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
 
@@ -229,6 +232,13 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
             RadioButton radiobutton = (RadioButton) radioGroup1.getChildAt(j);
             //判断radiobutton的id是否等于选中的id
             if (radiobutton.getId() == i) {
+
+                //记录上一个下标
+                if (j == 3) {
+                } else {
+                    last_index = j;
+                }
+
                 //设置当前页
                 pager.setCurrentItem(j, false);
 
@@ -329,10 +339,8 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
         ivNoLoginLogo.startAnimation(animation);
 
         if (EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(HomePageActivity.this, "token", ""))) {
-            if (index == 3) {
-                changeUi(0); //未登录返回切换到首页
-                index = 0;
-            }
+            changeUi(last_index); //未登录返回切换到首页
+            index = last_index;
         } else {
             if (index == 3) {  //登录后切换到我的
                 changeUi(3);

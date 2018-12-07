@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.shuyun.qapp.R;
@@ -210,6 +211,8 @@ public class ChangePhoneActivity extends BaseActivity {
                                 //绑定成功
                                 ToastUtil.showToast(ChangePhoneActivity.this, "更换手机号成功");
                                 SaveUserInfo.getInstance(ChangePhoneActivity.this).setUserInfo("phone", phoneNumber);
+                                //隐藏输入法
+                                KeyboardUtils.hideSoftInput(ChangePhoneActivity.this);
                                 finish();
                             } else if (dataResponse.getErr().equals("U0002")) {
                                 ToastUtil.showToast(ChangePhoneActivity.this, dataResponse.getMsg());

@@ -253,7 +253,6 @@ public class LoginActivity extends BaseActivity {
                 break;
             case R.id.tv_forget_pwd: //忘记密码
                 //是否是答题免登陆，传入答卷id
-                isAnswerLogin();
                 if (!EncodeAndStringTool.isStringEmpty(etPhoneNumber.getText().toString())) {
                     if (RegularTool.isMobileExact(etPhoneNumber.getText().toString())) {
                         SaveUserInfo.getInstance(mContext).setUserInfo("login_phone", etPhoneNumber.getText().toString());
