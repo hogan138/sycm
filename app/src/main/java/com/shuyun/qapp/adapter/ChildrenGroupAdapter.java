@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.shuyun.qapp.R;
@@ -20,6 +21,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.blankj.utilcode.util.SizeUtils.dp2px;
+import static com.blankj.utilcode.util.SizeUtils.px2dp;
 
 /**
  * 分类右侧题组分类适配器
@@ -52,7 +56,22 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
         GroupClassifyBean.ChildrenBean childrenBean = childrenBeans.get(position);
 
         try {
+
+//            int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+//            int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+//            holder.rlItem.measure(w, h);
+//            int height = (holder.rlItem.getMeasuredWidth() - dp2px(16)) / 2;
+
             ImageLoaderManager.LoadImage(context, childrenBean.getPicture(), holder.ivGroup, R.mipmap.zw01);//题组图片
+
+            //设置图片高度
+//            ViewGroup.LayoutParams lp = holder.ivGroup.getLayoutParams();
+//            lp.height = height;
+//            holder.ivGroup.setLayoutParams(lp);
+//
+//            holder.ivGroup.setMaxHeight(height * 5);
+
+
             if (!EncodeAndStringTool.isStringEmpty(childrenBean.getMerchantName())) {
                 holder.tvCompany.setVisibility(View.VISIBLE);
                 holder.tvCompany.setText("出题方：" + childrenBean.getMerchantName()); //出题方
@@ -117,6 +136,8 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
         TextView tvTitle; //标题
         @BindView(R.id.tv_tag1)
         TextView tvTag1; //标题1
+        @BindView(R.id.rl_item)
+        RelativeLayout rlItem;
 
         public ViewHolder(View itemView) {
             super(itemView);

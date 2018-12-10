@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_item"
     android:layout_width="match_parent"
     android:layout_height="166dp"
     android:layout_marginLeft="@dimen/text_6"
@@ -21,10 +22,10 @@
             <com.shuyun.qapp.view.OvalImageView
                 android:id="@+id/iv_group"
                 android:layout_width="match_parent"
-                android:layout_height="129dp"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/text_2"
                 android:layout_marginRight="@dimen/text_2"
-                android:scaleType="centerCrop"
+                android:scaleType="fitXY"
                 android:src="@mipmap/home_group_two"
                 app:type="round" />
 
@@ -33,7 +34,7 @@
                 android:layout_height="129dp"
                 android:layout_marginLeft="@dimen/text_2"
                 android:layout_marginRight="@dimen/text_2"
-                android:background="@drawable/classify_gray_bg_image"/>
+                android:background="@drawable/classify_gray_bg_image" />
 
             <TextView
                 android:id="@+id/tv_company"

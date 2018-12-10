@@ -36,6 +36,7 @@ import com.shuyun.qapp.receiver.MyReceiver;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.homepage.InformationActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
+import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
@@ -151,10 +152,17 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            //是否实名认证
-            loadMineHomeData1();
             //个人信息
-            loadMineHomeData();
+            if (!EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(mContext, "token", ""))) {
+                //是否实名认证
+                loadMineHomeData1();
+                //个人信息
+                loadMineHomeData();
+            } else {
+                SaveUserInfo.getInstance(getContext()).setUserInfo("home_mine", "3");
+                startActivity(new Intent(mContext, LoginActivity.class));
+            }
+
         }
     }
 
@@ -253,7 +261,6 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                                         ivCommonRightIcon.setImageResource(R.mipmap.messagew);
                                     }
 
-                                    //TODO 圆形图片有待修改
                                     if (!EncodeAndStringTool.isStringEmpty(mineBean.getHeaderId()) && mineBean.getHeaderId() > 0) {
                                         ivHeaderPic.setImageResource(icon[mineBean.getHeaderId() - 1]);
                                     } else {
@@ -310,12 +317,8 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                                 } catch (Exception e) {
 
                                 }
-                            } else {
                             }
                         } else {
-                            if ("TAU12".equals(listDataResponse.getErr())) {
-                                SaveUserInfo.getInstance(getContext()).setUserInfo("home_mine", "3");
-                            }
                             ErrorCodeTools.errorCodePrompt(mContext, listDataResponse.getErr(), listDataResponse.getMsg());
                         }
 
@@ -681,9 +684,6 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
                                 }
                             }
                         } else {
-                            if ("TAU12".equals(listDataResponse.getErr())) {
-                                SaveUserInfo.getInstance(getContext()).setUserInfo("home_mine", "3");
-                            }
                             ErrorCodeTools.errorCodePrompt(mContext, listDataResponse.getErr(), listDataResponse.getMsg());
                         }
 
