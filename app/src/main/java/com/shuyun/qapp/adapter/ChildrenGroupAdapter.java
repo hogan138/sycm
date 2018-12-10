@@ -4,9 +4,11 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -23,7 +25,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.blankj.utilcode.util.SizeUtils.dp2px;
-import static com.blankj.utilcode.util.SizeUtils.px2dp;
 
 /**
  * 分类右侧题组分类适配器
@@ -36,10 +37,18 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
 
     private List<GroupClassifyBean.ChildrenBean> childrenBeans;
 
+    private int height = 0;
+
     public ChildrenGroupAdapter(Context context, List<GroupClassifyBean.ChildrenBean> childrenBeans) {
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
         this.childrenBeans = childrenBeans;
+
+        //获取屏幕宽度
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        int w = (int) Math.ceil(dm.widthPixels * (7f / 9)) - dp2px(16);
+        height = w / 2;
+
         notifyDataSetChanged();
     }
 
@@ -56,21 +65,12 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
         GroupClassifyBean.ChildrenBean childrenBean = childrenBeans.get(position);
 
         try {
-
-//            int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-//            int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-//            holder.rlItem.measure(w, h);
-//            int height = (holder.rlItem.getMeasuredWidth() - dp2px(16)) / 2;
-
             ImageLoaderManager.LoadImage(context, childrenBean.getPicture(), holder.ivGroup, R.mipmap.zw01);//题组图片
 
             //设置图片高度
-//            ViewGroup.LayoutParams lp = holder.ivGroup.getLayoutParams();
-//            lp.height = height;
-//            holder.ivGroup.setLayoutParams(lp);
-//
-//            holder.ivGroup.setMaxHeight(height * 5);
-
+            ViewGroup.LayoutParams lp = holder.rl.getLayoutParams();
+            lp.height = height;
+            holder.rl.setLayoutParams(lp);
 
             if (!EncodeAndStringTool.isStringEmpty(childrenBean.getMerchantName())) {
                 holder.tvCompany.setVisibility(View.VISIBLE);
@@ -136,8 +136,8 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
         TextView tvTitle; //标题
         @BindView(R.id.tv_tag1)
         TextView tvTag1; //标题1
-        @BindView(R.id.rl_item)
-        RelativeLayout rlItem;
+        @BindView(R.id.rl)
+        RelativeLayout rl;
 
         public ViewHolder(View itemView) {
             super(itemView);

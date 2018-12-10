@@ -88,6 +88,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import cn.kevin.banner.BannerAdapter;
 import cn.kevin.banner.BannerViewPager;
 import cn.kevin.banner.IBannerItem;
 import cn.kevin.banner.transformer.YZoomTransFormer;
@@ -359,8 +360,8 @@ public class HomeFragment extends Fragment {
                                 final List<BannerBean> bannerData = listDataResponse.getDat();
                                 if (!EncodeAndStringTool.isListEmpty(bannerData)) {
                                     //设置轮播图
-//                                    BannerAdapter adapter = new BannerAdapter(new GlideImageLoader());
-                                    HomeBannerAdapter adapter = new HomeBannerAdapter(new GlideImageLoader1());
+                                    BannerAdapter adapter = new BannerAdapter(new GlideImageLoader());
+//                                    HomeBannerAdapter adapter = new HomeBannerAdapter(new GlideImageLoader1());
                                     List<IBannerItem> list = new ArrayList<>();
                                     for (int i = 0; i < bannerData.size(); i++) {
                                         list.add(new BannerItem(bannerData.get(i).getPicture()));

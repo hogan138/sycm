@@ -1,108 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/rl_item"
     android:layout_width="match_parent"
-    android:layout_height="166dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/text_6"
     android:layout_marginLeft="@dimen/text_6"
-    android:layout_marginTop="6dp"
-    android:layout_marginRight="6dp"
-    android:background="@mipmap/home_group_two">
+    android:layout_marginRight="@dimen/text_6"
+    android:orientation="vertical">
 
-    <RelativeLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?android:attr/selectableItemBackground">
+        android:foreground="?attr/selectableItemBackground"
+        app:cardCornerRadius="6dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="-2dp">
 
-        <RelativeLayout
-            android:id="@+id/rl"
-            android:layout_width="match_parent"
-            android:layout_height="129dp">
-
-            <com.shuyun.qapp.view.OvalImageView
-                android:id="@+id/iv_group"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/text_2"
-                android:layout_marginRight="@dimen/text_2"
-                android:scaleType="fitXY"
-                android:src="@mipmap/home_group_two"
-                app:type="round" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="129dp"
-                android:layout_marginLeft="@dimen/text_2"
-                android:layout_marginRight="@dimen/text_2"
-                android:background="@drawable/classify_gray_bg_image" />
-
-            <TextView
-                android:id="@+id/tv_company"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="@dimen/text_15"
-                android:layout_marginBottom="@dimen/text_3"
-                android:text="出题方："
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_11" />
-
-            <TextView
-                android:id="@+id/recommend_logo"
-                android:layout_width="@dimen/text_30"
-                android:layout_height="@dimen/text_15"
-                android:layout_below="@+id/iv_group_bg1"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="@dimen/text_11"
-                android:layout_marginRight="@dimen/text_11"
-                android:background="@mipmap/home_recommond_logo"
-                android:gravity="center"
-                android:text="推荐"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_10"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/tv_tag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/recommend_logo"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="4dp"
-                android:layout_marginRight="@dimen/text_11"
-                android:gravity="right"
-                android:lineSpacingExtra="@dimen/text_2"
-                android:text="答题功略"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_10"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/tv_tag1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/recommend_logo"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="11dp"
-                android:layout_marginRight="@dimen/text_11"
-                android:gravity="right"
-                android:lineSpacingExtra="@dimen/text_2"
-                android:text="答题功略"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_10"
-                android:visibility="gone" />
-
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/tv_title"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rl"
-            android:layout_marginTop="@dimen/text_7"
-            android:gravity="center_horizontal"
-            android:text="标题"
-            android:textColor="@color/color_1"
-            android:textSize="@dimen/text_15" />
-    </RelativeLayout>
-</RelativeLayout>
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/rl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.shuyun.qapp.view.OvalImageView
+                    android:id="@+id/iv_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/home_group_two"
+                    app:type="round" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_gray_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/classify_gray_bg_image" />
+
+                <TextView
+                    android:id="@+id/tv_company"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/text_15"
+                    android:layout_marginBottom="@dimen/text_3"
+                    android:text="出题方："
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_11" />
+
+                <TextView
+                    android:id="@+id/recommend_logo"
+                    android:layout_width="@dimen/text_30"
+                    android:layout_height="@dimen/text_15"
+                    android:layout_below="@+id/iv_group_bg1"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/text_11"
+                    android:layout_marginRight="@dimen/text_11"
+                    android:background="@mipmap/home_recommond_logo"
+                    android:gravity="center"
+                    android:text="推荐"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_10"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/recommend_logo"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="@dimen/text_11"
+                    android:gravity="right"
+                    android:lineSpacingExtra="@dimen/text_2"
+                    android:text="答题功略"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_10"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_tag1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/recommend_logo"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="11dp"
+                    android:layout_marginRight="@dimen/text_11"
+                    android:gravity="right"
+                    android:lineSpacingExtra="@dimen/text_2"
+                    android:text="答题功略"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_10"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/text_32"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="标题"
+                    android:textColor="@color/color_1"
+                    android:textSize="@dimen/text_15" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
