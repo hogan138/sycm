@@ -387,6 +387,7 @@ public class WebPrizeBoxActivity extends BaseActivity {
                 //为空加载本地
                 wvPrizeBox.loadUrl(AppConst.BOX);
             }
+//            wvPrizeBox.loadUrl("http://192.168.191.1:8080?debug=1&prize=1");
         } else if (!EncodeAndStringTool.isStringEmpty(getIntent().getStringExtra("main_box")) && getIntent().getStringExtra("main_box").equals("score_box")) {
             String h5Url = getIntent().getStringExtra("h5Url");
             if (!EncodeAndStringTool.isStringEmpty(h5Url)) {

@@ -481,6 +481,8 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
             wvAnswerHome.loadUrl(AppConst.ANSWER);
         }
 
+//        wvAnswerHome.loadUrl("http://192.168.191.1:8080?debug=1");
+
         EventBus.getDefault().register(this);
 
     }
