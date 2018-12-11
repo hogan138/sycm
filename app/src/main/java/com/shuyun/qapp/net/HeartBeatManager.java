@@ -47,7 +47,7 @@ public class HeartBeatManager {
     }
 
     private void doCall() {
-        if(!AppConst.isLogon())
+        if(!AppConst.isLogin())
             return;
         //执行接口请求
         ApiService apiService = BasePresenter.create(8000);

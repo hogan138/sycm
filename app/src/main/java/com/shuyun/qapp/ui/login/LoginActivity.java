@@ -357,6 +357,7 @@ public class LoginActivity extends BaseActivity {
                 .subscribe(new Observer<DataResponse<LoginResponse>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
+
                     }
 
                     @Override
@@ -393,7 +394,14 @@ public class LoginActivity extends BaseActivity {
                                     public void run() {
                                         LoadingBar.cancel(rlMain);
                                         KeyboardUtils.hideSoftInput(LoginActivity.this);
-                                        finish();
+                                        try {
+                                            setResult(RESULT_OK);
+                                            finish();
+                                        } catch (Exception e) {
+
+                                        }
+
+
                                     }
                                 }, 2000);
 

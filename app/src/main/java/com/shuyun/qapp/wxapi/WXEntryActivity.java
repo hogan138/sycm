@@ -98,7 +98,7 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
                             /**
                              * 如果没有登录1:走登录逻辑;2:否则将微信code存本地
                              */
-                            if (!AppConst.isLogon() || currentTimeMillis >= expire) {
+                            if (!AppConst.isLogin() || currentTimeMillis >= expire) {
                                 long curTime = System.currentTimeMillis();
                                 String tsn = EncodeAndStringTool.getTsn(getAppContext());
                                 String salt = EncodeAndStringTool.generateRandomString(12);
@@ -111,7 +111,6 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
                                  * code值
                                  */
                                 String signCode = getCode(myCode);
-//                                LogUtil.logInfo("curTime" + curTime + ",signString==" + signString + ",myCode==" + myCode, TAG);
 
                                 final LoginInput loginInput = new LoginInput();
                                 loginInput.setMode(AppConst.WX_MODE);

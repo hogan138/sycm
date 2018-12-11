@@ -31,6 +31,7 @@ import com.shuyun.qapp.bean.AddWithdrawResultBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.SubmitWithdrawInfoBean;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.integral.IntegralMainActivity;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
@@ -90,10 +91,8 @@ public class AddWithdrawInfoActivity extends BaseActivity implements View.OnClic
         try {
             //是否需要登录
             Long is_Login = getIntent().getLongExtra("isLogin", 0);
-            if (is_Login == 1) {
-                if (EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(AddWithdrawInfoActivity.this, "token", ""))) {
-                    startActivity(new Intent(AddWithdrawInfoActivity.this, LoginActivity.class));
-                }
+            if (is_Login == 1 && !AppConst.isLogin()) {
+                startActivity(new Intent(AddWithdrawInfoActivity.this, LoginActivity.class));
             }
         } catch (Exception e) {
 

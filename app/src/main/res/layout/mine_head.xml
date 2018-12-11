@@ -159,6 +159,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/text_12"
                     android:background="@drawable/mine_withdraw_btn_selector"
+                    android:foreground="?attr/selectableItemBackground"
                     android:text="@string/immedicate_withdrawal"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_12" />
@@ -179,6 +180,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:foreground="?attr/selectableItemBackground"
             android:orientation="vertical">
 
             <ImageView
@@ -214,6 +216,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:foreground="?attr/selectableItemBackground"
             android:orientation="vertical">
 
             <ImageView
@@ -249,6 +252,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:foreground="?attr/selectableItemBackground"
             android:orientation="vertical">
 
             <ImageView

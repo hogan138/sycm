@@ -3,7 +3,8 @@
     android:id="@+id/rl_system_set"
     android:layout_width="match_parent"
     android:layout_height="43.5dp"
-    android:layout_gravity="center_vertical">
+    android:layout_gravity="center_vertical"
+    android:foreground="?attr/selectableItemBackground">
 
     <TextView
         android:layout_width="wrap_content"

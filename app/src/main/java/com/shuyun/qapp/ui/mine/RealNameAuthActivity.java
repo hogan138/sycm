@@ -33,6 +33,7 @@ import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.bean.RealNameBean;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.CustomLoadingFactory;
@@ -108,10 +109,8 @@ public class RealNameAuthActivity extends BaseActivity {
         try {
             //是否需要登录
             Long is_Login = getIntent().getLongExtra("isLogin", 0);
-            if (is_Login == 1) {
-                if (EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(RealNameAuthActivity.this, "token", ""))) {
-                    startActivity(new Intent(RealNameAuthActivity.this, LoginActivity.class));
-                }
+            if (is_Login == 1 && !AppConst.isLogin()) {
+                startActivity(new Intent(RealNameAuthActivity.this, LoginActivity.class));
             }
         } catch (Exception e) {
 

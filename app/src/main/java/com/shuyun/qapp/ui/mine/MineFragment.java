@@ -153,7 +153,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             //个人信息
-            if (!EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(mContext, "token", ""))) {
+            if (AppConst.isLogin()) {
                 //是否实名认证
                 loadMineHomeData1();
                 //个人信息
@@ -225,7 +225,7 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
         }
 
         //个人信息
-        if (!EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(mContext, "token", ""))) {
+        if (AppConst.isLogin()) {
             loadMineHomeData();
         }
 

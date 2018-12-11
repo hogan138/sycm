@@ -11,6 +11,7 @@ import android.os.CountDownTimer;
 import android.os.Parcelable;
 import android.support.animation.SpringAnimation;
 import android.support.animation.SpringForce;
+import android.support.annotation.Nullable;
 import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
@@ -29,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.google.gson.Gson;
@@ -168,17 +170,14 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
          * h5调用app登录
          */
         @JavascriptInterface
-        public void jsLogin(String action, final String value) {
-
-            if ("exam".equals(action)) {
+        public void jsLogin(String data) {
+            final JSONObject rel = JSON.parseObject(data);
+            if ("exam".equals(rel.getString("action"))) {
                 //答题
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Intent intent = new Intent();
-                        intent.putExtra("examId", value);
-                        intent.setClass(WebAnswerActivity.this, LoginActivity.class);
-                        startActivity(intent);
+                        startActivityForResult(new Intent(WebAnswerActivity.this, LoginActivity.class).putExtra("examId", rel.getString("examId")), 1);
                     }
                 });
             }
@@ -448,10 +447,8 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
         MyActivityManager.getInstance().pushOneActivity(this);
         //是否需要登录
         Long is_Login = getIntent().getLongExtra("isLogin", 0);
-        if (is_Login == 1) {
-            if (EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(WebAnswerActivity.this, "token", ""))) {
-                startActivity(new Intent(WebAnswerActivity.this, LoginActivity.class));
-            }
+        if (is_Login == 1 && !AppConst.isLogin()) {
+            startActivity(new Intent(WebAnswerActivity.this, LoginActivity.class));
         }
 
         //是否参与邀请分享 1——参与邀请
@@ -475,26 +472,39 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
-        if (!EncodeAndStringTool.isStringEmpty(h5Url)) {
-            wvAnswerHome.loadUrl(h5Url);
-        } else {
-            wvAnswerHome.loadUrl(AppConst.ANSWER);
-        }
+//        if (!EncodeAndStringTool.isStringEmpty(h5Url)) {
+//            wvAnswerHome.loadUrl(h5Url);
+//        } else {
+//            wvAnswerHome.loadUrl(AppConst.ANSWER);
+//        }
 
-//        wvAnswerHome.loadUrl("http://192.168.191.1:8080?debug=1");
+        wvAnswerHome.loadUrl("http://192.168.191.1:8080?debug=1");
 
         EventBus.getDefault().register(this);
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
 
-        //登录成功，调用h5方法,，传递boxId给h5
-        String boxId = (String) SharedPrefrenceTool.get(WebAnswerActivity.this, "boxId", "");
-        if (!EncodeAndStringTool.isStringEmpty(boxId)) {
-            wvAnswerHome.loadUrl("javascript:jsLoginCallback(" + "exam," + boxId + ") ");
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            //登录成功，调用h5方法,，传递boxId给h5
+            String boxId = (String) SharedPrefrenceTool.get(WebAnswerActivity.this, "boxId", "");
+            if (!EncodeAndStringTool.isStringEmpty(boxId)) {
+                JSONObject rel = new JSONObject();
+                rel.put("action", "exam");
+                rel.put("boxId", boxId);
+                answerHomeBean.setToken(AppConst.TOKEN);
+                answerHomeBean.setRandom(AppConst.RANDOM);
+                answerHomeBean.setV(AppConst.V);
+                answerHomeBean.setSalt(AppConst.SALT);
+                answerHomeBean.setAppSecret(AppConst.APP_KEY);
+                answerHomeBean.setGroupId(groupId);
+                answerHomeBean.setDeviceId(SmAntiFraud.getDeviceId());
+                rel.put("answer", JSON.toJSONString(answerHomeBean));
+                wvAnswerHome.loadUrl("javascript:jsLoginCallback(" + rel.toString() + ") ");
+            }
         }
 
     }
@@ -503,7 +513,18 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(MessageEvent messageEvent) {
         if (!EncodeAndStringTool.isStringEmpty(messageEvent.getMessage())) {
-            wvAnswerHome.loadUrl("javascript:jsLoginCallback(" + "exam," + messageEvent.getMessage() + ") ");
+            JSONObject rel = new JSONObject();
+            rel.put("action", "exam");
+            rel.put("boxId", messageEvent.getMessage());
+            answerHomeBean.setToken(AppConst.TOKEN);
+            answerHomeBean.setRandom(AppConst.RANDOM);
+            answerHomeBean.setV(AppConst.V);
+            answerHomeBean.setSalt(AppConst.SALT);
+            answerHomeBean.setAppSecret(AppConst.APP_KEY);
+            answerHomeBean.setGroupId(groupId);
+            answerHomeBean.setDeviceId(SmAntiFraud.getDeviceId());
+            rel.put("answer", JSON.toJSONString(answerHomeBean));
+            wvAnswerHome.loadUrl("javascript:jsLoginCallback(" + rel.toString() + ") ");
         }
     }
 

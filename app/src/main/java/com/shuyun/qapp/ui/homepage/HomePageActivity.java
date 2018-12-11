@@ -55,6 +55,7 @@ import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.StatusBarUtil;
+import com.shuyun.qapp.view.NoScrollViewPager;
 import com.shuyun.qapp.wxapi.WXEntryActivity;
 import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
@@ -91,7 +92,7 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
     @BindView(R.id.radio_mine)
     RadioButton radioMine; //我的
     @BindView(R.id.pager)
-    ViewPager pager;
+    NoScrollViewPager pager;
     @BindView(R.id.iv_no_login_logo)
     ImageView ivNoLoginLogo; //未登陆logo
 
@@ -152,7 +153,7 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
         /**
          * 邀请有奖
          */
-        if (!EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(HomePageActivity.this, "token", ""))) {
+        if (AppConst.isLogin()) {
             invite();
         }
 
@@ -252,7 +253,7 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
 
                 //点击活动专区
                 if (j == 2 && "1".equals(show)) { //未点过红色角标
-                    if (!EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(HomePageActivity.this, "token", ""))) {
+                    if (AppConst.isLogin()) {
                         Drawable drawable = getResources().getDrawable(R.mipmap.activity_s);
                         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
                         radioActivity.setCompoundDrawables(null, drawable, null, null);
@@ -338,8 +339,8 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
         animation.setRepeatMode(Animation.REVERSE);
         ivNoLoginLogo.startAnimation(animation);
 
-        if (EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(HomePageActivity.this, "token", ""))) {
-            changeUi(last_index); //未登录返回切换到首页
+        if (!AppConst.isLogin()) {
+            changeUi(last_index); //未登录返回切换到之前的页面
             index = last_index;
         } else {
             if (index == 3) {  //登录后切换到我的
@@ -354,7 +355,7 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
         @Override
         public void run() {
             //是否未登陆
-            if (EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(HomePageActivity.this, "token", ""))) {
+            if (!AppConst.isLogin()) {
                 ivNoLoginLogo.setVisibility(View.VISIBLE);
             } else {
                 try {

@@ -344,10 +344,8 @@ public class WebPrizeBoxActivity extends BaseActivity {
         try {
             //是否需要登录
             Long is_Login = getIntent().getLongExtra("isLogin", 0);
-            if (is_Login == 1) {
-                if (EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(WebPrizeBoxActivity.this, "token", ""))) {
-                    startActivity(new Intent(WebPrizeBoxActivity.this, LoginActivity.class));
-                }
+            if (is_Login == 1 && !AppConst.isLogin()) {
+                startActivity(new Intent(WebPrizeBoxActivity.this, LoginActivity.class));
             }
         } catch (Exception e) {
 
@@ -380,14 +378,14 @@ public class WebPrizeBoxActivity extends BaseActivity {
                 wvPrizeBox.loadUrl(AppConst.BOX);
             }
         } else if (!EncodeAndStringTool.isStringEmpty(getIntent().getStringExtra("main_box")) && getIntent().getStringExtra("main_box").equals("my_prize")) {
-            if (!EncodeAndStringTool.isStringEmpty(minePrize.getH5Url())) {
-                //我的奖品开宝箱
-                wvPrizeBox.loadUrl(minePrize.getH5Url());
-            } else {
-                //为空加载本地
-                wvPrizeBox.loadUrl(AppConst.BOX);
-            }
-//            wvPrizeBox.loadUrl("http://192.168.191.1:8080?debug=1&prize=1");
+//            if (!EncodeAndStringTool.isStringEmpty(minePrize.getH5Url())) {
+//                //我的奖品开宝箱
+//                wvPrizeBox.loadUrl(minePrize.getH5Url());
+//            } else {
+//                //为空加载本地
+//                wvPrizeBox.loadUrl(AppConst.BOX);
+//            }
+            wvPrizeBox.loadUrl("http://192.168.191.1:8080?debug=1&prize=1");
         } else if (!EncodeAndStringTool.isStringEmpty(getIntent().getStringExtra("main_box")) && getIntent().getStringExtra("main_box").equals("score_box")) {
             String h5Url = getIntent().getStringExtra("h5Url");
             if (!EncodeAndStringTool.isStringEmpty(h5Url)) {

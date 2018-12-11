@@ -271,15 +271,11 @@ public class HomeFragment extends Fragment {
              * 获取宝箱数量
              */
             try {
-                if (!EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(mContext, "token", ""))) {
+                if (AppConst.isLogin()) {
                     loadTreasureBoxNum();
                 } else {
-                    try {
-                        ivBx.clearAnimation();
-                        ivBx.setVisibility(View.GONE);
-                    } catch (Exception e) {
-
-                    }
+                    ivBx.clearAnimation();
+                    ivBx.setVisibility(View.GONE);
                 }
             } catch (Exception e) {
 
@@ -942,7 +938,7 @@ public class HomeFragment extends Fragment {
          * 获取宝箱数量
          */
         try {
-            if (!EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(mContext, "token", ""))) {
+            if (AppConst.isLogin()) {
                 loadTreasureBoxNum();
                 /**
                  * 首页题组

@@ -18,6 +18,7 @@ import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.IntegralExchangeBean;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
@@ -75,10 +76,8 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
         try {
             //是否需要登录
             Long is_Login = getIntent().getLongExtra("isLogin", 0);
-            if (is_Login == 1) {
-                if (EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(IntegralExchangeActivity.this, "token", ""))) {
-                    startActivity(new Intent(IntegralExchangeActivity.this, LoginActivity.class));
-                }
+            if (is_Login == 1 && !AppConst.isLogin()) {
+                startActivity(new Intent(IntegralExchangeActivity.this, LoginActivity.class));
             }
         } catch (Exception e) {
 

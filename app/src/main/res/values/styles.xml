@@ -105,4 +105,8 @@
         <item name="android:windowExitAnimation">@anim/popuwindows_alpha_out</item>
     </style>
 
+    <style name="Default.Widget.Button" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorAccent">@color/white</item>
+    </style>
+
 </resources>

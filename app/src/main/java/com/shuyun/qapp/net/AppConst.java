@@ -14,7 +14,7 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 public class AppConst {
     //备注：上线打包时需将gradle文件中debuggable = true设置为false
 
-//                    public static final String BASE_URL = "https://api-syksc.25876.com";///线上服务器
+    //                    public static final String BASE_URL = "https://api-syksc.25876.com";///线上服务器
     //    public static final String BASE_URL = "http://192.168.3.250:8080";//:8002/公司内部服务器
 //    public static final String BASE_URL = "http://139.224.199.106:8080";//开发测试服务器
     public static final String BASE_URL = "http://192.168.3.157";//测试环境
@@ -61,8 +61,8 @@ public class AppConst {
         }
     }
 
-    public static boolean isLogon() {
-        return !EncodeAndStringTool.isStringEmpty(jwtToken);
+    public static boolean isLogin() {
+        return !EncodeAndStringTool.isStringEmpty(TOKEN);
     }
 
     public static String sycm() {

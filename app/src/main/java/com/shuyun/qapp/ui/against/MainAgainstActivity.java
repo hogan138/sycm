@@ -136,10 +136,8 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
         try {
             //是否需要登录
             Long is_Login = getIntent().getLongExtra("isLogin", 0);
-            if (is_Login == 1) {
-                if (EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(MainAgainstActivity.this, "token", ""))) {
-                    startActivity(new Intent(MainAgainstActivity.this, LoginActivity.class));
-                }
+            if (is_Login == 1 && !AppConst.isLogin()) {
+                startActivity(new Intent(MainAgainstActivity.this, LoginActivity.class));
             }
         } catch (Exception e) {
 

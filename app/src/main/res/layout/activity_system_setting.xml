@@ -13,7 +13,7 @@
         android:id="@+id/rl_use_info"
         android:layout_width="match_parent"
         android:layout_height="63.5dp"
-        android:layout_gravity="center_vertical">
+        android:foreground="?attr/selectableItemBackground">
 
         <TextView
             android:layout_width="wrap_content"
@@ -30,8 +30,8 @@
             android:layout_width="@dimen/text_7"
             android:layout_height="@dimen/text_12"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/text_12"
             android:layout_marginTop="@dimen/text_35"
+            android:layout_marginRight="@dimen/text_12"
             android:src="@mipmap/gomore" />
     </RelativeLayout>
 
@@ -40,7 +40,8 @@
     <RelativeLayout
         android:id="@+id/rl_about_us"
         android:layout_width="match_parent"
-        android:layout_height="45.5dp">
+        android:layout_height="45.5dp"
+        android:foreground="?attr/selectableItemBackground">
         <!--android:layout_gravity="center_vertical"-->
         <TextView
             android:layout_width="wrap_content"
@@ -66,7 +67,8 @@
     <RelativeLayout
         android:id="@+id/rl_feed_back"
         android:layout_width="match_parent"
-        android:layout_height="45.5dp">
+        android:layout_height="45.5dp"
+        android:foreground="?attr/selectableItemBackground">
 
         <TextView
             android:layout_width="wrap_content"
@@ -92,7 +94,8 @@
     <RelativeLayout
         android:id="@+id/rl_version"
         android:layout_width="match_parent"
-        android:layout_height="45.5dp">
+        android:layout_height="45.5dp"
+        android:foreground="?attr/selectableItemBackground">
 
         <TextView
             android:layout_width="wrap_content"
@@ -129,7 +132,8 @@
     <RelativeLayout
         android:id="@+id/rl_other_set"
         android:layout_width="match_parent"
-        android:layout_height="45.5dp">
+        android:layout_height="45.5dp"
+        android:foreground="?attr/selectableItemBackground">
 
         <TextView
             android:layout_width="wrap_content"
@@ -173,14 +177,15 @@
 
     <Button
         android:id="@+id/btn_exit_login"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/text_40"
+        android:layout_height="@dimen/text_52"
         android:layout_marginLeft="@dimen/text_12"
-        android:layout_marginRight="@dimen/text_12"
         android:layout_marginTop="100dp"
-        android:background="@drawable/common_btn_bg_7"
+        android:layout_marginRight="@dimen/text_12"
         android:text="退出登录"
         android:textColor="@color/color_2"
-        android:textSize="@dimen/text_18" />
+        android:textSize="@dimen/text_18"
+        app:theme="@style/Default.Widget.Button" />
 
 </LinearLayout>
