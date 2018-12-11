@@ -10,3 +10,5 @@ classes/
 **/build/
 .DS_Store
 out/
+local.properties
+/local.properties
