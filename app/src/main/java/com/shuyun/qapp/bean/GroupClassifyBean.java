@@ -276,15 +276,15 @@ public class GroupClassifyBean {
          * tagName : 获得积分
          */
 
-        private int groupId;
+        private Long groupId;
         private String remark;
         private String tagName;
 
-        public int getGroupId() {
+        public Long getGroupId() {
             return groupId;
         }
 
-        public void setGroupId(int groupId) {
+        public void setGroupId(Long groupId) {
             this.groupId = groupId;
         }
 

@@ -10,7 +10,7 @@ public class WebAnswerHomeBean {
     private String token;//登录返回参数
     private String random;//登录返回参数
     private Long groupId;//题组id
-    private int act;//活动id;获取题组答题详情接口返回
+    private Long act;//活动id;获取题组答题详情接口返回
     private int v;
     private String salt;
     /**
@@ -41,7 +41,7 @@ public class WebAnswerHomeBean {
         this.groupId = groupId;
     }
 
-    public void setAct(int act) {
+    public void setAct(Long act) {
         this.act = act;
     }
 
@@ -61,7 +61,7 @@ public class WebAnswerHomeBean {
         return groupId;
     }
 
-    public int getAct() {
+    public Long getAct() {
         return act;
     }
 

@@ -15,10 +15,10 @@ public class LoginInput {
     private double lat;//用户当前纬度
     private String tsn;//登录终端的序列号
     private String salt;//应用随机生成的字符串
-    private int inviter;//邀请人id   如果用户通过分享注册，需要传递该参数
+    private long inviter;//邀请人id   如果用户通过分享注册，需要传递该参数
     private String appVersion;//App的版本号
-    private int devId;//开发者id
-    private int appId;//应用id
+    private long devId;//开发者id
+    private long appId;//应用id
     private int v;//登录接口版本
     private long stamp;//当前的时间戳
     private String code;//签名计算的code
@@ -61,11 +61,11 @@ public class LoginInput {
         this.salt = salt;
     }
 
-    public void setDevId(int devId) {
+    public void setDevId(long devId) {
         this.devId = devId;
     }
 
-    public void setAppId(int appId) {
+    public void setAppId(long appId) {
         this.appId = appId;
     }
 
@@ -111,11 +111,11 @@ public class LoginInput {
         return salt;
     }
 
-    public int getDevId() {
+    public long getDevId() {
         return devId;
     }
 
-    public int getAppId() {
+    public long getAppId() {
         return appId;
     }
 
@@ -131,11 +131,11 @@ public class LoginInput {
         return code;
     }
 
-    public void setInviter(int inviter) {
+    public void setInviter(long inviter) {
         this.inviter = inviter;
     }
 
-    public int getInviter() {
+    public long getInviter() {
         return inviter;
     }
 

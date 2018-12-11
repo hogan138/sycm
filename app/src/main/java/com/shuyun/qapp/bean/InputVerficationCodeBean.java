@@ -14,8 +14,8 @@ public class InputVerficationCodeBean {
      * 3:绑定微信
      */
     private int type;
-    private int devId;//开发者id
-    private int appId;//应用内部id
+    private long devId;//开发者id
+    private long appId;//应用内部id
     private int v;//接口版本
     private long stamp;//当前时间戳
     private String code;//签名验证码
@@ -28,11 +28,11 @@ public class InputVerficationCodeBean {
         this.type = type;
     }
 
-    public void setDevId(int devId) {
+    public void setDevId(long devId) {
         this.devId = devId;
     }
 
-    public void setAppId(int appId) {
+    public void setAppId(long appId) {
         this.appId = appId;
     }
 
@@ -56,11 +56,11 @@ public class InputVerficationCodeBean {
         return type;
     }
 
-    public int getDevId() {
+    public long getDevId() {
         return devId;
     }
 
-    public int getAppId() {
+    public long getAppId() {
         return appId;
     }
 
