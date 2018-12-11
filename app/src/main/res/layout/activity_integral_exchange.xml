@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,9 +23,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:paddingBottom="@dimen/text_17"
                 android:paddingLeft="26dp"
                 android:paddingTop="@dimen/text_17"
+                android:paddingBottom="@dimen/text_17"
                 android:text="我的积分:0"
                 android:textColor="@color/color_1"
                 android:textSize="@dimen/text_15" />
@@ -34,68 +35,80 @@
                 android:layout_width="match_parent"
                 android:layout_height="190dp"
                 android:layout_marginLeft="@dimen/text_15"
-                android:layout_marginRight="@dimen/text_15"
                 android:layout_marginTop="@dimen/text_17"
-                android:background="@mipmap/home_group_two">
+                android:layout_marginRight="@dimen/text_15">
 
-                <ImageView
-                    android:id="@+id/iv_bg1"
+                <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:layout_marginLeft="@dimen/text_3"
-                    android:layout_marginRight="@dimen/text_3"
-                    android:background="@mipmap/huangse" />
+                    android:layout_height="match_parent"
+                    android:foreground="?attr/selectableItemBackground"
+                    app:cardCornerRadius="6dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:cardUseCompatPadding="true"
+                    app:contentPadding="-2dp">
 
-                <TextView
-                    android:id="@+id/in_treasure"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/text_31"
-                    android:layout_marginTop="@dimen/text_23"
-                    android:text="积 分 开 宝 箱"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_20"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_reduce_score"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/in_treasure"
-                    android:layout_marginLeft="@dimen/text_31"
-                    android:layout_marginTop="@dimen/text_2"
-                    android:text="最低消费100积分"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_12" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="21dp"
-                    android:layout_below="@+id/tv_reduce_score"
-                    android:layout_marginLeft="@dimen/text_31"
-                    android:layout_marginTop="@dimen/text_12"
-                    android:background="@drawable/score_against_bg_common"
-                    android:gravity="center"
-                    android:paddingLeft="@dimen/text_18"
-                    android:paddingRight="@dimen/text_18"
-                    android:text="立即参与"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_12" />
-
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/iv_bg1"
-                    android:scrollbars="none">
-
-                    <LinearLayout
-                        android:id="@+id/ll_prize1"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="70dp"
-                        android:orientation="horizontal">
+                        android:layout_height="wrap_content">
 
-                    </LinearLayout>
-                </HorizontalScrollView>
+                        <ImageView
+                            android:id="@+id/iv_bg1"
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:background="@mipmap/huangse" />
+
+                        <TextView
+                            android:id="@+id/in_treasure"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/text_31"
+                            android:layout_marginTop="@dimen/text_23"
+                            android:text="积 分 开 宝 箱"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_20"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_reduce_score"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/in_treasure"
+                            android:layout_marginLeft="@dimen/text_31"
+                            android:layout_marginTop="@dimen/text_2"
+                            android:text="最低消费100积分"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_12" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="21dp"
+                            android:layout_below="@+id/tv_reduce_score"
+                            android:layout_marginLeft="@dimen/text_31"
+                            android:layout_marginTop="@dimen/text_12"
+                            android:background="@drawable/score_against_bg_common"
+                            android:gravity="center"
+                            android:paddingLeft="@dimen/text_18"
+                            android:paddingRight="@dimen/text_18"
+                            android:text="立即参与"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_12" />
+
+                        <HorizontalScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/iv_bg1"
+                            android:scrollbars="none">
+
+                            <LinearLayout
+                                android:id="@+id/ll_prize1"
+                                android:layout_width="match_parent"
+                                android:layout_height="70dp"
+                                android:orientation="horizontal">
+
+                            </LinearLayout>
+                        </HorizontalScrollView>
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
             </RelativeLayout>
 
             <RelativeLayout
@@ -103,71 +116,82 @@
                 android:layout_width="match_parent"
                 android:layout_height="190dp"
                 android:layout_marginLeft="@dimen/text_15"
-                android:layout_marginRight="@dimen/text_15"
                 android:layout_marginTop="@dimen/text_15"
-                android:background="@mipmap/home_group_two">
+                android:layout_marginRight="@dimen/text_15">
 
-                <ImageView
-                    android:id="@+id/iv_bg2"
+                <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:layout_marginLeft="@dimen/text_3"
-                    android:layout_marginRight="@dimen/text_3"
-                    android:background="@mipmap/jifdb" />
+                    android:layout_height="match_parent"
+                    android:foreground="?attr/selectableItemBackground"
+                    app:cardCornerRadius="6dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:cardUseCompatPadding="true"
+                    app:contentPadding="-2dp">
 
-                <TextView
-                    android:id="@+id/tv_getbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/text_31"
-                    android:layout_marginTop="@dimen/text_23"
-                    android:text="积 分 夺 宝"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_20"
-                    android:textStyle="bold" />
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="21dp"
-                    android:layout_below="@+id/tv_getbox"
-                    android:layout_marginLeft="@dimen/text_31"
-                    android:layout_marginTop="@dimen/text_31"
-                    android:background="@drawable/score_against_bg"
-                    android:gravity="center"
-                    android:paddingLeft="@dimen/text_18"
-                    android:paddingRight="@dimen/text_18"
-                    android:text="立即参与"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_12" />
-
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/iv_bg2"
-                    android:scrollbars="none">
-
-                    <LinearLayout
-                        android:id="@+id/ll_prize2"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="70dp"
-                        android:orientation="horizontal">
+                        android:layout_height="wrap_content">
 
-                    </LinearLayout>
+                        <ImageView
+                            android:id="@+id/iv_bg2"
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:background="@mipmap/jifdb" />
 
-                </HorizontalScrollView>
+                        <TextView
+                            android:id="@+id/tv_getbox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/text_31"
+                            android:layout_marginTop="@dimen/text_23"
+                            android:text="积 分 夺 宝"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_20"
+                            android:textStyle="bold" />
 
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="21dp"
+                            android:layout_below="@+id/tv_getbox"
+                            android:layout_marginLeft="@dimen/text_31"
+                            android:layout_marginTop="@dimen/text_31"
+                            android:background="@drawable/score_against_bg"
+                            android:gravity="center"
+                            android:paddingLeft="@dimen/text_18"
+                            android:paddingRight="@dimen/text_18"
+                            android:text="立即参与"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_12" />
+
+                        <HorizontalScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/iv_bg2"
+                            android:scrollbars="none">
+
+                            <LinearLayout
+                                android:id="@+id/ll_prize2"
+                                android:layout_width="match_parent"
+                                android:layout_height="70dp"
+                                android:orientation="horizontal">
+
+                            </LinearLayout>
+
+                        </HorizontalScrollView>
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/rl_pull"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="190dp"
                 android:layout_marginLeft="@dimen/text_15"
-                android:layout_marginRight="@dimen/text_15"
                 android:layout_marginTop="@dimen/text_15"
-                android:background="@mipmap/home_group_two">
+                android:layout_marginRight="@dimen/text_15"
+                android:background="@mipmap/home_group_two"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/iv_bg3"
@@ -225,12 +249,12 @@
                 android:id="@+id/rl_start_exchange"
                 android:layout_width="match_parent"
                 android:layout_height="190dp"
-                android:layout_marginBottom="@dimen/text_17"
-                android:visibility="gone"
                 android:layout_marginLeft="@dimen/text_15"
-                android:layout_marginRight="@dimen/text_15"
                 android:layout_marginTop="@dimen/text_15"
-                android:background="@mipmap/home_group_two">
+                android:layout_marginRight="@dimen/text_15"
+                android:layout_marginBottom="@dimen/text_17"
+                android:background="@mipmap/home_group_two"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/iv_bg4"

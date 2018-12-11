@@ -5,35 +5,40 @@
     android:layout_width="match_parent"
     android:layout_height="140dp"
     android:layout_marginTop="@dimen/text_6"
-    android:layout_marginRight="@dimen/text_8"
-    android:background="@mipmap/home_group_all_bg">
+    android:layout_marginRight="@dimen/text_8">
 
-    <RelativeLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?android:attr/selectableItemBackground">
+        android:foreground="?attr/selectableItemBackground"
+        app:cardCornerRadius="6dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="-2dp">
 
-        <com.shuyun.qapp.view.OvalImageView
-            android:id="@+id/iv_group_bg"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="104dp"
-            android:layout_marginLeft="@dimen/text_2"
-            android:layout_marginRight="@dimen/text_2"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/zw01"
-            app:type="round" />
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_group_title"
-            android:layout_width="match_parent"
-            android:layout_height="33dp"
-            android:layout_below="@+id/iv_group_bg"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text="标题"
-            android:textColor="@color/color_1"
-            android:textSize="@dimen/text_15" />
-    </RelativeLayout>
+            <com.shuyun.qapp.view.OvalImageView
+                android:id="@+id/iv_group_bg"
+                android:layout_width="match_parent"
+                android:layout_height="104dp"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/zw01"
+                app:type="round" />
 
+            <TextView
+                android:id="@+id/tv_group_title"
+                android:layout_width="match_parent"
+                android:layout_height="33dp"
+                android:layout_below="@+id/iv_group_bg"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="标题"
+                android:textColor="@color/color_1"
+                android:textSize="@dimen/text_15" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
 </RelativeLayout>

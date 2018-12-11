@@ -33,7 +33,6 @@
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
                     android:scaleType="fitXY"
-                    android:src="@mipmap/home_group_two"
                     app:type="round" />
 
                 <RelativeLayout

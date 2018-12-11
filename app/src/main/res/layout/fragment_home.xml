@@ -68,39 +68,53 @@
                 android:layout_marginLeft="@dimen/text_15"
                 android:layout_marginTop="@dimen/text_15"
                 android:layout_marginRight="@dimen/text_15"
-                android:background="@mipmap/home_ad_bg"
-                android:visibility="gone">
+                android:visibility="visible">
 
-                <ImageView
-                    android:id="@+id/iv_ad_logo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/text_10"
-                    android:src="@mipmap/home_ad_logo" />
-
-                <ImageView
-                    android:id="@+id/iv_ad_point"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/text_10"
-                    android:layout_marginRight="@dimen/text_15"
-                    android:src="@mipmap/home_ad_point" />
-
-                <com.shuyun.qapp.view.TextBannerView
-                    android:id="@+id/scroll_ad"
+                <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/text_14"
-                    android:layout_toLeftOf="@+id/iv_ad_point"
-                    android:layout_toRightOf="@+id/iv_ad_logo"
-                    app:setDirection="bottom_to_top"
-                    app:setGravity="left"
-                    app:setTextSize="@dimen/text_12" />
+                    android:layout_height="match_parent"
+                    android:foreground="?attr/selectableItemBackground"
+                    app:cardBackgroundColor="#F8F8F8"
+                    app:cardCornerRadius="6dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:cardUseCompatPadding="true"
+                    app:contentPadding="-2dp">
 
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/text_55">
+
+                        <ImageView
+                            android:id="@+id/iv_ad_logo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/text_10"
+                            android:src="@mipmap/home_ad_logo" />
+
+                        <ImageView
+                            android:id="@+id/iv_ad_point"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/text_10"
+                            android:layout_marginRight="@dimen/text_15"
+                            android:src="@mipmap/home_ad_point" />
+
+                        <com.shuyun.qapp.view.TextBannerView
+                            android:id="@+id/scroll_ad"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/text_14"
+                            android:layout_toLeftOf="@+id/iv_ad_point"
+                            android:layout_toRightOf="@+id/iv_ad_logo"
+                            app:setDirection="bottom_to_top"
+                            app:setGravity="left"
+                            app:setTextSize="@dimen/text_12" />
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
             </RelativeLayout>
 
             <!--活动布局-->
@@ -110,7 +124,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/text_15"
                 android:layout_marginTop="15dp"
-                android:layout_marginRight="@dimen/text_14"
+                android:layout_marginRight="@dimen/text_15"
                 android:orientation="horizontal" />
 
             <LinearLayout
