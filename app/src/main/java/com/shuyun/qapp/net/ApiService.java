@@ -709,4 +709,10 @@ public interface ApiService {
      */
     @GET("/rest/user/prop/use")
     Observable<DataResponse<Object>> useProps(@Query("mode") String mode);
+
+    /**
+     * 80、心跳
+     */
+    @GET("/rest/user/heartbeat")
+    Observable<DataResponse<Object>> heartBeat();
 }

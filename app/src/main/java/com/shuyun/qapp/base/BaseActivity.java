@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
+import com.shuyun.qapp.net.HeartBeatManager;
 
 /**
  * 2018/6/9
@@ -67,6 +68,13 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @return
      */
     public abstract int intiLayout();
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        HeartBeatManager.instance().start(this);
+    }
 
     /**
      * 初始化布局

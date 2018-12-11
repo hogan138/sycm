@@ -125,9 +125,6 @@ public class ChangePhoneNumActivity extends BaseActivity {
     }
 
     /**
-     * 获取到验证码
-     */
-    /**
      * 获取验证码
      *
      * @param verficationCodeBean post json body

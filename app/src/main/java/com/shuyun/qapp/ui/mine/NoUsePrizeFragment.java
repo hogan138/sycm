@@ -58,8 +58,7 @@ import io.reactivex.schedulers.Schedulers;
  * 2018/6/9
  * ganquan
  */
-public class
-NoUsePrizeFragment extends Fragment {
+public class NoUsePrizeFragment extends Fragment {
 
     Unbinder unbinder;
     @BindView(R.id.rv_prize)

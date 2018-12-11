@@ -271,7 +271,7 @@ public class HomeFragment extends Fragment {
              * 获取宝箱数量
              */
             try {
-                if (!EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(getContext(), "token", ""))) {
+                if (!EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(mContext, "token", ""))) {
                     loadTreasureBoxNum();
                 } else {
                     try {
@@ -366,7 +366,7 @@ public class HomeFragment extends Fragment {
                                     for (int i = 0; i < bannerData.size(); i++) {
                                         list.add(new BannerItem(bannerData.get(i).getPicture()));
                                     }
-                                    adapter.setData(getContext(), list);
+                                    adapter.setData(mContext, list);
                                     mBannerView.setBannerAdapter(adapter);
 
                                     //设置index 在viewpager下面
@@ -563,7 +563,7 @@ public class HomeFragment extends Fragment {
                                             item.setMarkLabel(homeGroupsBean.getOften().get(i).getName());
                                             list1.add(item);
                                         }
-                                        adapter1.setData(getContext(), list1);
+                                        adapter1.setData(mContext, list1);
                                         alwaysBanner.setBannerAdapter(adapter1);
 
                                         //设置index 在viewpager下面
@@ -942,7 +942,7 @@ public class HomeFragment extends Fragment {
          * 获取宝箱数量
          */
         try {
-            if (!EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(getContext(), "token", ""))) {
+            if (!EncodeAndStringTool.isStringEmpty(SharedPrefrenceTool.get(mContext, "token", ""))) {
                 loadTreasureBoxNum();
                 /**
                  * 首页题组
