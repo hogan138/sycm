@@ -124,10 +124,10 @@ public class IntegralFragment extends Fragment {
                                     refreshLayout.finishRefresh();
                                     refreshLayout.setLoadmoreFinished(false);
                                     //进入动画
-                                    LayoutAnimationController controller = new LayoutAnimationController(MyLayoutAnimationHelper.getAnimationSetScaleBig());
-                                    controller.setDelay(0.1f);
-                                    rvAccountRecord.setLayoutAnimation(controller);
-                                    rvAccountRecord.scheduleLayoutAnimation();
+//                                    LayoutAnimationController controller = new LayoutAnimationController(MyLayoutAnimationHelper.getAnimationSetScaleBig());
+//                                    controller.setDelay(0.1f);
+//                                    rvAccountRecord.setLayoutAnimation(controller);
+//                                    rvAccountRecord.scheduleLayoutAnimation();
                                 } else if (loadState == AppConst.STATE_MORE) {
                                     if (accountBeanList1.size() == 0) {//没有数据了
                                         refreshLayout.finishLoadmore();

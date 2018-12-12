@@ -177,6 +177,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        MyActivityManager.getInstance().popOneActivity(WebAnswerActivity.this);
                         startActivityForResult(new Intent(WebAnswerActivity.this, LoginActivity.class).putExtra("examId", rel.getString("examId")), 1);
                     }
                 });
@@ -472,13 +473,13 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
-//        if (!EncodeAndStringTool.isStringEmpty(h5Url)) {
-//            wvAnswerHome.loadUrl(h5Url);
-//        } else {
-//            wvAnswerHome.loadUrl(AppConst.ANSWER);
-//        }
+        if (!EncodeAndStringTool.isStringEmpty(h5Url)) {
+            wvAnswerHome.loadUrl(h5Url);
+        } else {
+            wvAnswerHome.loadUrl(AppConst.ANSWER);
+        }
 
-        wvAnswerHome.loadUrl("http://192.168.191.1:8080?debug=1");
+//        wvAnswerHome.loadUrl("http://192.168.191.1:8080?debug=1");
 
         EventBus.getDefault().register(this);
 

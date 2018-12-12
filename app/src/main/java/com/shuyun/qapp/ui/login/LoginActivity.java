@@ -4,11 +4,15 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.transition.Fade;
+import android.transition.Slide;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -134,7 +138,9 @@ public class LoginActivity extends BaseActivity {
         }
 
         MyActivityManager1.getInstance().pushOneActivity(this);
+
     }
+
 
     @Override
     public int intiLayout() {
@@ -214,6 +220,7 @@ public class LoginActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.rl_close:
                 MyActivityManager.getInstance().finishAllActivity();
+                MyActivityManager1.getInstance().finishAllActivity();
                 SaveUserInfo.getInstance(LoginActivity.this).setUserInfo("home_mine", "");
                 finish();
                 break;
@@ -395,6 +402,7 @@ public class LoginActivity extends BaseActivity {
                                         LoadingBar.cancel(rlMain);
                                         KeyboardUtils.hideSoftInput(LoginActivity.this);
                                         try {
+                                            MyActivityManager1.getInstance().finishAllActivity();
                                             setResult(RESULT_OK);
                                             finish();
                                         } catch (Exception e) {
@@ -590,6 +598,7 @@ public class LoginActivity extends BaseActivity {
     public void onBackPressed() {
         super.onBackPressed();
         MyActivityManager.getInstance().finishAllActivity();
+        MyActivityManager1.getInstance().finishAllActivity();
         SaveUserInfo.getInstance(LoginActivity.this).setUserInfo("home_mine", "");
         finish();
     }

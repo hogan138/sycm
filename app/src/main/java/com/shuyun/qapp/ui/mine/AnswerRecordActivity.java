@@ -162,10 +162,10 @@ public class AnswerRecordActivity extends BaseActivity {
                                     refreshLayout.setLoadmoreFinished(false);
 
                                     //进入动画
-                                    LayoutAnimationController controller = new LayoutAnimationController(MyLayoutAnimationHelper.getAnimationSetScaleBig());
-                                    controller.setDelay(0.1f);
-                                    rvAnswerRecord.setLayoutAnimation(controller);
-                                    rvAnswerRecord.scheduleLayoutAnimation();
+//                                    LayoutAnimationController controller = new LayoutAnimationController(MyLayoutAnimationHelper.getAnimationSetScaleBig());
+//                                    controller.setDelay(0.1f);
+//                                    rvAnswerRecord.setLayoutAnimation(controller);
+//                                    rvAnswerRecord.scheduleLayoutAnimation();
 
                                 } else if (loadState == AppConst.STATE_MORE) {
                                     if (answerRecordBeanList1.size() == 0) {//没有数据了

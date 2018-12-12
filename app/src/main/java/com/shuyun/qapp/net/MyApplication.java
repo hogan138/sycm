@@ -20,6 +20,7 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.utils.CrashHandler;
 import com.shuyun.qapp.utils.MTACrashModule;
+import com.squareup.leakcanary.LeakCanary;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.tencent.stat.StatConfig;
@@ -186,6 +187,15 @@ public class MyApplication extends Application {
         StatService.registerActivityLifecycleCallbacks(this);
         // 初始化MTA的Crash模块，可监控java、native的Crash，以及Crash后的回调
         MTACrashModule.initMtaCrashModule(this);
+
+
+        //内存检测
+//        if (LeakCanary.isInAnalyzerProcess(this)) {
+//            // This process is dedicated to LeakCanary for heap analysis.
+//            // You should not init your app in this process.
+//            return;
+//        }
+//        LeakCanary.install(this);
 
     }
 
