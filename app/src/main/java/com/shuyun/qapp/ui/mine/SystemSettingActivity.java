@@ -222,13 +222,6 @@ public class SystemSettingActivity extends BaseActivity {
                         SharedPrefrenceTool.clear(SystemSettingActivity.this);
                         AppConst.loadToken(SystemSettingActivity.this);
 
-                        //清空原先的别名
-                        JPushInterface.setAlias(SystemSettingActivity.this, new Random().nextInt(), "");
-
-                        MyActivityManager.getInstance().finishAllActivity();//销毁所有页面
-                        startActivity(new Intent(SystemSettingActivity.this, LoginActivity.class));
-                        finish();
-
                         //清空缓存
                         SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.group_count", "");
                         SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.real_count", "");
@@ -242,6 +235,15 @@ public class SystemSettingActivity extends BaseActivity {
                         SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.h5.external_count", "");
                         SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.day.task_count", "");
                         SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.default_count", "");
+
+                        //清空原先的别名
+                        JPushInterface.setAlias(SystemSettingActivity.this, new Random().nextInt(), "");
+
+                        MyActivityManager.getInstance().finishAllActivity();//销毁所有页面
+
+                        startActivity(new Intent(SystemSettingActivity.this, LoginActivity.class));
+
+                        finish();
                     }
                 })
                 .configDialog(new ConfigDialog() {

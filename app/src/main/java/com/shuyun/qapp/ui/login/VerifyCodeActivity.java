@@ -318,7 +318,6 @@ public class VerifyCodeActivity extends BaseActivity {
                                 }
 
                                 //设置别名
-                                JPushInterface.setAlias(VerifyCodeActivity.this, new Random().nextInt(), "");
                                 JPushInterface.setAlias(VerifyCodeActivity.this, new Random().nextInt(), phone);
 
                                 if (mode == 2) {

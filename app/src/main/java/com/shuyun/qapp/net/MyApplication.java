@@ -20,7 +20,6 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.utils.CrashHandler;
 import com.shuyun.qapp.utils.MTACrashModule;
-import com.squareup.leakcanary.LeakCanary;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.tencent.stat.StatConfig;

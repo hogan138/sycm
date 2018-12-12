@@ -4,15 +4,11 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.RequiresApi;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.transition.Fade;
-import android.transition.Slide;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -24,7 +20,6 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.KeyboardUtils;
-import com.blankj.utilcode.util.TimeUtils;
 import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.mylhyl.circledialog.CircleDialog;
@@ -34,15 +29,15 @@ import com.mylhyl.circledialog.params.ButtonParams;
 import com.mylhyl.circledialog.params.DialogParams;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.LoginInput;
 import com.shuyun.qapp.bean.LoginResponse;
 import com.shuyun.qapp.bean.Msg;
-import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.MyApplication;
-import com.shuyun.qapp.ui.mine.AddWithdrawInfoActivity;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -52,11 +47,9 @@ import com.shuyun.qapp.utils.MyActivityManager1;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.PermissionsChecker;
 import com.shuyun.qapp.utils.RegularTool;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.ToastUtil;
-import com.shuyun.qapp.wxapi.WXEntryActivity;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
@@ -70,10 +63,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.jpush.android.api.JPushInterface;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -276,6 +265,9 @@ public class LoginActivity extends BaseActivity {
                 String password = etPassword.getText().toString();
                 boolean checkPwd = EncodeAndStringTool.checkNull(phoneNum, password);
                 if (checkPwd) {
+                    CustomLoadingFactory factory = new CustomLoadingFactory();
+                    LoadingBar.make(rlMain, factory).show();
+
                     String mdCode = encryptMD5ToString(phoneNum + encryptMD5ToString(password));
                     long curTime = System.currentTimeMillis();
                     String tsn = EncodeAndStringTool.getTsn(this);
@@ -286,9 +278,7 @@ public class LoginActivity extends BaseActivity {
                     String signString = "" + AppConst.DEV_ID + AppConst.APP_ID + AppConst.V + curTime + 1 + phoneNum + tsn + salt + AppConst.APP_KEY + mdCode;
                     //将拼接的字符串转化为16进制MD5
                     String myCode = encryptMD5ToString(signString);
-                    /**
-                     * code值
-                     */
+
                     String signCode = getCode(myCode);
                     LoginInput loginInput = new LoginInput();
                     loginInput.setMode(1);
@@ -338,9 +328,7 @@ public class LoginActivity extends BaseActivity {
         } catch (Exception e) {
 
         }
-
     }
-
 
     /**
      * 登录
@@ -354,99 +342,75 @@ public class LoginActivity extends BaseActivity {
         if (!loginInput.getAccount().equals(account)) {
             DataSupport.deleteAll(Msg.class);//清空数据库中消息
         }
-        ApiService apiService = BasePresenter.create(8000);
-        String inputbean = JSON.toJSONString(loginInput);
+        String inputBean = JSON.toJSONString(loginInput);
         Log.i(TAG, "loadLogin: " + loginInput.toString());
-        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
-        apiService.login(body)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<LoginResponse>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
 
-                    }
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputBean);
+        RemotingEx.doRequest(ApiServiceBean.login(), new Object[]{body}, new OnRemotingCallBackListener<LoginResponse>() {
+            @Override
+            public void onCompleted(String action) {
+                LoadingBar.cancel(rlMain);
+            }
 
-                    @Override
-                    public void onNext(DataResponse<LoginResponse> loginResponse) {
-                        if (loginResponse.isSuccees()) {
-                            LoginResponse loginResp = loginResponse.getDat();
-                            if (!EncodeAndStringTool.isObjectEmpty(loginResp)) {
-                                SharedPrefrenceTool.put(mContext, "token", loginResp.getToken());
-                                SharedPrefrenceTool.put(mContext, "expire", loginResp.getExpire());//token的有效期
-                                SharedPrefrenceTool.put(mContext, "key", loginResp.getKey());//对称加密的秘钥。
-                                SharedPrefrenceTool.put(mContext, "bind", loginResp.getBind());//是否绑定用户。
-                                SharedPrefrenceTool.put(mContext, "random", loginResp.getRandom());//登录成果后，平台随机生成的字符串
-                                AppConst.loadToken(mContext);
+            @Override
+            public void onFailed(String action, String message) {
 
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<LoginResponse> response) {
+                if (response.isSuccees()) {
+                    LoginResponse loginResp = response.getDat();
+                    if (!EncodeAndStringTool.isObjectEmpty(loginResp)) {
+                        SharedPrefrenceTool.put(mContext, "token", loginResp.getToken());
+                        SharedPrefrenceTool.put(mContext, "expire", loginResp.getExpire());//token的有效期
+                        SharedPrefrenceTool.put(mContext, "key", loginResp.getKey());//对称加密的秘钥。
+                        SharedPrefrenceTool.put(mContext, "bind", loginResp.getBind());//是否绑定用户。
+                        SharedPrefrenceTool.put(mContext, "random", loginResp.getRandom());//登录成果后，平台随机生成的字符串
+                        AppConst.loadToken(mContext);
+
+                        //答题免登录返回宝箱id
+                        if (!EncodeAndStringTool.isStringEmpty(loginResp.getBoxId())) {
+                            SharedPrefrenceTool.put(mContext, "boxId", loginResp.getBoxId());
+                        }
+
+                        //设置别名
+                        JPushInterface.setAlias(mContext, new Random().nextInt(), etPhoneNumber.getText().toString());
+                        btnLogin.setEnabled(false);
+
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                KeyboardUtils.hideSoftInput(LoginActivity.this);
                                 try {
-                                    //答题免登录返回宝箱id
-                                    if (!EncodeAndStringTool.isStringEmpty(loginResp.getBoxId())) {
-                                        SharedPrefrenceTool.put(mContext, "boxId", loginResp.getBoxId());
-                                    }
+                                    MyActivityManager1.getInstance().finishAllActivity();
+                                    setResult(RESULT_OK);
+                                    finish();
                                 } catch (Exception e) {
 
                                 }
-
-                                //清空原先的别名
-                                //设置别名
-                                JPushInterface.setAlias(mContext, new Random().nextInt(), "");
-                                JPushInterface.setAlias(mContext, new Random().nextInt(), etPhoneNumber.getText().toString());
-                                btnLogin.setEnabled(false);
-
-                                CustomLoadingFactory factory = new CustomLoadingFactory();
-                                LoadingBar.make(rlMain, factory).show();
-                                mHandler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        LoadingBar.cancel(rlMain);
-                                        KeyboardUtils.hideSoftInput(LoginActivity.this);
-                                        try {
-                                            MyActivityManager1.getInstance().finishAllActivity();
-                                            setResult(RESULT_OK);
-                                            finish();
-                                        } catch (Exception e) {
-
-                                        }
-
-
-                                    }
-                                }, 2000);
-
                             }
+                        }, 320);
+                    }
+                } else {
+                    if (response.getErr().equals("TAU11")) {
+                        if (error == 0) {
+                            error = 1;
+                            errorDialog("密码错误请重新输入");
                         } else {
-                            if (loginResponse.getErr().equals("TAU11")) {
-                                if (error == 0) {
-                                    error = 1;
-                                    errorDialog("密码错误请重新输入");
-                                } else {
-                                    //再次输入错误密码
-                                    updatePasswordDialog();
-                                }
-                            } else {
-                                if ("U0001".equals(loginResponse.getErr())) {
-                                    ToastUtil.showToast(mContext, "用户未注册");
-                                } else {
-                                    ErrorCodeTools.errorCodePrompt(mContext, loginResponse.getErr(), loginResponse.getMsg());
-                                }
-
-                            }
-
+                            //再次输入错误密码
+                            updatePasswordDialog();
                         }
-
+                    } else {
+                        if ("U0001".equals(response.getErr())) {
+                            ToastUtil.showToast(mContext, "用户未注册");
+                        } else {
+                            ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
+                        }
                     }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+                }
+            }
+        });
     }
 
     /**

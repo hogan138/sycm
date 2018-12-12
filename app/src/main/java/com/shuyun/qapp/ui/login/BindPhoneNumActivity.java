@@ -235,7 +235,6 @@ public class BindPhoneNumActivity extends BaseActivity {
                             if (dataResponse.isSuccees()) {
 
                                 //设置别名
-                                JPushInterface.setAlias(BindPhoneNumActivity.this, new Random().nextInt(), "");
                                 JPushInterface.setAlias(BindPhoneNumActivity.this, new Random().nextInt(), phoneNumber);
 
                                 AppConst.loadToken(MyApplication.getAppContext());

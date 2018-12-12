@@ -1,6 +1,5 @@
 package com.shuyun.qapp.ui.homepage;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -34,11 +33,9 @@ import com.blankj.utilcode.util.PhoneUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.GroupTreeAdapter;
-import com.shuyun.qapp.adapter.HomeBannerAdapter;
 import com.shuyun.qapp.adapter.HomeSortAdapter;
 import com.shuyun.qapp.adapter.HotGroupAdapter;
 import com.shuyun.qapp.adapter.MarkBannerAdapter;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.BannerBean;
 import com.shuyun.qapp.bean.BannerItem;
 import com.shuyun.qapp.bean.BoxBean;
@@ -51,13 +48,14 @@ import com.shuyun.qapp.bean.HomeNoticeBean;
 import com.shuyun.qapp.bean.MainConfigBean;
 import com.shuyun.qapp.bean.MarkBannerItem;
 import com.shuyun.qapp.bean.SystemInfo;
-import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.MyApplication;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.receiver.MyReceiver;
 import com.shuyun.qapp.ui.classify.ClassifyActivity;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
-import com.shuyun.qapp.ui.loader.GlideImageLoader1;
 import com.shuyun.qapp.ui.mine.MinePrizeActivity;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
@@ -67,7 +65,6 @@ import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.InformatListenner;
 import com.shuyun.qapp.utils.NotificationsUtils;
 import com.shuyun.qapp.utils.OnMultiClickListener;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.view.H5JumpUtil;
@@ -92,10 +89,6 @@ import cn.kevin.banner.BannerAdapter;
 import cn.kevin.banner.BannerViewPager;
 import cn.kevin.banner.IBannerItem;
 import cn.kevin.banner.transformer.YZoomTransFormer;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 import static com.blankj.utilcode.util.ConvertUtils.dp2px;
 
@@ -340,340 +333,291 @@ public class HomeFragment extends Fragment {
      * 轮播图数据
      */
     public void loadHomeBanners() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.getHomeBanner()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<List<BannerBean>>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+        RemotingEx.doRequest(ApiServiceBean.getHomeBanner(), new OnRemotingCallBackListener<List<BannerBean>>() {
+            @Override
+            public void onCompleted(String action) {
 
-                    @Override
-                    public void onNext(DataResponse<List<BannerBean>> listDataResponse) {
-                        if (listDataResponse.isSuccees()) {
-                            try {
-                                final List<BannerBean> bannerData = listDataResponse.getDat();
-                                if (!EncodeAndStringTool.isListEmpty(bannerData)) {
-                                    //设置轮播图
-                                    BannerAdapter adapter = new BannerAdapter(new GlideImageLoader());
-//                                    HomeBannerAdapter adapter = new HomeBannerAdapter(new GlideImageLoader1());
-                                    List<IBannerItem> list = new ArrayList<>();
-                                    for (int i = 0; i < bannerData.size(); i++) {
-                                        list.add(new BannerItem(bannerData.get(i).getPicture()));
-                                    }
-                                    adapter.setData(mContext, list);
-                                    mBannerView.setBannerAdapter(adapter);
+            }
 
-                                    //设置index 在viewpager下面
-                                    ViewPager mViewpager = (ViewPager) mBannerView.getChildAt(0);
-                                    //为ViewPager设置高度
-                                    ViewGroup.LayoutParams params = mViewpager.getLayoutParams();
-                                    params.height = getResources().getDimensionPixelSize(R.dimen.viewPager_01);
-                                    mViewpager.setLayoutParams(params);
-                                    //设置时间，时间越长，速度越慢
-                                    ViewPagerScroller pagerScroller = new ViewPagerScroller(getActivity());
-                                    pagerScroller.setScrollDuration(400);
-                                    pagerScroller.initViewPagerScroll(mViewpager);
+            @Override
+            public void onFailed(String action, String message) {
 
-                                    mBannerView.setBannerItemClick(new BannerViewPager.OnBannerItemClick<IBannerItem>() {
-                                        @Override
-                                        public void onClick(IBannerItem data) {
-                                            for (int i = 0; i < bannerData.size(); i++) {
-                                                if (data.ImageUrl().equals(bannerData.get(i).getPicture())) {
-                                                    String action = bannerData.get(i).getAction();
-                                                    String h5Url = bannerData.get(i).getH5Url();
-                                                    Long is_Login = bannerData.get(i).getIsLogin();
-                                                    try {
-                                                        H5JumpUtil.dialogSkip(action, bannerData.get(i).getContent(), h5Url, mContext, llHomeFragment, is_Login);
-                                                    } catch (Exception e) {
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    });
-                                    mBannerView.setPageTransformer(true, new YZoomTransFormer(0.9f)); //banner动画
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+            }
 
-                        } else {//错误码提示
-                            if (listDataResponse.getErr().equals("U0001")) {
-                                mContext.finish();
-                            }
-                            ErrorCodeTools.errorCodePrompt(mContext, listDataResponse.getErr(), listDataResponse.getMsg());
+            @Override
+            public void onSucceed(String action, DataResponse<List<BannerBean>> response) {
+                if (response.isSuccees()) {
+                    final List<BannerBean> bannerData = response.getDat();
+                    if (!EncodeAndStringTool.isListEmpty(bannerData)) {
+                        //设置轮播图
+                        BannerAdapter adapter = new BannerAdapter(new GlideImageLoader());
+                        List<IBannerItem> list = new ArrayList<>();
+                        for (int i = 0; i < bannerData.size(); i++) {
+                            list.add(new BannerItem(bannerData.get(i).getPicture()));
                         }
-                    }
+                        adapter.setData(mContext, list);
+                        mBannerView.setBannerAdapter(adapter);
 
+                        //设置index 在viewpager下面
+                        ViewPager mViewpager = (ViewPager) mBannerView.getChildAt(0);
+                        //为ViewPager设置高度
+                        ViewGroup.LayoutParams params = mViewpager.getLayoutParams();
+                        params.height = getResources().getDimensionPixelSize(R.dimen.viewPager_01);
+                        mViewpager.setLayoutParams(params);
+                        //设置时间，时间越长，速度越慢
+                        ViewPagerScroller pagerScroller = new ViewPagerScroller(getActivity());
+                        pagerScroller.setScrollDuration(400);
+                        pagerScroller.initViewPagerScroll(mViewpager);
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
+                        mBannerView.setBannerItemClick(new BannerViewPager.OnBannerItemClick<IBannerItem>() {
+                            @Override
+                            public void onClick(IBannerItem data) {
+                                for (int i = 0; i < bannerData.size(); i++) {
+                                    if (data.ImageUrl().equals(bannerData.get(i).getPicture())) {
+                                        String action = bannerData.get(i).getAction();
+                                        String h5Url = bannerData.get(i).getH5Url();
+                                        Long is_Login = bannerData.get(i).getIsLogin();
+                                        try {
+                                            H5JumpUtil.dialogSkip(action, bannerData.get(i).getContent(), h5Url, mContext, llHomeFragment, is_Login);
+                                        } catch (Exception e) {
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                        mBannerView.setPageTransformer(true, new YZoomTransFormer(0.9f)); //banner动画
                     }
-
-                    @Override
-                    public void onComplete() {
+                } else {//错误码提示
+                    if (response.getErr().equals("U0001")) {
+                        mContext.finish();
                     }
-                });
+                    ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
+                }
+            }
+        });
     }
 
     /**
      * 获取跑马灯消息
      */
     private void loadSystemInfo() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.getSystemInfo()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<List<SystemInfo>>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+        RemotingEx.doRequest(ApiServiceBean.getSystemInfo(), new OnRemotingCallBackListener<List<SystemInfo>>() {
+            @Override
+            public void onCompleted(String action) {
 
-                    @Override
-                    public void onNext(DataResponse<List<SystemInfo>> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            List<SystemInfo> systemInfos = dataResponse.getDat();
-                            if (!EncodeAndStringTool.isListEmpty(systemInfos)) {
-                                try {
-                                    llMarqueeView.setVisibility(View.VISIBLE);
-                                    /**
-                                     * 跑马灯数据
-                                     */
-                                    List<String> info = new ArrayList<>();
-                                    for (int i = 0; i < systemInfos.size(); i++) {
-                                        info.add(systemInfos.get(i).getMsg());
-                                    }
-                                    if (!EncodeAndStringTool.isListEmpty(info)) {
-                                        marqueeView.startWithList(info);
-                                    }
-                                } catch (Exception e) {
-                                }
-                            } else {
-                                llMarqueeView.setVisibility(View.GONE);
-                            }
-                        } else {
-                            if (dataResponse.getErr().equals("U0001")) {
-                                mContext.finish();
-                            }
-                            ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
+            }
+
+            @Override
+            public void onFailed(String action, String message) {
+
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<List<SystemInfo>> response) {
+                if (response.isSuccees()) {
+                    List<SystemInfo> systemInfos = response.getDat();
+                    if (!EncodeAndStringTool.isListEmpty(systemInfos)) {
+                        llMarqueeView.setVisibility(View.VISIBLE);
+                        /**
+                         * 跑马灯数据
+                         */
+                        List<String> info = new ArrayList<>();
+                        for (int i = 0; i < systemInfos.size(); i++) {
+                            info.add(systemInfos.get(i).getMsg());
                         }
+                        if (!EncodeAndStringTool.isListEmpty(info)) {
+                            marqueeView.startWithList(info);
+                        }
+                    } else {
+                        llMarqueeView.setVisibility(View.GONE);
                     }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
+                } else {
+                    if (response.getErr().equals("U0001")) {
+                        mContext.finish();
                     }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+                    ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
+                }
+            }
+        });
     }
 
     /**
      * 获取活动配置信息
      */
     private void getConfigInfo() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.configMainActivity()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<MainConfigBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+        RemotingEx.doRequest(ApiServiceBean.configMainActivity(), new OnRemotingCallBackListener<MainConfigBean>() {
+            @Override
+            public void onCompleted(String action) {
 
-                    @Override
-                    public void onNext(DataResponse<MainConfigBean> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            MainConfigBean mainConfigBean = dataResponse.getDat();
-                            try {
-                                //动态添加布局
-                                activityRegion.removeAllViews();
-                                activityRegion.addView(ActivityRegionManager.getView(mContext, mainConfigBean, llHomeFragment));
-                            } catch (Exception e) {
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
-                        }
-                    }
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
+            @Override
+            public void onFailed(String action, String message) {
 
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<MainConfigBean> response) {
+                if (response.isSuccees()) {
+                    MainConfigBean mainConfigBean = response.getDat();
+                    //动态添加布局
+                    activityRegion.removeAllViews();
+                    activityRegion.addView(ActivityRegionManager.getView(mContext, mainConfigBean, llHomeFragment));
+                } else {
+                    ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
+                }
+            }
+        });
     }
 
     /**
      * 首页题组
      */
     private void loadHomeGroups() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.getHomeGroups(AppUtils.getAppVersionName())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<HomeGroupsBean>>() {
-
+        RemotingEx.doRequest(null, ApiServiceBean.getHomeGroups(), new Object[]{AppUtils.getAppVersionName()},
+                new OnRemotingCallBackListener<HomeGroupsBean>() {
                     @Override
-                    public void onSubscribe(Disposable d) {
+                    public void onCompleted(String action) {
+
                     }
 
                     @Override
-                    public void onNext(DataResponse<HomeGroupsBean> listDataResponse) {
-                        if (listDataResponse.isSuccees()) {
-                            try {
-                                final HomeGroupsBean homeGroupsBean = listDataResponse.getDat();
-                                if (!EncodeAndStringTool.isObjectEmpty(homeGroupsBean)) {
-                                    if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getRecommend())) { //推荐题组
-                                        groupBeans = homeGroupsBean.getRecommend();
-                                        if (!EncodeAndStringTool.isListEmpty(groupBeans)) {
-                                            recommendIndex = 0;
-                                            rollRecommendGroup();
-                                            if (groupBeans.size() <= 2) {
-                                                llChangeGroup.setVisibility(View.GONE);
-                                            } else {
-                                                llChangeGroup.setVisibility(View.VISIBLE);
-                                            }
-                                        }
-                                    }
+                    public void onFailed(String action, String message) {
 
-                                    if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getOften())) { //常答题组
-                                        llOften.setVisibility(View.VISIBLE);
-                                        alwaysBanner.setVisibility(View.VISIBLE);
+                    }
 
-                                        //常答题组
-                                        MarkBannerAdapter adapter1 = new MarkBannerAdapter(new GlideImageLoader());
-                                        List<IBannerItem> list1 = new ArrayList<>();
-                                        for (int i = 0; i < homeGroupsBean.getOften().size(); i++) {
-                                            MarkBannerItem item = new MarkBannerItem(homeGroupsBean.getOften().get(i).getPicture());
-                                            item.setMarkLabel(homeGroupsBean.getOften().get(i).getName());
-                                            list1.add(item);
-                                        }
-                                        adapter1.setData(mContext, list1);
-                                        alwaysBanner.setBannerAdapter(adapter1);
-
-                                        //设置index 在viewpager下面
-                                        ViewPager mViewpager1 = (ViewPager) alwaysBanner.getChildAt(0);
-                                        //为ViewPager设置高度
-                                        ViewGroup.LayoutParams params = mViewpager1.getLayoutParams();
-                                        params.height = getResources().getDimensionPixelSize(R.dimen.viewPager_02);
-                                        mViewpager1.setLayoutParams(params);
-                                        //设置时间，时间越长，速度越慢
-                                        ViewPagerScroller pagerScroller = new ViewPagerScroller(getActivity());
-                                        pagerScroller.setScrollDuration(400);
-                                        pagerScroller.initViewPagerScroll(mViewpager1);
-
-                                        alwaysBanner.setBannerItemClick(new BannerViewPager.OnBannerItemClick<IBannerItem>() {
-                                            @Override
-                                            public void onClick(IBannerItem data) {
-                                                for (int i = 0; i < homeGroupsBean.getOften().size(); i++) {
-                                                    if (data.ImageUrl().equals(homeGroupsBean.getOften().get(i).getPicture())) {
-                                                        try {
-                                                            Intent intent = new Intent(mContext, WebAnswerActivity.class);
-                                                            intent.putExtra("groupId", homeGroupsBean.getOften().get(i).getId());
-                                                            intent.putExtra("h5Url", homeGroupsBean.getOften().get(i).getH5Url());
-                                                            startActivity(intent);
-                                                        } catch (Exception e) {
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        });
-                                    } else {
-                                        llOften.setVisibility(View.GONE);
-                                        alwaysBanner.setVisibility(View.GONE);
-                                    }
-
-                                    if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getThermal())) {   //大家都在答
-                                        final List<GroupBean> groupData = homeGroupsBean.getThermal();
-                                        try {
-                                            HotGroupAdapter hotGroupAdapter = new HotGroupAdapter(groupData, mContext);
-                                            hotGroupAdapter.setOnItemClickLitsener(new GroupTreeAdapter.OnItemClickListener() {
-                                                @Override
-                                                public void onItemClick(View view, int position) {
-                                                    Long groupId = groupData.get(position).getId();
-                                                    Intent intent = new Intent(mContext, WebAnswerActivity.class);
-                                                    intent.putExtra("groupId", groupId);
-                                                    intent.putExtra("h5Url", groupData.get(position).getH5Url());
-                                                    startActivity(intent);
-                                                }
-                                            });
-
-                                            GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2) {
-                                                @Override
-                                                public boolean canScrollVertically() {//禁止layout垂直滑动
-                                                    return false;
-                                                }
-                                            };
-                                            gridLayoutManager.setSmoothScrollbarEnabled(true);
-                                            gridLayoutManager.setAutoMeasureEnabled(true);
-                                            rvHotGroup.setLayoutManager(gridLayoutManager);
-                                            //解决数据加载不完的问题
-                                            rvHotGroup.setHasFixedSize(true);
-                                            rvHotGroup.setNestedScrollingEnabled(false);
-                                            rvHotGroup.setAdapter(hotGroupAdapter);
-                                        } catch (Exception e) {
-                                        }
-                                    }
-                                    if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getTree())) {  //分类
-                                        final List<GroupClassifyBean> groupClassifyBeans = homeGroupsBean.getTree();
-                                        try {
-                                            HomeSortAdapter hotGroupAdapter = new HomeSortAdapter(groupClassifyBeans, mContext);
-                                            hotGroupAdapter.setOnItemClickLitsener(new GroupTreeAdapter.OnItemClickListener() {
-                                                @Override
-                                                public void onItemClick(View view, int position) {
-                                                    Long groupId = groupClassifyBeans.get(position).getId();
-                                                    Intent intent1 = new Intent(mContext, ClassifyActivity.class);
-                                                    intent1.putExtra("id", groupId);
-                                                    startActivity(intent1);
-                                                }
-                                            });
-                                            GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1) {
-                                                @Override
-                                                public boolean canScrollVertically() {//禁止layout垂直滑动
-                                                    return false;
-                                                }
-                                            };
-                                            gridLayoutManager.setSmoothScrollbarEnabled(true);
-                                            gridLayoutManager.setAutoMeasureEnabled(true);
-                                            rvGroupSortGroup.setLayoutManager(gridLayoutManager);
-                                            //解决数据加载不完的问题
-                                            rvGroupSortGroup.setHasFixedSize(true);
-                                            rvGroupSortGroup.setNestedScrollingEnabled(false);
-                                            rvGroupSortGroup.setAdapter(hotGroupAdapter);
-                                        } catch (Exception e) {
+                    @Override
+                    public void onSucceed(String action, DataResponse<HomeGroupsBean> response) {
+                        if (response.isSuccees()) {
+                            final HomeGroupsBean homeGroupsBean = response.getDat();
+                            if (!EncodeAndStringTool.isObjectEmpty(homeGroupsBean)) {
+                                if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getRecommend())) { //推荐题组
+                                    groupBeans = homeGroupsBean.getRecommend();
+                                    if (!EncodeAndStringTool.isListEmpty(groupBeans)) {
+                                        recommendIndex = 0;
+                                        rollRecommendGroup();
+                                        if (groupBeans.size() <= 2) {
+                                            llChangeGroup.setVisibility(View.GONE);
+                                        } else {
+                                            llChangeGroup.setVisibility(View.VISIBLE);
                                         }
                                     }
                                 }
-                            } catch (Exception e) {
+
+                                if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getOften())) { //常答题组
+                                    llOften.setVisibility(View.VISIBLE);
+                                    alwaysBanner.setVisibility(View.VISIBLE);
+
+                                    //常答题组
+                                    MarkBannerAdapter adapter1 = new MarkBannerAdapter(new GlideImageLoader());
+                                    List<IBannerItem> list1 = new ArrayList<>();
+                                    for (int i = 0; i < homeGroupsBean.getOften().size(); i++) {
+                                        MarkBannerItem item = new MarkBannerItem(homeGroupsBean.getOften().get(i).getPicture());
+                                        item.setMarkLabel(homeGroupsBean.getOften().get(i).getName());
+                                        list1.add(item);
+                                    }
+                                    adapter1.setData(mContext, list1);
+                                    alwaysBanner.setBannerAdapter(adapter1);
+
+                                    //设置index 在viewpager下面
+                                    ViewPager mViewpager1 = (ViewPager) alwaysBanner.getChildAt(0);
+                                    //为ViewPager设置高度
+                                    ViewGroup.LayoutParams params = mViewpager1.getLayoutParams();
+                                    params.height = getResources().getDimensionPixelSize(R.dimen.viewPager_02);
+                                    mViewpager1.setLayoutParams(params);
+                                    //设置时间，时间越长，速度越慢
+                                    ViewPagerScroller pagerScroller = new ViewPagerScroller(getActivity());
+                                    pagerScroller.setScrollDuration(400);
+                                    pagerScroller.initViewPagerScroll(mViewpager1);
+
+                                    alwaysBanner.setBannerItemClick(new BannerViewPager.OnBannerItemClick<IBannerItem>() {
+                                        @Override
+                                        public void onClick(IBannerItem data) {
+                                            for (int i = 0; i < homeGroupsBean.getOften().size(); i++) {
+                                                if (data.ImageUrl().equals(homeGroupsBean.getOften().get(i).getPicture())) {
+                                                    try {
+                                                        Intent intent = new Intent(mContext, WebAnswerActivity.class);
+                                                        intent.putExtra("groupId", homeGroupsBean.getOften().get(i).getId());
+                                                        intent.putExtra("h5Url", homeGroupsBean.getOften().get(i).getH5Url());
+                                                        startActivity(intent);
+                                                    } catch (Exception e) {
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    llOften.setVisibility(View.GONE);
+                                    alwaysBanner.setVisibility(View.GONE);
+                                }
+
+                                if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getThermal())) {   //大家都在答
+                                    final List<GroupBean> groupData = homeGroupsBean.getThermal();
+                                    try {
+                                        HotGroupAdapter hotGroupAdapter = new HotGroupAdapter(groupData, mContext);
+                                        hotGroupAdapter.setOnItemClickLitsener(new GroupTreeAdapter.OnItemClickListener() {
+                                            @Override
+                                            public void onItemClick(View view, int position) {
+                                                Long groupId = groupData.get(position).getId();
+                                                Intent intent = new Intent(mContext, WebAnswerActivity.class);
+                                                intent.putExtra("groupId", groupId);
+                                                intent.putExtra("h5Url", groupData.get(position).getH5Url());
+                                                startActivity(intent);
+                                            }
+                                        });
+
+                                        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2) {
+                                            @Override
+                                            public boolean canScrollVertically() {//禁止layout垂直滑动
+                                                return false;
+                                            }
+                                        };
+                                        gridLayoutManager.setSmoothScrollbarEnabled(true);
+                                        gridLayoutManager.setAutoMeasureEnabled(true);
+                                        rvHotGroup.setLayoutManager(gridLayoutManager);
+                                        //解决数据加载不完的问题
+                                        rvHotGroup.setHasFixedSize(true);
+                                        rvHotGroup.setNestedScrollingEnabled(false);
+                                        rvHotGroup.setAdapter(hotGroupAdapter);
+                                    } catch (Exception e) {
+                                    }
+                                }
+                                if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getTree())) {  //分类
+                                    final List<GroupClassifyBean> groupClassifyBeans = homeGroupsBean.getTree();
+                                    try {
+                                        HomeSortAdapter hotGroupAdapter = new HomeSortAdapter(groupClassifyBeans, mContext);
+                                        hotGroupAdapter.setOnItemClickLitsener(new GroupTreeAdapter.OnItemClickListener() {
+                                            @Override
+                                            public void onItemClick(View view, int position) {
+                                                Long groupId = groupClassifyBeans.get(position).getId();
+                                                Intent intent1 = new Intent(mContext, ClassifyActivity.class);
+                                                intent1.putExtra("id", groupId);
+                                                startActivity(intent1);
+                                            }
+                                        });
+                                        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1) {
+                                            @Override
+                                            public boolean canScrollVertically() {//禁止layout垂直滑动
+                                                return false;
+                                            }
+                                        };
+                                        gridLayoutManager.setSmoothScrollbarEnabled(true);
+                                        gridLayoutManager.setAutoMeasureEnabled(true);
+                                        rvGroupSortGroup.setLayoutManager(gridLayoutManager);
+                                        //解决数据加载不完的问题
+                                        rvGroupSortGroup.setHasFixedSize(true);
+                                        rvGroupSortGroup.setNestedScrollingEnabled(false);
+                                        rvGroupSortGroup.setAdapter(hotGroupAdapter);
+                                    } catch (Exception e) {
+                                    }
+                                }
                             }
                         } else {//错误码提示
-                            if (listDataResponse.getErr().equals("U0001")) {
+                            if (response.getErr().equals("U0001")) {
                                 mContext.finish();
                             }
-                            ErrorCodeTools.errorCodePrompt(mContext, listDataResponse.getErr(), listDataResponse.getMsg());
+                            ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
                         }
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
                     }
                 });
 
@@ -804,92 +748,76 @@ public class HomeFragment extends Fragment {
      * 获取宝箱数量
      */
     private void loadTreasureBoxNum() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.getTreasureNumV2()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<BoxBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+        RemotingEx.doRequest(ApiServiceBean.getTreasureNumV2(), new OnRemotingCallBackListener<BoxBean>() {
+            @Override
+            public void onCompleted(String action) {
 
-                    @Override
-                    public void onNext(DataResponse<BoxBean> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            BoxBean boxBean = dataResponse.getDat();
+            }
 
-                            if (!EncodeAndStringTool.isObjectEmpty(boxBean)) {
-                                try {
-                                    if (boxBean.getCount() > 0) {
-                                        if (boxBean.getCount() == 1 && boxBean.getSource() == 3) {//从微信获取且只有一个宝箱，直接跳开宝箱页面
-                                            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("FirstRun", 0);
-                                            Boolean first_run = sharedPreferences.getBoolean("Main", true);
-                                            if (first_run) {
-                                                sharedPreferences.edit().putBoolean("Main", false).commit();
-                                                Intent intent = new Intent(mContext, WebPrizeBoxActivity.class);
-                                                intent.putExtra("BoxBean", boxBean);
-                                                intent.putExtra("main_box", "main_box");
-                                                startActivity(intent);
-                                            }
-                                        } else {//如果宝箱数量大于0,首页左下角显示宝箱摇晃动画
-                                            ivBx.setVisibility(View.VISIBLE);
-                                            TranslateAnimation animation = new TranslateAnimation(5, -5, 0, 0);
-                                            animation.setInterpolator(new OvershootInterpolator());
-                                            animation.setDuration(500);
-                                            animation.setRepeatCount(Animation.INFINITE);
-                                            animation.setRepeatMode(Animation.REVERSE);
-                                            ivBx.startAnimation(animation);
-                                            ivBx.setOnClickListener(new OnMultiClickListener() {
-                                                @Override
-                                                public void onMultiClick(View v) {
-                                                    Intent intent = new Intent(mContext, MinePrizeActivity.class);
-                                                    intent.putExtra("status", 1);
-                                                    startActivity(intent);
-                                                }
-                                            });
-                                        }
-                                    } else {
-                                        try {
-                                            ivBx.clearAnimation();
-                                            ivBx.setVisibility(View.GONE);
-                                        } catch (Exception e) {
+            @Override
+            public void onFailed(String action, String message) {
 
-                                        }
-                                    }
+            }
 
-                                    //是否实名认证
-                                    if (!EncodeAndStringTool.isStringEmpty(boxBean.getIsRealName())) {
-                                        if (boxBean.getIsRealName().equals("true")) {
-                                            SaveUserInfo.getInstance(mContext).setUserInfo("cert", "1");
-                                        } else {
-                                            SaveUserInfo.getInstance(mContext).setUserInfo("cert", "0");
-                                        }
-                                    }
+            @Override
+            public void onSucceed(String action, DataResponse<BoxBean> response) {
+                if (response.isSuccees()) {
+                    BoxBean boxBean = response.getDat();
 
-                                } catch (Exception e) {
-
+                    if (!EncodeAndStringTool.isObjectEmpty(boxBean)) {
+                        if (boxBean.getCount() > 0) {
+                            if (boxBean.getCount() == 1 && boxBean.getSource() == 3) {//从微信获取且只有一个宝箱，直接跳开宝箱页面
+                                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("FirstRun", 0);
+                                Boolean first_run = sharedPreferences.getBoolean("Main", true);
+                                if (first_run) {
+                                    sharedPreferences.edit().putBoolean("Main", false).commit();
+                                    Intent intent = new Intent(mContext, WebPrizeBoxActivity.class);
+                                    intent.putExtra("BoxBean", boxBean);
+                                    intent.putExtra("main_box", "main_box");
+                                    startActivity(intent);
                                 }
+                            } else {//如果宝箱数量大于0,首页左下角显示宝箱摇晃动画
+                                ivBx.setVisibility(View.VISIBLE);
+                                TranslateAnimation animation = new TranslateAnimation(5, -5, 0, 0);
+                                animation.setInterpolator(new OvershootInterpolator());
+                                animation.setDuration(500);
+                                animation.setRepeatCount(Animation.INFINITE);
+                                animation.setRepeatMode(Animation.REVERSE);
+                                ivBx.startAnimation(animation);
+                                ivBx.setOnClickListener(new OnMultiClickListener() {
+                                    @Override
+                                    public void onMultiClick(View v) {
+                                        Intent intent = new Intent(mContext, MinePrizeActivity.class);
+                                        intent.putExtra("status", 1);
+                                        startActivity(intent);
+                                    }
+                                });
                             }
                         } else {
-                            if (dataResponse.getErr().equals("U0001")) {
-                                mContext.finish();
+                            try {
+                                ivBx.clearAnimation();
+                                ivBx.setVisibility(View.GONE);
+                            } catch (Exception e) {
+
                             }
-                            ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
                         }
-
+                        //是否实名认证
+                        if (!EncodeAndStringTool.isStringEmpty(boxBean.getIsRealName())) {
+                            if (boxBean.getIsRealName().equals("true")) {
+                                SaveUserInfo.getInstance(mContext).setUserInfo("cert", "1");
+                            } else {
+                                SaveUserInfo.getInstance(mContext).setUserInfo("cert", "0");
+                            }
+                        }
                     }
-
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
+                } else {
+                    if (response.getErr().equals("U0001")) {
+                        mContext.finish();
                     }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+                    ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
+                }
+            }
+        });
     }
 
     @Override
@@ -961,97 +889,69 @@ public class HomeFragment extends Fragment {
 
     //获取活动弹框信息
     private void getDialogInfo() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.configDialog()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<ConfigDialogBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+        RemotingEx.doRequest(ApiServiceBean.configDialog(), new OnRemotingCallBackListener<ConfigDialogBean>() {
+            @Override
+            public void onCompleted(String action) {
 
-                    @Override
-                    public void onNext(DataResponse<ConfigDialogBean> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            try {
-                                ConfigDialogBean configDialogBean = dataResponse.getDat();
-                                MainActivityDialogInfo.info(configDialogBean, mContext, llHomeFragment);
-                            } catch (Exception e) {
-                            }
+            }
 
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
-                        }
+            @Override
+            public void onFailed(String action, String message) {
 
-                    }
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+            @Override
+            public void onSucceed(String action, DataResponse<ConfigDialogBean> response) {
+                if (response.isSuccees()) {
+                    ConfigDialogBean configDialogBean = response.getDat();
+                    MainActivityDialogInfo.info(configDialogBean, mContext, llHomeFragment);
+                } else {
+                    ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
+                }
+            }
+        });
     }
-
 
     //获取公告信息
     private void getNoticeInfo() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.homeNotice()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<List<HomeNoticeBean>>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+        RemotingEx.doRequest(ApiServiceBean.homeNotice(), new OnRemotingCallBackListener<List<HomeNoticeBean>>() {
+            @Override
+            public void onCompleted(String action) {
 
-                    @Override
-                    public void onNext(DataResponse<List<HomeNoticeBean>> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            try {
-                                if (!EncodeAndStringTool.isObjectEmpty(dataResponse.getDat())) {
-                                    rlAd.setVisibility(View.VISIBLE);
-                                    final List<HomeNoticeBean> homeNoticeBeanList = dataResponse.getDat();
-                                    //公告
+            }
 
-                                    List<String> info = new ArrayList<>();
-                                    for (int i = 0; i < homeNoticeBeanList.size(); i++) {
-                                        info.add(homeNoticeBeanList.get(i).getContent());
-                                    }
-                                    scrollAd.setDatas(info);
-                                    //设置TextBannerView点击监听事件，返回点击的data数据, 和position位置
-                                    scrollAd.setItemOnClickListener(new ITextBannerItemClickListener() {
-                                        @Override
-                                        public void onItemClick(String data, int position) {
-                                            H5JumpUtil.dialogSkip(homeNoticeBeanList.get(position).getAction(), homeNoticeBeanList.get(position).getGroupId(), homeNoticeBeanList.get(position).getH5Url(), mContext, llHomeFragment, homeNoticeBeanList.get(position).getIsLogin());
-                                        }
-                                    });
-                                } else {
-                                    rlAd.setVisibility(View.GONE);
-                                }
-                            } catch (Exception e) {
-                            }
+            @Override
+            public void onFailed(String action, String message) {
 
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<List<HomeNoticeBean>> response) {
+                if (response.isSuccees()) {
+                    if (!EncodeAndStringTool.isObjectEmpty(response.getDat())) {
+                        rlAd.setVisibility(View.VISIBLE);
+                        final List<HomeNoticeBean> homeNoticeBeanList = response.getDat();
+                        //公告
+                        List<String> info = new ArrayList<>();
+                        for (int i = 0; i < homeNoticeBeanList.size(); i++) {
+                            info.add(homeNoticeBeanList.get(i).getContent());
                         }
-
+                        scrollAd.setDatas(info);
+                        //设置TextBannerView点击监听事件，返回点击的data数据, 和position位置
+                        scrollAd.setItemOnClickListener(new ITextBannerItemClickListener() {
+                            @Override
+                            public void onItemClick(String data, int position) {
+                                H5JumpUtil.dialogSkip(homeNoticeBeanList.get(position).getAction(), homeNoticeBeanList.get(position).getGroupId(), homeNoticeBeanList.get(position).getH5Url(), mContext, llHomeFragment, homeNoticeBeanList.get(position).getIsLogin());
+                            }
+                        });
+                    } else {
+                        rlAd.setVisibility(View.GONE);
                     }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+                } else {
+                    ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
+                }
+            }
+        });
     }
 
     // scrollview滚动监听

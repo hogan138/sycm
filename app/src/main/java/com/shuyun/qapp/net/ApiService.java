@@ -57,20 +57,16 @@ import retrofit2.http.Query;
 /**
  * 接口地址
  */
-
 public interface ApiService {
 
-
     /**
-     * 1、首页banner/app-center
+     * 1、首页banner
      */
     @GET("/rest/app/banner")
     Observable<DataResponse<List<BannerBean>>> getHomeBanner();
 
     /**
-     * 2 首页题组/activity-center
-     *
-     * @return
+     * 2 首页题组
      */
     @GET("/rest/act/known/group/home")
     Observable<DataResponse<HomeGroupsBean>> getHomeGroups(@Query("appVersion") String appVersion);
@@ -82,47 +78,6 @@ public interface ApiService {
      */
     @POST("/rest/security/login")
     Observable<DataResponse<LoginResponse>> login(@Body RequestBody body);
-
-    /**
-     * 4、获取题组详情//{id} /activity-center TODO act  参数问题  ,@Query("act") long act
-     *
-     * @param id
-     * @return
-     * @Query("act") int act  该题组参与的活动id
-     */
-//    @GET("/rest/act/known/group/{id}")
-//    Observable<DataResponse<String>> getGroupDetails(@Path("id") int id);
-
-    /**
-     * 5、答题活动的中奖扩展规则答题情况TODO
-     * /activity-center
-     *
-     * @param id
-     * @return
-     */
-//    @GET("/rest/act/exam/xrule/act/{id}")
-//    Observable<DataResponse<String>> getXruleAnswerInfo(@Path("id") int id);
-
-    /**
-     * 6、扩展活动抽奖TODO
-     * /activity-center
-     * 加上了数美deviceId
-     *
-     * @param act
-     * @return
-     */
-//    @GET("/rest/act/x/lucky")
-//    Observable<DataResponse<String>> getXruleActivityPrize(@Query("act") int act, @Query("deviceId") String deviceId);
-
-    /**
-     * 7、获取扩展抽奖活动信息TODO
-     * /activity-center/
-     *
-     * @param act
-     * @return
-     */
-//    @GET("/rest/act/x/lucky/info")
-//    Observable<DataResponse<String>> getXruleActivityPrizeInfo(@Query("act") int act);
 
     /**
      * 8、申请答题
@@ -165,132 +120,47 @@ public interface ApiService {
     /**
      * 13、获取我的奖品/user-center
      */
-
     @GET("/rest/user/award/v3")
     Observable<DataResponse<List<MinePrize>>> getMyPrize(@Query("status") int status, @Query("page") int page);
 
     /**
      * 14、申请提现
      * /user-center
-     *
-     * @param body
-     * @return
      */
-
     @POST("/rest/user/money/withdraw/apply")
     Observable<DataResponse<OutPutWithdraw>> applyWithdrawal(@Body RequestBody body);
 
     /**
      * 15、查询现金流水记录
      * /user-center
-     *
-     * @return
      */
     @GET("/rest/user/cash")
     Observable<DataResponse<List<AccountBean>>> queryCashFlow(@Query("page") int page);
 
     /**
-     * /activity-center/rest/act/bp/lucky/info
-     * 16、获取积分抽奖活动信息 /activity-center
-     */
-//    @GET("/rest/act/bp/lucky/info")
-//    Observable<DataResponse<String>> getIntegralDrawInfo();
-
-    /**
      * 17、查询积分流水记录
      * /user-center
-     *
-     * @return
      */
     @GET("/rest/user/bp")
     Observable<DataResponse<List<AccountBean>>> queryIntegralCurrent(@Query("page") int page);
 
-
     /**
      * 18、获取验证码
      * /authorize-service
-     *
-     * @return
      */
     @POST("/rest/security/sms")
     Observable<DataResponse<String>> getCode(@Body RequestBody body);
 
-
-    /**
-     * 19、绑定手机号 /user-center
-     * 当err=S0002时，dat表示当前的状态
-     *
-     * @param phone 手机号
-     * @param code  验证码
-     * @return
-     */
-//    @GET("/rest/user/phone/bind")
-//    Observable<DataResponse> bindPhomeNum(@Query("phone") String phone, @Query("code") String code);
-
     /**
      * 20、用户变更头像
      * /user-center
-     *
-     * @param headerId
-     * @return
      */
     @GET("/rest/user/header")
     Observable<DataResponse<Integer>> changeHeader(@Query("headerId") int headerId);
 
     /**
-     * 21、积分抽奖
-     * /activity-center
-     *
-     * @return
-     */
-
-    /**
-     * 21、积分抽奖
-     * /activity-center
-     * 加上了数美 deviceId
-     *
-     * @param deviceId 设备id  数美sdk返回的设备id
-     * @return
-     */
-//    @GET("/rest/act/bp/lucky")
-//    Observable<DataResponse<String>> integralDraw(@Query("deviceId") String deviceId);
-
-    /**
-     * 22、打开宝箱
-     * /user-center
-     *
-     * @param id
-     * @return
-     */
-    @GET("/rest/user/lucky/{id}")
-    Observable<DataResponse<List<MinePrize>>> openTreasureBox(@Path("id") String id);
-
-
-    /**
-     * 23、打开宝箱2
-     * /user-center
-     *
-     * @param id
-     * @return
-     */
-    @GET("/rest/user/lucky/{id}")
-    Observable<Object> openTreasureBox2(@Path("id") String id);
-
-    /**
-     * 24、获取宝箱数量
-     * /user-center
-     *
-     * @return
-     */
-    @GET("/rest/user/lucky/available")
-    Observable<DataResponse<Integer>> getTreasureNum();
-
-
-    /**
      * 25、获取宝箱数量
      * /user-center
-     *
-     * @return
      */
     @GET("/rest/user/lucky/available/v2")
     Observable<DataResponse<BoxBean>> getTreasureNumV2();
@@ -350,7 +220,6 @@ public interface ApiService {
     @GET("/rest/act/q/{id}/fb")
     Observable<DataResponse> getAnswerFeedBack(@Path("id") Long id, @Query("feedbackId") int feedbackId);
 
-
     /**
      * 32、领取答题机会TODO
      * /user-center
@@ -364,7 +233,6 @@ public interface ApiService {
      */
     @GET("/rest/user/oppty/remainder")
     Observable<DataResponse<String>> getAnswerOpptyRemainder();
-
 
     /**
      * 34、反馈建议TODO
@@ -383,8 +251,6 @@ public interface ApiService {
 
     /**
      * 36、获取广告列表 LoginInput /app-center
-     *
-     * @return
      */
     @GET("/rest/app/ad")
     Observable<DataResponse<AdBean>> getAd(@Query("devId") int devId, @Query("appId") int appId,
@@ -404,8 +270,6 @@ public interface ApiService {
     /**
      * 38、使用道具
      * 增次卡
-     *
-     * @return
      */
     @GET("/rest/user/prop/{id}/use")
     Observable<DataResponse> addAnswerNum(@Path("id") String id);
@@ -504,12 +368,9 @@ public interface ApiService {
     @GET("/rest/battle/bKnowGroup")
     Observable<DataResponse<List<GroupAgainstBean>>> groupAgainst(@Query("type") int type);
 
-
     /**
      * 51、用户匹配时长
      * //@param jwtToken @Query("jwtToken") String jwtToken
-     *
-     * @return
      */
     @GET("/rest/battle/bMatch")
     Observable<DataResponse<MatchTimeBean>> getMatchTimeInfo();
@@ -546,7 +407,6 @@ public interface ApiService {
     @GET("/rest/battle/bEnd")
     Observable<DataResponse<Integer>> completeAnswAgainst(@Query("type") int type, @Query("isWin") int isWin);
 
-
     /**
      * 56、答题对战分享
      * /share-service
@@ -582,7 +442,7 @@ public interface ApiService {
      * 60、积分夺宝我的奖券
      */
     @GET("/rest/act/bp/treasure/myTicket")
-    Observable<DataResponse<List<ExchangeMyPrizeBean>>> getMyPrize(@Query("page") int page);
+    Observable<DataResponse<List<ExchangeMyPrizeBean>>> getMyTicket(@Query("page") int page);
 
     /**
      * 61、宝贝详情
@@ -616,7 +476,7 @@ public interface ApiService {
      * 65、首页邀请有奖
      */
     @GET("/rest/user/inviteShare")
-    Observable<DataResponse<InviteBean>> prizeShare();
+    Observable<DataResponse<InviteBean>> inviteShare();
 
     /**
      * 66、用户设置密码

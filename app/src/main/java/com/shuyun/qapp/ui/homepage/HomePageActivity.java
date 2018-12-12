@@ -23,7 +23,6 @@ import android.view.animation.Animation;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -41,22 +40,19 @@ import com.shuyun.qapp.bean.InviteBean;
 import com.shuyun.qapp.event.MessageEvent;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.HeartBeatManager;
 import com.shuyun.qapp.ui.activity.ActivityFragment;
 import com.shuyun.qapp.ui.classify.ClassifyFragment;
-import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.mine.MineFragment;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ExampleUtil;
-import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
-import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.StatusBarUtil;
 import com.shuyun.qapp.view.NoScrollViewPager;
-import com.shuyun.qapp.wxapi.WXEntryActivity;
 import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 
@@ -304,6 +300,9 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
     @Override
     public void onResume() {
         super.onResume();
+
+        HeartBeatManager.instance().start(this);
+
         MobclickAgent.onResume(this); //统计时长
 
         StatService.onResume(this);
@@ -608,7 +607,7 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
     //邀请有奖
     private void invite() {
         ApiService apiService = BasePresenter.create(8000);
-        apiService.prizeShare()
+        apiService.inviteShare()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<DataResponse<InviteBean>>() {

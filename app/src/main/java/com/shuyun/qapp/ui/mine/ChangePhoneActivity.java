@@ -202,10 +202,8 @@ public class ChangePhoneActivity extends BaseActivity {
                         @Override
                         public void onNext(DataResponse dataResponse) {
                             if (dataResponse.isSuccees()) {
-
                                 //清空原先的别名
                                 //设置别名
-                                JPushInterface.setAlias(ChangePhoneActivity.this, new Random().nextInt(), "");
                                 JPushInterface.setAlias(ChangePhoneActivity.this, new Random().nextInt(), phoneNumber);
 
                                 //绑定成功

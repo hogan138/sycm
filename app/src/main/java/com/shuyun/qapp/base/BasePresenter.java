@@ -24,17 +24,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * 网络请求配置
  */
-
 public class BasePresenter {
-    private static long CONNECT_TIMEOUT = 10L;
-    private static long READ_TIMEOUT = 15L;
-    private static long WRITE_TIMEOUT = 15L;
+    private static final long CONNECT_TIMEOUT = 10L;
+    private static final long READ_TIMEOUT = 15L;
+    private static final long WRITE_TIMEOUT = 15L;
     private static volatile OkHttpClient mOkHttpClient;
     private static ApiService apiService;
 
     public static ApiService create(int port) {
         if (apiService == null) {
-            Retrofit retrofit = new Retrofit.Builder().baseUrl(AppConst.BASE_URL)//+ ":" + port + "/"
+            Retrofit retrofit = new Retrofit.Builder().baseUrl(AppConst.BASE_URL)
                     .client(getOkHttpClient())
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create()).build();
@@ -43,48 +42,25 @@ public class BasePresenter {
         return apiService;
     }
 
+    public static ApiService Builder() {
+        return create(0);
+    }
+
     /**
      * 获取OkHttpClient实例
      *
      * @return
      */
-
-    static List<String> SERVERS = new ArrayList<>();
-    static ListDataSave listDataSave;
-
     private static OkHttpClient getOkHttpClient() {
         if (mOkHttpClient == null) {
             synchronized (BasePresenter.class) {
-
                 if (mOkHttpClient == null) {
-
-                    //添加重定向IP
-//                    SERVERS = new ArrayList<>();
-//                    SERVERS.clear();
-
-                    //版本控制的url
-//                    try {
-//                        listDataSave = new ListDataSave(MyApplication.getAppContext(), "url");
-//                        if (!EncodeAndStringTool.isListEmpty(listDataSave.getDataList("forUrl"))) {
-//                            for (int i = 0; i < listDataSave.getDataList("forUrl").size(); i++) {
-//                                String url1 = listDataSave.getDataList("forUrl").get(i).toString().substring(0, listDataSave.getDataList("forUrl").get(i).toString().length() - 1);
-//                                SERVERS.add(url1);
-//                            }
-//                        }
-//                    } catch (Exception e) {
-//
-//                    }
-
-                    //固定的ip
-//                    SERVERS.add("http://106.15.130.118");
                     mOkHttpClient = new OkHttpClient.Builder()
                             .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
                             .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
                             .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
                             .addInterceptor(mSignagureInteceptor)
                             .addInterceptor(mLoggingInterceptor)
-//                            .retryOnConnectionFailure(true)//允许失败重试
-//                            .addInterceptor(new RetryAndChangeIpInterceptor(AppConst.BASE_URL, SERVERS, 2))//添加失败重试及重定向拦截器
                             .build();
                 }
             }
@@ -121,11 +97,10 @@ public class BasePresenter {
         public Response intercept(Chain chain) throws IOException {
             Request request = chain.request();
             Response response = chain.proceed(request);//请求输入的链接
-
             //错误拦截
             if (response.code() != 200) {
                 return new Response.Builder()
-                        .code(00000)
+                        .code(0)
                         .body(ResponseBody.create(response.body().contentType(), "服务器错误！"))
                         .request(request)
                         .protocol(Protocol.HTTP_1_1)
@@ -134,6 +109,4 @@ public class BasePresenter {
             return response;
         }
     };
-
-
 }

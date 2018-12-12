@@ -114,7 +114,7 @@ public class MyPrizeActivity extends BaseActivity {
 
     private void loadIntegralCurrent() {
         ApiService apiService = BasePresenter.create(8000);
-        apiService.getMyPrize(currentPage)
+        apiService.getMyTicket(currentPage)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<DataResponse<List<ExchangeMyPrizeBean>>>() {
