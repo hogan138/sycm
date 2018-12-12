@@ -14,8 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_156"
         android:layout_marginLeft="@dimen/text_23"
-        android:layout_marginRight="@dimen/text_23"
         android:layout_marginTop="@dimen/text_10"
+        android:layout_marginRight="@dimen/text_23"
         android:src="@mipmap/letter_example" />
 
     <TextView
@@ -31,8 +31,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_0.5"
         android:layout_marginLeft="@dimen/text_15"
-        android:layout_marginRight="@dimen/text_15"
         android:layout_marginTop="@dimen/text_15"
+        android:layout_marginRight="@dimen/text_15"
         android:background="@color/color_36" />
 
     <ImageView
@@ -40,8 +40,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_140"
         android:layout_marginLeft="@dimen/text_27"
-        android:layout_marginRight="@dimen/text_27"
         android:layout_marginTop="@dimen/text_40"
+        android:layout_marginRight="@dimen/text_27"
         android:scaleType="fitXY"
         android:src="@mipmap/camera" />
 
@@ -50,9 +50,10 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_45"
         android:layout_marginLeft="@dimen/text_30"
-        android:layout_marginRight="@dimen/text_30"
         android:layout_marginTop="@dimen/text_44"
+        android:layout_marginRight="@dimen/text_30"
         android:background="@drawable/btn_bind_wechat_bg"
+        android:foreground="?attr/selectableItemBackground"
         android:text="下一步"
         android:textColor="@color/white"
         android:textSize="@dimen/text_15" />

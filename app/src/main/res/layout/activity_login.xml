@@ -184,6 +184,7 @@
             android:layout_marginRight="@dimen/common_margin"
             android:layout_marginBottom="@dimen/text_1"
             android:background="@drawable/selector_3"
+            android:foreground="?attr/selectableItemBackground"
             android:text="@string/login"
             android:textColor="@color/login_text"
             android:textSize="@dimen/text_17"

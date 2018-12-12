@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_free_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:id="@+id/ll_free_main"
     android:orientation="vertical"
     tools:context="com.shuyun.qapp.ui.against.FreeMainActivity">
 
@@ -26,8 +26,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/text_15"
-        android:layout_marginRight="@dimen/text_15"
         android:layout_marginTop="@dimen/text_15"
+        android:layout_marginRight="@dimen/text_15"
         android:fillViewport="true">
 
         <LinearLayout
@@ -38,7 +38,8 @@
             <RelativeLayout
                 android:id="@+id/rl_random"
                 android:layout_width="match_parent"
-                android:layout_height="85dp">
+                android:layout_height="85dp"
+                android:foreground="?attr/selectableItemBackground">
 
                 <com.shuyun.qapp.view.RoundImageView
                     android:layout_width="match_parent"

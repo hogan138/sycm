@@ -443,7 +443,15 @@
         <activity
             android:name=".ui.mine.BoxRecordActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.mine.MyPropsActivity"></activity>
+        <!--我的道具-->
+        <activity
+            android:name=".ui.mine.MyPropsActivity"
+            android:screenOrientation="portrait" />
+
+        <!--glide加载图片变绿-->
+        <meta-data
+            android:name="com.shuyun.qapp.utils.GlideConfiguration"
+            android:value="GlideModule" />
     </application>
 
 </manifest>

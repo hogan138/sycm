@@ -98,9 +98,10 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_45"
         android:layout_marginLeft="@dimen/text_30"
-        android:layout_marginRight="@dimen/text_30"
         android:layout_marginTop="@dimen/text_55"
+        android:layout_marginRight="@dimen/text_30"
         android:background="@drawable/btn_bind_wechat_bg"
+        android:foreground="?attr/selectableItemBackground"
         android:text="下一步"
         android:textColor="@color/white"
         android:textSize="@dimen/text_15" />

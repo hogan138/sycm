@@ -11,7 +11,8 @@
     <RelativeLayout
         android:id="@+id/rl_account_logout"
         android:layout_width="match_parent"
-        android:layout_height="45.5dp">
+        android:layout_height="45.5dp"
+        android:foreground="?attr/selectableItemBackground">
 
         <TextView
             android:layout_width="wrap_content"

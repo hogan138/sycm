@@ -255,8 +255,8 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
                                             //答题免登录返回宝箱id
                                             if (!EncodeAndStringTool.isStringEmpty(loginResp.getBoxId())) {
                                                 SharedPrefrenceTool.put(mContext, "boxId", loginResp.getBoxId());
+                                                EventBus.getDefault().post(new MessageEvent(loginResp.getBoxId()));
                                             }
-                                            EventBus.getDefault().post(new MessageEvent(loginResp.getBoxId()));
                                         } catch (Exception e) {
 
                                         }

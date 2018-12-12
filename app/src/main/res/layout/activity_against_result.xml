@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_against_result"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:id="@+id/rl_against_result"
     tools:context="com.shuyun.qapp.ui.against.AgainstResultActivity">
 
     <include
@@ -38,8 +38,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/iv_status"
-        android:layout_marginRight="@dimen/text_30"
         android:layout_marginTop="@dimen/text_30"
+        android:layout_marginRight="@dimen/text_30"
         android:layout_toLeftOf="@+id/tv"
         android:orientation="vertical">
 
@@ -117,7 +117,8 @@
         android:layout_below="@+id/tv"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="108dp"
-        android:background="@drawable/start_matching_bg">
+        android:background="@drawable/start_matching_bg"
+        android:foreground="?attr/selectableItemBackground">
 
         <TextView
             android:id="@id/tv"
@@ -150,6 +151,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
         android:background="@drawable/matching_btn_bg"
+        android:foreground="?attr/selectableItemBackground"
         android:text="查看错题"
         android:textColor="#0194EC"
         android:textSize="@dimen/text_18"

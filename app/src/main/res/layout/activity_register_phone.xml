@@ -54,8 +54,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/text_10"
-            android:layout_marginRight="@dimen/text_15"
             android:layout_marginTop="@dimen/text_10"
+            android:layout_marginRight="@dimen/text_15"
             android:src="@mipmap/cuowu1"
             android:visibility="gone" />
 
@@ -65,19 +65,20 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginLeft="@dimen/text_12"
-        android:layout_marginRight="@dimen/text_12"
         android:layout_marginTop="@dimen/text_10"
+        android:layout_marginRight="@dimen/text_12"
         android:background="@color/color_33" />
 
     <Button
         android:id="@+id/btn_next"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_marginBottom="@dimen/text_1"
         android:layout_marginLeft="@dimen/common_margin"
-        android:layout_marginRight="@dimen/common_margin"
         android:layout_marginTop="47dp"
+        android:layout_marginRight="@dimen/common_margin"
+        android:layout_marginBottom="@dimen/text_1"
         android:background="@drawable/selector_3"
+        android:foreground="?attr/selectableItemBackground"
         android:text="@string/next"
         android:textColor="@color/login_text"
         android:textSize="@dimen/text_15" />

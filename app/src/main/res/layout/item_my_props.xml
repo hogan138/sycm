@@ -24,6 +24,7 @@
         android:layout_marginRight="@dimen/text_15"
         android:layout_marginBottom="@dimen/text_15"
         android:background="@drawable/selector_3"
+        android:foreground="?attr/selectableItemBackground"
         android:gravity="center"
         android:textColor="@color/white"
         android:textSize="12sp" />

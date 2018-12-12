@@ -20,9 +20,10 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_40"
         android:layout_marginLeft="@dimen/common_margin"
-        android:layout_marginRight="@dimen/common_margin"
         android:layout_marginTop="67dp"
+        android:layout_marginRight="@dimen/common_margin"
         android:background="@drawable/btn_selector"
+        android:foreground="?attr/selectableItemBackground"
         android:text="@string/confirm"
         android:textColor="@color/white"
         android:textSize="@dimen/text_18" />

@@ -197,6 +197,7 @@
             android:layout_marginRight="@dimen/common_margin"
             android:background="@drawable/selector_cash_withdraw"
             android:enabled="false"
+            android:foreground="?attr/selectableItemBackground"
             android:text="立即提现"
             android:textColor="@color/white"
             android:textSize="@dimen/text_16" />
@@ -215,6 +216,7 @@
             android:layout_height="30dp"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/common_contact_our_bg"
+            android:foreground="?attr/selectableItemBackground"
             android:stateListAnimator="@null"
             android:text="@string/contact_our"
             android:textColor="@color/color_4"

@@ -118,6 +118,7 @@
             android:layout_centerInParent="true"
             android:layout_marginTop="65dp"
             android:background="@drawable/matching_btn_bg"
+            android:foreground="?attr/selectableItemBackground"
             android:text="取消匹配"
             android:textColor="#0194EC"
             android:textSize="@dimen/text_15"
