@@ -35,6 +35,7 @@ import com.shuyun.qapp.adapter.MyHomeadapter;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.ActivityTimeBean;
+import com.shuyun.qapp.bean.AdBean;
 import com.shuyun.qapp.bean.AppVersionBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.InviteBean;
@@ -45,6 +46,8 @@ import com.shuyun.qapp.net.HeartBeatManager;
 import com.shuyun.qapp.ui.activity.ActivityFragment;
 import com.shuyun.qapp.ui.classify.ClassifyFragment;
 import com.shuyun.qapp.ui.mine.MineFragment;
+import com.shuyun.qapp.ui.webview.WebAnswerActivity;
+import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
@@ -151,6 +154,9 @@ public class HomePageActivity extends BaseActivity implements RadioGroup.OnCheck
                 index = 3;
             }
         });
+
+        //从广告页过来
+        skip();
     }
 
     @Override
@@ -641,5 +647,49 @@ public class HomePageActivity extends BaseActivity implements RadioGroup.OnCheck
                     }
                 });
     }
+
+
+    //从广告页进来
+    private void skip() {
+        try {
+            String from = getIntent().getStringExtra("from");
+            if (!EncodeAndStringTool.isStringEmpty(from) && "welcome".equals(from)) {
+                final Long model = getIntent().getLongExtra("model", 0);
+                final String content = getIntent().getStringExtra("content");
+                final Long isLogin = getIntent().getLongExtra("isLogin", 0);
+                if (model == 3) {//题组跳转
+                    if (!EncodeAndStringTool.isStringEmpty(content)) {
+                        Intent intent = new Intent(HomePageActivity.this, WebAnswerActivity.class);
+                        intent.putExtra("groupId", Integer.parseInt(content));
+                        intent.putExtra("from", "splash");
+                        intent.putExtra("h5Url", getIntent().getStringArrayExtra("examUrl"));
+                        intent.putExtra("isLogin", isLogin);
+                        startActivity(intent);
+                    }
+                } else if (model == 2) {//内部链接
+                    if (!EncodeAndStringTool.isStringEmpty(content)) {
+                        Intent intent = new Intent(HomePageActivity.this, WebH5Activity.class);
+                        intent.putExtra("url", content);
+                        intent.putExtra("name", "全民共进");
+                        intent.putExtra("from", "splash");
+                        intent.putExtra("isLogin", isLogin);
+                        startActivity(intent);
+                    }
+                } else if (model == 1) {//外部链接
+                    if (!EncodeAndStringTool.isStringEmpty(content)) {
+                        Uri uri = Uri.parse(content);
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent);
+                    }
+                } else if (model == 0) {
+
+                }
+
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
 
 }

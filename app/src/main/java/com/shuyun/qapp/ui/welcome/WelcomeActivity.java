@@ -122,38 +122,18 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
         ivAdvertising.setOnClickListener(new OnMultiClickListener() {
             @Override
             public void onMultiClick(View v) {
-
                 //TODO 这里不需要进行逻辑判断 一律打开HomePage 在首页进行处理 默认首页不进行数据请求
-                if (model == 3) {//题组跳转
-                    if (!EncodeAndStringTool.isStringEmpty(content)) {
-                        Intent intent = new Intent(mContext, WebAnswerActivity.class);
-                        intent.putExtra("groupId", Integer.parseInt(content));
-                        intent.putExtra("from", "splash");
-                        intent.putExtra("h5Url", adBean.getExamUrl());
-                        intent.putExtra("isLogin", isLogin);
-                        startActivity(intent);
-                        finish();
-                    }
-                } else if (model == 2) {//内部链接
-                    if (!EncodeAndStringTool.isStringEmpty(content)) {
-                        Intent intent = new Intent(mContext, WebH5Activity.class);
-                        intent.putExtra("url", content);
-                        intent.putExtra("name", "全民共进");
-                        intent.putExtra("from", "splash");
-                        intent.putExtra("isLogin", isLogin);
-                        startActivity(intent);
-                        finish();
-                    }
-                } else if (model == 1) {//外部链接
-                    if (!EncodeAndStringTool.isStringEmpty(content)) {
-                        Uri uri = Uri.parse(content);
-                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                        startActivity(intent);
-                        finish();
-                    }
-                } else if (model == 0) {
-                    skip();
-                }
+                Intent intent = new Intent();
+                intent.putExtra("from", "welcome");
+                intent.putExtra("model", model);
+                intent.putExtra("content", content);
+                intent.putExtra("examUrl", adBean.getExamUrl());
+                intent.putExtra("isLogin", isLogin);
+                intent.setClass(mContext, HomePageActivity.class);
+                startActivity(intent);
+                finish();
+                if (timer != null)
+                    timer.cancel();
             }
         });
         tvSkip.setOnClickListener(new View.OnClickListener() {
@@ -167,7 +147,7 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
     private void initTime() {
         long time = 3;
         Long timeout = adBean.getTimeout();
-        if(timeout != null && timeout != 0)
+        if (timeout != null && timeout != 0)
             time = timeout;
 
         timer = new CountDownTimer(time * 1000, 1000) {
