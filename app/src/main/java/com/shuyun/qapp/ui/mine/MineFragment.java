@@ -213,7 +213,7 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
             case R.id.rl_back:
                 if (mContext instanceof HomePageActivity) {
                     HomePageActivity homePageActivity = (HomePageActivity) mContext;
-                    homePageActivity.changeUi(0);
+                    homePageActivity.radioGroupChange(0);
                 }
                 break;
             case R.id.iv_common_right_icon: //右侧消息按钮;

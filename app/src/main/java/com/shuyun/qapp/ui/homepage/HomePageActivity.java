@@ -213,7 +213,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
     private int index = 0;
 
     //更改Fragment
-    public void changeUi(int index) {
+    private void changeUi(int index) {
         this.index = index;
         pager.setCurrentItem(index, false);
     }
@@ -420,7 +420,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         }
     }
 
-    private void radioGroupChange(int position) {
+    public void radioGroupChange(int position) {
         if (position == 3) {
             SaveUserInfo.getInstance(HomePageActivity.this).setUserInfo("home_mine", "3");
         } else {

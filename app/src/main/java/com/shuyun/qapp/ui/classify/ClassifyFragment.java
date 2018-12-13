@@ -13,37 +13,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.TimeUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.ChildrenGroupAdapter;
 import com.shuyun.qapp.adapter.GroupTreeAdapter;
 import com.shuyun.qapp.base.BaseFragment;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.GroupClassifyBean;
-import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.umeng.analytics.MobclickAgent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 分类
  */
-public class ClassifyFragment extends BaseFragment {
+public class ClassifyFragment extends BaseFragment implements OnRemotingCallBackListener<List<GroupClassifyBean>> {
 
     @BindView(R.id.rv_group_sort)
     RecyclerView rvGroupSort;//左侧题组分类RecyclerView
@@ -51,8 +47,18 @@ public class ClassifyFragment extends BaseFragment {
     RecyclerView rvGroup;//右侧题组RecyclerView
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle;
-    Unbinder unbinder;
+
+    private Unbinder unbinder;
     private Activity mContext;
+    private List<GroupClassifyBean> classifyBeans = new ArrayList<>();
+    private List<GroupClassifyBean.ChildrenBean> childrenBeans = new ArrayList<>();
+
+    private GroupTreeAdapter groupTreeAdapter;
+    private CenterLayoutManager centerLayoutManager;
+    /**
+     * 右侧题组分类列表
+     */
+    private ChildrenGroupAdapter childrenGroupAdapter;
 
     @Override
     public void onAttach(Context context) {
@@ -73,12 +79,57 @@ public class ClassifyFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         mContext = getActivity();
         tvCommonTitle.setText("题组分类");
+
+        groupTreeAdapter = new GroupTreeAdapter(classifyBeans, mContext);//分类左侧适配器
+        centerLayoutManager = new CenterLayoutManager(mContext);
+
+        /**
+         * 左侧分类列表点击事件
+         */
+        groupTreeAdapter.setOnItemClickLitsener(new GroupTreeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                if (!EncodeAndStringTool.isListEmpty(classifyBeans)) {
+                    for (int i = 0; i < classifyBeans.size(); i++) {
+                        if (i == position) {
+                            classifyBeans.get(i).setFlag(true);
+                        } else {
+                            classifyBeans.get(i).setFlag(false);
+                        }
+                        groupTreeAdapter.notifyDataSetChanged();
+                    }
+                    /**
+                     * 将答题树列表滑动到指定位置TODO  和点击选中有问题; groupTreeAdapter
+                     */
+                    centerLayoutManager.smoothScrollToPosition(rvGroup, new RecyclerView.State(), position);
+
+                    refreshRightGroup(position, classifyBeans);
+                }
+            }
+        });
+        rvGroupSort.setLayoutManager(centerLayoutManager);
+        rvGroupSort.setAdapter(groupTreeAdapter);
+
+        childrenGroupAdapter = new ChildrenGroupAdapter(mContext, childrenBeans);
+        childrenGroupAdapter.setOnItemClickLitsener(new ChildrenGroupAdapter.OnItemClickListener() {
+            @Override
+            public void onItemChildClick(View view, int position) {
+                GroupClassifyBean.ChildrenBean childrenBean = childrenBeans.get(position);
+                Intent intent = new Intent(mContext, WebAnswerActivity.class);
+                intent.putExtra("groupId", childrenBean.getId());
+                intent.putExtra("h5Url", childrenBean.getH5Url());
+                startActivity(intent);
+            }
+        });
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(mContext);
+        rvGroup.setLayoutManager(layoutManager2);
+        rvGroup.setAdapter(childrenGroupAdapter);
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if(!isVisibleToUser)
+        if (!isVisibleToUser)
             return;
         refresh();
     }
@@ -89,9 +140,9 @@ public class ClassifyFragment extends BaseFragment {
             case R.id.iv_back: //返回键
                 if (mContext instanceof HomePageActivity) {
                     HomePageActivity homePageActivity = (HomePageActivity) mContext;
-                    homePageActivity.changeUi(0);
+                    homePageActivity.radioGroupChange(0);
                 } else if (mContext instanceof ClassifyActivity) {
-                    startActivity(new Intent(mContext, HomePageActivity.class));
+                    mContext.finish();
                 }
                 break;
             default:
@@ -103,88 +154,7 @@ public class ClassifyFragment extends BaseFragment {
      * 获取到题组树
      */
     private void loadGroupTree() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.getGroupTree()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<List<GroupClassifyBean>>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse<List<GroupClassifyBean>> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            /**
-                             * 左侧题组分类列表
-                             */
-                            final List<GroupClassifyBean> classifyBeans = dataResponse.getDat();
-                            if (!EncodeAndStringTool.isListEmpty(classifyBeans)) {
-                                final GroupTreeAdapter groupTreeAdapter = new GroupTreeAdapter(classifyBeans, mContext);//分类左侧适配器
-                                final CenterLayoutManager centerLayoutManager = new CenterLayoutManager(getActivity());
-
-                                if (mContext instanceof ClassifyActivity) {
-                                    Long id = mContext.getIntent().getLongExtra("id", 0);
-                                    for (int i = 0; i < classifyBeans.size(); i++) {
-                                        if (classifyBeans.get(i).getId().longValue() == id.longValue()) {
-                                            classifyBeans.get(i).setFlag(true);
-                                            refreshRightGroup(i, classifyBeans);
-                                        } else if (id == 0) {
-                                            classifyBeans.get(0).setFlag(true);
-                                            refreshRightGroup(0, classifyBeans);
-                                        }
-                                    }
-                                } else if (mContext instanceof HomePageActivity) {
-                                    classifyBeans.get(0).setFlag(true);
-                                    refreshRightGroup(0, classifyBeans);
-                                }
-                                /**
-                                 * 左侧分类列表点击事件
-                                 */
-                                groupTreeAdapter.setOnItemClickLitsener(new GroupTreeAdapter.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(View view, int position) {
-                                        if (!EncodeAndStringTool.isListEmpty(classifyBeans)) {
-                                            for (int i = 0; i < classifyBeans.size(); i++) {
-                                                if (i == position) {
-                                                    classifyBeans.get(i).setFlag(true);
-                                                } else {
-                                                    classifyBeans.get(i).setFlag(false);
-                                                }
-                                                groupTreeAdapter.notifyDataSetChanged();
-                                            }
-                                            /**
-                                             * 将答题树列表滑动到指定位置TODO  和点击选中有问题; groupTreeAdapter
-                                             */
-                                            centerLayoutManager.smoothScrollToPosition(rvGroup, new RecyclerView.State(), position);
-
-                                            refreshRightGroup(position, classifyBeans);
-                                        }
-                                    }
-                                });
-                                try {
-                                    rvGroupSort.setLayoutManager(centerLayoutManager);
-                                    rvGroupSort.setAdapter(groupTreeAdapter);
-                                } catch (Exception e) {
-
-                                }
-
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+        RemotingEx.doRequest(ApiServiceBean.getGroupTree(), this);
     }
 
     /**
@@ -194,30 +164,10 @@ public class ClassifyFragment extends BaseFragment {
      * @param classifyBeans
      */
     private void refreshRightGroup(int position, List<GroupClassifyBean> classifyBeans) {
-        final List<GroupClassifyBean.ChildrenBean> childrenBeans = classifyBeans.get(position).getChildren();
-        /**
-         * 右侧题组分类列表
-         */
-        ChildrenGroupAdapter childrenGroupAdapter = new ChildrenGroupAdapter(mContext, childrenBeans);
-
-        childrenGroupAdapter.setOnItemClickLitsener(new ChildrenGroupAdapter.OnItemClickListener() {
-            @Override
-            public void onItemChildClick(View view, int position) {
-                GroupClassifyBean.ChildrenBean childrenBean = childrenBeans.get(position);
-                Intent intent = new Intent(getActivity(), WebAnswerActivity.class);
-                intent.putExtra("groupId", childrenBean.getId());
-                intent.putExtra("h5Url", childrenBean.getH5Url());
-                startActivity(intent);
-            }
-        });
-        try {
-            LinearLayoutManager layoutManager2 = new LinearLayoutManager(mContext);
-            rvGroup.setLayoutManager(layoutManager2);
-            rvGroup.setAdapter(childrenGroupAdapter);
-        } catch (Exception e) {
-
-        }
-
+        final List<GroupClassifyBean.ChildrenBean> beans = classifyBeans.get(position).getChildren();
+        childrenBeans.clear();
+        childrenBeans.addAll(beans);
+        childrenGroupAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -243,6 +193,46 @@ public class ClassifyFragment extends BaseFragment {
     public void refresh() {
         //刷新分类数据
         loadGroupTree();
+    }
+
+    @Override
+    public void onCompleted(String action) {
+
+    }
+
+    @Override
+    public void onFailed(String action, String message) {
+
+    }
+
+    @Override
+    public void onSucceed(String action, DataResponse<List<GroupClassifyBean>> response) {
+        if (response.isSuccees()) {
+            final List<GroupClassifyBean> beans = response.getDat();
+            classifyBeans.clear();
+            classifyBeans.addAll(beans);
+
+            if (!EncodeAndStringTool.isListEmpty(beans)) {
+                if (mContext instanceof ClassifyActivity) {
+                    Long id = mContext.getIntent().getLongExtra("id", 0);
+                    for (int i = 0; i < beans.size(); i++) {
+                        if (beans.get(i).getId().longValue() == id.longValue()) {
+                            beans.get(i).setFlag(true);
+                            refreshRightGroup(i, beans);
+                        } else if (id == 0) {
+                            beans.get(0).setFlag(true);
+                            refreshRightGroup(0, beans);
+                        }
+                    }
+                } else if (mContext instanceof HomePageActivity) {
+                    beans.get(0).setFlag(true);
+                    refreshRightGroup(0, beans);
+                }
+            }
+            groupTreeAdapter.notifyDataSetChanged();
+        } else {
+            ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
+        }
     }
 }
 
