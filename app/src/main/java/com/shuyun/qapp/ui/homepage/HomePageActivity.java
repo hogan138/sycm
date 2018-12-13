@@ -138,12 +138,12 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         //判断是否从广告页传递数据过来
         Bundle bundle = getIntent().getExtras();
         if (bundle != null && "welcome".equals(bundle.getString("from"))) {
-            ((HomeFragment)fragments.get(0)).setRefresh(false);
+            ((HomeFragment) fragments.get(0)).setRefresh(false);
             //从广告页过来
             skip(bundle);
-            ((HomeFragment)fragments.get(0)).setRefresh(true);
+            ((HomeFragment) fragments.get(0)).setRefresh(true);
         } else {
-            ((HomeFragment)fragments.get(0)).setRefresh(true);
+            ((HomeFragment) fragments.get(0)).setRefresh(true);
         }
 
         /*//沉浸式代码配置
@@ -484,6 +484,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
 
     //获取最新活动显示角标
     String show = "";
+
     private void getActivityShow(final int i) {
         ApiService apiService = BasePresenter.create(8000);
         apiService.getActivityShow()
@@ -621,33 +622,37 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK) {
-            if (requestCode == 0x1000) {
-                radioGroupChange(3);
-            } else if (requestCode == 0x0010 || requestCode == 0x0020) {
-                final Long model = bundleRedirect.getLong("model", 0);
-                final String content = bundleRedirect.getString("content");
-                if (model == 3) {//题组跳转
-                    if (!EncodeAndStringTool.isStringEmpty(content)) {
-                        Intent intent = new Intent(HomePageActivity.this, WebAnswerActivity.class);
-                        intent.putExtra("groupId", Long.valueOf(content));
-                        intent.putExtra("from", "splash");
-                        intent.putExtra("h5Url", bundleRedirect.getString("examUrl"));
-                        startActivity(intent);
-                    }
-                } else if (model == 2) {//内部链接
-                    if (!EncodeAndStringTool.isStringEmpty(content)) {
-                        Intent intent = new Intent(HomePageActivity.this, WebH5Activity.class);
-                        intent.putExtra("url", content);
-                        intent.putExtra("name", "全民共进");
-                        intent.putExtra("from", "splash");
-                        startActivity(intent);
+        if (resultCode == RESULT_OK && requestCode == 0x1000) {
+            radioGroupChange(3);
+            return;
+        } else if (resultCode == RESULT_OK && (requestCode == 0x0010 || requestCode == 0x0020)) {
+            final Long model = bundleRedirect.getLong("model", 0);
+            final String content = bundleRedirect.getString("content");
+            if (model == 3) {//题组跳转
+                if (!EncodeAndStringTool.isStringEmpty(content)) {
+                    Intent intent = new Intent(HomePageActivity.this, WebAnswerActivity.class);
+                    intent.putExtra("groupId", Long.valueOf(content));
+                    intent.putExtra("from", "splash");
+                    intent.putExtra("h5Url", bundleRedirect.getString("examUrl"));
+                    startActivity(intent);
+                }
+            } else if (model == 2) {//内部链接
+                if (!EncodeAndStringTool.isStringEmpty(content)) {
+                    Intent intent = new Intent(HomePageActivity.this, WebH5Activity.class);
+                    intent.putExtra("url", content);
+                    intent.putExtra("name", "全民共进");
+                    intent.putExtra("from", "splash");
+                    startActivity(intent);
 
-                    }
                 }
             }
+            return;
         } else if (requestCode == 0x0010 || requestCode == 0x0020) {
             refresh();
+            return;
+        }
+        for (Fragment fragment : fragments) {
+            fragment.onActivityResult(requestCode, resultCode, data);
         }
     }
 

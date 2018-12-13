@@ -134,4 +134,13 @@ public class AppConst {
     public static final String TASK = "action.day.task";//每日任务
     public static final String WITHDRAW_INFO = "action.withdraw.info";//提现信息
     public static final String H5_EXTERNAL = "action.h5.external";//h5跳转外部链接
+
+    //邀请登录跳转
+    public static final int INVITE_CODE = 0x2001;
+    //题组跳转
+    public static final int GROUP_CODE = 0x2002;
+    //积分兑换
+    public static final int INTEGRAL_CODE = 0x2003;
+    //积分夺宝
+    public static final int TREASURE_CODE = 0x2004;
 }

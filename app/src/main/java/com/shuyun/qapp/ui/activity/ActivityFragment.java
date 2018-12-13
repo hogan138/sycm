@@ -2,6 +2,7 @@ package com.shuyun.qapp.ui.activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -30,7 +31,7 @@ import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveErrorTxt;
-import com.shuyun.qapp.view.H5JumpUtil;
+import com.shuyun.qapp.view.LoginJumpUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -66,7 +67,8 @@ public class ActivityFragment extends BaseFragment {
     private int loadState = AppConst.STATE_NORMAL;
     private int currentPage = 0;
 
-    ActivityTabAdapter activityTabAdapter; //活动适配器
+    private ActivityTabAdapter activityTabAdapter; //活动适配器
+    private ActivityTabBean.ResultBean selectedItem = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -168,7 +170,7 @@ public class ActivityFragment extends BaseFragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if(!isVisibleToUser)
+        if (!isVisibleToUser)
             return;
         refresh();
     }
@@ -207,11 +209,13 @@ public class ActivityFragment extends BaseFragment {
             @Override
             public void onItemChildClick(View view, int position) {
                 ActivityTabBean.ResultBean resultBean = activityTabBeanlist.get(position);
-                try {
-                    H5JumpUtil.dialogSkip(resultBean.getBtnAction(), resultBean.getContent(), resultBean.getH5Url(), mContext, llMain, resultBean.getIsLogin());
-                } catch (Exception e) {
-
-                }
+                selectedItem = resultBean;
+                LoginJumpUtil.dialogSkip(resultBean.getBtnAction(),
+                        mContext,
+                        resultBean.getContent(),
+                        resultBean.getH5Url(),
+                        resultBean.getIsLogin(),
+                        null);
             }
         });
         GridLayoutManager glManager = new GridLayoutManager(mContext, 1, LinearLayoutManager.VERTICAL, false);
@@ -233,6 +237,23 @@ public class ActivityFragment extends BaseFragment {
     public void refresh() {
         //加载活动数据
         loadInfo();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK && (requestCode == AppConst.INVITE_CODE
+                || requestCode == AppConst.GROUP_CODE
+                || requestCode == AppConst.INTEGRAL_CODE
+                || requestCode == AppConst.TREASURE_CODE)) {
+            LoginJumpUtil.dialogSkip(selectedItem.getBtnAction(),
+                    mContext,
+                    selectedItem.getContent(),
+                    selectedItem.getH5Url(),
+                    selectedItem.getIsLogin(),
+                    null);
+        }
     }
 }
 
