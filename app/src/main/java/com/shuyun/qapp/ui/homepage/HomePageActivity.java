@@ -221,6 +221,11 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
         receiver(intent);
+
+        String action = intent.getStringExtra(AppConst.APP_ACTION_PARAM);
+        if (AppConst.APP_ACTION_LOGOUT.equals(action)) {
+            radioGroupChange(0);
+        }
     }
 
     private void receiver(Intent intent) {

@@ -170,7 +170,7 @@ public class HomeFragment extends BaseFragment {
      * 网络获取到推荐题组列表
      */
     private List<GroupBean> groupBeans;
-
+    private CountDownTimer timer;
     private Activity mContext;
     private MyReceiver msgReceiver;
     private Handler mHandler = new Handler();
@@ -230,6 +230,21 @@ public class HomeFragment extends BaseFragment {
             }
         });
 
+        timer = new CountDownTimer(5 * 1000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                if (!EncodeAndStringTool.isListEmpty(groupBeans)) {
+                    //倒计时5秒切換一下推荐题组
+                    rollRecommendGroup();
+                }
+                timer.start();
+            }
+        };
     }
 
     @Override
@@ -261,6 +276,8 @@ public class HomeFragment extends BaseFragment {
                 if (circle_anim != null) {
                     ivChange.startAnimation(circle_anim);  //开始动画
                 }
+                timer.cancel();
+                timer.start();
                 //轮训换题组
                 rollRecommendGroup();
                 break;
@@ -575,6 +592,9 @@ public class HomeFragment extends BaseFragment {
                                     } catch (Exception e) {
                                     }
                                 }
+
+                                timer.cancel();
+                                timer.start();
                             }
                         } else {//错误码提示
                             if (response.getErr().equals("U0001")) {
@@ -790,8 +810,6 @@ public class HomeFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    CountDownTimer timer;
-
     @Override
     public void onResume() {
         super.onResume();
@@ -902,6 +920,7 @@ public class HomeFragment extends BaseFragment {
         if (msgReceiver != null) {
             mContext.unregisterReceiver(msgReceiver);
         }
+        timer.cancel();
     }
 
     @Override
@@ -925,22 +944,6 @@ public class HomeFragment extends BaseFragment {
                 }, 10);
             }
         }
-        //5秒更新推荐题组
-        /*timer = new CountDownTimer(5 * 1000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-
-            }
-
-            @Override
-            public void onFinish() {
-                if (!EncodeAndStringTool.isListEmpty(groupBeans)) {
-                    //倒计时5秒切換一下推荐题组
-                    rollRecommendGroup();
-                }
-                timer.start();
-            }
-        }.start();*/
 
         //获取全民播报
         loadSystemInfo();

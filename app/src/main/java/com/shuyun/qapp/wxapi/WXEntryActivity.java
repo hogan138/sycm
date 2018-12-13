@@ -236,7 +236,6 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
                                 SharedPrefrenceTool.put(getAppContext(), "random", loginResp.getRandom());//登录成果后，平台随机生成的字符串
                                 AppConst.loadToken(WXEntryActivity.this);
 
-
                                 if (!EncodeAndStringTool.isStringEmpty(loginResp.getInvite())) {
                                     SharedPrefrenceTool.put(getAppContext(), "invite", loginResp.getInvite());
                                 }

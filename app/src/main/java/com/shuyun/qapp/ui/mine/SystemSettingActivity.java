@@ -1,5 +1,6 @@
 package com.shuyun.qapp.ui.mine;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -21,7 +22,11 @@ import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.AppVersionBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
+import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.webview.WebPublicActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
@@ -52,7 +57,7 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 /**
  * 系统设置
  */
-public class SystemSettingActivity extends BaseActivity {
+public class SystemSettingActivity extends BaseActivity implements OnRemotingCallBackListener<AppVersionBean> {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;
@@ -67,15 +72,19 @@ public class SystemSettingActivity extends BaseActivity {
     @BindView(R.id.rl_version)
     RelativeLayout rlVersion;
 
+    private Context mContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+
+        mContext = this;
+
         tvCommonTitle.setText("系统设置");
         MyActivityManager.getInstance().pushOneActivity(this);
 
         tvVersion.setText("V" + APKVersionCodeTools.getVerName(this));
-
     }
 
     @Override
@@ -91,13 +100,13 @@ public class SystemSettingActivity extends BaseActivity {
                 break;
             case R.id.rl_use_info:
                 //更改用户信息
-                Intent intent = new Intent(SystemSettingActivity.this, ChangePersonalInfoActivity.class);
+                Intent intent = new Intent(mContext, ChangePersonalInfoActivity.class);
                 startActivity(intent);
                 //用户信息
                 break;
             case R.id.rl_about_us:
                 //关于我们
-                Intent i = new Intent(SystemSettingActivity.this, WebPublicActivity.class);
+                Intent i = new Intent(mContext, WebPublicActivity.class);
                 i.putExtra("name", "about");
                 startActivity(i);
                 break;
@@ -124,54 +133,20 @@ public class SystemSettingActivity extends BaseActivity {
 
     //更新版本
     private void updateVersion() {
+        String dName = APKVersionCodeTools.getVerName(this);
         long curTime = System.currentTimeMillis();
-        String signString = "" + AppConst.DEV_ID + AppConst.APP_ID + AppConst.V + curTime + APKVersionCodeTools.getVerName(this) + AppConst.APP_KEY;
-        Log.e("签名", signString);
+        StringBuilder sb = new StringBuilder();
+        sb.append(AppConst.DEV_ID)
+                .append(AppConst.APP_ID)
+                .append(AppConst.V)
+                .append(curTime)
+                .append(dName)
+                .append(AppConst.APP_KEY);
         //将拼接的字符串转化为16进制MD5
-        String myCode = encryptMD5ToString(signString);
-        /**
-         * code值
-         */
+        String myCode = encryptMD5ToString(sb.toString());
         String signCode = getCode(myCode);
 
-        final ApiService apiService = BasePresenter.create(8000);
-        apiService.updateVersion(APKVersionCodeTools.getVerName(this), AppConst.DEV_ID, AppConst.APP_ID, AppConst.V, curTime, signCode)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<AppVersionBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse<AppVersionBean> loginResponse) {
-                        if (loginResponse.isSuccees()) {
-                            AppVersionBean appVersionBean = loginResponse.getDat();
-                            if (!EncodeAndStringTool.isObjectEmpty(appVersionBean)) {
-                                Long mode = appVersionBean.getMode();
-                                if (mode == 0) {
-                                    Toast.makeText(SystemSettingActivity.this, "当前已是最新版本", Toast.LENGTH_SHORT).show();
-                                } else if (mode == 1) {
-                                    updateDialog(appVersionBean.getUrl());
-                                } else if (mode == 2) {
-
-                                }
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(SystemSettingActivity.this, loginResponse.getErr(), loginResponse.getMsg());
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+        RemotingEx.doRequest(ApiServiceBean.updateVersion(), new Object[]{dName, AppConst.DEV_ID, AppConst.APP_ID, AppConst.V, curTime, signCode}, this);
     }
 
     private void updateDialog(final String url) {
@@ -219,30 +194,30 @@ public class SystemSettingActivity extends BaseActivity {
                     @Override
                     public void onMultiClick(View v) {
                         //清空数据
-                        SharedPrefrenceTool.clear(SystemSettingActivity.this);
-                        AppConst.loadToken(SystemSettingActivity.this);
+                        SharedPrefrenceTool.clear(mContext);
+                        AppConst.loadToken(mContext);
 
                         //清空缓存
-                        SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.group_count", "");
-                        SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.real_count", "");
-                        SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.h5_count", "");
-                        SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.invite_count", "");
-                        SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.integral_count", "");
-                        SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.answer.against_count", "");
-                        SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.integral.open.box_count", "");
-                        SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.integral.treasure_count", "");
-                        SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.withdraw.info_count", "");
-                        SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.h5.external_count", "");
-                        SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.day.task_count", "");
-                        SaveUserInfo.getInstance(SystemSettingActivity.this).setUserInfo("action.default_count", "");
+                        SaveUserInfo.getInstance(mContext).setUserInfo("action.group_count", "");
+                        SaveUserInfo.getInstance(mContext).setUserInfo("action.real_count", "");
+                        SaveUserInfo.getInstance(mContext).setUserInfo("action.h5_count", "");
+                        SaveUserInfo.getInstance(mContext).setUserInfo("action.invite_count", "");
+                        SaveUserInfo.getInstance(mContext).setUserInfo("action.integral_count", "");
+                        SaveUserInfo.getInstance(mContext).setUserInfo("action.answer.against_count", "");
+                        SaveUserInfo.getInstance(mContext).setUserInfo("action.integral.open.box_count", "");
+                        SaveUserInfo.getInstance(mContext).setUserInfo("action.integral.treasure_count", "");
+                        SaveUserInfo.getInstance(mContext).setUserInfo("action.withdraw.info_count", "");
+                        SaveUserInfo.getInstance(mContext).setUserInfo("action.h5.external_count", "");
+                        SaveUserInfo.getInstance(mContext).setUserInfo("action.day.task_count", "");
+                        SaveUserInfo.getInstance(mContext).setUserInfo("action.default_count", "");
 
                         //清空原先的别名
-                        JPushInterface.setAlias(SystemSettingActivity.this, new Random().nextInt(), "");
+                        JPushInterface.setAlias(mContext, new Random().nextInt(), "");
 
                         MyActivityManager.getInstance().finishAllActivity();//销毁所有页面
-
-                        startActivity(new Intent(SystemSettingActivity.this, LoginActivity.class));
-
+                        Intent intent = new Intent(mContext, HomePageActivity.class);
+                        intent.putExtra(AppConst.APP_ACTION_PARAM, AppConst.APP_ACTION_LOGOUT);
+                        startActivity(intent);
                         finish();
                     }
                 })
@@ -266,5 +241,34 @@ public class SystemSettingActivity extends BaseActivity {
         super.onPause();
         MobclickAgent.onPause(this); //统计时长
         StatService.onPause(this);
+    }
+
+    @Override
+    public void onCompleted(String action) {
+
+    }
+
+    @Override
+    public void onFailed(String action, String message) {
+
+    }
+
+    @Override
+    public void onSucceed(String action, DataResponse<AppVersionBean> response) {
+        if (response.isSuccees()) {
+            AppVersionBean appVersionBean = response.getDat();
+            if (!EncodeAndStringTool.isObjectEmpty(appVersionBean)) {
+                Long mode = appVersionBean.getMode();
+                if (mode == 0) {
+                    Toast.makeText(mContext, "当前已是最新版本", Toast.LENGTH_SHORT).show();
+                } else if (mode == 1) {
+                    updateDialog(appVersionBean.getUrl());
+                } else if (mode == 2) {
+
+                }
+            }
+        } else {
+            ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
+        }
     }
 }

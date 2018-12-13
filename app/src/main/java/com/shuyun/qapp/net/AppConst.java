@@ -143,4 +143,7 @@ public class AppConst {
     public static final int INTEGRAL_CODE = 0x2003;
     //积分夺宝
     public static final int TREASURE_CODE = 0x2004;
+
+    public static final String APP_ACTION_LOGOUT = "APP_ACTION_LOGOUT";//退出登录
+    public static final String APP_ACTION_PARAM = "APP_ACTION";//动作参数
 }
