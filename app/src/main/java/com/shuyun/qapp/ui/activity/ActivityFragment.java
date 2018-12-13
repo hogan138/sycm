@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,12 +15,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.TimeUtils;
-import com.gyf.barlibrary.ImmersionBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.ActivityTabAdapter;
+import com.shuyun.qapp.base.BaseFragment;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.ActivityTabBean;
 import com.shuyun.qapp.bean.DataResponse;
@@ -49,7 +48,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * 活动Fragment
  */
-public class ActivityFragment extends Fragment {
+public class ActivityFragment extends BaseFragment {
 
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle; //标题文字
@@ -80,8 +79,8 @@ public class ActivityFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        mContext = getActivity();
         tvCommonTitle.setText("活动专区");
-
     }
 
     @OnClick({R.id.iv_back})
@@ -169,10 +168,9 @@ public class ActivityFragment extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            //显示刷新活动数据
-            loadInfo();
-        }
+        if(!isVisibleToUser)
+            return;
+        refresh();
     }
 
 
@@ -180,10 +178,6 @@ public class ActivityFragment extends Fragment {
     public void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("ActivityFragment");
-
-        //加载活动数据
-        loadInfo();
-
     }
 
     private void loadInfo() {
@@ -227,13 +221,18 @@ public class ActivityFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        this.mContext = (Activity) context;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void refresh() {
+        //加载活动数据
+        loadInfo();
     }
 }
 

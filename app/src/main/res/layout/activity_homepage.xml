@@ -31,7 +31,7 @@
         android:visibility="gone" />
 
     <RadioGroup
-        android:id="@+id/radioGroup1"
+        android:id="@+id/radioGroup"
         android:layout_width="match_parent"
         android:layout_height="49dp"
         android:layout_alignParentBottom="true"
@@ -47,13 +47,13 @@
             android:button="@null"
             android:checked="true"
             android:drawableTop="@drawable/home"
-            android:enabled="false"
             android:gravity="center"
             android:paddingTop="@dimen/text_7"
             android:text="首页"
             android:textColor="@color/home_bottom_tv_color"
             android:textSize="@dimen/text_10"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:tag="0"/>
 
         <RadioButton
             android:id="@+id/radio_classify"
@@ -67,8 +67,8 @@
             android:text="分类"
             android:textColor="@color/home_bottom_tv_color"
             android:textSize="@dimen/text_10"
-            android:textStyle="bold" />
-
+            android:textStyle="bold"
+            android:tag="1"/>
 
         <RadioButton
             android:id="@+id/radio_activity"
@@ -82,7 +82,8 @@
             android:text="活动"
             android:textColor="@color/home_bottom_tv_color"
             android:textSize="@dimen/text_10"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:tag="2"/>
 
         <RadioButton
             android:id="@+id/radio_mine"
@@ -96,6 +97,7 @@
             android:text="我的"
             android:textColor="@color/home_bottom_tv_color"
             android:textSize="@dimen/text_10"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:tag="3"/>
     </RadioGroup>
 </RelativeLayout>

@@ -1,7 +1,6 @@
 package com.shuyun.qapp.ui.mine;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -9,7 +8,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -23,15 +21,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.NetworkUtils;
-import com.blankj.utilcode.util.TimeUtils;
 import com.shuyun.qapp.R;
-import com.shuyun.qapp.base.BasePresenter;
+import com.shuyun.qapp.base.BaseFragment;
 import com.shuyun.qapp.bean.AnswerOpptyBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MineBean;
-import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.MyApplication;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.receiver.MyReceiver;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.homepage.InformationActivity;
@@ -45,7 +44,6 @@ import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.InformatListenner;
 import com.shuyun.qapp.utils.OnMultiClickListener;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.ToastUtil;
@@ -62,17 +60,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 通用popupwindow
  * https://www.jianshu.com/p/9304d553aa67
  * 我的首界面
  */
-public class MineFragment extends Fragment implements CommonPopupWindow.ViewInterface {
+public class MineFragment extends BaseFragment implements CommonPopupWindow.ViewInterface, OnRemotingCallBackListener<Object> {
 
     @BindView(R.id.ll_mine_fragment)
     LinearLayout llMineFragment;
@@ -117,7 +111,12 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
     LinearLayout llTools; //道具
     @BindView(R.id.ll_add)
     LinearLayout llAdd;//增加答题次数
+
     private CommonPopupWindow popupWindow;
+    private static final String LOAD_MINE_HOME_DATA = "loadMineHomeData";//个人信息
+    private static final String LOAD_ANSWER_OPPTY_REMAINDER = "loadAnswerOpptyRemainder";//答题机会领取
+    private static final String LOAD_ANSWER_OPPTY = "loadAnswerOppty"; //领取答题机会
+    private Handler mHandler = new Handler();
 
     //图标
     private int[] icon = new int[]{R.mipmap.header02, R.mipmap.header03, R.mipmap.header04,
@@ -127,9 +126,9 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
      */
     private MineBean mineBean;
     private String remainderTime;
-    private Activity mContext;
+    private Context mContext;
     private MyReceiver msgReceiver;
-
+    private AnswerOpptyBean answerOpptyBean;
 
     public MineFragment() {
     }
@@ -137,7 +136,6 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        this.mContext = (Activity) context;
     }
 
     @Override
@@ -151,24 +149,16 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            //个人信息
-            if (AppConst.isLogin()) {
-                //是否实名认证
-                loadMineHomeData1();
-                //个人信息
-                loadMineHomeData();
-            } else {
-                SaveUserInfo.getInstance(getContext()).setUserInfo("home_mine", "3");
-                startActivity(new Intent(mContext, LoginActivity.class));
-            }
-
-        }
+        if(!isVisibleToUser)
+            return;
+        refresh();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        mContext = getActivity();
         /**
          * 检测微信是否安装,如果没有安装,需不显示分享按钮;如果安装了微信则显示分享按钮.
          */
@@ -206,135 +196,13 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
     public void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("MineFragment"); //统计页面，"MainScreen"为页面名称，可自定义
-        Integer position = (Integer) SharedPrefrenceTool.get(mContext, "headerId", 0);
-        if (position != 0) {//根据修改的头像,变更头像
-            ivHeaderPic.setImageResource(icon[position - 1]);
-        }
-        try {
-            if (SaveUserInfo.getInstance(getActivity()).getUserInfo("action_msg") != null && SaveUserInfo.getInstance(getActivity()).getUserInfo("action_msg").equals("action_msg")) {
-                showAddAnswerNum();
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        SaveUserInfo.getInstance(getActivity()).setUserInfo("action_msg", "");
-                    }
-                }, 1000);
-
-            }
-        } catch (Exception e) {
-        }
-
-        //个人信息
-        if (AppConst.isLogin()) {
-            loadMineHomeData();
-        }
-
     }
-
 
     /**
      * 获取到我的首界面数据
      */
     private void loadMineHomeData() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.getMineHomeData()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<MineBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse<MineBean> listDataResponse) {
-                        if (listDataResponse.isSuccees()) {
-                            mineBean = listDataResponse.getDat();
-                            if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
-                                long id = mineBean.getId();
-                                StatConfig.setCustomUserId(getActivity(), String.valueOf(id));
-                                try {
-                                    if (0 == mineBean.getMessages()) {
-                                        //没有新消息
-                                        ivCommonRightIcon.setImageResource(R.mipmap.messagew_n);
-                                    } else {
-                                        //有新消息
-                                        ivCommonRightIcon.setImageResource(R.mipmap.messagew);
-                                    }
-
-                                    if (!EncodeAndStringTool.isStringEmpty(mineBean.getHeaderId()) && mineBean.getHeaderId() > 0) {
-                                        ivHeaderPic.setImageResource(icon[mineBean.getHeaderId() - 1]);
-                                    } else {
-                                        ImageLoaderManager.LoadImage(mContext, mineBean.getHeader(), ivHeaderPic, R.mipmap.head);
-                                    }
-                                    if (!EncodeAndStringTool.isStringEmpty(mineBean.getAccount())) {
-                                        tvPhoneNum1.setText(mineBean.getAccount());
-                                    }
-                                    Integer isCertification = mineBean.getCertification();
-                                    SharedPrefrenceTool.put(mContext, "certification", isCertification);
-                                    if (1 == mineBean.getCertification()) {
-                                        //已实名认证
-                                        ivRealLogo.setVisibility(View.GONE);
-                                    } else {
-                                        //未实名认证
-                                        ivRealLogo.setVisibility(View.VISIBLE);
-                                    }
-                                    tvTodayAnswerNum.setText("今日答题次数剩余: " + mineBean.getOpporitunity());
-                                    tvBalance.setText("余额:￥" + mineBean.getCash());
-                                    if (!EncodeAndStringTool.isStringEmpty(mineBean.getCash())) {
-                                        double money = Double.parseDouble(mineBean.getCash());
-                                        if (1 == mineBean.getWithdraw() && money >= 50) {
-                                            //可以提现
-                                            btnImmedicateWithdrawal.setEnabled(true);
-                                        } else {
-                                            //不能提现和提现中 按钮变灰
-                                            btnImmedicateWithdrawal.setEnabled(false);
-                                        }
-                                    }
-                                    if (!EncodeAndStringTool.isStringEmpty(mineBean.getBp())) {
-                                        SharedPrefrenceTool.put(mContext, "bp", mineBean.getBp());
-                                    }
-
-                                    tvIntegralBalance.setText("可用积分：" + mineBean.getBp());
-
-                                    tvGiftNum.setText("可用奖品：" + mineBean.getAvailablePrize());//可使用奖品数
-
-                                    tvToolsNum.setText("可用道具：" + mineBean.getPropCount());
-
-                                    SaveUserInfo.getInstance(getActivity()).setUserInfo("my_bp", mineBean.getBp());
-
-                                    //保存信息到本地
-                                    SaveUserInfo.getInstance(mContext).setUserInfo("icon", mineBean.getHeaderId() + "");
-                                    SaveUserInfo.getInstance(mContext).setUserInfo("icon1", mineBean.getHeader());
-                                    SaveUserInfo.getInstance(mContext).setUserInfo("phone", mineBean.getPhone());
-                                    SaveUserInfo.getInstance(mContext).setUserInfo("cert", mineBean.getCertification() + "");
-                                    SaveUserInfo.getInstance(mContext).setUserInfo("nickname", mineBean.getNickname());
-                                    SaveUserInfo.getInstance(mContext).setUserInfo("wxBind", String.valueOf(mineBean.getWxBind()));
-                                    SaveUserInfo.getInstance(mContext).setUserInfo("wxHeader", mineBean.getWxHeader());
-
-                                    //保存联系客服
-                                    SaveUserInfo.getInstance(mContext).setUserInfo("contactUs_url", mineBean.getContactUs());
-
-                                } catch (Exception e) {
-
-                                }
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(mContext, listDataResponse.getErr(), listDataResponse.getMsg());
-                        }
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                        return;
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+        RemotingEx.doRequest(LOAD_MINE_HOME_DATA, ApiServiceBean.getMineHomeData(), null, this);
     }
 
     @OnClick({R.id.rl_back, R.id.iv_common_right_icon, R.id.iv_header_pic, R.id.rl_header, R.id.iv_real_logo,
@@ -492,104 +360,15 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
      * U0004  答题机会已到上限
      */
     private void loadAnswerOpptyRemainder() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.getAnswerOpptyRemainder()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<String>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse<String> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            remainderTime = dataResponse.getDat();
-                            if (!EncodeAndStringTool.isStringEmpty(remainderTime)) {
-                                if (remainderTime.equals("0")) {
-                                    btnGetImmedicate.setEnabled(true);
-                                    add_answernum_logo.setBackgroundResource(R.mipmap.new_add_answernum_s);
-                                } else {
-                                    btnGetImmedicate.setEnabled(false);
-                                    add_answernum_logo.setBackgroundResource(R.mipmap.new_add_answernum_n);
-                                    long time = Long.parseLong(remainderTime);
-                                    try {
-                                        countDown(time);
-                                    } catch (Exception e) {
-
-                                    }
-
-                                }
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                        return;
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+        RemotingEx.doRequest(LOAD_ANSWER_OPPTY_REMAINDER, ApiServiceBean.getAnswerOpptyRemainder(), null, this);
     }
-
-
-    private AnswerOpptyBean answerOpptyBean;
 
     /**
      * 领取答题机会
      * U0005
      */
     private void loadAnswerOppty() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.getAnswerOppty()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<AnswerOpptyBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse<AnswerOpptyBean> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            answerOpptyBean = dataResponse.getDat();
-                            if (!EncodeAndStringTool.isObjectEmpty(answerOpptyBean)) {
-                                btnGetImmedicate.setEnabled(false);
-                                add_answernum_logo.setBackgroundResource(R.mipmap.new_add_answernum_n);
-                                answerOpptyBean.getRemainder();
-                                try {
-                                    countDown(answerOpptyBean.getRemainder());
-                                } catch (Exception e) {
-
-                                }
-                                /**
-                                 * 领取答题机会之后需要刷新数据
-                                 */
-                                loadMineHomeData();
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                        return;
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+        RemotingEx.doRequest(LOAD_ANSWER_OPPTY, ApiServiceBean.getAnswerOppty(), null, this);
     }
 
     private CountDownTimer timer;
@@ -655,52 +434,157 @@ public class MineFragment extends Fragment implements CommonPopupWindow.ViewInte
         }
     }
 
-    /**
-     * 获取到我的首界面数据
-     */
-    private void loadMineHomeData1() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.getMineHomeData()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<MineBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+    @Override
+    public void onCompleted(String action) {
 
-                    @Override
-                    public void onNext(DataResponse<MineBean> listDataResponse) {
-                        if (listDataResponse.isSuccees()) {
-                            mineBean = listDataResponse.getDat();
-                            if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
-                                try {
-                                    if (1 == mineBean.getCertification()) {
-                                    } else {
-                                        RealNamePopupUtil.showAuthPop(mContext, llMineFragment, getString(R.string.real_main_describe));
-                                    }
-
-                                } catch (Exception e) {
-
-                                }
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(mContext, listDataResponse.getErr(), listDataResponse.getMsg());
-                        }
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                        return;
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
     }
 
+    @Override
+    public void onFailed(String action, String message) {
+
+    }
+
+    @Override
+    public void onSucceed(String action, DataResponse<Object> response) {
+        if (!response.isSuccees()) {
+            ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
+            return;
+        }
+
+        if (LOAD_MINE_HOME_DATA.equals(action)) { //个人信息
+            mineBean = (MineBean) response.getDat();
+            if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
+                if (1 != mineBean.getCertification()) {
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            RealNamePopupUtil.showAuthPop(mContext, llMineFragment, getString(R.string.real_main_describe));
+                        }
+                    }, 10);
+                }
+
+                long id = mineBean.getId();
+                StatConfig.setCustomUserId(mContext, String.valueOf(id));
+                if (0 == mineBean.getMessages()) {
+                    //没有新消息
+                    ivCommonRightIcon.setImageResource(R.mipmap.messagew_n);
+                } else {
+                    //有新消息
+                    ivCommonRightIcon.setImageResource(R.mipmap.messagew);
+                }
+
+                if (!EncodeAndStringTool.isStringEmpty(mineBean.getHeaderId()) && mineBean.getHeaderId() > 0) {
+                    ivHeaderPic.setImageResource(icon[mineBean.getHeaderId() - 1]);
+                } else {
+                    ImageLoaderManager.LoadImage(mContext, mineBean.getHeader(), ivHeaderPic, R.mipmap.head);
+                }
+                if (!EncodeAndStringTool.isStringEmpty(mineBean.getAccount())) {
+                    tvPhoneNum1.setText(mineBean.getAccount());
+                }
+                Integer isCertification = mineBean.getCertification();
+                SharedPrefrenceTool.put(mContext, "certification", isCertification);
+                if (1 == mineBean.getCertification()) {
+                    //已实名认证
+                    ivRealLogo.setVisibility(View.GONE);
+                } else {
+                    //未实名认证
+                    ivRealLogo.setVisibility(View.VISIBLE);
+                }
+                tvTodayAnswerNum.setText("今日答题次数剩余: " + mineBean.getOpporitunity());
+                tvBalance.setText("余额:￥" + mineBean.getCash());
+                if (!EncodeAndStringTool.isStringEmpty(mineBean.getCash())) {
+                    double money = Double.parseDouble(mineBean.getCash());
+                    if (1 == mineBean.getWithdraw() && money >= 50) {
+                        //可以提现
+                        btnImmedicateWithdrawal.setEnabled(true);
+                    } else {
+                        //不能提现和提现中 按钮变灰
+                        btnImmedicateWithdrawal.setEnabled(false);
+                    }
+                }
+                if (!EncodeAndStringTool.isStringEmpty(mineBean.getBp())) {
+                    SharedPrefrenceTool.put(mContext, "bp", mineBean.getBp());
+                }
+
+                tvIntegralBalance.setText("可用积分：" + mineBean.getBp());
+                tvGiftNum.setText("可用奖品：" + mineBean.getAvailablePrize());//可使用奖品数
+                tvToolsNum.setText("可用道具：" + mineBean.getPropCount());
+
+                SaveUserInfo.getInstance(mContext).setUserInfo("my_bp", mineBean.getBp());
+
+                //保存信息到本地
+                SaveUserInfo.getInstance(mContext).setUserInfo("icon", mineBean.getHeaderId() + "");
+                SaveUserInfo.getInstance(mContext).setUserInfo("icon1", mineBean.getHeader());
+                SaveUserInfo.getInstance(mContext).setUserInfo("phone", mineBean.getPhone());
+                SaveUserInfo.getInstance(mContext).setUserInfo("cert", mineBean.getCertification() + "");
+                SaveUserInfo.getInstance(mContext).setUserInfo("nickname", mineBean.getNickname());
+                SaveUserInfo.getInstance(mContext).setUserInfo("wxBind", String.valueOf(mineBean.getWxBind()));
+                SaveUserInfo.getInstance(mContext).setUserInfo("wxHeader", mineBean.getWxHeader());
+
+                //保存联系客服
+                SaveUserInfo.getInstance(mContext).setUserInfo("contactUs_url", mineBean.getContactUs());
+            }
+        } else if (LOAD_ANSWER_OPPTY_REMAINDER.equals(action)) {
+            remainderTime = (String) response.getDat();
+            if (!EncodeAndStringTool.isStringEmpty(remainderTime)) {
+                if (remainderTime.equals("0")) {
+                    btnGetImmedicate.setEnabled(true);
+                    add_answernum_logo.setBackgroundResource(R.mipmap.new_add_answernum_s);
+                } else {
+                    btnGetImmedicate.setEnabled(false);
+                    add_answernum_logo.setBackgroundResource(R.mipmap.new_add_answernum_n);
+                    long time = Long.parseLong(remainderTime);
+                    try {
+                        countDown(time);
+                    } catch (Exception e) {
+
+                    }
+                }
+            }
+        } else if (LOAD_ANSWER_OPPTY.equals(action)) {
+            answerOpptyBean = (AnswerOpptyBean) response.getDat();
+            if (!EncodeAndStringTool.isObjectEmpty(answerOpptyBean)) {
+                btnGetImmedicate.setEnabled(false);
+                add_answernum_logo.setBackgroundResource(R.mipmap.new_add_answernum_n);
+                answerOpptyBean.getRemainder();
+                try {
+                    countDown(answerOpptyBean.getRemainder());
+                } catch (Exception e) {
+
+                }
+                /**
+                 * 领取答题机会之后需要刷新数据
+                 */
+                loadMineHomeData();
+            }
+        }
+    }
+
+    @Override
+    public void refresh() {
+        Integer position = (Integer) SharedPrefrenceTool.get(mContext, "headerId", 0);
+        if (position != 0) {//根据修改的头像,变更头像
+            ivHeaderPic.setImageResource(icon[position - 1]);
+        }
+        try {
+            if ("action_msg".equals(SaveUserInfo.getInstance(mContext).getUserInfo("action_msg"))) {
+                showAddAnswerNum();
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        SaveUserInfo.getInstance(mContext).setUserInfo("action_msg", "");
+                    }
+                }, 1000);
+            }
+        } catch (Exception e) {
+        }
+
+        if (AppConst.isLogin()) {
+            loadMineHomeData();
+        } else {
+            SaveUserInfo.getInstance(mContext).setUserInfo("home_mine", "3");
+            startActivity(new Intent(mContext, LoginActivity.class));
+        }
+    }
 }
 

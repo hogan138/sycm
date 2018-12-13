@@ -9,7 +9,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.v4.app.Fragment;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
@@ -36,6 +36,7 @@ import com.shuyun.qapp.adapter.GroupTreeAdapter;
 import com.shuyun.qapp.adapter.HomeSortAdapter;
 import com.shuyun.qapp.adapter.HotGroupAdapter;
 import com.shuyun.qapp.adapter.MarkBannerAdapter;
+import com.shuyun.qapp.base.BaseFragment;
 import com.shuyun.qapp.bean.BannerBean;
 import com.shuyun.qapp.bean.BannerItem;
 import com.shuyun.qapp.bean.BoxBean;
@@ -96,7 +97,7 @@ import static com.blankj.utilcode.util.ConvertUtils.dp2px;
 /**
  * 首页
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends BaseFragment {
     @BindView(R.id.tv_invite)
     TextView tvInvite; //分享
     @BindView(R.id.tv_common_title)
@@ -172,15 +173,21 @@ public class HomeFragment extends Fragment {
 
     private Activity mContext;
     private MyReceiver msgReceiver;
+    private Handler mHandler = new Handler();
+    private boolean isRefresh = false;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        this.mContext = (Activity) context;
+    }
+
+    public void setRefresh(boolean isRefresh) {
+        this.isRefresh = isRefresh;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         unbinder = ButterKnife.bind(this, view);
@@ -190,7 +197,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        mContext = getActivity();
         /**
          * 检测微信是否安装,如果没有安装,需不显示分享按钮;如果安装了微信则显示分享按钮.
          */
@@ -228,52 +235,9 @@ public class HomeFragment extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {  //显示
 
-            /**
-             * 获取全民播报
-             */
-            loadSystemInfo();
-
-            /**
-             * 获取banner轮播数据
-             */
-            loadHomeBanners();
-
-            /**
-             * 获取公告信息
-             */
-            getNoticeInfo();
-
-            /**
-             * 获取弹框信息
-             */
-            getDialogInfo();
-
-            /**
-             * 首页题组
-             */
-            loadHomeGroups();
-
-            /**
-             * 获取活动配置信息
-             */
-            getConfigInfo();
-
-            /**
-             * 获取宝箱数量
-             */
-            try {
-                if (AppConst.isLogin()) {
-                    loadTreasureBoxNum();
-                } else {
-                    ivBx.clearAnimation();
-                    ivBx.setVisibility(View.GONE);
-                }
-            } catch (Exception e) {
-
-            }
-
+        if (isVisibleToUser && isRefresh) {
+            refresh();
         }
     }
 
@@ -832,59 +796,6 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("HomeFragment"); //统计页面，"MainScreen"为页面名称，可自定义
-        long newNowMills = (long) SharedPrefrenceTool.get(mContext, "nowMills", (TimeUtils.getNowMills() - 86400000 * 7));//获取首选项中的时间,默认值为七天前的时间戳
-        long timeSpan = TimeUtils.getTimeSpan(newNowMills, TimeUtils.getNowMills(), TimeConstants.DAY);//当前时间和首选项中时间差
-        /**
-         * 如果通知权限关闭且当前时间和首选项中的时间相差大于等于7天(每7天提醒一次),弹窗提示
-         */
-        if (!NotificationsUtils.isNotificationEnabled(mContext) && timeSpan >= 7) {
-            //当前弹窗提示时间
-            long nowMills = TimeUtils.getNowMills();
-            SharedPrefrenceTool.put(mContext, "nowMills", (long) nowMills);
-            //如果通知栏未打开,弹出前往设置打开通知栏的弹窗
-            NotifyDialog.dialogShow(mContext);
-        }
-
-        //5秒更新推荐题组
-        timer = new CountDownTimer(5 * 1000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-
-            }
-
-            @Override
-            public void onFinish() {
-                if (!EncodeAndStringTool.isListEmpty(groupBeans)) {
-                    //倒计时5秒切換一下推荐题组
-                    rollRecommendGroup();
-                }
-                timer.start();
-            }
-        }.start();
-
-        /**
-         * 获取宝箱数量
-         */
-        try {
-            if (AppConst.isLogin()) {
-                loadTreasureBoxNum();
-                /**
-                 * 首页题组
-                 */
-                loadHomeGroups();
-            } else {
-                try {
-                    ivBx.clearAnimation();
-                    ivBx.setVisibility(View.GONE);
-                } catch (Exception e) {
-
-                }
-            }
-        } catch (Exception e) {
-
-        }
-
-
     }
 
     //获取活动弹框信息
@@ -993,6 +904,74 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    @Override
+    public void refresh() {
+        if (mContext != null) {
+            long newNowMills = (long) SharedPrefrenceTool.get(mContext, "nowMills", (TimeUtils.getNowMills() - 86400000 * 7));//获取首选项中的时间,默认值为七天前的时间戳
+            long timeSpan = TimeUtils.getTimeSpan(newNowMills, TimeUtils.getNowMills(), TimeConstants.DAY);//当前时间和首选项中时间差
+            /**
+             * 如果通知权限关闭且当前时间和首选项中的时间相差大于等于7天(每7天提醒一次),弹窗提示
+             */
+            if (!NotificationsUtils.isNotificationEnabled(mContext) && timeSpan >= 7) {
+                //当前弹窗提示时间
+                long nowMills = TimeUtils.getNowMills();
+                SharedPrefrenceTool.put(mContext, "nowMills", nowMills);
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //如果通知栏未打开,弹出前往设置打开通知栏的弹窗
+                        NotifyDialog.dialogShow(mContext);
+                    }
+                }, 10);
+            }
+        }
+        //5秒更新推荐题组
+        /*timer = new CountDownTimer(5 * 1000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                if (!EncodeAndStringTool.isListEmpty(groupBeans)) {
+                    //倒计时5秒切換一下推荐题组
+                    rollRecommendGroup();
+                }
+                timer.start();
+            }
+        }.start();*/
+
+        //获取全民播报
+        loadSystemInfo();
+
+        //获取banner轮播数据
+        loadHomeBanners();
+
+        //获取公告信息
+        getNoticeInfo();
+
+        //获取弹框信息
+        getDialogInfo();
+
+        //首页题组
+        loadHomeGroups();
+
+        //获取活动配置信息
+        getConfigInfo();
+
+        //获取宝箱数量
+        try {
+            if (AppConst.isLogin()) {
+                loadTreasureBoxNum();
+            } else {
+                ivBx.clearAnimation();
+                ivBx.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+
+        }
+    }
 }
 
 

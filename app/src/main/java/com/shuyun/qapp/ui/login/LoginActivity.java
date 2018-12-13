@@ -383,8 +383,8 @@ public class LoginActivity extends BaseActivity {
                             public void run() {
                                 KeyboardUtils.hideSoftInput(LoginActivity.this);
                                 try {
-                                    MyActivityManager1.getInstance().finishAllActivity();
                                     setResult(RESULT_OK);
+                                    MyActivityManager1.getInstance().finishAllActivity();
                                     finish();
                                 } catch (Exception e) {
 

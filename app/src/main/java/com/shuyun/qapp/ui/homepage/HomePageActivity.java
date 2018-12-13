@@ -8,15 +8,14 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.IdRes;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -33,9 +32,9 @@ import com.mylhyl.circledialog.params.DialogParams;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.MyHomeadapter;
 import com.shuyun.qapp.base.BaseActivity;
+import com.shuyun.qapp.base.BaseFragment;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.ActivityTimeBean;
-import com.shuyun.qapp.bean.AdBean;
 import com.shuyun.qapp.bean.AppVersionBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.InviteBean;
@@ -45,6 +44,7 @@ import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.HeartBeatManager;
 import com.shuyun.qapp.ui.activity.ActivityFragment;
 import com.shuyun.qapp.ui.classify.ClassifyFragment;
+import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.mine.MineFragment;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
@@ -65,6 +65,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -79,10 +80,10 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 /**
  * 主页面activity
  */
-public class HomePageActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener, ViewPager.OnPageChangeListener {
+public class HomePageActivity extends BaseActivity implements ViewPager.OnPageChangeListener, View.OnClickListener {
 
-    @BindView(R.id.radioGroup1)
-    RadioGroup radioGroup1;
+    @BindView(R.id.radioGroup)
+    RadioGroup radioGroup; //首页
     @BindView(R.id.radio_main)
     RadioButton radioMain; //首页
     @BindView(R.id.radio_classify)
@@ -99,10 +100,10 @@ public class HomePageActivity extends BaseActivity implements RadioGroup.OnCheck
     /**
      * fragment容器
      */
-    private FragmentManager fm;
-    ArrayList<Fragment> fragments = new ArrayList<>();
+    private List<Fragment> fragments = new ArrayList<>();
     public static boolean isForeground = false; //极光推送
-    int i = 0;//当前下标
+    private int i = 0;//当前下标
+    private Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +111,40 @@ public class HomePageActivity extends BaseActivity implements RadioGroup.OnCheck
         ButterKnife.bind(this);
 
         EventBus.getDefault().register(this);
+
+        //注册极光推送
+        registerMessageReceiver();
+
+        pager.setOnPageChangeListener(this);
+        radioMain.setOnClickListener(this);
+        radioClassify.setOnClickListener(this);
+        radioActivity.setOnClickListener(this);
+        radioMine.setOnClickListener(this);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("FirstRun", 0);
+        sharedPreferences.edit().putBoolean("Main", true).commit();
+
+        //点击登录logo
+        ivNoLoginLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                radioGroupChange(3);
+            }
+        });
+
+        //初始化数据
+        initDate();
+
+        //判断是否从广告页传递数据过来
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null && "welcome".equals(bundle.getString("from"))) {
+            ((HomeFragment)fragments.get(0)).setRefresh(false);
+            //从广告页过来
+            skip(bundle);
+            ((HomeFragment)fragments.get(0)).setRefresh(true);
+        } else {
+            ((HomeFragment)fragments.get(0)).setRefresh(true);
+        }
 
         /*//沉浸式代码配置
         //当FitsSystemWindows设置 true 时，会在屏幕最上方预留出状态栏高度的 padding
@@ -125,38 +160,6 @@ public class HomePageActivity extends BaseActivity implements RadioGroup.OnCheck
         }
         //用来设置整体下移，状态栏沉浸
         StatusBarUtil.setRootViewFitsSystemWindows(this, false);*/
-
-        pager.setOnPageChangeListener(this);
-        radioGroup1.setOnCheckedChangeListener(this);
-
-        SharedPreferences sharedPreferences = getSharedPreferences("FirstRun", 0);
-        Boolean main_run = sharedPreferences.getBoolean("Main", true);
-        sharedPreferences.edit().putBoolean("Main", true).commit();
-
-        //注册极光推送
-        registerMessageReceiver();
-
-        //初始化数据
-        initDate();
-
-        /**
-         * 邀请有奖
-         */
-        if (AppConst.isLogin()) {
-            invite();
-        }
-
-        //点击登录logo
-        ivNoLoginLogo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeUi(3);
-                index = 3;
-            }
-        });
-
-        //从广告页过来
-        skip();
     }
 
     @Override
@@ -165,28 +168,18 @@ public class HomePageActivity extends BaseActivity implements RadioGroup.OnCheck
     }
 
     private void initDate() {
-        fragments = new ArrayList<>();
-        //实例化Fragment
-        HomeFragment fragmentOne = new HomeFragment();
-        ClassifyFragment fragmentTwo = new ClassifyFragment();
-        ActivityFragment fragmentThree = new ActivityFragment();
-        MineFragment fragmentFour = new MineFragment();
-
         //添加到集合
-        fragments.add(fragmentOne);
-        fragments.add(fragmentTwo);
-        fragments.add(fragmentThree);
-        fragments.add(fragmentFour);
+        fragments.add(new HomeFragment());
+        fragments.add(new ClassifyFragment());
+        fragments.add(new ActivityFragment());
+        fragments.add(new MineFragment());
 
 
         //得到getSupportFragmentManager()的管理器
-        fm = getSupportFragmentManager();
         //得到适配器
-        MyHomeadapter myAdapter = new MyHomeadapter(fm, fragments, this);
         pager.setOffscreenPageLimit(4);
         //设置适配器
-        pager.setAdapter(myAdapter);
-
+        pager.setAdapter(new MyHomeadapter(getSupportFragmentManager(), fragments, this));
     }
 
     //ViewPager.OnPageChangeListener监听事件
@@ -197,9 +190,8 @@ public class HomePageActivity extends BaseActivity implements RadioGroup.OnCheck
 
     @Override
     public void onPageSelected(int position) {
-
         for (int i = 0; i < fragments.size(); i++) {
-            RadioButton radiobutton = (RadioButton) radioGroup1.getChildAt(i);
+            RadioButton radiobutton = (RadioButton) radioGroup.getChildAt(i);
             if (i == position) {
                 radiobutton.setChecked(true);
                 radiobutton.setEnabled(false);
@@ -219,118 +211,49 @@ public class HomePageActivity extends BaseActivity implements RadioGroup.OnCheck
     //RadioGroup的监听事件
     private int index = 0;
 
-    //记录上一个下标
-    private int last_index = 0;
-
-    @Override
-    public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
-        StatusBarUtil.setStatusBarColor(this, R.color.white);
-        for (int j = 0; j < fragments.size(); j++) {
-            //得到radiobutton
-            RadioButton radiobutton = (RadioButton) radioGroup1.getChildAt(j);
-            //判断radiobutton的id是否等于选中的id
-            if (radiobutton.getId() == i) {
-                //记录上一个下标
-                if (j == 3) {
-                    StatusBarUtil.setStatusBarColor(this, R.color.mine_top);
-                } else {
-                    last_index = j;
-                }
-
-                //设置当前页
-                pager.setCurrentItem(j, false);
-
-                //当前下标
-                i = j;
-
-                index = j;
-
-                //获取最新活动显示角标
-                getActivityShow(i);
-
-                //点击活动专区
-                if (j == 2 && "1".equals(show)) { //未点过红色角标
-                    if (AppConst.isLogin()) {
-                        Drawable drawable = getResources().getDrawable(R.mipmap.activity_s);
-                        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
-                        radioActivity.setCompoundDrawables(null, drawable, null, null);
-                        clickActivity();
-                    }
-                } else if (j == 2) {
-                    Drawable drawable = getResources().getDrawable(R.mipmap.activity_s);
-                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
-                    radioActivity.setCompoundDrawables(null, drawable, null, null);
-                } else {
-                    Drawable drawable = getResources().getDrawable(R.mipmap.activity_n);
-                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
-                    radioActivity.setCompoundDrawables(null, drawable, null, null);
-                }
-
-                /**
-                 * 大家都在答
-                 */
-                AppConst.i = 0;
-
-            }
-        }
-    }
-
     //更改Fragment
     public void changeUi(int index) {
+        this.index = index;
         pager.setCurrentItem(index, false);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
+        receiver(intent);
+    }
+
+    private void receiver(Intent intent) {
         try {
+            String from = intent.getStringExtra("from");
             //领取答题次数
-            if (intent.getStringExtra("from") != null && intent.getStringExtra("from").equals("msg")) {
-                changeUi(3);
-            } else if (intent.getStringExtra("from") != null && intent.getStringExtra("from").equals("h5")) {  //我的奖品h5返回首页
-                changeUi(0);
+            if ("msg".equals(from)) {
+                radioGroupChange(3);
+            } else if ("h5".equals(from)) {  //我的奖品h5返回首页
+                radioGroupChange(0);
             }
         } catch (Exception e) {
 
         }
-
     }
-
 
     //在activity或者fragment中添加友盟统计
     @Override
     public void onResume() {
         super.onResume();
+        isForeground = true;
 
         HeartBeatManager.instance().start(this);
-
         MobclickAgent.onResume(this); //统计时长
-
         StatService.onResume(this);
 
-        //获取最新活动显示角标
-        getActivityShow(i);
-
-        try {
-            //领取答题次数
-            if (getIntent().getStringExtra("from") != null && getIntent().getStringExtra("from").equals("msg")) {
-                changeUi(3);
-            } else if (getIntent().getStringExtra("from") != null && getIntent().getStringExtra("from").equals("h5")) {  //我的奖品h5返回首页
-                changeUi(0);
-            }
-        } catch (Exception e) {
-
-        }
-
-        isForeground = true;
+        //receiver(getIntent());
 
         //版本更新
         updateVersion();
 
-        Log.e("token", AppConst.TOKEN + "--------" + AppConst.sycm());
+        mHandler.postDelayed(runnable, 500);
 
-
-        handler.postDelayed(runnable, 500);
         //开启登录logo动画
         TranslateAnimation animation = new TranslateAnimation(0, 0, 10, -10);
         animation.setInterpolator(new OvershootInterpolator());
@@ -338,19 +261,8 @@ public class HomePageActivity extends BaseActivity implements RadioGroup.OnCheck
         animation.setRepeatCount(Animation.INFINITE);
         animation.setRepeatMode(Animation.REVERSE);
         ivNoLoginLogo.startAnimation(animation);
-
-        if (!AppConst.isLogin()) {
-            changeUi(last_index); //未登录返回切换到之前的页面
-            index = last_index;
-        } else {
-            if (index == 3) {  //登录后切换到我的
-                changeUi(3);
-            }
-        }
-
     }
 
-    Handler handler = new Handler();
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -365,7 +277,7 @@ public class HomePageActivity extends BaseActivity implements RadioGroup.OnCheck
 
                 }
             }
-            handler.post(runnable);
+            mHandler.postDelayed(runnable, 10);
         }
     };
 
@@ -459,7 +371,7 @@ public class HomePageActivity extends BaseActivity implements RadioGroup.OnCheck
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(MessageEvent messageEvent) {
         if ("3".equals(messageEvent.getMessage())) { //个人信息微信登录返回
-            changeUi(3);
+            radioGroupChange(3);
         }
     }
 
@@ -469,7 +381,6 @@ public class HomePageActivity extends BaseActivity implements RadioGroup.OnCheck
         super.onDestroy();
 
         SharedPreferences sharedPreferences = getSharedPreferences("FirstRun", 0);
-        Boolean main_run = sharedPreferences.getBoolean("Main", true);
         sharedPreferences.edit().putBoolean("Main", true).commit();
 
         if (EventBus.getDefault().isRegistered(this)) {
@@ -493,16 +404,75 @@ public class HomePageActivity extends BaseActivity implements RadioGroup.OnCheck
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, filter);
     }
 
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == radioActivity.getId()
+                || v.getId() == radioMain.getId()
+                || v.getId() == radioMine.getId()
+                || v.getId() == radioClassify.getId()) {
+            radioGroupChange(Integer.valueOf(v.getTag().toString()));
+        }
+    }
+
+    private void radioGroupChange(int position) {
+        if (position == 3 && !AppConst.isLogin()) {
+            //还原选中
+            switch (index) {
+                case 0:
+                    radioGroup.check(radioMain.getId());
+                    break;
+                case 1:
+                    radioGroup.check(radioClassify.getId());
+                    break;
+                case 2:
+                    radioGroup.check(radioActivity.getId());
+                    break;
+            }
+
+            //跳转登录
+            startActivityForResult(new Intent(this, LoginActivity.class), 0x1000);
+            return;
+        }
+
+        StatusBarUtil.setStatusBarColor(this, R.color.white);
+        if (position == 3) {
+            StatusBarUtil.setStatusBarColor(this, R.color.mine_top);
+        } else {
+            StatusBarUtil.setStatusBarColor(this, R.color.white);
+        }
+        //点击活动专区
+        if (position == 2 && "1".equals(show)) { //未点过红色角标
+            if (AppConst.isLogin()) {
+                Drawable drawable = getResources().getDrawable(R.mipmap.activity_s);
+                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
+                radioActivity.setCompoundDrawables(null, drawable, null, null);
+                clickActivity();
+            }
+        } else if (position == 2) {
+            Drawable drawable = getResources().getDrawable(R.mipmap.activity_s);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
+            radioActivity.setCompoundDrawables(null, drawable, null, null);
+        } else {
+            Drawable drawable = getResources().getDrawable(R.mipmap.activity_n);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
+            radioActivity.setCompoundDrawables(null, drawable, null, null);
+        }
+
+        changeUi(position);
+
+        getActivityShow(position);
+    }
+
     public class MessageReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
             try {
                 if (MESSAGE_RECEIVED_ACTION.equals(intent.getAction())) {
-                    String messge = intent.getStringExtra(KEY_MESSAGE);
+                    String message = intent.getStringExtra(KEY_MESSAGE);
                     String extras = intent.getStringExtra(KEY_EXTRAS);
                     StringBuilder showMsg = new StringBuilder();
-                    showMsg.append(KEY_MESSAGE + " : " + messge + "\n");
+                    showMsg.append(KEY_MESSAGE + " : " + message + "\n");
                     if (!ExampleUtil.isEmpty(extras)) {
                         showMsg.append(KEY_EXTRAS + " : " + extras + "\n");
                     }
@@ -514,7 +484,6 @@ public class HomePageActivity extends BaseActivity implements RadioGroup.OnCheck
 
     //获取最新活动显示角标
     String show = "";
-
     private void getActivityShow(final int i) {
         ApiService apiService = BasePresenter.create(8000);
         apiService.getActivityShow()
@@ -648,22 +617,22 @@ public class HomePageActivity extends BaseActivity implements RadioGroup.OnCheck
                 });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-    //从广告页进来
-    private void skip() {
-        try {
-            String from = getIntent().getStringExtra("from");
-            if (!EncodeAndStringTool.isStringEmpty(from) && "welcome".equals(from)) {
-                final Long model = getIntent().getLongExtra("model", 0);
-                final String content = getIntent().getStringExtra("content");
-                final Long isLogin = getIntent().getLongExtra("isLogin", 0);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 0x1000) {
+                radioGroupChange(3);
+            } else if (requestCode == 0x0010 || requestCode == 0x0020) {
+                final Long model = bundleRedirect.getLong("model", 0);
+                final String content = bundleRedirect.getString("content");
                 if (model == 3) {//题组跳转
                     if (!EncodeAndStringTool.isStringEmpty(content)) {
                         Intent intent = new Intent(HomePageActivity.this, WebAnswerActivity.class);
-                        intent.putExtra("groupId", Integer.parseInt(content));
+                        intent.putExtra("groupId", Long.valueOf(content));
                         intent.putExtra("from", "splash");
-                        intent.putExtra("h5Url", getIntent().getStringArrayExtra("examUrl"));
-                        intent.putExtra("isLogin", isLogin);
+                        intent.putExtra("h5Url", bundleRedirect.getString("examUrl"));
                         startActivity(intent);
                     }
                 } else if (model == 2) {//内部链接
@@ -672,24 +641,74 @@ public class HomePageActivity extends BaseActivity implements RadioGroup.OnCheck
                         intent.putExtra("url", content);
                         intent.putExtra("name", "全民共进");
                         intent.putExtra("from", "splash");
-                        intent.putExtra("isLogin", isLogin);
                         startActivity(intent);
-                    }
-                } else if (model == 1) {//外部链接
-                    if (!EncodeAndStringTool.isStringEmpty(content)) {
-                        Uri uri = Uri.parse(content);
-                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                        startActivity(intent);
-                    }
-                } else if (model == 0) {
 
+                    }
                 }
-
             }
-        } catch (Exception e) {
-
+        } else if (requestCode == 0x0010 || requestCode == 0x0020) {
+            refresh();
         }
     }
 
+    private void refresh() {
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ((BaseFragment) fragments.get(index)).refresh();
+            }
+        }, 320);
+    }
 
+    /**
+     * 重定向数据
+     */
+    private Bundle bundleRedirect = null;
+
+    //从广告页进来
+    private void skip(Bundle bundle) {
+        bundleRedirect = null;
+        final Long model = bundle.getLong("model", 0);
+        final String content = bundle.getString("content");
+        final Long isLogin = bundle.getLong("isLogin", 0);
+        if (model == 3) {//题组跳转
+            if (!EncodeAndStringTool.isStringEmpty(content)) {
+                //判断是否需要登录
+                if (isLogin == 1 && !AppConst.isLogin()) {
+                    bundleRedirect = bundle;
+                    Intent intent = new Intent(HomePageActivity.this, LoginActivity.class);
+                    startActivityForResult(intent, 0x0010);
+                } else {
+                    Intent intent = new Intent(HomePageActivity.this, WebAnswerActivity.class);
+                    intent.putExtra("groupId", Long.valueOf(content));
+                    intent.putExtra("from", "splash");
+                    intent.putExtra("h5Url", bundle.getString("examUrl"));
+                    startActivity(intent);
+                }
+            }
+        } else if (model == 2) {//内部链接
+            if (!EncodeAndStringTool.isStringEmpty(content)) {
+                //判断是否需要登录
+                if (isLogin == 1 && !AppConst.isLogin()) {
+                    bundleRedirect = bundle;
+                    Intent intent = new Intent(HomePageActivity.this, LoginActivity.class);
+                    startActivityForResult(intent, 0x0020);
+                } else {
+                    Intent intent = new Intent(HomePageActivity.this, WebH5Activity.class);
+                    intent.putExtra("url", content);
+                    intent.putExtra("name", "全民共进");
+                    intent.putExtra("from", "splash");
+                    startActivity(intent);
+                }
+            }
+        } else if (model == 1) {//外部链接
+            if (!EncodeAndStringTool.isStringEmpty(content)) {
+                Uri uri = Uri.parse(content);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        } else if (model == 0) {
+
+        }
+    }
 }

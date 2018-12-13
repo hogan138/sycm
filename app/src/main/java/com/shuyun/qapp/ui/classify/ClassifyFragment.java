@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,10 +14,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.TimeUtils;
-import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.ChildrenGroupAdapter;
 import com.shuyun.qapp.adapter.GroupTreeAdapter;
+import com.shuyun.qapp.base.BaseFragment;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.GroupClassifyBean;
@@ -44,7 +43,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * 分类
  */
-public class ClassifyFragment extends Fragment {
+public class ClassifyFragment extends BaseFragment {
 
     @BindView(R.id.rv_group_sort)
     RecyclerView rvGroupSort;//左侧题组分类RecyclerView
@@ -58,7 +57,6 @@ public class ClassifyFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        this.mContext = (Activity) context;
     }
 
 
@@ -73,19 +71,16 @@ public class ClassifyFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        mContext = getActivity();
         tvCommonTitle.setText("题组分类");
-
-        //请求分类数据
-        loadGroupTree();
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            //刷新分类数据
-            loadGroupTree();
-        }
+        if(!isVisibleToUser)
+            return;
+        refresh();
     }
 
     @OnClick({R.id.iv_back})
@@ -242,6 +237,12 @@ public class ClassifyFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void refresh() {
+        //刷新分类数据
+        loadGroupTree();
     }
 }
 

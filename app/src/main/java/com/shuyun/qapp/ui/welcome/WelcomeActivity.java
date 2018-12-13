@@ -62,6 +62,7 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
 
     private Handler mHandler = new Handler();
     private boolean isLoading = false;
+    private boolean isStop = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +114,6 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
      * 广告弹框
      */
     public void showPop() {
-        wAd.setVisibility(View.VISIBLE);
         ImageLoaderManager.LoadImage(mContext, adBean.getAd().get(0).getUrl(), ivAdvertising, R.mipmap.zw01);
 
         final Long model = adBean.getAd().get(0).getModel();
@@ -123,6 +123,7 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
             @Override
             public void onMultiClick(View v) {
                 //TODO 这里不需要进行逻辑判断 一律打开HomePage 在首页进行处理 默认首页不进行数据请求
+                isStop = true;
                 Intent intent = new Intent();
                 intent.putExtra("from", "welcome");
                 intent.putExtra("model", model);
@@ -132,8 +133,6 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
                 intent.setClass(mContext, HomePageActivity.class);
                 startActivity(intent);
                 finish();
-                if (timer != null)
-                    timer.cancel();
             }
         });
         tvSkip.setOnClickListener(new View.OnClickListener() {
@@ -145,6 +144,8 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
     }
 
     private void initTime() {
+        wAd.setVisibility(View.VISIBLE);
+
         long time = 3;
         Long timeout = adBean.getTimeout();
         if (timeout != null && timeout != 0)
@@ -166,6 +167,9 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
 
     //跳转
     private void skip() {
+        if(isStop)
+            return;
+        isStop = true;
         Intent intent = new Intent(mContext, HomePageActivity.class);
         startActivity(intent);
         finish();
@@ -229,7 +233,7 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
                         //倒计时结束
                         initTime();
                     }
-                }, 320);
+                }, 1000);
             } else {
                 //进入首页
                 skip();
