@@ -214,8 +214,7 @@ public class ActivityFragment extends BaseFragment {
                         mContext,
                         resultBean.getContent(),
                         resultBean.getH5Url(),
-                        resultBean.getIsLogin(),
-                        null);
+                        resultBean.getIsLogin());
             }
         });
         GridLayoutManager glManager = new GridLayoutManager(mContext, 1, LinearLayoutManager.VERTICAL, false);
@@ -251,8 +250,7 @@ public class ActivityFragment extends BaseFragment {
                     mContext,
                     selectedItem.getContent(),
                     selectedItem.getH5Url(),
-                    selectedItem.getIsLogin(),
-                    null);
+                    selectedItem.getIsLogin());
         }
     }
 }

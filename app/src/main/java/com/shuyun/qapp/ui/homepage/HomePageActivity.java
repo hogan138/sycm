@@ -54,6 +54,7 @@ import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ExampleUtil;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
+import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.StatusBarUtil;
 import com.shuyun.qapp.view.NoScrollViewPager;
@@ -420,6 +421,11 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
     }
 
     private void radioGroupChange(int position) {
+        if (position == 3) {
+            SaveUserInfo.getInstance(HomePageActivity.this).setUserInfo("home_mine", "3");
+        } else {
+            SaveUserInfo.getInstance(HomePageActivity.this).setUserInfo("home_mine", "");
+        }
         if (position == 3 && !AppConst.isLogin()) {
             //还原选中
             switch (index) {

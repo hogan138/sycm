@@ -28,6 +28,7 @@ import com.shuyun.qapp.bean.InputVerficationCodeBean;
 import com.shuyun.qapp.bean.LoginInput;
 import com.shuyun.qapp.bean.LoginResponse;
 import com.shuyun.qapp.bean.Msg;
+import com.shuyun.qapp.event.MessageEvent;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
@@ -45,6 +46,7 @@ import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.view.VerifyCodeView;
 import com.shuyun.qapp.wxapi.WXEntryActivity;
 
+import org.greenrobot.eventbus.EventBus;
 import org.litepal.crud.DataSupport;
 
 import java.util.Random;
@@ -338,9 +340,12 @@ public class VerifyCodeActivity extends BaseActivity {
                                                 @Override
                                                 public void run() {
                                                     LoadingBar.cancel(llMain);
+                                                    KeyboardUtils.hideSoftInput(VerifyCodeActivity.this);
                                                     MyActivityManager1.getInstance().finishAllActivity();
-                                                    //验证码登录
-//                                                    startActivity(new Intent(VerifyCodeActivity.this, HomePageActivity.class));
+                                                    if ("3".equals(SaveUserInfo.getInstance(VerifyCodeActivity.this).getUserInfo("home_mine"))) {//来自个人信息微信登录
+                                                        EventBus.getDefault().post(new MessageEvent("3"));
+                                                        SaveUserInfo.getInstance(VerifyCodeActivity.this).setUserInfo("home_mine", "");
+                                                    }
                                                 }
                                             }, 2000);
                                         }

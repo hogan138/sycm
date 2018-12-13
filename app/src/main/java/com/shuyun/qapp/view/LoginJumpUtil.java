@@ -24,7 +24,7 @@ public class LoginJumpUtil {
      * @param action
      * @param context
      */
-    public static void dialogSkip(String action, Activity context, String content, String h5Url, Long isLogin, View view) {
+    public static void dialogSkip(String action, Activity context, String content, String h5Url, Long isLogin) {
         if (AppConst.INVITE.equals(action)) {//邀请跳转
             if (isLogin == 1 && !AppConst.isLogin()) {
                 Intent intent = new Intent(context, LoginActivity.class);
