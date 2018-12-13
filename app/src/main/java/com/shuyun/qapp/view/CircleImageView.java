@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Path;
 import android.graphics.Region;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
@@ -57,7 +58,7 @@ public class CircleImageView extends ImageView {
         pfdf = new PaintFlagsDrawFilter(clearBits, setBits);
         //由于imageview有默认底色,如黑色,设置背景为透明是为了第一次setImageBitmap时不显示圆以外方型的默认背景色
         //但是这样在中兴nubia手机上还会首先显示正方形黑色背景,然后才变圆(解决办法,先裁成圆再setImageBitmap)
-        setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
+        setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
     }
 
     @Override

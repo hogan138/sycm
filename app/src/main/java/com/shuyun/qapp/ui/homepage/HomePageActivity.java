@@ -32,6 +32,7 @@ import com.mylhyl.circledialog.callback.ConfigDialog;
 import com.mylhyl.circledialog.params.DialogParams;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.MyHomeadapter;
+import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.ActivityTimeBean;
 import com.shuyun.qapp.bean.AppVersionBean;
@@ -75,7 +76,7 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 /**
  * 主页面activity
  */
-public class HomePageActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener, ViewPager.OnPageChangeListener {
+public class HomePageActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener, ViewPager.OnPageChangeListener {
 
     @BindView(R.id.radioGroup1)
     RadioGroup radioGroup1;
@@ -103,17 +104,11 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
-            finish();
-            return;
-        }
-
-        setContentView(R.layout.activity_homepage);
         ButterKnife.bind(this);
 
         EventBus.getDefault().register(this);
 
-        //沉浸式代码配置
+        /*//沉浸式代码配置
         //当FitsSystemWindows设置 true 时，会在屏幕最上方预留出状态栏高度的 padding
         StatusBarUtil.setRootViewFitsSystemWindows(this, true);
         //设置状态栏透明
@@ -126,7 +121,7 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
             StatusBarUtil.setStatusBarColor(this, 0x55000000);
         }
         //用来设置整体下移，状态栏沉浸
-        StatusBarUtil.setRootViewFitsSystemWindows(this, false);
+        StatusBarUtil.setRootViewFitsSystemWindows(this, false);*/
 
         pager.setOnPageChangeListener(this);
         radioGroup1.setOnCheckedChangeListener(this);
@@ -134,11 +129,6 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
         SharedPreferences sharedPreferences = getSharedPreferences("FirstRun", 0);
         Boolean main_run = sharedPreferences.getBoolean("Main", true);
         sharedPreferences.edit().putBoolean("Main", true).commit();
-
-        //底部导航栏
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setNavigationBarColor(Color.parseColor("#ffffff"));
-        }
 
         //注册极光推送
         registerMessageReceiver();
@@ -163,8 +153,13 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
         });
     }
 
+    @Override
+    public int intiLayout() {
+        return R.layout.activity_homepage;
+    }
+
     private void initDate() {
-        fragments = new ArrayList<Fragment>();
+        fragments = new ArrayList<>();
         //实例化Fragment
         HomeFragment fragmentOne = new HomeFragment();
         ClassifyFragment fragmentTwo = new ClassifyFragment();
@@ -223,15 +218,15 @@ public class HomePageActivity extends AppCompatActivity implements RadioGroup.On
 
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
-
+        StatusBarUtil.setStatusBarColor(this, R.color.white);
         for (int j = 0; j < fragments.size(); j++) {
             //得到radiobutton
             RadioButton radiobutton = (RadioButton) radioGroup1.getChildAt(j);
             //判断radiobutton的id是否等于选中的id
             if (radiobutton.getId() == i) {
-
                 //记录上一个下标
                 if (j == 3) {
+                    StatusBarUtil.setStatusBarColor(this, R.color.mine_top);
                 } else {
                     last_index = j;
                 }

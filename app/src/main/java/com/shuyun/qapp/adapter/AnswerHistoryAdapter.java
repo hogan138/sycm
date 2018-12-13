@@ -1,6 +1,7 @@
 package com.shuyun.qapp.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,7 +85,7 @@ public class AnswerHistoryAdapter extends RecyclerView.Adapter<AnswerHistoryAdap
                         || EncodeAndStringTool.isStringEmpty(questionsBean.getAnswer())
                         || "0".equals(questionsBean.getAnswer())) {
                     holder.tvYourAnswer.setText("您的答案:超时未答或中途异常");
-                    holder.tvYourAnswer.setTextColor(context.getResources().getColor(R.color.color_20));
+                    holder.tvYourAnswer.setTextColor(ContextCompat.getColor(context, R.color.color_20));
                 }
 
                 for (int i = 0; i < optionsBeans.size(); i++) {
@@ -111,9 +112,9 @@ public class AnswerHistoryAdapter extends RecyclerView.Adapter<AnswerHistoryAdap
 
                     //用户答案颜色
                     if (oks.equals(questionsBean.getAnswer())) {
-                        holder.tvYourAnswer.setTextColor(context.getResources().getColor(R.color.color_4));
+                        holder.tvYourAnswer.setTextColor(ContextCompat.getColor(context, R.color.color_4));
                     } else {
-                        holder.tvYourAnswer.setTextColor(context.getResources().getColor(R.color.color_20));
+                        holder.tvYourAnswer.setTextColor(ContextCompat.getColor(context, R.color.color_20));
                     }
 
                 }

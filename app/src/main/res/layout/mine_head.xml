@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/rl_header"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#f8f8f8">
+    android:background="#f8f8f8"
+    android:orientation="vertical">
 
     <RelativeLayout
-        android:id="@+id/rl_top"
+        android:id="@+id/rl_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/mine_bg">
@@ -101,7 +101,6 @@
         android:id="@+id/rl_withdraw"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:layout_below="@+id/rl_top"
         android:layout_marginLeft="@dimen/text_17"
         android:layout_marginRight="@dimen/text_17"
         android:layout_marginBottom="@dimen/text_10">
@@ -290,4 +289,4 @@
         android:layout_height="@dimen/text_10"
         android:layout_below="@id/ll_main"
         android:background="#f8f8f8"></View>
-</RelativeLayout>
+</LinearLayout>

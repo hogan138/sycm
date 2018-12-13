@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -74,7 +75,7 @@ public class GlideUtils {
     public static void LoadCircleImage(Context mContext, String path,
                                        ImageView imageview) {
         Glide.with(mContext).load(path).centerCrop().placeholder(R.mipmap.zw02)
-                .transform(new GlideCircleTransform(mContext, 0, mContext.getResources().getColor(R.color.white)))
+                .transform(new GlideCircleTransform(mContext, 0, ContextCompat.getColor(mContext, R.color.white)))
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageview);
 
     }

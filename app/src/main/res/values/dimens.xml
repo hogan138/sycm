@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <dimen name="bar_height">50dp</dimen>
     <dimen name="text_0.5">0.5dp</dimen>
     <dimen name="text_1">1dp</dimen>
     <dimen name="text_2">2dp</dimen>

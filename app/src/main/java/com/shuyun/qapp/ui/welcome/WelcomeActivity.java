@@ -1,11 +1,8 @@
 package com.shuyun.qapp.ui.welcome;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -16,14 +13,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.TimeUtils;
-import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
-import com.shuyun.qapp.base.BasePresenter;
+import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.AdBean;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
@@ -31,7 +28,6 @@ import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.tencent.stat.MtaSDkException;
 import com.tencent.stat.StatConfig;
@@ -41,10 +37,6 @@ import com.umeng.analytics.MobclickAgent;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 import static com.shuyun.qapp.utils.EncodeAndStringTool.encryptMD5ToString;
 import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
@@ -52,7 +44,7 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 /**
  * 启动页
  */
-public class WelcomeActivity extends Activity {
+public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackListener<AdBean> {
     private static final int LOGIN_MODE = 1;
 
     @BindView(R.id.fl_main)
@@ -74,7 +66,6 @@ public class WelcomeActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_welcome);
         ButterKnife.bind(this);
         mContext = this;
         //腾讯应用分析
@@ -88,79 +79,34 @@ public class WelcomeActivity extends Activity {
             Log.e("MTA", "MTA start failed");
         }
 
-        //初始化沉浸状态栏
-        ImmersionBar.with(this)
-                .statusBarColor(R.color.white)
-                .statusBarDarkFont(true)
-                .fitsSystemWindows(true).init();
-        //底部导航栏
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setNavigationBarColor(Color.parseColor("#ffffff"));
-        }
-
         //保存登录状态
         SaveUserInfo.getInstance(this).setUserInfo("LOGIN_MODE", String.valueOf(LOGIN_MODE));
     }
 
+    @Override
+    public int intiLayout() {
+        return R.layout.activity_welcome;
+    }
+
     private void getAd() {
         long curTime = System.currentTimeMillis();
-        String signString = "" + AppConst.DEV_ID + AppConst.APP_ID + AppConst.V + curTime + AppConst.APP_KEY;
+        StringBuilder sb = new StringBuilder();
+        sb.append(AppConst.DEV_ID)
+                .append(AppConst.APP_ID)
+                .append(AppConst.V)
+                .append(curTime)
+                .append(AppConst.APP_KEY);
+
         //将拼接的字符串转化为16进制MD5
-        String myCode = encryptMD5ToString(signString);
-        /**
-         * code值
-         */
+        String myCode = encryptMD5ToString(sb.toString());
         String signCode = getCode(myCode);
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.getAd(AppConst.DEV_ID, AppConst.APP_ID, AppConst.V, curTime + "", signCode)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<AdBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse<AdBean> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            adBean = dataResponse.getDat();
-                            if (!EncodeAndStringTool.isListEmpty(adBean.getAd())) {
-                                //加载广告页
-                                showPop();
-
-                                mHandler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        //倒计时结束
-                                        initTime();
-                                    }
-                                }, 320);
-                            } else {
-                                //进入首页
-                                Intent intent = new Intent(mContext, HomePageActivity.class);
-                                startActivity(intent);
-                                finish();
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                        //进入首页
-                        Intent intent = new Intent(mContext, HomePageActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+        RemotingEx.doRequest(null, ApiServiceBean.getAd(), new Object[]{
+                AppConst.DEV_ID,
+                AppConst.APP_ID,
+                AppConst.V,
+                String.valueOf(curTime),
+                signCode
+        }, this);
     }
 
     /**
@@ -176,6 +122,8 @@ public class WelcomeActivity extends Activity {
         ivAdvertising.setOnClickListener(new OnMultiClickListener() {
             @Override
             public void onMultiClick(View v) {
+
+                //TODO 这里不需要进行逻辑判断 一律打开HomePage 在首页进行处理 默认首页不进行数据请求
                 if (model == 3) {//题组跳转
                     if (!EncodeAndStringTool.isStringEmpty(content)) {
                         Intent intent = new Intent(mContext, WebAnswerActivity.class);
@@ -217,10 +165,15 @@ public class WelcomeActivity extends Activity {
     }
 
     private void initTime() {
-        timer = new CountDownTimer(3 * 1000, 1000) {
+        long time = 3;
+        Long timeout = adBean.getTimeout();
+        if(timeout != null && timeout != 0)
+            time = timeout;
+
+        timer = new CountDownTimer(time * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                //time = millisUntilFinished / 1000;
+
             }
 
             @Override
@@ -246,11 +199,6 @@ public class WelcomeActivity extends Activity {
         super.onDestroy();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
     //在activity或者fragment中添加友盟统计
     @Override
     protected void onResume() {
@@ -267,7 +215,7 @@ public class WelcomeActivity extends Activity {
                 //获取广告
                 getAd();
             }
-        }, 1600);
+        }, 100);
     }
 
     @Override
@@ -275,5 +223,39 @@ public class WelcomeActivity extends Activity {
         super.onPause();
         MobclickAgent.onPause(this); //统计时长
         StatService.onPause(this);
+    }
+
+    @Override
+    public void onCompleted(String action) {
+
+    }
+
+    @Override
+    public void onFailed(String action, String message) {
+        skip();
+    }
+
+    @Override
+    public void onSucceed(String action, DataResponse<AdBean> response) {
+        if (response.isSuccees()) {
+            adBean = response.getDat();
+            if (!EncodeAndStringTool.isListEmpty(adBean.getAd())) {
+                //加载广告页
+                showPop();
+
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //倒计时结束
+                        initTime();
+                    }
+                }, 320);
+            } else {
+                //进入首页
+                skip();
+            }
+        } else {
+            ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
+        }
     }
 }

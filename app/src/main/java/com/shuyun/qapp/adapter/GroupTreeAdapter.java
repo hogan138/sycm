@@ -1,6 +1,7 @@
 package com.shuyun.qapp.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,9 +52,9 @@ public class GroupTreeAdapter extends RecyclerView.Adapter<GroupTreeAdapter.View
         ImageLoaderManager.LoadImage(mContext, classifyBean.getPicture(), holder.ivItem, R.mipmap.zw01);
         if (classifyBeans.get(position).isFlag()) {
             holder.rlSort.setSelected(true);
-            holder.tvSortName.setTextColor(mContext.getResources().getColor(R.color.color_35));
+            holder.tvSortName.setTextColor(ContextCompat.getColor(mContext, R.color.color_35));
         } else {
-            holder.tvSortName.setTextColor(mContext.getResources().getColor(R.color.color_35));
+            holder.tvSortName.setTextColor(ContextCompat.getColor(mContext, R.color.color_35));
             holder.rlSort.setSelected(false);
         }
         /**

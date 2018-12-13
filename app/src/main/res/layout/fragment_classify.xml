@@ -6,14 +6,13 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="@color/white"
-        android:paddingTop="@dimen/text_35">
+        android:layout_height="@dimen/bar_height"
+        android:background="@color/white">
 
         <RelativeLayout
             android:id="@+id/iv_back"
             android:layout_width="68dp"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/iv_left_back"
@@ -28,7 +27,8 @@
         <TextView
             android:id="@+id/tv_common_title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="@dimen/text_40"
             android:layout_marginRight="@dimen/text_40"
