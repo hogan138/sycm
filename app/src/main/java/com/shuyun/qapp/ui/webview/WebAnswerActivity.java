@@ -12,7 +12,6 @@ import android.os.Parcelable;
 import android.support.animation.SpringAnimation;
 import android.support.animation.SpringForce;
 import android.support.annotation.Nullable;
-import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -54,10 +53,10 @@ import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.bean.ReturnDialogBean;
 import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.bean.WebAnswerHomeBean;
-import com.shuyun.qapp.event.MessageEvent;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.net.MyApplication;
+import com.shuyun.qapp.net.LoginDataManager;
+import com.shuyun.qapp.net.SyckApplication;
 import com.shuyun.qapp.ui.answer.AnswerHistoryActivity;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
@@ -73,8 +72,6 @@ import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ScannerUtils;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
-import com.shuyun.qapp.utils.ToastUtil;
-import com.shuyun.qapp.view.H5JumpUtil;
 import com.shuyun.qapp.view.LoginJumpUtil;
 import com.shuyun.qapp.view.RealNamePopupUtil;
 import com.umeng.socialize.ShareAction;
@@ -85,8 +82,6 @@ import com.umeng.socialize.media.UMWeb;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -174,6 +169,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
         public void jsLogin(String data) {
             final JSONObject rel = JSON.parseObject(data);
             if ("exam".equals(rel.getString("action"))) {
+                LoginDataManager.instance().addData(LoginDataManager.ANSWER_LOGIN, new JSONObject());
                 //答题
                 runOnUiThread(new Runnable() {
                     @Override
@@ -435,7 +431,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
         /**
          * 检测微信是否安装,如果没有安装,需不显示分享按钮,如果安装了,需要显示分享按钮
          */
-        if (!MyApplication.mWxApi.isWXAppInstalled()) {
+        if (!SyckApplication.mWxApi.isWXAppInstalled()) {
             ivRightIcon.setVisibility(View.GONE);
         } else {
             ivRightIcon.setImageResource(R.mipmap.share);//右侧分享
@@ -494,42 +490,11 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
             //登录成功，调用h5方法,，传递boxId给h5
             String boxId = (String) SharedPrefrenceTool.get(WebAnswerActivity.this, "boxId", "");
             if (!EncodeAndStringTool.isStringEmpty(boxId)) {
-                JSONObject rel = new JSONObject();
-                rel.put("action", "exam");
-                rel.put("boxId", boxId);
-                answerHomeBean.setToken(AppConst.TOKEN);
-                answerHomeBean.setRandom(AppConst.RANDOM);
-                answerHomeBean.setV(AppConst.V);
-                answerHomeBean.setSalt(AppConst.SALT);
-                answerHomeBean.setAppSecret(AppConst.APP_KEY);
-                answerHomeBean.setGroupId(groupId);
-                answerHomeBean.setDeviceId(SmAntiFraud.getDeviceId());
-                rel.put("answer", JSON.toJSONString(answerHomeBean));
-                wvAnswerHome.loadUrl("javascript:jsLoginCallback(" + rel.toString() + ") ");
+                sendBox(boxId);
             }
         }
 
     }
-
-    //接收微信登录返回的宝箱id
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void Event(MessageEvent messageEvent) {
-        if (!EncodeAndStringTool.isStringEmpty(messageEvent.getMessage())) {
-            JSONObject rel = new JSONObject();
-            rel.put("action", "exam");
-            rel.put("boxId", messageEvent.getMessage());
-            answerHomeBean.setToken(AppConst.TOKEN);
-            answerHomeBean.setRandom(AppConst.RANDOM);
-            answerHomeBean.setV(AppConst.V);
-            answerHomeBean.setSalt(AppConst.SALT);
-            answerHomeBean.setAppSecret(AppConst.APP_KEY);
-            answerHomeBean.setGroupId(groupId);
-            answerHomeBean.setDeviceId(SmAntiFraud.getDeviceId());
-            rel.put("answer", JSON.toJSONString(answerHomeBean));
-            wvAnswerHome.loadUrl("javascript:jsLoginCallback(" + rel.toString() + ") ");
-        }
-    }
-
 
     @Override
     protected void onDestroy() {
@@ -1250,6 +1215,26 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                     }
                 })
                 .show();
+    }
+
+    /**
+     * 回调给H5 宝箱ID
+     *
+     * @param boxId
+     */
+    public void sendBox(String boxId) {
+        JSONObject rel = new JSONObject();
+        rel.put("action", "exam");
+        rel.put("boxId", boxId);
+        answerHomeBean.setToken(AppConst.TOKEN);
+        answerHomeBean.setRandom(AppConst.RANDOM);
+        answerHomeBean.setV(AppConst.V);
+        answerHomeBean.setSalt(AppConst.SALT);
+        answerHomeBean.setAppSecret(AppConst.APP_KEY);
+        answerHomeBean.setGroupId(groupId);
+        answerHomeBean.setDeviceId(SmAntiFraud.getDeviceId());
+        rel.put("answer", JSON.toJSONString(answerHomeBean));
+        wvAnswerHome.loadUrl("javascript:jsLoginCallback(" + rel.toString() + ") ");
     }
 
 }

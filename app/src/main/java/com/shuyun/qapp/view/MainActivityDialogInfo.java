@@ -13,6 +13,7 @@ import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.ConfigDialogBean;
 import com.shuyun.qapp.bean.MainConfigBean;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.LoginDataManager;
 import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
@@ -21,8 +22,6 @@ import com.shuyun.qapp.utils.SaveUserInfo;
  * 首页活动弹框
  */
 public class MainActivityDialogInfo {
-
-    private static ConfigDialogBean selectedItem = null;
 
     public static void info(ConfigDialogBean configDialogBean, Activity mContext) {
         if (AppConst.GROUP.equals(configDialogBean.getBtnAction())) {
@@ -227,22 +226,14 @@ public class MainActivityDialogInfo {
         });
     }
 
-    public static ConfigDialogBean getSelectedItem() {
-        return selectedItem;
-    }
-
-    public static void clearSelectedItem() {
-        selectedItem = null;
-    }
-
     /**
      * 登录或跳转
      *
      * @param view
      */
     private static void dialogSkip(View view, Activity context) {
-        selectedItem = (ConfigDialogBean) view.getTag();
-
+        ConfigDialogBean selectedItem = (ConfigDialogBean) view.getTag();
+        LoginDataManager.instance().addData(LoginDataManager.HOME_DIALOG_LOGIN, selectedItem);
         final String action = selectedItem.getBtnAction(); //跳转action
         final String h5Url = selectedItem.getH5Url(); //跳转地址
         final String content = selectedItem.getContent();//题组id

@@ -1,7 +1,6 @@
 package com.shuyun.qapp.ui.homepage;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -52,9 +51,10 @@ import com.shuyun.qapp.bean.SystemInfo;
 import com.shuyun.qapp.event.MessageEvent;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.net.MyApplication;
+import com.shuyun.qapp.net.LoginDataManager;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
+import com.shuyun.qapp.net.SyckApplication;
 import com.shuyun.qapp.receiver.MyReceiver;
 import com.shuyun.qapp.ui.classify.ClassifyActivity;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
@@ -69,7 +69,6 @@ import com.shuyun.qapp.utils.NotificationsUtils;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
-import com.shuyun.qapp.view.H5JumpUtil;
 import com.shuyun.qapp.view.ITextBannerItemClickListener;
 import com.shuyun.qapp.view.InviteSharePopupUtil;
 import com.shuyun.qapp.view.LoginJumpUtil;
@@ -87,6 +86,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -182,9 +182,6 @@ public class HomeFragment extends BaseFragment {
     private Handler mHandler = new Handler();
     private boolean isRefresh = false;
 
-    private static BannerBean bannerBean_selectItem = null;
-    private static HomeNoticeBean homeNoticeBean_selectItem = null;
-
     public void setRefresh(boolean isRefresh) {
         this.isRefresh = isRefresh;
     }
@@ -208,7 +205,7 @@ public class HomeFragment extends BaseFragment {
         /**
          * 检测微信是否安装,如果没有安装,需不显示分享按钮;如果安装了微信则显示分享按钮.
          */
-        if (!MyApplication.mWxApi.isWXAppInstalled()) {
+        if (!SyckApplication.mWxApi.isWXAppInstalled()) {
             tvInvite.setVisibility(View.GONE);
         } else {
             tvInvite.setVisibility(View.VISIBLE);
@@ -361,12 +358,14 @@ public class HomeFragment extends BaseFragment {
                             @Override
                             public void onClick(IBannerItem data) {
                                 for (int i = 0; i < bannerData.size(); i++) {
-                                    if (data.ImageUrl().equals(bannerData.get(i).getPicture())) {
-                                        bannerBean_selectItem = bannerData.get(i);
-                                        String action = bannerData.get(i).getAction();
-                                        String h5Url = bannerData.get(i).getH5Url();
-                                        Long is_Login = bannerData.get(i).getIsLogin();
-                                        LoginJumpUtil.dialogSkip(action, mContext, bannerData.get(i).getContent(), h5Url, is_Login);
+                                    BannerBean bannerBean = bannerData.get(i);
+                                    if (data.ImageUrl().equals(bannerBean.getPicture())) {
+
+                                        LoginDataManager.instance().addData(LoginDataManager.BANNER_LOGIN, bannerBean);
+                                        String action = bannerBean.getAction();
+                                        String h5Url = bannerBean.getH5Url();
+                                        Long is_Login = bannerBean.getIsLogin();
+                                        LoginJumpUtil.dialogSkip(action, mContext, bannerBean.getContent(), h5Url, is_Login);
                                     }
                                 }
                             }
@@ -875,12 +874,13 @@ public class HomeFragment extends BaseFragment {
                         scrollAd.setItemOnClickListener(new ITextBannerItemClickListener() {
                             @Override
                             public void onItemClick(String data, int position) {
-                                homeNoticeBean_selectItem = homeNoticeBeanList.get(position);
-                                LoginJumpUtil.dialogSkip(homeNoticeBeanList.get(position).getAction(),
+                                HomeNoticeBean homeNoticeBean = homeNoticeBeanList.get(position);
+                                LoginDataManager.instance().addData(LoginDataManager.HOME_NOTICE_LOGIN, homeNoticeBean);
+                                LoginJumpUtil.dialogSkip(homeNoticeBean.getAction(),
                                         mContext,
-                                        homeNoticeBeanList.get(position).getGroupId(),
-                                        homeNoticeBeanList.get(position).getH5Url(),
-                                        homeNoticeBeanList.get(position).getIsLogin());
+                                        homeNoticeBean.getGroupId(),
+                                        homeNoticeBean.getH5Url(),
+                                        homeNoticeBean.getIsLogin());
                             }
                         });
                     } else {
@@ -917,7 +917,7 @@ public class HomeFragment extends BaseFragment {
                         // 只是layout背景透明
                         rlTitle.setBackgroundColor(Color.argb((int) alpha, 255, 255, 255));
                     } else {
-                        rlTitle.setBackgroundColor(Color.argb((int) 255, 255, 255, 255));
+                        rlTitle.setBackgroundColor(Color.argb(255, 255, 255, 255));
                     }
                 }
             });
@@ -992,7 +992,7 @@ public class HomeFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(MessageEvent messageEvent) {
-        if (messageEvent.getMessage().equals(AppConst.APP_WXINXIN_LOGIN)
+        /*if (messageEvent.getMessage().equals(AppConst.APP_WXINXIN_LOGIN)
                 || messageEvent.getMessage().equals(AppConst.APP_VERIFYCODE_LOGIN)) {
             //活动固定专区
             if (ActivityRegionManager.getSelectedItem() != null) {
@@ -1026,7 +1026,7 @@ public class HomeFragment extends BaseFragment {
             MainActivityDialogInfo.clearSelectedItem();
             bannerBean_selectItem = null;
             homeNoticeBean_selectItem = null;
-        }
+        }*/
     }
 
     @Override
@@ -1043,43 +1043,7 @@ public class HomeFragment extends BaseFragment {
                 || requestCode == AppConst.OPEN_BOX_CODE
                 || requestCode == AppConst.WITHDRAW_INFO_CODE
         )) {
-            //活动固定专区
-            if (ActivityRegionManager.getSelectedItem() != null) {
-                MainConfigBean.DatasBean selectedItem = ActivityRegionManager.getSelectedItem();
-                LoginJumpUtil.dialogSkip(selectedItem.getAction(),
-                        mContext,
-                        selectedItem.getContent(),
-                        selectedItem.getH5Url(),
-                        selectedItem.getIsLogin());
-            } else if (MainActivityDialogInfo.getSelectedItem() != null) {//首页弹框
-                ConfigDialogBean selectedItem = MainActivityDialogInfo.getSelectedItem();
-                LoginJumpUtil.dialogSkip(selectedItem.getBtnAction(),
-                        mContext,
-                        selectedItem.getContent(),
-                        selectedItem.getH5Url(),
-                        selectedItem.getIsLogin());
-            } else if (bannerBean_selectItem != null) { //banner
-                LoginJumpUtil.dialogSkip(bannerBean_selectItem.getAction(),
-                        mContext,
-                        bannerBean_selectItem.getContent(),
-                        bannerBean_selectItem.getH5Url(),
-                        bannerBean_selectItem.getIsLogin());
-            } else if (homeNoticeBean_selectItem != null) { //公告
-                LoginJumpUtil.dialogSkip(homeNoticeBean_selectItem.getAction(),
-                        mContext,
-                        homeNoticeBean_selectItem.getContent(),
-                        homeNoticeBean_selectItem.getH5Url(),
-                        homeNoticeBean_selectItem.getIsLogin());
-            }
-//            ActivityRegionManager.clearSelectedItem();
-//            MainActivityDialogInfo.clearSelectedItem();
-//            bannerBean_selectItem = null;
-//            homeNoticeBean_selectItem = null;
-        } else {
-//            ActivityRegionManager.clearSelectedItem();
-//            MainActivityDialogInfo.clearSelectedItem();
-//            bannerBean_selectItem = null;
-//            homeNoticeBean_selectItem = null;
+            LoginDataManager.instance().handler(mContext, null);
         }
     }
 }

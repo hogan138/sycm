@@ -37,10 +37,10 @@ import org.litepal.tablemanager.Connector;
 
 import cn.jpush.android.api.JPushInterface;
 
-public class MyApplication extends Application {
+public class SyckApplication extends Application {
 
 
-    private static final String TAG = "MyApplication";
+    private static final String TAG = "SyckApplication";
 
     /**
      * 取得当前进程名
@@ -298,21 +298,21 @@ public class MyApplication extends Application {
     @Override
     public void onTerminate() {
         // 程序终止的时候执行
-        Log.d(TAG, "MyApplication == onTerminate");
+        Log.d(TAG, "SyckApplication == onTerminate");
         super.onTerminate();
     }
 
     @Override
     public void onLowMemory() {
         // 低内存的时候执行
-        Log.d(TAG, "MyApplication ==onLowMemory");
+        Log.d(TAG, "SyckApplication ==onLowMemory");
         super.onLowMemory();
     }
 
     @Override
     public void onTrimMemory(int level) {
         // 程序在内存清理的时候执行
-        Log.d(TAG, "MyApplication == onTrimMemory");
+        Log.d(TAG, "SyckApplication == onTrimMemory");
         super.onTrimMemory(level);
     }
 

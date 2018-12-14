@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.TimeUtils;
 import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.callback.ConfigDialog;
@@ -40,6 +41,7 @@ import com.shuyun.qapp.event.MessageEvent;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.HeartBeatManager;
+import com.shuyun.qapp.net.LoginDataManager;
 import com.shuyun.qapp.ui.activity.ActivityFragment;
 import com.shuyun.qapp.ui.classify.ClassifyFragment;
 import com.shuyun.qapp.ui.login.LoginActivity;
@@ -52,7 +54,6 @@ import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ExampleUtil;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
-import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.StatusBarUtil;
 import com.shuyun.qapp.view.NoScrollViewPager;
@@ -292,9 +293,6 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         Log.e("签名", signString);
         //将拼接的字符串转化为16进制MD5
         String myCode = encryptMD5ToString(signString);
-        /**
-         * code值
-         */
         String signCode = getCode(myCode);
 
         final ApiService apiService = BasePresenter.create(8000);
@@ -374,9 +372,9 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(MessageEvent messageEvent) {
-        if ("3".equals(messageEvent.getMessage())) { //个人信息微信登录返回
+        /*if ("3".equals(messageEvent.getMessage())) { //个人信息微信登录返回
             radioGroupChange(3);
-        }
+        }*/
     }
 
 
@@ -419,11 +417,6 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
     }
 
     public void radioGroupChange(int position) {
-        if (position == 3) {
-            SaveUserInfo.getInstance(HomePageActivity.this).setUserInfo("home_mine", "3");
-        } else {
-            SaveUserInfo.getInstance(HomePageActivity.this).setUserInfo("home_mine", "");
-        }
         if (position == 3 && !AppConst.isLogin()) {
             //还原选中
             switch (index) {
@@ -437,7 +430,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
                     radioGroup.check(radioActivity.getId());
                     break;
             }
-
+            LoginDataManager.instance().addData(LoginDataManager.MINE_LOGIN, new JSONObject());
             //跳转登录
             startActivityForResult(new Intent(this, LoginActivity.class), 0x1000);
             return;
@@ -632,29 +625,10 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK && requestCode == 0x1000) {
-            radioGroupChange(3);
+            LoginDataManager.instance().handler(this, null);
             return;
         } else if (resultCode == RESULT_OK && (requestCode == 0x0010 || requestCode == 0x0020)) {
-            final Long model = bundleRedirect.getLong("model", 0);
-            final String content = bundleRedirect.getString("content");
-            if (model == 3) {//题组跳转
-                if (!EncodeAndStringTool.isStringEmpty(content)) {
-                    Intent intent = new Intent(HomePageActivity.this, WebAnswerActivity.class);
-                    intent.putExtra("groupId", Long.valueOf(content));
-                    intent.putExtra("from", "splash");
-                    intent.putExtra("h5Url", bundleRedirect.getString("examUrl"));
-                    startActivity(intent);
-                }
-            } else if (model == 2) {//内部链接
-                if (!EncodeAndStringTool.isStringEmpty(content)) {
-                    Intent intent = new Intent(HomePageActivity.this, WebH5Activity.class);
-                    intent.putExtra("url", content);
-                    intent.putExtra("name", "全民共进");
-                    intent.putExtra("from", "splash");
-                    startActivity(intent);
-
-                }
-            }
+            LoginDataManager.instance().handler(this, null);
             return;
         } else if (requestCode == 0x0010 || requestCode == 0x0020) {
             refresh();
@@ -674,14 +648,8 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         }, 320);
     }
 
-    /**
-     * 重定向数据
-     */
-    private Bundle bundleRedirect = null;
-
     //从广告页进来
     private void skip(Bundle bundle) {
-        bundleRedirect = null;
         final Long model = bundle.getLong("model", 0);
         final String content = bundle.getString("content");
         final Long isLogin = bundle.getLong("isLogin", 0);
@@ -689,7 +657,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
             if (!EncodeAndStringTool.isStringEmpty(content)) {
                 //判断是否需要登录
                 if (isLogin == 1 && !AppConst.isLogin()) {
-                    bundleRedirect = bundle;
+                    LoginDataManager.instance().addData(LoginDataManager.WELCOME_LOGIN, bundle);
                     Intent intent = new Intent(HomePageActivity.this, LoginActivity.class);
                     startActivityForResult(intent, 0x0010);
                 } else {
@@ -704,7 +672,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
             if (!EncodeAndStringTool.isStringEmpty(content)) {
                 //判断是否需要登录
                 if (isLogin == 1 && !AppConst.isLogin()) {
-                    bundleRedirect = bundle;
+                    LoginDataManager.instance().addData(LoginDataManager.WELCOME_LOGIN, bundle);
                     Intent intent = new Intent(HomePageActivity.this, LoginActivity.class);
                     startActivityForResult(intent, 0x0020);
                 } else {

@@ -13,9 +13,9 @@ import android.widget.TextView;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.MainConfigBean;
+import com.shuyun.qapp.net.LoginDataManager;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
 import com.shuyun.qapp.utils.GlideUtils;
-import com.shuyun.qapp.view.H5JumpUtil;
 import com.shuyun.qapp.view.LoginJumpUtil;
 import com.shuyun.qapp.view.RoundImageView;
 
@@ -27,7 +27,6 @@ import java.util.List;
  * 首页活动区域封装
  */
 public class ActivityRegionManager {
-    private static MainConfigBean.DatasBean selectedItem = null;
 
     public static RelativeLayout getView(final Activity context, MainConfigBean data, final View layout) {
         Resources resources = context.getResources();
@@ -201,21 +200,14 @@ public class ActivityRegionManager {
         view.setLayoutParams(layoutParams);
     }
 
-    public static MainConfigBean.DatasBean getSelectedItem() {
-        return selectedItem;
-    }
-
-    public static void clearSelectedItem() {
-        selectedItem = null;
-    }
-
     /**
      * 登录或跳转
      *
      * @param view
      */
     private static void dialogSkip(View view, Activity context) {
-        selectedItem = (MainConfigBean.DatasBean) view.getTag();
+        MainConfigBean.DatasBean selectedItem = (MainConfigBean.DatasBean) view.getTag();
+        LoginDataManager.instance().addData(LoginDataManager.HOME_ACTIVITY_LOGIN, selectedItem);
 
         final String action = selectedItem.getAction(); //跳转action
         final String h5Url = selectedItem.getH5Url(); //跳转地址

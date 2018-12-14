@@ -26,9 +26,7 @@ import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.event.MessageEvent;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.net.MyApplication;
-import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
-import com.shuyun.qapp.ui.login.LoginActivity;
+import com.shuyun.qapp.net.SyckApplication;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -37,7 +35,6 @@ import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.ScannerUtils;
-import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -57,7 +54,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.blankj.utilcode.util.SizeUtils.dp2px;
-import static com.shuyun.qapp.net.MyApplication.getAppContext;
+import static com.shuyun.qapp.net.SyckApplication.getAppContext;
 
 /**
  * 答题对战首页
@@ -124,7 +121,7 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
         /**
          * 检测微信是否安装,如果没有安装,需不显示分享按钮;如果安装了微信则显示分享按钮.
          */
-        if (!MyApplication.mWxApi.isWXAppInstalled()) {
+        if (!SyckApplication.mWxApi.isWXAppInstalled()) {
             ivRightIcon.setVisibility(View.GONE);
         } else {
             ivRightIcon.setVisibility(View.VISIBLE);
@@ -138,7 +135,6 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
         getInfo();
 
         EventBus.getDefault().register(this);
-
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

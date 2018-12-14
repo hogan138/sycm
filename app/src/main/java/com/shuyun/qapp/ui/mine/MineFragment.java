@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseFragment;
@@ -28,7 +29,8 @@ import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.net.MyApplication;
+import com.shuyun.qapp.net.LoginDataManager;
+import com.shuyun.qapp.net.SyckApplication;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.receiver.MyReceiver;
@@ -162,7 +164,7 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
         /**
          * 检测微信是否安装,如果没有安装,需不显示分享按钮;如果安装了微信则显示分享按钮.
          */
-        if (!MyApplication.mWxApi.isWXAppInstalled()) {
+        if (!SyckApplication.mWxApi.isWXAppInstalled()) {
             rlInviteShare.setVisibility(View.GONE);
         } else {
             rlInviteShare.setVisibility(View.VISIBLE);
@@ -579,12 +581,7 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
         } catch (Exception e) {
         }
 
-        if (AppConst.isLogin()) {
-            loadMineHomeData();
-        } else {
-            SaveUserInfo.getInstance(mContext).setUserInfo("home_mine", "3");
-            startActivity(new Intent(mContext, LoginActivity.class));
-        }
+        loadMineHomeData();
     }
 }
 

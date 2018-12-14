@@ -10,7 +10,7 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.shuyun.qapp.net.MyApplication;
+import com.shuyun.qapp.net.SyckApplication;
 import com.shuyun.qapp.bean.PushBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
@@ -24,7 +24,6 @@ import com.shuyun.qapp.ui.mine.MinePrizeActivity;
 import com.shuyun.qapp.utils.ExampleUtil;
 import com.shuyun.qapp.utils.Logger;
 import com.shuyun.qapp.utils.SaveUserInfo;
-import com.shuyun.qapp.utils.SharedPrefrenceTool;
 
 import java.util.Iterator;
 
@@ -90,7 +89,7 @@ public class MyReceiver extends BroadcastReceiver {
                 if (!AppConst.isLogin()) {
                     //拉起登录界面
                     Intent i = new Intent(context, LoginActivity.class);
-                    MyApplication.getAppContext().startActivity(i);
+                    SyckApplication.getAppContext().startActivity(i);
                     return;
                 } else {
                     PushBean pushBean = JSON.parseObject(bundle.getString(JPushInterface.EXTRA_EXTRA), PushBean.class);

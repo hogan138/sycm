@@ -31,6 +31,7 @@ import com.shuyun.qapp.bean.Msg;
 import com.shuyun.qapp.event.MessageEvent;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.LoginDataManager;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.mine.AddWithdrawInfoActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
@@ -286,6 +287,10 @@ public class VerifyCodeActivity extends BaseActivity {
         if (!loginInput.getAccount().equals(account)) {
             DataSupport.deleteAll(Msg.class);//清空数据库中消息
         }
+
+        CustomLoadingFactory factory = new CustomLoadingFactory();
+        LoadingBar.make(llMain, factory).show();
+
         ApiService apiService = BasePresenter.create(8000);
         final String inputbean = JSON.toJSONString(loginInput);
         Log.i(TAG, "loadLogin: " + loginInput.toString());
@@ -334,21 +339,9 @@ public class VerifyCodeActivity extends BaseActivity {
                                             startActivity(intent);
                                         } else {
                                             //已设置密码
-                                            CustomLoadingFactory factory = new CustomLoadingFactory();
-                                            LoadingBar.make(llMain, factory).show();
-                                            new Handler().postDelayed(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    LoadingBar.cancel(llMain);
-                                                    KeyboardUtils.hideSoftInput(VerifyCodeActivity.this);
-                                                    MyActivityManager1.getInstance().finishAllActivity();
-                                                    EventBus.getDefault().post(new MessageEvent(AppConst.APP_VERIFYCODE_LOGIN));
-                                                    if ("3".equals(SaveUserInfo.getInstance(VerifyCodeActivity.this).getUserInfo("home_mine"))) {//来自个人信息微信登录
-                                                        EventBus.getDefault().post(new MessageEvent("3"));
-                                                        SaveUserInfo.getInstance(VerifyCodeActivity.this).setUserInfo("home_mine", "");
-                                                    }
-                                                }
-                                            }, 2000);
+                                            KeyboardUtils.hideSoftInput(VerifyCodeActivity.this);
+                                            MyActivityManager1.getInstance().finishAllActivity();
+                                            LoginDataManager.instance().handler(VerifyCodeActivity.this, null);
                                         }
                                     } catch (Exception e) {
 
@@ -383,6 +376,7 @@ public class VerifyCodeActivity extends BaseActivity {
 
                     @Override
                     public void onComplete() {
+                        LoadingBar.cancel(llMain);
                     }
                 });
     }

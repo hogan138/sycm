@@ -23,8 +23,7 @@ import com.shuyun.qapp.bean.InputVerficationCodeBean;
 import com.shuyun.qapp.bean.LoginResponse;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.net.MyApplication;
-import com.shuyun.qapp.ui.homepage.HomePageActivity;
+import com.shuyun.qapp.net.SyckApplication;
 import com.shuyun.qapp.ui.webview.WebPublicActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
@@ -237,7 +236,7 @@ public class BindPhoneNumActivity extends BaseActivity {
                                 //设置别名
                                 JPushInterface.setAlias(BindPhoneNumActivity.this, new Random().nextInt(), phoneNumber);
 
-                                AppConst.loadToken(MyApplication.getAppContext());
+                                AppConst.loadToken(SyckApplication.getAppContext());
                                 //绑定成功  存token值
                                 ToastUtil.showToast(BindPhoneNumActivity.this, "绑定成功");
 //                                startActivity(new Intent(BindPhoneNumActivity.this, HomePageActivity.class));

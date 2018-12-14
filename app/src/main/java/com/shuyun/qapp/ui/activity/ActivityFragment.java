@@ -1,7 +1,6 @@
 package com.shuyun.qapp.ui.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,20 +21,17 @@ import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.ActivityTabAdapter;
 import com.shuyun.qapp.base.BaseFragment;
 import com.shuyun.qapp.bean.ActivityTabBean;
-import com.shuyun.qapp.bean.ConfigDialogBean;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.bean.MainConfigBean;
 import com.shuyun.qapp.event.MessageEvent;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.LoginDataManager;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
-import com.shuyun.qapp.ui.homepage.ActivityRegionManager;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.view.LoginJumpUtil;
-import com.shuyun.qapp.view.MainActivityDialogInfo;
 import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -72,7 +68,6 @@ public class ActivityFragment extends BaseFragment implements OnRemotingCallBack
     private int currentPage = 0;
 
     private ActivityTabAdapter activityTabAdapter; //活动适配器
-    private static ActivityTabBean.ResultBean selectedItem = null;
     /**
      * 活动专区
      */
@@ -115,7 +110,7 @@ public class ActivityFragment extends BaseFragment implements OnRemotingCallBack
             @Override
             public void onItemChildClick(View view, int position) {
                 ActivityTabBean.ResultBean resultBean = activityTabBeanList.get(position);
-                selectedItem = resultBean;
+                LoginDataManager.instance().addData(LoginDataManager.ACTIVITY_LOGIN, resultBean);
                 LoginJumpUtil.dialogSkip(resultBean.getBtnAction(),
                         mContext,
                         resultBean.getContent(),
@@ -189,7 +184,7 @@ public class ActivityFragment extends BaseFragment implements OnRemotingCallBack
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(MessageEvent messageEvent) {
-        if (messageEvent.getMessage() == AppConst.APP_WXINXIN_LOGIN
+        /*if (messageEvent.getMessage() == AppConst.APP_WXINXIN_LOGIN
                 || messageEvent.getMessage().equals(AppConst.APP_VERIFYCODE_LOGIN)) {
             if (selectedItem == null)
                 return;
@@ -199,7 +194,7 @@ public class ActivityFragment extends BaseFragment implements OnRemotingCallBack
                     selectedItem.getH5Url(),
                     selectedItem.getIsLogin());
             selectedItem = null;
-        }
+        }*/
     }
 
     @Override
@@ -216,16 +211,7 @@ public class ActivityFragment extends BaseFragment implements OnRemotingCallBack
                 || requestCode == AppConst.OPEN_BOX_CODE
                 || requestCode == AppConst.WITHDRAW_INFO_CODE
         )) {
-            if (selectedItem == null)
-                return;
-            LoginJumpUtil.dialogSkip(selectedItem.getBtnAction(),
-                    mContext,
-                    selectedItem.getContent(),
-                    selectedItem.getH5Url(),
-                    selectedItem.getIsLogin());
-//            selectedItem = null;
-        } else {
-//            selectedItem = null;
+            LoginDataManager.instance().handler(mContext, null);
         }
     }
 

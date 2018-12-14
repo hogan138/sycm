@@ -35,7 +35,7 @@ import com.shuyun.qapp.bean.LoginResponse;
 import com.shuyun.qapp.bean.Msg;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.net.MyApplication;
+import com.shuyun.qapp.net.SyckApplication;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
@@ -122,7 +122,7 @@ public class LoginActivity extends BaseActivity {
         mPermissionsChecker = new PermissionsChecker(this);
         clearEditText(etPhoneNumber, ivClearPhoneNum);
         clearEditText(etPassword, ivClearPwd);
-        if (!MyApplication.mWxApi.isWXAppInstalled()) {
+        if (!SyckApplication.mWxApi.isWXAppInstalled()) {
             tvWeixinLogo.setVisibility(View.GONE);
         }
 
@@ -208,7 +208,6 @@ public class LoginActivity extends BaseActivity {
     public void click(View view) {
         switch (view.getId()) {
             case R.id.rl_close:
-                SaveUserInfo.getInstance(LoginActivity.this).setUserInfo("home_mine", "");
                 finish();
                 break;
             case R.id.iv_clear_phone_num: //清空手机号
@@ -418,7 +417,7 @@ public class LoginActivity extends BaseActivity {
         final SendAuth.Req req = new SendAuth.Req();
         req.scope = "snsapi_userinfo";
         req.state = "diandi_wx_login";
-        MyApplication.mWxApi.sendReq(req);
+        SyckApplication.mWxApi.sendReq(req);
     }
 
 
@@ -559,7 +558,6 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        SaveUserInfo.getInstance(LoginActivity.this).setUserInfo("home_mine", "");
         finish();
     }
 }
