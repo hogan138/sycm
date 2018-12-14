@@ -93,6 +93,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             SharedPrefrenceTool.put(getAppContext(), "key", loginResp.getKey());//对称加密的秘钥。
             SharedPrefrenceTool.put(getAppContext(), "bind", loginResp.getBind());//是否绑定用户。
             SharedPrefrenceTool.put(getAppContext(), "random", loginResp.getRandom());//登录成果后，平台随机生成的字符串
+            SaveUserInfo.getInstance(getAppContext()).setUserInfo("cert", loginResp.getCertification());
             AppConst.loadToken(this);
             if (!EncodeAndStringTool.isStringEmpty(loginResp.getInvite())) {
                 SharedPrefrenceTool.put(getAppContext(), "invite", loginResp.getInvite());

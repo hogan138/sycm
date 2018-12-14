@@ -1,5 +1,6 @@
 package com.shuyun.qapp.ui.login;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -82,11 +83,14 @@ public class VerifyCodeActivity extends BaseActivity {
     LinearLayout llMain;
 
     String phone = "";
+    private Activity mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        mContext = this;
+
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,7 +154,7 @@ public class VerifyCodeActivity extends BaseActivity {
         String tsn = EncodeAndStringTool.getTsn(this);
         String salt = EncodeAndStringTool.generateRandomString(12);
 
-        SharedPrefrenceTool.put(VerifyCodeActivity.this, "salt", salt);
+        SharedPrefrenceTool.put(mContext, "salt", salt);
         //devId+appId+v+stamp+mode+account+tsn+salt+ appSecret+mdpwd
         String signString = "" + AppConst.DEV_ID + AppConst.APP_ID + AppConst.V + curTime + mode + phone + tsn + salt + AppConst.APP_KEY + mdCode;
         //将拼接的字符串转化为16进制MD5
@@ -169,20 +173,20 @@ public class VerifyCodeActivity extends BaseActivity {
         loginInput.setAppId(AppConst.APP_ID);
         loginInput.setV(AppConst.V);
         loginInput.setStamp(curTime);
-        loginInput.setAppVersion(APKVersionCodeTools.getVerName(VerifyCodeActivity.this));
+        loginInput.setAppVersion(APKVersionCodeTools.getVerName(mContext));
         loginInput.setCode(signCode);
         String deviceId = SmAntiFraud.getDeviceId();
         loginInput.setDeviceId(deviceId);
         try {
             //是否是答题免登陆，传入答卷id
-            String examId = SaveUserInfo.getInstance(VerifyCodeActivity.this).getUserInfo("answer_exam_id");
+            String examId = SaveUserInfo.getInstance(mContext).getUserInfo("answer_exam_id");
             if (!EncodeAndStringTool.isStringEmpty(examId)) {
                 loginInput.setExamId(examId);
             }
         } catch (Exception e) {
 
         }
-        loadLogin(VerifyCodeActivity.this, loginInput, mode);
+        loadLogin(mContext, loginInput, mode);
     }
 
     //发送验证码
@@ -236,7 +240,7 @@ public class VerifyCodeActivity extends BaseActivity {
                     @Override
                     public void onNext(DataResponse<String> loginResponse) {
                         if (loginResponse.isSuccees()) {
-                            KeyboardUtils.showSoftInput(VerifyCodeActivity.this);
+                            KeyboardUtils.showSoftInput(mContext);
                             //显示60s倒计时
                             tvSendCode.setEnabled(false);
                             new CountDownTimer(120 * 1000, 1000) {
@@ -254,7 +258,7 @@ public class VerifyCodeActivity extends BaseActivity {
                                 }
                             }.start();
                         } else {
-                            ErrorCodeTools.errorCodePrompt(VerifyCodeActivity.this, loginResponse.getErr(), loginResponse.getMsg());
+                            ErrorCodeTools.errorCodePrompt(mContext, loginResponse.getErr(), loginResponse.getMsg());
                             tvSendCode.setEnabled(true);
                             tvSendCode.setText("重新发送验证码");
                             tvSendCode.setTextColor(Color.parseColor("#0194ec"));
@@ -278,7 +282,7 @@ public class VerifyCodeActivity extends BaseActivity {
      * 登录
      */
 
-    public void loadLogin(final Context mContext, final LoginInput loginInput, final int mode) {
+    public void loadLogin(final Activity mContext, final LoginInput loginInput, final int mode) {
         SaveUserInfo.getInstance(this).setUserInfo("account", loginInput.getAccount());
         final String account = SaveUserInfo.getInstance(this).getUserInfo("account");
         /**
@@ -308,12 +312,13 @@ public class VerifyCodeActivity extends BaseActivity {
                         if (loginResponse.isSuccees()) {
                             LoginResponse loginResp = loginResponse.getDat();
                             if (!EncodeAndStringTool.isObjectEmpty(loginResp)) {
-                                SharedPrefrenceTool.put(VerifyCodeActivity.this, "token", loginResp.getToken());
-                                SharedPrefrenceTool.put(VerifyCodeActivity.this, "expire", loginResp.getExpire());//token的有效期
-                                SharedPrefrenceTool.put(VerifyCodeActivity.this, "key", loginResp.getKey());//对称加密的秘钥。
-                                SharedPrefrenceTool.put(VerifyCodeActivity.this, "bind", loginResp.getBind());//是否绑定用户。
-                                SharedPrefrenceTool.put(VerifyCodeActivity.this, "random", loginResp.getRandom());//登录成果后，平台随机生成的字符串
-                                AppConst.loadToken(VerifyCodeActivity.this);
+                                SharedPrefrenceTool.put(mContext, "token", loginResp.getToken());
+                                SharedPrefrenceTool.put(mContext, "expire", loginResp.getExpire());//token的有效期
+                                SharedPrefrenceTool.put(mContext, "key", loginResp.getKey());//对称加密的秘钥。
+                                SharedPrefrenceTool.put(mContext, "bind", loginResp.getBind());//是否绑定用户。
+                                SharedPrefrenceTool.put(mContext, "random", loginResp.getRandom());//登录成果后，平台随机生成的字符串
+                                SaveUserInfo.getInstance(mContext).setUserInfo("cert", loginResp.getCertification());
+                                AppConst.loadToken(mContext);
 
                                 try {
                                     //答题免登录返回宝箱id
@@ -325,13 +330,13 @@ public class VerifyCodeActivity extends BaseActivity {
                                 }
 
                                 //设置别名
-                                JPushInterface.setAlias(VerifyCodeActivity.this, new Random().nextInt(), phone);
+                                JPushInterface.setAlias(mContext, new Random().nextInt(), phone);
 
                                 if (mode == 2) {
                                     try {
                                         if (loginResp.isSetPwd()) {
                                             //未设置密码
-                                            Intent intent = new Intent(VerifyCodeActivity.this, SetPasswordActivity.class);
+                                            Intent intent = new Intent(mContext, SetPasswordActivity.class);
                                             intent.putExtra("name", "register");
                                             intent.putExtra("phone", phone);
                                             intent.putExtra("code", verifyCodeView.getEditContent());
@@ -339,16 +344,17 @@ public class VerifyCodeActivity extends BaseActivity {
                                             startActivity(intent);
                                         } else {
                                             //已设置密码
-                                            KeyboardUtils.hideSoftInput(VerifyCodeActivity.this);
+                                            KeyboardUtils.hideSoftInput(mContext);
                                             MyActivityManager1.getInstance().finishAllActivity();
-                                            LoginDataManager.instance().handler(VerifyCodeActivity.this, new Object[]{loginResp.getBoxId()});
+                                            //获取当前活动的Activity
+                                            LoginDataManager.instance().handler(mContext, new Object[]{loginResp.getBoxId()});
                                         }
                                     } catch (Exception e) {
 
                                     }
                                 } else if (mode == 4) {
                                     //注册
-                                    Intent intent = new Intent(VerifyCodeActivity.this, SetPasswordActivity.class);
+                                    Intent intent = new Intent(mContext, SetPasswordActivity.class);
                                     intent.putExtra("name", getIntent().getStringExtra("name"));
                                     intent.putExtra("phone", phone);
                                     intent.putExtra("code", verifyCodeView.getEditContent());
@@ -436,7 +442,7 @@ public class VerifyCodeActivity extends BaseActivity {
                     @Override
                     public void onNext(DataResponse<String> loginResponse) {
                         if (loginResponse.isSuccees()) {
-                            Intent intent = new Intent(VerifyCodeActivity.this, SetPasswordActivity.class);
+                            Intent intent = new Intent(mContext, SetPasswordActivity.class);
                             intent.putExtra("name", getIntent().getStringExtra("name"));
                             intent.putExtra("phone", phone);
                             intent.putExtra("code", verifyCodeView.getEditContent());
@@ -446,7 +452,7 @@ public class VerifyCodeActivity extends BaseActivity {
                             if (loginResponse.getErr().equals("TAU11")) {
                                 errorDialog("验证码错误，请重新输入");
                             } else {
-                                ErrorCodeTools.errorCodePrompt(VerifyCodeActivity.this, loginResponse.getErr(), loginResponse.getMsg());
+                                ErrorCodeTools.errorCodePrompt(mContext, loginResponse.getErr(), loginResponse.getMsg());
                             }
                         }
                     }

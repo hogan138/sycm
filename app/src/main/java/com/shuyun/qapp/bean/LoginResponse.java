@@ -15,11 +15,19 @@ public class LoginResponse implements Serializable {
     private String invite;//邀请分享的展现图片地址  当user.share=1时有效
     private User user;//对象
     private boolean setPwd;
-
     private String openId;
     private String wxName;
     private String wxHeadUrl;
     private String boxId; //宝箱ID
+    private String certification; //是否实名
+
+    public String getCertification() {
+        return certification;
+    }
+
+    public void setCertification(String certification) {
+        this.certification = certification;
+    }
 
     public String getBoxId() {
         return boxId;

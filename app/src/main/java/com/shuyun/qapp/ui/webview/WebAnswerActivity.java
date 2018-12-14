@@ -1,5 +1,7 @@
 package com.shuyun.qapp.ui.webview;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -53,6 +55,7 @@ import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.bean.ReturnDialogBean;
 import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.bean.WebAnswerHomeBean;
+import com.shuyun.qapp.event.MessageEvent;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.LoginDataManager;
@@ -82,6 +85,8 @@ import com.umeng.socialize.media.UMWeb;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -119,6 +124,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
     private String h5Url; //h5url
     private static final String TAG = "WebAnswerActivity";
     private String splash = "";
+    private Context mContext;
 
     private boolean show = false;
     ReturnDialogBean returnDialogBean;
@@ -174,7 +180,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        startActivityForResult(new Intent(WebAnswerActivity.this, LoginActivity.class).putExtra("examId", rel.getString("examId")), 1);
+                        startActivityForResult(new Intent(mContext, LoginActivity.class).putExtra("examId", rel.getString("examId")), 1);
                     }
                 });
             }
@@ -185,7 +191,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
          */
         @JavascriptInterface
         public boolean jsCertState() {
-            if (Integer.parseInt(SaveUserInfo.getInstance(WebAnswerActivity.this).getUserInfo("cert")) == 1) {
+            if (Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("cert")) == 1) {
                 return true;
             } else {
                 return false;
@@ -200,7 +206,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    RealNamePopupUtil.showAuthPop(WebAnswerActivity.this, llH5, getString(R.string.real_openbox_describe));
+                    RealNamePopupUtil.showAuthPop(mContext, llH5, getString(R.string.real_openbox_describe));
                 }
             });
         }
@@ -262,7 +268,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Intent intent = new Intent(WebAnswerActivity.this, AnswerHistoryActivity.class);
+                    Intent intent = new Intent(mContext, AnswerHistoryActivity.class);
                     intent.putExtra("answer_id", id);
                     intent.putExtra("title", wTitle);
                     startActivity(intent);
@@ -281,7 +287,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                     if (!EncodeAndStringTool.isStringEmpty(splash)) {
                         if (splash.equals("splash")) {
                             finish();
-                            Intent intent = new Intent(WebAnswerActivity.this, HomePageActivity.class);
+                            Intent intent = new Intent(mContext, HomePageActivity.class);
                             startActivity(intent);
                         }
                     } else {
@@ -333,7 +339,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    ErrorCodeTools.errorCodePrompt(WebAnswerActivity.this, err, msg);
+                    ErrorCodeTools.errorCodePrompt(mContext, err, msg);
                 }
             });
         }
@@ -351,14 +357,14 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                     MinePrize minePrize = new Gson().fromJson(prizeData, MinePrize.class);
                     if (minePrize.getActionType().equals("action.h5.url")) {
                         //实物
-                        Intent intent = new Intent(WebAnswerActivity.this, WebH5Activity.class);
+                        Intent intent = new Intent(mContext, WebH5Activity.class);
                         intent.putExtra("id", minePrize.getId());
                         intent.putExtra("url", minePrize.getH5Url());
                         intent.putExtra("name", minePrize.getName());
                         startActivity(intent);
                     } else if (minePrize.getActionType().equals("action.withdraw")) {
                         //红包
-                        if (Integer.parseInt(SaveUserInfo.getInstance(WebAnswerActivity.this).getUserInfo("cert")) == 1) {
+                        if (Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("cert")) == 1) {
                             if (!EncodeAndStringTool.isListEmpty(minePrize.getMinePrizes())) {
                                 List<MinePrize.ChildMinePrize> redPrizeList = new ArrayList<>();
                                 for (int i = 0; i < minePrize.getMinePrizes().size(); i++) {
@@ -368,7 +374,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                                     }
                                 }
                                 if (!EncodeAndStringTool.isListEmpty(redPrizeList)) {
-                                    Intent intent = new Intent(WebAnswerActivity.this, NewRedWithdrawActivity.class);
+                                    Intent intent = new Intent(mContext, NewRedWithdrawActivity.class);
                                     Bundle bundle = new Bundle();
                                     bundle.putParcelableArrayList("redPrize", (ArrayList<? extends Parcelable>) redPrizeList);
                                     bundle.putString("redId", minePrize.getId());
@@ -379,11 +385,11 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                             }
                         } else {
                             //显示实名认证弹窗
-                            RealNamePopupUtil.showAuthPop(WebAnswerActivity.this, llH5, getString(R.string.real_gift_describe));
+                            RealNamePopupUtil.showAuthPop(mContext, llH5, getString(R.string.real_gift_describe));
                         }
                     } else if (minePrize.getActionType().equals("action.bp.use")) {
                         //积分
-                        startActivity(new Intent(WebAnswerActivity.this, IntegralExchangeActivity.class));
+                        startActivity(new Intent(mContext, IntegralExchangeActivity.class));
                     }
                 }
             });
@@ -400,10 +406,10 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                 @Override
                 public void run() {
                     LoginJumpUtil.dialogSkip(h5JumpBean.getBtnAction(),
-                            WebAnswerActivity.this,
+                            (Activity) mContext,
                             h5JumpBean.getContent(),
                             h5JumpBean.getH5Url(),
-                            Long.valueOf(0));
+                            0L);
                 }
             });
             Log.e("data", data);
@@ -424,9 +430,10 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        mContext = this;
+        SharedPrefrenceTool.put(mContext, "boxId", "");//清空答题免登录返回宝箱id
 
-        SharedPrefrenceTool.put(WebAnswerActivity.this, "boxId", "");//清空答题免登录返回宝箱id
-
+        EventBus.getDefault().register(this);
         /**
          * 检测微信是否安装,如果没有安装,需不显示分享按钮,如果安装了,需要显示分享按钮
          */
@@ -472,18 +479,31 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().unregister(this);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == 1) {
             //登录成功，调用h5方法,，传递boxId给h5
-            String boxId = (String) SharedPrefrenceTool.get(WebAnswerActivity.this, "boxId", "");
+            String boxId = (String) SharedPrefrenceTool.get(mContext, "boxId", "");
             if (!EncodeAndStringTool.isStringEmpty(boxId)) {
                 sendBox(boxId);
             }
         }
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(MessageEvent messageEvent) {
+        if (LoginDataManager.ANSWER_LOGIN.equals(messageEvent.getMessage())) {
+            sendBox((String) messageEvent.getData());
+        }
     }
 
 
@@ -552,13 +572,13 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
     public void showSharedPop() {
         if ((!EncodeAndStringTool.isObjectEmpty(commonPopupWindow)) && commonPopupWindow.isShowing())
             return;
-        View upView = LayoutInflater.from(WebAnswerActivity.this).inflate(R.layout.share_popupwindow, null);
+        View upView = LayoutInflater.from(mContext).inflate(R.layout.share_popupwindow, null);
         //测量View的宽高
         CommonPopUtil.measureWidthAndHeight(upView);
         //取值范围0.0f-1.0f 值越小越暗
 //        .setAnimationStyle(R.style.AnimUp)//设置动画
         //设置子View点击事件
-        commonPopupWindow = new CommonPopupWindow.Builder(WebAnswerActivity.this)
+        commonPopupWindow = new CommonPopupWindow.Builder(mContext)
                 .setView(R.layout.share_popupwindow)
                 .setWidthAndHeight(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                 .setBackGroundLevel(0.5f)//取值范围0.0f-1.0f 值越小越暗
@@ -621,7 +641,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                                 }
                             }
                         } else {
-                            ErrorCodeTools.errorCodePrompt(WebAnswerActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                            ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
                         }
                     }
 
@@ -666,7 +686,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                                 }
                             }
                         } else {
-                            ErrorCodeTools.errorCodePrompt(WebAnswerActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                            ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
                         }
                     }
 
@@ -772,7 +792,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                         if (dataResponse.isSuccees()) {
 
                         } else {
-                            ErrorCodeTools.errorCodePrompt(WebAnswerActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                            ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
                         }
                     }
 
@@ -927,7 +947,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                         if (NetworkUtils.isAvailableByPing()) {
                             loadAnswerOppty();
                         } else {
-                            Toast.makeText(WebAnswerActivity.this, "网络链接失败，请检查网络链接！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "网络链接失败，请检查网络链接！", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -979,7 +999,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                             } else {
                             }
                         } else {
-                            ErrorCodeTools.errorCodePrompt(WebAnswerActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                            ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
                         }
 
                     }
@@ -1053,7 +1073,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                                 countDown(answerOpptyBean.getRemainder());
                             }
                         } else {
-                            ErrorCodeTools.errorCodePrompt(WebAnswerActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                            ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
                         }
                     }
 

@@ -365,6 +365,7 @@ public class LoginActivity extends BaseActivity {
                         SharedPrefrenceTool.put(mContext, "key", loginResp.getKey());//对称加密的秘钥。
                         SharedPrefrenceTool.put(mContext, "bind", loginResp.getBind());//是否绑定用户。
                         SharedPrefrenceTool.put(mContext, "random", loginResp.getRandom());//登录成果后，平台随机生成的字符串
+                        SaveUserInfo.getInstance(mContext).setUserInfo("cert", loginResp.getCertification());
                         AppConst.loadToken(mContext);
 
                         //答题免登录返回宝箱id

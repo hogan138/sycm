@@ -10,6 +10,7 @@ package com.shuyun.qapp.event;
  */
 public class MessageEvent {
     private String message;
+    private Object data;
 
     public MessageEvent(String message) {
         this.message = message;
@@ -23,4 +24,11 @@ public class MessageEvent {
         this.message = message;
     }
 
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
+    }
 }

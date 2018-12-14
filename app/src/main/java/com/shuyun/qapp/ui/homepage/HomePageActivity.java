@@ -60,6 +60,7 @@ import com.shuyun.qapp.view.NoScrollViewPager;
 import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -103,6 +104,8 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
     public static boolean isForeground = false; //极光推送
     private int i = 0;//当前下标
     private Handler mHandler = new Handler();
+    //获取最新活动显示角标
+    private String show = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +134,8 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
 
         //初始化数据
         initDate();
+
+        EventBus.getDefault().register(this);
 
         //判断是否从广告页传递数据过来
         Bundle bundle = getIntent().getExtras();
@@ -370,6 +375,8 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
     protected void onDestroy() {
         super.onDestroy();
 
+        if (EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().unregister(this);
         SharedPreferences sharedPreferences = getSharedPreferences("FirstRun", 0);
         sharedPreferences.edit().putBoolean("Main", true).commit();
 
@@ -467,9 +474,6 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
             }
         }
     }
-
-    //获取最新活动显示角标
-    String show = "";
 
     private void getActivityShow(final int i) {
         ApiService apiService = BasePresenter.create(8000);
@@ -675,6 +679,13 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
             }
         } else if (model == 0) {
 
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(MessageEvent messageEvent) {
+        if (LoginDataManager.MINE_LOGIN.equals(messageEvent.getMessage())) {
+            radioGroupChange(3);
         }
     }
 }

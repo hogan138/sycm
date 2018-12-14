@@ -10,11 +10,14 @@ import com.shuyun.qapp.bean.BannerBean;
 import com.shuyun.qapp.bean.ConfigDialogBean;
 import com.shuyun.qapp.bean.HomeNoticeBean;
 import com.shuyun.qapp.bean.MainConfigBean;
+import com.shuyun.qapp.event.MessageEvent;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.view.LoginJumpUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -149,6 +152,13 @@ public class LoginDataManager {
                         ((HomePageActivity) mContext).radioGroupChange(3);
                     }
                 }, 150);
+            } else {
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                       EventBus.getDefault().post(new MessageEvent(LoginDataManager.MINE_LOGIN));
+                    }
+                }, 150);
             }
         } else if (LoginDataManager.WELCOME_LOGIN.equals(action)) {
             Bundle bundleRedirect = (Bundle) map.get(LoginDataManager.VALUE);
@@ -177,6 +187,15 @@ public class LoginDataManager {
                     @Override
                     public void run() {
                         ((WebAnswerActivity) mContext).sendBox((String)args[0]);
+                    }
+                }, 150);
+            } else { //获取当前活动的Activity
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        MessageEvent event = new MessageEvent(LoginDataManager.ANSWER_LOGIN);
+                        event.setData(args[0]);
+                        EventBus.getDefault().post(event);
                     }
                 }, 150);
             }
