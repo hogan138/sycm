@@ -180,7 +180,13 @@ public class ActivityFragment extends BaseFragment implements OnRemotingCallBack
         if (resultCode == Activity.RESULT_OK && (requestCode == AppConst.INVITE_CODE
                 || requestCode == AppConst.GROUP_CODE
                 || requestCode == AppConst.INTEGRAL_CODE
-                || requestCode == AppConst.TREASURE_CODE)) {
+                || requestCode == AppConst.TREASURE_CODE
+                || requestCode == AppConst.REAL_CODE
+                || requestCode == AppConst.H5_CODE
+                || requestCode == AppConst.AGAINST_CODE
+                || requestCode == AppConst.OPEN_BOX_CODE
+                || requestCode == AppConst.WITHDRAW_INFO_CODE
+        )) {
             LoginJumpUtil.dialogSkip(selectedItem.getBtnAction(),
                     mContext,
                     selectedItem.getContent(),

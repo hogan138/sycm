@@ -143,6 +143,17 @@ public class AppConst {
     public static final int INTEGRAL_CODE = 0x2003;
     //积分夺宝
     public static final int TREASURE_CODE = 0x2004;
+    //实名认证
+    public static final int REAL_CODE = 0x2005;
+    //h5页面跳转
+    public static final int H5_CODE = 0x2006;
+    //答题对战跳转
+    public static final int AGAINST_CODE = 0x2007;
+    //积分开宝箱跳转
+    public static final int OPEN_BOX_CODE = 0x2008;
+    //提现信息跳转
+    public static final int WITHDRAW_INFO_CODE = 0x2009;
+
 
     public static final String APP_ACTION_LOGOUT = "APP_ACTION_LOGOUT";//退出登录
     public static final String APP_ACTION_PARAM = "APP_ACTION";//动作参数

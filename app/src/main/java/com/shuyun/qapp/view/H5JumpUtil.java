@@ -21,7 +21,7 @@ import com.shuyun.qapp.utils.SaveUserInfo;
  */
 public class H5JumpUtil {
 
-    public static void dialogSkip(String action, String content, String h5Url, Context context, View view, Long isLogin) {
+    public static void dialogSkip(String action, String content, String h5Url, Context context, Long isLogin) {
         if (AppConst.GROUP.equals(action)) {
             //题组
             Intent intent = new Intent(context, WebAnswerActivity.class);

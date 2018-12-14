@@ -71,6 +71,7 @@ import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.view.H5JumpUtil;
 import com.shuyun.qapp.view.ITextBannerItemClickListener;
 import com.shuyun.qapp.view.InviteSharePopupUtil;
+import com.shuyun.qapp.view.LoginJumpUtil;
 import com.shuyun.qapp.view.MainActivityDialogInfo;
 import com.shuyun.qapp.view.NotifyDialog;
 import com.shuyun.qapp.view.OvalImageView;
@@ -359,7 +360,7 @@ public class HomeFragment extends BaseFragment {
                                         String h5Url = bannerData.get(i).getH5Url();
                                         Long is_Login = bannerData.get(i).getIsLogin();
                                         try {
-                                            H5JumpUtil.dialogSkip(action, bannerData.get(i).getContent(), h5Url, mContext, llHomeFragment, is_Login);
+                                            LoginJumpUtil.dialogSkip(action, mContext, bannerData.get(i).getContent(), h5Url, is_Login);
                                         } catch (Exception e) {
                                         }
                                     }
@@ -870,7 +871,11 @@ public class HomeFragment extends BaseFragment {
                         scrollAd.setItemOnClickListener(new ITextBannerItemClickListener() {
                             @Override
                             public void onItemClick(String data, int position) {
-                                H5JumpUtil.dialogSkip(homeNoticeBeanList.get(position).getAction(), homeNoticeBeanList.get(position).getGroupId(), homeNoticeBeanList.get(position).getH5Url(), mContext, llHomeFragment, homeNoticeBeanList.get(position).getIsLogin());
+                                LoginJumpUtil.dialogSkip(homeNoticeBeanList.get(position).getAction(),
+                                        mContext,
+                                        homeNoticeBeanList.get(position).getGroupId(),
+                                        homeNoticeBeanList.get(position).getH5Url(),
+                                        homeNoticeBeanList.get(position).getIsLogin());
                             }
                         });
                     } else {

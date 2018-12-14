@@ -58,6 +58,7 @@ import com.shuyun.qapp.utils.JumpTomap;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.view.H5JumpUtil;
 import com.shuyun.qapp.view.InviteSharePopupUtil;
+import com.shuyun.qapp.view.LoginJumpUtil;
 import com.shuyun.qapp.view.SharePopupUtil;
 
 import butterknife.BindView;
@@ -531,7 +532,11 @@ public class WebH5Activity extends BaseActivity implements CommonPopupWindow.Vie
                 @Override
                 public void run() {
                     try {
-                        H5JumpUtil.dialogSkip(h5JumpBean.getBtnAction(), h5JumpBean.getContent(), h5JumpBean.getH5Url(), WebH5Activity.this, rlMain, Long.valueOf(0));
+                        LoginJumpUtil.dialogSkip(h5JumpBean.getBtnAction(),
+                                WebH5Activity.this,
+                                h5JumpBean.getContent(),
+                                h5JumpBean.getH5Url(),
+                                Long.valueOf(0));
                     } catch (Exception e) {
                     }
                 }

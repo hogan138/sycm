@@ -1,5 +1,6 @@
 package com.shuyun.qapp.view;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -20,7 +21,7 @@ import com.shuyun.qapp.utils.SaveUserInfo;
  */
 public class MainActivityDialogInfo {
 
-    public static void info(ConfigDialogBean configDialogBean, Context mContext, View view) {
+    public static void info(ConfigDialogBean configDialogBean, Activity mContext, View view) {
         if (AppConst.GROUP.equals(configDialogBean.getBtnAction())) {
             //题组
             if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.group_count").equals("")) {
@@ -161,7 +162,7 @@ public class MainActivityDialogInfo {
     //活动弹框
     static Dialog dialog;
 
-    private static void activitydialog(final ConfigDialogBean configDialogBean, final Context mContext, final View llHomeFragment) {
+    private static void activitydialog(final ConfigDialogBean configDialogBean, final Activity mContext, final View llHomeFragment) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.AlertDialog);
         final LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.open_activity_popup, null);
@@ -207,7 +208,11 @@ public class MainActivityDialogInfo {
                 if (dialog.isShowing()) {
                     dialog.dismiss();
                     try {
-                        H5JumpUtil.dialogSkip(configDialogBean.getBtnAction(), configDialogBean.getContent(), configDialogBean.getH5Url(), mContext, llHomeFragment, configDialogBean.getIsLogin());
+                        LoginJumpUtil.dialogSkip(configDialogBean.getBtnAction(),
+                                mContext,
+                                configDialogBean.getContent(),
+                                configDialogBean.getH5Url(),
+                                configDialogBean.getIsLogin());
                     } catch (Exception e) {
 
                     }
@@ -220,7 +225,11 @@ public class MainActivityDialogInfo {
                 if (dialog.isShowing()) {
                     dialog.dismiss();
                     try {
-                        H5JumpUtil.dialogSkip(configDialogBean.getBtnAction(), configDialogBean.getContent(), configDialogBean.getH5Url(), mContext, llHomeFragment, configDialogBean.getIsLogin());
+                        LoginJumpUtil.dialogSkip(configDialogBean.getBtnAction(),
+                                mContext,
+                                configDialogBean.getContent(),
+                                configDialogBean.getH5Url(),
+                                configDialogBean.getIsLogin());
                     } catch (Exception e) {
 
                     }

@@ -73,15 +73,6 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
         rlStartBaby.setOnClickListener(this);
 
         MyActivityManager.getInstance().pushOneActivity(this);
-        try {
-            //是否需要登录
-            Long is_Login = getIntent().getLongExtra("isLogin", 0);
-            if (is_Login == 1 && !AppConst.isLogin()) {
-                startActivity(new Intent(IntegralExchangeActivity.this, LoginActivity.class));
-            }
-        } catch (Exception e) {
-
-        }
 
     }
 
@@ -91,7 +82,6 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
 
         //获取积分信息
         getInfo();
-
 
     }
 

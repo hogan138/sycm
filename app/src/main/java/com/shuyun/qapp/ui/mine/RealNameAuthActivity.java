@@ -106,15 +106,6 @@ public class RealNameAuthActivity extends BaseActivity {
         addListener(etIdCard, ivClearId);//给支付宝账户EditText设置变化监听事件
 
         MyActivityManager.getInstance().pushOneActivity(this);
-        try {
-            //是否需要登录
-            Long is_Login = getIntent().getLongExtra("isLogin", 0);
-            if (is_Login == 1 && !AppConst.isLogin()) {
-                startActivity(new Intent(RealNameAuthActivity.this, LoginActivity.class));
-            }
-        } catch (Exception e) {
-
-        }
 
     }
 

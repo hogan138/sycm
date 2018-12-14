@@ -1,5 +1,6 @@
 package com.shuyun.qapp.ui.homepage;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
@@ -15,6 +16,7 @@ import com.shuyun.qapp.bean.MainConfigBean;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
 import com.shuyun.qapp.utils.GlideUtils;
 import com.shuyun.qapp.view.H5JumpUtil;
+import com.shuyun.qapp.view.LoginJumpUtil;
 import com.shuyun.qapp.view.RoundImageView;
 
 import java.util.Collections;
@@ -26,7 +28,7 @@ import java.util.List;
  */
 public class ActivityRegionManager {
 
-    public static RelativeLayout getView(final Context context, MainConfigBean data, final View layout) {
+    public static RelativeLayout getView(final Activity context, MainConfigBean data, final View layout) {
 
         Resources resources = context.getResources();
         DisplayMetrics dm = resources.getDisplayMetrics();
@@ -113,7 +115,7 @@ public class ActivityRegionManager {
                         @Override
                         public void onClick(View view) {
                             try {
-                                H5JumpUtil.dialogSkip(action, content, h5_url, context, layout, is_Login);
+                                LoginJumpUtil.dialogSkip(action, context, content, h5_url, is_Login);
                             } catch (Exception e) {
 
                             }
@@ -133,7 +135,7 @@ public class ActivityRegionManager {
                         @Override
                         public void onClick(View view) {
                             try {
-                                H5JumpUtil.dialogSkip(action, content, h5_url, context, layout, is_Login);
+                                LoginJumpUtil.dialogSkip(action, context, content, h5_url, is_Login);
                             } catch (Exception e) {
 
                             }
@@ -160,7 +162,7 @@ public class ActivityRegionManager {
                         @Override
                         public void onClick(View view) {
                             try {
-                                H5JumpUtil.dialogSkip(action, content, h5_url, context, layout, is_Login);
+                                LoginJumpUtil.dialogSkip(action, context, content, h5_url, is_Login);
                             } catch (Exception e) {
 
                             }
@@ -175,7 +177,7 @@ public class ActivityRegionManager {
                         @Override
                         public void onClick(View view) {
                             try {
-                                H5JumpUtil.dialogSkip(action, content, h5_url, context, layout, is_Login);
+                                LoginJumpUtil.dialogSkip(action, context, content, h5_url, is_Login);
                             } catch (Exception e) {
 
                             }

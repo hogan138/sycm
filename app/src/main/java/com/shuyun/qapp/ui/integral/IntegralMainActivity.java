@@ -95,15 +95,6 @@ public class IntegralMainActivity extends BaseActivity implements View.OnClickLi
         MyActivityManager.getInstance().pushOneActivity(this);
 
         EventBus.getDefault().register(this);
-        try {
-            //是否需要登录
-            Long is_Login = getIntent().getLongExtra("isLogin", 0);
-            if (is_Login == 1 && !AppConst.isLogin()) {
-                startActivity(new Intent(IntegralMainActivity.this, LoginActivity.class));
-            }
-        } catch (Exception e) {
-
-        }
 
         integralAllPrizeAdapter = new IntegralAllPrizeAdapter(IntegralMainActivity.this, integralAllPrizeBeanList);
         LinearLayoutManager manager = new LinearLayoutManager(IntegralMainActivity.this);

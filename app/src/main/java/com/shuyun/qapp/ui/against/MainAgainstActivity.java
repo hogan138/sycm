@@ -133,15 +133,6 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
 
         AppConst.loadToken(getAppContext());
         MyActivityManager.getInstance().pushOneActivity(this);
-        try {
-            //是否需要登录
-            Long is_Login = getIntent().getLongExtra("isLogin", 0);
-            if (is_Login == 1 && !AppConst.isLogin()) {
-                startActivity(new Intent(MainAgainstActivity.this, LoginActivity.class));
-            }
-        } catch (Exception e) {
-
-        }
 
         //获取答题对战首页
         getInfo();

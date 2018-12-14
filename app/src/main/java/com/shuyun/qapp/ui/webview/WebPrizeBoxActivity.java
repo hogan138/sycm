@@ -53,6 +53,7 @@ import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.view.H5JumpUtil;
 import com.shuyun.qapp.view.InviteSharePopupUtil;
+import com.shuyun.qapp.view.LoginJumpUtil;
 import com.shuyun.qapp.view.RealNamePopupUtil;
 
 import java.util.ArrayList;
@@ -280,7 +281,11 @@ public class WebPrizeBoxActivity extends BaseActivity {
                 @Override
                 public void run() {
                     try {
-                        H5JumpUtil.dialogSkip(h5JumpBean.getBtnAction(), h5JumpBean.getContent(), h5JumpBean.getH5Url(), WebPrizeBoxActivity.this, llWebBox, Long.valueOf(0));
+                        LoginJumpUtil.dialogSkip(h5JumpBean.getBtnAction(),
+                                WebPrizeBoxActivity.this,
+                                h5JumpBean.getContent(),
+                                h5JumpBean.getH5Url(),
+                                Long.valueOf(0));
                     } catch (Exception e) {
                     }
                 }
@@ -341,15 +346,6 @@ public class WebPrizeBoxActivity extends BaseActivity {
         }
 
         MyActivityManager.getInstance().pushOneActivity(this);
-        try {
-            //是否需要登录
-            Long is_Login = getIntent().getLongExtra("isLogin", 0);
-            if (is_Login == 1 && !AppConst.isLogin()) {
-                startActivity(new Intent(WebPrizeBoxActivity.this, LoginActivity.class));
-            }
-        } catch (Exception e) {
-
-        }
 
         answerHomeBean.setToken(AppConst.TOKEN);
         answerHomeBean.setRandom(AppConst.RANDOM);

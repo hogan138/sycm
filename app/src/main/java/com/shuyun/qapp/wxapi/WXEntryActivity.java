@@ -245,6 +245,7 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
                                     startActivity(intent);
                                     finish();
                                 } else if (1 == loginResp.getBind()) {
+                                    setResult(RESULT_OK);
                                     finish();
                                     if ("3".equals(SaveUserInfo.getInstance(WXEntryActivity.this).getUserInfo("home_mine"))) {//来自个人信息微信登录
                                         EventBus.getDefault().post(new MessageEvent("3"));

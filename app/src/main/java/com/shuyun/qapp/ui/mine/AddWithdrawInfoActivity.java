@@ -88,15 +88,6 @@ public class AddWithdrawInfoActivity extends BaseActivity implements View.OnClic
         ivClearAccount.setOnClickListener(this);
 
         MyActivityManager.getInstance().pushOneActivity(this);
-        try {
-            //是否需要登录
-            Long is_Login = getIntent().getLongExtra("isLogin", 0);
-            if (is_Login == 1 && !AppConst.isLogin()) {
-                startActivity(new Intent(AddWithdrawInfoActivity.this, LoginActivity.class));
-            }
-        } catch (Exception e) {
-
-        }
 
         addListener(etName, ivClearName);//给支付宝绑定姓名EditText设置变化监听事件
         addListener(etAccount, ivClearAccount);//给支付宝账户EditText设置变化监听事件
