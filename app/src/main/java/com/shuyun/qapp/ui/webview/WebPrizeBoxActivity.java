@@ -280,14 +280,11 @@ public class WebPrizeBoxActivity extends BaseActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    try {
-                        LoginJumpUtil.dialogSkip(h5JumpBean.getBtnAction(),
-                                WebPrizeBoxActivity.this,
-                                h5JumpBean.getContent(),
-                                h5JumpBean.getH5Url(),
-                                Long.valueOf(0));
-                    } catch (Exception e) {
-                    }
+                    LoginJumpUtil.dialogSkip(h5JumpBean.getBtnAction(),
+                            WebPrizeBoxActivity.this,
+                            h5JumpBean.getContent(),
+                            h5JumpBean.getH5Url(),
+                            Long.valueOf(0));
                 }
             });
             Log.e("data", data);

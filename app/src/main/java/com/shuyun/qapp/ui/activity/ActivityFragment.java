@@ -22,16 +22,25 @@ import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.ActivityTabAdapter;
 import com.shuyun.qapp.base.BaseFragment;
 import com.shuyun.qapp.bean.ActivityTabBean;
+import com.shuyun.qapp.bean.ConfigDialogBean;
 import com.shuyun.qapp.bean.DataResponse;
+import com.shuyun.qapp.bean.MainConfigBean;
+import com.shuyun.qapp.event.MessageEvent;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
+import com.shuyun.qapp.ui.homepage.ActivityRegionManager;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.view.LoginJumpUtil;
+import com.shuyun.qapp.view.MainActivityDialogInfo;
 import com.umeng.analytics.MobclickAgent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +72,7 @@ public class ActivityFragment extends BaseFragment implements OnRemotingCallBack
     private int currentPage = 0;
 
     private ActivityTabAdapter activityTabAdapter; //活动适配器
-    private ActivityTabBean.ResultBean selectedItem = null;
+    private static ActivityTabBean.ResultBean selectedItem = null;
     /**
      * 活动专区
      */
@@ -82,6 +91,8 @@ public class ActivityFragment extends BaseFragment implements OnRemotingCallBack
         super.onActivityCreated(savedInstanceState);
         mContext = getActivity();
         tvCommonTitle.setText("活动专区");
+
+        EventBus.getDefault().register(this);
 
         refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
             @Override
@@ -157,11 +168,6 @@ public class ActivityFragment extends BaseFragment implements OnRemotingCallBack
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
@@ -171,6 +177,29 @@ public class ActivityFragment extends BaseFragment implements OnRemotingCallBack
     public void refresh() {
         //加载活动数据
         loadInfo();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(MessageEvent messageEvent) {
+        if (messageEvent.getMessage() == AppConst.APP_WXINXIN_LOGIN
+                || messageEvent.getMessage().equals(AppConst.APP_VERIFYCODE_LOGIN)) {
+            if (selectedItem == null)
+                return;
+            LoginJumpUtil.dialogSkip(selectedItem.getBtnAction(),
+                    mContext,
+                    selectedItem.getContent(),
+                    selectedItem.getH5Url(),
+                    selectedItem.getIsLogin());
+            selectedItem = null;
+        }
     }
 
     @Override
@@ -194,9 +223,9 @@ public class ActivityFragment extends BaseFragment implements OnRemotingCallBack
                     selectedItem.getContent(),
                     selectedItem.getH5Url(),
                     selectedItem.getIsLogin());
-            selectedItem = null;
+//            selectedItem = null;
         } else {
-            selectedItem = null;
+//            selectedItem = null;
         }
     }
 

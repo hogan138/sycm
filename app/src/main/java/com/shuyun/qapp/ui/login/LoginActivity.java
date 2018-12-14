@@ -208,8 +208,6 @@ public class LoginActivity extends BaseActivity {
     public void click(View view) {
         switch (view.getId()) {
             case R.id.rl_close:
-                MyActivityManager.getInstance().finishAllActivity();
-                MyActivityManager1.getInstance().finishAllActivity();
                 SaveUserInfo.getInstance(LoginActivity.this).setUserInfo("home_mine", "");
                 finish();
                 break;
@@ -561,8 +559,6 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        MyActivityManager.getInstance().finishAllActivity();
-        MyActivityManager1.getInstance().finishAllActivity();
         SaveUserInfo.getInstance(LoginActivity.this).setUserInfo("home_mine", "");
         finish();
     }

@@ -49,6 +49,7 @@ import com.shuyun.qapp.bean.HomeNoticeBean;
 import com.shuyun.qapp.bean.MainConfigBean;
 import com.shuyun.qapp.bean.MarkBannerItem;
 import com.shuyun.qapp.bean.SystemInfo;
+import com.shuyun.qapp.event.MessageEvent;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.MyApplication;
@@ -79,6 +80,10 @@ import com.shuyun.qapp.view.TextBannerView;
 import com.shuyun.qapp.view.ViewPagerScroller;
 import com.sunfusheng.marqueeview.MarqueeView;
 import com.umeng.analytics.MobclickAgent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -177,10 +182,8 @@ public class HomeFragment extends BaseFragment {
     private Handler mHandler = new Handler();
     private boolean isRefresh = false;
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
+    private static BannerBean bannerBean_selectItem = null;
+    private static HomeNoticeBean homeNoticeBean_selectItem = null;
 
     public void setRefresh(boolean isRefresh) {
         this.isRefresh = isRefresh;
@@ -199,6 +202,9 @@ public class HomeFragment extends BaseFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mContext = getActivity();
+
+        EventBus.getDefault().register(this);
+
         /**
          * 检测微信是否安装,如果没有安装,需不显示分享按钮;如果安装了微信则显示分享按钮.
          */
@@ -356,13 +362,11 @@ public class HomeFragment extends BaseFragment {
                             public void onClick(IBannerItem data) {
                                 for (int i = 0; i < bannerData.size(); i++) {
                                     if (data.ImageUrl().equals(bannerData.get(i).getPicture())) {
+                                        bannerBean_selectItem = bannerData.get(i);
                                         String action = bannerData.get(i).getAction();
                                         String h5Url = bannerData.get(i).getH5Url();
                                         Long is_Login = bannerData.get(i).getIsLogin();
-                                        try {
-                                            LoginJumpUtil.dialogSkip(action, mContext, bannerData.get(i).getContent(), h5Url, is_Login);
-                                        } catch (Exception e) {
-                                        }
+                                        LoginJumpUtil.dialogSkip(action, mContext, bannerData.get(i).getContent(), h5Url, is_Login);
                                     }
                                 }
                             }
@@ -834,7 +838,7 @@ public class HomeFragment extends BaseFragment {
             public void onSucceed(String action, DataResponse<ConfigDialogBean> response) {
                 if (response.isSuccees()) {
                     ConfigDialogBean configDialogBean = response.getDat();
-                    MainActivityDialogInfo.info(configDialogBean, mContext, llHomeFragment);
+                    MainActivityDialogInfo.info(configDialogBean, mContext);
                 } else {
                     ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
                 }
@@ -871,6 +875,7 @@ public class HomeFragment extends BaseFragment {
                         scrollAd.setItemOnClickListener(new ITextBannerItemClickListener() {
                             @Override
                             public void onItemClick(String data, int position) {
+                                homeNoticeBean_selectItem = homeNoticeBeanList.get(position);
                                 LoginJumpUtil.dialogSkip(homeNoticeBeanList.get(position).getAction(),
                                         mContext,
                                         homeNoticeBeanList.get(position).getGroupId(),
@@ -926,6 +931,10 @@ public class HomeFragment extends BaseFragment {
             mContext.unregisterReceiver(msgReceiver);
         }
         timer.cancel();
+
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     @Override
@@ -981,6 +990,45 @@ public class HomeFragment extends BaseFragment {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(MessageEvent messageEvent) {
+        if (messageEvent.getMessage().equals(AppConst.APP_WXINXIN_LOGIN)
+                || messageEvent.getMessage().equals(AppConst.APP_VERIFYCODE_LOGIN)) {
+            //活动固定专区
+            if (ActivityRegionManager.getSelectedItem() != null) {
+                MainConfigBean.DatasBean selectedItem = ActivityRegionManager.getSelectedItem();
+                LoginJumpUtil.dialogSkip(selectedItem.getAction(),
+                        mContext,
+                        selectedItem.getContent(),
+                        selectedItem.getH5Url(),
+                        selectedItem.getIsLogin());
+            } else if (MainActivityDialogInfo.getSelectedItem() != null) {//首页弹框
+                ConfigDialogBean selectedItem = MainActivityDialogInfo.getSelectedItem();
+                LoginJumpUtil.dialogSkip(selectedItem.getBtnAction(),
+                        mContext,
+                        selectedItem.getContent(),
+                        selectedItem.getH5Url(),
+                        selectedItem.getIsLogin());
+            } else if (bannerBean_selectItem != null) { //banner
+                LoginJumpUtil.dialogSkip(bannerBean_selectItem.getAction(),
+                        mContext,
+                        bannerBean_selectItem.getContent(),
+                        bannerBean_selectItem.getH5Url(),
+                        bannerBean_selectItem.getIsLogin());
+            } else if (homeNoticeBean_selectItem != null) { //公告
+                LoginJumpUtil.dialogSkip(homeNoticeBean_selectItem.getAction(),
+                        mContext,
+                        homeNoticeBean_selectItem.getContent(),
+                        homeNoticeBean_selectItem.getH5Url(),
+                        homeNoticeBean_selectItem.getIsLogin());
+            }
+            ActivityRegionManager.clearSelectedItem();
+            MainActivityDialogInfo.clearSelectedItem();
+            bannerBean_selectItem = null;
+            homeNoticeBean_selectItem = null;
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -1003,12 +1051,35 @@ public class HomeFragment extends BaseFragment {
                         selectedItem.getContent(),
                         selectedItem.getH5Url(),
                         selectedItem.getIsLogin());
-            } else {//Banner
-
+            } else if (MainActivityDialogInfo.getSelectedItem() != null) {//首页弹框
+                ConfigDialogBean selectedItem = MainActivityDialogInfo.getSelectedItem();
+                LoginJumpUtil.dialogSkip(selectedItem.getBtnAction(),
+                        mContext,
+                        selectedItem.getContent(),
+                        selectedItem.getH5Url(),
+                        selectedItem.getIsLogin());
+            } else if (bannerBean_selectItem != null) { //banner
+                LoginJumpUtil.dialogSkip(bannerBean_selectItem.getAction(),
+                        mContext,
+                        bannerBean_selectItem.getContent(),
+                        bannerBean_selectItem.getH5Url(),
+                        bannerBean_selectItem.getIsLogin());
+            } else if (homeNoticeBean_selectItem != null) { //公告
+                LoginJumpUtil.dialogSkip(homeNoticeBean_selectItem.getAction(),
+                        mContext,
+                        homeNoticeBean_selectItem.getContent(),
+                        homeNoticeBean_selectItem.getH5Url(),
+                        homeNoticeBean_selectItem.getIsLogin());
             }
-            ActivityRegionManager.clearSelectedItem();
+//            ActivityRegionManager.clearSelectedItem();
+//            MainActivityDialogInfo.clearSelectedItem();
+//            bannerBean_selectItem = null;
+//            homeNoticeBean_selectItem = null;
         } else {
-            ActivityRegionManager.clearSelectedItem();
+//            ActivityRegionManager.clearSelectedItem();
+//            MainActivityDialogInfo.clearSelectedItem();
+//            bannerBean_selectItem = null;
+//            homeNoticeBean_selectItem = null;
         }
     }
 }

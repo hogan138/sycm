@@ -250,16 +250,12 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
                                         EventBus.getDefault().post(new MessageEvent("3"));
                                         SaveUserInfo.getInstance(WXEntryActivity.this).setUserInfo("home_mine", "");
                                     } else {
-                                        try {
-                                            //答题免登录返回宝箱id
-                                            if (!EncodeAndStringTool.isStringEmpty(loginResp.getBoxId())) {
-                                                SharedPrefrenceTool.put(mContext, "boxId", loginResp.getBoxId());
-                                                EventBus.getDefault().post(new MessageEvent(loginResp.getBoxId()));
-                                            }
-                                        } catch (Exception e) {
-
+                                        EventBus.getDefault().post(new MessageEvent(AppConst.APP_WXINXIN_LOGIN));
+                                        //答题免登录返回宝箱id
+                                        if (!EncodeAndStringTool.isStringEmpty(loginResp.getBoxId())) {
+                                            SharedPrefrenceTool.put(mContext, "boxId", loginResp.getBoxId());
+                                            EventBus.getDefault().post(new MessageEvent(loginResp.getBoxId()));
                                         }
-
                                     }
 
                                 }

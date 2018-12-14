@@ -531,14 +531,11 @@ public class WebH5Activity extends BaseActivity implements CommonPopupWindow.Vie
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    try {
-                        LoginJumpUtil.dialogSkip(h5JumpBean.getBtnAction(),
-                                WebH5Activity.this,
-                                h5JumpBean.getContent(),
-                                h5JumpBean.getH5Url(),
-                                Long.valueOf(0));
-                    } catch (Exception e) {
-                    }
+                    LoginJumpUtil.dialogSkip(h5JumpBean.getBtnAction(),
+                            WebH5Activity.this,
+                            h5JumpBean.getContent(),
+                            h5JumpBean.getH5Url(),
+                            Long.valueOf(0));
                 }
             });
             Log.e("data", data);

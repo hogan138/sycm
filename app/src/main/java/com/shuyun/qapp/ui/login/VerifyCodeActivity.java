@@ -342,6 +342,7 @@ public class VerifyCodeActivity extends BaseActivity {
                                                     LoadingBar.cancel(llMain);
                                                     KeyboardUtils.hideSoftInput(VerifyCodeActivity.this);
                                                     MyActivityManager1.getInstance().finishAllActivity();
+                                                    EventBus.getDefault().post(new MessageEvent(AppConst.APP_VERIFYCODE_LOGIN));
                                                     if ("3".equals(SaveUserInfo.getInstance(VerifyCodeActivity.this).getUserInfo("home_mine"))) {//来自个人信息微信登录
                                                         EventBus.getDefault().post(new MessageEvent("3"));
                                                         SaveUserInfo.getInstance(VerifyCodeActivity.this).setUserInfo("home_mine", "");

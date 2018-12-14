@@ -157,4 +157,6 @@ public class AppConst {
 
     public static final String APP_ACTION_LOGOUT = "APP_ACTION_LOGOUT";//退出登录
     public static final String APP_ACTION_PARAM = "APP_ACTION";//动作参数
+    public static final String APP_WXINXIN_LOGIN = "APP_WXINXIN_LOGIN";//微信登录
+    public static final String APP_VERIFYCODE_LOGIN = "APP_VERIFYCODE_LOGIN";//验证码登录
 }
