@@ -187,11 +187,16 @@ public class ActivityFragment extends BaseFragment implements OnRemotingCallBack
                 || requestCode == AppConst.OPEN_BOX_CODE
                 || requestCode == AppConst.WITHDRAW_INFO_CODE
         )) {
+            if (selectedItem == null)
+                return;
             LoginJumpUtil.dialogSkip(selectedItem.getBtnAction(),
                     mContext,
                     selectedItem.getContent(),
                     selectedItem.getH5Url(),
                     selectedItem.getIsLogin());
+            selectedItem = null;
+        } else {
+            selectedItem = null;
         }
     }
 

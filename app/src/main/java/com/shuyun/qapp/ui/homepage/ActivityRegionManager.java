@@ -27,9 +27,9 @@ import java.util.List;
  * 首页活动区域封装
  */
 public class ActivityRegionManager {
+    private static MainConfigBean.DatasBean selectedItem = null;
 
     public static RelativeLayout getView(final Activity context, MainConfigBean data, final View layout) {
-
         Resources resources = context.getResources();
         DisplayMetrics dm = resources.getDisplayMetrics();
 
@@ -92,10 +92,6 @@ public class ActivityRegionManager {
                 String remark = datasBean.getRemark();//描述
                 String icon = datasBean.getIcon(); //图片地址
                 String count = datasBean.getCount();//积分数量
-                final String action = datasBean.getAction(); //跳转action
-                final String h5_url = datasBean.getH5Url(); //跳转地址
-                final String content = datasBean.getContent();//题组id
-                final Long is_Login = datasBean.getIsLogin();//是否需要登录
 
                 //计算 top left
                 int x = xList[colD - 1];
@@ -103,6 +99,7 @@ public class ActivityRegionManager {
                 View view = null;
                 if ("1".equals(template)) { //邀请宝箱
                     view = LayoutInflater.from(context).inflate(R.layout.item_main_invite_box, null);
+                    view.setTag(datasBean);
                     RelativeLayout rl_main1 = view.findViewById(R.id.rl_main);
                     TextView tv_name1 = view.findViewById(R.id.tv_name);
                     TextView tv_remark1 = view.findViewById(R.id.tv_remark);
@@ -114,15 +111,12 @@ public class ActivityRegionManager {
                     rl_main1.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            try {
-                                LoginJumpUtil.dialogSkip(action, context, content, h5_url, is_Login);
-                            } catch (Exception e) {
-
-                            }
+                            dialogSkip(view, context);
                         }
                     });
                 } else if ("2".equals(template)) { //答题对战
                     view = LayoutInflater.from(context).inflate(R.layout.item_main_against, null);
+                    view.setTag(datasBean);
                     RelativeLayout rl_main2 = view.findViewById(R.id.rl_main);
                     TextView tv_name2 = view.findViewById(R.id.tv_name);
                     TextView tv_remark2 = view.findViewById(R.id.tv_remark);
@@ -134,15 +128,12 @@ public class ActivityRegionManager {
                     rl_main2.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            try {
-                                LoginJumpUtil.dialogSkip(action, context, content, h5_url, is_Login);
-                            } catch (Exception e) {
-
-                            }
+                            dialogSkip(view, context);
                         }
                     });
                 } else if ("3".equals(template)) { //每日任务
                     view = LayoutInflater.from(context).inflate(R.layout.item_main_task, null);
+                    view.setTag(datasBean);
                     RelativeLayout rl_main3 = view.findViewById(R.id.rl_main);
                     TextView tv_name3 = view.findViewById(R.id.tv_name);
                     TextView tv_remark3 = view.findViewById(R.id.tv_remark);
@@ -161,26 +152,19 @@ public class ActivityRegionManager {
                     rl_main3.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            try {
-                                LoginJumpUtil.dialogSkip(action, context, content, h5_url, is_Login);
-                            } catch (Exception e) {
-
-                            }
+                            dialogSkip(view, context);
                         }
                     });
                 } else if ("4".equals(template)) { //图片模板
                     view = LayoutInflater.from(context).inflate(R.layout.item_main_picture, null);
+                    view.setTag(datasBean);
                     RelativeLayout rl_main4 = view.findViewById(R.id.rl_main);
                     RoundImageView roundImageView = view.findViewById(R.id.iv_bg);
                     new GlideImageLoader().onDisplayImage(context, roundImageView, icon);
                     rl_main4.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            try {
-                                LoginJumpUtil.dialogSkip(action, context, content, h5_url, is_Login);
-                            } catch (Exception e) {
-
-                            }
+                            dialogSkip(view, context);
                         }
                     });
                 }
@@ -210,10 +194,33 @@ public class ActivityRegionManager {
      * 设置控件所在的位置YY，并且不改变宽高，
      * XY为绝对位置
      */
-    public static void setLayout(View view, int x, int y) {
+    private static void setLayout(View view, int x, int y) {
         ViewGroup.MarginLayoutParams margin = new ViewGroup.MarginLayoutParams(view.getLayoutParams());
         margin.setMargins(x, y, 0, 0);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(margin);
         view.setLayoutParams(layoutParams);
+    }
+
+    public static MainConfigBean.DatasBean getSelectedItem() {
+        return selectedItem;
+    }
+
+    public static void clearSelectedItem() {
+        selectedItem = null;
+    }
+
+    /**
+     * 登录或跳转
+     *
+     * @param view
+     */
+    private static void dialogSkip(View view, Activity context) {
+        selectedItem = (MainConfigBean.DatasBean) view.getTag();
+
+        final String action = selectedItem.getAction(); //跳转action
+        final String h5Url = selectedItem.getH5Url(); //跳转地址
+        final String content = selectedItem.getContent();//题组id
+        final Long isLogin = selectedItem.getIsLogin();//是否需要登录
+        LoginJumpUtil.dialogSkip(action, context, content, h5Url, isLogin);
     }
 }

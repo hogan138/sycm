@@ -980,6 +980,37 @@ public class HomeFragment extends BaseFragment {
 
         }
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK && (requestCode == AppConst.INVITE_CODE
+                || requestCode == AppConst.GROUP_CODE
+                || requestCode == AppConst.INTEGRAL_CODE
+                || requestCode == AppConst.TREASURE_CODE
+                || requestCode == AppConst.REAL_CODE
+                || requestCode == AppConst.H5_CODE
+                || requestCode == AppConst.AGAINST_CODE
+                || requestCode == AppConst.OPEN_BOX_CODE
+                || requestCode == AppConst.WITHDRAW_INFO_CODE
+        )) {
+            //活动固定专区
+            if (ActivityRegionManager.getSelectedItem() != null) {
+                MainConfigBean.DatasBean selectedItem = ActivityRegionManager.getSelectedItem();
+                LoginJumpUtil.dialogSkip(selectedItem.getAction(),
+                        mContext,
+                        selectedItem.getContent(),
+                        selectedItem.getH5Url(),
+                        selectedItem.getIsLogin());
+            } else {//Banner
+
+            }
+            ActivityRegionManager.clearSelectedItem();
+        } else {
+            ActivityRegionManager.clearSelectedItem();
+        }
+    }
 }
 
 
