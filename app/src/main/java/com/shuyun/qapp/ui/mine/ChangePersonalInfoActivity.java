@@ -381,13 +381,6 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
         KeyboardUtils.hideSoftInput(ChangePersonalInfoActivity.this);
     }
 
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this); //统计时长
-        StatService.onPause(this);
-    }
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();

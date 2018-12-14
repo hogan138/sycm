@@ -179,7 +179,7 @@
         android:id="@+id/btn_exit_login"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/text_52"
+        android:layout_height="@dimen/text_58"
         android:layout_marginLeft="@dimen/text_12"
         android:layout_marginTop="100dp"
         android:layout_marginRight="@dimen/text_12"

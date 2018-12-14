@@ -36,7 +36,6 @@ import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.RSAUtils;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.ToastUtil;
-import com.umeng.analytics.MobclickAgent;
 
 import java.security.PrivateKey;
 import java.util.List;
@@ -295,16 +294,5 @@ public class AnswerHistoryActivity extends BaseActivity implements CommonPopupWi
     public void onBackPressed() {
         super.onBackPressed();
         finish();
-    }
-
-    //在activity或者fragment中添加友盟统计
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this); //统计时长
-    }
-
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this); //统计时长
     }
 }

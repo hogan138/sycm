@@ -361,10 +361,6 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
 
     public void onPause() {
         super.onPause();
-        MobclickAgent.onPause(this); //统计时长
-
-        StatService.onPause(this);
-
         isForeground = false;
     }
 

@@ -32,8 +32,6 @@ import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
-import com.tencent.stat.StatService;
-import com.umeng.analytics.MobclickAgent;
 
 import org.litepal.crud.DataSupport;
 
@@ -313,20 +311,6 @@ public class InformationActivity extends BaseActivity implements CommonPopupWind
         super.onStart();
 
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this); //统计时长
-        StatService.onResume(this);
-    }
-
-    //在activity或者fragment中添加友盟统计
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this); //统计时长
-        StatService.onPause(this);
     }
 
     @Override

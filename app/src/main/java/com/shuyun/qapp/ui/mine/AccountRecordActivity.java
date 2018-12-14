@@ -12,8 +12,6 @@ import android.widget.Toast;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.MyPagerAdapter;
 import com.shuyun.qapp.base.BaseActivity;
-import com.tencent.stat.StatService;
-import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,18 +85,4 @@ public class AccountRecordActivity extends BaseActivity {
                 break;
         }
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this); //统计时长
-        StatService.onResume(this);
-    }
-
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this); //统计时长
-        StatService.onPause(this);
-    }
-
 }

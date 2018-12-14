@@ -25,6 +25,9 @@ import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.wxapi.WXEntryActivity;
+import com.tencent.stat.StatService;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.socialize.UMShareAPI;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
@@ -67,9 +70,13 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     public abstract int intiLayout();
 
+    //在activity或者fragment中添加友盟统计
     @Override
     protected void onResume() {
         super.onResume();
+
+        MobclickAgent.onResume(this); //统计时长
+        StatService.onResume(this);
 
         HeartBeatManager.instance().start(this);
 
@@ -78,6 +85,27 @@ public abstract class BaseActivity extends AppCompatActivity {
                 || this instanceof WebH5Activity))
             return;
         ActivityCallManager.instance().setActivity(this);
+    }
+
+    //在activity或者fragment中添加友盟统计
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPause(this); //统计时长
+        StatService.onPause(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        try{
+            //防止内存泄露
+            UMShareAPI.get(this).release();
+        }catch (Exception e){
+
+        }
     }
 
     /**

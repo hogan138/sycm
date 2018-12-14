@@ -1,19 +1,13 @@
 package com.shuyun.qapp.ui.mine;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.bean.OutPutWithdraw;
-import com.shuyun.qapp.utils.EncodeAndStringTool;
-import com.umeng.analytics.MobclickAgent;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,16 +50,5 @@ public class CashResultActivity extends BaseActivity {
             default:
                 break;
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this); //统计时长
-    }
-
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this); //统计时长
     }
 }

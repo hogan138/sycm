@@ -29,8 +29,6 @@ import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.ToastUtil;
-import com.tencent.stat.StatService;
-import com.umeng.analytics.MobclickAgent;
 
 import java.util.Random;
 
@@ -264,18 +262,5 @@ public class BindPhoneNumActivity extends BaseActivity {
         super.onBackPressed();
         startActivity(new Intent(BindPhoneNumActivity.this, LoginActivity.class));
         finish();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this); //统计时长
-        StatService.onResume(this);
-    }
-
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this); //统计时长
-        StatService.onPause(this);
     }
 }

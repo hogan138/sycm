@@ -3,14 +3,11 @@ package com.shuyun.qapp.ui.mine;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.tencent.stat.StatService;
-import com.umeng.analytics.MobclickAgent;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,18 +50,5 @@ public class AuthResultActivity extends BaseActivity {
             default:
                 break;
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this); //统计时长
-        StatService.onResume(this);
-    }
-
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this); //统计时长
-        StatService.onPause(this);
     }
 }

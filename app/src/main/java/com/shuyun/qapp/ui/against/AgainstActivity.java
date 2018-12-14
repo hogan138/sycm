@@ -45,7 +45,6 @@ import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.view.CircleImageView;
 import com.shuyun.qapp.view.CircleProgressView;
 import com.shuyun.qapp.view.TiaoZiView;
-import com.umeng.analytics.MobclickAgent;
 
 import java.security.PrivateKey;
 import java.util.HashMap;
@@ -1417,18 +1416,6 @@ public class AgainstActivity extends BaseActivity {
                     public void onComplete() {
                     }
                 });
-    }
-
-
-    //在activity或者fragment中添加友盟统计
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this); //统计时长
-    }
-
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this); //统计时长
     }
 
     @Override

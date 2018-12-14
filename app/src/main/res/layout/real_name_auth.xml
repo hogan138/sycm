@@ -53,12 +53,13 @@
         android:layout_height="@dimen/text_0.5"
         android:layout_marginLeft="@dimen/text_15"
         android:layout_marginRight="@dimen/text_15"
-        android:background="#C8C7CC"></View>
+        android:background="#C8C7CC"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:foreground="?attr/selectableItemBackground">
 
         <RelativeLayout
             android:layout_width="match_parent"

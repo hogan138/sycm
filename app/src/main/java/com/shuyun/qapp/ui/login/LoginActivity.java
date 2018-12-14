@@ -35,9 +35,9 @@ import com.shuyun.qapp.bean.LoginResponse;
 import com.shuyun.qapp.bean.Msg;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.net.SyckApplication;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
+import com.shuyun.qapp.net.SyckApplication;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -53,7 +53,6 @@ import com.shuyun.qapp.utils.ToastUtil;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
-import com.umeng.socialize.UMShareAPI;
 
 import org.litepal.crud.DataSupport;
 
@@ -420,23 +419,6 @@ public class LoginActivity extends BaseActivity {
         req.scope = "snsapi_userinfo";
         req.state = "diandi_wx_login";
         SyckApplication.mWxApi.sendReq(req);
-    }
-
-
-    /**
-     * 友盟统计
-     */
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this);
-        StatService.onPause(this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //防止内存泄漏
-        UMShareAPI.get(this).release();
     }
 
     /**

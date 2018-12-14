@@ -26,7 +26,6 @@ import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ToastUtil;
-import com.umeng.analytics.MobclickAgent;
 
 import java.util.Random;
 
@@ -233,16 +232,4 @@ public class ChangePhoneActivity extends BaseActivity {
         }
 
     }
-
-    //在activity或者fragment中添加友盟统计
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this); //统计时长
-    }
-
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this); //统计时长
-    }
-
 }

@@ -1,12 +1,8 @@
 package com.shuyun.qapp.ui.webview;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.drawable.AnimationDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
@@ -21,8 +17,6 @@ import com.blankj.utilcode.util.PhoneUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.ui.login.PermissionsActivity;
-import com.shuyun.qapp.utils.PermissionsChecker;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
@@ -169,10 +163,4 @@ public class WebPublicActivity extends BaseActivity {
             }
         });
     }
-
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this); //统计时长
-    }
-
 }

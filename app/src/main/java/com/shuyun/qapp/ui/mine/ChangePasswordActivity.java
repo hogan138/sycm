@@ -39,8 +39,6 @@ import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.ToastUtil;
-import com.umeng.analytics.MobclickAgent;
-import com.umeng.socialize.UMShareAPI;
 
 import org.litepal.crud.DataSupport;
 
@@ -392,30 +390,5 @@ public class ChangePasswordActivity extends BaseActivity {
             pwd.setSelection(pwd.getText().length());
             ivIsShowPwd.setImageResource(R.drawable.no_show_pwd);
         }
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        /**
-         * 友盟统计
-         */
-        MobclickAgent.onResume(this);
-    }
-
-    /**
-     * 友盟统计
-     */
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //防止内存泄漏
-        UMShareAPI.get(this).release();
     }
 }

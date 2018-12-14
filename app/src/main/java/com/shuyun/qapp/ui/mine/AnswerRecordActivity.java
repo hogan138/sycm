@@ -203,13 +203,4 @@ public class AnswerRecordActivity extends BaseActivity {
                     }
                 });
     }
-
-
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this); //统计时长
-        StatService.onPause(this);
-    }
-
-
 }
