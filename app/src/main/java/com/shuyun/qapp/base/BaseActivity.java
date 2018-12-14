@@ -81,11 +81,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
-     * 微信回调
+     * 非正常登陆回调
      *
      * @param data
      */
-    public void callBackWx(Object data) {
+    public void callBack(Object data) {
         if (data instanceof LoginResponse) {
             LoginResponse loginResp = (LoginResponse) data;
             SharedPrefrenceTool.put(getAppContext(), "token", loginResp.getToken());

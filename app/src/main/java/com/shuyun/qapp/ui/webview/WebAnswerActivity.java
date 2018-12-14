@@ -55,7 +55,6 @@ import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.bean.ReturnDialogBean;
 import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.bean.WebAnswerHomeBean;
-import com.shuyun.qapp.event.MessageEvent;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.LoginDataManager;
@@ -69,7 +68,6 @@ import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
@@ -83,10 +81,6 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -433,7 +427,6 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
         mContext = this;
         SharedPrefrenceTool.put(mContext, "boxId", "");//清空答题免登录返回宝箱id
 
-        EventBus.getDefault().register(this);
         /**
          * 检测微信是否安装,如果没有安装,需不显示分享按钮,如果安装了,需要显示分享按钮
          */
@@ -480,13 +473,6 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (EventBus.getDefault().isRegistered(this))
-            EventBus.getDefault().unregister(this);
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == 1) {
@@ -498,14 +484,6 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
         }
 
     }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void Event(MessageEvent messageEvent) {
-        if (LoginDataManager.ANSWER_LOGIN.equals(messageEvent.getMessage())) {
-            sendBox((String) messageEvent.getData());
-        }
-    }
-
 
     @Override
     public int intiLayout() {

@@ -1,12 +1,10 @@
 package com.shuyun.qapp.ui.login;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -29,26 +27,20 @@ import com.shuyun.qapp.bean.InputVerficationCodeBean;
 import com.shuyun.qapp.bean.LoginInput;
 import com.shuyun.qapp.bean.LoginResponse;
 import com.shuyun.qapp.bean.Msg;
-import com.shuyun.qapp.event.MessageEvent;
+import com.shuyun.qapp.net.ActivityCallManager;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.net.LoginDataManager;
-import com.shuyun.qapp.ui.homepage.HomePageActivity;
-import com.shuyun.qapp.ui.mine.AddWithdrawInfoActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.MyActivityManager1;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.view.VerifyCodeView;
-import com.shuyun.qapp.wxapi.WXEntryActivity;
 
-import org.greenrobot.eventbus.EventBus;
 import org.litepal.crud.DataSupport;
 
 import java.util.Random;
@@ -346,8 +338,10 @@ public class VerifyCodeActivity extends BaseActivity {
                                             //已设置密码
                                             KeyboardUtils.hideSoftInput(mContext);
                                             MyActivityManager1.getInstance().finishAllActivity();
-                                            //获取当前活动的Activity
-                                            LoginDataManager.instance().handler(mContext, new Object[]{loginResp.getBoxId()});
+                                            //统一给活动的Activity处理
+                                            if (ActivityCallManager.instance().getActivity() != null) {
+                                                ActivityCallManager.instance().getActivity().callBack(loginResp);
+                                            }
                                         }
                                     } catch (Exception e) {
 

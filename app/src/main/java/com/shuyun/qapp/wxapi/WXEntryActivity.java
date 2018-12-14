@@ -3,7 +3,6 @@ package com.shuyun.qapp.wxapi;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -14,14 +13,12 @@ import com.shuyun.qapp.bean.LoginInput;
 import com.shuyun.qapp.bean.LoginResponse;
 import com.shuyun.qapp.bean.Msg;
 import com.shuyun.qapp.bean.UserWxInfo;
-import com.shuyun.qapp.event.MessageEvent;
 import com.shuyun.qapp.net.ActivityCallManager;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.SyckApplication;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
-import com.shuyun.qapp.ui.login.BindPhoneNumActivity;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -35,7 +32,6 @@ import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.umeng.socialize.weixin.view.WXCallbackActivity;
 
-import org.greenrobot.eventbus.EventBus;
 import org.litepal.crud.DataSupport;
 
 import okhttp3.MediaType;
@@ -225,7 +221,7 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
                 if (!EncodeAndStringTool.isObjectEmpty(loginResp)) {
                     //统一给活动的Activity处理
                     if (ActivityCallManager.instance().getActivity() != null) {
-                        ActivityCallManager.instance().getActivity().callBackWx(loginResp);
+                        ActivityCallManager.instance().getActivity().callBack(loginResp);
                     }
                     finish();
                 }
