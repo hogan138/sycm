@@ -1,5 +1,6 @@
 package com.shuyun.qapp.ui.webview;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -1203,8 +1204,9 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
      *
      * @param boxId
      */
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     public void sendBox(String boxId) {
-        JSONObject rel = new JSONObject();
+        final JSONObject rel = new JSONObject();
         rel.put("action", "exam");
         rel.put("boxId", boxId);
         answerHomeBean.setToken(AppConst.TOKEN);
@@ -1215,7 +1217,12 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
         answerHomeBean.setGroupId(groupId);
         answerHomeBean.setDeviceId(SmAntiFraud.getDeviceId());
         rel.put("answer", JSON.toJSONString(answerHomeBean));
-        wvAnswerHome.loadUrl("javascript:jsLoginCallback(" + rel.toString() + ") ");
+        wvAnswerHome.post(new Runnable() {
+            @Override
+            public void run() {
+                wvAnswerHome.evaluateJavascript("javascript:jsLoginCallback(" + rel.toString() + "); ", null);
+            }
+        });
     }
 
 }

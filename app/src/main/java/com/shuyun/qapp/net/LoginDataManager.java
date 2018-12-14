@@ -152,7 +152,7 @@ public class LoginDataManager {
                     public void run() {
                         ((HomePageActivity) mContext).radioGroupChange(3);
                     }
-                }, 150);
+                }, 10);
             }
         } else if (LoginDataManager.WELCOME_LOGIN.equals(action)) {
             Bundle bundleRedirect = (Bundle) map.get(LoginDataManager.VALUE);
@@ -182,7 +182,7 @@ public class LoginDataManager {
                     public void run() {
                         ((WebAnswerActivity) mContext).sendBox((String) args[0]);
                     }
-                }, 150);
+                }, 10);
             }
         }
     }
