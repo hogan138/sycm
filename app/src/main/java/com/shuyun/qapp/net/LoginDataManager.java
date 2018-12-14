@@ -99,7 +99,10 @@ public class LoginDataManager {
     public Map<String, Object> getLast() {
         if (lastKey == null)
             return null;
-        return map.get(lastKey);
+        Map<String, Object> data = map.get(lastKey);
+        map.clear();
+        lastKey = null;
+        return data;
     }
 
     public void handler(final Activity mContext, final Object[] args) {
