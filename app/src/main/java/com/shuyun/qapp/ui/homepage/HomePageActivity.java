@@ -60,7 +60,6 @@ import com.shuyun.qapp.view.NoScrollViewPager;
 import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -109,8 +108,6 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-
-        EventBus.getDefault().register(this);
 
         //注册极光推送
         registerMessageReceiver();
@@ -369,25 +366,12 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         isForeground = false;
     }
 
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void Event(MessageEvent messageEvent) {
-        /*if ("3".equals(messageEvent.getMessage())) { //个人信息微信登录返回
-            radioGroupChange(3);
-        }*/
-    }
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
         SharedPreferences sharedPreferences = getSharedPreferences("FirstRun", 0);
         sharedPreferences.edit().putBoolean("Main", true).commit();
-
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
 
     }
 

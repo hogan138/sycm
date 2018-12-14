@@ -338,8 +338,6 @@ public class WebPrizeBoxActivity extends BaseActivity {
 
         }
 
-        MyActivityManager.getInstance().pushOneActivity(this);
-
         answerHomeBean.setToken(AppConst.TOKEN);
         answerHomeBean.setRandom(AppConst.RANDOM);
         answerHomeBean.setV(AppConst.V);

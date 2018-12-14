@@ -92,10 +92,6 @@ public class IntegralMainActivity extends BaseActivity implements View.OnClickLi
         ivMyGift.setOnClickListener(this);
         tvRule.setOnClickListener(this);
 
-        MyActivityManager.getInstance().pushOneActivity(this);
-
-        EventBus.getDefault().register(this);
-
         integralAllPrizeAdapter = new IntegralAllPrizeAdapter(IntegralMainActivity.this, integralAllPrizeBeanList);
         LinearLayoutManager manager = new LinearLayoutManager(IntegralMainActivity.this);
         rvAllGift.setLayoutManager(manager);
@@ -119,12 +115,6 @@ public class IntegralMainActivity extends BaseActivity implements View.OnClickLi
         });
 
     }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void Event(MessageEvent messageEvent) {
-        loadIntegralCurrent();//要做分页操作
-    }
-
 
     @Override
     public int intiLayout() {
@@ -248,11 +238,4 @@ public class IntegralMainActivity extends BaseActivity implements View.OnClickLi
                 });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
-    }
 }

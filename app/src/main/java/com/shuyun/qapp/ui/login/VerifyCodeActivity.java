@@ -341,7 +341,7 @@ public class VerifyCodeActivity extends BaseActivity {
                                             //已设置密码
                                             KeyboardUtils.hideSoftInput(VerifyCodeActivity.this);
                                             MyActivityManager1.getInstance().finishAllActivity();
-                                            LoginDataManager.instance().handler(VerifyCodeActivity.this, null);
+                                            LoginDataManager.instance().handler(VerifyCodeActivity.this, new Object[]{loginResp.getBoxId()});
                                         }
                                     } catch (Exception e) {
 

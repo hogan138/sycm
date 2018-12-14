@@ -26,6 +26,7 @@ import com.shuyun.qapp.bean.LoginResponse;
 import com.shuyun.qapp.bean.Msg;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.LoginDataManager;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -194,8 +195,8 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
                 isLogin();
                 break;
             case R.id.tv_rigth_title:
-//                startActivity(new Intent(SetPasswordActivity.this, HomePageActivity.class));
                 MyActivityManager1.getInstance().finishAllActivity();
+                LoginDataManager.instance().handler(SetPasswordActivity.this, new Object[]{SharedPrefrenceTool.get(SetPasswordActivity.this, "boxId", "")});
                 break;
             case R.id.iv_is_show_pwd:
                 isShowPwd(etPassword);
@@ -274,7 +275,6 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
                                 AppConst.loadToken(SetPasswordActivity.this);
 
                                 MyActivityManager1.getInstance().finishAllActivity();
-//                                startActivity(new Intent(SetPasswordActivity.this, HomePageActivity.class));
                             }
                         } else {
                             ErrorCodeTools.errorCodePrompt(SetPasswordActivity.this, loginResponse.getErr(), loginResponse.getMsg());
@@ -319,7 +319,7 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
                     public void onNext(DataResponse<String> dataResponse) {
                         if (dataResponse.isSuccees()) {
                             MyActivityManager1.getInstance().finishAllActivity();
-//                            startActivity(new Intent(SetPasswordActivity.this, HomePageActivity.class));
+                            LoginDataManager.instance().handler(SetPasswordActivity.this, new Object[]{SharedPrefrenceTool.get(SetPasswordActivity.this, "boxId", "")});
                         } else {
                             ErrorCodeTools.errorCodePrompt(SetPasswordActivity.this, dataResponse.getErr(), dataResponse.getMsg());
                         }

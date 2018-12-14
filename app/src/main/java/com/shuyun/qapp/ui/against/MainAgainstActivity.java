@@ -128,19 +128,9 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
             ivRightIcon.setImageResource(R.mipmap.share);//右侧分享
         }
 
-        AppConst.loadToken(getAppContext());
-        MyActivityManager.getInstance().pushOneActivity(this);
-
         //获取答题对战首页
         getInfo();
 
-        EventBus.getDefault().register(this);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void Event(MessageEvent messageEvent) {
-        //获取答题对战首页
-        getInfo();
     }
 
     @Override
@@ -579,11 +569,4 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
-    }
 }

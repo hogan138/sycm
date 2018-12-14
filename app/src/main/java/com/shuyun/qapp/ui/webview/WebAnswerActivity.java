@@ -174,7 +174,6 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        MyActivityManager.getInstance().popOneActivity(WebAnswerActivity.this);
                         startActivityForResult(new Intent(WebAnswerActivity.this, LoginActivity.class).putExtra("examId", rel.getString("examId")), 1);
                     }
                 });
@@ -442,13 +441,6 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
         groupId = intent.getLongExtra("groupId", 0);
         h5Url = intent.getStringExtra("h5Url");
 
-        MyActivityManager.getInstance().pushOneActivity(this);
-        //是否需要登录
-        Long is_Login = getIntent().getLongExtra("isLogin", 0);
-        if (is_Login == 1 && !AppConst.isLogin()) {
-            startActivity(new Intent(WebAnswerActivity.this, LoginActivity.class));
-        }
-
         //是否参与邀请分享 1——参与邀请
         Integer share = (Integer) SharedPrefrenceTool.get(this, "share", (Integer) 0);
         answerHomeBean.setToken(AppConst.TOKEN);
@@ -478,8 +470,6 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
 
 //        wvAnswerHome.loadUrl("http://192.168.191.1:8080?debug=1");
 
-        EventBus.getDefault().register(this);
-
     }
 
 
@@ -496,13 +486,6 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
-    }
 
     @Override
     public int intiLayout() {

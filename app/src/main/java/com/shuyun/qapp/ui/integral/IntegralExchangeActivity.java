@@ -72,8 +72,6 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
         rlStartBox.setOnClickListener(this);
         rlStartBaby.setOnClickListener(this);
 
-        MyActivityManager.getInstance().pushOneActivity(this);
-
     }
 
     @Override

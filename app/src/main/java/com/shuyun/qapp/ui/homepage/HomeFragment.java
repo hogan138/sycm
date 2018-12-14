@@ -200,8 +200,6 @@ public class HomeFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         mContext = getActivity();
 
-        EventBus.getDefault().register(this);
-
         /**
          * 检测微信是否安装,如果没有安装,需不显示分享按钮;如果安装了微信则显示分享按钮.
          */
@@ -932,9 +930,6 @@ public class HomeFragment extends BaseFragment {
         }
         timer.cancel();
 
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
     }
 
     @Override
@@ -988,45 +983,6 @@ public class HomeFragment extends BaseFragment {
         } catch (Exception e) {
 
         }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void Event(MessageEvent messageEvent) {
-        /*if (messageEvent.getMessage().equals(AppConst.APP_WXINXIN_LOGIN)
-                || messageEvent.getMessage().equals(AppConst.APP_VERIFYCODE_LOGIN)) {
-            //活动固定专区
-            if (ActivityRegionManager.getSelectedItem() != null) {
-                MainConfigBean.DatasBean selectedItem = ActivityRegionManager.getSelectedItem();
-                LoginJumpUtil.dialogSkip(selectedItem.getAction(),
-                        mContext,
-                        selectedItem.getContent(),
-                        selectedItem.getH5Url(),
-                        selectedItem.getIsLogin());
-            } else if (MainActivityDialogInfo.getSelectedItem() != null) {//首页弹框
-                ConfigDialogBean selectedItem = MainActivityDialogInfo.getSelectedItem();
-                LoginJumpUtil.dialogSkip(selectedItem.getBtnAction(),
-                        mContext,
-                        selectedItem.getContent(),
-                        selectedItem.getH5Url(),
-                        selectedItem.getIsLogin());
-            } else if (bannerBean_selectItem != null) { //banner
-                LoginJumpUtil.dialogSkip(bannerBean_selectItem.getAction(),
-                        mContext,
-                        bannerBean_selectItem.getContent(),
-                        bannerBean_selectItem.getH5Url(),
-                        bannerBean_selectItem.getIsLogin());
-            } else if (homeNoticeBean_selectItem != null) { //公告
-                LoginJumpUtil.dialogSkip(homeNoticeBean_selectItem.getAction(),
-                        mContext,
-                        homeNoticeBean_selectItem.getContent(),
-                        homeNoticeBean_selectItem.getH5Url(),
-                        homeNoticeBean_selectItem.getIsLogin());
-            }
-            ActivityRegionManager.clearSelectedItem();
-            MainActivityDialogInfo.clearSelectedItem();
-            bannerBean_selectItem = null;
-            homeNoticeBean_selectItem = null;
-        }*/
     }
 
     @Override

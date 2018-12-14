@@ -208,6 +208,7 @@ public class LoginActivity extends BaseActivity {
     public void click(View view) {
         switch (view.getId()) {
             case R.id.rl_close:
+                MyActivityManager.getInstance().finishAllActivity();
                 finish();
                 break;
             case R.id.iv_clear_phone_num: //清空手机号
@@ -558,6 +559,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        MyActivityManager.getInstance().finishAllActivity();
         finish();
     }
 }

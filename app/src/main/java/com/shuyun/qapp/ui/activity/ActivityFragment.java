@@ -22,7 +22,6 @@ import com.shuyun.qapp.adapter.ActivityTabAdapter;
 import com.shuyun.qapp.base.BaseFragment;
 import com.shuyun.qapp.bean.ActivityTabBean;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.event.MessageEvent;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.LoginDataManager;
@@ -33,10 +32,6 @@ import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.view.LoginJumpUtil;
 import com.umeng.analytics.MobclickAgent;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +82,6 @@ public class ActivityFragment extends BaseFragment implements OnRemotingCallBack
         mContext = getActivity();
         tvCommonTitle.setText("活动专区");
 
-        EventBus.getDefault().register(this);
 
         refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
             @Override
@@ -175,29 +169,6 @@ public class ActivityFragment extends BaseFragment implements OnRemotingCallBack
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void Event(MessageEvent messageEvent) {
-        /*if (messageEvent.getMessage() == AppConst.APP_WXINXIN_LOGIN
-                || messageEvent.getMessage().equals(AppConst.APP_VERIFYCODE_LOGIN)) {
-            if (selectedItem == null)
-                return;
-            LoginJumpUtil.dialogSkip(selectedItem.getBtnAction(),
-                    mContext,
-                    selectedItem.getContent(),
-                    selectedItem.getH5Url(),
-                    selectedItem.getIsLogin());
-            selectedItem = null;
-        }*/
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -214,6 +185,7 @@ public class ActivityFragment extends BaseFragment implements OnRemotingCallBack
             LoginDataManager.instance().handler(mContext, null);
         }
     }
+
 
     @Override
     public void onCompleted(String action) {
