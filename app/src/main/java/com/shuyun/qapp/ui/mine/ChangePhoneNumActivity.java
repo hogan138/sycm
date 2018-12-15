@@ -20,7 +20,10 @@ import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.InputVerficationCodeBean;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveErrorTxt;
@@ -42,7 +45,7 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 /**
  * 更改手机号---验证老手机号
  */
-public class ChangePhoneNumActivity extends BaseActivity {
+public class ChangePhoneNumActivity extends BaseActivity implements OnRemotingCallBackListener<Object> {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;//返回按钮
@@ -128,53 +131,10 @@ public class ChangePhoneNumActivity extends BaseActivity {
      * @param verficationCodeBean post json body
      */
     private void getCodeNum(InputVerficationCodeBean verficationCodeBean) {
-        ApiService apiService = BasePresenter.create(8000);
         String inputbean = JSON.toJSONString(verficationCodeBean);
         Log.i(TAG, "loadLogin: " + verficationCodeBean.toString());
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
-        apiService.getCode(body)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<String>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse<String> loginResponse) {
-                        if (loginResponse.isSuccees()) {
-                            String sn = loginResponse.getDat();//验证码序列号
-                            ToastUtil.showToast(ChangePhoneNumActivity.this, "获取验证码成功");
-                            btnGetCode.setEnabled(false);
-                            //倒计时
-                            new CountDownTimer(60 * 1000, 1000) {
-
-                                @Override
-                                public void onTick(long millisUntilFinished) {
-                                    btnGetCode.setText(String.format("%dS", millisUntilFinished / 1000));
-                                }
-
-                                @Override
-                                public void onFinish() {
-                                    btnGetCode.setText("获取验证码");
-                                    btnGetCode.setEnabled(true);
-                                }
-                            }.start();
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(ChangePhoneNumActivity.this, loginResponse.getErr(), loginResponse.getMsg());
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+        RemotingEx.doRequest("getCode", ApiServiceBean.getCode(), new Object[]{body}, this);
     }
 
     /**
@@ -184,44 +144,56 @@ public class ChangePhoneNumActivity extends BaseActivity {
         String phoneNumber = tvPhoneNumber.getText().toString().trim();
         String code = etCode.getText().toString().trim();
         if (!EncodeAndStringTool.checkNull(phoneNumber, code)) {
-            ToastUtil.showToast(ChangePhoneNumActivity.this, "手机号或验证码不能为空");
-        } else {
-            ApiService apiService = BasePresenter.create(8000);
-            apiService.verifyoldphone(code)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<DataResponse>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
-                        }
-
-                        @Override
-                        public void onNext(DataResponse dataResponse) {
-                            if (dataResponse.getErr().equals("00000")) {
-                                startActivity(new Intent(ChangePhoneNumActivity.this, ChangePhoneActivity.class));
-                                finish();
-                            } else if (dataResponse.getErr().equals("S0003")) {
-                                ToastUtil.showToast(ChangePhoneNumActivity.this, "短信验证码不匹配！");
-                            } else if (dataResponse.getErr().equals("S0002")) {
-                                ToastUtil.showToast(ChangePhoneNumActivity.this, "短信验证码状态不正确！");
-                            } else {
-                                ToastUtil.showToast(ChangePhoneNumActivity.this, "验证手机号失败！");
-                                ErrorCodeTools.errorCodePrompt(ChangePhoneNumActivity.this, dataResponse.getErr(), dataResponse.getMsg());
-                            }
-
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            //保存错误信息
-                            SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                        }
-
-                        @Override
-                        public void onComplete() {
-                        }
-                    });
+            ToastUtil.showToast(this, "手机号或验证码不能为空");
+            return;
         }
+        RemotingEx.doRequest("verifyoldphone", ApiServiceBean.verifyoldphone(), new Object[]{code}, this);
+    }
 
+    @Override
+    public void onCompleted(String action) {
+
+    }
+
+    @Override
+    public void onFailed(String action, String message) {
+
+    }
+
+    @Override
+    public void onSucceed(String action, DataResponse<Object> response) {
+        if ("getCode".equals(action)) {
+            if (response.isSuccees()) {
+                ToastUtil.showToast(this, "获取验证码成功");
+                btnGetCode.setEnabled(false);
+                //倒计时
+                new CountDownTimer(60 * 1000, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        btnGetCode.setText(String.format("%dS", millisUntilFinished / 1000));
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        btnGetCode.setText("获取验证码");
+                        btnGetCode.setEnabled(true);
+                    }
+                }.start();
+            } else {
+                ErrorCodeTools.errorCodePrompt(this, response.getErr(), response.getMsg());
+            }
+        } else if ("verifyoldphone".equals(action)) {
+            if (response.isSuccees()) {
+                startActivity(new Intent(this, ChangePhoneActivity.class));
+                finish();
+            } else if ("S0003".equals(response.getErr())) {
+                ToastUtil.showToast(this, "短信验证码不匹配！");
+            } else if ("S0002".equals(response.getErr())) {
+                ToastUtil.showToast(this, "短信验证码状态不正确！");
+            } else {
+                ToastUtil.showToast(this, "验证手机号失败！");
+                ErrorCodeTools.errorCodePrompt(this, response.getErr(), response.getMsg());
+            }
+        }
     }
 }

@@ -85,6 +85,7 @@ import com.uuzuche.lib_zxing.activity.CodeUtils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import butterknife.BindView;
@@ -859,7 +860,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
         timer = new CountDownTimer(remainderTime * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");//初始化Formatter的转换格式。
+                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss", Locale.CHINA);//初始化Formatter的转换格式。
                 formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
                 String hms = formatter.format(millisUntilFinished);
                 String time = "需等待" + hms + "后获取次数";

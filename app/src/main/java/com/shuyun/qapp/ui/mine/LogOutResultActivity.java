@@ -13,6 +13,9 @@ import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 
@@ -27,7 +30,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * 账户注销结果页
  */
-public class LogOutResultActivity extends BaseActivity {
+public class LogOutResultActivity extends BaseActivity implements OnRemotingCallBackListener<Object> {
 
     @BindView(R.id.iv_left_back)
     ImageView ivLeftBack;
@@ -70,40 +73,30 @@ public class LogOutResultActivity extends BaseActivity {
 
     //撤回注销申请
     private void removeCondition() {
+        RemotingEx.doRequest(ApiServiceBean.removeCondition(), this);
+    }
 
-        final ApiService apiService = BasePresenter.create(8000);
-        apiService.removeCondition()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+    @Override
+    public void onCompleted(String action) {
 
-                    @Override
-                    public void onNext(DataResponse loginResponse) {
-                        if (loginResponse.isSuccees()) {
-                            if (loginResponse.getErr().equals("00000")) {
-                                finish();
-                                Toast.makeText(LogOutResultActivity.this, "撤回注销申请成功！", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(LogOutResultActivity.this, "撤回注销申请失败！", Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(LogOutResultActivity.this, loginResponse.getErr(), loginResponse.getMsg());
-                        }
-                    }
+    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
+    @Override
+    public void onFailed(String action, String message) {
 
-                    @Override
-                    public void onComplete() {
+    }
 
-                    }
-                });
+    @Override
+    public void onSucceed(String action, DataResponse<Object> response) {
+        if (!response.isSuccees()) {
+            ErrorCodeTools.errorCodePrompt(this, response.getErr(), response.getMsg());
+            return;
+        }
+        if ("00000".equals(response.getErr())) {
+            finish();
+            Toast.makeText(this, "撤回注销申请成功！", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "撤回注销申请失败！", Toast.LENGTH_SHORT).show();
+        }
     }
 }

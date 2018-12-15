@@ -197,7 +197,6 @@ public class BoxRecordActivity extends BaseActivity implements OnRemotingCallBac
                     refreshLayout.setLoadmoreFinished(true);
                 } else {
                     boxRecordBeanList.addAll(boxRecordBeanList1);
-                    boxRecordAdapter.notifyDataSetChanged();
                     refreshLayout.finishLoadmore();
                     refreshLayout.setLoadmoreFinished(false);
                 }

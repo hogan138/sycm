@@ -81,7 +81,6 @@ public class ActivityFragment extends BaseFragment implements OnRemotingCallBack
         mContext = getActivity();
         tvCommonTitle.setText("活动专区");
 
-
         refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
@@ -113,6 +112,7 @@ public class ActivityFragment extends BaseFragment implements OnRemotingCallBack
         });
         GridLayoutManager glManager = new GridLayoutManager(mContext, 1, LinearLayoutManager.VERTICAL, false);
         rvActivity.setLayoutManager(glManager);
+        rvActivity.setAdapter(activityTabAdapter);
     }
 
     @OnClick({R.id.iv_back})
@@ -186,46 +186,45 @@ public class ActivityFragment extends BaseFragment implements OnRemotingCallBack
 
     @Override
     public void onFailed(String action, String message) {
-
+        if (currentPage == 0) {
+            refreshLayout.finishRefresh();
+        } else {
+            refreshLayout.finishLoadmore();
+        }
     }
 
     @Override
     public void onSucceed(String action, DataResponse<ActivityTabBean> response) {
-        if (response.isSuccees()) {
-            ActivityTabBean activityTabBean = response.getDat();
-            List<ActivityTabBean.ResultBean> activityTabBeanList1 = activityTabBean.getResult();
-            if (!EncodeAndStringTool.isListEmpty(activityTabBeanList1) && activityTabBeanList1.size() > 0) {
-                try {
-                    ivActivityEmpty.setVisibility(View.GONE);
-                    if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {//首次加载||下拉刷新
-                        activityTabBeanList.clear();
-                        activityTabBeanList.addAll(activityTabBeanList1);
-                        rvActivity.setAdapter(activityTabAdapter);
-                        refreshLayout.finishRefresh();
-                        refreshLayout.setLoadmoreFinished(false);
-
-                    } else if (loadState == AppConst.STATE_MORE) {
-                        if (activityTabBeanList1.size() == 0) {//没有数据了
-                            refreshLayout.finishLoadmore(); //
-                            refreshLayout.setLoadmoreFinished(true);
-                        } else {
-                            activityTabBeanList.addAll(activityTabBeanList1);
-                            activityTabAdapter.notifyDataSetChanged();
-                            refreshLayout.finishLoadmore();
-                            refreshLayout.setLoadmoreFinished(false);
-                        }
-                    }
-                } catch (Exception e) {
-                }
-            } else {
-                if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {
-                    ivActivityEmpty.setVisibility(View.VISIBLE);
-                }
-                refreshLayout.finishLoadmore();
-                refreshLayout.setLoadmoreFinished(true);
-            }
-        } else {
+        if (!response.isSuccees()) {
             ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
+            return;
+        }
+        ActivityTabBean activityTabBean = response.getDat();
+        List<ActivityTabBean.ResultBean> activityTabBeanList1 = activityTabBean.getResult();
+        if (!EncodeAndStringTool.isListEmpty(activityTabBeanList1) && activityTabBeanList1.size() > 0) {
+            ivActivityEmpty.setVisibility(View.GONE);
+            if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {//首次加载||下拉刷新
+                activityTabBeanList.clear();
+                activityTabBeanList.addAll(activityTabBeanList1);
+                refreshLayout.finishRefresh();
+                refreshLayout.setLoadmoreFinished(false);
+            } else if (loadState == AppConst.STATE_MORE) {
+                if (activityTabBeanList1.size() == 0) {//没有数据了
+                    refreshLayout.finishLoadmore(); //
+                    refreshLayout.setLoadmoreFinished(true);
+                } else {
+                    activityTabBeanList.addAll(activityTabBeanList1);
+                    refreshLayout.finishLoadmore();
+                    refreshLayout.setLoadmoreFinished(false);
+                }
+            }
+            activityTabAdapter.notifyDataSetChanged();
+        } else {
+            if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {
+                ivActivityEmpty.setVisibility(View.VISIBLE);
+            }
+            refreshLayout.finishLoadmore();
+            refreshLayout.setLoadmoreFinished(true);
         }
     }
 }

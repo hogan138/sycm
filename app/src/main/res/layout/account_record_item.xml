@@ -27,8 +27,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/text_20"
         android:layout_marginTop="@dimen/text_21"
+        android:layout_marginRight="@dimen/text_20"
         android:textColor="@color/color_0"
         android:textSize="@dimen/text_16"
         android:textStyle="bold" />

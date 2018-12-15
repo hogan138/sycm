@@ -22,6 +22,7 @@ import com.shuyun.qapp.view.RushBuyCountDownTimerView;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,7 +58,7 @@ public class MyPrizeAdapter extends RecyclerView.Adapter<MyPrizeAdapter.ViewHold
         GlideUtils.LoadImage(context, exchangeMyPrizeBean.getMainPic(), holder.ivPicture);
         if (exchangeMyPrizeBean.getScheduleStatus() == 0) {
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");//年-月-日 时-分
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);//年-月-日 时-分
             try {
                 long time1 = dateFormat.parse(TimeUtils.millis2String(exchangeMyPrizeBean.getEndTime())).getTime();
                 long time2 = dateFormat.parse(TimeUtils.millis2String(System.currentTimeMillis())).getTime();

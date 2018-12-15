@@ -1,5 +1,6 @@
 package com.shuyun.qapp.ui.mine;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -18,6 +19,9 @@ import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
@@ -38,7 +42,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * 我的奖品界面
  */
-public class MinePrizeActivity extends BaseActivity {
+public class MinePrizeActivity extends BaseActivity implements OnRemotingCallBackListener<Object> {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;
@@ -58,17 +62,20 @@ public class MinePrizeActivity extends BaseActivity {
     private List<Fragment> mFragmentList;
     private List<String> mTitleList;
     private MineBean mineBean;
+    private CommonPopupWindow popupWindow;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        mContext = this;
+
         tvCommonTitle.setText("我的奖品");
         Intent intent = getIntent();
         status = intent.getIntExtra("status", 0);
 
         loadMineHomeData();
-
     }
 
     @Override
@@ -101,11 +108,14 @@ public class MinePrizeActivity extends BaseActivity {
 
     private void initFragment() {
         mFragmentList = new ArrayList<>();
-        mFragmentList.add(new NoUsePrizeFragment().newInstance(mineBean.getCertification()));
-        mFragmentList.add(new UseInPrizeFragment().newInstance(mineBean.getCertification()));
-        mFragmentList.add(new UsePrizeFragment().newInstance(mineBean.getCertification()));
+        mFragmentList.add(NoUsePrizeFragment.newInstance(mineBean.getCertification()));
+        mFragmentList.add(UseInPrizeFragment.newInstance(mineBean.getCertification()));
+        mFragmentList.add(UsePrizeFragment.newInstance(mineBean.getCertification()));
 //        mFragmentList.add(new AllPrizeFragment().newInstance(mineBean.getCertification()));
-
+        //设置适配器
+        vp.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), mFragmentList, mTitleList));
+        //将tablayout与fragment关联
+        tabLayout.setupWithViewPager(vp);
     }
 
     @OnClick({R.id.iv_back, R.id.tv_box_record})
@@ -120,22 +130,18 @@ public class MinePrizeActivity extends BaseActivity {
                 }
                 break;
             case R.id.tv_box_record: //宝箱记录
-                startActivity(new Intent(MinePrizeActivity.this, BoxRecordActivity.class));
+                startActivity(new Intent(mContext, BoxRecordActivity.class));
                 break;
             default:
                 break;
         }
     }
 
-    private CommonPopupWindow popupWindow;
-
-
     /**
      * 监听返回键
      */
     @Override
     public void onBackPressed() {
-
         if (!EncodeAndStringTool.isObjectEmpty(popupWindow)) {
             popupWindow.dismiss();
             popupWindow = null;
@@ -148,53 +154,38 @@ public class MinePrizeActivity extends BaseActivity {
      * 获取到我的首界面数据
      */
     private void loadMineHomeData() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.getMineHomeData()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<MineBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+        RemotingEx.doRequest(ApiServiceBean.getMineHomeData(), this);
+    }
 
-                    @Override
-                    public void onNext(DataResponse<MineBean> listDataResponse) {
-                        if (listDataResponse.isSuccees()) {
-                            mineBean = listDataResponse.getDat();
-                            SaveUserInfo.getInstance(MinePrizeActivity.this).setUserInfo("cer", String.valueOf(mineBean.getCertification()));
-                            //添加标题
-                            initTitile();
-                            //添加fragment
-                            initFragment();
-                            //设置适配器
-                            vp.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), mFragmentList, mTitleList));
-                            //将tablayout与fragment关联
-                            tabLayout.setupWithViewPager(vp);
+    @Override
+    public void onCompleted(String action) {
 
-                            if (status == 1) { //未使用
-                                vp.setCurrentItem(0);
-                            } else if (status == 2) { //使用中
-                                vp.setCurrentItem(1);
-                            } else if (status == 3) { //已使用
-                                vp.setCurrentItem(2);
-                            }
+    }
 
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(MinePrizeActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
-                        }
+    @Override
+    public void onFailed(String action, String message) {
 
-                    }
+    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                        return;
-                    }
+    @Override
+    public void onSucceed(String action, DataResponse<Object> response) {
+        if (!response.isSuccees()) {
+            ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
+            return;
+        }
+        mineBean = (MineBean) response.getDat();
+        SaveUserInfo.getInstance(mContext).setUserInfo("cer", String.valueOf(mineBean.getCertification()));
+        //添加标题
+        initTitile();
+        //添加fragment
+        initFragment();
 
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+        if (status == 1) { //未使用
+            vp.setCurrentItem(0);
+        } else if (status == 2) { //使用中
+            vp.setCurrentItem(1);
+        } else if (status == 3) { //已使用
+            vp.setCurrentItem(2);
+        }
     }
 }

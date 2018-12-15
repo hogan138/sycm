@@ -14,32 +14,27 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.NetworkUtils;
-import com.blankj.utilcode.util.TimeUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.FeedBackSuggestBean;
-import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.ToastUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
 /**
  * 反馈
  */
-public class FeedbackActivity extends BaseActivity {
+public class FeedbackActivity extends BaseActivity implements OnRemotingCallBackListener<Object> {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;
@@ -126,34 +121,27 @@ public class FeedbackActivity extends BaseActivity {
      */
     private void loadFeedBack(FeedBackSuggestBean feedBackSuggestBean) {
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), JSON.toJSONString(feedBackSuggestBean));
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.getFeedBack(body)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+        RemotingEx.doRequest(ApiServiceBean.getFeedBack(), new Object[]{body}, this);
+    }
 
-                    @Override
-                    public void onNext(DataResponse dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            ToastUtil.showToast(FeedbackActivity.this, "反馈成功!");
-                            finish();
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(FeedbackActivity.this, dataResponse.getErr(), dataResponse.getMsg());
-                        }
-                    }
+    @Override
+    public void onCompleted(String action) {
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
+    }
 
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+    @Override
+    public void onFailed(String action, String message) {
+
+    }
+
+    @Override
+    public void onSucceed(String action, DataResponse<Object> response) {
+        if (!response.isSuccees()) {
+            ErrorCodeTools.errorCodePrompt(this, response.getErr(), response.getMsg());
+            return;
+        }
+
+        ToastUtil.showToast(this, "反馈成功!");
+        finish();
     }
 }

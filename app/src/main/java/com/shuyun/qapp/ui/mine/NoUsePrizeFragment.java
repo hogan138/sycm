@@ -127,7 +127,7 @@ public class NoUsePrizeFragment extends Fragment implements OnRemotingCallBackLi
                     //道具（增次卡）
                     useAddCard(minePrize.getId());
                     minePrizeList.remove(position);
-                    rvPrize.setAdapter(prizeAdapter);
+                    prizeAdapter.notifyDataSetChanged();
                 } else if (minePrize.getActionType().equals("action.h5.url")) {
                     if (Integer.parseInt(SaveUserInfo.getInstance(getActivity()).getUserInfo("cert")) == 1) {
                         //票务

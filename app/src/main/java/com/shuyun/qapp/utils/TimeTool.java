@@ -4,6 +4,7 @@ package com.shuyun.qapp.utils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by sunxiao on 2018/5/8.
@@ -23,7 +24,7 @@ public class TimeTool {
 
     public static String getFormatToday(String dateFormat) {
         Date currentTime = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
+        SimpleDateFormat formatter = new SimpleDateFormat(dateFormat, Locale.CHINA);
         return formatter.format(currentTime);
     }
 
@@ -34,7 +35,7 @@ public class TimeTool {
      * @return
      */
     public static String getTimeMill(String Time) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
         Date date = null;
         try {
             date = format.parse(Time);
@@ -54,7 +55,7 @@ public class TimeTool {
      */
     public static String getTime(String Time) {
         Date currentTime = new Date(Long.parseLong(Time));
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
         return formatter.format(currentTime);
     }
 
@@ -66,7 +67,7 @@ public class TimeTool {
      */
     public static String getTime1(String Time) {
         Date currentTime = new Date(Long.parseLong(Time));
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd", Locale.CHINA);
         return formatter.format(currentTime);
     }
 
@@ -78,7 +79,7 @@ public class TimeTool {
      */
     public static String getCommTime(String Time, String format) {
         Date currentTime = new Date(Long.parseLong(Time));
-        SimpleDateFormat formatter = new SimpleDateFormat(format);
+        SimpleDateFormat formatter = new SimpleDateFormat(format, Locale.CHINA);
         return formatter.format(currentTime);
     }
 
@@ -88,7 +89,7 @@ public class TimeTool {
      * @return
      */
     public static String dateToString(Date date, String dateFormat) {
-        SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
+        SimpleDateFormat formatter = new SimpleDateFormat(dateFormat, Locale.CHINA);
         return formatter.format(date);
     }
 

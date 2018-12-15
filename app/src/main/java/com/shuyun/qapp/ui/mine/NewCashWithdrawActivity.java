@@ -1,8 +1,9 @@
 package com.shuyun.qapp.ui.mine;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -18,37 +19,32 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.KeyboardUtils;
-import com.blankj.utilcode.util.TimeUtils;
 import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.InputWithdrawalbean;
 import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.bean.OutPutWithdraw;
-import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ToastUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
 /**
  * 现金提现
  */
-public class NewCashWithdrawActivity extends BaseActivity implements View.OnClickListener {
+public class NewCashWithdrawActivity extends BaseActivity implements View.OnClickListener, OnRemotingCallBackListener<Object> {
 
     @BindView(R.id.rl_back)
     RelativeLayout rlBack;
@@ -80,16 +76,16 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
     private InputWithdrawalbean inputWithdrawalbean;
 
     private String bankId = "";
-
     private String cashRuls = "";   //现金提现规则
-
     //实名信息
     String real_info = "";
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        mContext = this;
 
         rlBack.setOnClickListener(this);
         tvRule.setOnClickListener(this);
@@ -134,10 +130,8 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
     @Override
     protected void onResume() {
         super.onResume();
-
         //访问个人信息
         loadMineHomeData();
-
     }
 
     @Override
@@ -145,10 +139,10 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
         switch (v.getId()) {
             case R.id.rl_back:
                 finish();
-                KeyboardUtils.hideSoftInput(NewCashWithdrawActivity.this);
+                KeyboardUtils.hideSoftInput(this);
                 break;
             case R.id.iv_add_user_info:
-                startActivity(new Intent(NewCashWithdrawActivity.this, AddWithdrawInfoActivity.class));
+                startActivity(new Intent(mContext, AddWithdrawInfoActivity.class));
                 break;
             case R.id.rl_user_info:
                 Intent intent1 = new Intent(this, AddWithdrawInfoActivity.class);
@@ -156,7 +150,7 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
                 startActivity(intent1);
                 break;
             case R.id.tv_rule:
-                Intent i = new Intent(NewCashWithdrawActivity.this, WebH5Activity.class);
+                Intent i = new Intent(mContext, WebH5Activity.class);
                 i.putExtra("url", cashRuls);
                 i.putExtra("name", "现金提现");
                 startActivity(i);
@@ -168,21 +162,14 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
                 break;
             case R.id.btn_enter:
                 if (EncodeAndStringTool.isStringEmpty(bankId)) {
-                    ToastUtil.showToast(NewCashWithdrawActivity.this, "请先完善提现信息");
+                    ToastUtil.showToast(mContext, "请先完善提现信息");
                 } else {
                     String[] reds = new String[]{};
                     inputWithdrawalbean = new InputWithdrawalbean(moneyNumber, 1, reds, bankId);
                     if (myCash >= 50 && money <= myCash) {
-                        CustomLoadingFactory factory = new CustomLoadingFactory();
-                        LoadingBar.make(rlMain, factory).show();
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                loadApplyWithdrawal(inputWithdrawalbean);
-                            }
-                        }, 2000);
+                        loadApplyWithdrawal(inputWithdrawalbean);
                     } else {
-                        ToastUtil.showToast(NewCashWithdrawActivity.this, "您账户余额不足50元或您输入的金额大于账户余额,请您重新输入!");
+                        ToastUtil.showToast(mContext, "您账户余额不足50元或您输入的金额大于账户余额,请您重新输入!");
                     }
                 }
                 break;
@@ -198,115 +185,17 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
     }
 
     private void loadApplyWithdrawal(InputWithdrawalbean inputWithdrawalbean) {
-        ApiService apiService = BasePresenter.create(8000);
+        CustomLoadingFactory factory = new CustomLoadingFactory();
+        LoadingBar.make(rlMain, factory).show();
+
         final String inputbean = JSON.toJSONString(inputWithdrawalbean);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
-        apiService.applyWithdrawal(body)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<OutPutWithdraw>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse<OutPutWithdraw> listDataResponse) {
-                        LoadingBar.cancel(rlMain);
-                        if (listDataResponse.isSuccees()) {
-                            OutPutWithdraw outPutWithdraw = listDataResponse.getDat();
-                            if (!EncodeAndStringTool.isObjectEmpty(outPutWithdraw)) {
-                                Intent intent = new Intent(NewCashWithdrawActivity.this, WithdrawResultActivity.class);
-                                intent.putExtra("from", "withdraw");
-                                intent.putExtra("remark", outPutWithdraw.getRemark());
-                                startActivity(intent);
-                                finish();
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(NewCashWithdrawActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
-                        }
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        LoadingBar.cancel(rlMain);
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-
+        RemotingEx.doRequest("applyWithdrawal", ApiServiceBean.applyWithdrawal(), new Object[]{body}, this);
     }
 
     //加载个人信息
     private void loadMineHomeData() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.getMineHomeData()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<MineBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse<MineBean> listDataResponse) {
-                        if (listDataResponse.isSuccees()) {
-                            MineBean mineBean = listDataResponse.getDat();
-                            if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
-                                cashRuls = mineBean.getCashRuleUrl();
-                                try {
-                                    for (int i = 0; i < mineBean.getDatas().size(); i++) {
-                                        String type = mineBean.getDatas().get(i).getType();
-                                        Long status = mineBean.getDatas().get(i).getStatus();
-                                        if (!EncodeAndStringTool.isStringEmpty(type) && "withdraw".equals(type) && status == 3) {
-                                            //是否完善提现信息
-                                            bankId = mineBean.getDatas().get(i).getBankId();
-                                            String title = mineBean.getDatas().get(i).getTitle().replaceAll(" ", "");
-                                            real_info = title;
-                                            ivAddUserInfo.setVisibility(View.GONE);
-                                            rlUserInfo.setVisibility(View.VISIBLE);
-                                            String[] args = title.split("[|]");
-                                            String str = args[1] + "   " + args[2];
-                                            tvNameAccount.setText(str);
-                                            if (mineBean.getDatas().get(i).isEnabled()) {
-                                                rlUserInfo.setEnabled(true);
-                                            } else {
-                                                rlUserInfo.setEnabled(false);
-                                            }
-                                            return;
-                                        } else {
-                                            ivAddUserInfo.setVisibility(View.VISIBLE);
-                                            rlUserInfo.setVisibility(View.GONE);
-                                        }
-                                    }
-                                } catch (Exception e) {
-
-                                }
-                            } else {
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(NewCashWithdrawActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
-                        }
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                        return;
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+        RemotingEx.doRequest("getMineHomeData", ApiServiceBean.getMineHomeData(), null, this);
     }
 
     /**
@@ -397,4 +286,60 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
     }
 
 
+    @Override
+    public void onCompleted(String action) {
+        if ("applyWithdrawal".equals(action))
+            LoadingBar.cancel(rlMain);
+    }
+
+    @Override
+    public void onFailed(String action, String message) {
+
+    }
+
+    @Override
+    public void onSucceed(String action, DataResponse<Object> response) {
+        if (!response.isSuccees()) {
+            ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
+            return;
+        }
+        if ("applyWithdrawal".equals(action)) {
+            OutPutWithdraw outPutWithdraw = (OutPutWithdraw) response.getDat();
+            if (!EncodeAndStringTool.isObjectEmpty(outPutWithdraw)) {
+                Intent intent = new Intent(mContext, WithdrawResultActivity.class);
+                intent.putExtra("from", "withdraw");
+                intent.putExtra("remark", outPutWithdraw.getRemark());
+                startActivity(intent);
+                finish();
+            }
+        } else if ("getMineHomeData".equals(action)) {
+            MineBean mineBean = (MineBean) response.getDat();
+            if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
+                cashRuls = mineBean.getCashRuleUrl();
+                for (int i = 0; i < mineBean.getDatas().size(); i++) {
+                    String type = mineBean.getDatas().get(i).getType();
+                    Long status = mineBean.getDatas().get(i).getStatus();
+                    if (!EncodeAndStringTool.isStringEmpty(type) && "withdraw".equals(type) && status == 3) {
+                        //是否完善提现信息
+                        bankId = mineBean.getDatas().get(i).getBankId();
+                        String title = mineBean.getDatas().get(i).getTitle().replaceAll(" ", "");
+                        real_info = title;
+                        ivAddUserInfo.setVisibility(View.GONE);
+                        rlUserInfo.setVisibility(View.VISIBLE);
+                        String[] args = title.split("[|]");
+                        String str = args[1] + "   " + args[2];
+                        tvNameAccount.setText(str);
+                        if (mineBean.getDatas().get(i).isEnabled()) {
+                            rlUserInfo.setEnabled(true);
+                        } else {
+                            rlUserInfo.setEnabled(false);
+                        }
+                    } else {
+                        ivAddUserInfo.setVisibility(View.VISIBLE);
+                        rlUserInfo.setVisibility(View.GONE);
+                    }
+                }
+            }
+        }
+    }
 }

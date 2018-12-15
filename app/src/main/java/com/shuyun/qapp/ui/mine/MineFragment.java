@@ -52,6 +52,7 @@ import com.shuyun.qapp.view.RealNamePopupUtil;
 import com.tencent.stat.StatConfig;
 
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import butterknife.BindView;
@@ -127,6 +128,10 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
     private Context mContext;
     private MyReceiver msgReceiver;
     private AnswerOpptyBean answerOpptyBean;
+    private TextView tvRemainderTime;
+    private Button btnGetImmedicate;
+    private ImageView add_answernum_logo;
+    private CountDownTimer timer;
 
     public MineFragment() {
     }
@@ -147,7 +152,7 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if(!isVisibleToUser)
+        if (!isVisibleToUser)
             return;
         refresh();
     }
@@ -279,11 +284,6 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
         }
     }
 
-
-    TextView tvRemainderTime;
-    Button btnGetImmedicate;
-    ImageView add_answernum_logo;
-
     /**
      * 增加答题次数弹窗
      */
@@ -361,18 +361,18 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
         RemotingEx.doRequest(LOAD_ANSWER_OPPTY, ApiServiceBean.getAnswerOppty(), null, this);
     }
 
-    private CountDownTimer timer;
-
     /**
      * 领取答题机会倒计时
      *
      * @param remainderTime
      */
     private void countDown(long remainderTime) {
+        if(timer != null)
+            timer.cancel();
         timer = new CountDownTimer(remainderTime * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");//初始化Formatter的转换格式。
+                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss", Locale.CHINA);//初始化Formatter的转换格式。
                 formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
                 String hms = formatter.format(millisUntilFinished);
                 String time = "需等待" + hms + "后获取次数";
@@ -523,11 +523,7 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
                     btnGetImmedicate.setEnabled(false);
                     add_answernum_logo.setBackgroundResource(R.mipmap.new_add_answernum_n);
                     long time = Long.parseLong(remainderTime);
-                    try {
-                        countDown(time);
-                    } catch (Exception e) {
-
-                    }
+                    countDown(time);
                 }
             }
         } else if (LOAD_ANSWER_OPPTY.equals(action)) {
@@ -536,11 +532,7 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
                 btnGetImmedicate.setEnabled(false);
                 add_answernum_logo.setBackgroundResource(R.mipmap.new_add_answernum_n);
                 answerOpptyBean.getRemainder();
-                try {
-                    countDown(answerOpptyBean.getRemainder());
-                } catch (Exception e) {
-
-                }
+                countDown(answerOpptyBean.getRemainder());
                 /**
                  * 领取答题机会之后需要刷新数据
                  */
