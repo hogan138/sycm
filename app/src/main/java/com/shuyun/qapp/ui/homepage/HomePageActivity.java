@@ -24,7 +24,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.alibaba.fastjson.JSONObject;
-import com.blankj.utilcode.util.TimeUtils;
 import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.callback.ConfigDialog;
 import com.mylhyl.circledialog.params.DialogParams;
@@ -32,16 +31,12 @@ import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.MyHomeadapter;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BaseFragment;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.ActivityTimeBean;
 import com.shuyun.qapp.bean.AppVersionBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.InviteBean;
-import com.shuyun.qapp.event.MessageEvent;
-import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.net.HeartBeatManager;
 import com.shuyun.qapp.net.LoginDataManager;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -56,23 +51,15 @@ import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ExampleUtil;
 import com.shuyun.qapp.utils.OnMultiClickListener;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.StatusBarUtil;
 import com.shuyun.qapp.view.NoScrollViewPager;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 import static com.shuyun.qapp.utils.EncodeAndStringTool.encryptMD5ToString;
 import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
@@ -111,6 +98,13 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
 
+        //判断是否从广告页传递数据过来
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null && "welcome".equals(bundle.getString("from"))) {
+            //从广告页过来
+            skip(bundle);
+        }
+
         //注册极光推送
         registerMessageReceiver();
 
@@ -134,17 +128,6 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         //初始化数据
         initDate();
 
-        //判断是否从广告页传递数据过来
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null && "welcome".equals(bundle.getString("from"))) {
-            ((HomeFragment) fragments.get(0)).setRefresh(false);
-            //从广告页过来
-            skip(bundle);
-            ((HomeFragment) fragments.get(0)).setRefresh(true);
-        } else {
-            ((HomeFragment) fragments.get(0)).setRefresh(true);
-        }
-
         /*//沉浸式代码配置
         //当FitsSystemWindows设置 true 时，会在屏幕最上方预留出状态栏高度的 padding
         StatusBarUtil.setRootViewFitsSystemWindows(this, true);
@@ -159,6 +142,16 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         }
         //用来设置整体下移，状态栏沉浸
         StatusBarUtil.setRootViewFitsSystemWindows(this, false);*/
+
+        //开启登录logo动画
+        TranslateAnimation animation = new TranslateAnimation(0, 0, 10, -10);
+        animation.setInterpolator(new OvershootInterpolator());
+        animation.setDuration(500);
+        animation.setRepeatCount(Animation.INFINITE);
+        animation.setRepeatMode(Animation.REVERSE);
+        ivNoLoginLogo.startAnimation(animation);
+
+        mHandler.postDelayed(runnable, 500);
     }
 
     @Override
@@ -247,22 +240,8 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         super.onResume();
         isForeground = true;
 
-        HeartBeatManager.instance().start(this);
-
-        //receiver(getIntent());
-
         //版本更新
         updateVersion();
-
-        mHandler.postDelayed(runnable, 500);
-
-        //开启登录logo动画
-        TranslateAnimation animation = new TranslateAnimation(0, 0, 10, -10);
-        animation.setInterpolator(new OvershootInterpolator());
-        animation.setDuration(500);
-        animation.setRepeatCount(Animation.INFINITE);
-        animation.setRepeatMode(Animation.REVERSE);
-        ivNoLoginLogo.startAnimation(animation);
     }
 
     Runnable runnable = new Runnable() {
@@ -637,13 +616,6 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
             }
         } else if (model == 0) {
 
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void Event(MessageEvent messageEvent) {
-        if (LoginDataManager.MINE_LOGIN.equals(messageEvent.getMessage())) {
-            radioGroupChange(3);
         }
     }
 }
