@@ -173,6 +173,9 @@ public class HomeFragment extends BaseFragment {
     private Activity mContext;
     private MyReceiver msgReceiver;
     private Handler mHandler = new Handler();
+    private GroupBean recommendGroup1;
+    private GroupBean recommendGroup2;
+    private int recommendIndex = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -594,10 +597,6 @@ public class HomeFragment extends BaseFragment {
                 });
 
     }
-
-    GroupBean recommendGroup1;
-    GroupBean recommendGroup2;
-    int recommendIndex = 0;
 
     /**
      * 根据角标i的值,两个一组轮询推荐题组列表

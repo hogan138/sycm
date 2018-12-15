@@ -100,10 +100,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        try{
+        try {
             //防止内存泄露
             UMShareAPI.get(this).release();
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
@@ -114,6 +114,12 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param data
      */
     public void callBack(Object data) {
+        if (data == null) {
+            //获取全局的对象
+            data = LoginDataManager.instance().getOverallData();
+            LoginDataManager.instance().setOverallData(null);
+        }
+
         if (data instanceof LoginResponse) {
             LoginResponse loginResp = (LoginResponse) data;
             SharedPrefrenceTool.put(getAppContext(), "token", loginResp.getToken());

@@ -22,6 +22,7 @@ import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.LoginResponse;
 import com.shuyun.qapp.bean.Msg;
+import com.shuyun.qapp.net.ActivityCallManager;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.LoginDataManager;
@@ -189,8 +190,11 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.tv_rigth_title:
                 KeyboardUtils.hideSoftInput(SetPasswordActivity.this);
-                LoginDataManager.instance().handler(SetPasswordActivity.this, new Object[]{SharedPrefrenceTool.get(SetPasswordActivity.this, "boxId", "")});
                 MyActivityManager1.getInstance().finishAllActivity();
+                //统一给活动的Activity处理
+                if (ActivityCallManager.instance().getActivity() != null) {
+                    ActivityCallManager.instance().getActivity().callBack(null);
+                }
                 break;
             case R.id.iv_is_show_pwd:
                 isShowPwd(etPassword);
@@ -281,7 +285,6 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
 
     }
 
-
     //注册设置密码
     private void setPwd() {
         String phoneNum = getIntent().getStringExtra("phone");
@@ -292,7 +295,6 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
         String iv = "SYKSC258";
         //DESede/CBC/PKCS5Padding
         String password = EncryptUtils.encrypt3DES2HexString(pwd.getBytes(), new_key.getBytes(), "DESede/CBC/PKCS5Padding", iv.getBytes());
-
 
         RemotingEx.doRequest(ApiServiceBean.setPwd(), new Object[]{password}, new OnRemotingCallBackListener<String>() {
             @Override
@@ -310,7 +312,10 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
                 if (dataResponse.isSuccees()) {
                     KeyboardUtils.hideSoftInput(SetPasswordActivity.this);
                     MyActivityManager1.getInstance().finishAllActivity();
-                    LoginDataManager.instance().handler(SetPasswordActivity.this, new Object[]{SharedPrefrenceTool.get(SetPasswordActivity.this, "boxId", "")});
+                    //统一给活动的Activity处理
+                    if (ActivityCallManager.instance().getActivity() != null) {
+                        ActivityCallManager.instance().getActivity().callBack(null);
+                    }
                 } else {
                     ErrorCodeTools.errorCodePrompt(SetPasswordActivity.this, dataResponse.getErr(), dataResponse.getMsg());
                 }

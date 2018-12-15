@@ -29,6 +29,11 @@ public class LoginDataManager {
     public static final String VALUE = "data";
 
     /**
+     * 全局对象 适用于登录回调callBack为空时
+     */
+    public Object overallData = null;
+
+    /**
      * banner登录
      */
     public static final String BANNER_LOGIN = "banner_login";
@@ -81,6 +86,14 @@ public class LoginDataManager {
         if (manager == null)
             manager = new LoginDataManager();
         return manager;
+    }
+
+    public void setOverallData(Object data) {
+        this.overallData = data;
+    }
+
+    public Object getOverallData() {
+        return overallData;
     }
 
     /**

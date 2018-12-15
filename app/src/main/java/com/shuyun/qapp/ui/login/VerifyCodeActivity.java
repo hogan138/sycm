@@ -31,6 +31,7 @@ import com.shuyun.qapp.net.ActivityCallManager;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.LoginDataManager;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
@@ -309,6 +310,9 @@ public class VerifyCodeActivity extends BaseActivity {
             public void onSucceed(String action, DataResponse<LoginResponse> loginResponse) {
                 if (loginResponse.isSuccees()) {
                     LoginResponse loginResp = loginResponse.getDat();
+                    //保存为全局对象
+                    LoginDataManager.instance().setOverallData(loginResp);
+
                     if (!EncodeAndStringTool.isObjectEmpty(loginResp)) {
                         SharedPrefrenceTool.put(mContext, "token", loginResp.getToken());
                         SharedPrefrenceTool.put(mContext, "expire", loginResp.getExpire());//token的有效期
