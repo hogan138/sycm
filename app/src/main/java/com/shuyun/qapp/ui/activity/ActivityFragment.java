@@ -3,6 +3,7 @@ package com.shuyun.qapp.ui.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -56,10 +57,13 @@ public class ActivityFragment extends BaseFragment implements OnRemotingCallBack
     ImageView ivActivityEmpty; //空白图
     @BindView(R.id.ll_main)
     LinearLayout llMain;
+
     private Activity mContext;
 
     private int loadState = AppConst.STATE_NORMAL;
     private int currentPage = 0;
+    private boolean isLoading = false;
+    private Handler mHandler = new Handler();
 
     private ActivityTabAdapter activityTabAdapter; //活动适配器
     /**
@@ -80,7 +84,27 @@ public class ActivityFragment extends BaseFragment implements OnRemotingCallBack
         super.onActivityCreated(savedInstanceState);
         mContext = getActivity();
         tvCommonTitle.setText("活动专区");
+    }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (!isLoading) {
+                        init();
+                    }
+                    isLoading = true;
+
+                    refresh();
+                }
+            }, 10);
+        }
+    }
+
+    private void init(){
         refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
@@ -131,14 +155,6 @@ public class ActivityFragment extends BaseFragment implements OnRemotingCallBack
 
     private void loadActivityList(int currentPage) {
         RemotingEx.doRequest(ApiServiceBean.ActivityList(), new Object[]{String.valueOf(currentPage), "20"}, this);
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (!isVisibleToUser)
-            return;
-        refresh();
     }
 
     private void loadInfo() {

@@ -232,6 +232,15 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
 
         //版本更新
         updateVersion();
+
+        if (selectedIndex == 3) {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ((BaseFragment) fragments.get(selectedIndex)).refresh();
+                }
+            }, 10);
+        }
     }
 
     Runnable runnable = new Runnable() {

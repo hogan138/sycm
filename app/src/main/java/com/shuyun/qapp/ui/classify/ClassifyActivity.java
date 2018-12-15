@@ -25,7 +25,7 @@ public class ClassifyActivity extends BaseActivity {
                 Fragment classify = getSupportFragmentManager().findFragmentById(R.id.classify_fragment);
                 ((BaseFragment)classify).refresh();
             }
-        }, 320);
+        }, 10);
     }
 
     @Override

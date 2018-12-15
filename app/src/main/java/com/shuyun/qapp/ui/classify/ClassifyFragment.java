@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -52,8 +53,12 @@ public class ClassifyFragment extends BaseFragment implements OnRemotingCallBack
     private List<GroupClassifyBean> classifyBeans = new ArrayList<>();
     private List<GroupClassifyBean.ChildrenBean> childrenBeans = new ArrayList<>();
 
+    private boolean isLoading = false;
+
     private GroupTreeAdapter groupTreeAdapter;
     private CenterLayoutManager centerLayoutManager;
+
+    private Handler mHandler = new Handler();
     /**
      * 右侧题组分类列表
      */
@@ -78,7 +83,22 @@ public class ClassifyFragment extends BaseFragment implements OnRemotingCallBack
         super.onActivityCreated(savedInstanceState);
         mContext = getActivity();
         tvCommonTitle.setText("题组分类");
+    }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    refresh();
+                }
+            }, 10);
+        }
+    }
+
+    private void init() {
         groupTreeAdapter = new GroupTreeAdapter(classifyBeans, mContext);//分类左侧适配器
         centerLayoutManager = new CenterLayoutManager(mContext);
 
@@ -125,14 +145,6 @@ public class ClassifyFragment extends BaseFragment implements OnRemotingCallBack
         rvGroup.setAdapter(childrenGroupAdapter);
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (!isVisibleToUser)
-            return;
-        refresh();
-    }
-
     @OnClick({R.id.iv_back})
     public void click(View view) {
         switch (view.getId()) {
@@ -177,6 +189,11 @@ public class ClassifyFragment extends BaseFragment implements OnRemotingCallBack
 
     @Override
     public void refresh() {
+        if (!isLoading) {
+            init();
+        }
+        isLoading = true;
+
         //刷新分类数据
         loadGroupTree();
     }
@@ -193,32 +210,33 @@ public class ClassifyFragment extends BaseFragment implements OnRemotingCallBack
 
     @Override
     public void onSucceed(String action, DataResponse<List<GroupClassifyBean>> response) {
-        if (response.isSuccees()) {
-            final List<GroupClassifyBean> beans = response.getDat();
-            classifyBeans.clear();
-            classifyBeans.addAll(beans);
-
-            if (!EncodeAndStringTool.isListEmpty(beans)) {
-                if (mContext instanceof ClassifyActivity) {
-                    Long id = mContext.getIntent().getLongExtra("id", 0);
-                    for (int i = 0; i < beans.size(); i++) {
-                        if (beans.get(i).getId().longValue() == id.longValue()) {
-                            beans.get(i).setFlag(true);
-                            refreshRightGroup(i, beans);
-                        } else if (id == 0) {
-                            beans.get(0).setFlag(true);
-                            refreshRightGroup(0, beans);
-                        }
-                    }
-                } else if (mContext instanceof HomePageActivity) {
-                    beans.get(0).setFlag(true);
-                    refreshRightGroup(0, beans);
-                }
-            }
-            groupTreeAdapter.notifyDataSetChanged();
-        } else {
+        if (!response.isSuccees()) {
             ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
+            return;
         }
+        List<GroupClassifyBean> beans = response.getDat();
+        classifyBeans.clear();
+        classifyBeans.addAll(beans);
+
+        if (!EncodeAndStringTool.isListEmpty(beans)) {
+            if (mContext instanceof ClassifyActivity) {
+                Long id = mContext.getIntent().getLongExtra("id", 0);
+                for (int i = 0; i < beans.size(); i++) {
+                    if (beans.get(i).getId().longValue() == id.longValue()) {
+                        beans.get(i).setFlag(true);
+                        refreshRightGroup(i, beans);
+                    } else if (id == 0) {
+                        beans.get(0).setFlag(true);
+                        refreshRightGroup(0, beans);
+                    }
+                }
+            } else if (mContext instanceof HomePageActivity) {
+                beans.get(0).setFlag(true);
+                refreshRightGroup(0, beans);
+            }
+        }
+        groupTreeAdapter.notifyDataSetChanged();
+
     }
 }
 

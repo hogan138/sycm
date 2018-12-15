@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -22,150 +23,60 @@ import com.shuyun.qapp.utils.SaveUserInfo;
  * 首页活动弹框
  */
 public class MainActivityDialogInfo {
+    //活动弹框
+    private static Dialog dialog = null;
+    private static View view = null;
 
     public static void info(ConfigDialogBean configDialogBean, Activity mContext) {
-        if (AppConst.GROUP.equals(configDialogBean.getBtnAction())) {
-            //题组
-            if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.group_count").equals("")) {
-                activitydialog(configDialogBean, mContext);
-                SaveUserInfo.getInstance(mContext).setUserInfo("action.group_count", "" + 1);
-            } else {
-                if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.group_count"))) {
-                    activitydialog(configDialogBean, mContext);
-                    SaveUserInfo.getInstance(mContext).setUserInfo("action.group_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.group_count")) + 1) + "");
-                }
-            }
-        } else if (AppConst.REAL.equals(configDialogBean.getBtnAction())) {
-            //实名认证
-            if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.real_count").equals("")) {
-                activitydialog(configDialogBean, mContext);
-                SaveUserInfo.getInstance(mContext).setUserInfo("action.real_count", "" + 1);
-            } else {
-                if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.real_count"))) {
-                    activitydialog(configDialogBean, mContext);
-                    SaveUserInfo.getInstance(mContext).setUserInfo("action.real_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.real_count")) + 1) + "");
-                }
-            }
-        } else if (AppConst.H5.equals(configDialogBean.getBtnAction())) {
-            //h5页面
-            if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.h5_count").equals("")) {
-                activitydialog(configDialogBean, mContext);
-                SaveUserInfo.getInstance(mContext).setUserInfo("action.h5_count", "" + 1);
-            } else {
-                if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.h5_count"))) {
-                    activitydialog(configDialogBean, mContext);
-                    SaveUserInfo.getInstance(mContext).setUserInfo("action.h5_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.h5_count")) + 1) + "");
-                }
-            }
+        if (configDialogBean.getCount() == null || configDialogBean.getCount() == 0)
+            return;
+        String action = configDialogBean.getBtnAction();
+        Long beanCount = configDialogBean.getCount();
+        Integer _count = 1;
+        String bName = null;
+        if (AppConst.GROUP.equals(action)) {//题组
+            bName = "action.group_count";
+        } else if (AppConst.REAL.equals(action)) {//实名认证
+            bName = "action.real_count";
+        } else if (AppConst.H5.equals(action)) {//h5页面
+            bName = "action.h5_count";
+        } else if (AppConst.INVITE.equals(action)) { //邀请
+            bName = "action.invite_count";
+        } else if (AppConst.INTEGRAL.equals(action)) {//积分兑换
+            bName = "action.integral_count";
+        } else if (AppConst.AGAINST.equals(action)) {//答题对战
+            bName = "action.answer.against_count";
+        } else if (AppConst.OPEN_BOX.equals(action)) {//积分开宝箱
+            bName = "action.integral.open.box_count";
+        } else if (AppConst.TREASURE.equals(action)) {//积分夺宝
+            bName = "action.integral.treasure_count";
+        } else if (AppConst.TASK.equals(action)) { //每日任务
+            bName = "action.day.task_count";
+        } else if (AppConst.WITHDRAW_INFO.equals(action)) { //提现信息
+            bName = "action.withdraw.info_count";
+        } else if (AppConst.H5_EXTERNAL.equals(action)) {//跳转外部h5
+            bName = "action.h5.external_count";
+        } else if (AppConst.DEFAULT.equals(action)) { //默认不跳转
+            bName = "action.default_count";
+        }
 
-        } else if (AppConst.INVITE.equals(configDialogBean.getBtnAction())) {
-            //邀请
-            if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.invite_count").equals("")) {
-                activitydialog(configDialogBean, mContext);
-                SaveUserInfo.getInstance(mContext).setUserInfo("action.invite_count", "" + 1);
-            } else {
-                if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.invite_count"))) {
-                    activitydialog(configDialogBean, mContext);
-                    SaveUserInfo.getInstance(mContext).setUserInfo("action.invite_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.invite_count")) + 1) + "");
-                }
-            }
-        } else if (AppConst.INTEGRAL.equals(configDialogBean.getBtnAction())) {
-            //积分兑换
-            if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.integral_count").equals("")) {
-                activitydialog(configDialogBean, mContext);
-                SaveUserInfo.getInstance(mContext).setUserInfo("action.integral_count", "" + 1);
-            } else {
-                if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.integral_count"))) {
-                    activitydialog(configDialogBean, mContext);
-                    SaveUserInfo.getInstance(mContext).setUserInfo("action.integral_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.integral_count")) + 1) + "");
-                }
-            }
-        } else if (AppConst.AGAINST.equals(configDialogBean.getBtnAction())) {
-            //答题对战
-            if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.answer.against_count").equals("")) {
-                activitydialog(configDialogBean, mContext);
-                SaveUserInfo.getInstance(mContext).setUserInfo("action.answer.against_count", "" + 1);
-            } else {
-                if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.answer.against_count"))) {
-                    activitydialog(configDialogBean, mContext);
-                    SaveUserInfo.getInstance(mContext).setUserInfo("action.answer.against_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.answer.against_count")) + 1) + "");
-                }
-            }
-        } else if (AppConst.OPEN_BOX.equals(configDialogBean.getBtnAction())) {
-            //积分开宝箱
-            if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.integral.open.box_count").equals("")) {
-                activitydialog(configDialogBean, mContext);
-                SaveUserInfo.getInstance(mContext).setUserInfo("action.integral.open.box_count", "" + 1);
-            } else {
-                if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.integral.open.box_count"))) {
-                    activitydialog(configDialogBean, mContext);
-                    SaveUserInfo.getInstance(mContext).setUserInfo("action.integral.open.box_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.integral.open.box_count")) + 1) + "");
-                }
-            }
-        } else if (AppConst.TREASURE.equals(configDialogBean.getBtnAction())) {
-            //积分夺宝
-            if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.integral.treasure_count").equals("")) {
-                activitydialog(configDialogBean, mContext);
-                SaveUserInfo.getInstance(mContext).setUserInfo("action.integral.treasure_count", "" + 1);
-            } else {
-                if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.integral.treasure_count"))) {
-                    activitydialog(configDialogBean, mContext);
-                    SaveUserInfo.getInstance(mContext).setUserInfo("action.integral.treasure_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.integral.treasure_count")) + 1) + "");
-                }
-            }
-        } else if (AppConst.TASK.equals(configDialogBean.getBtnAction())) {
-            //每日任务
-            if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.day.task_count").equals("")) {
-                activitydialog(configDialogBean, mContext);
-                SaveUserInfo.getInstance(mContext).setUserInfo("action.day.task_count", "" + 1);
-            } else {
-                if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.day.task_count"))) {
-                    activitydialog(configDialogBean, mContext);
-                    SaveUserInfo.getInstance(mContext).setUserInfo("action.day.task_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.day.task_count")) + 1) + "");
-                }
-            }
-        } else if (AppConst.WITHDRAW_INFO.equals(configDialogBean.getBtnAction())) {
-            //提现信息
-            if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.withdraw.info_count").equals("")) {
-                activitydialog(configDialogBean, mContext);
-                SaveUserInfo.getInstance(mContext).setUserInfo("action.withdraw.info_count", "" + 1);
-            } else {
-                if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.withdraw.info_count"))) {
-                    activitydialog(configDialogBean, mContext);
-                    SaveUserInfo.getInstance(mContext).setUserInfo("action.withdraw.info_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.withdraw.info_count")) + 1) + "");
-                }
-            }
-        } else if (AppConst.H5_EXTERNAL.equals(configDialogBean.getBtnAction())) {
-            //跳转外部h5
-            if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.h5.external_count").equals("")) {
-                activitydialog(configDialogBean, mContext);
-                SaveUserInfo.getInstance(mContext).setUserInfo("action.h5.external_count", "" + 1);
-            } else {
-                if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.h5.external_count"))) {
-                    activitydialog(configDialogBean, mContext);
-                    SaveUserInfo.getInstance(mContext).setUserInfo("action.h5.external_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.h5.external_count")) + 1) + "");
-                }
-            }
-        } else if (AppConst.DEFAULT.equals(configDialogBean.getBtnAction())) {
-            //默认不跳转
-            if (configDialogBean.getCount() > 0 && SaveUserInfo.getInstance(mContext).getUserInfo("action.default_count").equals("")) {
-                activitydialog(configDialogBean, mContext);
-                SaveUserInfo.getInstance(mContext).setUserInfo("action.default_count", "" + 1);
-            } else {
-                if (configDialogBean.getCount() > Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("action.default_count"))) {
-                    activitydialog(configDialogBean, mContext);
-                    SaveUserInfo.getInstance(mContext).setUserInfo("action.default_count", (Integer.decode(SaveUserInfo.getInstance(mContext).getUserInfo("action.default_count")) + 1) + "");
-                }
-            }
+        if (bName == null)
+            return;
+        String count = SaveUserInfo.getInstance(mContext).getUserInfo(bName);
+        if ("".equals(count))
+            _count = 0;
+        if (beanCount > _count) {
+            activitydialog(configDialogBean, mContext);
+            _count += 1;
+            SaveUserInfo.getInstance(mContext).setUserInfo(bName, _count.toString());
         }
     }
 
-
-    //活动弹框
-    static Dialog dialog;
-    static View view = null;
-
     private static void activitydialog(final ConfigDialogBean configDialogBean, final Activity mContext) {
+        if (dialog != null && dialog.isShowing()) {
+            return;
+        }
+
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.AlertDialog);
         final LayoutInflater inflater = LayoutInflater.from(mContext);
         view = inflater.inflate(R.layout.open_activity_popup, null);
@@ -177,7 +88,7 @@ public class MainActivityDialogInfo {
         try {
             //背景图
             ImageLoaderManager.LoadImage(mContext, configDialogBean.getBaseImage(), iv_bg, R.mipmap.zw01);
-            if (configDialogBean.isShowBtn() == true) {
+            if (configDialogBean.isShowBtn()) {
                 //显示按钮
                 btn_enter.setVisibility(View.VISIBLE);
                 btn_enter.setText(configDialogBean.getBtnLabel());
@@ -190,10 +101,6 @@ public class MainActivityDialogInfo {
         }
         dialog = builder.create();
 
-        if (dialog.isShowing()) {
-            return;
-        }
-
         dialog.show();
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
@@ -203,6 +110,8 @@ public class MainActivityDialogInfo {
             public void onMultiClick(View v) {
                 if (dialog.isShowing()) {
                     dialog.dismiss();
+                    dialog = null;
+                    view = null;
                 }
             }
         });
@@ -212,6 +121,8 @@ public class MainActivityDialogInfo {
                 if (dialog.isShowing()) {
                     dialog.dismiss();
                     dialogSkip(view, mContext);
+                    dialog = null;
+                    view = null;
                 }
             }
         });
@@ -221,6 +132,8 @@ public class MainActivityDialogInfo {
                 if (dialog.isShowing()) {
                     dialog.dismiss();
                     dialogSkip(view, mContext);
+                    dialog = null;
+                    view = null;
                 }
             }
         });

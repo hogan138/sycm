@@ -11,7 +11,7 @@ public class HeartBeatManager {
     private static HeartBeatManager manager = null;
     private Handler mHandler = new Handler();
     private boolean running = false;
-    private static final int HeartBeatMinutes = 1;
+    private static final int HeartBeatMinutes = 5;
 
     protected HeartBeatManager() {
     }
@@ -35,7 +35,7 @@ public class HeartBeatManager {
             public void run() {
                 doCall();
             }
-        }, HeartBeatMinutes * 1000 * 15);
+        }, HeartBeatMinutes * 1000 * 60);
     }
 
     private void doCall() {

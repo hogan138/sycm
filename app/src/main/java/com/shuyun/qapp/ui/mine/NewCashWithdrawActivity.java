@@ -36,6 +36,8 @@ import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ToastUtil;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.MediaType;
@@ -316,24 +318,27 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
             MineBean mineBean = (MineBean) response.getDat();
             if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
                 cashRuls = mineBean.getCashRuleUrl();
-                for (int i = 0; i < mineBean.getDatas().size(); i++) {
-                    String type = mineBean.getDatas().get(i).getType();
-                    Long status = mineBean.getDatas().get(i).getStatus();
-                    if (!EncodeAndStringTool.isStringEmpty(type) && "withdraw".equals(type) && status == 3) {
+                List<MineBean.DatasBean> list = mineBean.getDatas();
+                for (int i = 0; i < list.size(); i++) {
+                    MineBean.DatasBean datasBean = list.get(i);
+                    String type = datasBean.getType();
+                    Long status = datasBean.getStatus();
+                    if ("withdraw".equals(type) && status == 3) {
                         //是否完善提现信息
-                        bankId = mineBean.getDatas().get(i).getBankId();
-                        String title = mineBean.getDatas().get(i).getTitle().replaceAll(" ", "");
+                        bankId = datasBean.getBankId();
+                        String title = datasBean.getTitle().replaceAll(" ", "");
                         real_info = title;
                         ivAddUserInfo.setVisibility(View.GONE);
                         rlUserInfo.setVisibility(View.VISIBLE);
                         String[] args = title.split("[|]");
                         String str = args[1] + "   " + args[2];
                         tvNameAccount.setText(str);
-                        if (mineBean.getDatas().get(i).isEnabled()) {
+                        if (datasBean.isEnabled()) {
                             rlUserInfo.setEnabled(true);
                         } else {
                             rlUserInfo.setEnabled(false);
                         }
+                        break;
                     } else {
                         ivAddUserInfo.setVisibility(View.VISIBLE);
                         rlUserInfo.setVisibility(View.GONE);

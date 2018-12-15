@@ -116,7 +116,7 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
     private static final String LOAD_ANSWER_OPPTY_REMAINDER = "loadAnswerOpptyRemainder";//答题机会领取
     private static final String LOAD_ANSWER_OPPTY = "loadAnswerOppty"; //领取答题机会
     private Handler mHandler = new Handler();
-
+    private boolean isLoading = false;
     //图标
     private int[] icon = new int[]{R.mipmap.header02, R.mipmap.header03, R.mipmap.header04,
             R.mipmap.header05, R.mipmap.header06, R.mipmap.header07, R.mipmap.header08, R.mipmap.header09};
@@ -152,9 +152,19 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (!isVisibleToUser)
-            return;
-        refresh();
+        if (isVisibleToUser) {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (!isLoading) {
+                        init();
+                    }
+                    isLoading = true;
+
+                    refresh();
+                }
+            }, 10);
+        }
     }
 
     @Override
@@ -162,6 +172,9 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
         super.onActivityCreated(savedInstanceState);
 
         mContext = getActivity();
+    }
+
+    private void init() {
         /**
          * 检测微信是否安装,如果没有安装,需不显示分享按钮;如果安装了微信则显示分享按钮.
          */
@@ -190,7 +203,6 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
                 }
             }
         });
-
     }
 
     /**
@@ -367,7 +379,7 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
      * @param remainderTime
      */
     private void countDown(long remainderTime) {
-        if(timer != null)
+        if (timer != null)
             timer.cancel();
         timer = new CountDownTimer(remainderTime * 1000, 1000) {
             @Override

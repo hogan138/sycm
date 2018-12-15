@@ -185,19 +185,19 @@ public class SystemSettingActivity extends BaseActivity implements OnRemotingCal
                         SharedPrefrenceTool.clear(mContext);
                         AppConst.loadToken(mContext);
 
-                        //清空缓存
-                        SaveUserInfo.getInstance(mContext).setUserInfo("action.group_count", "");
-                        SaveUserInfo.getInstance(mContext).setUserInfo("action.real_count", "");
-                        SaveUserInfo.getInstance(mContext).setUserInfo("action.h5_count", "");
-                        SaveUserInfo.getInstance(mContext).setUserInfo("action.invite_count", "");
-                        SaveUserInfo.getInstance(mContext).setUserInfo("action.integral_count", "");
-                        SaveUserInfo.getInstance(mContext).setUserInfo("action.answer.against_count", "");
-                        SaveUserInfo.getInstance(mContext).setUserInfo("action.integral.open.box_count", "");
-                        SaveUserInfo.getInstance(mContext).setUserInfo("action.integral.treasure_count", "");
-                        SaveUserInfo.getInstance(mContext).setUserInfo("action.withdraw.info_count", "");
-                        SaveUserInfo.getInstance(mContext).setUserInfo("action.h5.external_count", "");
-                        SaveUserInfo.getInstance(mContext).setUserInfo("action.day.task_count", "");
-                        SaveUserInfo.getInstance(mContext).setUserInfo("action.default_count", "");
+                        //清空缓存 不需要
+                        //SaveUserInfo.getInstance(mContext).setUserInfo("action.group_count", "");
+                        //SaveUserInfo.getInstance(mContext).setUserInfo("action.real_count", "");
+                        //SaveUserInfo.getInstance(mContext).setUserInfo("action.h5_count", "");
+                        //SaveUserInfo.getInstance(mContext).setUserInfo("action.invite_count", "");
+                        //SaveUserInfo.getInstance(mContext).setUserInfo("action.integral_count", "");
+                        //SaveUserInfo.getInstance(mContext).setUserInfo("action.answer.against_count", "");
+                        //SaveUserInfo.getInstance(mContext).setUserInfo("action.integral.open.box_count", "");
+                        //SaveUserInfo.getInstance(mContext).setUserInfo("action.integral.treasure_count", "");
+                        //SaveUserInfo.getInstance(mContext).setUserInfo("action.withdraw.info_count", "");
+                        //SaveUserInfo.getInstance(mContext).setUserInfo("action.h5.external_count", "");
+                        //SaveUserInfo.getInstance(mContext).setUserInfo("action.day.task_count", "");
+                        //SaveUserInfo.getInstance(mContext).setUserInfo("action.default_count", "");
 
                         //清空原先的别名
                         JPushInterface.setAlias(mContext, new Random().nextInt(), "");
