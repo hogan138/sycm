@@ -341,7 +341,7 @@ public class MatchingActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onSucceed(String action, DataResponse<Object> listDataResponse) {
-        if (action.equals(AppConst.MATCHING_USER_TIME)) { //获取用户匹配时长
+        if (AppConst.MATCHING_USER_TIME.equals(action)) { //获取用户匹配时长
             if (listDataResponse.isSuccees()) {
                 try {
                     matchTimeBean = (MatchTimeBean) listDataResponse.getDat();
@@ -445,7 +445,7 @@ public class MatchingActivity extends BaseActivity implements View.OnClickListen
             } else {//错误码提示
                 ErrorCodeTools.errorCodePrompt(MatchingActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
             }
-        } else if (action.equals(AppConst.AGAINST_REDUCE_SCORE)) { //减去消耗的积分
+        } else if (AppConst.AGAINST_REDUCE_SCORE.equals(action)) { //减去消耗的积分
             if (listDataResponse.isSuccees()) {
                 //进入答题页面
                 toAnswerhandler.postDelayed(toAnswerRunnable, 2000);

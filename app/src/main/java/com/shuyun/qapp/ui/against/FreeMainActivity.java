@@ -401,41 +401,37 @@ public class FreeMainActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onSucceed(String action, DataResponse<Object> listDataResponse) {
 
-        if (action.equals(AppConst.GET_GROUP_LIST)) { //获取题组列表
+        if (AppConst.GET_GROUP_LIST.equals(action)) { //获取题组列表
             if (listDataResponse.isSuccees()) {
                 final List<GroupAgainstBean> groupAgainstBean = (List<GroupAgainstBean>) listDataResponse.getDat();
-                try {
-                    rvAgainstGroup.setHasFixedSize(true);
-                    rvAgainstGroup.setNestedScrollingEnabled(false);
-                    FreeGroupAdapter freeGroupAdapter = new FreeGroupAdapter(groupAgainstBean, FreeMainActivity.this);
-                    freeGroupAdapter.setOnItemClickLitsener(new FreeGroupAdapter.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(View view, int position) {
-                            Intent intent = new Intent(FreeMainActivity.this, FreeDetailActivity.class);
-                            intent.putExtra("groupId", groupAgainstBean.get(position).getId());
-                            intent.putExtra("image", groupAgainstBean.get(position).getPicture());
-                            intent.putExtra("name", groupAgainstBean.get(position).getName());
-                            intent.putExtra("description", groupAgainstBean.get(position).getDescription());
-                            intent.putExtra("type", type);
-                            if (getIntent().getStringExtra("score").equals("")) {
-                                intent.putExtra("score", "");
-                            } else {
-                                intent.putExtra("score", getIntent().getStringExtra("score"));
-                            }
-                            startActivity(intent);
+                rvAgainstGroup.setHasFixedSize(true);
+                rvAgainstGroup.setNestedScrollingEnabled(false);
+                FreeGroupAdapter freeGroupAdapter = new FreeGroupAdapter(groupAgainstBean, FreeMainActivity.this);
+                freeGroupAdapter.setOnItemClickLitsener(new FreeGroupAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Intent intent = new Intent(FreeMainActivity.this, FreeDetailActivity.class);
+                        intent.putExtra("groupId", groupAgainstBean.get(position).getId());
+                        intent.putExtra("image", groupAgainstBean.get(position).getPicture());
+                        intent.putExtra("name", groupAgainstBean.get(position).getName());
+                        intent.putExtra("description", groupAgainstBean.get(position).getDescription());
+                        intent.putExtra("type", type);
+                        if (getIntent().getStringExtra("score").equals("")) {
+                            intent.putExtra("score", "");
+                        } else {
+                            intent.putExtra("score", getIntent().getStringExtra("score"));
                         }
-                    });
+                        startActivity(intent);
+                    }
+                });
 
-                    GridLayoutManager gridLayoutManager = new GridLayoutManager(FreeMainActivity.this, 1);
-                    rvAgainstGroup.setLayoutManager(gridLayoutManager);
-                    rvAgainstGroup.setAdapter(freeGroupAdapter);
-                } catch (Exception e) {
-
-                }
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(FreeMainActivity.this, 1);
+                rvAgainstGroup.setLayoutManager(gridLayoutManager);
+                rvAgainstGroup.setAdapter(freeGroupAdapter);
             } else {
                 ErrorCodeTools.errorCodePrompt(FreeMainActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
             }
-        } else if (action.equals(AppConst.AGAINST_SHARE)) { //答题对战分享
+        } else if (AppConst.AGAINST_SHARE.equals(action)) { //答题对战分享
             if (listDataResponse.isSuccees()) {
                 SharedBean sharedBean = (SharedBean) listDataResponse.getDat();
                 if (!EncodeAndStringTool.isObjectEmpty(sharedBean)) {
@@ -450,7 +446,7 @@ public class FreeMainActivity extends BaseActivity implements View.OnClickListen
             } else {
                 ErrorCodeTools.errorCodePrompt(FreeMainActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
             }
-        } else if (action.equals(AppConst.AGAINST_SHARE_CONFIM)) {//分享确认
+        } else if (AppConst.AGAINST_SHARE_CONFIM.equals(action)) {//分享确认
 
         }
 

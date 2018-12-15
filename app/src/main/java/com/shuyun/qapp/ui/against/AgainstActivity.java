@@ -2,6 +2,7 @@ package com.shuyun.qapp.ui.against;
 
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -180,22 +181,27 @@ public class AgainstActivity extends BaseActivity implements OnRemotingCallBackL
     /**
      * 动画
      */
-    Animation mAnimation = null;
-
-    RobotShowBean robotShowBean;
-
+    private Animation mAnimation = null;
+    private RobotShowBean robotShowBean;
     private String answer = ""; //机器人选择的答案
-
     private double timeConsuming = 0;//机器人答题耗时
-
     private String answerId = "";  //机器人选项
-
-    int last = 0;
-
+    private int last = 0;
     private boolean robot_isSelcet = false;
-
     private boolean user_isSelect = false;
+    private int type;
+    private int user_checked = 0;
+    private String fail_id = ""; //错题id
+    //头像图标
+    private int[] icon = new int[]{R.mipmap.header02, R.mipmap.header03, R.mipmap.header04,
+            R.mipmap.header05, R.mipmap.header06, R.mipmap.header07, R.mipmap.header08, R.mipmap.header09};
+    private String questionArray = "";
+    private int isLast = 1;
+    private String name;
 
+    private Handler handler = new Handler();
+    private Map<Integer, RadioButton> mapAnswerButton = new HashMap<>(); // 选项的映射：key：btnAnswer1~4.id
+    private Context mContext;
 
     @SuppressLint("HandlerLeak")
     private Handler timehandler = new Handler() {
@@ -209,11 +215,11 @@ public class AgainstActivity extends BaseActivity implements OnRemotingCallBackL
                 mapAnswerButton.put(R.id.btn_answer3, btnAnswer3);
                 mapAnswerButton.put(R.id.btn_answer4, btnAnswer4);
             }
-
-            if (getIntent().getStringExtra("from").equals("common")) {
+            String from = getIntent().getStringExtra("from");
+            if ("common".equals(from)) {
                 //普通答题
                 applyAnswer(getIntent().getLongExtra("groupId", 0));
-            } else if (getIntent().getStringExtra("from").equals("random")) {
+            } else if ("random".equals(from)) {
                 //随机题目
                 randomGroup();
             }
@@ -224,25 +230,11 @@ public class AgainstActivity extends BaseActivity implements OnRemotingCallBackL
         }
     };
 
-    int type;
-
-    int user_checked = 0;
-
-    String fail_id = ""; //错题id
-
-    //头像图标
-    private int[] icon = new int[]{R.mipmap.header02, R.mipmap.header03, R.mipmap.header04,
-            R.mipmap.header05, R.mipmap.header06, R.mipmap.header07, R.mipmap.header08, R.mipmap.header09};
-
-    String questionArray = "";
-
-    int isLast = 1;
-    private String name;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        mContext = this;
         //标题
         type = getIntent().getIntExtra("type", 0);
         name = getIntent().getStringExtra("name");
@@ -256,7 +248,7 @@ public class AgainstActivity extends BaseActivity implements OnRemotingCallBackL
 
         //底部图片动画
         ivBottom.setVisibility(View.VISIBLE);
-        mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.image_alpha);
+        mAnimation = AnimationUtils.loadAnimation(this, R.anim.image_alpha);
         ivBottom.setAnimation(mAnimation);
         mAnimation.start();
 
@@ -370,29 +362,21 @@ public class AgainstActivity extends BaseActivity implements OnRemotingCallBackL
      * 申请答题
      */
     private void applyAnswer(Long groupId) {
-
         RemotingEx.doRequest(AppConst.AGAINST_APPLY_ANSWER, ApiServiceBean.applyAnswer(), new Object[]{groupId, 1, type}, this);
-
     }
 
     /**
      * 随机题目
      */
     private void randomGroup() {
-
         RemotingEx.doRequest(AppConst.AGAINST_RANDOM_ANSWER, ApiServiceBean.randomGroup(), new Object[]{type}, this);
-
     }
-
-    private Handler handler = new Handler();
-    private Map<Integer, RadioButton> mapAnswerButton = new HashMap<>(); // 选项的映射：key：btnAnswer1~4.id
 
     private void initTimer() {
         if (timer != null) {
             timer.cancel();
         }
         final int timeout = applyAnswer.getTimeout() + 1;//加一操作
-
         if (position == questionsBeans.size()) {
             //答题完成
         } else {
@@ -414,7 +398,7 @@ public class AgainstActivity extends BaseActivity implements OnRemotingCallBackL
                 public void onFinish() {
                     //超时未答
                     //选择正确答案按钮,改变一下背景
-                    synchronized (AgainstActivity.this) {
+                    synchronized (mContext) {
                         disableAllOptionButton(); // 不允许用户进行任何选择了
                         ++position;
                         // 进入下一题
@@ -428,7 +412,7 @@ public class AgainstActivity extends BaseActivity implements OnRemotingCallBackL
                                 alphaAnimation.setRepeatMode(Animation.REVERSE);
 
                                 //用户背景闪烁
-                                if (user_isSelect == true && user_checked == 1) {
+                                if (user_isSelect && user_checked == 1) {
                                     //用户答对
                                     rlLeftBg.setBackgroundResource(R.mipmap.lanse1);
                                 } else {
@@ -447,7 +431,7 @@ public class AgainstActivity extends BaseActivity implements OnRemotingCallBackL
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                                if (robot_isSelcet == true && answerId.equals(oks)) {
+                                if (robot_isSelcet && answerId.equals(oks)) {
                                     //机器人答对
                                     rlRightBg.setBackgroundResource(R.mipmap.lanse2);
                                 } else {
@@ -456,13 +440,13 @@ public class AgainstActivity extends BaseActivity implements OnRemotingCallBackL
                                 rlRightBg.startAnimation(alphaAnimation);
 
                                 //用户未答 机器人已答
-                                if (user_isSelect == false && robot_isSelcet == true) {
+                                if (!user_isSelect && robot_isSelcet) {
                                     //用户选项id
                                     userOptionId = "0";
                                     user_checked = 0;
                                     userCont = applyAnswer.getTimeout() + 1;
                                     showRobotSelect();
-                                } else if (user_isSelect == true && robot_isSelcet == true) {
+                                } else if (user_isSelect && robot_isSelcet) {
                                     //用户已答 机器人已答
                                     showRobotSelect();
                                 } else {
@@ -626,12 +610,12 @@ public class AgainstActivity extends BaseActivity implements OnRemotingCallBackL
         }
     }
 
-    private Long questionId = Long.valueOf(0); //上一题目题目id
+    private Long questionId = 0L; //上一题目题目id
     private int userScore = 0; //用户积分
     private int robotScore = 0; //机器人积分
     private String robotId = ""; //机器人id
     private String userOptionId = "0"; //用户选项id
-    private Long nextQuestionId = Long.valueOf(0); //当前题目id
+    private Long nextQuestionId = 0L; //当前题目id
     private double userCont = 0; //用户耗时
     private String robotOptionId = "";
 
@@ -1096,7 +1080,7 @@ public class AgainstActivity extends BaseActivity implements OnRemotingCallBackL
 
     @Override
     public void onSucceed(String action, DataResponse<Object> listDataResponse) {
-        if (action.equals(AppConst.AGAINST_APPLY_ANSWER)) { //用户申请答题
+        if (AppConst.AGAINST_APPLY_ANSWER.equals(action)) { //用户申请答题
             String err = listDataResponse.getErr();
             if (listDataResponse.isSuccees()) {
                 applyAnswer = (ApplyAnswer) listDataResponse.getDat();
@@ -1127,14 +1111,14 @@ public class AgainstActivity extends BaseActivity implements OnRemotingCallBackL
                 }
             } else {
                 if (err.equals("E0002")) {
-                    ErrorCodeTools.errorCodePrompt(AgainstActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
+                    ErrorCodeTools.errorCodePrompt(mContext, listDataResponse.getErr(), listDataResponse.getMsg());
                     finish();
                     return;
                 } else {
-                    ErrorCodeTools.errorCodePrompt(AgainstActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
+                    ErrorCodeTools.errorCodePrompt(mContext, listDataResponse.getErr(), listDataResponse.getMsg());
                 }
             }
-        } else if (action.equals(AppConst.AGAINST_RANDOM_ANSWER)) { //随机题目
+        } else if (AppConst.AGAINST_RANDOM_ANSWER.equals(action)) { //随机题目
             String err = listDataResponse.getErr();
             if (listDataResponse.isSuccees()) {
                 applyAnswer = (ApplyAnswer) listDataResponse.getDat();
@@ -1165,14 +1149,14 @@ public class AgainstActivity extends BaseActivity implements OnRemotingCallBackL
 
             } else {
                 if (err.equals("E0002")) {
-                    ErrorCodeTools.errorCodePrompt(AgainstActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
+                    ErrorCodeTools.errorCodePrompt(mContext, listDataResponse.getErr(), listDataResponse.getMsg());
                     finish();
                     return;
                 } else {
-                    ErrorCodeTools.errorCodePrompt(AgainstActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
+                    ErrorCodeTools.errorCodePrompt(mContext, listDataResponse.getErr(), listDataResponse.getMsg());
                 }
             }
-        } else if (action.equals(AppConst.AGAINST_ROBOT)) { //与机器人对战
+        } else if (AppConst.AGAINST_ROBOT.equals(action)) { //与机器人对战
             if (listDataResponse.isSuccees()) {
                 robotShowBean = (RobotShowBean) listDataResponse.getDat();
                 if (!EncodeAndStringTool.isObjectEmpty(robotShowBean)) {
@@ -1193,7 +1177,7 @@ public class AgainstActivity extends BaseActivity implements OnRemotingCallBackL
                         userScore = robotShowBean.getUserScore();
                         robotScore = robotShowBean.getRobotScore();
                         finish();
-                        Intent intent = new Intent(AgainstActivity.this, AgainstResultActivity.class);
+                        Intent intent = new Intent(mContext, AgainstResultActivity.class);
                         intent.putExtra("type", type);
                         intent.putExtra("name", name);
                         intent.putExtra("my_head", getIntent().getIntExtra("my_head", 0));
@@ -1271,7 +1255,7 @@ public class AgainstActivity extends BaseActivity implements OnRemotingCallBackL
 
                             //左侧环形图片显示隐藏
                             if (options.size() == 1) {
-                                mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                mAnimation = AnimationUtils.loadAnimation(mContext, R.anim.select_alpha);
                                 rlA.setAnimation(mAnimation);
                                 mAnimation.start();
                                 rlSelectA.setVisibility(View.VISIBLE);
@@ -1279,13 +1263,13 @@ public class AgainstActivity extends BaseActivity implements OnRemotingCallBackL
                                 rlSelectC.setVisibility(View.GONE);
                                 rlSelectD.setVisibility(View.GONE);
                             } else if (options.size() == 2) {
-                                mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                mAnimation = AnimationUtils.loadAnimation(mContext, R.anim.select_alpha);
                                 rlA.setAnimation(mAnimation);
                                 mAnimation.start();
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                        mAnimation = AnimationUtils.loadAnimation(mContext, R.anim.select_alpha);
                                         rlB.setAnimation(mAnimation);
                                         mAnimation.start();
                                     }
@@ -1295,19 +1279,19 @@ public class AgainstActivity extends BaseActivity implements OnRemotingCallBackL
                                 rlSelectC.setVisibility(View.GONE);
                                 rlSelectD.setVisibility(View.GONE);
                             } else if (options.size() == 3) {
-                                mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                mAnimation = AnimationUtils.loadAnimation(mContext, R.anim.select_alpha);
                                 rlA.setAnimation(mAnimation);
                                 mAnimation.start();
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                        mAnimation = AnimationUtils.loadAnimation(mContext, R.anim.select_alpha);
                                         rlB.setAnimation(mAnimation);
                                         mAnimation.start();
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
-                                                mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                                mAnimation = AnimationUtils.loadAnimation(mContext, R.anim.select_alpha);
                                                 rlC.setAnimation(mAnimation);
                                                 mAnimation.start();
                                             }
@@ -1319,25 +1303,25 @@ public class AgainstActivity extends BaseActivity implements OnRemotingCallBackL
                                 rlSelectC.setVisibility(View.VISIBLE);
                                 rlSelectD.setVisibility(View.GONE);
                             } else if (options.size() == 4) {
-                                mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                mAnimation = AnimationUtils.loadAnimation(mContext, R.anim.select_alpha);
                                 rlA.setAnimation(mAnimation);
                                 mAnimation.start();
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                        mAnimation = AnimationUtils.loadAnimation(mContext, R.anim.select_alpha);
                                         rlB.setAnimation(mAnimation);
                                         mAnimation.start();
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
-                                                mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                                mAnimation = AnimationUtils.loadAnimation(mContext, R.anim.select_alpha);
                                                 rlC.setAnimation(mAnimation);
                                                 mAnimation.start();
                                                 new Handler().postDelayed(new Runnable() {
                                                     @Override
                                                     public void run() {
-                                                        mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                                        mAnimation = AnimationUtils.loadAnimation(mContext, R.anim.select_alpha);
                                                         rlD.setAnimation(mAnimation);
                                                         mAnimation.start();
 
@@ -1374,7 +1358,7 @@ public class AgainstActivity extends BaseActivity implements OnRemotingCallBackL
                 }
 
             } else {
-                ErrorCodeTools.errorCodePrompt(AgainstActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
+                ErrorCodeTools.errorCodePrompt(mContext, listDataResponse.getErr(), listDataResponse.getMsg());
             }
         }
     }

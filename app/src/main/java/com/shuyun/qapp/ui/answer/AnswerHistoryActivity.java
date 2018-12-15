@@ -182,7 +182,7 @@ public class AnswerHistoryActivity extends BaseActivity implements CommonPopupWi
 
     @Override
     public void onSucceed(String action, DataResponse<Object> response) {
-        if (action.equals(AppConst.ANSWER_HISTORY)) { //答题历史
+        if (AppConst.ANSWER_HISTORY.equals(action)) { //答题历史
             if (response.isSuccees()) {
                 LookAnswerResultBean lookAnswerResult = (LookAnswerResultBean) response.getDat();
                 if (!EncodeAndStringTool.isObjectEmpty(lookAnswerResult)) {
@@ -241,7 +241,7 @@ public class AnswerHistoryActivity extends BaseActivity implements CommonPopupWi
             } else {
                 ErrorCodeTools.errorCodePrompt(AnswerHistoryActivity.this, response.getErr(), response.getMsg());
             }
-        } else if (action.equals(AppConst.ANSWER_FEEDBACK)) { //答题反馈
+        } else if (AppConst.ANSWER_FEEDBACK.equals(action)) { //答题反馈
             if (response.isSuccees()) {
                 ToastUtil.showToast(AnswerHistoryActivity.this, "提交成功!");
                 questionId = Long.valueOf(0);

@@ -90,7 +90,6 @@ public class MyReceiver extends BroadcastReceiver {
                     //拉起登录界面
                     Intent i = new Intent(context, LoginActivity.class);
                     SyckApplication.getAppContext().startActivity(i);
-                    return;
                 } else {
                     PushBean pushBean = JSON.parseObject(bundle.getString(JPushInterface.EXTRA_EXTRA), PushBean.class);
                     Intent i;

@@ -492,7 +492,7 @@ public class AgainstResultActivity extends BaseActivity implements View.OnClickL
 
     @Override
     public void onSucceed(String action, DataResponse<Object> dataResponse) {
-        if (action.equals(AppConst.AGAINST_RESULT)) { //对战结果
+        if (AppConst.AGAINST_RESULT.equals(action)) { //对战结果
             if (dataResponse.isSuccees()) {
                 if (type == 0) { //自由对战不提示积分情况
                 } else {
@@ -501,7 +501,7 @@ public class AgainstResultActivity extends BaseActivity implements View.OnClickL
             } else {//错误码提示
                 ErrorCodeTools.errorCodePrompt(AgainstResultActivity.this, dataResponse.getErr(), dataResponse.getMsg());
             }
-        } else if (action.equals(AppConst.AGAINST_RESULT_SHARE)) {
+        } else if (AppConst.AGAINST_RESULT_SHARE.equals(action)) {
             if (dataResponse.isSuccees()) {
                 SharedBean sharedBean = (SharedBean) dataResponse.getDat();
                 if (!EncodeAndStringTool.isObjectEmpty(sharedBean)) {
@@ -516,7 +516,7 @@ public class AgainstResultActivity extends BaseActivity implements View.OnClickL
             } else {
                 ErrorCodeTools.errorCodePrompt(AgainstResultActivity.this, dataResponse.getErr(), dataResponse.getMsg());
             }
-        } else if (action.equals(AppConst.AGAINST_SHARE_CONFIM)) {//分享确认
+        } else if (AppConst.AGAINST_SHARE_CONFIM.equals(action)) {//分享确认
 
         }
 

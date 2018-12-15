@@ -20,7 +20,10 @@ import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.InputVerficationCodeBean;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveErrorTxt;
@@ -46,7 +49,7 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 /**
  * 更换绑定手机号
  */
-public class ChangePhoneActivity extends BaseActivity {
+public class ChangePhoneActivity extends BaseActivity implements OnRemotingCallBackListener<Object> {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;
@@ -89,12 +92,16 @@ public class ChangePhoneActivity extends BaseActivity {
                     //获取到验证码
                     long curTime0 = System.currentTimeMillis();
                     //devId+appId+v+stamp+phone+type+appSecret
-                    String singString0 = "" + AppConst.DEV_ID + AppConst.APP_ID + AppConst.V + curTime0 + phoneNum + 6 + AppConst.APP_KEY;
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(AppConst.DEV_ID)
+                            .append(AppConst.APP_ID)
+                            .append(AppConst.V)
+                            .append(curTime0)
+                            .append(phoneNum)
+                            .append(6)
+                            .append(AppConst.APP_KEY);
                     //将拼接的字符串转化为16进制MD5
-                    String myCode = encryptMD5ToString(singString0);
-                    /**
-                     * 签名code值
-                     */
+                    String myCode = encryptMD5ToString(sb.toString());
                     String signCode = getCode(myCode);
                     InputVerficationCodeBean verficationCodeBean = new InputVerficationCodeBean();
                     verficationCodeBean.setPhone(phoneNum);
@@ -110,7 +117,6 @@ public class ChangePhoneActivity extends BaseActivity {
                     } else {
                         Toast.makeText(this, "网络链接失败，请检查网络链接！", Toast.LENGTH_SHORT).show();
                     }
-
                 } else {
                     ToastUtil.showToast(this, "请输入正确的手机号");
                 }
@@ -127,57 +133,10 @@ public class ChangePhoneActivity extends BaseActivity {
      * 获取验证码
      */
     private void getCodeNum(InputVerficationCodeBean verficationCodeBean) {
-        ApiService apiService = BasePresenter.create(8000);
         String inputbean = JSON.toJSONString(verficationCodeBean);
         Log.i(TAG, "loadLogin: " + verficationCodeBean.toString());
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
-        apiService.getCode(body)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<String>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse<String> codeResponse) {
-                        if (codeResponse.isSuccees()) {
-                            String sn = codeResponse.getDat();//验证码序号
-                            if (!EncodeAndStringTool.isObjectEmpty(codeResponse)) {
-                                ToastUtil.showToast(ChangePhoneActivity.this, "获取验证码成功");
-                                btnGetCode2.setEnabled(false);
-                                //倒计时
-                                new CountDownTimer(60 * 1000, 1000) {
-                                    @Override
-                                    public void onTick(long millisUntilFinished) {
-                                        btnGetCode2.setText(String.format("%dS", millisUntilFinished / 1000));
-
-                                    }
-
-                                    @Override
-                                    public void onFinish() {
-                                        btnGetCode2.setText("获取验证码");
-                                        btnGetCode2.setEnabled(true);
-                                    }
-                                }.start();
-                            } else {
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(ChangePhoneActivity.this, codeResponse.getErr(), codeResponse.getMsg());
-                        }
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+        RemotingEx.doRequest("getCode", ApiServiceBean.getCode(), new Object[]{body}, this);
     }
 
     /**
@@ -187,49 +146,60 @@ public class ChangePhoneActivity extends BaseActivity {
         final String phoneNumber = etPhoneNum.getText().toString().trim();
         String code = etNewCode.getText().toString().trim();
         if (!EncodeAndStringTool.checkNull(phoneNumber, code)) {
-            ToastUtil.showToast(ChangePhoneActivity.this, "手机号或验证码不能为空");
-        } else {
-            ApiService apiService = BasePresenter.create(8000);
-            apiService.verifynewphone(code, phoneNumber)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<DataResponse>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
-                        }
-
-                        @Override
-                        public void onNext(DataResponse dataResponse) {
-                            if (dataResponse.isSuccees()) {
-                                //清空原先的别名
-                                //设置别名
-                                JPushInterface.setAlias(ChangePhoneActivity.this, new Random().nextInt(), phoneNumber);
-
-                                //绑定成功
-                                ToastUtil.showToast(ChangePhoneActivity.this, "更换手机号成功");
-                                SaveUserInfo.getInstance(ChangePhoneActivity.this).setUserInfo("phone", phoneNumber);
-                                //隐藏输入法
-                                KeyboardUtils.hideSoftInput(ChangePhoneActivity.this);
-                                finish();
-                            } else if (dataResponse.getErr().equals("U0002")) {
-                                ToastUtil.showToast(ChangePhoneActivity.this, dataResponse.getMsg());
-                            } else {
-                                ErrorCodeTools.errorCodePrompt(ChangePhoneActivity.this, dataResponse.getErr(), dataResponse.getMsg());
-                            }
-
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            //保存错误信息
-                            SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                        }
-
-                        @Override
-                        public void onComplete() {
-                        }
-                    });
+            ToastUtil.showToast(this, "手机号或验证码不能为空");
+            return;
         }
+        RemotingEx.doRequest("verifynewphone", ApiServiceBean.verifynewphone(), new Object[]{code, phoneNumber}, this);
+    }
 
+    @Override
+    public void onCompleted(String action) {
+
+    }
+
+    @Override
+    public void onFailed(String action, String message) {
+
+    }
+
+    @Override
+    public void onSucceed(String action, DataResponse<Object> response) {
+        if ("getCode".equals(action)) {
+            if (response.isSuccees()) {
+                ToastUtil.showToast(this, "获取验证码成功");
+                btnGetCode2.setEnabled(false);
+                //倒计时
+                new CountDownTimer(60 * 1000, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        btnGetCode2.setText(String.format("%dS", millisUntilFinished / 1000));
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        btnGetCode2.setText("获取验证码");
+                        btnGetCode2.setEnabled(true);
+                    }
+                }.start();
+            }
+        } else if ("verifynewphone".equals(action)) {
+            final String phoneNumber = etPhoneNum.getText().toString().trim();
+            if (response.isSuccees()) {
+                //清空原先的别名
+                //设置别名
+                JPushInterface.setAlias(this, new Random().nextInt(), phoneNumber);
+
+                //绑定成功
+                ToastUtil.showToast(this, "更换手机号成功");
+                SaveUserInfo.getInstance(this).setUserInfo("phone", phoneNumber);
+                //隐藏输入法
+                KeyboardUtils.hideSoftInput(this);
+                finish();
+            } else if ("U0002".equals(response.getErr())) {
+                ToastUtil.showToast(this, response.getMsg());
+            } else {
+                ErrorCodeTools.errorCodePrompt(this, response.getErr(), response.getMsg());
+            }
+        }
     }
 }

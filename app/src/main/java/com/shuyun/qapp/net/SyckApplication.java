@@ -48,12 +48,10 @@ public class SyckApplication extends Application {
      * @param context
      * @return
      */
-    String getCurProcessName(Context context) {
+    private String getCurProcessName(Context context) {
         int pid = android.os.Process.myPid();
-        ActivityManager mActivityManager = (ActivityManager) context
-                .getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningAppProcessInfo appProcess : mActivityManager
-                .getRunningAppProcesses()) {
+        ActivityManager mActivityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningAppProcessInfo appProcess : mActivityManager.getRunningAppProcesses()) {
             if (appProcess.pid == pid) {
                 return appProcess.processName;
             }
@@ -76,17 +74,20 @@ public class SyckApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        /**
+         * 全局Context
+         * 使用Application的context,防止内存泄漏
+         */
+        appContext = getApplicationContext();
 
         //初始化工具类
         Utils.init(this);
 
-
         //极光推送
-//        JPushInterface.setDebugMode(true);//打印debug级别的日志
-        JPushInterface.init(this);//极光
-
+        //JPushInterface.setDebugMode(true);//打印debug级别的日志
+        JPushInterface.init(appContext);//极光
         //Litepal数据库
-        LitePal.initialize(this);
+        LitePal.initialize(appContext);
         /**
          * 创建数据库创建表
          */
@@ -96,7 +97,7 @@ public class SyckApplication extends Application {
 
         //数美
         //如果 AndroidManifest.xml 中没有指定主进程名字，主进程名默认与 packagename 相同
-        if (getCurProcessName(this).equals(this.getPackageName())) {
+        if (this.getPackageName().equals(getCurProcessName(appContext))) {
             SmAntiFraud.SmOption option = new SmAntiFraud.SmOption();
             String DEBUG_ORG = "7pLqYjvuoJeakPdaNjEj";// organization 代码 不要传 AccessKey
             option.setOrganization(DEBUG_ORG);
@@ -121,19 +122,12 @@ public class SyckApplication extends Application {
                         }
 
                     });
-            SmAntiFraud.create(this, option);
+            SmAntiFraud.create(appContext, option);
             // 注意！！获取 deviceId，这个接口在真正的注册或登录事件产生的地方调用。
             // create 后马上调用返回的是本地的 deviceId，
             // 本地 deviceId 和服务器同步需要一点时间。
 //            String deviceId = SmAntiFraud.getDeviceId();
         }
-
-
-        /**
-         * 全局Context
-         * 使用Application的context,防止内存泄漏
-         */
-        appContext = getApplicationContext();
         AppConst.loadToken(appContext);
 
         /**
@@ -142,7 +136,7 @@ public class SyckApplication extends Application {
          * 参数2:设备类型，UMConfigure.DEVICE_TYPE_PHONE为手机、UMConfigure.DEVICE_TYPE_BOX为盒子，默认为手机
          * 参数3:Push推送业务的secret,如果不用集成推送业务，则传空
          */
-        UMConfigure.init(this, UMConfigure.DEVICE_TYPE_PHONE, "");//友盟
+        UMConfigure.init(appContext, UMConfigure.DEVICE_TYPE_PHONE, "");//友盟
         /**
          * 设置组件化的Log开关
          * 参数: boolean 默认为false，如需查看LOG设置为true
@@ -160,7 +154,7 @@ public class SyckApplication extends Application {
          *  EScenarioType.E_UM_GAME 游戏场景 ，如果您在埋点过程中需要使用到U-Game
          *   统计接口，则必须设置游戏场景，否则所有的U-Game统计接口不会生效。
          */
-        MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);//友盟
+        MobclickAgent.setScenarioType(appContext, MobclickAgent.EScenarioType.E_UM_NORMAL);//友盟
 
         //向微信注册APP
         registToWX();//微信
@@ -171,22 +165,18 @@ public class SyckApplication extends Application {
 
         // 请在初始化时调用，参数为Application或Activity或Service
         //StatisticsDataAPI.instance(this);
-        StatService.setContext(this);
-
+        StatService.setContext(appContext);
         // TLink功能，true：开启；false：关闭，默认值
         StatConfig.setTLinkStatus(true);
-
         // hybrid统计功能初始化
-        StatHybridHandler.init(this);
-
+        StatHybridHandler.init(appContext);
 
         //  初始化MTA配置
         initMTAConfig(true);
         // 注册Activity生命周期监控，自动统计时长
         StatService.registerActivityLifecycleCallbacks(this);
         // 初始化MTA的Crash模块，可监控java、native的Crash，以及Crash后的回调
-        MTACrashModule.initMtaCrashModule(this);
-
+        MTACrashModule.initMtaCrashModule(appContext);
 
         //内存检测
 //        if (LeakCanary.isInAnalyzerProcess(this)) {
@@ -270,7 +260,7 @@ public class SyckApplication extends Application {
 
     private void registToWX() {
         //AppConst.WEIXIN_APP_ID是指你应用在微信开放平台上的AppID，记得替换。
-        mWxApi = WXAPIFactory.createWXAPI(this, AppConst.WEIXIN_APP_ID, true);
+        mWxApi = WXAPIFactory.createWXAPI(appContext, AppConst.WEIXIN_APP_ID, true);
         // 将该app注册到微信
         mWxApi.registerApp(AppConst.WEIXIN_APP_ID);
     }

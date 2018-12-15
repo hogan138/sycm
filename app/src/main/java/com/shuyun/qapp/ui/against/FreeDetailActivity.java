@@ -395,7 +395,7 @@ public class FreeDetailActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onSucceed(String action, DataResponse<Object> listDataResponse) {
-        if (action.equals(AppConst.AGAINST_SHARE)) { //答题对战分享
+        if (AppConst.AGAINST_SHARE.equals(action)) { //答题对战分享
             if (listDataResponse.isSuccees()) {
                 SharedBean sharedBean = (SharedBean) listDataResponse.getDat();
                 if (!EncodeAndStringTool.isObjectEmpty(sharedBean)) {
@@ -410,7 +410,7 @@ public class FreeDetailActivity extends BaseActivity implements View.OnClickList
             } else {
                 ErrorCodeTools.errorCodePrompt(FreeDetailActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
             }
-        } else if (action.equals(AppConst.AGAINST_SHARE_CONFIM)) {//分享确认
+        } else if (AppConst.AGAINST_SHARE_CONFIM.equals(action)) {//分享确认
 
         }
 

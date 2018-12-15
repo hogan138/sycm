@@ -467,7 +467,7 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onSucceed(String action, DataResponse<Object> response) {
-        if (action.equals(AppConst.AGAINST_MAIN_INFO)) {  //获取答题对战首页信息
+        if (AppConst.AGAINST_MAIN_INFO.equals(action)) {  //获取答题对战首页信息
             MainAgainstBean mainAgainstBean = (MainAgainstBean) response.getDat();
             if (response.isSuccees()) {
                 tvScore.setText("我的积分：" + mainAgainstBean.getBattleUserBP());
@@ -482,7 +482,7 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
             } else {
                 ErrorCodeTools.errorCodePrompt(MainAgainstActivity.this, response.getErr(), response.getMsg());
             }
-        } else if (action.equals(AppConst.AGAINST_SHARE)) { //答题对战分享
+        } else if (AppConst.AGAINST_SHARE.equals(action)) { //答题对战分享
             if (response.isSuccees()) {
                 SharedBean sharedBean = (SharedBean) response.getDat();
                 if (!EncodeAndStringTool.isObjectEmpty(sharedBean)) {
@@ -497,7 +497,7 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
             } else {
                 ErrorCodeTools.errorCodePrompt(MainAgainstActivity.this, response.getErr(), response.getMsg());
             }
-        } else if (action.equals(AppConst.AGAINST_SHARE_CONFIM)) {//分享确认
+        } else if (AppConst.AGAINST_SHARE_CONFIM.equals(action)) {//分享确认
 
         }
 
