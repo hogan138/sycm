@@ -17,16 +17,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.blankj.utilcode.util.TimeUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.PrizeAdapter;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MinePrize;
-import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
@@ -35,7 +32,6 @@ import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ToastUtil;
 import com.shuyun.qapp.view.RealNamePopupUtil;
@@ -46,10 +42,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 我的奖品未使用Fragment

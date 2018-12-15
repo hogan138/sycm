@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.animation.SpringAnimation;
 import android.support.animation.SpringForce;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,13 +18,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.blankj.utilcode.util.TimeUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.SharedBean;
-import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
@@ -37,7 +33,6 @@ import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.OnMultiClickListener;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.ScannerUtils;
 import com.shuyun.qapp.view.CircleImageView;
 import com.umeng.socialize.ShareAction;
@@ -49,10 +44,6 @@ import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 import static com.blankj.utilcode.util.SizeUtils.dp2px;
 
@@ -360,31 +351,6 @@ public class AgainstResultActivity extends BaseActivity implements View.OnClickL
         share_style = channl;
         RemotingEx.doRequest(AppConst.AGAINST_RESULT_SHARE, ApiServiceBean.battleAnswerShared1(), new Object[]{channl, type}, this);
 
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.battleAnswerShared1(channl, type)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<SharedBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse<SharedBean> dataResponse) {
-                        Log.i(TAG, "loadAppShared==onNext: " + dataResponse.toString());
-                    }
-
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
     }
 
     /**

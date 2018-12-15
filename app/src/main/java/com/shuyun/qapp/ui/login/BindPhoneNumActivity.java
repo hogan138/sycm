@@ -14,14 +14,11 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.NetworkUtils;
-import com.blankj.utilcode.util.TimeUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.InputVerficationCodeBean;
 import com.shuyun.qapp.bean.LoginResponse;
-import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
@@ -30,7 +27,6 @@ import com.shuyun.qapp.net.SyckApplication;
 import com.shuyun.qapp.ui.webview.WebPublicActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.ToastUtil;
 
 import java.util.Random;
@@ -39,10 +35,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.jpush.android.api.JPushInterface;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 

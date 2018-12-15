@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.KeyboardUtils;
-import com.blankj.utilcode.util.TimeUtils;
 import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.mylhyl.circledialog.CircleDialog;
@@ -21,14 +20,12 @@ import com.mylhyl.circledialog.callback.ConfigDialog;
 import com.mylhyl.circledialog.params.DialogParams;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.InputVerficationCodeBean;
 import com.shuyun.qapp.bean.LoginInput;
 import com.shuyun.qapp.bean.LoginResponse;
 import com.shuyun.qapp.bean.Msg;
 import com.shuyun.qapp.net.ActivityCallManager;
-import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.LoginDataManager;
@@ -40,7 +37,6 @@ import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.MyActivityManager1;
 import com.shuyun.qapp.utils.OnMultiClickListener;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.view.VerifyCodeView;
@@ -52,10 +48,6 @@ import java.util.Random;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.jpush.android.api.JPushInterface;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -221,57 +213,48 @@ public class VerifyCodeActivity extends BaseActivity {
      * @param verficationCodeBean post json body
      */
     private void getVerficationCode(InputVerficationCodeBean verficationCodeBean) {
-        ApiService apiService = BasePresenter.create(8000);
         String inputbean = JSON.toJSONString(verficationCodeBean);
         Log.i(TAG, "loadLogin: " + verficationCodeBean.toString());
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
-        apiService.getCode(body)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<String>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+        RemotingEx.doRequest(ApiServiceBean.getCode(), new Object[]{body}, new OnRemotingCallBackListener<String>() {
+            @Override
+            public void onCompleted(String action) {
 
-                    @Override
-                    public void onNext(DataResponse<String> loginResponse) {
-                        if (loginResponse.isSuccees()) {
-                            KeyboardUtils.showSoftInput(mContext);
-                            //显示60s倒计时
-                            tvSendCode.setEnabled(false);
-                            new CountDownTimer(120 * 1000, 1000) {
+            }
 
-                                @Override
-                                public void onTick(long millisUntilFinished) {
-                                    tvSendCode.setText(String.format("%d", millisUntilFinished / 1000) + "s重新发送验证码");
-                                }
+            @Override
+            public void onFailed(String action, String message) {
 
-                                @Override
-                                public void onFinish() {
-                                    tvSendCode.setEnabled(true);
-                                    tvSendCode.setText("重新发送验证码");
-                                    tvSendCode.setTextColor(Color.parseColor("#0194ec"));
-                                }
-                            }.start();
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(mContext, loginResponse.getErr(), loginResponse.getMsg());
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<String> loginResponse) {
+                if (loginResponse.isSuccees()) {
+                    KeyboardUtils.showSoftInput(mContext);
+                    //显示60s倒计时
+                    tvSendCode.setEnabled(false);
+                    new CountDownTimer(120 * 1000, 1000) {
+
+                        @Override
+                        public void onTick(long millisUntilFinished) {
+                            tvSendCode.setText(String.format("%d", millisUntilFinished / 1000) + "s重新发送验证码");
+                        }
+
+                        @Override
+                        public void onFinish() {
                             tvSendCode.setEnabled(true);
                             tvSendCode.setText("重新发送验证码");
                             tvSendCode.setTextColor(Color.parseColor("#0194ec"));
                         }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+                    }.start();
+                } else {
+                    ErrorCodeTools.errorCodePrompt(mContext, loginResponse.getErr(), loginResponse.getMsg());
+                    tvSendCode.setEnabled(true);
+                    tvSendCode.setText("重新发送验证码");
+                    tvSendCode.setTextColor(Color.parseColor("#0194ec"));
+                }
+            }
+        });
     }
 
     /**

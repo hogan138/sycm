@@ -2,12 +2,9 @@ package com.shuyun.qapp.base;
 
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.utils.ListDataSave;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.HttpUrl;

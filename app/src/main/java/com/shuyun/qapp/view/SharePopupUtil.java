@@ -15,21 +15,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.TimeUtils;
 import com.google.gson.Gson;
 import com.shuyun.qapp.R;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.SharePublicBean;
 import com.shuyun.qapp.bean.SharedBean;
-import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.OnMultiClickListener;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.ScannerUtils;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
@@ -37,11 +36,6 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
-
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 import static com.blankj.utilcode.util.SizeUtils.dp2px;
 import static com.umeng.socialize.net.dplus.CommonNetImpl.TAG;
@@ -143,85 +137,65 @@ public class SharePopupUtil {
         String action = sharedBean.getAction();
         String id = sharedBean.getId();
         if (!EncodeAndStringTool.isStringEmpty(sharedBean.getId())) {
-            ApiService apiService = BasePresenter.create(8000);
-            apiService.SharedPublic(channl, action, id)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<DataResponse<SharedBean>>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
-                        }
+            RemotingEx.doRequest(ApiServiceBean.SharedPublic(), new Object[]{channl, action, id}, new OnRemotingCallBackListener<SharedBean>() {
+                @Override
+                public void onCompleted(String action) {
 
-                        @Override
-                        public void onNext(DataResponse<SharedBean> dataResponse) {
-                            if (dataResponse.isSuccees()) {
-                                SharedBean sharedBean = dataResponse.getDat();
-                                if (!EncodeAndStringTool.isObjectEmpty(sharedBean)) {
-                                    if (channl == 3) {
-                                        sharedBean1 = dataResponse.getDat();
-                                        //显示二维码弹框
-                                        showQr(context, view);
-                                    } else {
-                                        wechatShare(sharedBean, context);
-                                    }
-                                }
+                }
+
+                @Override
+                public void onFailed(String action, String message) {
+
+                }
+
+                @Override
+                public void onSucceed(String action, DataResponse<SharedBean> dataResponse) {
+                    if (dataResponse.isSuccees()) {
+                        SharedBean sharedBean = dataResponse.getDat();
+                        if (!EncodeAndStringTool.isObjectEmpty(sharedBean)) {
+                            if (channl == 3) {
+                                sharedBean1 = dataResponse.getDat();
+                                //显示二维码弹框
+                                showQr(context, view);
                             } else {
-                                ErrorCodeTools.errorCodePrompt(context, dataResponse.getErr(), dataResponse.getMsg());
+                                wechatShare(sharedBean, context);
                             }
-
                         }
-
-
-                        @Override
-                        public void onError(Throwable e) {
-                            //保存错误信息
-                            SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                        }
-
-                        @Override
-                        public void onComplete() {
-                        }
-                    });
+                    } else {
+                        ErrorCodeTools.errorCodePrompt(context, dataResponse.getErr(), dataResponse.getMsg());
+                    }
+                }
+            });
         } else {
-            ApiService apiService = BasePresenter.create(8000);
-            apiService.SharedPublic1(channl, action)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<DataResponse<SharedBean>>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
-                        }
+            RemotingEx.doRequest(ApiServiceBean.SharedPublic1(), new Object[]{channl, action}, new OnRemotingCallBackListener<SharedBean>() {
+                @Override
+                public void onCompleted(String action) {
 
-                        @Override
-                        public void onNext(DataResponse<SharedBean> dataResponse) {
-                            if (dataResponse.isSuccees()) {
-                                SharedBean sharedBean = dataResponse.getDat();
-                                if (!EncodeAndStringTool.isObjectEmpty(sharedBean)) {
-                                    if (channl == 3) {
-                                        sharedBean1 = dataResponse.getDat();
-                                        //显示二维码弹框
-                                        showQr(context, view);
-                                    } else {
-                                        wechatShare(sharedBean, context);
-                                    }
-                                }
+                }
+
+                @Override
+                public void onFailed(String action, String message) {
+
+                }
+
+                @Override
+                public void onSucceed(String action, DataResponse<SharedBean> dataResponse) {
+                    if (dataResponse.isSuccees()) {
+                        SharedBean sharedBean = dataResponse.getDat();
+                        if (!EncodeAndStringTool.isObjectEmpty(sharedBean)) {
+                            if (channl == 3) {
+                                sharedBean1 = dataResponse.getDat();
+                                //显示二维码弹框
+                                showQr(context, view);
                             } else {
-                                ErrorCodeTools.errorCodePrompt(context, dataResponse.getErr(), dataResponse.getMsg());
+                                wechatShare(sharedBean, context);
                             }
-
                         }
-
-
-                        @Override
-                        public void onError(Throwable e) {
-                            //保存错误信息
-                            SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                        }
-
-                        @Override
-                        public void onComplete() {
-                        }
-                    });
+                    } else {
+                        ErrorCodeTools.errorCodePrompt(context, dataResponse.getErr(), dataResponse.getMsg());
+                    }
+                }
+            });
         }
     }
 
@@ -357,35 +331,26 @@ public class SharePopupUtil {
      * @param channel 1:微信朋友圈 2:微信好友
      */
     private static void loadSharedSure(Long id, int result, int channel, final Context context) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.sharedConfirm(id, result, channel)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+        RemotingEx.doRequest(ApiServiceBean.sharedConfirm(), new Object[]{id, result, channel}, new OnRemotingCallBackListener<Object>() {
+            @Override
+            public void onCompleted(String action) {
 
-                    @Override
-                    public void onNext(DataResponse dataResponse) {
-                        if (dataResponse.isSuccees()) {
+            }
 
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(context, dataResponse.getErr(), dataResponse.getMsg());
-                        }
+            @Override
+            public void onFailed(String action, String message) {
 
-                    }
+            }
 
+            @Override
+            public void onSucceed(String action, DataResponse<Object> dataResponse) {
+                if (dataResponse.isSuccees()) {
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
+                } else {
+                    ErrorCodeTools.errorCodePrompt(context, dataResponse.getErr(), dataResponse.getMsg());
+                }
 
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+            }
+        });
     }
 }

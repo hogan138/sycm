@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.TimeUtils;
 import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.callback.ConfigButton;
@@ -27,12 +26,13 @@ import com.mylhyl.circledialog.params.TextParams;
 import com.mylhyl.circledialog.params.TitleParams;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.AuthNameBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.bean.RealNameBean;
-import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -40,17 +40,12 @@ import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.RegularTool;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ToastUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 实名认证界面
@@ -117,55 +112,47 @@ public class RealNameAuthActivity extends BaseActivity {
      * @param etIdCard 身份证
      */
     private void loadAuthNameData(String realName, String etIdCard) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.realNameAuth(realName, etIdCard)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<RealNameBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+        RemotingEx.doRequest(ApiServiceBean.realNameAuth(), new Object[]{realName, etIdCard}, new OnRemotingCallBackListener<RealNameBean>() {
+            @Override
+            public void onCompleted(String action) {
 
-                    @Override
-                    public void onNext(DataResponse<RealNameBean> authNameBeanDataResponse) {
-                        LoadingBar.cancel(rlMain);
-                        if (authNameBeanDataResponse.isSuccees()) {
-                            RealNameBean realNameBean = authNameBeanDataResponse.getDat();
-                            //进行芝麻信用认证
-                            if (!EncodeAndStringTool.isObjectEmpty(realNameBean)) {
+            }
 
-                                bizNo = realNameBean.getBizNo();
+            @Override
+            public void onFailed(String action, String message) {
 
-                                Intent intent = new Intent();
-                                intent.setData(Uri.parse(realNameBean.getBody()));
-                                intent.setAction(Intent.ACTION_VIEW);
-                                startActivity(intent);
+            }
 
-                                handler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        //显示确认查询认证弹框
-                                        ShowDialog();
-                                    }
-                                }, time);
+            @Override
+            public void onSucceed(String action, DataResponse<RealNameBean> authNameBeanDataResponse) {
+                LoadingBar.cancel(rlMain);
+                if (authNameBeanDataResponse.isSuccees()) {
+                    RealNameBean realNameBean = authNameBeanDataResponse.getDat();
+                    //进行芝麻信用认证
+                    if (!EncodeAndStringTool.isObjectEmpty(realNameBean)) {
 
+                        bizNo = realNameBean.getBizNo();
+
+                        Intent intent = new Intent();
+                        intent.setData(Uri.parse(realNameBean.getBody()));
+                        intent.setAction(Intent.ACTION_VIEW);
+                        startActivity(intent);
+
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                //显示确认查询认证弹框
+                                ShowDialog();
                             }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(RealNameAuthActivity.this, authNameBeanDataResponse.getErr(), authNameBeanDataResponse.getMsg());
-                        }
+                        }, time);
 
                     }
+                } else {
+                    ErrorCodeTools.errorCodePrompt(RealNameAuthActivity.this, authNameBeanDataResponse.getErr(), authNameBeanDataResponse.getMsg());
+                }
+            }
+        });
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
     }
 
     @OnClick({R.id.iv_back, R.id.btn_confirm, R.id.btn_contact_our, R.id.iv_clear_name, R.id.iv_clear_id})
@@ -274,49 +261,39 @@ public class RealNameAuthActivity extends BaseActivity {
      * 实名认证结果查询
      */
     private void queryResult() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.queryRealResult(bizNo)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<AuthNameBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
+        RemotingEx.doRequest(ApiServiceBean.queryRealResult(), new Object[]{bizNo}, new OnRemotingCallBackListener<AuthNameBean>() {
+            @Override
+            public void onCompleted(String action) {
+
+            }
+
+            @Override
+            public void onFailed(String action, String message) {
+
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<AuthNameBean> authNameBeanDataResponse) {
+                if (authNameBeanDataResponse.isSuccees()) {
+                    SaveUserInfo.getInstance(RealNameAuthActivity.this).setUserInfo("cert", "1");
+                    startActivity(new Intent(RealNameAuthActivity.this, AuthResultActivity.class));
+                    finish();
+                } else {
+                    tvErrorHint.setVisibility(View.VISIBLE);
+                    tvErrorHint.setText(authNameBeanDataResponse.getMsg());
+                    if (cerCount <= 0) {
+                        btnConfirm.setText("今日认证次数已用完");
+                        btnConfirm.setEnabled(false);
+                        btnConfirm.setBackgroundResource(R.drawable.common_btn_bg_10);
+                    } else {
+                        btnConfirm.setText("重新认证");
+                        btnConfirm.setEnabled(true);
+                        btnConfirm.setBackgroundResource(R.drawable.common_btn_bg_4);
                     }
-
-                    @Override
-                    public void onNext(DataResponse<AuthNameBean> authNameBeanDataResponse) {
-                        if (authNameBeanDataResponse.isSuccees()) {
-                            SaveUserInfo.getInstance(RealNameAuthActivity.this).setUserInfo("cert", "1");
-                            startActivity(new Intent(RealNameAuthActivity.this, AuthResultActivity.class));
-                            finish();
-                        } else {
-                            tvErrorHint.setVisibility(View.VISIBLE);
-                            tvErrorHint.setText(authNameBeanDataResponse.getMsg());
-                            if (cerCount <= 0) {
-                                btnConfirm.setText("今日认证次数已用完");
-                                btnConfirm.setEnabled(false);
-                                btnConfirm.setBackgroundResource(R.drawable.common_btn_bg_10);
-                            } else {
-                                btnConfirm.setText("重新认证");
-                                btnConfirm.setEnabled(true);
-                                btnConfirm.setBackgroundResource(R.drawable.common_btn_bg_4);
-                            }
-                            ErrorCodeTools.errorCodePrompt(RealNameAuthActivity.this, authNameBeanDataResponse.getErr(), authNameBeanDataResponse.getMsg());
-                        }
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+                    ErrorCodeTools.errorCodePrompt(RealNameAuthActivity.this, authNameBeanDataResponse.getErr(), authNameBeanDataResponse.getMsg());
+                }
+            }
+        });
     }
 
 
@@ -326,53 +303,45 @@ public class RealNameAuthActivity extends BaseActivity {
     Long cerCount;
 
     private void loadMineHomeData() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.getMineHomeData()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<MineBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
 
-                    @Override
-                    public void onNext(DataResponse<MineBean> listDataResponse) {
-                        if (listDataResponse.isSuccees()) {
-                            MineBean mineBean = listDataResponse.getDat();
-                            if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
-                                try {
-                                    cerCount = mineBean.getCertCount();
-                                    tvCount.setText("今日认证剩余次数：" + cerCount + "次");
-                                    if (cerCount <= 0) {
-                                        btnConfirm.setText("今日认证次数已用完");
-                                        btnConfirm.setEnabled(false);
-                                        btnConfirm.setBackgroundResource(R.drawable.common_btn_bg_10);
-                                    } else {
-                                        btnConfirm.setText("打开支付宝进行认证");
-                                        btnConfirm.setEnabled(true);
-                                        btnConfirm.setBackgroundResource(R.drawable.common_btn_bg_4);
-                                    }
-                                } catch (Exception e) {
+        RemotingEx.doRequest(ApiServiceBean.getMineHomeData(), new OnRemotingCallBackListener<MineBean>() {
+            @Override
+            public void onCompleted(String action) {
 
-                                }
+            }
+
+            @Override
+            public void onFailed(String action, String message) {
+
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<MineBean> listDataResponse) {
+                if (listDataResponse.isSuccees()) {
+                    MineBean mineBean = listDataResponse.getDat();
+                    if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
+                        try {
+                            cerCount = mineBean.getCertCount();
+                            tvCount.setText("今日认证剩余次数：" + cerCount + "次");
+                            if (cerCount <= 0) {
+                                btnConfirm.setText("今日认证次数已用完");
+                                btnConfirm.setEnabled(false);
+                                btnConfirm.setBackgroundResource(R.drawable.common_btn_bg_10);
+                            } else {
+                                btnConfirm.setText("打开支付宝进行认证");
+                                btnConfirm.setEnabled(true);
+                                btnConfirm.setBackgroundResource(R.drawable.common_btn_bg_4);
                             }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(RealNameAuthActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
+                        } catch (Exception e) {
+
                         }
-
                     }
+                } else {
+                    ErrorCodeTools.errorCodePrompt(RealNameAuthActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
+                }
+            }
+        });
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                        return;
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
     }
 
     //在activity或者fragment中添加友盟统计

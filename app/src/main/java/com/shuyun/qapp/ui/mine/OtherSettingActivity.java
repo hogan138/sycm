@@ -8,21 +8,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.blankj.utilcode.util.TimeUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.net.ApiService;
-import com.shuyun.qapp.utils.SaveErrorTxt;
+import com.shuyun.qapp.net.ApiServiceBean;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 其他设置
@@ -66,40 +61,33 @@ public class OtherSettingActivity extends BaseActivity {
     //判断账户注销前置条件
     private void verifyCondition() {
 
-        final ApiService apiService = BasePresenter.create(8000);
-        apiService.verifyCondition()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+        RemotingEx.doRequest(ApiServiceBean.verifyCondition(), new OnRemotingCallBackListener<Object>() {
+            @Override
+            public void onCompleted(String action) {
 
-                    @Override
-                    public void onNext(DataResponse loginResponse) {
-                        if (loginResponse.getErr().equals("00000")) {
-                            startActivity(new Intent(OtherSettingActivity.this, AccountLogoutActivity.class));
-                        } else if (loginResponse.getErr().equals("CERT01")) {
-                            Toast.makeText(OtherSettingActivity.this, "未实名认证，暂不支持注销账号", Toast.LENGTH_SHORT).show();
-                        } else if (loginResponse.getErr().equals("CERT02")) {
-                            startActivity(new Intent(OtherSettingActivity.this, LogOutResultActivity.class));
-                        } else if (loginResponse.getErr().equals("CERT03")) {
-                            Toast.makeText(OtherSettingActivity.this, "该账户近三个月内有修改密码或手机号记录", Toast.LENGTH_SHORT).show();
-                        } else if (loginResponse.getErr().equals("99999")) {
-                            Toast.makeText(OtherSettingActivity.this, "接口返回未知错误", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
+            @Override
+            public void onFailed(String action, String message) {
 
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<Object> loginResponse) {
+                if (loginResponse.getErr().equals("00000")) {
+                    startActivity(new Intent(OtherSettingActivity.this, AccountLogoutActivity.class));
+                } else if (loginResponse.getErr().equals("CERT01")) {
+                    Toast.makeText(OtherSettingActivity.this, "未实名认证，暂不支持注销账号", Toast.LENGTH_SHORT).show();
+                } else if (loginResponse.getErr().equals("CERT02")) {
+                    startActivity(new Intent(OtherSettingActivity.this, LogOutResultActivity.class));
+                } else if (loginResponse.getErr().equals("CERT03")) {
+                    Toast.makeText(OtherSettingActivity.this, "该账户近三个月内有修改密码或手机号记录", Toast.LENGTH_SHORT).show();
+                } else if (loginResponse.getErr().equals("99999")) {
+                    Toast.makeText(OtherSettingActivity.this, "接口返回未知错误", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 
     @Override

@@ -318,6 +318,7 @@ public class LoginActivity extends BaseActivity {
         } catch (Exception e) {
 
         }
+
     }
 
     /**

@@ -447,7 +447,6 @@
         <activity
             android:name=".ui.mine.MyPropsActivity"
             android:screenOrientation="portrait" />
-
         <!--glide加载图片变绿-->
         <meta-data
             android:name="com.shuyun.qapp.utils.GlideConfiguration"

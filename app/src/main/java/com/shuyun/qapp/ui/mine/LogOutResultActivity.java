@@ -7,25 +7,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.blankj.utilcode.util.TimeUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 账户注销结果页

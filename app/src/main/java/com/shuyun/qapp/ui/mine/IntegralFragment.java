@@ -11,23 +11,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.blankj.utilcode.util.TimeUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.AccountRecordAdapter;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.AccountBean;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,10 +31,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 积分账户Fragment
