@@ -16,9 +16,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.OvershootInterpolator;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -92,6 +89,9 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
     private Handler mHandler = new Handler();
     //获取最新活动显示角标
     private String show = "";
+    //RadioGroup的监听事件
+    private int selectedIndex = 0;
+    private boolean isInit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,14 +143,6 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         //用来设置整体下移，状态栏沉浸
         StatusBarUtil.setRootViewFitsSystemWindows(this, false);*/
 
-        //开启登录logo动画
-        TranslateAnimation animation = new TranslateAnimation(0, 0, 10, -10);
-        animation.setInterpolator(new OvershootInterpolator());
-        animation.setDuration(500);
-        animation.setRepeatCount(Animation.INFINITE);
-        animation.setRepeatMode(Animation.REVERSE);
-        ivNoLoginLogo.startAnimation(animation);
-
         mHandler.postDelayed(runnable, 500);
     }
 
@@ -200,12 +192,9 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
 
     }
 
-    //RadioGroup的监听事件
-    private int index = 0;
-
     //更改Fragment
     private void changeUi(int index) {
-        this.index = index;
+        this.selectedIndex = index;
         pager.setCurrentItem(index, false);
     }
 
@@ -242,23 +231,24 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
 
         //版本更新
         updateVersion();
+
+        //选中的刷新
+        if (isInit) {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ((BaseFragment) fragments.get(selectedIndex)).refresh();
+                }
+            }, 10);
+        } else {
+            isInit = true;
+        }
     }
 
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            //是否未登陆
-            if (!AppConst.isLogin()) {
-                ivNoLoginLogo.setVisibility(View.VISIBLE);
-            } else {
-                try {
-                    ivNoLoginLogo.setVisibility(View.GONE);
-                    ivNoLoginLogo.clearAnimation();
-                } catch (Exception e) {
 
-                }
-            }
-            mHandler.postDelayed(runnable, 10);
         }
     };
 
@@ -370,7 +360,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
     public void radioGroupChange(int position) {
         if (position == 3 && !AppConst.isLogin()) {
             //还原选中
-            switch (index) {
+            switch (selectedIndex) {
                 case 0:
                     radioGroup.check(radioMain.getId());
                     break;
@@ -460,7 +450,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
                             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
                             radioActivity.setCompoundDrawables(null, drawable, null, null);
                         } else {
-                            if (index == 2) {
+                            if (selectedIndex == 2) {
                                 Drawable drawable = getResources().getDrawable(R.mipmap.activity_s);
                                 drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
                                 radioActivity.setCompoundDrawables(null, drawable, null, null);
@@ -568,7 +558,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                ((BaseFragment) fragments.get(index)).refresh();
+                ((BaseFragment) fragments.get(selectedIndex)).refresh();
             }
         }, 320);
     }
