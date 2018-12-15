@@ -173,11 +173,6 @@ public class HomeFragment extends BaseFragment {
     private Activity mContext;
     private MyReceiver msgReceiver;
     private Handler mHandler = new Handler();
-    private boolean isRefresh = false;
-
-    public void setRefresh(boolean isRefresh) {
-        this.isRefresh = isRefresh;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -246,7 +241,7 @@ public class HomeFragment extends BaseFragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
 
-        if (isVisibleToUser && isRefresh) {
+        if (isVisibleToUser) {
             refresh();
         }
     }
@@ -268,9 +263,7 @@ public class HomeFragment extends BaseFragment {
                 Animation circle_anim = AnimationUtils.loadAnimation(mContext, R.anim.anim_round_rotate);
                 LinearInterpolator interpolator = new LinearInterpolator();  //设置匀速旋转，在xml文件中设置会出现卡顿
                 circle_anim.setInterpolator(interpolator);
-                if (circle_anim != null) {
-                    ivChange.startAnimation(circle_anim);  //开始动画
-                }
+                ivChange.startAnimation(circle_anim);  //开始动画
                 timer.cancel();
                 timer.start();
                 //轮训换题组
