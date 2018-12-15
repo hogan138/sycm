@@ -18,8 +18,6 @@ import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.utils.SaveUserInfo;
-import com.tencent.stat.StatService;
-import com.umeng.analytics.MobclickAgent;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -132,13 +130,9 @@ public class WebPublicActivity extends BaseActivity {
         });
     }
 
-
-    //在activity或者fragment中添加友盟统计
     public void onResume() {
         super.onResume();
-        MobclickAgent.onResume(this); //统计时长
 
-        StatService.onResume(this);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.addJavascriptInterface(new JsInteration(), "android");
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);

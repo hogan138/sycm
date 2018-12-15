@@ -26,7 +26,6 @@ import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -169,19 +168,6 @@ public class ClassifyFragment extends BaseFragment implements OnRemotingCallBack
         childrenBeans.addAll(beans);
         childrenGroupAdapter.notifyDataSetChanged();
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onPageStart("ClassifyFragment");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd("ClassifyFragment");
-    }
-
 
     @Override
     public void onDestroyView() {

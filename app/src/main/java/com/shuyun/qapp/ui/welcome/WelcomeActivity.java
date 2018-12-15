@@ -30,7 +30,6 @@ import com.tencent.stat.MtaSDkException;
 import com.tencent.stat.StatConfig;
 import com.tencent.stat.StatService;
 import com.tencent.stat.common.StatConstants;
-import com.umeng.analytics.MobclickAgent;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -184,8 +183,6 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
     @Override
     protected void onResume() {
         super.onResume();
-        MobclickAgent.onResume(this); //统计时长
-        StatService.onResume(this);
 
         if (isLoading)
             return;

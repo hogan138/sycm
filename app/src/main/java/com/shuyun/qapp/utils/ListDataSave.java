@@ -18,11 +18,9 @@ import java.util.List;
 public class ListDataSave {
 
     private SharedPreferences preferences;
-    private SharedPreferences.Editor editor;
 
     public ListDataSave(Context mContext, String preferenceName) {
         preferences = mContext.getSharedPreferences(preferenceName, Context.MODE_PRIVATE);
-        editor = preferences.edit();
     }
 
     /**
@@ -34,12 +32,12 @@ public class ListDataSave {
     public <T> void setDataList(String tag, List<T> datalist) {
         if (null == datalist || datalist.size() <= 0)
             return;
-
+        SharedPreferences.Editor editor = preferences.edit();
         //转换成json数据，再保存
         String strJson = JSON.toJSONString(datalist);
         editor.clear();
         editor.putString(tag, strJson);
-        editor.commit();
+        editor.apply();
 
     }
 
@@ -55,7 +53,8 @@ public class ListDataSave {
         if (null == strJson) {
             return datalist;
         }
-        datalist = JSON.parseObject(strJson, new TypeReference<List<T>>(){});
+        datalist = JSON.parseObject(strJson, new TypeReference<List<T>>() {
+        });
         return datalist;
 
     }

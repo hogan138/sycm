@@ -40,8 +40,6 @@ import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
-import com.tencent.stat.StatService;
-import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -372,8 +370,6 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
     @Override
     public void onResume() {
         super.onResume();
-        MobclickAgent.onResume(this); //统计时长
-        StatService.onResume(this);
         initData();
 
         loadMineHomeData1();

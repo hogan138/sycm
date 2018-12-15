@@ -31,7 +31,6 @@ import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.view.LoginJumpUtil;
-import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -140,13 +139,6 @@ public class ActivityFragment extends BaseFragment implements OnRemotingCallBack
         if (!isVisibleToUser)
             return;
         refresh();
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onPageStart("ActivityFragment");
     }
 
     private void loadInfo() {

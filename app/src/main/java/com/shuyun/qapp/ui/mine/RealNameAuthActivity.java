@@ -43,8 +43,6 @@ import com.shuyun.qapp.utils.RegularTool;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ToastUtil;
-import com.tencent.stat.StatService;
-import com.umeng.analytics.MobclickAgent;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -380,8 +378,6 @@ public class RealNameAuthActivity extends BaseActivity {
     //在activity或者fragment中添加友盟统计
     public void onResume() {
         super.onResume();
-        MobclickAgent.onResume(this); //统计时长
-        StatService.onResume(this);
 
         //获取个人信息
         loadMineHomeData();

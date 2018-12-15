@@ -35,7 +35,6 @@ import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.ToastUtil;
-import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,7 +96,6 @@ public class AllPrizeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        MobclickAgent.onPageStart("MineFragment"); //统计页面，"MainScreen"为页面名称，可自定义
         loadState = AppConst.STATE_REFRESH;
         refreshLayout.setLoadmoreFinished(true);
         loadMinePrize(0, 0);
@@ -276,11 +274,6 @@ public class AllPrizeFragment extends Fragment {
 
         builder.create();
         builder.show();
-    }
-
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd("MineFragment");
     }
 
     /**

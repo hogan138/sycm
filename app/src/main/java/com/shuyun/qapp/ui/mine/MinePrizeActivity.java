@@ -23,7 +23,6 @@ import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
-import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,15 +107,6 @@ public class MinePrizeActivity extends BaseActivity {
 //        mFragmentList.add(new AllPrizeFragment().newInstance(mineBean.getCertification()));
 
     }
-
-
-    //在activity或者fragment中添加友盟统计
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this); //统计时长
-
-    }
-
 
     @OnClick({R.id.iv_back, R.id.tv_box_record})
     public void click(View view) {

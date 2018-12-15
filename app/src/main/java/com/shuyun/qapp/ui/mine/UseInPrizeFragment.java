@@ -13,30 +13,26 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 
-import com.blankj.utilcode.util.TimeUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.PrizeAdapter;
-import com.shuyun.qapp.animation.MyLayoutAnimationHelper;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MinePrize;
+import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.base.BasePresenter;
-import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ToastUtil;
 import com.shuyun.qapp.view.RealNamePopupUtil;
-import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,16 +40,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 我的奖品使用中Fragment
  * ganquan
  */
-public class UseInPrizeFragment extends Fragment {
+public class UseInPrizeFragment extends Fragment implements OnRemotingCallBackListener<Object> {
 
     Unbinder unbinder;
     @BindView(R.id.rv_prize)
@@ -66,7 +58,15 @@ public class UseInPrizeFragment extends Fragment {
     private int loadState = AppConst.STATE_NORMAL;
     private int currentPage = 0;
 
-    PrizeAdapter prizeAdapter; //奖品适配器
+    private PrizeAdapter prizeAdapter; //奖品适配器
+    /**
+     * 获取到我的奖品
+     * 加上分页加载的功能
+     *
+     * @param status 1:未使用奖品;2:已使用奖品;3:已过期;0:全部奖品4:快过期
+     * @param page
+     */
+    List<MinePrize> minePrizeList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -85,10 +85,8 @@ public class UseInPrizeFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onPageStart("MineFragment"); //统计页面，"MainScreen"为页面名称，可自定义
-        loadMinePrize(5, currentPage);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
             @Override
@@ -148,85 +146,18 @@ public class UseInPrizeFragment extends Fragment {
         });
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rvPrize.setLayoutManager(layoutManager);
-
+        rvPrize.setAdapter(prizeAdapter);
     }
 
-    /**
-     * 获取到我的奖品
-     * 加上分页加载的功能
-     *
-     * @param status 1:未使用奖品;2:已使用奖品;3:已过期;0:全部奖品4:快过期
-     * @param page
-     */
-
-    List<MinePrize> minePrizeList = new ArrayList<>();
+    @Override
+    public void onResume() {
+        super.onResume();
+        currentPage = 0;
+        loadMinePrize(5, currentPage);
+    }
 
     private void loadMinePrize(int status, int page) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.getMyPrize(status, page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-
-                .subscribe(new Observer<DataResponse<List<MinePrize>>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse<List<MinePrize>> listDataResponse) {
-                        if (listDataResponse.isSuccees()) {
-                            final List<MinePrize> minePrizeList1 = listDataResponse.getDat();
-                            if (!EncodeAndStringTool.isListEmpty(minePrizeList1) && minePrizeList1.size() > 0) {
-                                ivPrizeEmpty.setVisibility(View.GONE);
-                                if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {//首次加載||下拉刷新
-                                    minePrizeList.clear();
-                                    minePrizeList.addAll(minePrizeList1);
-                                    rvPrize.setAdapter(prizeAdapter);
-                                    refreshLayout.finishRefresh();
-                                    refreshLayout.setLoadmoreFinished(false);
-                                } else if (loadState == AppConst.STATE_MORE) {
-                                    if (minePrizeList1.size() == 0) {//没有数据了
-                                        refreshLayout.finishLoadmore(); //
-                                        refreshLayout.setLoadmoreFinished(true);
-                                    } else {
-                                        if (currentPage == 0) {
-                                            minePrizeList.clear();
-                                            minePrizeList.addAll(minePrizeList1);
-                                            rvPrize.setAdapter(prizeAdapter);
-                                            refreshLayout.finishRefresh();
-                                        } else {
-                                            minePrizeList.addAll(minePrizeList1);
-                                            prizeAdapter.notifyDataSetChanged();
-                                            refreshLayout.finishLoadmore();
-                                            refreshLayout.setLoadmoreFinished(false);
-                                        }
-                                    }
-                                }
-
-                            } else {
-                                if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {
-                                    ivPrizeEmpty.setVisibility(View.VISIBLE);
-                                    refreshLayout.finishRefresh();
-                                }
-                                refreshLayout.finishLoadmore();
-                                refreshLayout.setLoadmoreFinished(true);
-                                currentPage = 0;
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(getActivity(), listDataResponse.getErr(), listDataResponse.getMsg());
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+        RemotingEx.doRequest("getMyPrize", ApiServiceBean.getMyPrize(), new Object[]{status, page}, this);
     }
 
     /**
@@ -254,11 +185,6 @@ public class UseInPrizeFragment extends Fragment {
         builder.show();
     }
 
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd("MineFragment");
-    }
-
     /**
      * 使用道具
      * 增次卡
@@ -266,35 +192,65 @@ public class UseInPrizeFragment extends Fragment {
      * @param id
      */
     public void useAddCard(String id) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.addAnswerNum(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            ToastUtil.showToast(getActivity(), "增次卡使用成功");
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(getActivity(), dataResponse.getErr(), dataResponse.getMsg());
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                        return;
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+        RemotingEx.doRequest("addAnswerNum", ApiServiceBean.addAnswerNum(), new Object[]{id}, this);
     }
 
+    @Override
+    public void onCompleted(String action) {
+
+    }
+
+    @Override
+    public void onFailed(String action, String message) {
+        if (currentPage == 0)
+            refreshLayout.finishRefresh();
+        else
+            refreshLayout.finishLoadmore();
+    }
+
+    @Override
+    public void onSucceed(String action, DataResponse<Object> response) {
+        if (!response.isSuccees()) {
+            ErrorCodeTools.errorCodePrompt(getActivity(), response.getErr(), response.getMsg());
+            return;
+        }
+        if ("getMyPrize".equals(action)) {
+            final List<MinePrize> minePrizeList1 = (List<MinePrize>) response.getDat();
+            if (!EncodeAndStringTool.isListEmpty(minePrizeList1) && minePrizeList1.size() > 0) {
+                ivPrizeEmpty.setVisibility(View.GONE);
+                if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {//首次加載||下拉刷新
+                    minePrizeList.clear();
+                    minePrizeList.addAll(minePrizeList1);
+                    refreshLayout.finishRefresh();
+                    refreshLayout.setLoadmoreFinished(false);
+                } else if (loadState == AppConst.STATE_MORE) {
+                    if (minePrizeList1.size() == 0) {//没有数据了
+                        refreshLayout.finishLoadmore(); //
+                        refreshLayout.setLoadmoreFinished(true);
+                    } else {
+                        if (currentPage == 0) {
+                            minePrizeList.clear();
+                            minePrizeList.addAll(minePrizeList1);
+                            refreshLayout.finishRefresh();
+                        } else {
+                            minePrizeList.addAll(minePrizeList1);
+                            refreshLayout.finishLoadmore();
+                            refreshLayout.setLoadmoreFinished(false);
+                        }
+                    }
+                }
+                prizeAdapter.notifyDataSetChanged();
+            } else {
+                if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {
+                    ivPrizeEmpty.setVisibility(View.VISIBLE);
+                    refreshLayout.finishRefresh();
+                }
+                refreshLayout.finishLoadmore();
+                refreshLayout.setLoadmoreFinished(true);
+                currentPage = 0;
+            }
+        } else if ("addAnswerNum".equals(action)) {
+            ToastUtil.showToast(getActivity(), "增次卡使用成功");
+        }
+    }
 }

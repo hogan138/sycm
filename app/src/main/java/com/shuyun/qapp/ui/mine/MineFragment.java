@@ -20,7 +20,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseFragment;
@@ -29,15 +28,13 @@ import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.net.LoginDataManager;
-import com.shuyun.qapp.net.SyckApplication;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
+import com.shuyun.qapp.net.SyckApplication;
 import com.shuyun.qapp.receiver.MyReceiver;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.homepage.InformationActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
-import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
@@ -53,7 +50,6 @@ import com.shuyun.qapp.view.CircleImageView;
 import com.shuyun.qapp.view.InviteSharePopupUtil;
 import com.shuyun.qapp.view.RealNamePopupUtil;
 import com.tencent.stat.StatConfig;
-import com.umeng.analytics.MobclickAgent;
 
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
@@ -190,14 +186,6 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
             }
         });
 
-    }
-
-
-    //在activity或者fragment中添加友盟统计
-    @Override
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onPageStart("MineFragment"); //统计页面，"MainScreen"为页面名称，可自定义
     }
 
     /**
@@ -401,7 +389,6 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
     @Override
     public void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd("MineFragment");
         if (popupWindow != null && popupWindow.isShowing()) {
             popupWindow.dismiss();
         }

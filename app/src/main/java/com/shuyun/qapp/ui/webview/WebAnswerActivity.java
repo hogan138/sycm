@@ -34,7 +34,6 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.NetworkUtils;
-import com.blankj.utilcode.util.TimeUtils;
 import com.google.gson.Gson;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.mylhyl.circledialog.CircleDialog;
@@ -48,7 +47,6 @@ import com.mylhyl.circledialog.params.TextParams;
 import com.mylhyl.circledialog.params.TitleParams;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.AnswerOpptyBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.H5JumpBean;
@@ -56,9 +54,11 @@ import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.bean.ReturnDialogBean;
 import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.bean.WebAnswerHomeBean;
-import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.LoginDataManager;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SyckApplication;
 import com.shuyun.qapp.ui.answer.AnswerHistoryActivity;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
@@ -70,7 +70,6 @@ import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.OnMultiClickListener;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ScannerUtils;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
@@ -91,17 +90,14 @@ import java.util.TimeZone;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 import static com.blankj.utilcode.util.SizeUtils.dp2px;
 
 /**
  * H5答题页webview
  */
-public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow.ViewInterface {
+@TargetApi(Build.VERSION_CODES.KITKAT)
+public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow.ViewInterface, OnRemotingCallBackListener<Object> {
 
     @BindView(R.id.iv_common_left_icon)
     RelativeLayout ivCommonLeftIcon;
@@ -120,6 +116,9 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
     private static final String TAG = "WebAnswerActivity";
     private String splash = "";
     private Context mContext;
+    private TextView tvRemainderTime;
+    private Button btnGetImmedicate;
+    private ImageView add_answernum_logo;
 
     private boolean show = false;
     ReturnDialogBean returnDialogBean;
@@ -140,7 +139,17 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
      * 3——未通过
      * 4——拉黑
      */
-    int certification;
+    private int certification;
+    /**
+     * 题组分享
+     */
+    private SharedBean sharedBean1;
+    private int channel;
+    /**
+     * 答题机会领取剩余时长TODO
+     * U0004  答题机会已到上限
+     */
+    private String remainderTime;
 
     class JsInteration {
 
@@ -547,7 +556,6 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
     /**
      * 分享弹窗
      */
-
     public void showSharedPop() {
         if ((!EncodeAndStringTool.isObjectEmpty(commonPopupWindow)) && commonPopupWindow.isShowing())
             return;
@@ -590,96 +598,18 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
         commonPopupWindow.showAtLocation(llH5, Gravity.CENTER, 0, 0);
     }
 
-    /**
-     * 题组分享
-     */
-    SharedBean sharedBean1;
-
-    private void loadGroupShared(final int channl, Long groupId) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.groupShared(channl, groupId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<SharedBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse<SharedBean> dataResponse) {
-                        Log.i(TAG, "loadGroupShared==onNext: " + dataResponse.toString());
-                        if (dataResponse.isSuccees()) {
-                            SharedBean sharedBean = dataResponse.getDat();
-                            if (!EncodeAndStringTool.isObjectEmpty(sharedBean)) {
-                                if (channl == 3) {
-                                    sharedBean1 = dataResponse.getDat();
-                                    //显示二维码弹框
-                                    showQr();
-                                } else {
-                                    wechatShare(sharedBean);
-                                }
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
-                        }
-                    }
-
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+    private void loadGroupShared(final int channel, Long groupId) {
+        this.channel = channel;
+        RemotingEx.doRequest("groupShared", ApiServiceBean.groupShared(), new Object[]{channel, groupId}, this);
     }
 
     /**
      * 答题分享
      */
 
-    private void loadAnswerShared(final int channl, String id) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.answerShared(channl, id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<SharedBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse<SharedBean> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            SharedBean sharedBean = dataResponse.getDat();
-                            if (!EncodeAndStringTool.isObjectEmpty(sharedBean)) {
-                                if (channl == 3) {
-                                    sharedBean1 = dataResponse.getDat();
-                                    //显示二维码弹框
-                                    showQr();
-                                } else {
-                                    wechatShare(sharedBean);
-                                }
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
-                        }
-                    }
-
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+    private void loadAnswerShared(final int channel, String id) {
+        this.channel = channel;
+        RemotingEx.doRequest("answerShared", ApiServiceBean.answerShared(), new Object[]{channel, id}, this);
     }
 
     /**
@@ -756,41 +686,8 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
      * @param channel 1:微信朋友圈 2:微信好友
      */
     private void loadSharedSure(Long id, int result, int channel) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.sharedConfirm(id, result, channel)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse dataResponse) {
-                        Log.i(TAG, "loadSharedSure==onNext: " + dataResponse.toString());
-                        if (dataResponse.isSuccees()) {
-
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
-                        }
-                    }
-
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+        RemotingEx.doRequest("sharedConfirm", ApiServiceBean.sharedConfirm(), new Object[]{id, result, channel}, this);
     }
-
-    TextView tvRemainderTime;
-    Button btnGetImmedicate;
-    ImageView add_answernum_logo;
 
     /**
      * 增加答题次数弹窗
@@ -945,55 +842,8 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
         return bitmap;
     }
 
-    /**
-     * 答题机会领取剩余时长TODO
-     * U0004  答题机会已到上限
-     */
-    private String remainderTime;
-
     private void loadAnswerOpptyRemainder() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.getAnswerOpptyRemainder()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<String>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse<String> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            remainderTime = dataResponse.getDat();
-                            if (!EncodeAndStringTool.isStringEmpty(remainderTime)) {
-                                if (remainderTime.equals("0")) {
-                                    btnGetImmedicate.setEnabled(true);
-                                    add_answernum_logo.setBackgroundResource(R.mipmap.new_add_answernum_s);
-                                } else {
-                                    btnGetImmedicate.setEnabled(false);
-                                    add_answernum_logo.setBackgroundResource(R.mipmap.new_add_answernum_n);
-                                    long time = Long.parseLong(remainderTime);
-                                    countDown(time);
-                                }
-                            } else {
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
-                        }
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                        return;
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+        RemotingEx.doRequest("getAnswerOpptyRemainder", ApiServiceBean.getAnswerOpptyRemainder(), null, this);
     }
 
     private CountDownTimer timer;
@@ -1004,6 +854,8 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
      * @param remainderTime
      */
     private void countDown(long remainderTime) {
+        if (timer != null)
+            timer.cancel();
         timer = new CountDownTimer(remainderTime * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -1028,45 +880,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
      * U0005
      */
     private void loadAnswerOppty() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.getAnswerOppty()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<AnswerOpptyBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse<AnswerOpptyBean> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            answerOpptyBean = dataResponse.getDat();
-                            if (!EncodeAndStringTool.isObjectEmpty(answerOpptyBean)) {
-                                btnGetImmedicate.setEnabled(false);
-                                add_answernum_logo.setBackgroundResource(R.mipmap.new_add_answernum_n);
-                                answerOpptyBean.getRemainder();
-                                /**
-                                 * 增加答题次数之后重新请求并刷新数据,让用户可以答题TODO 调用H5页面
-                                 */
-                                wvAnswerHome.loadUrl("javascript:addAnswer()");
-                                countDown(answerOpptyBean.getRemainder());
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                        return;
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+        RemotingEx.doRequest("getAnswerOppty", ApiServiceBean.getAnswerOppty(), null, this);
     }
 
 
@@ -1152,7 +966,12 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                             finish();
                         } else if ("open.new.page".equals(action)) {
                             //新开页面
-                            wvAnswerHome.loadUrl(returnDialogBean.getBtns().get(0).getH5Url());
+                            wvAnswerHome.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    wvAnswerHome.loadUrl(returnDialogBean.getBtns().get(0).getH5Url());
+                                }
+                            });
                         }
                     }
                 })
@@ -1180,7 +999,12 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                             finish();
                         } else if ("open.new.page".equals(action)) {
                             //新开页面
-                            wvAnswerHome.loadUrl(returnDialogBean.getBtns().get(1).getH5Url());
+                            wvAnswerHome.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    wvAnswerHome.loadUrl(returnDialogBean.getBtns().get(1).getH5Url());
+                                }
+                            });
                         }
                     }
                 })
@@ -1204,7 +1028,6 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
      *
      * @param boxId
      */
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     public void sendBox(String boxId) {
         final JSONObject rel = new JSONObject();
         rel.put("action", "exam");
@@ -1223,6 +1046,66 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                 wvAnswerHome.evaluateJavascript("javascript:jsLoginCallback(" + rel.toString() + "); ", null);
             }
         });
+    }
+
+    @Override
+    public void onCompleted(String action) {
+
+    }
+
+    @Override
+    public void onFailed(String action, String message) {
+
+    }
+
+    @Override
+    public void onSucceed(String action, DataResponse<Object> response) {
+        if (!response.isSuccees()) {
+            ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
+            return;
+        }
+        if ("groupShared".equals(action) || "answerShared".equals(action)) {
+            SharedBean sharedBean = (SharedBean) response.getDat();
+            if (!EncodeAndStringTool.isObjectEmpty(sharedBean)) {
+                if (channel == 3) {
+                    sharedBean1 = sharedBean;
+                    //显示二维码弹框
+                    showQr();
+                } else {
+                    wechatShare(sharedBean);
+                }
+            }
+        } else if ("getAnswerOpptyRemainder".equals(action)) {
+            remainderTime = (String) response.getDat();
+            if (!EncodeAndStringTool.isStringEmpty(remainderTime)) {
+                if (remainderTime.equals("0")) {
+                    btnGetImmedicate.setEnabled(true);
+                    add_answernum_logo.setBackgroundResource(R.mipmap.new_add_answernum_s);
+                } else {
+                    btnGetImmedicate.setEnabled(false);
+                    add_answernum_logo.setBackgroundResource(R.mipmap.new_add_answernum_n);
+                    long time = Long.parseLong(remainderTime);
+                    countDown(time);
+                }
+            }
+        } else if ("getAnswerOppty".equals(action)) {
+            answerOpptyBean = (AnswerOpptyBean) response.getDat();
+            if (!EncodeAndStringTool.isObjectEmpty(answerOpptyBean)) {
+                btnGetImmedicate.setEnabled(false);
+                add_answernum_logo.setBackgroundResource(R.mipmap.new_add_answernum_n);
+                /**
+                 * 增加答题次数之后重新请求并刷新数据,让用户可以答题TODO 调用H5页面
+                 */
+                wvAnswerHome.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        wvAnswerHome.evaluateJavascript("javascript:addAnswer();", null);
+                    }
+                });
+
+                countDown(answerOpptyBean.getRemainder());
+            }
+        }
     }
 
 }

@@ -47,16 +47,16 @@ import com.blankj.utilcode.util.TimeUtils;
 import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.OnMultiClickListener;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.ScannerUtils;
 
 import java.io.File;
@@ -67,15 +67,11 @@ import java.io.InputStream;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 账户注销上传邀请函
  */
-public class UploadLetterActivity extends BaseActivity implements CommonPopupWindow.ViewInterface {
+public class UploadLetterActivity extends BaseActivity implements CommonPopupWindow.ViewInterface, OnRemotingCallBackListener<Object> {
 
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle;//标题
@@ -90,6 +86,13 @@ public class UploadLetterActivity extends BaseActivity implements CommonPopupWin
 
     private Dialog dialog;
     private ImageView mImageView;
+    public static final int CHOOSE_PHOTO = 2;
+    private  CommonPopupWindow popupWindow;
+    public static final int TAKE_PHOTO = 1;
+    private Uri imageUri;
+    private String imagePath = "";
+    //上传图片到阿里云
+    private OSSClient oss;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +130,6 @@ public class UploadLetterActivity extends BaseActivity implements CommonPopupWin
                 return true;
             }
         });
-
 
     }
 
@@ -167,8 +169,6 @@ public class UploadLetterActivity extends BaseActivity implements CommonPopupWin
                 break;
         }
     }
-
-    CommonPopupWindow popupWindow;
 
     /**
      * 分享弹窗
@@ -245,9 +245,6 @@ public class UploadLetterActivity extends BaseActivity implements CommonPopupWin
         iv.setImageDrawable(drawable);
         return iv;
     }
-
-    public static final int TAKE_PHOTO = 1;
-    private Uri imageUri;
 
     /**
      * 调用摄像头拍照
@@ -329,10 +326,6 @@ public class UploadLetterActivity extends BaseActivity implements CommonPopupWin
                 break;
         }
     }
-
-    public static final int CHOOSE_PHOTO = 2;
-
-
     /**
      * 从相册中选择照片
      */
@@ -342,12 +335,8 @@ public class UploadLetterActivity extends BaseActivity implements CommonPopupWin
         startActivityForResult(intent, CHOOSE_PHOTO); // 打开相册
     }
 
-    String imagePath = "";
-
     private void handleImageOnKitKat(Intent data) {
-
         Uri uri = data.getData();
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             if (DocumentsContract.isDocumentUri(this, uri)) {
                 // 如果是document类型的Uri，则通过document id处理
@@ -414,9 +403,6 @@ public class UploadLetterActivity extends BaseActivity implements CommonPopupWin
         Log.v("TAG", "media scanner completed");
     }
 
-    //上传图片到阿里云
-    OSSClient oss;
-
 //    oss路径：syksc/cancel/
     //    aliyun.oss.endpoint=oss-cn-shanghai.aliyuncs.com
 //#aliyun.oss.bucket=test-sycm
@@ -479,41 +465,31 @@ public class UploadLetterActivity extends BaseActivity implements CommonPopupWin
 
     //账户注销提交审核
     private void commitCondition(String imagePath) {
+        RemotingEx.doRequest(ApiServiceBean.commitCondition(), new Object[]{imagePath}, this);
+    }
 
-        final ApiService apiService = BasePresenter.create(8000);
-        apiService.commitCondition(imagePath)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+    @Override
+    public void onCompleted(String action) {
+        LoadingBar.cancel(llLetter);
+    }
 
-                    @Override
-                    public void onNext(DataResponse loginResponse) {
-                        LoadingBar.cancel(llLetter);
-                        btnNext.setEnabled(true);
-                        if (loginResponse.isSuccees()) {
-                            if (loginResponse.getErr().equals("00000")) {
-                                finish();
-                                startActivity(new Intent(UploadLetterActivity.this, LogOutResultActivity.class));
-                            } else {
-                                Toast.makeText(UploadLetterActivity.this, "提交申请函失败", Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(UploadLetterActivity.this, loginResponse.getErr(), loginResponse.getMsg());
-                        }
-                    }
+    @Override
+    public void onFailed(String action, String message) {
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
+    }
 
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+    @Override
+    public void onSucceed(String action, DataResponse<Object> response) {
+        btnNext.setEnabled(true);
+        if (response.isSuccees()) {
+            if (response.getErr().equals("00000")) {
+                finish();
+                startActivity(new Intent(UploadLetterActivity.this, LogOutResultActivity.class));
+            } else {
+                Toast.makeText(UploadLetterActivity.this, "提交申请函失败", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            ErrorCodeTools.errorCodePrompt(UploadLetterActivity.this, response.getErr(), response.getMsg());
+        }
     }
 }

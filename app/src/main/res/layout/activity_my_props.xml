@@ -12,12 +12,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_props"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/text_15"
-               />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_props"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/text_15" />
 
         <ImageView
             android:id="@+id/iv_empty"

@@ -22,7 +22,6 @@ import com.shuyun.qapp.bean.WebAnswerHomeBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.SaveUserInfo;
-import com.umeng.analytics.MobclickAgent;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,7 +57,6 @@ public class WebDetailFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        MobclickAgent.onPageStart("MineFragment"); //统计页面，"MainScreen"为页面名称，可自定义
 
         answerHomeBean.setToken(AppConst.TOKEN);
         answerHomeBean.setRandom(AppConst.RANDOM);
@@ -132,13 +130,6 @@ public class WebDetailFragment extends Fragment {
 
             }
         }
-    }
-
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd("MineFragment");
     }
 
 }

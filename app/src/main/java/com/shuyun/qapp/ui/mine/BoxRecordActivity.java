@@ -1,5 +1,6 @@
 package com.shuyun.qapp.ui.mine;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,39 +15,34 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.TimeUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.BoxRecordAdapter;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.BoxRecordBean;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.OnMultiClickListener;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 宝箱记录
  */
-public class BoxRecordActivity extends BaseActivity {
+public class BoxRecordActivity extends BaseActivity implements OnRemotingCallBackListener<List<BoxRecordBean>> {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;
@@ -64,7 +60,10 @@ public class BoxRecordActivity extends BaseActivity {
     private int loadState = AppConst.STATE_NORMAL;
     private int currentPage = 0;
 
-    BoxRecordAdapter boxRecordAdapter;
+    private BoxRecordAdapter boxRecordAdapter;
+    private List<BoxRecordBean> boxRecordBeanList = new ArrayList<>();
+    private CommonPopupWindow popupWindow;
+    private Context mContext;
 
     @Override
     public int intiLayout() {
@@ -75,7 +74,7 @@ public class BoxRecordActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-
+        mContext = this;
         tvCommonTitle.setText("宝箱记录");
 
         ivBack.setOnClickListener(new View.OnClickListener() {
@@ -84,8 +83,6 @@ public class BoxRecordActivity extends BaseActivity {
                 finish();
             }
         });
-
-        loadBoxRecord(currentPage);
 
         refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
             @Override
@@ -115,72 +112,14 @@ public class BoxRecordActivity extends BaseActivity {
         });
         GridLayoutManager glManager = new GridLayoutManager(BoxRecordActivity.this, 1, LinearLayoutManager.VERTICAL, false);
         rvBoxRecord.setLayoutManager(glManager);
+        rvBoxRecord.setAdapter(boxRecordAdapter);
+
+        loadBoxRecord(currentPage);
     }
-
-
-    List<BoxRecordBean> boxRecordBeanList = new ArrayList<>();
 
     private void loadBoxRecord(int currentPage) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.boxRecord(currentPage)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<List<BoxRecordBean>>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse<List<BoxRecordBean>> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            final List<BoxRecordBean> boxRecordBeanList1 = dataResponse.getDat();
-                            if (!EncodeAndStringTool.isListEmpty(boxRecordBeanList1) && boxRecordBeanList1.size() > 0) {
-                                ivPrizeEmpty.setVisibility(View.GONE);
-                                if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {//首次加载||下拉刷新
-                                    boxRecordBeanList.clear();
-                                    boxRecordBeanList.addAll(boxRecordBeanList1);
-                                    rvBoxRecord.setAdapter(boxRecordAdapter);
-                                    refreshLayout.finishRefresh();
-                                    refreshLayout.setLoadmoreFinished(false);
-
-                                } else if (loadState == AppConst.STATE_MORE) {
-                                    if (boxRecordBeanList1.size() == 0) {//没有数据了
-                                        refreshLayout.finishLoadmore(); //
-                                        refreshLayout.setLoadmoreFinished(true);
-                                    } else {
-                                        boxRecordBeanList.addAll(boxRecordBeanList1);
-                                        boxRecordAdapter.notifyDataSetChanged();
-                                        refreshLayout.finishLoadmore();
-                                        refreshLayout.setLoadmoreFinished(false);
-                                    }
-                                }
-
-                            } else {
-                                if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {
-                                    ivPrizeEmpty.setVisibility(View.VISIBLE);
-                                }
-                                refreshLayout.finishLoadmore();
-                                refreshLayout.setLoadmoreFinished(true);
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(BoxRecordActivity.this, dataResponse.getErr(), dataResponse.getMsg());
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                        return;
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+        RemotingEx.doRequest(ApiServiceBean.boxRecord(), new Object[]{currentPage}, this);
     }
-
-    private static CommonPopupWindow popupWindow;
 
     /**
      * 详情popupWindow
@@ -222,5 +161,54 @@ public class BoxRecordActivity extends BaseActivity {
                 .create();
 
         popupWindow.showAtLocation(llMain, Gravity.CENTER, 0, 0);
+    }
+
+    @Override
+    public void onCompleted(String action) {
+
+    }
+
+    @Override
+    public void onFailed(String action, String message) {
+        if (currentPage == 0)
+            refreshLayout.finishRefresh();
+        else
+            refreshLayout.finishLoadmore();
+    }
+
+    @Override
+    public void onSucceed(String action, DataResponse<List<BoxRecordBean>> response) {
+        if (!response.isSuccees()) {
+            ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
+            return;
+        }
+        List<BoxRecordBean> boxRecordBeanList1 = response.getDat();
+        if (!EncodeAndStringTool.isListEmpty(boxRecordBeanList1) && boxRecordBeanList1.size() > 0) {
+            ivPrizeEmpty.setVisibility(View.GONE);
+            if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {//首次加载||下拉刷新
+                boxRecordBeanList.clear();
+                boxRecordBeanList.addAll(boxRecordBeanList1);
+                refreshLayout.finishRefresh();
+                refreshLayout.setLoadmoreFinished(false);
+
+            } else if (loadState == AppConst.STATE_MORE) {
+                if (boxRecordBeanList1.size() == 0) {//没有数据了
+                    refreshLayout.finishLoadmore(); //
+                    refreshLayout.setLoadmoreFinished(true);
+                } else {
+                    boxRecordBeanList.addAll(boxRecordBeanList1);
+                    boxRecordAdapter.notifyDataSetChanged();
+                    refreshLayout.finishLoadmore();
+                    refreshLayout.setLoadmoreFinished(false);
+                }
+            }
+            boxRecordAdapter.notifyDataSetChanged();
+        } else {
+            if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {
+                ivPrizeEmpty.setVisibility(View.VISIBLE);
+            }
+            refreshLayout.finishLoadmore();
+            refreshLayout.setLoadmoreFinished(true);
+        }
     }
 }

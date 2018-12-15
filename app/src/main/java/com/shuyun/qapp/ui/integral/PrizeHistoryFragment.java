@@ -30,7 +30,6 @@ import com.shuyun.qapp.utils.GlideUtils;
 import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.view.RoundImageView;
-import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -263,13 +262,6 @@ public class PrizeHistoryFragment extends Fragment implements View.OnClickListen
                     public void onComplete() {
                     }
                 });
-    }
-
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd("MineFragment");
     }
 
 }

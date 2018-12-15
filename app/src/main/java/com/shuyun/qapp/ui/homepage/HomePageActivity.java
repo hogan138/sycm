@@ -57,8 +57,6 @@ import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.StatusBarUtil;
 import com.shuyun.qapp.view.NoScrollViewPager;
-import com.tencent.stat.StatService;
-import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -121,7 +119,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         radioMine.setOnClickListener(this);
 
         SharedPreferences sharedPreferences = getSharedPreferences("FirstRun", 0);
-        sharedPreferences.edit().putBoolean("Main", true).commit();
+        sharedPreferences.edit().putBoolean("Main", true).apply();
 
         //点击登录logo
         ivNoLoginLogo.setOnClickListener(new View.OnClickListener() {
@@ -248,8 +246,6 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         isForeground = true;
 
         HeartBeatManager.instance().start(this);
-        MobclickAgent.onResume(this); //统计时长
-        StatService.onResume(this);
 
         //receiver(getIntent());
 
@@ -368,7 +364,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
     protected void onDestroy() {
         super.onDestroy();
         SharedPreferences sharedPreferences = getSharedPreferences("FirstRun", 0);
-        sharedPreferences.edit().putBoolean("Main", true).commit();
+        sharedPreferences.edit().putBoolean("Main", true).apply();
 
     }
 

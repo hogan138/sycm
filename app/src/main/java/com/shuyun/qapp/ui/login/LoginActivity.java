@@ -51,8 +51,6 @@ import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.ToastUtil;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
-import com.tencent.stat.StatService;
-import com.umeng.analytics.MobclickAgent;
 
 import org.litepal.crud.DataSupport;
 
@@ -166,11 +164,6 @@ public class LoginActivity extends BaseActivity {
         //手机号置为空
         SaveUserInfo.getInstance(mContext).setUserInfo("login_phone", "");
 
-        /**
-         * 友盟统计
-         */
-        MobclickAgent.onResume(this);
-        StatService.onResume(this);
         /**
          * 焦点变化监听
          */

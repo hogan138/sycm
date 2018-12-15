@@ -48,7 +48,6 @@ import com.shuyun.qapp.bean.HomeNoticeBean;
 import com.shuyun.qapp.bean.MainConfigBean;
 import com.shuyun.qapp.bean.MarkBannerItem;
 import com.shuyun.qapp.bean.SystemInfo;
-import com.shuyun.qapp.event.MessageEvent;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.LoginDataManager;
@@ -78,15 +77,9 @@ import com.shuyun.qapp.view.OvalImageView;
 import com.shuyun.qapp.view.TextBannerView;
 import com.shuyun.qapp.view.ViewPagerScroller;
 import com.sunfusheng.marqueeview.MarqueeView;
-import com.umeng.analytics.MobclickAgent;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -753,10 +746,10 @@ public class HomeFragment extends BaseFragment {
                     if (!EncodeAndStringTool.isObjectEmpty(boxBean)) {
                         if (boxBean.getCount() > 0) {
                             if (boxBean.getCount() == 1 && boxBean.getSource() == 3) {//从微信获取且只有一个宝箱，直接跳开宝箱页面
-                                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("FirstRun", 0);
+                                SharedPreferences sharedPreferences = mContext.getSharedPreferences("FirstRun", 0);
                                 Boolean first_run = sharedPreferences.getBoolean("Main", true);
                                 if (first_run) {
-                                    sharedPreferences.edit().putBoolean("Main", false).commit();
+                                    sharedPreferences.edit().putBoolean("Main", false).apply();
                                     Intent intent = new Intent(mContext, WebPrizeBoxActivity.class);
                                     intent.putExtra("BoxBean", boxBean);
                                     intent.putExtra("main_box", "main_box");
@@ -810,12 +803,6 @@ public class HomeFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onPageStart("HomeFragment"); //统计页面，"MainScreen"为页面名称，可自定义
     }
 
     //获取活动弹框信息

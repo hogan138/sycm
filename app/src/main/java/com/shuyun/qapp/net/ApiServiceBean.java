@@ -69,7 +69,7 @@ public class ApiServiceBean {
      * 13、获取我的奖品/user-center
      */
     public static String getMyPrize() {
-        return "getMyTicket";
+        return "getMyPrize";
     }
 
     /**
