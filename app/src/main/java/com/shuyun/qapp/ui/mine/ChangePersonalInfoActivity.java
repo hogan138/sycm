@@ -19,13 +19,13 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.KeyboardUtils;
-import com.blankj.utilcode.util.TimeUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MineBean;
-import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SyckApplication;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.CommonPopUtil;
@@ -36,7 +36,6 @@ import com.shuyun.qapp.utils.GlideUtils;
 import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
@@ -49,10 +48,6 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 修改个人信息
@@ -251,40 +246,32 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
      * @param position
      */
     private void loadChangeHeader(int position) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.changeHeader(position)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<Integer>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+        RemotingEx.doRequest(ApiServiceBean.changeHeader(), new Object[]{position}, new OnRemotingCallBackListener<Integer>() {
+            @Override
+            public void onCompleted(String action) {
 
-                    @Override
-                    public void onNext(DataResponse<Integer> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            Integer headId = dataResponse.getDat();
-                            if (!EncodeAndStringTool.isObjectEmpty(headId)) {
-                                //首选项存位置信息;用户头像id
-                                SharedPrefrenceTool.put(ChangePersonalInfoActivity.this, "headerId", headId);
-                            } else {
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(ChangePersonalInfoActivity.this, dataResponse.getErr(), dataResponse.getMsg());
-                        }
+            }
 
-                    }
+            @Override
+            public void onFailed(String action, String message) {
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
+            }
 
-                    @Override
-                    public void onComplete() {
+            @Override
+            public void onSucceed(String action, DataResponse<Integer> dataResponse) {
+                if (dataResponse.isSuccees()) {
+                    Integer headId = dataResponse.getDat();
+                    if (!EncodeAndStringTool.isObjectEmpty(headId)) {
+                        //首选项存位置信息;用户头像id
+                        SharedPrefrenceTool.put(ChangePersonalInfoActivity.this, "headerId", headId);
+                    } else {
                     }
-                });
+                } else {
+                    ErrorCodeTools.errorCodePrompt(ChangePersonalInfoActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                }
+            }
+        });
+
     }
 
     private void initIconData() {
@@ -384,87 +371,78 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
     }
 
     private void loadMineHomeData1() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.getMineHomeData()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<MineBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+        RemotingEx.doRequest(ApiServiceBean.getMineHomeData(), new OnRemotingCallBackListener<MineBean>() {
+            @Override
+            public void onCompleted(String action) {
 
-                    @Override
-                    public void onNext(DataResponse<MineBean> listDataResponse) {
-                        if (listDataResponse.isSuccees()) {
-                            MineBean mineBean = listDataResponse.getDat();
-                            if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
-                                try {
-                                    for (int i = 0; i < mineBean.getDatas().size(); i++) {
-                                        String status_name = mineBean.getDatas().get(i).getStateName();
-                                        String title = mineBean.getDatas().get(i).getTitle();
-                                        String message = mineBean.getDatas().get(i).getMessage();
-                                        Long status = mineBean.getDatas().get(i).getStatus();
-                                        if ("withdraw".equals(mineBean.getDatas().get(i).getType())) {
+            }
 
-                                            real_info = title;
+            @Override
+            public void onFailed(String action, String message) {
 
-                                            //提现信息
-                                            tvWithdrawTitle.setText(title);
-                                            tvWithdrawStatus.setText(status_name);
-                                            tvWithdrawDescription.setText(message);
-                                            //更改颜色
-                                            if (status == 3) {
-                                                tvWithdrawStatus.setTextColor(Color.parseColor("#0194EC"));
-                                            } else {
-                                                tvWithdrawStatus.setTextColor(Color.parseColor("#F53434"));
-                                            }
-                                            //是否可以点击
-                                            if (mineBean.getDatas().get(i).isEnabled()) {
-                                                llWithdrawInfo.setEnabled(true);
-                                            } else {
-                                                llWithdrawInfo.setEnabled(false);
-                                            }
-                                        } else if ("cert".equals(mineBean.getDatas().get(i).getType())) {
-                                            //实名信息
-                                            tvRealTitle.setText(title);
-                                            tvRealStatus.setText(status_name);
-                                            tvRealDescription.setText(message);
-                                            //更改颜色
-                                            if (status == 3) {
-                                                tvRealStatus.setTextColor(Color.parseColor("#0194EC"));
-                                            } else {
-                                                tvRealStatus.setTextColor(Color.parseColor("#F53434"));
-                                            }
-                                            //是否可以点击
-                                            if (mineBean.getDatas().get(i).isEnabled()) {
-                                                llRealNameAuth.setEnabled(true);
-                                            } else {
-                                                llRealNameAuth.setEnabled(false);
-                                            }
+            }
 
-                                        }
+            @Override
+            public void onSucceed(String action, DataResponse<MineBean> listDataResponse) {
+                if (listDataResponse.isSuccees()) {
+                    MineBean mineBean = listDataResponse.getDat();
+                    if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
+                        try {
+                            for (int i = 0; i < mineBean.getDatas().size(); i++) {
+                                String status_name = mineBean.getDatas().get(i).getStateName();
+                                String title = mineBean.getDatas().get(i).getTitle();
+                                String message = mineBean.getDatas().get(i).getMessage();
+                                Long status = mineBean.getDatas().get(i).getStatus();
+                                if ("withdraw".equals(mineBean.getDatas().get(i).getType())) {
+
+                                    real_info = title;
+
+                                    //提现信息
+                                    tvWithdrawTitle.setText(title);
+                                    tvWithdrawStatus.setText(status_name);
+                                    tvWithdrawDescription.setText(message);
+                                    //更改颜色
+                                    if (status == 3) {
+                                        tvWithdrawStatus.setTextColor(Color.parseColor("#0194EC"));
+                                    } else {
+                                        tvWithdrawStatus.setTextColor(Color.parseColor("#F53434"));
                                     }
-                                } catch (Exception e) {
+                                    //是否可以点击
+                                    if (mineBean.getDatas().get(i).isEnabled()) {
+                                        llWithdrawInfo.setEnabled(true);
+                                    } else {
+                                        llWithdrawInfo.setEnabled(false);
+                                    }
+                                } else if ("cert".equals(mineBean.getDatas().get(i).getType())) {
+                                    //实名信息
+                                    tvRealTitle.setText(title);
+                                    tvRealStatus.setText(status_name);
+                                    tvRealDescription.setText(message);
+                                    //更改颜色
+                                    if (status == 3) {
+                                        tvRealStatus.setTextColor(Color.parseColor("#0194EC"));
+                                    } else {
+                                        tvRealStatus.setTextColor(Color.parseColor("#F53434"));
+                                    }
+                                    //是否可以点击
+                                    if (mineBean.getDatas().get(i).isEnabled()) {
+                                        llRealNameAuth.setEnabled(true);
+                                    } else {
+                                        llRealNameAuth.setEnabled(false);
+                                    }
 
                                 }
-                            } else {
                             }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(ChangePersonalInfoActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
+                        } catch (Exception e) {
+
                         }
-
+                    } else {
                     }
+                } else {
+                    ErrorCodeTools.errorCodePrompt(ChangePersonalInfoActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
+                }
+            }
+        });
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                        return;
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
     }
 }

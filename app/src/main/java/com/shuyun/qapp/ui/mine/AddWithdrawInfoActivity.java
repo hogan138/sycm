@@ -31,7 +31,10 @@ import com.shuyun.qapp.bean.AddWithdrawResultBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.SubmitWithdrawInfoBean;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.integral.IntegralMainActivity;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
@@ -219,44 +222,34 @@ public class AddWithdrawInfoActivity extends BaseActivity implements View.OnClic
 
     //完善提现信息
     private void AddWithdrawalInfo(SubmitWithdrawInfoBean submitWithdrawInfoBean) {
-        ApiService apiService = BasePresenter.create(8000);
         final String inputbean = JSON.toJSONString(submitWithdrawInfoBean);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
-        apiService.submitWithdrawInfo(body)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<AddWithdrawResultBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
 
-                    @Override
-                    public void onNext(DataResponse<AddWithdrawResultBean> listDataResponse) {
-                        if (listDataResponse.isSuccees()) {
-                            Intent intent = new Intent(AddWithdrawInfoActivity.this, WithdrawResultActivity.class);
-                            intent.putExtra("from", "add");
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            tvErrorHint.setVisibility(View.VISIBLE);
-                            tvErrorHint.setText(listDataResponse.getMsg());
-                            ErrorCodeTools.errorCodePrompt(AddWithdrawInfoActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
-                        }
+        RemotingEx.doRequest(ApiServiceBean.submitWithdrawInfo(), new Object[]{body}, new OnRemotingCallBackListener<AddWithdrawResultBean>() {
+            @Override
+            public void onCompleted(String action) {
 
-                    }
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
+            @Override
+            public void onFailed(String action, String message) {
 
-                    }
+            }
 
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+            @Override
+            public void onSucceed(String action, DataResponse<AddWithdrawResultBean> listDataResponse) {
+                if (listDataResponse.isSuccees()) {
+                    Intent intent = new Intent(AddWithdrawInfoActivity.this, WithdrawResultActivity.class);
+                    intent.putExtra("from", "add");
+                    startActivity(intent);
+                    finish();
+                } else {
+                    tvErrorHint.setVisibility(View.VISIBLE);
+                    tvErrorHint.setText(listDataResponse.getMsg());
+                    ErrorCodeTools.errorCodePrompt(AddWithdrawInfoActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
+                }
+            }
+        });
 
     }
 

@@ -17,23 +17,22 @@ import android.view.ViewGroup;
 import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 
-import com.blankj.utilcode.util.TimeUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.PrizeAdapter;
 import com.shuyun.qapp.animation.MyLayoutAnimationHelper;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MinePrize;
-import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.ToastUtil;
 
 import java.util.ArrayList;
@@ -42,10 +41,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 全部奖品
@@ -181,75 +176,70 @@ public class AllPrizeFragment extends Fragment {
     List<MinePrize> minePrizeList = new ArrayList<>();
 
     private void loadMinePrize(int status, int page) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.getMyPrize(status, page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<List<MinePrize>>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
 
-                    @Override
-                    public void onNext(DataResponse<List<MinePrize>> listDataResponse) {
-                        if (listDataResponse.isSuccees()) {
-                            final List<MinePrize> minePrizeList1 = listDataResponse.getDat();
-                            if (!EncodeAndStringTool.isListEmpty(minePrizeList1) && minePrizeList1.size() > 0) {
-                                ivPrizeEmpty.setVisibility(View.GONE);
-                                if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {//首次加載||下拉刷新
+        RemotingEx.doRequest(ApiServiceBean.getMyPrize(), new Object[]{status, page}, new OnRemotingCallBackListener<List<MinePrize>>() {
+            @Override
+            public void onCompleted(String action) {
+
+            }
+
+            @Override
+            public void onFailed(String action, String message) {
+
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<List<MinePrize>> listDataResponse) {
+                if (listDataResponse.isSuccees()) {
+                    final List<MinePrize> minePrizeList1 = listDataResponse.getDat();
+                    if (!EncodeAndStringTool.isListEmpty(minePrizeList1) && minePrizeList1.size() > 0) {
+                        ivPrizeEmpty.setVisibility(View.GONE);
+                        if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {//首次加載||下拉刷新
+                            minePrizeList.clear();
+                            minePrizeList.addAll(minePrizeList1);
+                            rvPrize.setAdapter(prizeAdapter);
+                            refreshLayout.finishRefresh();
+                            refreshLayout.setLoadmoreFinished(false);
+                            //进入动画
+                            LayoutAnimationController controller = new LayoutAnimationController(MyLayoutAnimationHelper.getAnimationSetFromRight());
+                            controller.setDelay(0.3f);
+                            rvPrize.setLayoutAnimation(controller);
+                            rvPrize.scheduleLayoutAnimation();
+                        } else if (loadState == AppConst.STATE_MORE) {
+                            if (minePrizeList1.size() == 0) {//没有数据了
+                                refreshLayout.finishLoadmore(); //
+                                refreshLayout.setLoadmoreFinished(true);
+                            } else {
+                                if (currentPage == 0) {
                                     minePrizeList.clear();
                                     minePrizeList.addAll(minePrizeList1);
                                     rvPrize.setAdapter(prizeAdapter);
                                     refreshLayout.finishRefresh();
+                                } else {
+                                    minePrizeList.addAll(minePrizeList1);
+                                    prizeAdapter.notifyDataSetChanged();
+                                    refreshLayout.finishLoadmore();
                                     refreshLayout.setLoadmoreFinished(false);
-                                    //进入动画
-                                    LayoutAnimationController controller = new LayoutAnimationController(MyLayoutAnimationHelper.getAnimationSetFromRight());
-                                    controller.setDelay(0.3f);
-                                    rvPrize.setLayoutAnimation(controller);
-                                    rvPrize.scheduleLayoutAnimation();
-                                } else if (loadState == AppConst.STATE_MORE) {
-                                    if (minePrizeList1.size() == 0) {//没有数据了
-                                        refreshLayout.finishLoadmore(); //
-                                        refreshLayout.setLoadmoreFinished(true);
-                                    } else {
-                                        if (currentPage == 0) {
-                                            minePrizeList.clear();
-                                            minePrizeList.addAll(minePrizeList1);
-                                            rvPrize.setAdapter(prizeAdapter);
-                                            refreshLayout.finishRefresh();
-                                        } else {
-                                            minePrizeList.addAll(minePrizeList1);
-                                            prizeAdapter.notifyDataSetChanged();
-                                            refreshLayout.finishLoadmore();
-                                            refreshLayout.setLoadmoreFinished(false);
-                                        }
-                                    }
                                 }
-
-                            } else {
-                                if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {
-                                    ivPrizeEmpty.setVisibility(View.VISIBLE);
-                                    refreshLayout.finishRefresh();
-                                }
-                                refreshLayout.finishLoadmore();
-                                refreshLayout.setLoadmoreFinished(true);
-                                currentPage = 0;
                             }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(getActivity(), listDataResponse.getErr(), listDataResponse.getMsg());
                         }
-                    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
+                    } else {
+                        if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {
+                            ivPrizeEmpty.setVisibility(View.VISIBLE);
+                            refreshLayout.finishRefresh();
+                        }
+                        refreshLayout.finishLoadmore();
+                        refreshLayout.setLoadmoreFinished(true);
+                        currentPage = 0;
                     }
+                } else {
+                    ErrorCodeTools.errorCodePrompt(getActivity(), listDataResponse.getErr(), listDataResponse.getMsg());
+                }
+            }
+        });
 
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+
     }
 
     /**
@@ -283,39 +273,27 @@ public class AllPrizeFragment extends Fragment {
      * @param id
      */
     public void useAddCard(String id) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.addAnswerNum(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+        RemotingEx.doRequest(ApiServiceBean.addAnswerNum(), new Object[]{id}, new OnRemotingCallBackListener<Object>() {
+            @Override
+            public void onCompleted(String action) {
 
-                    @Override
-                    public void onNext(DataResponse dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            ToastUtil.showToast(getActivity(), "增次卡使用成功");
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(getActivity(), dataResponse.getErr(), dataResponse.getMsg());
-                        }
-                    }
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                        return;
-                    }
+            @Override
+            public void onFailed(String action, String message) {
 
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<Object> dataResponse) {
+                if (dataResponse.isSuccees()) {
+                    ToastUtil.showToast(getActivity(), "增次卡使用成功");
+                } else {
+                    ErrorCodeTools.errorCodePrompt(getActivity(), dataResponse.getErr(), dataResponse.getMsg());
+                }
+            }
+        });
+
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
 }

@@ -10,22 +10,21 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.TimeUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.AnswerRecordAdapter;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.AnswerRecordBean;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.answer.AnswerHistoryActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,10 +32,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 成绩单
@@ -127,68 +122,54 @@ public class AnswerRecordActivity extends BaseActivity {
     List<AnswerRecordBean> answerRecordBeanList = new ArrayList<>();
 
     private void loadAnswerRecord(int currentPage) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.getAnswerRecord(currentPage)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<List<AnswerRecordBean>>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+        RemotingEx.doRequest(ApiServiceBean.getAnswerRecord(), new Object[]{currentPage}, new OnRemotingCallBackListener<List<AnswerRecordBean>>() {
+            @Override
+            public void onCompleted(String action) {
 
-                    @Override
-                    public void onNext(DataResponse<List<AnswerRecordBean>> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            final List<AnswerRecordBean> answerRecordBeanList1 = dataResponse.getDat();
-                            if (!EncodeAndStringTool.isListEmpty(answerRecordBeanList1) && answerRecordBeanList1.size() > 0) {
-                                ivPrizeEmpty.setVisibility(View.GONE);
-                                if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {//首次加載||下拉刷新
-                                    answerRecordBeanList.clear();
-                                    answerRecordBeanList.addAll(answerRecordBeanList1);
-                                    rvAnswerRecord.setAdapter(answerRecordAdapter);
-                                    refreshLayout.finishRefresh();
-                                    refreshLayout.setLoadmoreFinished(false);
+            }
 
-                                    //进入动画
-//                                    LayoutAnimationController controller = new LayoutAnimationController(MyLayoutAnimationHelper.getAnimationSetScaleBig());
-//                                    controller.setDelay(0.1f);
-//                                    rvAnswerRecord.setLayoutAnimation(controller);
-//                                    rvAnswerRecord.scheduleLayoutAnimation();
+            @Override
+            public void onFailed(String action, String message) {
 
-                                } else if (loadState == AppConst.STATE_MORE) {
-                                    if (answerRecordBeanList1.size() == 0) {//没有数据了
-                                        refreshLayout.finishLoadmore(); //
-                                        refreshLayout.setLoadmoreFinished(true);
-                                    } else {
-                                        answerRecordBeanList.addAll(answerRecordBeanList1);
-                                        answerRecordAdapter.notifyDataSetChanged();
-                                        refreshLayout.finishLoadmore();
-                                        refreshLayout.setLoadmoreFinished(false);
-                                    }
-                                }
+            }
 
-                            } else {
-                                if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {
-                                    ivPrizeEmpty.setVisibility(View.VISIBLE);
-                                }
-                                refreshLayout.finishLoadmore();
+            @Override
+            public void onSucceed(String action, DataResponse<List<AnswerRecordBean>> dataResponse) {
+                if (dataResponse.isSuccees()) {
+                    final List<AnswerRecordBean> answerRecordBeanList1 = dataResponse.getDat();
+                    if (!EncodeAndStringTool.isListEmpty(answerRecordBeanList1) && answerRecordBeanList1.size() > 0) {
+                        ivPrizeEmpty.setVisibility(View.GONE);
+                        if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {//首次加載||下拉刷新
+                            answerRecordBeanList.clear();
+                            answerRecordBeanList.addAll(answerRecordBeanList1);
+                            rvAnswerRecord.setAdapter(answerRecordAdapter);
+                            refreshLayout.finishRefresh();
+                            refreshLayout.setLoadmoreFinished(false);
+
+                        } else if (loadState == AppConst.STATE_MORE) {
+                            if (answerRecordBeanList1.size() == 0) {//没有数据了
+                                refreshLayout.finishLoadmore(); //
                                 refreshLayout.setLoadmoreFinished(true);
+                            } else {
+                                answerRecordBeanList.addAll(answerRecordBeanList1);
+                                answerRecordAdapter.notifyDataSetChanged();
+                                refreshLayout.finishLoadmore();
+                                refreshLayout.setLoadmoreFinished(false);
                             }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(AnswerRecordActivity.this, dataResponse.getErr(), dataResponse.getMsg());
                         }
-                    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                        return;
+                    } else {
+                        if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {
+                            ivPrizeEmpty.setVisibility(View.VISIBLE);
+                        }
+                        refreshLayout.finishLoadmore();
+                        refreshLayout.setLoadmoreFinished(true);
                     }
+                } else {
+                    ErrorCodeTools.errorCodePrompt(AnswerRecordActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                }
+            }
+        });
 
-                    @Override
-                    public void onComplete() {
-                    }
-                });
     }
 }

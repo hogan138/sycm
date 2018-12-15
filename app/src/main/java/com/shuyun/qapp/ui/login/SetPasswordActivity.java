@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.EncryptUtils;
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
@@ -188,6 +189,7 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.tv_rigth_title:
                 MyActivityManager1.getInstance().finishAllActivity();
+                KeyboardUtils.hideSoftInput(SetPasswordActivity.this);
                 LoginDataManager.instance().handler(SetPasswordActivity.this, new Object[]{SharedPrefrenceTool.get(SetPasswordActivity.this, "boxId", "")});
                 break;
             case R.id.iv_is_show_pwd:
@@ -268,7 +270,7 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
                         SharedPrefrenceTool.put(SetPasswordActivity.this, "bind", changeResult.getBind());//是否绑定用户。
                         SharedPrefrenceTool.put(SetPasswordActivity.this, "random", changeResult.getRandom());//登录成果后，平台随机生成的字符串
                         AppConst.loadToken(SetPasswordActivity.this);
-
+                        KeyboardUtils.hideSoftInput(SetPasswordActivity.this);
                         MyActivityManager1.getInstance().finishAllActivity();
                     }
                 } else {
@@ -306,6 +308,7 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onSucceed(String action, DataResponse<String> dataResponse) {
                 if (dataResponse.isSuccees()) {
+                    KeyboardUtils.hideSoftInput(SetPasswordActivity.this);
                     MyActivityManager1.getInstance().finishAllActivity();
                     LoginDataManager.instance().handler(SetPasswordActivity.this, new Object[]{SharedPrefrenceTool.get(SetPasswordActivity.this, "boxId", "")});
                 } else {

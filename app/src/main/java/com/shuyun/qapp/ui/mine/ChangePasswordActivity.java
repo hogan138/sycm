@@ -19,23 +19,22 @@ import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.EncryptUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.NetworkUtils;
-import com.blankj.utilcode.util.TimeUtils;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.InputVerficationCodeBean;
 import com.shuyun.qapp.bean.LoginResponse;
 import com.shuyun.qapp.bean.Msg;
-import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.RegularTool;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.ToastUtil;
@@ -45,10 +44,6 @@ import org.litepal.crud.DataSupport;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -197,55 +192,48 @@ public class ChangePasswordActivity extends BaseActivity {
      * @param verficationCodeBean post json body
      */
     private void getVerficationCode(InputVerficationCodeBean verficationCodeBean) {
-        ApiService apiService = BasePresenter.create(8000);
         String inputbean = JSON.toJSONString(verficationCodeBean);
         Log.i(TAG, "loadLogin: " + verficationCodeBean.toString());
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
-        apiService.getCode(body)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<String>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+        RemotingEx.doRequest(ApiServiceBean.getCode(), new Object[]{body}, new OnRemotingCallBackListener<String>() {
+            @Override
+            public void onCompleted(String action) {
 
-                    @Override
-                    public void onNext(DataResponse<String> loginResponse) {
-                        if (loginResponse.isSuccees()) {
-                            String sn = loginResponse.getDat();//验证码序列号
-                            ToastUtil.showToast(ChangePasswordActivity.this, "获取验证码成功");
-                            btnGetCode1.setVisibility(View.GONE);
-                            tv60Second.setVisibility(View.VISIBLE);
-                            //60s走完之后,按钮显示,tv60Second隐藏
-                            tv60Second.setEnabled(false);
-                            new CountDownTimer(60 * 1000, 1000) {
+            }
 
-                                @Override
-                                public void onTick(long millisUntilFinished) {
-                                    tv60Second.setText(String.format("%dS", millisUntilFinished / 1000));
-                                }
+            @Override
+            public void onFailed(String action, String message) {
 
-                                @Override
-                                public void onFinish() {
-                                    btnGetCode1.setVisibility(View.VISIBLE);
-                                    tv60Second.setVisibility(View.GONE);
-                                }
-                            }.start();
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(ChangePasswordActivity.this, loginResponse.getErr(), loginResponse.getMsg());
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<String> loginResponse) {
+                if (loginResponse.isSuccees()) {
+                    String sn = loginResponse.getDat();//验证码序列号
+                    ToastUtil.showToast(ChangePasswordActivity.this, "获取验证码成功");
+                    btnGetCode1.setVisibility(View.GONE);
+                    tv60Second.setVisibility(View.VISIBLE);
+                    //60s走完之后,按钮显示,tv60Second隐藏
+                    tv60Second.setEnabled(false);
+                    new CountDownTimer(60 * 1000, 1000) {
+
+                        @Override
+                        public void onTick(long millisUntilFinished) {
+                            tv60Second.setText(String.format("%dS", millisUntilFinished / 1000));
                         }
-                    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
+                        @Override
+                        public void onFinish() {
+                            btnGetCode1.setVisibility(View.VISIBLE);
+                            tv60Second.setVisibility(View.GONE);
+                        }
+                    }.start();
+                } else {
+                    ErrorCodeTools.errorCodePrompt(ChangePasswordActivity.this, loginResponse.getErr(), loginResponse.getMsg());
+                }
+            }
+        });
 
-                    @Override
-                    public void onComplete() {
-                    }
-                });
     }
 
     /**
@@ -284,52 +272,44 @@ public class ChangePasswordActivity extends BaseActivity {
             DataSupport.deleteAll(Msg.class);//清空数据库中消息
         }
         String deviceId = SmAntiFraud.getDeviceId();
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.modifyPassWord(phoneNum, password, AppConst.DEV_ID, AppConst.APP_ID, salt, tsn, deviceId, APKVersionCodeTools.getVerName(this), AppConst.V, curTime, signCode)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<LoginResponse>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
+
+        RemotingEx.doRequest(ApiServiceBean.modifyPassWord(), new Object[]{phoneNum, password, AppConst.DEV_ID, AppConst.APP_ID, salt, tsn, deviceId, APKVersionCodeTools.getVerName(this), AppConst.V, curTime, signCode}, new OnRemotingCallBackListener<LoginResponse>() {
+            @Override
+            public void onCompleted(String action) {
+
+            }
+
+            @Override
+            public void onFailed(String action, String message) {
+
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<LoginResponse> loginResponse) {
+                LoginResponse changeResult = loginResponse.getDat();
+                if (loginResponse.isSuccees()) {
+                    if (!EncodeAndStringTool.isObjectEmpty(changeResult)) {
+                        SharedPrefrenceTool.put(ChangePasswordActivity.this, "salt", salt);
+                        SharedPrefrenceTool.put(ChangePasswordActivity.this, "token", changeResult.getToken());
+                        SharedPrefrenceTool.put(ChangePasswordActivity.this, "expire", changeResult.getExpire());//token的有效期
+                        SharedPrefrenceTool.put(ChangePasswordActivity.this, "key", changeResult.getKey());//对称加密的秘钥。
+                        SharedPrefrenceTool.put(ChangePasswordActivity.this, "bind", changeResult.getBind());//是否绑定用户。
+                        SharedPrefrenceTool.put(ChangePasswordActivity.this, "random", changeResult.getRandom());//登录成果后，平台随机生成的字符串
+                        LoginResponse.User user = changeResult.getUser();
+
+                        AppConst.loadToken(ChangePasswordActivity.this);
+                        Toast.makeText(ChangePasswordActivity.this, "修改密码成功！", Toast.LENGTH_SHORT).show();
+
+                        finish();
+                        KeyboardUtils.hideSoftInput(ChangePasswordActivity.this);
+                    } else {
+                        tvErrorHint.setVisibility(View.VISIBLE);
                     }
-
-                    @Override
-                    public void onNext(DataResponse<LoginResponse> loginResponse) {
-                        LoginResponse changeResult = loginResponse.getDat();
-                        if (loginResponse.isSuccees()) {
-                            if (!EncodeAndStringTool.isObjectEmpty(changeResult)) {
-                                SharedPrefrenceTool.put(ChangePasswordActivity.this, "salt", salt);
-                                SharedPrefrenceTool.put(ChangePasswordActivity.this, "token", changeResult.getToken());
-                                SharedPrefrenceTool.put(ChangePasswordActivity.this, "expire", changeResult.getExpire());//token的有效期
-                                SharedPrefrenceTool.put(ChangePasswordActivity.this, "key", changeResult.getKey());//对称加密的秘钥。
-                                SharedPrefrenceTool.put(ChangePasswordActivity.this, "bind", changeResult.getBind());//是否绑定用户。
-                                SharedPrefrenceTool.put(ChangePasswordActivity.this, "random", changeResult.getRandom());//登录成果后，平台随机生成的字符串
-                                LoginResponse.User user = changeResult.getUser();
-
-                                AppConst.loadToken(ChangePasswordActivity.this);
-                                Toast.makeText(ChangePasswordActivity.this, "修改密码成功！", Toast.LENGTH_SHORT).show();
-
-                                finish();
-                                KeyboardUtils.hideSoftInput(ChangePasswordActivity.this);
-                            } else {
-                                tvErrorHint.setVisibility(View.VISIBLE);
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(ChangePasswordActivity.this, loginResponse.getErr(), loginResponse.getMsg());
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+                } else {
+                    ErrorCodeTools.errorCodePrompt(ChangePasswordActivity.this, loginResponse.getErr(), loginResponse.getMsg());
+                }
+            }
+        });
     }
 
     /**
