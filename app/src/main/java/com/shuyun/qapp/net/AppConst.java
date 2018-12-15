@@ -159,4 +159,11 @@ public class AppConst {
     public static final String APP_ACTION_PARAM = "APP_ACTION";//动作参数
     public static final String APP_WXINXIN_LOGIN = "APP_WXINXIN_LOGIN";//微信登录
     public static final String APP_VERIFYCODE_LOGIN = "APP_VERIFYCODE_LOGIN";//验证码登录
+
+    public static final String AGAINST_MAIN_INFO = "against_main_info";
+    public static final String AGAINST_SHARE = "against_share";
+    public static final String AGAINST_SHARE_CONFIM = "against_share_confim";
+    public static final String GET_GROUP_LIST = "get_group_list";
+    public static final String MATCHING_USER_TIME = "matching_user_time";
+    public static final String AGAINST_REDUCE_SCORE = "against_reduce_score";
 }

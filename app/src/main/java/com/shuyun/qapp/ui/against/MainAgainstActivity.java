@@ -25,7 +25,10 @@ import com.shuyun.qapp.bean.MainAgainstBean;
 import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.event.MessageEvent;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SyckApplication;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
@@ -60,7 +63,7 @@ import static com.shuyun.qapp.net.SyckApplication.getAppContext;
  * 答题对战首页
  */
 
-public class MainAgainstActivity extends BaseActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface {
+public class MainAgainstActivity extends BaseActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface, OnRemotingCallBackListener<Object> {
 
 
     @BindView(R.id.iv_left_icon)
@@ -97,6 +100,10 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
     private Long common_score;
     private Long high_score;
 
+    SharedBean sharedBean1;
+
+    private static int share_style = 0;
+
     @Override
     public int intiLayout() {
         return R.layout.activity_main_against;
@@ -129,7 +136,7 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
         }
 
         //获取答题对战首页
-        getInfo();
+        RemotingEx.doRequest(AppConst.AGAINST_MAIN_INFO, ApiServiceBean.mainAgainst(), null, this);
 
     }
 
@@ -198,48 +205,6 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
             default:
                 break;
         }
-    }
-
-    public void getInfo() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.mainAgainst()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<MainAgainstBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse<MainAgainstBean> loginResponse) {
-                        MainAgainstBean mainAgainstBean = loginResponse.getDat();
-                        if (loginResponse.isSuccees()) {
-                            tvScore.setText("我的积分：" + mainAgainstBean.getBattleUserBP());
-                            tvContent.setText(mainAgainstBean.getBattleRule().replace("</br>", "\n"));
-                            my_score = mainAgainstBean.getBattleUserBP();//用户积分
-                            new_score = mainAgainstBean.getNovice();//新手场次积分
-                            common_score = mainAgainstBean.getIntermediate();//中级场次积分
-                            high_score = mainAgainstBean.getAdvanced();//高级场次积分
-                            tvNewScore.setText("消耗积分：" + new_score);
-                            tvCommonScore.setText("消耗积分：" + common_score);
-                            tvHighScore.setText("消耗积分：" + high_score);
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(MainAgainstActivity.this, loginResponse.getErr(), loginResponse.getMsg());
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-
     }
 
     CommonPopupWindow popupWindow;
@@ -402,51 +367,13 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
     }
 
     /**
-     * 邀请分享
+     * 答题对战分享
      *
      * @param channl 分享渠道id 1:微信分享;2 微信朋友圈分享 3:二维码分享
      */
-    SharedBean sharedBean1;
-
-    private void loadBattleAnswerShared(final int channl) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.battleAnswerShared(channl)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<SharedBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse<SharedBean> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            SharedBean sharedBean = dataResponse.getDat();
-                            if (!EncodeAndStringTool.isObjectEmpty(sharedBean)) {
-                                if (channl == 3) {
-                                    sharedBean1 = dataResponse.getDat();
-                                    //显示二维码弹框
-                                    showQr();
-                                } else {
-                                    wechatShare(sharedBean);
-                                }
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(MainAgainstActivity.this, dataResponse.getErr(), dataResponse.getMsg());
-                        }
-                    }
-
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+    private void loadBattleAnswerShared(int channl) {
+        share_style = channl;
+        RemotingEx.doRequest(AppConst.AGAINST_SHARE, ApiServiceBean.battleAnswerShared(), new Object[]{channl}, this);
     }
 
     /**
@@ -523,35 +450,9 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
      * @param channel 1:微信朋友圈 2:微信好友
      */
     private void loadSharedSure(Long id, int result, int channel) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.sharedConfirm(id, result, channel)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
 
-                    @Override
-                    public void onNext(DataResponse dataResponse) {
-                        if (dataResponse.isSuccees()) {
+        RemotingEx.doRequest(AppConst.AGAINST_SHARE_CONFIM, ApiServiceBean.sharedConfirm(), new Object[]{id, result, channel}, this);
 
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(MainAgainstActivity.this, dataResponse.getErr(), dataResponse.getMsg());
-                        }
-                    }
-
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
     }
 
 
@@ -569,4 +470,51 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
+    @Override
+    public void onCompleted(String action) {
+
+    }
+
+    @Override
+    public void onFailed(String action, String message) {
+
+    }
+
+    @Override
+    public void onSucceed(String action, DataResponse<Object> response) {
+        if (action.equals(AppConst.AGAINST_MAIN_INFO)) {  //获取答题对战首页信息
+            MainAgainstBean mainAgainstBean = (MainAgainstBean) response.getDat();
+            if (response.isSuccees()) {
+                tvScore.setText("我的积分：" + mainAgainstBean.getBattleUserBP());
+                tvContent.setText(mainAgainstBean.getBattleRule().replace("</br>", "\n"));
+                my_score = mainAgainstBean.getBattleUserBP();//用户积分
+                new_score = mainAgainstBean.getNovice();//新手场次积分
+                common_score = mainAgainstBean.getIntermediate();//中级场次积分
+                high_score = mainAgainstBean.getAdvanced();//高级场次积分
+                tvNewScore.setText("消耗积分：" + new_score);
+                tvCommonScore.setText("消耗积分：" + common_score);
+                tvHighScore.setText("消耗积分：" + high_score);
+            } else {
+                ErrorCodeTools.errorCodePrompt(MainAgainstActivity.this, response.getErr(), response.getMsg());
+            }
+        } else if (action.equals(AppConst.AGAINST_SHARE)) { //答题对战分享
+            if (response.isSuccees()) {
+                SharedBean sharedBean = (SharedBean) response.getDat();
+                if (!EncodeAndStringTool.isObjectEmpty(sharedBean)) {
+                    if (share_style == 3) {
+                        sharedBean1 = (SharedBean) response.getDat();
+                        //显示二维码弹框
+                        showQr();
+                    } else {
+                        wechatShare(sharedBean);
+                    }
+                }
+            } else {
+                ErrorCodeTools.errorCodePrompt(MainAgainstActivity.this, response.getErr(), response.getMsg());
+            }
+        } else if (action.equals(AppConst.AGAINST_SHARE_CONFIM)) {//分享确认
+
+        }
+
+    }
 }

@@ -4,7 +4,6 @@ package com.shuyun.qapp.ui.against;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,34 +20,30 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.blankj.utilcode.util.TimeUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MatchTimeBean;
-import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
+import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.OnMultiClickListener;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.view.RoundImageView;
 import com.shuyun.qapp.view.TiaoZiView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 答题对战----匹配对手
  */
 
-public class MatchingActivity extends BaseActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface {
+public class MatchingActivity extends BaseActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface, OnRemotingCallBackListener<Object> {
 
 
     @BindView(R.id.iv_left_icon)
@@ -159,133 +154,9 @@ public class MatchingActivity extends BaseActivity implements View.OnClickListen
      * 获取到用户匹配时长信息
      */
     private void loadMatchInfo() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.getMatchTimeInfo()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<MatchTimeBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
 
-                    @Override
-                    public void onNext(DataResponse<MatchTimeBean> listDataResponse) {
-                        if (listDataResponse.isSuccees()) {
-                            try {
-                                matchTimeBean = listDataResponse.getDat();
-                                if (matchTimeBean.getMatchTime() < 0) {
-                                    ivHeadMine.setImageResource(icon[matchTimeBean.getUser().getHeaderId() - 1]);
-                                    //开始动画
-                                    Startanimation();
-                                    failRunnable = new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            showPopupWindows();
-                                        }
-                                    };
-                                    failHandler.postDelayed(failRunnable, -(matchTimeBean.getMatchTime()) * 1000);
-                                } else {
-                                    ivHeadMine.setImageResource(icon[matchTimeBean.getUser().getHeaderId() - 1]);
+        RemotingEx.doRequest(AppConst.MATCHING_USER_TIME, ApiServiceBean.getMatchTimeInfo(), null, this);
 
-                                    //开始动画
-                                    Startanimation();
-
-                                    /**
-                                     * 延时几秒后进入答题页面
-                                     */
-                                    toAnswerRunnable = new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            finish();
-                                            Intent intent = new Intent(MatchingActivity.this, AgainstActivity.class);
-                                            intent.putExtra("type", type);
-                                            intent.putExtra("name", name);
-                                            intent.putExtra("from", getIntent().getStringExtra("from"));
-                                            intent.putExtra("groupId", getIntent().getLongExtra("groupId", 0));
-                                            intent.putExtra("my_head", matchTimeBean.getUser().getHeaderId());
-                                            intent.putExtra("my_phone", matchTimeBean.getUser().getPhone());
-                                            intent.putExtra("it_head", matchTimeBean.getRobotPic());
-                                            intent.putExtra("it_phone", matchTimeBean.getRobotAccount());
-                                            intent.putExtra("score", getIntent().getStringExtra("score"));
-                                            startActivity(intent);
-                                        }
-                                    };
-                                    /**
-                                     * 匹配成功之后更新UI
-                                     */
-                                    matchSucceedRunnable = new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            //取消匹配淡出
-                                            Animation alphaAnimation = new AlphaAnimation(1, 0);
-                                            alphaAnimation.setDuration(500);
-                                            alphaAnimation.setInterpolator(new LinearInterpolator());
-                                            alphaAnimation.setFillBefore(false);
-                                            alphaAnimation.setFillAfter(true);
-                                            rlCancelMatching.startAnimation(alphaAnimation);
-                                            rlCancelMatching.setVisibility(View.GONE);
-                                            llSearch.setVisibility(View.INVISIBLE);
-
-                                            if (getIntent().getStringExtra("score").equals("")) {
-                                                rlScore.setVisibility(View.GONE);
-                                                toAnswerhandler.postDelayed(toAnswerRunnable, 2000);
-                                            } else {
-                                                llSearch.setVisibility(View.INVISIBLE);
-                                                rlScore.setVisibility(View.VISIBLE);
-                                                tvScore.setText("积分：" + matchTimeBean.getUser().getBp());
-                                                tvReduceScore.setText("-" + getIntent().getStringExtra("score"));
-
-                                                //消耗积分淡出
-                                                Animation alphaAnimation1 = new AlphaAnimation(0, 1);
-                                                alphaAnimation1.setDuration(1000);
-                                                alphaAnimation1.setInterpolator(new LinearInterpolator());
-                                                alphaAnimation1.setFillBefore(false);
-                                                alphaAnimation1.setFillAfter(true);
-                                                rlScore.startAnimation(alphaAnimation1);
-
-                                                /**
-                                                 * 减去消耗的积分
-                                                 */
-                                                loadUseBpCons();
-                                            }
-                                            ivHeadIt.setImageResource(icon[matchTimeBean.getRobotPic()]);//- 1
-                                            tvMinePhone.setVisibility(View.VISIBLE);
-                                            tvItPhone.setVisibility(View.VISIBLE);
-                                            tvMinePhone.setText(matchTimeBean.getUser().getPhone());
-                                            tvItPhone.setText(matchTimeBean.getRobotAccount());
-
-                                            //机器人头像动画
-                                            Animation alphaAnimation2 = new AlphaAnimation(1, 0);
-                                            alphaAnimation2.setDuration(300);
-                                            alphaAnimation2.setInterpolator(new LinearInterpolator());
-                                            alphaAnimation2.setRepeatCount(3);
-                                            alphaAnimation2.setRepeatMode(Animation.REVERSE);
-                                            alphaAnimation2.setFillAfter(true);
-                                            ivHeadIt.startAnimation(alphaAnimation2);
-                                        }
-                                    };
-                                    matchSucceedHandler.postDelayed(matchSucceedRunnable, matchTimeBean.getMatchTime() * 1000);
-                                }
-                            } catch (Exception e) {
-
-                            }
-
-                        } else {//错误码提示
-                            ErrorCodeTools.errorCodePrompt(MatchingActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
-                        }
-                    }
-
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
     }
 
     private void Startanimation() {
@@ -329,40 +200,9 @@ public class MatchingActivity extends BaseActivity implements View.OnClickListen
      * 减去消耗的积分
      */
     private void loadUseBpCons() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.useBpCons(type)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        Log.i(TAG, "loadUseBpCons==onSubscribe: " + d);
-                    }
 
-                    @Override
-                    public void onNext(DataResponse listDataResponse) {
-                        if (listDataResponse.isSuccees()) {
-                            //进入答题页面
-                            toAnswerhandler.postDelayed(toAnswerRunnable, 2000);
-                        } else if (listDataResponse.getErr().equals("L0001")) {//积分不足
-                            Toast.makeText(MatchingActivity.this, "对不起，您的积分不足！", Toast.LENGTH_SHORT).show();
-                            finish();
-                        } else {//错误码提示
-                            ErrorCodeTools.errorCodePrompt(MatchingActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
-                        }
-                    }
+        RemotingEx.doRequest(AppConst.AGAINST_REDUCE_SCORE, ApiServiceBean.useBpCons(), new Object[]{type}, this);
 
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
     }
 
 
@@ -489,4 +329,132 @@ public class MatchingActivity extends BaseActivity implements View.OnClickListen
         exitAnimation();
     }
 
+    @Override
+    public void onCompleted(String action) {
+
+    }
+
+    @Override
+    public void onFailed(String action, String message) {
+
+    }
+
+    @Override
+    public void onSucceed(String action, DataResponse<Object> listDataResponse) {
+        if (action.equals(AppConst.MATCHING_USER_TIME)) { //获取用户匹配时长
+            if (listDataResponse.isSuccees()) {
+                try {
+                    matchTimeBean = (MatchTimeBean) listDataResponse.getDat();
+                    if (matchTimeBean.getMatchTime() < 0) {
+                        ivHeadMine.setImageResource(icon[matchTimeBean.getUser().getHeaderId() - 1]);
+                        //开始动画
+                        Startanimation();
+                        failRunnable = new Runnable() {
+                            @Override
+                            public void run() {
+                                showPopupWindows();
+                            }
+                        };
+                        failHandler.postDelayed(failRunnable, -(matchTimeBean.getMatchTime()) * 1000);
+                    } else {
+                        ivHeadMine.setImageResource(icon[matchTimeBean.getUser().getHeaderId() - 1]);
+
+                        //开始动画
+                        Startanimation();
+
+                        /**
+                         * 延时几秒后进入答题页面
+                         */
+                        toAnswerRunnable = new Runnable() {
+                            @Override
+                            public void run() {
+                                finish();
+                                Intent intent = new Intent(MatchingActivity.this, AgainstActivity.class);
+                                intent.putExtra("type", type);
+                                intent.putExtra("name", name);
+                                intent.putExtra("from", getIntent().getStringExtra("from"));
+                                intent.putExtra("groupId", getIntent().getLongExtra("groupId", 0));
+                                intent.putExtra("my_head", matchTimeBean.getUser().getHeaderId());
+                                intent.putExtra("my_phone", matchTimeBean.getUser().getPhone());
+                                intent.putExtra("it_head", matchTimeBean.getRobotPic());
+                                intent.putExtra("it_phone", matchTimeBean.getRobotAccount());
+                                intent.putExtra("score", getIntent().getStringExtra("score"));
+                                startActivity(intent);
+                            }
+                        };
+                        /**
+                         * 匹配成功之后更新UI
+                         */
+                        matchSucceedRunnable = new Runnable() {
+                            @Override
+                            public void run() {
+                                //取消匹配淡出
+                                Animation alphaAnimation = new AlphaAnimation(1, 0);
+                                alphaAnimation.setDuration(500);
+                                alphaAnimation.setInterpolator(new LinearInterpolator());
+                                alphaAnimation.setFillBefore(false);
+                                alphaAnimation.setFillAfter(true);
+                                rlCancelMatching.startAnimation(alphaAnimation);
+                                rlCancelMatching.setVisibility(View.GONE);
+                                llSearch.setVisibility(View.INVISIBLE);
+
+                                if (getIntent().getStringExtra("score").equals("")) {
+                                    rlScore.setVisibility(View.GONE);
+                                    toAnswerhandler.postDelayed(toAnswerRunnable, 2000);
+                                } else {
+                                    llSearch.setVisibility(View.INVISIBLE);
+                                    rlScore.setVisibility(View.VISIBLE);
+                                    tvScore.setText("积分：" + matchTimeBean.getUser().getBp());
+                                    tvReduceScore.setText("-" + getIntent().getStringExtra("score"));
+
+                                    //消耗积分淡出
+                                    Animation alphaAnimation1 = new AlphaAnimation(0, 1);
+                                    alphaAnimation1.setDuration(1000);
+                                    alphaAnimation1.setInterpolator(new LinearInterpolator());
+                                    alphaAnimation1.setFillBefore(false);
+                                    alphaAnimation1.setFillAfter(true);
+                                    rlScore.startAnimation(alphaAnimation1);
+
+                                    /**
+                                     * 减去消耗的积分
+                                     */
+                                    loadUseBpCons();
+                                }
+                                ivHeadIt.setImageResource(icon[matchTimeBean.getRobotPic()]);//- 1
+                                tvMinePhone.setVisibility(View.VISIBLE);
+                                tvItPhone.setVisibility(View.VISIBLE);
+                                tvMinePhone.setText(matchTimeBean.getUser().getPhone());
+                                tvItPhone.setText(matchTimeBean.getRobotAccount());
+
+                                //机器人头像动画
+                                Animation alphaAnimation2 = new AlphaAnimation(1, 0);
+                                alphaAnimation2.setDuration(300);
+                                alphaAnimation2.setInterpolator(new LinearInterpolator());
+                                alphaAnimation2.setRepeatCount(3);
+                                alphaAnimation2.setRepeatMode(Animation.REVERSE);
+                                alphaAnimation2.setFillAfter(true);
+                                ivHeadIt.startAnimation(alphaAnimation2);
+                            }
+                        };
+                        matchSucceedHandler.postDelayed(matchSucceedRunnable, matchTimeBean.getMatchTime() * 1000);
+                    }
+                } catch (Exception e) {
+
+                }
+
+            } else {//错误码提示
+                ErrorCodeTools.errorCodePrompt(MatchingActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
+            }
+        } else if (action.equals(AppConst.AGAINST_REDUCE_SCORE)) { //减去消耗的积分
+            if (listDataResponse.isSuccees()) {
+                //进入答题页面
+                toAnswerhandler.postDelayed(toAnswerRunnable, 2000);
+            } else if (listDataResponse.getErr().equals("L0001")) {//积分不足
+                Toast.makeText(MatchingActivity.this, "对不起，您的积分不足！", Toast.LENGTH_SHORT).show();
+                finish();
+            } else {//错误码提示
+                ErrorCodeTools.errorCodePrompt(MatchingActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
+            }
+        }
+    }
 }

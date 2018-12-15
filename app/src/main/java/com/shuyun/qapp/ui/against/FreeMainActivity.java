@@ -27,7 +27,10 @@ import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.GroupAgainstBean;
 import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SyckApplication;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
@@ -58,7 +61,7 @@ import static com.blankj.utilcode.util.SizeUtils.dp2px;
  * 自由对战首页
  */
 
-public class FreeMainActivity extends BaseActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface {
+public class FreeMainActivity extends BaseActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface, OnRemotingCallBackListener<Object> {
 
 
     @BindView(R.id.iv_left_icon)
@@ -80,6 +83,9 @@ public class FreeMainActivity extends BaseActivity implements View.OnClickListen
 
     int type = 0;
 
+    SharedBean sharedBean1;
+    private static int share_style = 0;
+
     @Override
     public int intiLayout() {
         return R.layout.activity_free_main;
@@ -100,7 +106,10 @@ public class FreeMainActivity extends BaseActivity implements View.OnClickListen
         }
         type = getIntent().getIntExtra("type", 0);
 
-        loadHomeGroups(type);
+        /**
+         * 首页题组
+         */
+        RemotingEx.doRequest(AppConst.GET_GROUP_LIST, ApiServiceBean.groupAgainst(), new Object[]{type}, this);
 
         ivLeftIcon.setImageResource(R.mipmap.backb);//左侧返回
         ivRightIcon.setOnClickListener(this);
@@ -115,12 +124,6 @@ public class FreeMainActivity extends BaseActivity implements View.OnClickListen
             ivRightIcon.setVisibility(View.VISIBLE);
             ivRightIcon.setImageResource(R.mipmap.share);//右侧分享
         }
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
 
     }
 
@@ -156,72 +159,6 @@ public class FreeMainActivity extends BaseActivity implements View.OnClickListen
                 break;
         }
     }
-
-    /**
-     * 首页题组
-     */
-    private void loadHomeGroups(final int type) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.groupAgainst(type)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<List<GroupAgainstBean>>>() {
-
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse<List<GroupAgainstBean>> listDataResponse) {
-                        if (listDataResponse.isSuccees()) {
-                            final List<GroupAgainstBean> groupAgainstBean = listDataResponse.getDat();
-                            try {
-                                rvAgainstGroup.setHasFixedSize(true);
-                                rvAgainstGroup.setNestedScrollingEnabled(false);
-                                FreeGroupAdapter freeGroupAdapter = new FreeGroupAdapter(groupAgainstBean, FreeMainActivity.this);
-                                freeGroupAdapter.setOnItemClickLitsener(new FreeGroupAdapter.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(View view, int position) {
-                                        Intent intent = new Intent(FreeMainActivity.this, FreeDetailActivity.class);
-                                        intent.putExtra("groupId", groupAgainstBean.get(position).getId());
-                                        intent.putExtra("image", groupAgainstBean.get(position).getPicture());
-                                        intent.putExtra("name", groupAgainstBean.get(position).getName());
-                                        intent.putExtra("description", groupAgainstBean.get(position).getDescription());
-                                        intent.putExtra("type", type);
-                                        if (getIntent().getStringExtra("score").equals("")) {
-                                            intent.putExtra("score", "");
-                                        } else {
-                                            intent.putExtra("score", getIntent().getStringExtra("score"));
-                                        }
-                                        startActivity(intent);
-                                    }
-                                });
-
-                                GridLayoutManager gridLayoutManager = new GridLayoutManager(FreeMainActivity.this, 1);
-                                rvAgainstGroup.setLayoutManager(gridLayoutManager);
-                                rvAgainstGroup.setAdapter(freeGroupAdapter);
-                            } catch (Exception e) {
-
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(FreeMainActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
-                        }
-
-                    }
-
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
-    }
-
 
     CommonPopupWindow popupWindow;
 
@@ -360,47 +297,9 @@ public class FreeMainActivity extends BaseActivity implements View.OnClickListen
      *
      * @param channl 分享渠道id 1:微信分享;2 微信朋友圈分享 3:二维码分享
      */
-    SharedBean sharedBean1;
-
     private void loadBattleAnswerShared(final int channl) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.battleAnswerShared(channl)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<SharedBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse<SharedBean> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            SharedBean sharedBean = dataResponse.getDat();
-                            if (!EncodeAndStringTool.isObjectEmpty(sharedBean)) {
-                                if (channl == 3) {
-                                    sharedBean1 = dataResponse.getDat();
-                                    //显示二维码弹框
-                                    showQr();
-                                } else {
-                                    wechatShare(sharedBean);
-                                }
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(FreeMainActivity.this, dataResponse.getErr(), dataResponse.getMsg());
-                        }
-                    }
-
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+        share_style = channl;
+        RemotingEx.doRequest(AppConst.AGAINST_SHARE, ApiServiceBean.battleAnswerShared(), new Object[]{channl}, this);
     }
 
     /**
@@ -477,35 +376,9 @@ public class FreeMainActivity extends BaseActivity implements View.OnClickListen
      * @param channel 1:微信朋友圈 2:微信好友
      */
     private void loadSharedSure(Long id, int result, int channel) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.sharedConfirm(id, result, channel)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
 
-                    @Override
-                    public void onNext(DataResponse dataResponse) {
-                        if (dataResponse.isSuccees()) {
+        RemotingEx.doRequest(AppConst.AGAINST_SHARE_CONFIM, ApiServiceBean.sharedConfirm(), new Object[]{id, result, channel}, this);
 
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(FreeMainActivity.this, dataResponse.getErr(), dataResponse.getMsg());
-                        }
-                    }
-
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
     }
 
     @Override
@@ -523,4 +396,71 @@ public class FreeMainActivity extends BaseActivity implements View.OnClickListen
     }
 
 
+    @Override
+    public void onCompleted(String action) {
+
+    }
+
+    @Override
+    public void onFailed(String action, String message) {
+
+    }
+
+    @Override
+    public void onSucceed(String action, DataResponse<Object> listDataResponse) {
+
+        if (action.equals(AppConst.GET_GROUP_LIST)) { //获取题组列表
+            if (listDataResponse.isSuccees()) {
+                final List<GroupAgainstBean> groupAgainstBean = (List<GroupAgainstBean>) listDataResponse.getDat();
+                try {
+                    rvAgainstGroup.setHasFixedSize(true);
+                    rvAgainstGroup.setNestedScrollingEnabled(false);
+                    FreeGroupAdapter freeGroupAdapter = new FreeGroupAdapter(groupAgainstBean, FreeMainActivity.this);
+                    freeGroupAdapter.setOnItemClickLitsener(new FreeGroupAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
+                            Intent intent = new Intent(FreeMainActivity.this, FreeDetailActivity.class);
+                            intent.putExtra("groupId", groupAgainstBean.get(position).getId());
+                            intent.putExtra("image", groupAgainstBean.get(position).getPicture());
+                            intent.putExtra("name", groupAgainstBean.get(position).getName());
+                            intent.putExtra("description", groupAgainstBean.get(position).getDescription());
+                            intent.putExtra("type", type);
+                            if (getIntent().getStringExtra("score").equals("")) {
+                                intent.putExtra("score", "");
+                            } else {
+                                intent.putExtra("score", getIntent().getStringExtra("score"));
+                            }
+                            startActivity(intent);
+                        }
+                    });
+
+                    GridLayoutManager gridLayoutManager = new GridLayoutManager(FreeMainActivity.this, 1);
+                    rvAgainstGroup.setLayoutManager(gridLayoutManager);
+                    rvAgainstGroup.setAdapter(freeGroupAdapter);
+                } catch (Exception e) {
+
+                }
+            } else {
+                ErrorCodeTools.errorCodePrompt(FreeMainActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
+            }
+        } else if (action.equals(AppConst.AGAINST_SHARE)) { //答题对战分享
+            if (listDataResponse.isSuccees()) {
+                SharedBean sharedBean = (SharedBean) listDataResponse.getDat();
+                if (!EncodeAndStringTool.isObjectEmpty(sharedBean)) {
+                    if (share_style == 3) {
+                        sharedBean1 = (SharedBean) listDataResponse.getDat();
+                        //显示二维码弹框
+                        showQr();
+                    } else {
+                        wechatShare(sharedBean);
+                    }
+                }
+            } else {
+                ErrorCodeTools.errorCodePrompt(FreeMainActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
+            }
+        } else if (action.equals(AppConst.AGAINST_SHARE_CONFIM)) {//分享确认
+
+        }
+
+    }
 }
