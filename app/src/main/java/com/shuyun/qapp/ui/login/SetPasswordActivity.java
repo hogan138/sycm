@@ -188,9 +188,9 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
                 isLogin();
                 break;
             case R.id.tv_rigth_title:
-                MyActivityManager1.getInstance().finishAllActivity();
                 KeyboardUtils.hideSoftInput(SetPasswordActivity.this);
                 LoginDataManager.instance().handler(SetPasswordActivity.this, new Object[]{SharedPrefrenceTool.get(SetPasswordActivity.this, "boxId", "")});
+                MyActivityManager1.getInstance().finishAllActivity();
                 break;
             case R.id.iv_is_show_pwd:
                 isShowPwd(etPassword);

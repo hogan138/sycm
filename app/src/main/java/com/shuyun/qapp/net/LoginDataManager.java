@@ -11,6 +11,7 @@ import com.shuyun.qapp.bean.ConfigDialogBean;
 import com.shuyun.qapp.bean.HomeNoticeBean;
 import com.shuyun.qapp.bean.MainConfigBean;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
+import com.shuyun.qapp.ui.login.SetPasswordActivity;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
