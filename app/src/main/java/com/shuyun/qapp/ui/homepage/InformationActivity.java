@@ -32,6 +32,8 @@ import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveErrorTxt;
+import com.tencent.stat.StatService;
+import com.umeng.analytics.MobclickAgent;
 
 import org.litepal.crud.DataSupport;
 
@@ -79,7 +81,8 @@ public class InformationActivity extends BaseActivity implements CommonPopupWind
 
         MyActivityManager.getInstance().pushOneActivity(this);
 
-        loadMsg();
+//        loadMsg();
+        ivEmpty.setVisibility(View.VISIBLE);
 
     }
 
@@ -304,13 +307,6 @@ public class InformationActivity extends BaseActivity implements CommonPopupWind
             default:
                 break;
         }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-
     }
 
     @Override
