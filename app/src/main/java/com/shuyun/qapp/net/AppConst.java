@@ -160,10 +160,19 @@ public class AppConst {
     public static final String APP_WXINXIN_LOGIN = "APP_WXINXIN_LOGIN";//微信登录
     public static final String APP_VERIFYCODE_LOGIN = "APP_VERIFYCODE_LOGIN";//验证码登录
 
-    public static final String AGAINST_MAIN_INFO = "against_main_info";
-    public static final String AGAINST_SHARE = "against_share";
-    public static final String AGAINST_SHARE_CONFIM = "against_share_confim";
-    public static final String GET_GROUP_LIST = "get_group_list";
-    public static final String MATCHING_USER_TIME = "matching_user_time";
-    public static final String AGAINST_REDUCE_SCORE = "against_reduce_score";
+    public static final String AGAINST_MAIN_INFO = "against_main_info";//答题对战首页
+    public static final String AGAINST_SHARE = "against_share";//对战分享
+    public static final String AGAINST_SHARE_CONFIM = "against_share_confim";//对战分享确认
+    public static final String GET_GROUP_LIST = "get_group_list"; //对战获取题组列表
+    public static final String MATCHING_USER_TIME = "matching_user_time"; //用户匹配时长
+    public static final String AGAINST_REDUCE_SCORE = "against_reduce_score"; //消耗积分
+    public static final String AGAINST_APPLY_ANSWER = "against_apply_answer"; //申请答题
+    public static final String AGAINST_RANDOM_ANSWER = "against_random_answer";//随机题目
+    public static final String AGAINST_ROBOT = "against_robot";//机器人对战
+    public static final String AGAINST_RESULT = "against_result";//对战结果
+    public static final String AGAINST_RESULT_SHARE = "against_result_share";//对战结果分享
+    public static final String ANSWER_HISTORY = "answer_history"; //答题历史
+    public static final String ANSWER_FEEDBACK = "answer_feedback";//答题反馈
+
+
 }

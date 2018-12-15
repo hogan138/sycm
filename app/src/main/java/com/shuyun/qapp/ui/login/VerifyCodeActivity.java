@@ -29,7 +29,10 @@ import com.shuyun.qapp.bean.LoginResponse;
 import com.shuyun.qapp.bean.Msg;
 import com.shuyun.qapp.net.ActivityCallManager;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -287,98 +290,89 @@ public class VerifyCodeActivity extends BaseActivity {
         CustomLoadingFactory factory = new CustomLoadingFactory();
         LoadingBar.make(llMain, factory).show();
 
-        ApiService apiService = BasePresenter.create(8000);
         final String inputbean = JSON.toJSONString(loginInput);
         Log.i(TAG, "loadLogin: " + loginInput.toString());
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
-        apiService.login(body)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<LoginResponse>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
 
-                    @Override
-                    public void onNext(DataResponse<LoginResponse> loginResponse) {
-                        if (loginResponse.isSuccees()) {
-                            LoginResponse loginResp = loginResponse.getDat();
-                            if (!EncodeAndStringTool.isObjectEmpty(loginResp)) {
-                                SharedPrefrenceTool.put(mContext, "token", loginResp.getToken());
-                                SharedPrefrenceTool.put(mContext, "expire", loginResp.getExpire());//token的有效期
-                                SharedPrefrenceTool.put(mContext, "key", loginResp.getKey());//对称加密的秘钥。
-                                SharedPrefrenceTool.put(mContext, "bind", loginResp.getBind());//是否绑定用户。
-                                SharedPrefrenceTool.put(mContext, "random", loginResp.getRandom());//登录成果后，平台随机生成的字符串
-                                SaveUserInfo.getInstance(mContext).setUserInfo("cert", loginResp.getCertification());
-                                AppConst.loadToken(mContext);
+        RemotingEx.doRequest(ApiServiceBean.login(), new Object[]{body}, new OnRemotingCallBackListener<LoginResponse>() {
+            @Override
+            public void onCompleted(String action) {
 
-                                try {
-                                    //答题免登录返回宝箱id
-                                    if (!EncodeAndStringTool.isStringEmpty(loginResp.getBoxId())) {
-                                        SharedPrefrenceTool.put(mContext, "boxId", loginResp.getBoxId());
-                                    }
-                                } catch (Exception e) {
+            }
 
-                                }
+            @Override
+            public void onFailed(String action, String message) {
 
-                                //设置别名
-                                JPushInterface.setAlias(mContext, new Random().nextInt(), phone);
+            }
 
-                                if (mode == 2) {
-                                    try {
-                                        if (loginResp.isSetPwd()) {
-                                            //未设置密码
-                                            Intent intent = new Intent(mContext, SetPasswordActivity.class);
-                                            intent.putExtra("name", "register");
-                                            intent.putExtra("phone", phone);
-                                            intent.putExtra("code", verifyCodeView.getEditContent());
-                                            intent.putExtra("token", loginResp.getToken());
-                                            startActivity(intent);
-                                        } else {
-                                            //已设置密码
-                                            KeyboardUtils.hideSoftInput(mContext);
-                                            MyActivityManager1.getInstance().finishAllActivity();
-                                            //统一给活动的Activity处理
-                                            if (ActivityCallManager.instance().getActivity() != null) {
-                                                ActivityCallManager.instance().getActivity().callBack(loginResp);
-                                            }
-                                        }
-                                    } catch (Exception e) {
+            @Override
+            public void onSucceed(String action, DataResponse<LoginResponse> loginResponse) {
+                if (loginResponse.isSuccees()) {
+                    LoginResponse loginResp = loginResponse.getDat();
+                    if (!EncodeAndStringTool.isObjectEmpty(loginResp)) {
+                        SharedPrefrenceTool.put(mContext, "token", loginResp.getToken());
+                        SharedPrefrenceTool.put(mContext, "expire", loginResp.getExpire());//token的有效期
+                        SharedPrefrenceTool.put(mContext, "key", loginResp.getKey());//对称加密的秘钥。
+                        SharedPrefrenceTool.put(mContext, "bind", loginResp.getBind());//是否绑定用户。
+                        SharedPrefrenceTool.put(mContext, "random", loginResp.getRandom());//登录成果后，平台随机生成的字符串
+                        SaveUserInfo.getInstance(mContext).setUserInfo("cert", loginResp.getCertification());
+                        AppConst.loadToken(mContext);
 
-                                    }
-                                } else if (mode == 4) {
-                                    //注册
+                        try {
+                            //答题免登录返回宝箱id
+                            if (!EncodeAndStringTool.isStringEmpty(loginResp.getBoxId())) {
+                                SharedPrefrenceTool.put(mContext, "boxId", loginResp.getBoxId());
+                            }
+                        } catch (Exception e) {
+
+                        }
+
+                        //设置别名
+                        JPushInterface.setAlias(mContext, new Random().nextInt(), phone);
+
+                        if (mode == 2) {
+                            try {
+                                if (loginResp.isSetPwd()) {
+                                    //未设置密码
                                     Intent intent = new Intent(mContext, SetPasswordActivity.class);
-                                    intent.putExtra("name", getIntent().getStringExtra("name"));
+                                    intent.putExtra("name", "register");
                                     intent.putExtra("phone", phone);
                                     intent.putExtra("code", verifyCodeView.getEditContent());
                                     intent.putExtra("token", loginResp.getToken());
                                     startActivity(intent);
+                                } else {
+                                    //已设置密码
+                                    KeyboardUtils.hideSoftInput(mContext);
+                                    MyActivityManager1.getInstance().finishAllActivity();
+                                    //统一给活动的Activity处理
+                                    if (ActivityCallManager.instance().getActivity() != null) {
+                                        ActivityCallManager.instance().getActivity().callBack(loginResp);
+                                    }
                                 }
+                            } catch (Exception e) {
 
                             }
-                        } else {
-                            if (loginResponse.getErr().equals("TAU11")) {
-                                errorDialog("验证码错误，请重新输入");
-                            } else {
-                                ErrorCodeTools.errorCodePrompt(mContext, loginResponse.getErr(), loginResponse.getMsg());
-                            }
+                        } else if (mode == 4) {
+                            //注册
+                            Intent intent = new Intent(mContext, SetPasswordActivity.class);
+                            intent.putExtra("name", getIntent().getStringExtra("name"));
+                            intent.putExtra("phone", phone);
+                            intent.putExtra("code", verifyCodeView.getEditContent());
+                            intent.putExtra("token", loginResp.getToken());
+                            startActivity(intent);
                         }
 
                     }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-
+                } else {
+                    if (loginResponse.getErr().equals("TAU11")) {
+                        errorDialog("验证码错误，请重新输入");
+                    } else {
+                        ErrorCodeTools.errorCodePrompt(mContext, loginResponse.getErr(), loginResponse.getMsg());
                     }
+                }
+            }
+        });
 
-                    @Override
-                    public void onComplete() {
-                        LoadingBar.cancel(llMain);
-                    }
-                });
     }
 
     //错误弹框
@@ -424,44 +418,37 @@ public class VerifyCodeActivity extends BaseActivity {
         if (!phoneNum.equals(account)) {
             DataSupport.deleteAll(Msg.class);//清空数据库中消息
         }
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.verifyPassWord(phoneNum, AppConst.DEV_ID, AppConst.APP_ID, 4, AppConst.V, curTime, signCode)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<String>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
 
-                    @Override
-                    public void onNext(DataResponse<String> loginResponse) {
-                        if (loginResponse.isSuccees()) {
-                            Intent intent = new Intent(mContext, SetPasswordActivity.class);
-                            intent.putExtra("name", getIntent().getStringExtra("name"));
-                            intent.putExtra("phone", phone);
-                            intent.putExtra("code", verifyCodeView.getEditContent());
-                            intent.putExtra("token", "");
-                            startActivity(intent);
-                        } else {
-                            if (loginResponse.getErr().equals("TAU11")) {
-                                errorDialog("验证码错误，请重新输入");
-                            } else {
-                                ErrorCodeTools.errorCodePrompt(mContext, loginResponse.getErr(), loginResponse.getMsg());
-                            }
-                        }
-                    }
+        RemotingEx.doRequest(ApiServiceBean.verifyPassWord(), new Object[]{phoneNum, AppConst.DEV_ID, AppConst.APP_ID, 4, AppConst.V, curTime, signCode}, new OnRemotingCallBackListener<String>() {
+            @Override
+            public void onCompleted(String action) {
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
+            }
 
-                    @Override
-                    public void onComplete() {
+            @Override
+            public void onFailed(String action, String message) {
 
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<String> loginResponse) {
+                if (loginResponse.isSuccees()) {
+                    Intent intent = new Intent(mContext, SetPasswordActivity.class);
+                    intent.putExtra("name", getIntent().getStringExtra("name"));
+                    intent.putExtra("phone", phone);
+                    intent.putExtra("code", verifyCodeView.getEditContent());
+                    intent.putExtra("token", "");
+                    startActivity(intent);
+                } else {
+                    if (loginResponse.getErr().equals("TAU11")) {
+                        errorDialog("验证码错误，请重新输入");
+                    } else {
+                        ErrorCodeTools.errorCodePrompt(mContext, loginResponse.getErr(), loginResponse.getMsg());
                     }
-                });
+                }
+            }
+        });
+
     }
 
 

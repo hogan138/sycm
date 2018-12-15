@@ -22,7 +22,10 @@ import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.InputVerficationCodeBean;
 import com.shuyun.qapp.bean.LoginResponse;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SyckApplication;
 import com.shuyun.qapp.ui.webview.WebPublicActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -158,56 +161,49 @@ public class BindPhoneNumActivity extends BaseActivity {
      * @param verficationCodeBean post json body
      */
     private void getVerficationCode(InputVerficationCodeBean verficationCodeBean) {
-        ApiService apiService = BasePresenter.create(8000);
         String inputbean = JSON.toJSONString(verficationCodeBean);
         Log.i(TAG, "loadLogin: " + verficationCodeBean.toString());
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
-        apiService.getCode(body)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<String>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+        RemotingEx.doRequest(ApiServiceBean.getCode(), new Object[]{body}, new OnRemotingCallBackListener<String>() {
+            @Override
+            public void onCompleted(String action) {
 
-                    @Override
-                    public void onNext(DataResponse<String> loginResponse) {
-                        if (loginResponse.isSuccees()) {
-                            //验证码序列号
-                            sn = loginResponse.getDat();
-                            ToastUtil.showToast(BindPhoneNumActivity.this, "获取验证码成功");
-                            btnGetCode1.setVisibility(View.GONE);
-                            tv60Second.setVisibility(View.VISIBLE);
-                            //60s走完之后,按钮显示,tv60Second隐藏
-                            tv60Second.setEnabled(false);
-                            new CountDownTimer(60 * 1000, 1000) {
+            }
 
-                                @Override
-                                public void onTick(long millisUntilFinished) {
-                                    tv60Second.setText(String.format("%d S", millisUntilFinished / 1000));
-                                }
+            @Override
+            public void onFailed(String action, String message) {
 
-                                @Override
-                                public void onFinish() {
-                                    btnGetCode1.setVisibility(View.VISIBLE);
-                                    tv60Second.setVisibility(View.GONE);
-                                }
-                            }.start();
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(BindPhoneNumActivity.this, loginResponse.getErr(), loginResponse.getMsg());
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<String> loginResponse) {
+                if (loginResponse.isSuccees()) {
+                    //验证码序列号
+                    sn = loginResponse.getDat();
+                    ToastUtil.showToast(BindPhoneNumActivity.this, "获取验证码成功");
+                    btnGetCode1.setVisibility(View.GONE);
+                    tv60Second.setVisibility(View.VISIBLE);
+                    //60s走完之后,按钮显示,tv60Second隐藏
+                    tv60Second.setEnabled(false);
+                    new CountDownTimer(60 * 1000, 1000) {
+
+                        @Override
+                        public void onTick(long millisUntilFinished) {
+                            tv60Second.setText(String.format("%d S", millisUntilFinished / 1000));
                         }
-                    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
+                        @Override
+                        public void onFinish() {
+                            btnGetCode1.setVisibility(View.VISIBLE);
+                            tv60Second.setVisibility(View.GONE);
+                        }
+                    }.start();
+                } else {
+                    ErrorCodeTools.errorCodePrompt(BindPhoneNumActivity.this, loginResponse.getErr(), loginResponse.getMsg());
+                }
+            }
+        });
 
-                    @Override
-                    public void onComplete() {
-                    }
-                });
     }
 
     /**
@@ -218,42 +214,35 @@ public class BindPhoneNumActivity extends BaseActivity {
         String code = etCode.getText().toString().trim();
         if (!EncodeAndStringTool.checkNull(phoneNumber, code)) {
         } else {
-            ApiService apiService = BasePresenter.create(8000);
-            apiService.bindWx(phoneNumber, code)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<DataResponse>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
-                        }
+            RemotingEx.doRequest(ApiServiceBean.bindWx(), new Object[]{phoneNumber, code}, new OnRemotingCallBackListener<Object>() {
+                @Override
+                public void onCompleted(String action) {
 
-                        @Override
-                        public void onNext(DataResponse dataResponse) {
-                            if (dataResponse.isSuccees()) {
+                }
 
-                                //设置别名
-                                JPushInterface.setAlias(BindPhoneNumActivity.this, new Random().nextInt(), phoneNumber);
+                @Override
+                public void onFailed(String action, String message) {
 
-                                AppConst.loadToken(SyckApplication.getAppContext());
-                                //绑定成功  存token值
-                                ToastUtil.showToast(BindPhoneNumActivity.this, "绑定成功");
-//                                startActivity(new Intent(BindPhoneNumActivity.this, HomePageActivity.class));
-                                finish();
-                            } else {
-                                ErrorCodeTools.errorCodePrompt(BindPhoneNumActivity.this, dataResponse.getErr(), dataResponse.getMsg());
-                            }
-                        }
+                }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            //保存错误信息
-                            SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                        }
+                @Override
+                public void onSucceed(String action, DataResponse<Object> dataResponse) {
+                    if (dataResponse.isSuccees()) {
 
-                        @Override
-                        public void onComplete() {
-                        }
-                    });
+                        //设置别名
+                        JPushInterface.setAlias(BindPhoneNumActivity.this, new Random().nextInt(), phoneNumber);
+
+                        AppConst.loadToken(SyckApplication.getAppContext());
+                        //绑定成功  存token值
+                        ToastUtil.showToast(BindPhoneNumActivity.this, "绑定成功");
+                        finish();
+                    } else {
+                        ErrorCodeTools.errorCodePrompt(BindPhoneNumActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                    }
+                }
+            });
+
+
         }
     }
 

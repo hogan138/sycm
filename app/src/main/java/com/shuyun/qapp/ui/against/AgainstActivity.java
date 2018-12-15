@@ -35,7 +35,10 @@ import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.RobotInputAgainstBean;
 import com.shuyun.qapp.bean.RobotShowBean;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.Base64Utils;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
@@ -66,7 +69,7 @@ import okhttp3.RequestBody;
  * 答题对战页面
  */
 
-public class AgainstActivity extends BaseActivity {
+public class AgainstActivity extends BaseActivity implements OnRemotingCallBackListener<Object> {
 
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle; //标题
@@ -178,6 +181,21 @@ public class AgainstActivity extends BaseActivity {
      * 动画
      */
     Animation mAnimation = null;
+
+    RobotShowBean robotShowBean;
+
+    private String answer = ""; //机器人选择的答案
+
+    private double timeConsuming = 0;//机器人答题耗时
+
+    private String answerId = "";  //机器人选项
+
+    int last = 0;
+
+    private boolean robot_isSelcet = false;
+
+    private boolean user_isSelect = false;
+
 
     @SuppressLint("HandlerLeak")
     private Handler timehandler = new Handler() {
@@ -352,136 +370,18 @@ public class AgainstActivity extends BaseActivity {
      * 申请答题
      */
     private void applyAnswer(Long groupId) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.applyAnswer(groupId, 1, type)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<ApplyAnswer>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
 
-                    @Override
-                    public void onNext(DataResponse<ApplyAnswer> listDataResponse) {
-                        String err = listDataResponse.getErr();
-                        if (listDataResponse.isSuccees()) {
-                            applyAnswer = listDataResponse.getDat();
-                            if (!EncodeAndStringTool.isObjectEmpty(applyAnswer)) {
-                                if (!EncodeAndStringTool.isStringEmpty(applyAnswer.getId()) && !EncodeAndStringTool.isListEmpty(applyAnswer.getQuestions())) {
-                                    fail_id = applyAnswer.getId();
-                                    questionsBeans = applyAnswer.getQuestions();
-                                    answerNum = questionsBeans.size(); // 以实际题目为准
+        RemotingEx.doRequest(AppConst.AGAINST_APPLY_ANSWER, ApiServiceBean.applyAnswer(), new Object[]{groupId, 1, type}, this);
 
-                                    if (answerNum == 0) {
-                                        finish();
-                                        return;
-                                    }
-                                    position = 0;
-
-                                    //用户选项id
-                                    userOptionId = "0";
-                                    user_checked = 0;
-
-                                    robot_isSelcet = false;
-                                    user_isSelect = false;
-
-                                    nextReplyQuestion();
-                                }
-
-                            } else {
-                                finish();
-                            }
-                        } else {
-                            if (err.equals("E0002")) {
-                                ErrorCodeTools.errorCodePrompt(AgainstActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
-                                finish();
-                                return;
-                            } else {
-                                ErrorCodeTools.errorCodePrompt(AgainstActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
-                            }
-                        }
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                        return;
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
     }
 
     /**
      * 随机题目
      */
     private void randomGroup() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.randomGroup(type)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<ApplyAnswer>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
 
-                    @Override
-                    public void onNext(DataResponse<ApplyAnswer> listDataResponse) {
-                        String err = listDataResponse.getErr();
-                        if (listDataResponse.isSuccees()) {
-                            applyAnswer = listDataResponse.getDat();
-                            if (!EncodeAndStringTool.isObjectEmpty(applyAnswer)) {
-                                if (!EncodeAndStringTool.isStringEmpty(applyAnswer.getId()) && !EncodeAndStringTool.isListEmpty(applyAnswer.getQuestions())) {
-                                    fail_id = applyAnswer.getId();
-                                    questionsBeans = applyAnswer.getQuestions();
-                                    answerNum = questionsBeans.size(); // 以实际题目为准
+        RemotingEx.doRequest(AppConst.AGAINST_RANDOM_ANSWER, ApiServiceBean.randomGroup(), new Object[]{type}, this);
 
-                                    if (answerNum == 0) {
-                                        finish();
-                                        return;
-                                    }
-                                    position = 0;
-                                    //用户选项id
-                                    userOptionId = "0";
-                                    user_checked = 0;
-
-
-                                    robot_isSelcet = false;
-                                    user_isSelect = false;
-                                    nextReplyQuestion();
-                                }
-
-                            } else {
-                                finish();
-                            }
-
-                        } else {
-                            if (err.equals("E0002")) {
-                                ErrorCodeTools.errorCodePrompt(AgainstActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
-                                finish();
-                                return;
-                            } else {
-                                ErrorCodeTools.errorCodePrompt(AgainstActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
-                            }
-                        }
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                        return;
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
     }
 
     private Handler handler = new Handler();
@@ -1168,254 +1068,12 @@ public class AgainstActivity extends BaseActivity {
     /**
      * 机器人对战
      */
-    RobotShowBean robotShowBean;
-
-    private String answer = ""; //机器人选择的答案
-
-    private double timeConsuming = 0;//机器人答题耗时
-
-    private String answerId = "";  //机器人选项
-
-    int last = 0;
-
-    private boolean robot_isSelcet = false;
-
-    private boolean user_isSelect = false;
-
-
     private void getRobotAgainst(final RobotInputAgainstBean robotInputAgainstBean) {
-        ApiService apiService = BasePresenter.create(8000);
         String inputbean = JSON.toJSONString(robotInputAgainstBean);
-        Log.i(TAG, "show_input: " + robotInputAgainstBean.toString());
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
-        apiService.against(body)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<RobotShowBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
 
-                    @Override
-                    public void onNext(DataResponse<RobotShowBean> listDataResponse) {
-                        Log.i(TAG, "onNext1: " + listDataResponse.toString());
-                        if (listDataResponse.isSuccees()) {
-                            robotShowBean = listDataResponse.getDat();
-                            if (!EncodeAndStringTool.isObjectEmpty(robotShowBean)) {
-                                Log.e("返回参数", robotShowBean.toString());
+        RemotingEx.doRequest(AppConst.AGAINST_ROBOT, ApiServiceBean.against(), new Object[]{body}, this);
 
-                                robot_isSelcet = false;
-                                user_isSelect = false;
-
-                                //机器人是否答题
-                                if ("0".equals(robotShowBean.getAnswerId())) {
-                                    robot_isSelcet = false;
-                                } else {
-                                    robot_isSelcet = true;
-                                }
-
-                                if (last == 1) {   //最后一题
-
-                                    userScore = robotShowBean.getUserScore();
-                                    robotScore = robotShowBean.getRobotScore();
-                                    finish();
-                                    Intent intent = new Intent(AgainstActivity.this, AgainstResultActivity.class);
-                                    intent.putExtra("type", type);
-                                    intent.putExtra("name", name);
-                                    intent.putExtra("my_head", getIntent().getIntExtra("my_head", 0));
-                                    intent.putExtra("my_phone", getIntent().getStringExtra("my_phone"));
-                                    intent.putExtra("it_head", getIntent().getIntExtra("it_head", 0));
-                                    intent.putExtra("it_phone", getIntent().getStringExtra("it_phone"));
-                                    intent.putExtra("score", getIntent().getStringExtra("score"));
-                                    intent.putExtra("my_score", userScore);
-                                    intent.putExtra("it_score", robotScore);
-                                    intent.putExtra("answer_id", fail_id);//答题id
-                                    startActivity(intent);
-
-                                } else {
-                                    if (!EncodeAndStringTool.isStringEmpty(robotShowBean.getAnswer())) {
-                                        answer = robotShowBean.getAnswer();
-                                    } else {
-                                        answer = "";
-                                    }
-                                    answerId = robotShowBean.getAnswerId();
-                                    robotId = robotShowBean.getRobotId();
-                                    userScore = robotShowBean.getUserScore();
-                                    robotScore = robotShowBean.getRobotScore();
-                                    timeConsuming = robotShowBean.getTimeConsuming();
-
-                                    //积分显示
-                                    tvMineScore.setText(userScore + "");
-                                    tvItScore.setText(robotScore + "");
-
-                                    initTimer();
-
-                                    // 展现题目
-                                    questionsBean = questionsBeans.get(position);
-
-                                    //题目标题RSA解密
-                                    try {
-                                        PrivateKey private_key = RSAUtils.loadPrivateKey(AppConst.private_key);
-                                        byte[] decryptByte = RSAUtils.decryptDataPrivateKey(Base64Utils.decode(questionsBean.getTitle()), private_key);
-                                        String title = new String(decryptByte);
-                                        tvQuestion.setText(title + "");
-                                        Log.e("题目标题", title);
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-
-                                    //选项
-                                    List<ApplyAnswer.QuestionsBean.OptionsBean> options = questionsBean.getOptions();
-                                    if (!EncodeAndStringTool.isListEmpty(options)) {
-                                        int answerIds[] = {R.id.btn_answer1, R.id.btn_answer2, R.id.btn_answer3, R.id.btn_answer4};
-                                        int index = 0;
-                                        for (ApplyAnswer.QuestionsBean.OptionsBean option : options) {
-                                            int id = answerIds[index];
-                                            ++index;
-                                            RadioButton btn = mapAnswerButton.get(id);
-                                            btn.setVisibility(View.VISIBLE);
-                                            //选项名称解密
-                                            try {
-                                                PrivateKey private_key = RSAUtils.loadPrivateKey(AppConst.private_key);
-                                                byte[] decryptByte = RSAUtils.decryptDataPrivateKey(Base64Utils.decode(option.getTitle()), private_key);
-                                                String title = new String(decryptByte);
-                                                btn.setText(title + "");
-                                                Log.e("选项标题", title);
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
-                                            }
-                                            btn.setEnabled(true);
-                                        }
-                                        /**
-                                         * 如果选项长度小于4个,隐藏掉多余的radioButton
-                                         */
-                                        for (int i = index; i < answerIds.length; ++i) {
-                                            int id = answerIds[i];
-                                            RadioButton btn = mapAnswerButton.get(id);
-                                            btn.setVisibility(View.INVISIBLE);
-                                        }
-
-                                        //左侧环形图片显示隐藏
-                                        if (options.size() == 1) {
-                                            mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
-                                            rlA.setAnimation(mAnimation);
-                                            mAnimation.start();
-                                            rlSelectA.setVisibility(View.VISIBLE);
-                                            rlSelectB.setVisibility(View.GONE);
-                                            rlSelectC.setVisibility(View.GONE);
-                                            rlSelectD.setVisibility(View.GONE);
-                                        } else if (options.size() == 2) {
-                                            mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
-                                            rlA.setAnimation(mAnimation);
-                                            mAnimation.start();
-                                            new Handler().postDelayed(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
-                                                    rlB.setAnimation(mAnimation);
-                                                    mAnimation.start();
-                                                }
-                                            }, 100);
-                                            rlSelectA.setVisibility(View.VISIBLE);
-                                            rlSelectB.setVisibility(View.VISIBLE);
-                                            rlSelectC.setVisibility(View.GONE);
-                                            rlSelectD.setVisibility(View.GONE);
-                                        } else if (options.size() == 3) {
-                                            mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
-                                            rlA.setAnimation(mAnimation);
-                                            mAnimation.start();
-                                            new Handler().postDelayed(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
-                                                    rlB.setAnimation(mAnimation);
-                                                    mAnimation.start();
-                                                    new Handler().postDelayed(new Runnable() {
-                                                        @Override
-                                                        public void run() {
-                                                            mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
-                                                            rlC.setAnimation(mAnimation);
-                                                            mAnimation.start();
-                                                        }
-                                                    }, 100);
-                                                }
-                                            }, 100);
-                                            rlSelectA.setVisibility(View.VISIBLE);
-                                            rlSelectB.setVisibility(View.VISIBLE);
-                                            rlSelectC.setVisibility(View.VISIBLE);
-                                            rlSelectD.setVisibility(View.GONE);
-                                        } else if (options.size() == 4) {
-                                            mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
-                                            rlA.setAnimation(mAnimation);
-                                            mAnimation.start();
-                                            new Handler().postDelayed(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
-                                                    rlB.setAnimation(mAnimation);
-                                                    mAnimation.start();
-                                                    new Handler().postDelayed(new Runnable() {
-                                                        @Override
-                                                        public void run() {
-                                                            mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
-                                                            rlC.setAnimation(mAnimation);
-                                                            mAnimation.start();
-                                                            new Handler().postDelayed(new Runnable() {
-                                                                @Override
-                                                                public void run() {
-                                                                    mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
-                                                                    rlD.setAnimation(mAnimation);
-                                                                    mAnimation.start();
-
-                                                                }
-                                                            }, 100);
-                                                        }
-                                                    }, 100);
-                                                }
-                                            }, 100);
-                                            rlSelectA.setVisibility(View.VISIBLE);
-                                            rlSelectB.setVisibility(View.VISIBLE);
-                                            rlSelectC.setVisibility(View.VISIBLE);
-                                            rlSelectD.setVisibility(View.VISIBLE);
-                                        }
-
-
-                                        //清除所有选中项
-                                        removeSelect();
-
-                                        //答题进度
-                                        tvPageEnd.setText((position + 1) + "/" + answerNum + "题");
-
-                                        //答题进度条
-                                        int progress = (int) (((position + 1) / (double) answerNum) * 100);
-                                        pbProgress.setProgress(progress);
-
-                                        // 等待用户答题
-                                        if (timer != null) {
-                                            // 启动定时器
-                                            timer.start();
-                                        }
-                                    }
-                                }
-                            }
-
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(AgainstActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
-                        }
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                        return;
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
     }
 
     @Override
@@ -1423,6 +1081,301 @@ public class AgainstActivity extends BaseActivity {
         super.onDestroy();
         if (timer != null) {
             timer.cancel();
+        }
+    }
+
+    @Override
+    public void onCompleted(String action) {
+
+    }
+
+    @Override
+    public void onFailed(String action, String message) {
+
+    }
+
+    @Override
+    public void onSucceed(String action, DataResponse<Object> listDataResponse) {
+        if (action.equals(AppConst.AGAINST_APPLY_ANSWER)) { //用户申请答题
+            String err = listDataResponse.getErr();
+            if (listDataResponse.isSuccees()) {
+                applyAnswer = (ApplyAnswer) listDataResponse.getDat();
+                if (!EncodeAndStringTool.isObjectEmpty(applyAnswer)) {
+                    if (!EncodeAndStringTool.isStringEmpty(applyAnswer.getId()) && !EncodeAndStringTool.isListEmpty(applyAnswer.getQuestions())) {
+                        fail_id = applyAnswer.getId();
+                        questionsBeans = applyAnswer.getQuestions();
+                        answerNum = questionsBeans.size(); // 以实际题目为准
+
+                        if (answerNum == 0) {
+                            finish();
+                            return;
+                        }
+                        position = 0;
+
+                        //用户选项id
+                        userOptionId = "0";
+                        user_checked = 0;
+
+                        robot_isSelcet = false;
+                        user_isSelect = false;
+
+                        nextReplyQuestion();
+                    }
+
+                } else {
+                    finish();
+                }
+            } else {
+                if (err.equals("E0002")) {
+                    ErrorCodeTools.errorCodePrompt(AgainstActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
+                    finish();
+                    return;
+                } else {
+                    ErrorCodeTools.errorCodePrompt(AgainstActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
+                }
+            }
+        } else if (action.equals(AppConst.AGAINST_RANDOM_ANSWER)) { //随机题目
+            String err = listDataResponse.getErr();
+            if (listDataResponse.isSuccees()) {
+                applyAnswer = (ApplyAnswer) listDataResponse.getDat();
+                if (!EncodeAndStringTool.isObjectEmpty(applyAnswer)) {
+                    if (!EncodeAndStringTool.isStringEmpty(applyAnswer.getId()) && !EncodeAndStringTool.isListEmpty(applyAnswer.getQuestions())) {
+                        fail_id = applyAnswer.getId();
+                        questionsBeans = applyAnswer.getQuestions();
+                        answerNum = questionsBeans.size(); // 以实际题目为准
+
+                        if (answerNum == 0) {
+                            finish();
+                            return;
+                        }
+                        position = 0;
+                        //用户选项id
+                        userOptionId = "0";
+                        user_checked = 0;
+
+
+                        robot_isSelcet = false;
+                        user_isSelect = false;
+                        nextReplyQuestion();
+                    }
+
+                } else {
+                    finish();
+                }
+
+            } else {
+                if (err.equals("E0002")) {
+                    ErrorCodeTools.errorCodePrompt(AgainstActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
+                    finish();
+                    return;
+                } else {
+                    ErrorCodeTools.errorCodePrompt(AgainstActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
+                }
+            }
+        } else if (action.equals(AppConst.AGAINST_ROBOT)) { //与机器人对战
+            if (listDataResponse.isSuccees()) {
+                robotShowBean = (RobotShowBean) listDataResponse.getDat();
+                if (!EncodeAndStringTool.isObjectEmpty(robotShowBean)) {
+                    Log.e("返回参数", robotShowBean.toString());
+
+                    robot_isSelcet = false;
+                    user_isSelect = false;
+
+                    //机器人是否答题
+                    if ("0".equals(robotShowBean.getAnswerId())) {
+                        robot_isSelcet = false;
+                    } else {
+                        robot_isSelcet = true;
+                    }
+
+                    if (last == 1) {   //最后一题
+
+                        userScore = robotShowBean.getUserScore();
+                        robotScore = robotShowBean.getRobotScore();
+                        finish();
+                        Intent intent = new Intent(AgainstActivity.this, AgainstResultActivity.class);
+                        intent.putExtra("type", type);
+                        intent.putExtra("name", name);
+                        intent.putExtra("my_head", getIntent().getIntExtra("my_head", 0));
+                        intent.putExtra("my_phone", getIntent().getStringExtra("my_phone"));
+                        intent.putExtra("it_head", getIntent().getIntExtra("it_head", 0));
+                        intent.putExtra("it_phone", getIntent().getStringExtra("it_phone"));
+                        intent.putExtra("score", getIntent().getStringExtra("score"));
+                        intent.putExtra("my_score", userScore);
+                        intent.putExtra("it_score", robotScore);
+                        intent.putExtra("answer_id", fail_id);//答题id
+                        startActivity(intent);
+
+                    } else {
+                        if (!EncodeAndStringTool.isStringEmpty(robotShowBean.getAnswer())) {
+                            answer = robotShowBean.getAnswer();
+                        } else {
+                            answer = "";
+                        }
+                        answerId = robotShowBean.getAnswerId();
+                        robotId = robotShowBean.getRobotId();
+                        userScore = robotShowBean.getUserScore();
+                        robotScore = robotShowBean.getRobotScore();
+                        timeConsuming = robotShowBean.getTimeConsuming();
+
+                        //积分显示
+                        tvMineScore.setText(userScore + "");
+                        tvItScore.setText(robotScore + "");
+
+                        initTimer();
+
+                        // 展现题目
+                        questionsBean = questionsBeans.get(position);
+
+                        //题目标题RSA解密
+                        try {
+                            PrivateKey private_key = RSAUtils.loadPrivateKey(AppConst.private_key);
+                            byte[] decryptByte = RSAUtils.decryptDataPrivateKey(Base64Utils.decode(questionsBean.getTitle()), private_key);
+                            String title = new String(decryptByte);
+                            tvQuestion.setText(title + "");
+                            Log.e("题目标题", title);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        //选项
+                        List<ApplyAnswer.QuestionsBean.OptionsBean> options = questionsBean.getOptions();
+                        if (!EncodeAndStringTool.isListEmpty(options)) {
+                            int answerIds[] = {R.id.btn_answer1, R.id.btn_answer2, R.id.btn_answer3, R.id.btn_answer4};
+                            int index = 0;
+                            for (ApplyAnswer.QuestionsBean.OptionsBean option : options) {
+                                int id = answerIds[index];
+                                ++index;
+                                RadioButton btn = mapAnswerButton.get(id);
+                                btn.setVisibility(View.VISIBLE);
+                                //选项名称解密
+                                try {
+                                    PrivateKey private_key = RSAUtils.loadPrivateKey(AppConst.private_key);
+                                    byte[] decryptByte = RSAUtils.decryptDataPrivateKey(Base64Utils.decode(option.getTitle()), private_key);
+                                    String title = new String(decryptByte);
+                                    btn.setText(title + "");
+                                    Log.e("选项标题", title);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                btn.setEnabled(true);
+                            }
+                            /**
+                             * 如果选项长度小于4个,隐藏掉多余的radioButton
+                             */
+                            for (int i = index; i < answerIds.length; ++i) {
+                                int id = answerIds[i];
+                                RadioButton btn = mapAnswerButton.get(id);
+                                btn.setVisibility(View.INVISIBLE);
+                            }
+
+                            //左侧环形图片显示隐藏
+                            if (options.size() == 1) {
+                                mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                rlA.setAnimation(mAnimation);
+                                mAnimation.start();
+                                rlSelectA.setVisibility(View.VISIBLE);
+                                rlSelectB.setVisibility(View.GONE);
+                                rlSelectC.setVisibility(View.GONE);
+                                rlSelectD.setVisibility(View.GONE);
+                            } else if (options.size() == 2) {
+                                mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                rlA.setAnimation(mAnimation);
+                                mAnimation.start();
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                        rlB.setAnimation(mAnimation);
+                                        mAnimation.start();
+                                    }
+                                }, 100);
+                                rlSelectA.setVisibility(View.VISIBLE);
+                                rlSelectB.setVisibility(View.VISIBLE);
+                                rlSelectC.setVisibility(View.GONE);
+                                rlSelectD.setVisibility(View.GONE);
+                            } else if (options.size() == 3) {
+                                mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                rlA.setAnimation(mAnimation);
+                                mAnimation.start();
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                        rlB.setAnimation(mAnimation);
+                                        mAnimation.start();
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                                rlC.setAnimation(mAnimation);
+                                                mAnimation.start();
+                                            }
+                                        }, 100);
+                                    }
+                                }, 100);
+                                rlSelectA.setVisibility(View.VISIBLE);
+                                rlSelectB.setVisibility(View.VISIBLE);
+                                rlSelectC.setVisibility(View.VISIBLE);
+                                rlSelectD.setVisibility(View.GONE);
+                            } else if (options.size() == 4) {
+                                mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                rlA.setAnimation(mAnimation);
+                                mAnimation.start();
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                        rlB.setAnimation(mAnimation);
+                                        mAnimation.start();
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                                rlC.setAnimation(mAnimation);
+                                                mAnimation.start();
+                                                new Handler().postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        mAnimation = AnimationUtils.loadAnimation(AgainstActivity.this, R.anim.select_alpha);
+                                                        rlD.setAnimation(mAnimation);
+                                                        mAnimation.start();
+
+                                                    }
+                                                }, 100);
+                                            }
+                                        }, 100);
+                                    }
+                                }, 100);
+                                rlSelectA.setVisibility(View.VISIBLE);
+                                rlSelectB.setVisibility(View.VISIBLE);
+                                rlSelectC.setVisibility(View.VISIBLE);
+                                rlSelectD.setVisibility(View.VISIBLE);
+                            }
+
+
+                            //清除所有选中项
+                            removeSelect();
+
+                            //答题进度
+                            tvPageEnd.setText((position + 1) + "/" + answerNum + "题");
+
+                            //答题进度条
+                            int progress = (int) (((position + 1) / (double) answerNum) * 100);
+                            pbProgress.setProgress(progress);
+
+                            // 等待用户答题
+                            if (timer != null) {
+                                // 启动定时器
+                                timer.start();
+                            }
+                        }
+                    }
+                }
+
+            } else {
+                ErrorCodeTools.errorCodePrompt(AgainstActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
+            }
         }
     }
 }

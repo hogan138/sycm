@@ -16,18 +16,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ConvertUtils;
-import com.blankj.utilcode.util.TimeUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.PrizeHistoryAdapter;
 import com.shuyun.qapp.animation.MyLayoutAnimationHelper;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.ExchangeHistoryBean;
-import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.GlideUtils;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.view.RoundImageView;
 
@@ -37,10 +36,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 积分夺宝----兑换记录
@@ -195,73 +190,65 @@ public class PrizeHistoryFragment extends Fragment implements View.OnClickListen
     List<ExchangeHistoryBean.TreasureUserChangeDataListBean> treasureUserChangeDataListBeanList = new ArrayList<>();
 
     private void loadHomeGroups(final int type, final int page) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.ExchangeHistory(SaveUserInfo.getInstance(getActivity()).getUserInfo("scheduleId"), type, page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<ExchangeHistoryBean>>() {
 
-                    @Override
-                    public void onSubscribe(Disposable d) {
+        RemotingEx.doRequest(ApiServiceBean.ExchangeHistory(), new Object[]{SaveUserInfo.getInstance(getActivity()).getUserInfo("scheduleId"), type, page}, new OnRemotingCallBackListener<ExchangeHistoryBean>() {
+            @Override
+            public void onCompleted(String action) {
+
+            }
+
+            @Override
+            public void onFailed(String action, String message) {
+
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<ExchangeHistoryBean> listDataResponse) {
+                if (listDataResponse.isSuccees()) {
+                    ExchangeHistoryBean groupAgainstBean = listDataResponse.getDat();
+
+                    GlideUtils.LoadImage(getActivity(), groupAgainstBean.getMainPic(), ivPicture);
+                    tvName.setText(groupAgainstBean.getPrizeName());
+                    tvContent.setText(groupAgainstBean.getPrizePurpose());
+
+                    if (groupAgainstBean.getScheduleStatus() == 0) {
+                        //未开奖
+                        tvWinning.setVisibility(View.GONE);
+                    } else {
+                        //已开奖
+                        tvWinning.setVisibility(View.VISIBLE);
+                        tvAll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ConvertUtils.dp2px(50), 1));
+                        tvMine.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ConvertUtils.dp2px(50), 1));
+                        tvWinning.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ConvertUtils.dp2px(50), 2));
                     }
 
-                    @Override
-                    public void onNext(DataResponse<ExchangeHistoryBean> listDataResponse) {
-                        if (listDataResponse.isSuccees()) {
-                            ExchangeHistoryBean groupAgainstBean = listDataResponse.getDat();
-
-                            GlideUtils.LoadImage(getActivity(), groupAgainstBean.getMainPic(), ivPicture);
-                            tvName.setText(groupAgainstBean.getPrizeName());
-                            tvContent.setText(groupAgainstBean.getPrizePurpose());
-
-                            if (groupAgainstBean.getScheduleStatus() == 0) {
-                                //未开奖
-                                tvWinning.setVisibility(View.GONE);
-                            } else {
-                                //已开奖
-                                tvWinning.setVisibility(View.VISIBLE);
-                                tvAll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ConvertUtils.dp2px(50), 1));
-                                tvMine.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ConvertUtils.dp2px(50), 1));
-                                tvWinning.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ConvertUtils.dp2px(50), 2));
-                            }
-
-                            if (EncodeAndStringTool.isListEmpty(groupAgainstBean.getTreasureUserChangeDataList())) {
-                                if (page == 0) {
-                                    rvRecord.setAdapter(freeGroupAdapter);
-                                }
-                                tvLoadMore.setText("没有更多数据了");
-                            } else {
-                                if (page == 0) {
-                                    treasureUserChangeDataListBeanList.addAll(groupAgainstBean.getTreasureUserChangeDataList());
-                                    rvRecord.setAdapter(freeGroupAdapter);
-                                    //进入动画
-                                    LayoutAnimationController controller = new LayoutAnimationController(MyLayoutAnimationHelper.getAnimationSetFromTop());
-                                    controller.setDelay(0.1f);
-                                    rvRecord.setLayoutAnimation(controller);
-                                    rvRecord.scheduleLayoutAnimation();
-                                } else {
-                                    treasureUserChangeDataListBeanList.addAll(groupAgainstBean.getTreasureUserChangeDataList());
-                                    freeGroupAdapter.notifyDataSetChanged();
-                                }
-
-                            }
+                    if (EncodeAndStringTool.isListEmpty(groupAgainstBean.getTreasureUserChangeDataList())) {
+                        if (page == 0) {
+                            rvRecord.setAdapter(freeGroupAdapter);
+                        }
+                        tvLoadMore.setText("没有更多数据了");
+                    } else {
+                        if (page == 0) {
+                            treasureUserChangeDataListBeanList.addAll(groupAgainstBean.getTreasureUserChangeDataList());
+                            rvRecord.setAdapter(freeGroupAdapter);
+                            //进入动画
+                            LayoutAnimationController controller = new LayoutAnimationController(MyLayoutAnimationHelper.getAnimationSetFromTop());
+                            controller.setDelay(0.1f);
+                            rvRecord.setLayoutAnimation(controller);
+                            rvRecord.scheduleLayoutAnimation();
                         } else {
-                            ErrorCodeTools.errorCodePrompt(getActivity(), listDataResponse.getErr(), listDataResponse.getMsg());
+                            treasureUserChangeDataListBeanList.addAll(groupAgainstBean.getTreasureUserChangeDataList());
+                            freeGroupAdapter.notifyDataSetChanged();
                         }
 
                     }
+                } else {
+                    ErrorCodeTools.errorCodePrompt(getActivity(), listDataResponse.getErr(), listDataResponse.getMsg());
+                }
+            }
+        });
 
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
     }
 
 }

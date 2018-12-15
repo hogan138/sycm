@@ -26,7 +26,10 @@ import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SyckApplication;
 import com.shuyun.qapp.ui.answer.AnswerHistoryActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
@@ -57,7 +60,7 @@ import static com.blankj.utilcode.util.SizeUtils.dp2px;
  * 答题对战结果页
  */
 
-public class AgainstResultActivity extends BaseActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface {
+public class AgainstResultActivity extends BaseActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface, OnRemotingCallBackListener<Object> {
 
     @BindView(R.id.iv_left_icon)
     ImageView ivLeftIcon;
@@ -174,38 +177,9 @@ public class AgainstResultActivity extends BaseActivity implements View.OnClickL
      * 答题对战结束
      */
     private void loadCompleteAnswAgainst(int isWin) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.completeAnswAgainst(type, isWin)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<Integer>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
 
-                    @Override
-                    public void onNext(DataResponse<Integer> listDataResponse) {
-                        if (listDataResponse.isSuccees()) {
-                            if (type == 0) { //自由对战不提示积分情况
-                            } else {
-                                Toast.makeText(AgainstResultActivity.this, "积分 +" + listDataResponse.getDat(), Toast.LENGTH_SHORT).show();
-                            }
-                        } else {//错误码提示
-                            ErrorCodeTools.errorCodePrompt(AgainstResultActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
-                        }
-                    }
+        RemotingEx.doRequest(AppConst.AGAINST_RESULT, ApiServiceBean.completeAnswAgainst(), new Object[]{type, isWin}, this);
 
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
     }
 
     @Override
@@ -374,13 +348,18 @@ public class AgainstResultActivity extends BaseActivity implements View.OnClickL
     }
 
     /**
-     * 邀请分享
+     * 分享
      *
      * @param channl 分享渠道id 1:微信分享;2 微信朋友圈分享 3:二维码分享
      */
     SharedBean sharedBean1;
+    private static int share_style = 0;
 
     private void loadBattleAnswerShared(final int channl) {
+
+        share_style = channl;
+        RemotingEx.doRequest(AppConst.AGAINST_RESULT_SHARE, ApiServiceBean.battleAnswerShared1(), new Object[]{channl, type}, this);
+
         ApiService apiService = BasePresenter.create(8000);
         apiService.battleAnswerShared1(channl, type)
                 .subscribeOn(Schedulers.io())
@@ -393,20 +372,6 @@ public class AgainstResultActivity extends BaseActivity implements View.OnClickL
                     @Override
                     public void onNext(DataResponse<SharedBean> dataResponse) {
                         Log.i(TAG, "loadAppShared==onNext: " + dataResponse.toString());
-                        if (dataResponse.isSuccees()) {
-                            SharedBean sharedBean = dataResponse.getDat();
-                            if (!EncodeAndStringTool.isObjectEmpty(sharedBean)) {
-                                if (channl == 3) {
-                                    sharedBean1 = dataResponse.getDat();
-                                    //显示二维码弹框
-                                    showQr();
-                                } else {
-                                    wechatShare(sharedBean);
-                                }
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(AgainstResultActivity.this, dataResponse.getErr(), dataResponse.getMsg());
-                        }
                     }
 
 
@@ -496,35 +461,9 @@ public class AgainstResultActivity extends BaseActivity implements View.OnClickL
      * @param channel 1:微信朋友圈 2:微信好友
      */
     private void loadSharedSure(Long id, int result, int channel) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.sharedConfirm(id, result, channel)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
 
-                    @Override
-                    public void onNext(DataResponse dataResponse) {
-                        if (dataResponse.isSuccees()) {
+        RemotingEx.doRequest(AppConst.AGAINST_SHARE_CONFIM, ApiServiceBean.sharedConfirm(), new Object[]{id, result, channel}, this);
 
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(AgainstResultActivity.this, dataResponse.getErr(), dataResponse.getMsg());
-                        }
-                    }
-
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
     }
 
     @Override
@@ -541,4 +480,45 @@ public class AgainstResultActivity extends BaseActivity implements View.OnClickL
         }
     }
 
+    @Override
+    public void onCompleted(String action) {
+
+    }
+
+    @Override
+    public void onFailed(String action, String message) {
+
+    }
+
+    @Override
+    public void onSucceed(String action, DataResponse<Object> dataResponse) {
+        if (action.equals(AppConst.AGAINST_RESULT)) { //对战结果
+            if (dataResponse.isSuccees()) {
+                if (type == 0) { //自由对战不提示积分情况
+                } else {
+                    Toast.makeText(AgainstResultActivity.this, "积分 +" + dataResponse.getDat(), Toast.LENGTH_SHORT).show();
+                }
+            } else {//错误码提示
+                ErrorCodeTools.errorCodePrompt(AgainstResultActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+            }
+        } else if (action.equals(AppConst.AGAINST_RESULT_SHARE)) {
+            if (dataResponse.isSuccees()) {
+                SharedBean sharedBean = (SharedBean) dataResponse.getDat();
+                if (!EncodeAndStringTool.isObjectEmpty(sharedBean)) {
+                    if (share_style == 3) {
+                        sharedBean1 = (SharedBean) dataResponse.getDat();
+                        //显示二维码弹框
+                        showQr();
+                    } else {
+                        wechatShare(sharedBean);
+                    }
+                }
+            } else {
+                ErrorCodeTools.errorCodePrompt(AgainstResultActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+            }
+        } else if (action.equals(AppConst.AGAINST_SHARE_CONFIM)) {//分享确认
+
+        }
+
+    }
 }

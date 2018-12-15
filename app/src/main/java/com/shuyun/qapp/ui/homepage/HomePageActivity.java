@@ -39,9 +39,12 @@ import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.InviteBean;
 import com.shuyun.qapp.event.MessageEvent;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.HeartBeatManager;
 import com.shuyun.qapp.net.LoginDataManager;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.activity.ActivityFragment;
 import com.shuyun.qapp.ui.classify.ClassifyFragment;
 import com.shuyun.qapp.ui.login.LoginActivity;
@@ -99,7 +102,6 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
      */
     private List<Fragment> fragments = new ArrayList<>();
     public static boolean isForeground = false; //极光推送
-    private int i = 0;//当前下标
     private Handler mHandler = new Handler();
     //获取最新活动显示角标
     private String show = "";
@@ -290,43 +292,36 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         String myCode = encryptMD5ToString(signString);
         String signCode = getCode(myCode);
 
-        final ApiService apiService = BasePresenter.create(8000);
-        apiService.updateVersion(APKVersionCodeTools.getVerName(this), AppConst.DEV_ID, AppConst.APP_ID, AppConst.V, curTime, signCode)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<AppVersionBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+        RemotingEx.doRequest(ApiServiceBean.updateVersion(), new Object[]{APKVersionCodeTools.getVerName(this), AppConst.DEV_ID, AppConst.APP_ID, AppConst.V, curTime, signCode}, new OnRemotingCallBackListener<AppVersionBean>() {
+            @Override
+            public void onCompleted(String action) {
 
-                    @Override
-                    public void onNext(DataResponse<AppVersionBean> loginResponse) {
-                        if (loginResponse.isSuccees()) {
-                            AppVersionBean appVersionBean = loginResponse.getDat();
-                            if (!EncodeAndStringTool.isObjectEmpty(appVersionBean)) {
-                                Long mode = appVersionBean.getMode();
-                                if (mode == 0) {
-                                } else if (mode == 1) {
-                                } else if (mode == 2) {
-                                    updateDialog(appVersionBean.getUrl());
-                                }
-                            }
+            }
 
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(HomePageActivity.this, loginResponse.getErr(), loginResponse.getMsg());
+            @Override
+            public void onFailed(String action, String message) {
+
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<AppVersionBean> loginResponse) {
+                if (loginResponse.isSuccees()) {
+                    AppVersionBean appVersionBean = loginResponse.getDat();
+                    if (!EncodeAndStringTool.isObjectEmpty(appVersionBean)) {
+                        Long mode = appVersionBean.getMode();
+                        if (mode == 0) {
+                        } else if (mode == 1) {
+                        } else if (mode == 2) {
+                            updateDialog(appVersionBean.getUrl());
                         }
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
+                } else {
+                    ErrorCodeTools.errorCodePrompt(HomePageActivity.this, loginResponse.getErr(), loginResponse.getMsg());
+                }
+            }
+        });
 
-                    @Override
-                    public void onComplete() {
-                    }
-                });
     }
 
     private void updateDialog(final String url) {
@@ -462,136 +457,113 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
     }
 
     private void getActivityShow(final int i) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.getActivityShow()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<ActivityTimeBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
 
-                    @Override
-                    public void onNext(DataResponse<ActivityTimeBean> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            ActivityTimeBean activityTimeBean = dataResponse.getDat();
-                            if ("1".equals(activityTimeBean.getShow())) {
-                                show = "1";
-                                if (i == 2) {
-                                    //显示活动角标
-                                    Drawable drawable = getResources().getDrawable(R.mipmap.activity_s);
-                                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
-                                    radioActivity.setCompoundDrawables(null, drawable, null, null);
-                                } else {
-                                    if (index == 2) {
-                                        Drawable drawable = getResources().getDrawable(R.mipmap.activity_s);
-                                        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
-                                        radioActivity.setCompoundDrawables(null, drawable, null, null);
-                                    } else {
-                                        //显示活动角标
-                                        Drawable drawable = getResources().getDrawable(R.mipmap.activity_n_red);
-                                        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
-                                        radioActivity.setCompoundDrawables(null, drawable, null, null);
-                                    }
+        RemotingEx.doRequest(ApiServiceBean.getActivityShow(), new OnRemotingCallBackListener<ActivityTimeBean>() {
+            @Override
+            public void onCompleted(String action) {
 
-                                }
+            }
+
+            @Override
+            public void onFailed(String action, String message) {
+
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<ActivityTimeBean> dataResponse) {
+                if (dataResponse.isSuccees()) {
+                    ActivityTimeBean activityTimeBean = dataResponse.getDat();
+                    if ("1".equals(activityTimeBean.getShow())) {
+                        show = "1";
+                        if (i == 2) {
+                            //显示活动角标
+                            Drawable drawable = getResources().getDrawable(R.mipmap.activity_s);
+                            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
+                            radioActivity.setCompoundDrawables(null, drawable, null, null);
+                        } else {
+                            if (index == 2) {
+                                Drawable drawable = getResources().getDrawable(R.mipmap.activity_s);
+                                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
+                                radioActivity.setCompoundDrawables(null, drawable, null, null);
                             } else {
-                                show = "0";
+                                //显示活动角标
+                                Drawable drawable = getResources().getDrawable(R.mipmap.activity_n_red);
+                                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
+                                radioActivity.setCompoundDrawables(null, drawable, null, null);
                             }
 
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(HomePageActivity.this, dataResponse.getErr(), dataResponse.getMsg());
                         }
-
+                    } else {
+                        show = "0";
                     }
 
+                } else {
+                    ErrorCodeTools.errorCodePrompt(HomePageActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                }
+            }
+        });
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
     }
 
     //活动专区点击
     private void clickActivity() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.clickActivity()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<String>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
 
-                    @Override
-                    public void onNext(DataResponse<String> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(HomePageActivity.this, dataResponse.getErr(), dataResponse.getMsg());
-                        }
+        RemotingEx.doRequest(ApiServiceBean.clickActivity(), new OnRemotingCallBackListener<String>() {
+            @Override
+            public void onCompleted(String action) {
 
-                    }
+            }
 
+            @Override
+            public void onFailed(String action, String message) {
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
+            }
 
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+            @Override
+            public void onSucceed(String action, DataResponse<String> dataResponse) {
+                if (dataResponse.isSuccees()) {
+                } else {
+                    ErrorCodeTools.errorCodePrompt(HomePageActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                }
+            }
+        });
+
     }
 
     //邀请有奖
     private void invite() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.inviteShare()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<InviteBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
 
-                    @Override
-                    public void onNext(DataResponse<InviteBean> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            InviteBean inviteBean = dataResponse.getDat();
-                            //邀请有奖
-                            try {
-                                if (inviteBean.getShare() == 1) {
-                                    SharedPrefrenceTool.put(HomePageActivity.this, "share", inviteBean.getShare());//是否参与邀请分享 1——参与邀请
-                                } else {
-                                    SharedPrefrenceTool.put(HomePageActivity.this, "share", inviteBean.getShare());//是否参与邀请分享 1——参与邀请
-                                }
-                            } catch (Exception e) {
+        RemotingEx.doRequest(ApiServiceBean.inviteShare(), new OnRemotingCallBackListener<InviteBean>() {
+            @Override
+            public void onCompleted(String action) {
 
-                            }
+            }
+
+            @Override
+            public void onFailed(String action, String message) {
+
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<InviteBean> dataResponse) {
+                if (dataResponse.isSuccees()) {
+                    InviteBean inviteBean = dataResponse.getDat();
+                    //邀请有奖
+                    try {
+                        if (inviteBean.getShare() == 1) {
+                            SharedPrefrenceTool.put(HomePageActivity.this, "share", inviteBean.getShare());//是否参与邀请分享 1——参与邀请
                         } else {
-                            ErrorCodeTools.errorCodePrompt(HomePageActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                            SharedPrefrenceTool.put(HomePageActivity.this, "share", inviteBean.getShare());//是否参与邀请分享 1——参与邀请
                         }
+                    } catch (Exception e) {
 
                     }
+                } else {
+                    ErrorCodeTools.errorCodePrompt(HomePageActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                }
+            }
+        });
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
     }
 
     @Override

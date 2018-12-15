@@ -21,7 +21,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.TimeUtils;
 import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.callback.ConfigButton;
@@ -33,12 +32,13 @@ import com.mylhyl.circledialog.params.TextParams;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.MyPagerAdapter;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.PrizeDetailBean;
 import com.shuyun.qapp.bean.SharedBean;
-import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SyckApplication;
 import com.shuyun.qapp.ui.webview.WebDetailFragment;
 import com.shuyun.qapp.utils.CommonPopUtil;
@@ -47,7 +47,6 @@ import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.OnMultiClickListener;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ScannerUtils;
 import com.shuyun.qapp.view.RealNamePopupUtil;
@@ -63,10 +62,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 import static com.blankj.utilcode.util.SizeUtils.dp2px;
 
@@ -203,56 +198,48 @@ public class PrizeDetailsActivity extends BaseActivity implements View.OnClickLi
      * 查询宝贝详情
      */
     private void getDetailInfo(String scheduleId) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.getDetailInfo(scheduleId)//分页加载0
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<PrizeDetailBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+        RemotingEx.doRequest(ApiServiceBean.getDetailInfo(), new Object[]{scheduleId}, new OnRemotingCallBackListener<PrizeDetailBean>() {
+            @Override
+            public void onCompleted(String action) {
 
-                    @Override
-                    public void onNext(DataResponse<PrizeDetailBean> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            PrizeDetailBean prizeDetailBean = dataResponse.getDat();
-                            if (prizeDetailBean.getScheduleStatus() == 0) {
-                                //未开奖
-                                llExchange.setVisibility(View.VISIBLE);
-                                tvScore.setText(prizeDetailBean.getUserBP() + "");
-                                tvReduceScore.setText("消耗" + prizeDetailBean.getBpcons() + "积分");
+            }
 
-                                if (prizeDetailBean.getUserBP().longValue() >= prizeDetailBean.getBpcons().longValue()) {
-                                    //可以兑换
-                                    rlExchange.setBackgroundColor(Color.parseColor("#0194ec"));
-                                    rlExchange.setClickable(true);
-                                } else {
-                                    //积分不足
-                                    rlExchange.setBackgroundColor(Color.parseColor("#999999"));
-                                    rlExchange.setClickable(false);
-                                }
-                                SaveUserInfo.getInstance(PrizeDetailsActivity.this).setUserInfo("ScheduleStatus", "0");
-                            } else {
-                                //已开奖
-                                llLookResult.setVisibility(View.VISIBLE);
-                                SaveUserInfo.getInstance(PrizeDetailsActivity.this).setUserInfo("ScheduleStatus", "1");
-                            }
+            @Override
+            public void onFailed(String action, String message) {
 
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<PrizeDetailBean> dataResponse) {
+                if (dataResponse.isSuccees()) {
+                    PrizeDetailBean prizeDetailBean = dataResponse.getDat();
+                    if (prizeDetailBean.getScheduleStatus() == 0) {
+                        //未开奖
+                        llExchange.setVisibility(View.VISIBLE);
+                        tvScore.setText(prizeDetailBean.getUserBP() + "");
+                        tvReduceScore.setText("消耗" + prizeDetailBean.getBpcons() + "积分");
+
+                        if (prizeDetailBean.getUserBP().longValue() >= prizeDetailBean.getBpcons().longValue()) {
+                            //可以兑换
+                            rlExchange.setBackgroundColor(Color.parseColor("#0194ec"));
+                            rlExchange.setClickable(true);
                         } else {
-                            ErrorCodeTools.errorCodePrompt(PrizeDetailsActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                            //积分不足
+                            rlExchange.setBackgroundColor(Color.parseColor("#999999"));
+                            rlExchange.setClickable(false);
                         }
+                        SaveUserInfo.getInstance(PrizeDetailsActivity.this).setUserInfo("ScheduleStatus", "0");
+                    } else {
+                        //已开奖
+                        llLookResult.setVisibility(View.VISIBLE);
+                        SaveUserInfo.getInstance(PrizeDetailsActivity.this).setUserInfo("ScheduleStatus", "1");
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+                } else {
+                    ErrorCodeTools.errorCodePrompt(PrizeDetailsActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                }
+            }
+        });
     }
 
 
@@ -260,90 +247,75 @@ public class PrizeDetailsActivity extends BaseActivity implements View.OnClickLi
      * 查询宝贝详情1<用来刷新积分>
      */
     private void getDetailInfo1(String scheduleId) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.getDetailInfo(scheduleId)//分页加载0
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<PrizeDetailBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
 
-                    @Override
-                    public void onNext(DataResponse<PrizeDetailBean> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            PrizeDetailBean prizeDetailBean = dataResponse.getDat();
-                            if (prizeDetailBean.getScheduleStatus() == 0) {
-                                //未开奖
-                                tvScore.setText(prizeDetailBean.getUserBP() + "");
-                                tvReduceScore.setText("消耗" + prizeDetailBean.getBpcons() + "积分");
+        RemotingEx.doRequest(ApiServiceBean.getDetailInfo(), new Object[]{scheduleId}, new OnRemotingCallBackListener<PrizeDetailBean>() {
+            @Override
+            public void onCompleted(String action) {
 
-                                if (prizeDetailBean.getUserBP().longValue() >= prizeDetailBean.getBpcons().longValue()) {
-                                    //可以兑换
-                                    rlExchange.setBackgroundColor(Color.parseColor("#0194ec"));
-                                    rlExchange.setClickable(true);
-                                } else {
-                                    //积分不足
-                                    rlExchange.setBackgroundColor(Color.parseColor("#999999"));
-                                    rlExchange.setClickable(false);
-                                }
-                                SaveUserInfo.getInstance(PrizeDetailsActivity.this).setUserInfo("ScheduleStatus", "0");
-                            } else {
-                                //已开奖
-                                SaveUserInfo.getInstance(PrizeDetailsActivity.this).setUserInfo("ScheduleStatus", "1");
-                            }
+            }
 
+            @Override
+            public void onFailed(String action, String message) {
+
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<PrizeDetailBean> dataResponse) {
+                if (dataResponse.isSuccees()) {
+                    PrizeDetailBean prizeDetailBean = dataResponse.getDat();
+                    if (prizeDetailBean.getScheduleStatus() == 0) {
+                        //未开奖
+                        tvScore.setText(prizeDetailBean.getUserBP() + "");
+                        tvReduceScore.setText("消耗" + prizeDetailBean.getBpcons() + "积分");
+
+                        if (prizeDetailBean.getUserBP().longValue() >= prizeDetailBean.getBpcons().longValue()) {
+                            //可以兑换
+                            rlExchange.setBackgroundColor(Color.parseColor("#0194ec"));
+                            rlExchange.setClickable(true);
                         } else {
-                            ErrorCodeTools.errorCodePrompt(PrizeDetailsActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                            //积分不足
+                            rlExchange.setBackgroundColor(Color.parseColor("#999999"));
+                            rlExchange.setClickable(false);
                         }
+                        SaveUserInfo.getInstance(PrizeDetailsActivity.this).setUserInfo("ScheduleStatus", "0");
+                    } else {
+                        //已开奖
+                        SaveUserInfo.getInstance(PrizeDetailsActivity.this).setUserInfo("ScheduleStatus", "1");
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
+                } else {
+                    ErrorCodeTools.errorCodePrompt(PrizeDetailsActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                }
+            }
+        });
 
-                    @Override
-                    public void onComplete() {
-                    }
-                });
     }
 
     /**
      * 确认兑换
      */
     private void enterExchange(String scheduleId) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.enterExchange(scheduleId)//分页加载0
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+        RemotingEx.doRequest(ApiServiceBean.enterExchange(), new Object[]{scheduleId}, new OnRemotingCallBackListener<Object>() {
+            @Override
+            public void onCompleted(String action) {
 
-                    @Override
-                    public void onNext(DataResponse dataResponse) {
-                        LoadingBar.cancel(rlMain);
-                        if (dataResponse.isSuccees()) {
-                            startActivity(new Intent(PrizeDetailsActivity.this, ExchangeResultActivity.class));
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(PrizeDetailsActivity.this, dataResponse.getErr(), dataResponse.getMsg());
-                        }
-                    }
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        LoadingBar.cancel(rlMain);
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
+            @Override
+            public void onFailed(String action, String message) {
+                LoadingBar.cancel(rlMain);
+            }
 
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+            @Override
+            public void onSucceed(String action, DataResponse<Object> dataResponse) {
+                LoadingBar.cancel(rlMain);
+                if (dataResponse.isSuccees()) {
+                    startActivity(new Intent(PrizeDetailsActivity.this, ExchangeResultActivity.class));
+                } else {
+                    ErrorCodeTools.errorCodePrompt(PrizeDetailsActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                }
+            }
+        });
     }
 
     /**
@@ -542,45 +514,37 @@ public class PrizeDetailsActivity extends BaseActivity implements View.OnClickLi
     SharedBean sharedBean1;
 
     private void loadBattleAnswerShared(final int channl) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.prizeShare(channl, getIntent().getStringExtra("scheduleId"))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<SharedBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
 
-                    @Override
-                    public void onNext(DataResponse<SharedBean> dataResponse) {
-                        Log.i(TAG, "loadAppShared==onNext: " + dataResponse.toString());
-                        if (dataResponse.isSuccees()) {
-                            SharedBean sharedBean = dataResponse.getDat();
-                            if (!EncodeAndStringTool.isObjectEmpty(sharedBean)) {
-                                if (channl == 3) {
-                                    sharedBean1 = dataResponse.getDat();
-                                    //显示二维码弹框
-                                    showQr();
-                                } else {
-                                    wechatShare(sharedBean);
-                                }
-                            }
+        RemotingEx.doRequest(ApiServiceBean.prizeShare(), new Object[]{channl, getIntent().getStringExtra("scheduleId")}, new OnRemotingCallBackListener<SharedBean>() {
+            @Override
+            public void onCompleted(String action) {
+
+            }
+
+            @Override
+            public void onFailed(String action, String message) {
+
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<SharedBean> dataResponse) {
+                if (dataResponse.isSuccees()) {
+                    SharedBean sharedBean = dataResponse.getDat();
+                    if (!EncodeAndStringTool.isObjectEmpty(sharedBean)) {
+                        if (channl == 3) {
+                            sharedBean1 = dataResponse.getDat();
+                            //显示二维码弹框
+                            showQr();
                         } else {
-                            ErrorCodeTools.errorCodePrompt(PrizeDetailsActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                            wechatShare(sharedBean);
                         }
                     }
+                } else {
+                    ErrorCodeTools.errorCodePrompt(PrizeDetailsActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                }
+            }
+        });
 
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
     }
 
     /**
@@ -661,35 +625,27 @@ public class PrizeDetailsActivity extends BaseActivity implements View.OnClickLi
      * @param channel 1:微信朋友圈 2:微信好友
      */
     private void loadSharedSure(Long id, int result, int channel) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.sharedConfirm(id, result, channel)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+        RemotingEx.doRequest(ApiServiceBean.sharedConfirm(), new Object[]{id, result, channel}, new OnRemotingCallBackListener<Object>() {
+            @Override
+            public void onCompleted(String action) {
 
-                    @Override
-                    public void onNext(DataResponse dataResponse) {
-                        if (dataResponse.isSuccees()) {
+            }
 
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(PrizeDetailsActivity.this, dataResponse.getErr(), dataResponse.getMsg());
-                        }
-                    }
+            @Override
+            public void onFailed(String action, String message) {
 
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
+            @Override
+            public void onSucceed(String action, DataResponse<Object> dataResponse) {
+                if (dataResponse.isSuccees()) {
 
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+                } else {
+                    ErrorCodeTools.errorCodePrompt(PrizeDetailsActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                }
+            }
+        });
+
     }
 
 

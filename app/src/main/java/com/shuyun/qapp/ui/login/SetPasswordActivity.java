@@ -1,7 +1,6 @@
 package com.shuyun.qapp.ui.login;
 
 import android.animation.ObjectAnimator;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -16,24 +15,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.EncryptUtils;
-import com.blankj.utilcode.util.TimeUtils;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.LoginResponse;
 import com.shuyun.qapp.bean.Msg;
-import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.LoginDataManager;
-import com.shuyun.qapp.ui.homepage.HomePageActivity;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.MyActivityManager1;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 
@@ -41,10 +37,6 @@ import org.litepal.crud.DataSupport;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 import static com.shuyun.qapp.utils.EncodeAndStringTool.encryptMD5ToString;
 import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
@@ -252,46 +244,39 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
             DataSupport.deleteAll(Msg.class);//清空数据库中消息
         }
         String deviceId = SmAntiFraud.getDeviceId();
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.modifyPassWord(phoneNum, password, AppConst.DEV_ID, AppConst.APP_ID, salt, tsn, deviceId, APKVersionCodeTools.getVerName(this), AppConst.V, curTime, signCode)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<LoginResponse>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
+
+        RemotingEx.doRequest(ApiServiceBean.modifyPassWord(), new Object[]{phoneNum, password, AppConst.DEV_ID, AppConst.APP_ID, salt, tsn, deviceId, APKVersionCodeTools.getVerName(this), AppConst.V, curTime, signCode}, new OnRemotingCallBackListener<LoginResponse>() {
+            @Override
+            public void onCompleted(String action) {
+
+            }
+
+            @Override
+            public void onFailed(String action, String message) {
+
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<LoginResponse> loginResponse) {
+                LoginResponse changeResult = loginResponse.getDat();
+                if (loginResponse.isSuccees()) {
+                    if (!EncodeAndStringTool.isObjectEmpty(changeResult)) {
+                        SharedPrefrenceTool.put(SetPasswordActivity.this, "salt", salt);
+                        SharedPrefrenceTool.put(SetPasswordActivity.this, "token", changeResult.getToken());
+                        SharedPrefrenceTool.put(SetPasswordActivity.this, "expire", changeResult.getExpire());//token的有效期
+                        SharedPrefrenceTool.put(SetPasswordActivity.this, "key", changeResult.getKey());//对称加密的秘钥。
+                        SharedPrefrenceTool.put(SetPasswordActivity.this, "bind", changeResult.getBind());//是否绑定用户。
+                        SharedPrefrenceTool.put(SetPasswordActivity.this, "random", changeResult.getRandom());//登录成果后，平台随机生成的字符串
+                        AppConst.loadToken(SetPasswordActivity.this);
+
+                        MyActivityManager1.getInstance().finishAllActivity();
                     }
+                } else {
+                    ErrorCodeTools.errorCodePrompt(SetPasswordActivity.this, loginResponse.getErr(), loginResponse.getMsg());
+                }
+            }
+        });
 
-                    @Override
-                    public void onNext(DataResponse<LoginResponse> loginResponse) {
-                        LoginResponse changeResult = loginResponse.getDat();
-                        if (loginResponse.isSuccees()) {
-                            if (!EncodeAndStringTool.isObjectEmpty(changeResult)) {
-                                SharedPrefrenceTool.put(SetPasswordActivity.this, "salt", salt);
-                                SharedPrefrenceTool.put(SetPasswordActivity.this, "token", changeResult.getToken());
-                                SharedPrefrenceTool.put(SetPasswordActivity.this, "expire", changeResult.getExpire());//token的有效期
-                                SharedPrefrenceTool.put(SetPasswordActivity.this, "key", changeResult.getKey());//对称加密的秘钥。
-                                SharedPrefrenceTool.put(SetPasswordActivity.this, "bind", changeResult.getBind());//是否绑定用户。
-                                SharedPrefrenceTool.put(SetPasswordActivity.this, "random", changeResult.getRandom());//登录成果后，平台随机生成的字符串
-                                AppConst.loadToken(SetPasswordActivity.this);
-
-                                MyActivityManager1.getInstance().finishAllActivity();
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(SetPasswordActivity.this, loginResponse.getErr(), loginResponse.getMsg());
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
     }
 
 
@@ -306,36 +291,30 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
         //DESede/CBC/PKCS5Padding
         String password = EncryptUtils.encrypt3DES2HexString(pwd.getBytes(), new_key.getBytes(), "DESede/CBC/PKCS5Padding", iv.getBytes());
 
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.setPwd(password)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<String>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
 
-                    @Override
-                    public void onNext(DataResponse<String> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            MyActivityManager1.getInstance().finishAllActivity();
-                            LoginDataManager.instance().handler(SetPasswordActivity.this, new Object[]{SharedPrefrenceTool.get(SetPasswordActivity.this, "boxId", "")});
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(SetPasswordActivity.this, dataResponse.getErr(), dataResponse.getMsg());
-                        }
+        RemotingEx.doRequest(ApiServiceBean.setPwd(), new Object[]{password}, new OnRemotingCallBackListener<String>() {
+            @Override
+            public void onCompleted(String action) {
 
-                    }
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
+            @Override
+            public void onFailed(String action, String message) {
 
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<String> dataResponse) {
+                if (dataResponse.isSuccees()) {
+                    MyActivityManager1.getInstance().finishAllActivity();
+                    LoginDataManager.instance().handler(SetPasswordActivity.this, new Object[]{SharedPrefrenceTool.get(SetPasswordActivity.this, "boxId", "")});
+                } else {
+                    ErrorCodeTools.errorCodePrompt(SetPasswordActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                }
+            }
+        });
+
+
     }
 
 }

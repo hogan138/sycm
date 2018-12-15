@@ -6,49 +6,33 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ConvertUtils;
-import com.blankj.utilcode.util.TimeUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.IntegralAllPrizeAdapter;
-import com.shuyun.qapp.animation.MyLayoutAnimationHelper;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.IntegralAllPrizeBean;
-import com.shuyun.qapp.event.MessageEvent;
-import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.ui.login.LoginActivity;
-import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.webview.WebPublicActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.MyActivityManager;
-import com.shuyun.qapp.utils.SaveErrorTxt;
-import com.shuyun.qapp.utils.SharedPrefrenceTool;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 积分夺宝
@@ -149,93 +133,87 @@ public class IntegralMainActivity extends BaseActivity implements View.OnClickLi
     List<IntegralAllPrizeBean> integralAllPrizeBeanList = new ArrayList<>();
 
     private void loadIntegralCurrent() {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.getAllPrize(currentPage)//分页加载0
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<List<IntegralAllPrizeBean>>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
 
-                    @Override
-                    public void onNext(DataResponse<List<IntegralAllPrizeBean>> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            final List<IntegralAllPrizeBean> integralAllPrizeBeanList1 = dataResponse.getDat();
-                            if (!EncodeAndStringTool.isListEmpty(integralAllPrizeBeanList1)) {
-                                ivEmpty.setVisibility(View.GONE);
-                                rvAllGift.setVisibility(View.VISIBLE);
-                                if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {//首次加載||下拉刷新
-                                    integralAllPrizeBeanList.clear();
-                                    integralAllPrizeBeanList.addAll(integralAllPrizeBeanList1);
-                                    rvAllGift.setAdapter(integralAllPrizeAdapter);
-                                    refreshLayout.finishRefresh();
-                                    refreshLayout.setLoadmoreFinished(false);
-                                    if (integralAllPrizeBeanList1.size() <= 4) {
-                                        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-                                            @Override
-                                            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                                                if (scrollY > ConvertUtils.dp2px(110)) {
-                                                    tvAllGift.setVisibility(View.GONE);
-                                                    tvAllGift1.setVisibility(View.VISIBLE);
-                                                } else {
-                                                    tvAllGift.setVisibility(View.VISIBLE);
-                                                    tvAllGift1.setVisibility(View.GONE);
-                                                }
-                                            }
-                                        });
-                                    } else {
-                                        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-                                            @Override
-                                            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                                                if (scrollY > ConvertUtils.dp2px(130)) {
-                                                    tvAllGift.setVisibility(View.GONE);
-                                                    tvAllGift1.setVisibility(View.VISIBLE);
-                                                } else {
-                                                    tvAllGift.setVisibility(View.VISIBLE);
-                                                    tvAllGift1.setVisibility(View.GONE);
-                                                }
-                                            }
-                                        });
+        RemotingEx.doRequest(ApiServiceBean.getAllPrize(), new Object[]{currentPage}, new OnRemotingCallBackListener<List<IntegralAllPrizeBean>>() {
+            @Override
+            public void onCompleted(String action) {
+
+            }
+
+            @Override
+            public void onFailed(String action, String message) {
+
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<List<IntegralAllPrizeBean>> dataResponse) {
+                if (dataResponse.isSuccees()) {
+                    final List<IntegralAllPrizeBean> integralAllPrizeBeanList1 = dataResponse.getDat();
+                    if (!EncodeAndStringTool.isListEmpty(integralAllPrizeBeanList1)) {
+                        ivEmpty.setVisibility(View.GONE);
+                        rvAllGift.setVisibility(View.VISIBLE);
+                        if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {//首次加載||下拉刷新
+                            integralAllPrizeBeanList.clear();
+                            integralAllPrizeBeanList.addAll(integralAllPrizeBeanList1);
+                            rvAllGift.setAdapter(integralAllPrizeAdapter);
+                            refreshLayout.finishRefresh();
+                            refreshLayout.setLoadmoreFinished(false);
+                            if (integralAllPrizeBeanList1.size() <= 4) {
+                                scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+                                    @Override
+                                    public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                                        if (scrollY > ConvertUtils.dp2px(110)) {
+                                            tvAllGift.setVisibility(View.GONE);
+                                            tvAllGift1.setVisibility(View.VISIBLE);
+                                        } else {
+                                            tvAllGift.setVisibility(View.VISIBLE);
+                                            tvAllGift1.setVisibility(View.GONE);
+                                        }
                                     }
-
-                                } else if (loadState == AppConst.STATE_MORE) {
-                                    if (integralAllPrizeBeanList1.size() == 0) {//没有数据了
-                                        refreshLayout.finishLoadmore();
-                                        refreshLayout.setLoadmoreFinished(true);
-                                    } else {
-                                        integralAllPrizeBeanList.addAll(integralAllPrizeBeanList1);
-                                        integralAllPrizeAdapter.notifyDataSetChanged();
-                                        refreshLayout.finishLoadmore();
-                                        refreshLayout.setLoadmoreFinished(false);
-                                    }
-                                }
-
+                                });
                             } else {
-                                if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {
-                                    ivEmpty.setVisibility(View.VISIBLE);
-                                    rvAllGift.setVisibility(View.INVISIBLE);
-                                    refreshLayout.finishRefresh();
-                                }
-                                refreshLayout.finishLoadmore();
-                                refreshLayout.setLoadmoreFinished(true);
+                                scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+                                    @Override
+                                    public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                                        if (scrollY > ConvertUtils.dp2px(130)) {
+                                            tvAllGift.setVisibility(View.GONE);
+                                            tvAllGift1.setVisibility(View.VISIBLE);
+                                        } else {
+                                            tvAllGift.setVisibility(View.VISIBLE);
+                                            tvAllGift1.setVisibility(View.GONE);
+                                        }
+                                    }
+                                });
                             }
 
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(IntegralMainActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                        } else if (loadState == AppConst.STATE_MORE) {
+                            if (integralAllPrizeBeanList1.size() == 0) {//没有数据了
+                                refreshLayout.finishLoadmore();
+                                refreshLayout.setLoadmoreFinished(true);
+                            } else {
+                                integralAllPrizeBeanList.addAll(integralAllPrizeBeanList1);
+                                integralAllPrizeAdapter.notifyDataSetChanged();
+                                refreshLayout.finishLoadmore();
+                                refreshLayout.setLoadmoreFinished(false);
+                            }
                         }
+
+                    } else {
+                        if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {
+                            ivEmpty.setVisibility(View.VISIBLE);
+                            rvAllGift.setVisibility(View.INVISIBLE);
+                            refreshLayout.finishRefresh();
+                        }
+                        refreshLayout.finishLoadmore();
+                        refreshLayout.setLoadmoreFinished(true);
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
+                } else {
+                    ErrorCodeTools.errorCodePrompt(IntegralMainActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                }
+            }
+        });
 
-                    @Override
-                    public void onComplete() {
-                    }
-                });
     }
 
 }

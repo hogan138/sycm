@@ -22,6 +22,9 @@ import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.Msg;
 import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
@@ -103,54 +106,47 @@ public class InformationActivity extends BaseActivity implements CommonPopupWind
             //第一条消息
             stamp1 = 0;
         }
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.getMsg(0, stamp1, stamp0)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<List<Msg>>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
 
-                    @Override
-                    public void onNext(DataResponse<List<Msg>> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            List<Msg> msgList = dataResponse.getDat();
-                            if (!EncodeAndStringTool.isListEmpty(msgList)) {
-                                for (int i = 0; i < msgList.size(); i++) {
-                                    Msg msg0 = msgList.get(i);
-                                    //查询数据库中的数据,如果不存在,才添加到数据库,不存在则不添加
-                                    Msg msg1 = DataSupport.find(Msg.class, msg0.getId());
-                                    if (EncodeAndStringTool.isObjectEmpty(msg1)) {
-                                        Msg msg = new Msg();
-                                        msg.setType(msg0.getType());
-                                        msg.setTitle(msg0.getTitle());
-                                        msg.setContent(msg0.getContent());
-                                        msg.setUrl(msg0.getUrl());
-                                        msg.setStatus(msg0.getStatus());
-                                        msg.setTime(msg0.getTime());
-                                        msg.setId(msg0.getId());
-                                        msg.save();
-                                    }
-                                }
+        RemotingEx.doRequest(ApiServiceBean.getMsg(), new Object[]{0, stamp1, stamp0}, new OnRemotingCallBackListener<List<Msg>>() {
+            @Override
+            public void onCompleted(String action) {
+
+            }
+
+            @Override
+            public void onFailed(String action, String message) {
+
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<List<Msg>> dataResponse) {
+                if (dataResponse.isSuccees()) {
+                    List<Msg> msgList = dataResponse.getDat();
+                    if (!EncodeAndStringTool.isListEmpty(msgList)) {
+                        for (int i = 0; i < msgList.size(); i++) {
+                            Msg msg0 = msgList.get(i);
+                            //查询数据库中的数据,如果不存在,才添加到数据库,不存在则不添加
+                            Msg msg1 = DataSupport.find(Msg.class, msg0.getId());
+                            if (EncodeAndStringTool.isObjectEmpty(msg1)) {
+                                Msg msg = new Msg();
+                                msg.setType(msg0.getType());
+                                msg.setTitle(msg0.getTitle());
+                                msg.setContent(msg0.getContent());
+                                msg.setUrl(msg0.getUrl());
+                                msg.setStatus(msg0.getStatus());
+                                msg.setTime(msg0.getTime());
+                                msg.setId(msg0.getId());
+                                msg.save();
                             }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(InformationActivity.this, dataResponse.getErr(), dataResponse.getMsg());
                         }
-                        getDataRefreshUi();
                     }
+                } else {
+                    ErrorCodeTools.errorCodePrompt(InformationActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                }
+                getDataRefreshUi();
+            }
+        });
 
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
     }
 
     /**

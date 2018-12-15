@@ -16,14 +16,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.TimeUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.SharedBean;
-import com.shuyun.qapp.net.ApiService;
+import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SyckApplication;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
@@ -31,7 +31,6 @@ import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
-import com.shuyun.qapp.utils.SaveErrorTxt;
 import com.shuyun.qapp.utils.ScannerUtils;
 import com.shuyun.qapp.view.RoundImageView;
 import com.umeng.socialize.ShareAction;
@@ -43,17 +42,13 @@ import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 import static com.blankj.utilcode.util.SizeUtils.dp2px;
 
 /**
  * 自由对战专题详情
  */
-public class FreeDetailActivity extends BaseActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface {
+public class FreeDetailActivity extends BaseActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface, OnRemotingCallBackListener<Object> {
 
 
     @BindView(R.id.iv_left_icon)
@@ -79,6 +74,9 @@ public class FreeDetailActivity extends BaseActivity implements View.OnClickList
 
     int type;
 
+    SharedBean sharedBean1;
+    private static int share_style = 0;
+
     @Override
     public int intiLayout() {
         return R.layout.activity_free_detail;
@@ -87,7 +85,6 @@ public class FreeDetailActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
 
         ivCommonLeftIcon.setOnClickListener(this);
@@ -288,47 +285,11 @@ public class FreeDetailActivity extends BaseActivity implements View.OnClickList
      *
      * @param channl 分享渠道id 1:微信分享;2 微信朋友圈分享 3:二维码分享
      */
-    SharedBean sharedBean1;
-
     private void loadBattleAnswerShared(final int channl) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.battleAnswerShared(channl)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse<SharedBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
 
-                    @Override
-                    public void onNext(DataResponse<SharedBean> dataResponse) {
-                        if (dataResponse.isSuccees()) {
-                            SharedBean sharedBean = dataResponse.getDat();
-                            if (!EncodeAndStringTool.isObjectEmpty(sharedBean)) {
-                                if (channl == 3) {
-                                    sharedBean1 = dataResponse.getDat();
-                                    //显示二维码弹框
-                                    showQr();
-                                } else {
-                                    wechatShare(sharedBean);
-                                }
-                            }
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(FreeDetailActivity.this, dataResponse.getErr(),dataResponse.getMsg());
-                        }
-                    }
+        share_style = channl;
+        RemotingEx.doRequest(AppConst.AGAINST_SHARE, ApiServiceBean.battleAnswerShared(), new Object[]{channl}, this);
 
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
     }
 
     /**
@@ -336,7 +297,7 @@ public class FreeDetailActivity extends BaseActivity implements View.OnClickList
      *
      * @param sharedBean
      */
-    private void wechatShare(final SharedBean sharedBean) {//String url, String content, String title  .getUrl(), sharedBean.getContent(), sharedBean.getTitle()
+    private void wechatShare(final SharedBean sharedBean) {
         SHARE_MEDIA media = SHARE_MEDIA.WEIXIN;
         if (SHARE_CHANNEL == AppConst.SHARE_MEDIA_WEIXIN) {//微信
             media = SHARE_MEDIA.WEIXIN;
@@ -405,35 +366,7 @@ public class FreeDetailActivity extends BaseActivity implements View.OnClickList
      * @param channel 1:微信朋友圈 2:微信好友
      */
     private void loadSharedSure(Long id, int result, int channel) {
-        ApiService apiService = BasePresenter.create(8000);
-        apiService.sharedConfirm(id, result, channel)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DataResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(DataResponse dataResponse) {
-                        if (dataResponse.isSuccees()) {
-
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(FreeDetailActivity.this, dataResponse.getErr(),dataResponse.getMsg());
-                        }
-                    }
-
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //保存错误信息
-                        SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+        RemotingEx.doRequest(AppConst.AGAINST_SHARE_CONFIM, ApiServiceBean.sharedConfirm(), new Object[]{id, result, channel}, this);
     }
 
     @Override
@@ -450,4 +383,36 @@ public class FreeDetailActivity extends BaseActivity implements View.OnClickList
         }
     }
 
+    @Override
+    public void onCompleted(String action) {
+
+    }
+
+    @Override
+    public void onFailed(String action, String message) {
+
+    }
+
+    @Override
+    public void onSucceed(String action, DataResponse<Object> listDataResponse) {
+        if (action.equals(AppConst.AGAINST_SHARE)) { //答题对战分享
+            if (listDataResponse.isSuccees()) {
+                SharedBean sharedBean = (SharedBean) listDataResponse.getDat();
+                if (!EncodeAndStringTool.isObjectEmpty(sharedBean)) {
+                    if (share_style == 3) {
+                        sharedBean1 = (SharedBean) listDataResponse.getDat();
+                        //显示二维码弹框
+                        showQr();
+                    } else {
+                        wechatShare(sharedBean);
+                    }
+                }
+            } else {
+                ErrorCodeTools.errorCodePrompt(FreeDetailActivity.this, listDataResponse.getErr(), listDataResponse.getMsg());
+            }
+        } else if (action.equals(AppConst.AGAINST_SHARE_CONFIM)) {//分享确认
+
+        }
+
+    }
 }
