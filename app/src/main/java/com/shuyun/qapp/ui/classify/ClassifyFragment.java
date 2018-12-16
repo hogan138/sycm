@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.ChildrenGroupAdapter;
 import com.shuyun.qapp.adapter.GroupTreeAdapter;
@@ -63,6 +64,7 @@ public class ClassifyFragment extends BaseFragment implements OnRemotingCallBack
      * 右侧题组分类列表
      */
     private ChildrenGroupAdapter childrenGroupAdapter;
+    private String dataString = null;
 
     @Override
     public void onAttach(Context context) {
@@ -215,10 +217,15 @@ public class ClassifyFragment extends BaseFragment implements OnRemotingCallBack
             return;
         }
         List<GroupClassifyBean> beans = response.getDat();
-        classifyBeans.clear();
-        classifyBeans.addAll(beans);
+        String string = JSON.toJSONString(beans);
+        if (dataString != null && dataString.equals(string)) {
+            return;
+        }
+        dataString = string;
 
         if (!EncodeAndStringTool.isListEmpty(beans)) {
+            classifyBeans.clear();
+            classifyBeans.addAll(beans);
             if (mContext instanceof ClassifyActivity) {
                 Long id = mContext.getIntent().getLongExtra("id", 0);
                 for (int i = 0; i < beans.size(); i++) {
@@ -234,9 +241,8 @@ public class ClassifyFragment extends BaseFragment implements OnRemotingCallBack
                 beans.get(0).setFlag(true);
                 refreshRightGroup(0, beans);
             }
+            groupTreeAdapter.notifyDataSetChanged();
         }
-        groupTreeAdapter.notifyDataSetChanged();
-
     }
 }
 

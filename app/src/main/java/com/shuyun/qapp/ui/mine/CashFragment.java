@@ -93,6 +93,7 @@ public class CashFragment extends Fragment implements OnRemotingCallBackListener
     @Override
     public void onResume() {
         super.onResume();
+        loadState = AppConst.STATE_NORMAL;
         currentPage = 0;
         loadCashFlow();//要做分页操作
     }

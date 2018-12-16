@@ -102,6 +102,7 @@ public class ErrorCodeTools {
     public static boolean errorCodePrompt(Context mContext, String err, String message) {
         if ("E0005".equals(err)) {
             ToastUtil.showToast(mContext, "今天您已经答对此题组，明天再来答哦");
+            return false;
         } else if ("U0001".equals(err)) {//用户未注册,跳转到登录页
             ToastUtil.showToast(mContext, "用户未注册");
             Intent intent = new Intent(mContext, LoginActivity.class);

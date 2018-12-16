@@ -1,5 +1,6 @@
 package com.shuyun.qapp.ui.login;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -18,8 +19,13 @@ import com.mylhyl.circledialog.callback.ConfigDialog;
 import com.mylhyl.circledialog.params.DialogParams;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
+import com.shuyun.qapp.bean.DataResponse;
+import com.shuyun.qapp.net.ApiServiceBean;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.webview.WebPublicActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
+import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.MyActivityManager1;
 import com.shuyun.qapp.utils.OnMultiClickListener;
@@ -47,10 +53,15 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
     @BindView(R.id.ll_agree_text)
     LinearLayout llAgreeText;
 
+    private Context mContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+
+        mContext = this;
+
         ivBack.setOnClickListener(this);
         llAgreeText.setOnClickListener(this);
         ivClearPhoneNum.setOnClickListener(this);
@@ -66,7 +77,7 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
             tvTitle.setText("新用户注册");
         } else if ("login".equals(getIntent().getStringExtra("name"))) {
             tvTitle.setText("输入手机号");
-            String phone = SaveUserInfo.getInstance(RegisterPhoneActivity.this).getUserInfo("login_phone");
+            String phone = SaveUserInfo.getInstance(this).getUserInfo("login_phone");
             if (!EncodeAndStringTool.isStringEmpty(phone)) {
                 etPhoneNumber.setText(phone);
                 etPhoneNumber.setSelection(etPhoneNumber.length());
@@ -74,7 +85,7 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
         } else if ("changePwd".equals(getIntent().getStringExtra("name"))) {
             tvTitle.setText("输入手机号");
             llAgreeText.setVisibility(View.GONE);
-            String phone = SaveUserInfo.getInstance(RegisterPhoneActivity.this).getUserInfo("login_phone");
+            String phone = SaveUserInfo.getInstance(this).getUserInfo("login_phone");
             if (!EncodeAndStringTool.isStringEmpty(phone)) {
                 etPhoneNumber.setText(phone);
                 etPhoneNumber.setSelection(etPhoneNumber.length());
@@ -101,19 +112,45 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
                 break;
             case R.id.ll_agree_text:
                 //跳转到协议界面
-                Intent i = new Intent(RegisterPhoneActivity.this, WebPublicActivity.class);
+                Intent i = new Intent(mContext, WebPublicActivity.class);
                 i.putExtra("name", "useragree");
                 startActivity(i);
                 break;
             case R.id.btn_next:
-                Intent intent = new Intent(RegisterPhoneActivity.this, VerifyCodeActivity.class);
-                intent.putExtra("phone", etPhoneNumber.getText().toString());
-                intent.putExtra("name", getIntent().getStringExtra("name"));
-                startActivity(intent);
+                //判断是否已注册
+                btnNext.setEnabled(false);
+                registered();
                 break;
             default:
                 break;
         }
+    }
+
+    private void registered(){
+        final String account = etPhoneNumber.getText().toString();
+        RemotingEx.doRequest("", ApiServiceBean.registered(), new Object[]{account}, new OnRemotingCallBackListener<Object>() {
+            @Override
+            public void onCompleted(String action) {
+                btnNext.setEnabled(true);
+            }
+
+            @Override
+            public void onFailed(String action, String message) {
+
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<Object> response) {
+                if(!response.isSuccees()){
+                    ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
+                    return;
+                }
+                Intent intent = new Intent(mContext, VerifyCodeActivity.class);
+                intent.putExtra("phone", account);
+                intent.putExtra("name", getIntent().getStringExtra("name"));
+                startActivity(intent);
+            }
+        });
     }
 
     /**

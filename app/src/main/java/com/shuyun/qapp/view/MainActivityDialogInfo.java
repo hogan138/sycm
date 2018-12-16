@@ -65,6 +65,8 @@ public class MainActivityDialogInfo {
         String count = SaveUserInfo.getInstance(mContext).getUserInfo(bName);
         if ("".equals(count))
             _count = 0;
+        else
+            _count = Integer.valueOf(count);
         if (beanCount > _count) {
             activitydialog(configDialogBean, mContext);
             _count += 1;

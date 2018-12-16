@@ -575,4 +575,10 @@ public interface ApiService {
      */
     @GET("/rest/user/heartbeat")
     Observable<DataResponse<Object>> heartBeat();
+
+    /**
+     * 81、是否已注册
+     */
+    @GET("/rest/user/registered")
+    Observable<DataResponse<Object>> registered(@Query("account") String account);
 }

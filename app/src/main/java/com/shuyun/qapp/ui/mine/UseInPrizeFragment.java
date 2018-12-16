@@ -152,6 +152,7 @@ public class UseInPrizeFragment extends Fragment implements OnRemotingCallBackLi
     @Override
     public void onResume() {
         super.onResume();
+        loadState = AppConst.STATE_NORMAL;
         currentPage = 0;
         loadMinePrize(5, currentPage);
     }

@@ -93,6 +93,7 @@ public class IntegralFragment extends Fragment implements OnRemotingCallBackList
     @Override
     public void onResume() {
         super.onResume();
+        loadState = AppConst.STATE_NORMAL;
         currentPage = 0;
         loadIntegralCurrent();//要做分页操作
     }

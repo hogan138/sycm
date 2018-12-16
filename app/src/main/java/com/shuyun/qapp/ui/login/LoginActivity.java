@@ -69,7 +69,7 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 /**
  * 登录
  */
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity implements OnRemotingCallBackListener<LoginResponse>{
     @BindView(R.id.et_phone_number)
     EditText etPhoneNumber;//手机号输入框
     @BindView(R.id.iv_clear_phone_num)
@@ -337,72 +337,7 @@ public class LoginActivity extends BaseActivity {
         Log.i(TAG, "loadLogin: " + loginInput.toString());
 
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputBean);
-        RemotingEx.doRequest(ApiServiceBean.login(), new Object[]{body}, new OnRemotingCallBackListener<LoginResponse>() {
-            @Override
-            public void onCompleted(String action) {
-                LoadingBar.cancel(rlMain);
-            }
-
-            @Override
-            public void onFailed(String action, String message) {
-
-            }
-
-            @Override
-            public void onSucceed(String action, DataResponse<LoginResponse> response) {
-                if (response.isSuccees()) {
-                    LoginResponse loginResp = response.getDat();
-                    if (!EncodeAndStringTool.isObjectEmpty(loginResp)) {
-                        SharedPrefrenceTool.put(mContext, "token", loginResp.getToken());
-                        SharedPrefrenceTool.put(mContext, "expire", loginResp.getExpire());//token的有效期
-                        SharedPrefrenceTool.put(mContext, "key", loginResp.getKey());//对称加密的秘钥。
-                        SharedPrefrenceTool.put(mContext, "bind", loginResp.getBind());//是否绑定用户。
-                        SharedPrefrenceTool.put(mContext, "random", loginResp.getRandom());//登录成果后，平台随机生成的字符串
-                        SaveUserInfo.getInstance(mContext).setUserInfo("cert", loginResp.getCertification());
-                        AppConst.loadToken(mContext);
-
-                        //答题免登录返回宝箱id
-                        if (!EncodeAndStringTool.isStringEmpty(loginResp.getBoxId())) {
-                            SharedPrefrenceTool.put(mContext, "boxId", loginResp.getBoxId());
-                        }
-
-                        //设置别名
-                        JPushInterface.setAlias(mContext, new Random().nextInt(), etPhoneNumber.getText().toString());
-                        btnLogin.setEnabled(false);
-
-                        mHandler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                KeyboardUtils.hideSoftInput(LoginActivity.this);
-                                try {
-                                    setResult(RESULT_OK);
-                                    MyActivityManager1.getInstance().finishAllActivity();
-                                    finish();
-                                } catch (Exception e) {
-
-                                }
-                            }
-                        }, 320);
-                    }
-                } else {
-                    if (response.getErr().equals("TAU11")) {
-                        if (error == 0) {
-                            error = 1;
-                            errorDialog("密码错误请重新输入");
-                        } else {
-                            //再次输入错误密码
-                            updatePasswordDialog();
-                        }
-                    } else {
-                        if ("U0001".equals(response.getErr())) {
-                            ToastUtil.showToast(mContext, "用户未注册");
-                        } else {
-                            ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
-                        }
-                    }
-                }
-            }
-        });
+        RemotingEx.doRequest(ApiServiceBean.login(), new Object[]{body}, this);
     }
 
     /**
@@ -538,6 +473,71 @@ public class LoginActivity extends BaseActivity {
         super.onBackPressed();
         MyActivityManager.getInstance().finishAllActivity();
         finish();
+    }
+
+    @Override
+    public void onCompleted(String action) {
+        LoadingBar.cancel(rlMain);
+    }
+
+    @Override
+    public void onFailed(String action, String message) {
+
+    }
+
+    @Override
+    public void onSucceed(String action, DataResponse<LoginResponse> response) {
+        if (response.isSuccees()) {
+            LoginResponse loginResp = response.getDat();
+            if (!EncodeAndStringTool.isObjectEmpty(loginResp)) {
+                SharedPrefrenceTool.put(mContext, "token", loginResp.getToken());
+                SharedPrefrenceTool.put(mContext, "expire", loginResp.getExpire());//token的有效期
+                SharedPrefrenceTool.put(mContext, "key", loginResp.getKey());//对称加密的秘钥。
+                SharedPrefrenceTool.put(mContext, "bind", loginResp.getBind());//是否绑定用户。
+                SharedPrefrenceTool.put(mContext, "random", loginResp.getRandom());//登录成果后，平台随机生成的字符串
+                SaveUserInfo.getInstance(mContext).setUserInfo("cert", loginResp.getCertification());
+                AppConst.loadToken(mContext);
+
+                //答题免登录返回宝箱id
+                if (!EncodeAndStringTool.isStringEmpty(loginResp.getBoxId())) {
+                    SharedPrefrenceTool.put(mContext, "boxId", loginResp.getBoxId());
+                }
+
+                //设置别名
+                JPushInterface.setAlias(mContext, new Random().nextInt(), etPhoneNumber.getText().toString());
+                btnLogin.setEnabled(false);
+
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        KeyboardUtils.hideSoftInput(LoginActivity.this);
+                        try {
+                            setResult(RESULT_OK);
+                            MyActivityManager1.getInstance().finishAllActivity();
+                            finish();
+                        } catch (Exception e) {
+
+                        }
+                    }
+                }, 10);
+            }
+        } else {
+            if ("TAU11".equals(response.getErr())) {
+                if (error == 0) {
+                    error = 1;
+                    errorDialog("账户或密码错误");
+                } else {
+                    //再次输入错误密码
+                    updatePasswordDialog();
+                }
+            } else {
+                if ("U0001".equals(response.getErr())) {
+                    ToastUtil.showToast(mContext, "用户未注册");
+                } else {
+                    ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
+                }
+            }
+        }
     }
 }
 

@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.constant.TimeConstants;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.PhoneUtils;
@@ -182,6 +183,7 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
     //banner
     private List<IBannerItem> bannerList = new ArrayList<>();
     private List<BannerBean> bannerData = new ArrayList<>();
+    private String bannerDataString = null;
     private BannerAdapter bannerAdapter;
 
     //常答题组
@@ -196,6 +198,17 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
     //分类
     private List<GroupClassifyBean> groupClassifyBeans = new ArrayList<>();
     private HomeSortAdapter treeGroupAdapter;
+
+    //公告
+    private List<HomeNoticeBean> homeNoticeBeanList = new ArrayList<>();
+
+    private String systemInfosString = null;
+    private String mainConfigBeanString = null;
+    private String treeString = null;
+    private String thermalString = null;
+    private String oftenString = null;
+    private String recommendString = null;
+    private String HomeNoticeBeanString = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -280,6 +293,20 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
     }
 
     private void init() {
+        //设置TextBannerView点击监听事件，返回点击的data数据, 和position位置
+        scrollAd.setItemOnClickListener(new ITextBannerItemClickListener() {
+            @Override
+            public void onItemClick(String data, int position) {
+                HomeNoticeBean homeNoticeBean = homeNoticeBeanList.get(position);
+                LoginDataManager.instance().addData(LoginDataManager.HOME_NOTICE_LOGIN, homeNoticeBean);
+                LoginJumpUtil.dialogSkip(homeNoticeBean.getAction(),
+                        mContext,
+                        homeNoticeBean.getGroupId(),
+                        homeNoticeBean.getH5Url(),
+                        homeNoticeBean.getIsLogin());
+            }
+        });
+
         bannerList.add(new BannerItem("https://image-syksc.oss-cn-shanghai.aliyuncs.com/syksc/app/banner/xiaji.jpg"));
         //设置轮播图
         bannerAdapter = new BannerAdapter(new GlideImageLoader());
@@ -755,6 +782,12 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
         if ("getHomeBanner".equals(action)) {
             bannerData = (List<BannerBean>) response.getDat();
             if (!EncodeAndStringTool.isListEmpty(bannerData)) {
+                String str = JSON.toJSONString(bannerData);
+                if (bannerDataString != null && bannerDataString.equals(str)) {
+                    return;
+                }
+                bannerDataString = str;
+
                 //设置轮播图
                 bannerList.clear();
                 for (int i = 0; i < bannerData.size(); i++) {
@@ -767,10 +800,13 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
         } else if ("getSystemInfo".equals(action)) {
             List<SystemInfo> systemInfos = (List<SystemInfo>) response.getDat();
             if (!EncodeAndStringTool.isListEmpty(systemInfos)) {
+                String str = JSON.toJSONString(systemInfos);
+                if (systemInfosString != null && systemInfosString.equals(str)) {
+                    return;
+                }
+                systemInfosString = str;
+
                 llMarqueeView.setVisibility(View.VISIBLE);
-                /**
-                 * 跑马灯数据
-                 */
                 List<String> info = new ArrayList<>();
                 for (int i = 0; i < systemInfos.size(); i++) {
                     info.add(systemInfos.get(i).getMsg());
@@ -783,40 +819,54 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
             }
         } else if ("configMainActivity".equals(action)) {
             MainConfigBean mainConfigBean = (MainConfigBean) response.getDat();
+            String str = JSON.toJSONString(mainConfigBean);
+            if (mainConfigBeanString != null && mainConfigBeanString.equals(str)) {
+                return;
+            }
+            mainConfigBeanString = str;
+
             //动态添加布局
             activityRegion.removeAllViews();
             activityRegion.addView(ActivityRegionManager.getView(mContext, mainConfigBean, llHomeFragment));
         } else if ("getHomeGroups".equals(action)) {
-            final HomeGroupsBean homeGroupsBean = (HomeGroupsBean) response.getDat();
+            HomeGroupsBean homeGroupsBean = (HomeGroupsBean) response.getDat();
             if (!EncodeAndStringTool.isObjectEmpty(homeGroupsBean)) {
                 //推荐题组
                 if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getRecommend())) {
-                    groupBeans = homeGroupsBean.getRecommend();
-                    if (!EncodeAndStringTool.isListEmpty(groupBeans)) {
-                        recommendIndex = 0;
-                        rollRecommendGroup();
-                        if (groupBeans.size() <= 2) {
-                            llChangeGroup.setVisibility(View.GONE);
-                        } else {
-                            llChangeGroup.setVisibility(View.VISIBLE);
+                    if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getRecommend())) {
+                        String str = JSON.toJSONString(homeGroupsBean.getRecommend());
+                        groupBeans = homeGroupsBean.getRecommend();
+                        if (recommendString == null || !recommendString.equals(str)) {
+                            recommendIndex = 0;
+                            rollRecommendGroup();
+                            if (groupBeans.size() <= 2) {
+                                llChangeGroup.setVisibility(View.GONE);
+                            } else {
+                                llChangeGroup.setVisibility(View.VISIBLE);
+                            }
                         }
+                        recommendString = str;
                     }
                 }
                 //常答题组
                 if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getOften())) {
-                    llOften.setVisibility(View.VISIBLE);
-                    alwaysBanner.setVisibility(View.VISIBLE);
-                    oftenData = homeGroupsBean.getOften();
-                    oftenList.clear();
-                    for (int i = 0; i < oftenData.size(); i++) {
-                        GroupBean bean = oftenData.get(i);
-                        MarkBannerItem item = new MarkBannerItem(bean.getPicture());
-                        item.setMarkLabel(bean.getName());
-                        oftenList.add(item);
+                    String str = JSON.toJSONString(homeGroupsBean.getOften());
+                    if (oftenString == null || !oftenString.equals(str)) {
+                        llOften.setVisibility(View.VISIBLE);
+                        alwaysBanner.setVisibility(View.VISIBLE);
+                        oftenData = homeGroupsBean.getOften();
+                        oftenList.clear();
+                        for (int i = 0; i < oftenData.size(); i++) {
+                            GroupBean bean = oftenData.get(i);
+                            MarkBannerItem item = new MarkBannerItem(bean.getPicture());
+                            item.setMarkLabel(bean.getName());
+                            oftenList.add(item);
+                        }
+                        markBannerAdapter.setData(mContext, oftenList);
+                        //重新生成单位条
+                        alwaysBanner.setBannerAdapter(markBannerAdapter);
                     }
-                    markBannerAdapter.setData(mContext, oftenList);
-                    //重新生成单位条
-                    alwaysBanner.setBannerAdapter(markBannerAdapter);
+                    oftenString = str;
                 } else {
                     llOften.setVisibility(View.GONE);
                     alwaysBanner.setVisibility(View.GONE);
@@ -824,16 +874,24 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
                 //大家都在答
                 if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getThermal())) {
                     List<GroupBean> groupData = homeGroupsBean.getThermal();
-                    groupThermalData.clear();
-                    groupThermalData.addAll(groupData);
-                    groupThermalAdapter.notifyDataSetChanged();
+                    String str = JSON.toJSONString(homeGroupsBean.getThermal());
+                    if (thermalString == null || !thermalString.equals(str)) {
+                        groupThermalData.clear();
+                        groupThermalData.addAll(groupData);
+                        groupThermalAdapter.notifyDataSetChanged();
+                    }
+                    thermalString = str;
                 }
                 //分类
                 if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getTree())) {
                     final List<GroupClassifyBean> classifyBeans = homeGroupsBean.getTree();
-                    groupClassifyBeans.clear();
-                    groupClassifyBeans.addAll(classifyBeans);
-                    treeGroupAdapter.notifyDataSetChanged();
+                    String str = JSON.toJSONString(homeGroupsBean.getTree());
+                    if (treeString == null || !treeString.equals(str)) {
+                        groupClassifyBeans.clear();
+                        groupClassifyBeans.addAll(classifyBeans);
+                        treeGroupAdapter.notifyDataSetChanged();
+                    }
+                    treeString = str;
                 }
 
                 timer.cancel();
@@ -887,8 +945,14 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
             ConfigDialogBean configDialogBean = (ConfigDialogBean) response.getDat();
             MainActivityDialogInfo.info(configDialogBean, mContext);
         } else if ("homeNotice".equals(action)) {
-            final List<HomeNoticeBean> homeNoticeBeanList = (List<HomeNoticeBean>) response.getDat();
+            homeNoticeBeanList = (List<HomeNoticeBean>) response.getDat();
             if (!EncodeAndStringTool.isObjectEmpty(response.getDat()) && !homeNoticeBeanList.isEmpty()) {
+                String str = JSON.toJSONString(homeNoticeBeanList);
+                if (HomeNoticeBeanString != null && HomeNoticeBeanString.equals(str)) {
+                    return;
+                }
+                HomeNoticeBeanString = str;
+
                 rlAd.setVisibility(View.VISIBLE);
                 //公告
                 List<String> info = new ArrayList<>();
@@ -896,19 +960,6 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
                     info.add(homeNoticeBeanList.get(i).getContent());
                 }
                 scrollAd.setDatas(info);
-                //设置TextBannerView点击监听事件，返回点击的data数据, 和position位置
-                scrollAd.setItemOnClickListener(new ITextBannerItemClickListener() {
-                    @Override
-                    public void onItemClick(String data, int position) {
-                        HomeNoticeBean homeNoticeBean = homeNoticeBeanList.get(position);
-                        LoginDataManager.instance().addData(LoginDataManager.HOME_NOTICE_LOGIN, homeNoticeBean);
-                        LoginJumpUtil.dialogSkip(homeNoticeBean.getAction(),
-                                mContext,
-                                homeNoticeBean.getGroupId(),
-                                homeNoticeBean.getH5Url(),
-                                homeNoticeBean.getIsLogin());
-                    }
-                });
             } else {
                 rlAd.setVisibility(View.GONE);
             }

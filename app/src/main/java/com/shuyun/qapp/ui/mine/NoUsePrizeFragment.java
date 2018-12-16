@@ -180,6 +180,7 @@ public class NoUsePrizeFragment extends Fragment implements OnRemotingCallBackLi
     @Override
     public void onResume() {
         super.onResume();
+        loadState = AppConst.STATE_NORMAL;
         currentPage = 0;
         loadMinePrize(1, currentPage);
     }

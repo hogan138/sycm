@@ -578,7 +578,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
             public void run() {
                 ((BaseFragment) fragments.get(selectedIndex)).refresh();
             }
-        }, 320);
+        }, 10);
     }
 
     //从广告页进来

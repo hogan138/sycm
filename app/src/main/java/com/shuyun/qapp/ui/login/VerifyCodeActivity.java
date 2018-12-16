@@ -281,7 +281,7 @@ public class VerifyCodeActivity extends BaseActivity {
         RemotingEx.doRequest(ApiServiceBean.login(), new Object[]{body}, new OnRemotingCallBackListener<LoginResponse>() {
             @Override
             public void onCompleted(String action) {
-
+                LoadingBar.cancel(llMain);
             }
 
             @Override

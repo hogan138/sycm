@@ -553,4 +553,11 @@ public class ApiServiceBean {
     public static String heartBeat() {
         return "heartBeat";
     }
+
+    /**
+     * 是否已注册
+     */
+    public static String registered(){
+        return "registered";
+    }
 }
