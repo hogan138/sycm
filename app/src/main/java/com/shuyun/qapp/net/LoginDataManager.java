@@ -5,13 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.ActivityTabBean;
 import com.shuyun.qapp.bean.BannerBean;
 import com.shuyun.qapp.bean.ConfigDialogBean;
 import com.shuyun.qapp.bean.HomeNoticeBean;
 import com.shuyun.qapp.bean.MainConfigBean;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
-import com.shuyun.qapp.ui.login.SetPasswordActivity;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -65,6 +65,10 @@ public class LoginDataManager {
      * 答题开宝箱登录
      */
     public static final String ANSWER_LOGIN = "answer_login";
+    /**
+     * 练习场登录
+     */
+    public static final String PRACTICE_LOGIN = "practice_login";
 
     private static LoginDataManager manager = null;
     /**
@@ -124,6 +128,10 @@ public class LoginDataManager {
         if (map == null)
             return;
         String action = (String) map.get(LoginDataManager.KEY);
+        if (mContext instanceof BaseActivity) {
+            ((BaseActivity) mContext).clear();
+        }
+
         if (LoginDataManager.ACTIVITY_LOGIN.equals(action)) { //活动专区
             ActivityTabBean.ResultBean resultBean = (ActivityTabBean.ResultBean) map.get(LoginDataManager.VALUE);
             LoginJumpUtil.dialogSkip(resultBean.getBtnAction(),
@@ -189,12 +197,21 @@ public class LoginDataManager {
                     mContext.startActivity(intent);
                 }
             }
-        } else if (LoginDataManager.ANSWER_LOGIN.equals(action)) {
+        } else if (LoginDataManager.ANSWER_LOGIN.equals(action)) {//答题登录
             if (mContext instanceof WebAnswerActivity) {
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        ((WebAnswerActivity) mContext).sendBox((String) args[0]);
+                        ((WebAnswerActivity) mContext).sendLoginCallBack("exam", (String) args[0]);
+                    }
+                }, 10);
+            }
+        } else if (LoginDataManager.PRACTICE_LOGIN.equals(action)) {//练习场登录
+            if (mContext instanceof WebAnswerActivity) {
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((WebAnswerActivity) mContext).sendLoginCallBack("practice", null);
                     }
                 }, 10);
             }

@@ -54,6 +54,7 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
     LinearLayout llAgreeText;
 
     private Context mContext;
+    private boolean isRegister = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,7 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
 
         if ("register".equals(getIntent().getStringExtra("name"))) {
             tvTitle.setText("新用户注册");
+            isRegister = true;
         } else if ("login".equals(getIntent().getStringExtra("name"))) {
             tvTitle.setText("输入手机号");
             String phone = SaveUserInfo.getInstance(this).getUserInfo("login_phone");
@@ -118,15 +120,28 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
                 break;
             case R.id.btn_next:
                 //判断是否已注册
-                btnNext.setEnabled(false);
-                registered();
+                if (isRegister) {
+                    btnNext.setEnabled(false);
+                    registered();
+                } else {
+                    skip();
+                }
                 break;
             default:
                 break;
         }
     }
 
-    private void registered(){
+    //跳过发送验证码
+    private void skip() {
+        final String account = etPhoneNumber.getText().toString();
+        Intent intent = new Intent(mContext, VerifyCodeActivity.class);
+        intent.putExtra("phone", account);
+        intent.putExtra("name", getIntent().getStringExtra("name"));
+        startActivity(intent);
+    }
+
+    private void registered() {
         final String account = etPhoneNumber.getText().toString();
         RemotingEx.doRequest("", ApiServiceBean.registered(), new Object[]{account}, new OnRemotingCallBackListener<Object>() {
             @Override
@@ -141,14 +156,11 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
 
             @Override
             public void onSucceed(String action, DataResponse<Object> response) {
-                if(!response.isSuccees()){
+                if (!response.isSuccees()) {
                     ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
                     return;
                 }
-                Intent intent = new Intent(mContext, VerifyCodeActivity.class);
-                intent.putExtra("phone", account);
-                intent.putExtra("name", getIntent().getStringExtra("name"));
-                startActivity(intent);
+                skip();
             }
         });
     }

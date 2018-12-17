@@ -139,7 +139,7 @@ public class AnswerRecordActivity extends BaseActivity {
                     final List<AnswerRecordBean> answerRecordBeanList1 = dataResponse.getDat();
                     if (!EncodeAndStringTool.isListEmpty(answerRecordBeanList1) && answerRecordBeanList1.size() > 0) {
                         ivPrizeEmpty.setVisibility(View.GONE);
-                        if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {//首次加載||下拉刷新
+                        if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {//首次加载||下拉刷新
                             answerRecordBeanList.clear();
                             answerRecordBeanList.addAll(answerRecordBeanList1);
                             rvAnswerRecord.setAdapter(answerRecordAdapter);

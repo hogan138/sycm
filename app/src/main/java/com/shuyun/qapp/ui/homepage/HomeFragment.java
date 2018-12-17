@@ -965,6 +965,20 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
             }
         }
     }
+
+    @Override
+    public void clear() {
+        super.clear();
+
+        bannerDataString = null;
+        systemInfosString = null;
+        mainConfigBeanString = null;
+        treeString = null;
+        thermalString = null;
+        oftenString = null;
+        recommendString = null;
+        HomeNoticeBeanString = null;
+    }
 }
 
 

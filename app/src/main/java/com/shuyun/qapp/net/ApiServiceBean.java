@@ -555,7 +555,7 @@ public class ApiServiceBean {
     }
 
     /**
-     * 是否已注册
+     * 81、是否已注册
      */
     public static String registered(){
         return "registered";

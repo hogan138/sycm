@@ -93,6 +93,8 @@ public class AdBean implements Parcelable {
         private Long model;
         private String content;//跳转的地址
         private Long isLogin;
+        private String bottomIcon; //底部图片
+
 
         protected AdInfo(Parcel in) {
             if (in.readByte() == 0) {
@@ -164,6 +166,14 @@ public class AdBean implements Parcelable {
 
         public String getContent() {
             return content;
+        }
+
+        public String getBottomIcon() {
+            return bottomIcon;
+        }
+
+        public void setBottomIcon(String bottomIcon) {
+            this.bottomIcon = bottomIcon;
         }
 
         @Override

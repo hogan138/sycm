@@ -69,7 +69,7 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 /**
  * 登录
  */
-public class LoginActivity extends BaseActivity implements OnRemotingCallBackListener<LoginResponse>{
+public class LoginActivity extends BaseActivity implements OnRemotingCallBackListener<LoginResponse> {
     @BindView(R.id.et_phone_number)
     EditText etPhoneNumber;//手机号输入框
     @BindView(R.id.iv_clear_phone_num)
@@ -200,6 +200,7 @@ public class LoginActivity extends BaseActivity implements OnRemotingCallBackLis
     public void click(View view) {
         switch (view.getId()) {
             case R.id.rl_close:
+                KeyboardUtils.hideSoftInput(LoginActivity.this);
                 MyActivityManager.getInstance().finishAllActivity();
                 finish();
                 break;
@@ -306,7 +307,6 @@ public class LoginActivity extends BaseActivity implements OnRemotingCallBackLis
 
         }
     }
-
 
     //是否是答题免登陆，传入答卷id
     private void isAnswerLogin() {

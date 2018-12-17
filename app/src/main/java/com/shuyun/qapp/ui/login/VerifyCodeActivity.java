@@ -82,6 +82,7 @@ public class VerifyCodeActivity extends BaseActivity {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                KeyboardUtils.hideSoftInput(VerifyCodeActivity.this);
                 finish();
             }
         });

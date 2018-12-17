@@ -188,6 +188,15 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                         startActivityForResult(new Intent(mContext, LoginActivity.class).putExtra("examId", rel.getString("examId")), 1);
                     }
                 });
+            } else if ("practice".equals(rel.getString("action"))) { //练习场登录
+                LoginDataManager.instance().addData(LoginDataManager.PRACTICE_LOGIN, new JSONObject());
+                //答题
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivityForResult(new Intent(mContext, LoginActivity.class), 2);
+                    }
+                });
             }
         }
 
@@ -361,12 +370,17 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
 //                    MinePrize minePrize = JSONObject.parseObject(prizeData.toString(), MinePrize.class);
                     MinePrize minePrize = new Gson().fromJson(prizeData, MinePrize.class);
                     if (minePrize.getActionType().equals("action.h5.url")) {
-                        //实物
-                        Intent intent = new Intent(mContext, WebH5Activity.class);
-                        intent.putExtra("id", minePrize.getId());
-                        intent.putExtra("url", minePrize.getH5Url());
-                        intent.putExtra("name", minePrize.getName());
-                        startActivity(intent);
+                        if (Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("cert")) == 1) {
+                            //实物
+                            Intent intent = new Intent(mContext, WebH5Activity.class);
+                            intent.putExtra("id", minePrize.getId());
+                            intent.putExtra("url", minePrize.getH5Url());
+                            intent.putExtra("name", minePrize.getName());
+                            startActivity(intent);
+                        } else {
+                            //显示实名认证弹窗
+                            RealNamePopupUtil.showAuthPop(getApplicationContext(), llH5, getString(R.string.real_gift_describe));
+                        }
                     } else if (minePrize.getActionType().equals("action.withdraw")) {
                         //红包
                         if (Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("cert")) == 1) {
@@ -489,9 +503,12 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
         if (resultCode == RESULT_OK && requestCode == 1) {
             //登录成功，调用h5方法,，传递boxId给h5
             String boxId = (String) SharedPrefrenceTool.get(mContext, "boxId", "");
-            if (!EncodeAndStringTool.isStringEmpty(boxId)) {
-                sendBox(boxId);
+            if (!EncodeAndStringTool.isStringEmpty(boxId)) { //答题登录
+                sendLoginCallBack("exam", boxId);
             }
+        } else if (resultCode == RESULT_OK && requestCode == 2) { //练习场登录
+            //登录成功，调用h5方法,，传递登录信息给h5
+            sendLoginCallBack("practice", null);
         }
 
     }
@@ -607,7 +624,6 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
     /**
      * 答题分享
      */
-
     private void loadAnswerShared(final int channel, String id) {
         this.channel = channel;
         RemotingEx.doRequest("answerShared", ApiServiceBean.answerShared(), new Object[]{channel, id}, this);
@@ -1029,9 +1045,9 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
      *
      * @param boxId
      */
-    public void sendBox(String boxId) {
+    public void sendLoginCallBack(String action, String boxId) {
         final JSONObject rel = new JSONObject();
-        rel.put("action", "exam");
+        rel.put("action", action);
         rel.put("boxId", boxId);
         answerHomeBean.setToken(AppConst.TOKEN);
         answerHomeBean.setRandom(AppConst.RANDOM);
@@ -1040,7 +1056,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
         answerHomeBean.setAppSecret(AppConst.APP_KEY);
         answerHomeBean.setGroupId(groupId);
         answerHomeBean.setDeviceId(SmAntiFraud.getDeviceId());
-        rel.put("answer", JSON.toJSONString(answerHomeBean));
+        rel.put("loginInfo", JSON.toJSONString(answerHomeBean));
         wvAnswerHome.post(new Runnable() {
             @Override
             public void run() {

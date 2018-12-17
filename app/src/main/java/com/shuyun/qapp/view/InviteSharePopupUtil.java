@@ -46,6 +46,7 @@ public class InviteSharePopupUtil {
 
     private static CommonPopupWindow popupWindow;
     private static int SHARE_CHANNEL;//分享渠道2:微信好友;1:微信朋友圈
+    static SharedBean sharedBean1;
 
     /**
      * 邀请分享弹窗
@@ -131,11 +132,9 @@ public class InviteSharePopupUtil {
      *
      * @param channl 1:微信分享;2 微信朋友圈分享
      */
-    static SharedBean sharedBean1;
-
     private static void loadInviteShared(final int channl, final Context context, final View view) {
 
-        RemotingEx.doRequest(ApiServiceBean.inviteShared(), new OnRemotingCallBackListener<SharedBean>() {
+        RemotingEx.doRequest(ApiServiceBean.inviteShared(), new Object[]{channl}, new OnRemotingCallBackListener<SharedBean>() {
             @Override
             public void onCompleted(String action) {
 

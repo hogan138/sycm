@@ -7,11 +7,16 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.blankj.utilcode.util.DeviceUtils;
+import com.blankj.utilcode.util.StringUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.AdBean;
@@ -20,6 +25,7 @@ import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
+import com.shuyun.qapp.ui.against.MatchingActivity;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
@@ -47,10 +53,14 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
     FrameLayout flMain;
     @BindView(R.id.tv_skip)
     TextView tvSkip;
-    @BindView(R.id.iv_advertising)
-    ImageView ivAdvertising;
-    @BindView(R.id.wAd)
-    RelativeLayout wAd;
+    @BindView(R.id.icon)
+    ImageView icon;
+    @BindView(R.id.mainImg)
+    ImageView mainImg;
+    @BindView(R.id.bottomIcon)
+    ImageView bottomIcon;
+    @BindView(R.id.bottomLayout)
+    LinearLayout bottomLayout;
 
     private CountDownTimer timer; //倒计时
     private Context mContext;
@@ -59,6 +69,11 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
     private Handler mHandler = new Handler();
     private boolean isLoading = false;
     private boolean isStop = false;
+
+    /**
+     * 动画
+     */
+    Animation mAnimation = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +93,7 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
 
         //保存登录状态
         SaveUserInfo.getInstance(this).setUserInfo("LOGIN_MODE", String.valueOf(LOGIN_MODE));
+
     }
 
     @Override
@@ -110,12 +126,21 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
      * 广告弹框
      */
     public void showPop() {
-        ImageLoaderManager.LoadImage(mContext, adBean.getAd().get(0).getUrl(), ivAdvertising, R.mipmap.zw01);
+        icon.setVisibility(View.GONE);
+        bottomIcon.setImageResource(R.mipmap.start_logo);
+        bottomLayout.setVisibility(View.VISIBLE);
 
-        final Long model = adBean.getAd().get(0).getModel();
-        final String content = adBean.getAd().get(0).getContent();
-        final Long isLogin = adBean.getAd().get(0).getIsLogin();
-        ivAdvertising.setOnClickListener(new OnMultiClickListener() {
+        AdBean.AdInfo info = adBean.getAd().get(0);
+        ImageLoaderManager.LoadImage(mContext, info.getUrl(), mainImg, R.mipmap.zw01);
+        mAnimation = AnimationUtils.loadAnimation(mContext, R.anim.image_alpha);
+        mainImg.setAnimation(mAnimation);
+        mAnimation.start();
+
+        final Long model = info.getModel();
+        final String content = info.getContent();
+        final Long isLogin = info.getIsLogin();
+
+        mainImg.setOnClickListener(new OnMultiClickListener() {
             @Override
             public void onMultiClick(View v) {
                 //TODO 这里不需要进行逻辑判断 一律打开HomePage 在首页进行处理 默认首页不进行数据请求
@@ -140,7 +165,8 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
     }
 
     private void initTime() {
-        wAd.setVisibility(View.VISIBLE);
+        tvSkip.setVisibility(View.VISIBLE);
+        mainImg.setVisibility(View.VISIBLE);
 
         long time = 3;
         Long timeout = adBean.getTimeout();
@@ -163,7 +189,7 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
 
     //跳转
     private void skip() {
-        if(isStop)
+        if (isStop)
             return;
         isStop = true;
         Intent intent = new Intent(mContext, HomePageActivity.class);
@@ -175,7 +201,8 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
     protected void onDestroy() {
         if (timer != null)
             timer.cancel();
-
+        if (mAnimation != null)
+            mAnimation.cancel();
         super.onDestroy();
     }
 
@@ -187,13 +214,20 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
         if (isLoading)
             return;
         isLoading = true;
+
+        //判断是否是魅族手机
+        if ("Meizu".equalsIgnoreCase(DeviceUtils.getManufacturer())) {
+            this.bottomIcon.setImageResource(R.mipmap.bottom_logo);
+            bottomLayout.setVisibility(View.VISIBLE);
+        }
+
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 //获取广告
                 getAd();
             }
-        }, 100);
+        }, 1600);
     }
 
     @Override

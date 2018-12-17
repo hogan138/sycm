@@ -626,4 +626,12 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
 
         }
     }
+
+    @Override
+    public void clear() {
+        super.clear();
+        for (Fragment fragment : fragments) {
+            ((BaseFragment) fragment).clear();
+        }
+    }
 }

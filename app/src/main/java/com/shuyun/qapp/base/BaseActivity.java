@@ -144,4 +144,11 @@ public abstract class BaseActivity extends AppCompatActivity {
             Toast.makeText(this, data.toString(), Toast.LENGTH_LONG).show();
         }
     }
+
+    /**
+     * 清理数据
+     */
+    public void clear() {
+
+    }
 }

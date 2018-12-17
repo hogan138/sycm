@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -52,7 +53,8 @@ import okhttp3.RequestBody;
  * 红包提现
  */
 public class NewRedWithdrawActivity extends BaseActivity implements View.OnClickListener, OnRemotingCallBackListener<Object> {
-
+    @BindView(R.id.ll_main)
+    LinearLayout llMain;
     @BindView(R.id.rl_back)
     RelativeLayout rlBack;
     @BindView(R.id.tv_rule)
@@ -73,8 +75,7 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
     Button btnContactOur;
 
     List<String> redIdList = new ArrayList<String>();
-    @BindView(R.id.rl_main)
-    RelativeLayout rlMain;
+
 
     private int DELYED = 100;
 
@@ -279,7 +280,7 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
      */
     private void redWithDrawal(InputWithdrawalbean inputWithdrawalbean) {
         CustomLoadingFactory factory = new CustomLoadingFactory();
-        LoadingBar.make(rlMain, factory).show();
+        LoadingBar.make(llMain, factory).show();
 
         final String inputbean = JSON.toJSONString(inputWithdrawalbean);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
@@ -293,8 +294,8 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
 
     @Override
     public void onCompleted(String action) {
-        if("applyWithdrawal".equals(action))
-            LoadingBar.cancel(rlMain);
+        if ("applyWithdrawal".equals(action))
+            LoadingBar.cancel(llMain);
     }
 
     @Override

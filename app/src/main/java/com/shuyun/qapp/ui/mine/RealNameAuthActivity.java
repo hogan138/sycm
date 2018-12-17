@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.callback.ConfigButton;
@@ -159,6 +160,7 @@ public class RealNameAuthActivity extends BaseActivity {
     public void click(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
+                KeyboardUtils.hideSoftInput(RealNameAuthActivity.this);
                 finish();
                 break;
             case R.id.iv_clear_name: //清除姓名

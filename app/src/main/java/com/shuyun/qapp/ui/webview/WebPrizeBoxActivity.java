@@ -214,12 +214,17 @@ public class WebPrizeBoxActivity extends BaseActivity {
 //                    MinePrize minePrize = JSON.parseObject(prizeData, MinePrize.class);
                     MinePrize minePrize = new Gson().fromJson(prizeData, MinePrize.class);
                     if (minePrize.getActionType().equals("action.h5.url")) {
-                        //实物
-                        Intent intent = new Intent(WebPrizeBoxActivity.this, WebH5Activity.class);
-                        intent.putExtra("id", minePrize.getId());
-                        intent.putExtra("url", minePrize.getH5Url());
-                        intent.putExtra("name", minePrize.getName());
-                        startActivity(intent);
+                        if (Integer.parseInt(SaveUserInfo.getInstance(WebPrizeBoxActivity.this).getUserInfo("cert")) == 1) {
+                            //实物
+                            Intent intent = new Intent(WebPrizeBoxActivity.this, WebH5Activity.class);
+                            intent.putExtra("id", minePrize.getId());
+                            intent.putExtra("url", minePrize.getH5Url());
+                            intent.putExtra("name", minePrize.getName());
+                            startActivity(intent);
+                        } else {
+                            //显示实名认证弹窗
+                            RealNamePopupUtil.showAuthPop(getApplicationContext(), llWebBox, getString(R.string.real_gift_describe));
+                        }
                     } else if (minePrize.getActionType().equals("action.withdraw")) {
                         //红包
                         if (Integer.parseInt(SaveUserInfo.getInstance(WebPrizeBoxActivity.this).getUserInfo("cert")) == 1) {
