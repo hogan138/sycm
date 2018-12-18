@@ -216,10 +216,10 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
         isLoading = true;
 
         //判断是否是魅族手机
-        if ("Meizu".equalsIgnoreCase(DeviceUtils.getManufacturer())) {
-            this.bottomIcon.setImageResource(R.mipmap.bottom_logo);
-            bottomLayout.setVisibility(View.VISIBLE);
-        }
+//        if ("Meizu".equalsIgnoreCase(DeviceUtils.getManufacturer())) {
+//            this.bottomIcon.setImageResource(R.mipmap.bottom_logo);
+//            bottomLayout.setVisibility(View.VISIBLE);
+//        }
 
         mHandler.postDelayed(new Runnable() {
             @Override
