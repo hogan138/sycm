@@ -1,6 +1,5 @@
 package com.shuyun.qapp.ui.mine;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;

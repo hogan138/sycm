@@ -119,11 +119,13 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
             //我的奖品红包提现
             final List<MinePrize> prizeBeanList = bundle.getParcelableArrayList("redPrize");
             if (!EncodeAndStringTool.isListEmpty(prizeBeanList)) {
-                for (MinePrize red : prizeBeanList) {
-                    if (red.getId().equals(redId)) {
-                        tvMoney.setText(red.getAmount());
+                int position = 0;
+                for (int i = 0; i < prizeBeanList.size(); i++) {
+                    if (prizeBeanList.get(i).getId().equals(redId)) {
+                        tvMoney.setText(prizeBeanList.get(i).getAmount());
                         redIdList.add(redId);
-                        red.selected = true;
+                        prizeBeanList.get(i).selected = true;
+                        position = i;
                         break;
                     }
                 }
@@ -150,16 +152,19 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
                 LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
                 rvRedPacket.setLayoutManager(layoutManager);
                 rvRedPacket.setAdapter(redPacketAdapter);
+                rvRedPacket.smoothScrollToPosition(position);
             }
         } else if ("box".equals(from)) {
             //开宝箱提现
             final List<MinePrize.ChildMinePrize> prizeBeanList = bundle.getParcelableArrayList("redPrize");
             if (!EncodeAndStringTool.isListEmpty(prizeBeanList)) {
-                for (MinePrize.ChildMinePrize red : prizeBeanList) {
-                    if (red.getId().equals(redId)) {
-                        tvMoney.setText(red.getAmount());
+                int position = 0;
+                for (int i = 0; i < prizeBeanList.size(); i++) {
+                    if (prizeBeanList.get(i).getId().equals(redId)) {
+                        tvMoney.setText(prizeBeanList.get(i).getAmount());
                         redIdList.add(redId);
-                        red.selected = true;
+                        prizeBeanList.get(i).selected = true;
+                        position = i;
                         break;
                     }
                 }
@@ -186,8 +191,10 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
                 LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
                 rvRedPacket.setLayoutManager(layoutManager);
                 rvRedPacket.setAdapter(redPacketAdapter);
+                rvRedPacket.smoothScrollToPosition(position);
             }
         }
+
     }
 
     //定时器

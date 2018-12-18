@@ -37,6 +37,7 @@ import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.InviteBean;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.HeartBeatManager;
 import com.shuyun.qapp.net.LoginDataManager;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -347,6 +348,8 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         super.onDestroy();
         SharedPreferences sharedPreferences = getSharedPreferences("FirstRun", 0);
         sharedPreferences.edit().putBoolean("Main", true).apply();
+
+        HeartBeatManager.instance().stop();
 
     }
 

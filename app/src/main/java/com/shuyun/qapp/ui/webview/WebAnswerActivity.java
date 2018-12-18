@@ -1057,6 +1057,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
         answerHomeBean.setGroupId(groupId);
         answerHomeBean.setDeviceId(SmAntiFraud.getDeviceId());
         rel.put("loginInfo", JSON.toJSONString(answerHomeBean));
+//        rel.put("loginInfo", answerHomeBean);
         wvAnswerHome.post(new Runnable() {
             @Override
             public void run() {

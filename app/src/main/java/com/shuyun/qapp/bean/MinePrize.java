@@ -53,8 +53,8 @@ public class MinePrize implements Parcelable {
     private String bulletin;
     private List<PrizesBean> prizes;
     private long beat0;//正确击败人次
-    private double beatRate;//击败人次的比例
-    private double accuracy;//正确率
+    private Double beatRate;//击败人次的比例
+    private Double accuracy;//正确率
     private Long source;//奖品来源
     private String substatusName;
     private String h5Url;
@@ -257,19 +257,19 @@ public class MinePrize implements Parcelable {
         this.beat0 = beat0;
     }
 
-    public double getBeatRate() {
+    public Double getBeatRate() {
         return beatRate;
     }
 
-    public void setBeatRate(double beatRate) {
+    public void setBeatRate(Double beatRate) {
         this.beatRate = beatRate;
     }
 
-    public double getAccuracy() {
+    public Double getAccuracy() {
         return accuracy;
     }
 
-    public void setAccuracy(double accuracy) {
+    public void setAccuracy(Double accuracy) {
         this.accuracy = accuracy;
     }
 
@@ -620,8 +620,8 @@ public class MinePrize implements Parcelable {
         private Long upcomming;
         private String amount;
         private Long beat;
-        private Long beatRate;
-        private Long accuracy;
+        private Double beatRate;
+        private Double accuracy;
         private Long original;
         private Long source;
         private Long scheduleId;
@@ -790,19 +790,19 @@ public class MinePrize implements Parcelable {
             this.beat = beat;
         }
 
-        public Long getBeatRate() {
+        public Double getBeatRate() {
             return beatRate;
         }
 
-        public void setBeatRate(Long beatRate) {
+        public void setBeatRate(Double beatRate) {
             this.beatRate = beatRate;
         }
 
-        public Long getAccuracy() {
+        public Double getAccuracy() {
             return accuracy;
         }
 
-        public void setAccuracy(Long accuracy) {
+        public void setAccuracy(Double accuracy) {
             this.accuracy = accuracy;
         }
 
@@ -873,8 +873,8 @@ public class MinePrize implements Parcelable {
             upcomming = in.readLong();
             amount = in.readString();
             beat = in.readLong();
-            beatRate = in.readLong();
-            accuracy = in.readLong();
+            beatRate = in.readDouble();
+            accuracy = in.readDouble();
             original = in.readLong();
             source = in.readLong();
             scheduleId = in.readLong();
@@ -921,8 +921,8 @@ public class MinePrize implements Parcelable {
             dest.writeLong(upcomming);
             dest.writeString(amount);
             dest.writeLong(beat);
-            dest.writeLong(beatRate);
-            dest.writeLong(accuracy);
+            dest.writeDouble(beatRate);
+            dest.writeDouble(accuracy);
             dest.writeLong(original);
             dest.writeLong(source);
             dest.writeLong(scheduleId);
