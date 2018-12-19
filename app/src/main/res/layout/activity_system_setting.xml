@@ -1,191 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <include layout="@layout/common_left_title" />
-
-
-    <RelativeLayout
-        android:id="@+id/rl_use_info"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="63.5dp"
-        android:foreground="?attr/selectableItemBackground">
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/text_12"
-            android:layout_marginTop="@dimen/text_30"
-            android:text="用户信息"
-            android:textColor="@color/color_1"
-            android:textSize="@dimen/text_15" />
+        <include layout="@layout/common_left_title" />
 
 
-        <ImageView
-            android:id="@+id/iv_user_info"
-            android:layout_width="@dimen/text_7"
-            android:layout_height="@dimen/text_12"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/text_35"
-            android:layout_marginRight="@dimen/text_12"
-            android:src="@mipmap/gomore" />
-    </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_use_info"
+            android:layout_width="match_parent"
+            android:layout_height="63.5dp"
+            android:foreground="?attr/selectableItemBackground">
 
-    <include layout="@layout/common_line_6" />
-
-    <RelativeLayout
-        android:id="@+id/rl_about_us"
-        android:layout_width="match_parent"
-        android:layout_height="45.5dp"
-        android:foreground="?attr/selectableItemBackground">
-        <!--android:layout_gravity="center_vertical"-->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/text_12"
-            android:text="关于我们"
-            android:textColor="@color/color_1"
-            android:textSize="@dimen/text_15" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_12"
+                android:layout_marginTop="@dimen/text_30"
+                android:text="用户信息"
+                android:textColor="@color/color_1"
+                android:textSize="@dimen/text_15" />
 
 
-        <ImageView
-            android:layout_width="@dimen/text_7"
-            android:layout_height="@dimen/text_12"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/text_12"
-            android:src="@mipmap/gomore" />
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/iv_user_info"
+                android:layout_width="@dimen/text_7"
+                android:layout_height="@dimen/text_12"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/text_35"
+                android:layout_marginRight="@dimen/text_12"
+                android:src="@mipmap/gomore" />
+        </RelativeLayout>
 
-    <include layout="@layout/common_line_6" />
+        <include layout="@layout/common_line_6" />
 
-    <RelativeLayout
-        android:id="@+id/rl_feed_back"
-        android:layout_width="match_parent"
-        android:layout_height="45.5dp"
-        android:foreground="?attr/selectableItemBackground">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/text_12"
-            android:text="反馈建议"
-            android:textColor="@color/color_1"
-            android:textSize="@dimen/text_15" />
-
-
-        <ImageView
-            android:layout_width="@dimen/text_7"
-            android:layout_height="@dimen/text_12"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/text_12"
-            android:src="@mipmap/gomore" />
-    </RelativeLayout>
-
-    <include layout="@layout/common_line_6" />
-
-    <RelativeLayout
-        android:id="@+id/rl_version"
-        android:layout_width="match_parent"
-        android:layout_height="45.5dp"
-        android:foreground="?attr/selectableItemBackground">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/text_12"
-            android:text="当前版本"
-            android:textColor="@color/color_1"
-            android:textSize="@dimen/text_15" />
-
-        <TextView
-            android:id="@+id/tv_version"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/text_40"
-            android:text="3.0.3"
-            android:textColor="@color/color_27"
-            android:textSize="@dimen/text_16" />
-
-        <ImageView
-            android:id="@+id/iv"
-            android:layout_width="@dimen/text_7"
-            android:layout_height="@dimen/text_12"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/text_12"
-            android:src="@mipmap/gomore" />
-    </RelativeLayout>
-
-    <include layout="@layout/common_line_6" />
-
-    <RelativeLayout
-        android:id="@+id/rl_other_set"
-        android:layout_width="match_parent"
-        android:layout_height="45.5dp"
-        android:foreground="?attr/selectableItemBackground">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/text_12"
-            android:text="其他设置"
-            android:textColor="@color/color_1"
-            android:textSize="@dimen/text_15" />
+        <RelativeLayout
+            android:id="@+id/rl_about_us"
+            android:layout_width="match_parent"
+            android:layout_height="45.5dp"
+            android:foreground="?attr/selectableItemBackground">
+            <!--android:layout_gravity="center_vertical"-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/text_12"
+                android:text="关于我们"
+                android:textColor="@color/color_1"
+                android:textSize="@dimen/text_15" />
 
 
-        <ImageView
-            android:layout_width="@dimen/text_7"
-            android:layout_height="@dimen/text_12"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/text_12"
-            android:src="@mipmap/gomore" />
-    </RelativeLayout>
+            <ImageView
+                android:layout_width="@dimen/text_7"
+                android:layout_height="@dimen/text_12"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/text_12"
+                android:src="@mipmap/gomore" />
+        </RelativeLayout>
 
-    <include layout="@layout/common_line_6" />
+        <include layout="@layout/common_line_6" />
 
-    <com.allen.library.SuperTextView
-        android:id="@+id/tv_more"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/text_45.5"
-        android:visibility="gone"
-        app:sBottomDividerLineMarginLR="@dimen/text_12"
-        app:sDividerLineColor="#C8C7CC"
-        app:sDividerLineHeight="@dimen/text_0.5"
-        app:sDividerLineType="bottom"
-        app:sLeftTextString="更多"
-        app:sLeftViewMarginLeft="12dp"
-        app:sRightIconHeight="@dimen/text_12"
-        app:sRightIconMarginRight="@dimen/text_12"
-        app:sRightIconRes="@mipmap/gomore"
-        app:sRightIconWidth="@dimen/text_7"
-        app:sRightTextColor="@color/color_27"
-        app:sRightTextString="V3.0.6"
-        app:sRightViewMarginRight="@dimen/text_20" />
+        <RelativeLayout
+            android:id="@+id/rl_feed_back"
+            android:layout_width="match_parent"
+            android:layout_height="45.5dp"
+            android:foreground="?attr/selectableItemBackground">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/text_12"
+                android:text="反馈建议"
+                android:textColor="@color/color_1"
+                android:textSize="@dimen/text_15" />
+
+
+            <ImageView
+                android:layout_width="@dimen/text_7"
+                android:layout_height="@dimen/text_12"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/text_12"
+                android:src="@mipmap/gomore" />
+        </RelativeLayout>
+
+        <include layout="@layout/common_line_6" />
+
+        <RelativeLayout
+            android:id="@+id/rl_version"
+            android:layout_width="match_parent"
+            android:layout_height="45.5dp"
+            android:foreground="?attr/selectableItemBackground">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/text_12"
+                android:text="当前版本"
+                android:textColor="@color/color_1"
+                android:textSize="@dimen/text_15" />
+
+            <TextView
+                android:id="@+id/tv_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/text_25"
+                android:text="3.0.3"
+                android:textColor="@color/color_9b"
+                android:textSize="@dimen/text_15" />
+
+            <ImageView
+                android:id="@+id/iv"
+                android:layout_width="@dimen/text_7"
+                android:layout_height="@dimen/text_12"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/text_12"
+                android:src="@mipmap/gomore" />
+        </RelativeLayout>
+
+        <include layout="@layout/common_line_6" />
+
+        <RelativeLayout
+            android:id="@+id/rl_other_set"
+            android:layout_width="match_parent"
+            android:layout_height="45.5dp"
+            android:foreground="?attr/selectableItemBackground">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/text_12"
+                android:text="其他设置"
+                android:textColor="@color/color_1"
+                android:textSize="@dimen/text_15" />
+
+
+            <ImageView
+                android:layout_width="@dimen/text_7"
+                android:layout_height="@dimen/text_12"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/text_12"
+                android:src="@mipmap/gomore" />
+        </RelativeLayout>
+
+        <include layout="@layout/common_line_6" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/btn_exit_login"
-        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/text_58"
-        android:layout_marginLeft="@dimen/text_12"
-        android:layout_marginTop="100dp"
-        android:layout_marginRight="@dimen/text_12"
+        android:layout_height="@dimen/text_45"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_37"
+        android:foreground="?attr/selectableItemBackground"
         android:text="退出登录"
-        android:textColor="@color/color_2"
-        android:textSize="@dimen/text_18"
-        app:theme="@style/Default.Widget.Button" />
-
-</LinearLayout>
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_15" />
+</RelativeLayout>

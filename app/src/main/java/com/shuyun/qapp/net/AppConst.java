@@ -87,25 +87,25 @@ public class AppConst {
     /**
      * 用户协议
      */
-    public static final String USER_AGREEMENT = "https://api-syksc.25876.com/h5/agreement.html";
+    public static final String USER_AGREEMENT = "https://api-syksc.25876.com/web/h5/agreement.html";
     /**
      * 关于我们
      */
-    public static final String ABOUT_US = "https://api-syksc.25876.com/h5/about.html";
+    public static final String ABOUT_US = "https://api-syksc.25876.com/web/h5/about.html";
     /**
      * 活动规则
      */
-    public static final String LOOK_RULES = "https://api-syksc.25876.com/h5/static.html#/text";
+    public static final String LOOK_RULES = "https://api-syksc.25876.com/web/h5/static.html#/text";
 
     /**
      * H5答题
      */
-    public static final String ANSWER = BASE_URL + "/h5/index.html?v=3.0.8";
+    public static final String ANSWER = BASE_URL + "/web/h5/index.html?v=3.0.8";
 
     /**
      * 开宝箱
      */
-    public static final String BOX = BASE_URL + "/h5/index.html?prize=1";
+    public static final String BOX = BASE_URL + "/web/h5/index.html?prize=1";
 
     /**
      * 是否有极光推送消息

@@ -74,7 +74,7 @@ public class GlideUtils {
      */
     public static void LoadCircleImage(Context mContext, String path,
                                        ImageView imageview) {
-        Glide.with(mContext).load(path).centerCrop().placeholder(R.mipmap.zw02)
+        Glide.with(mContext).load(path).centerCrop()
                 .transform(new GlideCircleTransform(mContext, 0, ContextCompat.getColor(mContext, R.color.white)))
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageview);
 

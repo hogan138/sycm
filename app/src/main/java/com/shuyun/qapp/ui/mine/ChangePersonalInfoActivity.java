@@ -292,11 +292,11 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
         if ((!EncodeAndStringTool.isObjectEmpty(commonPopupWindow)) && commonPopupWindow.isShowing())
             return;
 
-        View upView = LayoutInflater.from(this).inflate(R.layout.bind_wechat_pop, null);
+        View upView = LayoutInflater.from(this).inflate(R.layout.bind_wechat_popupwindow, null);
         //测量View的宽高
         CommonPopUtil.measureWidthAndHeight(upView);
         commonPopupWindow = new CommonPopupWindow.Builder(this)
-                .setView(R.layout.bind_wechat_pop)
+                .setView(R.layout.bind_wechat_popupwindow)
                 .setWidthAndHeight(upView.getMeasuredWidth(), upView.getMeasuredHeight())
                 .setBackGroundLevel(0.5f)//取值范围0.0f-1.0f 值越小越暗
                 .setOutsideTouchable(true)
@@ -311,7 +311,7 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
     @Override
     public void getChildView(View view, int layoutResId) {
         switch (layoutResId) {
-            case R.layout.bind_wechat_pop:
+            case R.layout.bind_wechat_popupwindow:
                 ImageView ivClose = (ImageView) view.findViewById(R.id.iv_close);
                 TextView tvNickName = (TextView) view.findViewById(R.id.tv_nick_name);
                 ImageView ivWechatHead = (ImageView) view.findViewById(R.id.iv_wechat_head);
