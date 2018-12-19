@@ -83,7 +83,11 @@ public class PrizeAdapter extends RecyclerView.Adapter<PrizeAdapter.ViewHolder> 
         //按钮名称
         holder.tvOpen.setText(minePrize.getActionTypeLabel());
         if (minePrize.getStatus() == 1 || minePrize.getStatus() == 4) {
-            holder.tvOpen.setEnabled(true);
+            if ("action.default".equals(minePrize.getActionType())) {
+                holder.tvOpen.setEnabled(false);
+            } else {
+                holder.tvOpen.setEnabled(true);
+            }
             holder.tvUseLogo.setVisibility(View.GONE);
         } else {
             holder.tvOpen.setEnabled(false);
