@@ -264,6 +264,7 @@ public class VerifyCodeActivity extends BaseActivity {
 
     public void loadLogin(final Activity mContext, final LoginInput loginInput, final int mode) {
         SaveUserInfo.getInstance(this).setUserInfo("account", loginInput.getAccount());
+        SaveUserInfo.getInstance(mContext).setUserInfo("phone", loginInput.getAccount());
         final String account = SaveUserInfo.getInstance(this).getUserInfo("account");
         /**
          * 如果两次登录用户不是同一用户,则清空本地数据库中的消息表

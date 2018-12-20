@@ -172,6 +172,7 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
      */
     public void loadLogin(final Context mContext, final LoginInput loginInput) {
         SaveUserInfo.getInstance(mContext).setUserInfo("account", loginInput.getAccount());
+        SaveUserInfo.getInstance(mContext).setUserInfo("phone", loginInput.getAccount());
         String account = SaveUserInfo.getInstance(mContext).getUserInfo("account");
         /**
          * 如果两次登录用户不是同一用户,则清空本地数据库中的消息表
