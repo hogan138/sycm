@@ -40,6 +40,7 @@
                 android:layout_height="wrap_content"
                 android:foreground="?attr/selectableItemBackground"
                 app:cardCornerRadius="6dp"
+                app:cardElevation="@dimen/text_1"
                 app:cardPreventCornerOverlap="false"
                 app:cardUseCompatPadding="true"
                 app:contentPadding="-2dp">

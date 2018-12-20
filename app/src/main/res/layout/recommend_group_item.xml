@@ -20,13 +20,15 @@
             android:layout_height="match_parent"
             android:foreground="?attr/selectableItemBackground"
             app:cardCornerRadius="6dp"
+            app:cardElevation="@dimen/text_1"
             app:cardPreventCornerOverlap="false"
             app:cardUseCompatPadding="true"
             app:contentPadding="-2dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@color/color_f8">
 
                 <com.shuyun.qapp.view.OvalImageView
                     android:id="@+id/iv_group_bg1"
@@ -99,13 +101,15 @@
             android:layout_height="match_parent"
             android:foreground="?attr/selectableItemBackground"
             app:cardCornerRadius="6dp"
+            app:cardElevation="@dimen/text_1"
             app:cardPreventCornerOverlap="false"
             app:cardUseCompatPadding="true"
             app:contentPadding="-2dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@color/color_f8">
 
                 <com.shuyun.qapp.view.OvalImageView
                     android:id="@+id/iv_group_bg2"

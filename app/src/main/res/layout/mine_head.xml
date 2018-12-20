@@ -76,25 +76,12 @@
                 android:textSize="@dimen/text_12" />
         </LinearLayout>
 
-        <com.shuyun.qapp.view.WaveView3
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_below="@+id/ll_add" />
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_add"
+            android:background="@mipmap/mine_top_bg" />
 
-        <com.shuyun.qapp.view.WaveView2
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_below="@+id/ll_add" />
-
-        <com.shuyun.qapp.view.WaveView1
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_below="@+id/ll_add" />
-
-        <com.shuyun.qapp.view.WaveView
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_below="@+id/ll_add" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -110,6 +97,7 @@
             android:layout_height="match_parent"
             android:foreground="?attr/selectableItemBackground"
             app:cardCornerRadius="2dp"
+            app:cardElevation="@dimen/text_1"
             app:cardPreventCornerOverlap="false"
             app:cardUseCompatPadding="true"
             app:contentPadding="-2dp">
