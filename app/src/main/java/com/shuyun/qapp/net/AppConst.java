@@ -13,7 +13,7 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 
 public class AppConst {
 
-//        public static final String BASE_URL = "https://api-syksc.25876.com";///线上服务器
+    //        public static final String BASE_URL = "https://api-syksc.25876.com";///线上服务器
     //    public static final String BASE_URL = "http://192.168.3.250:8080";//:8002/公司内部服务器
 //    public static final String BASE_URL = "http://139.224.199.106:8080";//开发测试服务器
     public static final String BASE_URL = "http://192.168.3.157";//测试环境
@@ -173,6 +173,8 @@ public class AppConst {
     public static final String AGAINST_RESULT_SHARE = "against_result_share";//对战结果分享
     public static final String ANSWER_HISTORY = "answer_history"; //答题历史
     public static final String ANSWER_FEEDBACK = "answer_feedback";//答题反馈
+    public static final String WELCOME_AD = "welcome_ad";//广告页
+    public static final String TOURISTS = "tourists";//是否是游客模式
 
 
 }

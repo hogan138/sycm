@@ -13,20 +13,18 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.blankj.utilcode.util.DeviceUtils;
-import com.blankj.utilcode.util.StringUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.AdBean;
 import com.shuyun.qapp.bean.DataResponse;
+import com.shuyun.qapp.bean.TouristsBean;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
-import com.shuyun.qapp.ui.against.MatchingActivity;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
+import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ImageLoaderManager;
@@ -46,7 +44,7 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 /**
  * 启动页
  */
-public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackListener<AdBean> {
+public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackListener<Object> {
     private static final int LOGIN_MODE = 1;
 
     @BindView(R.id.fl_main)
@@ -113,7 +111,7 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
         //将拼接的字符串转化为16进制MD5
         String myCode = encryptMD5ToString(sb.toString());
         String signCode = getCode(myCode);
-        RemotingEx.doRequest(null, ApiServiceBean.getAd(), new Object[]{
+        RemotingEx.doRequest(AppConst.WELCOME_AD, ApiServiceBean.getAd(), new Object[]{
                 AppConst.DEV_ID,
                 AppConst.APP_ID,
                 AppConst.V,
@@ -144,6 +142,7 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
             @Override
             public void onMultiClick(View v) {
                 //TODO 这里不需要进行逻辑判断 一律打开HomePage 在首页进行处理 默认首页不进行数据请求
+                SaveUserInfo.getInstance(mContext).setUserInfo("normal_login", "1");
                 isStop = true;
                 Intent intent = new Intent();
                 intent.putExtra("from", "welcome");
@@ -192,8 +191,21 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
         if (isStop)
             return;
         isStop = true;
-        Intent intent = new Intent(mContext, HomePageActivity.class);
-        startActivity(intent);
+        if ("1".equals(SaveUserInfo.getInstance(mContext).getUserInfo("tourists"))) {
+            //启用游客模式
+            SaveUserInfo.getInstance(mContext).setUserInfo("normal_login", "1");
+            Intent intent = new Intent(mContext, HomePageActivity.class);
+            startActivity(intent);
+        } else {
+            //不启用游客模式
+            SaveUserInfo.getInstance(mContext).setUserInfo("normal_login", "0");
+            if (AppConst.isLogin()) {
+                Intent intent = new Intent(mContext, HomePageActivity.class);
+                startActivity(intent);
+            } else {
+                startActivity(new Intent(mContext, LoginActivity.class));
+            }
+        }
         finish();
     }
 
@@ -228,6 +240,10 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
                 getAd();
             }
         }, 1600);
+
+        //获取是否需要登录
+        RemotingEx.doRequest(AppConst.TOURISTS, ApiServiceBean.tourists(), null, this);
+
     }
 
     @Override
@@ -241,26 +257,33 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<AdBean> response) {
-        if (response.isSuccees()) {
-            adBean = response.getDat();
-            if (!EncodeAndStringTool.isListEmpty(adBean.getAd())) {
-                //加载广告页
-                showPop();
+    public void onSucceed(String action, DataResponse<Object> response) {
+        if (AppConst.WELCOME_AD.equals(action)) { //广告页接口
+            if (response.isSuccees()) {
+                adBean = (AdBean) response.getDat();
+                if (!EncodeAndStringTool.isListEmpty(adBean.getAd())) {
+                    //加载广告页
+                    showPop();
 
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        //倒计时结束
-                        initTime();
-                    }
-                }, 1000);
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            //倒计时
+                            initTime();
+                        }
+                    }, 1000);
+                } else {
+                    //进入首页
+                    skip();
+                }
             } else {
-                //进入首页
-                skip();
+                ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
             }
-        } else {
-            ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
+        } else if (AppConst.TOURISTS.equals(action)) { //是否是游客模式
+            if (response.isSuccees()) {
+                TouristsBean touristsBean = (TouristsBean) response.getDat();
+                SaveUserInfo.getInstance(mContext).setUserInfo("tourists", touristsBean.getMode());
+            }
         }
     }
 }

@@ -737,8 +737,12 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
         if (AppConst.isLogin()) {
             loadTreasureBoxNum();
         } else {
-            ivBx.clearAnimation();
-            ivBx.setVisibility(View.GONE);
+            try {
+                ivBx.clearAnimation();
+                ivBx.setVisibility(View.GONE);
+            } catch (Exception e) {
+
+            }
         }
     }
 

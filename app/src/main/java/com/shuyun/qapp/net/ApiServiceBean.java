@@ -557,7 +557,14 @@ public class ApiServiceBean {
     /**
      * 81、是否已注册
      */
-    public static String registered(){
+    public static String registered() {
         return "registered";
+    }
+
+    /**
+     * 82、是否是游客登录
+     */
+    public static String tourists() {
+        return "tourists";
     }
 }

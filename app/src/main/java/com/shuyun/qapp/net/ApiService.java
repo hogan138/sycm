@@ -42,6 +42,7 @@ import com.shuyun.qapp.bean.RealNameBean;
 import com.shuyun.qapp.bean.RobotShowBean;
 import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.bean.SystemInfo;
+import com.shuyun.qapp.bean.TouristsBean;
 import com.shuyun.qapp.bean.UserWxInfo;
 
 import java.util.List;
@@ -581,4 +582,11 @@ public interface ApiService {
      */
     @GET("/rest/user/registered")
     Observable<DataResponse<Object>> registered(@Query("account") String account);
+
+    /**
+     * 82、是否是游客登录
+     */
+    @GET("/rest/app/tourists")
+    Observable<DataResponse<TouristsBean>> tourists();
+
 }

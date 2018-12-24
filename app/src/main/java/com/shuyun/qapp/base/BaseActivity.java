@@ -22,6 +22,7 @@ import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
+import com.shuyun.qapp.utils.MyActivityManager1;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.wxapi.WXEntryActivity;
@@ -138,7 +139,14 @@ public abstract class BaseActivity extends AppCompatActivity {
                 startActivity(intent);
             } else if (1 == loginResp.getBind()) {
                 //跳转下一级页面
-                LoginDataManager.instance().handler(this, new Object[]{loginResp.getBoxId()});
+                if ("0".equals(SaveUserInfo.getInstance(this).getUserInfo("normal_login"))) {
+                    //正常登录
+                    startActivity(new Intent(this, HomePageActivity.class));
+                } else {
+                    //启用游客模式
+                    LoginDataManager.instance().handler(this, new Object[]{loginResp.getBoxId()});
+                }
+
             }
         } else {
             Toast.makeText(this, data.toString(), Toast.LENGTH_LONG).show();

@@ -23,6 +23,7 @@ import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
+import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.webview.WebPublicActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -203,9 +204,16 @@ public class SystemSettingActivity extends BaseActivity implements OnRemotingCal
                         JPushInterface.setAlias(mContext, new Random().nextInt(), "");
 
                         MyActivityManager.getInstance().finishAllActivity();//销毁所有页面
-                        Intent intent = new Intent(mContext, HomePageActivity.class);
-                        intent.putExtra(AppConst.APP_ACTION_PARAM, AppConst.APP_ACTION_LOGOUT);
-                        startActivity(intent);
+
+                        if ("1".equals(SaveUserInfo.getInstance(mContext).getUserInfo("tourists"))) {
+                            //启用游客模式
+                            Intent intent = new Intent(mContext, HomePageActivity.class);
+                            intent.putExtra(AppConst.APP_ACTION_PARAM, AppConst.APP_ACTION_LOGOUT);
+                            startActivity(intent);
+                        } else {
+                            //不启用游客模式
+                            startActivity(new Intent(mContext, LoginActivity.class));
+                        }
                         finish();
                     }
                 })
