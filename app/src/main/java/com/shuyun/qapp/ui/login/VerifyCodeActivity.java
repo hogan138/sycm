@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -69,6 +70,10 @@ public class VerifyCodeActivity extends BaseActivity {
     TextView tvSendCode;
     @BindView(R.id.ll_main)
     LinearLayout llMain;
+    @BindView(R.id.tv_common_title)
+    TextView tvCommonTitle;
+    @BindView(R.id.btn_send_code)
+    Button btnSendCode;
 
     String phone = "";
     private Activity mContext;
@@ -102,6 +107,9 @@ public class VerifyCodeActivity extends BaseActivity {
                 } else if (getIntent().getStringExtra("name").equals("changePwd")) {
                     //忘记密码
                     verfifyPwd(verifyCodeView.getEditContent());
+                } else if (getIntent().getStringExtra("name").equals("modifyPwd")) {
+                    //修改密码
+                    verfifyPwd(verifyCodeView.getEditContent());
                 }
             }
 
@@ -113,11 +121,18 @@ public class VerifyCodeActivity extends BaseActivity {
 
         //获取验证码
         if (getIntent().getStringExtra("name").equals("login")) {
+            tvSendCode.setVisibility(View.VISIBLE);
             sendVerifyCode(1); //验证码登录
         } else if (getIntent().getStringExtra("name").equals("register")) {
+            tvSendCode.setVisibility(View.VISIBLE);
             sendVerifyCode(7); //注册
         } else if (getIntent().getStringExtra("name").equals("changePwd")) {
+            tvSendCode.setVisibility(View.VISIBLE);
             sendVerifyCode(4); //忘记密码
+        } else if (getIntent().getStringExtra("name").equals("modifyPwd")) {
+            //修改密码
+            tvCommonTitle.setText("修改密码");
+            btnSendCode.setVisibility(View.VISIBLE);
         }
 
         tvSendCode.setOnClickListener(new View.OnClickListener() {
@@ -131,6 +146,13 @@ public class VerifyCodeActivity extends BaseActivity {
                     sendVerifyCode(4); //忘记密码
                 }
 
+            }
+        });
+
+        btnSendCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendVerifyCode(4); //修改密码
             }
         });
 
@@ -180,7 +202,6 @@ public class VerifyCodeActivity extends BaseActivity {
 
     //发送验证码
     private void sendVerifyCode(int type) {
-        tvSendCode.setTextColor(Color.parseColor("#999999"));
         long curTime0 = System.currentTimeMillis();
         //devId+appId+v+stamp+phone+type+appSecret
         String singString0 = "" + AppConst.DEV_ID + AppConst.APP_ID + AppConst.V + curTime0 + phone + type + AppConst.APP_KEY;
@@ -232,27 +253,56 @@ public class VerifyCodeActivity extends BaseActivity {
             public void onSucceed(String action, DataResponse<String> loginResponse) {
                 if (loginResponse.isSuccees()) {
                     KeyboardUtils.showSoftInput(mContext);
-                    //显示60s倒计时
-                    tvSendCode.setEnabled(false);
-                    new CountDownTimer(120 * 1000, 1000) {
 
-                        @Override
-                        public void onTick(long millisUntilFinished) {
-                            tvSendCode.setText(String.format("%d", millisUntilFinished / 1000) + "s重新发送验证码");
-                        }
+                    if (getIntent().getStringExtra("name").equals("modifyPwd")) {
+                        //修改密码显示按钮
+                        btnSendCode.setEnabled(false);
+                        btnSendCode.setTextColor(Color.parseColor("#999999"));
+                        new CountDownTimer(120 * 1000, 1000) {
 
-                        @Override
-                        public void onFinish() {
-                            tvSendCode.setEnabled(true);
-                            tvSendCode.setText("重新发送验证码");
-                            tvSendCode.setTextColor(Color.parseColor("#0194ec"));
-                        }
-                    }.start();
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+                                btnSendCode.setText(String.format("%d", millisUntilFinished / 1000) + "s重新发送验证码");
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                btnSendCode.setEnabled(true);
+                                btnSendCode.setText("重新发送验证码");
+                                btnSendCode.setTextColor(Color.parseColor("#ffffff"));
+                            }
+                        }.start();
+                    } else {
+                        //显示60s倒计时
+                        tvSendCode.setTextColor(Color.parseColor("#999999"));
+                        tvSendCode.setEnabled(false);
+                        new CountDownTimer(120 * 1000, 1000) {
+
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+                                tvSendCode.setText(String.format("%d", millisUntilFinished / 1000) + "s重新发送验证码");
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                tvSendCode.setEnabled(true);
+                                tvSendCode.setText("重新发送验证码");
+                                tvSendCode.setTextColor(Color.parseColor("#0194ec"));
+                            }
+                        }.start();
+                    }
                 } else {
                     ErrorCodeTools.errorCodePrompt(mContext, loginResponse.getErr(), loginResponse.getMsg());
-                    tvSendCode.setEnabled(true);
-                    tvSendCode.setText("重新发送验证码");
-                    tvSendCode.setTextColor(Color.parseColor("#0194ec"));
+                    if (getIntent().getStringExtra("name").equals("modifyPwd")) {
+                        //修改密码显示按钮
+                        btnSendCode.setEnabled(true);
+                        btnSendCode.setText("重新发送验证码");
+                        btnSendCode.setTextColor(Color.parseColor("#ffffff"));
+                    } else {
+                        tvSendCode.setEnabled(true);
+                        tvSendCode.setText("重新发送验证码");
+                        tvSendCode.setTextColor(Color.parseColor("#0194ec"));
+                    }
                 }
             }
         });
@@ -426,10 +476,10 @@ public class VerifyCodeActivity extends BaseActivity {
                     intent.putExtra("name", getIntent().getStringExtra("name"));
                     intent.putExtra("phone", phone);
                     intent.putExtra("code", verifyCodeView.getEditContent());
-                    intent.putExtra("token", "");
                     startActivity(intent);
                 } else {
-                    if (loginResponse.getErr().equals("TAU11")) {
+                    KeyboardUtils.hideSoftInput(mContext);
+                    if (loginResponse.getErr().equals("S0003")) {
                         errorDialog("验证码错误，请重新输入");
                     } else {
                         ErrorCodeTools.errorCodePrompt(mContext, loginResponse.getErr(), loginResponse.getMsg());

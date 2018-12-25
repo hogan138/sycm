@@ -129,7 +129,7 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
         bottomLayout.setVisibility(View.VISIBLE);
 
         AdBean.AdInfo info = adBean.getAd().get(0);
-        ImageLoaderManager.LoadImage(mContext, info.getUrl(), mainImg, R.mipmap.zw01);
+        ImageLoaderManager.LoadImage(mContext, info.getUrl(), mainImg, R.mipmap.jiazai);
         mAnimation = AnimationUtils.loadAnimation(mContext, R.anim.image_alpha);
         mainImg.setAnimation(mAnimation);
         mAnimation.start();

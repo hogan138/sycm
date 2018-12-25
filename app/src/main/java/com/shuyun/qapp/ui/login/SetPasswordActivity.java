@@ -1,6 +1,7 @@
 package com.shuyun.qapp.ui.login;
 
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -28,6 +29,7 @@ import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.LoginDataManager;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
+import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
@@ -62,6 +64,8 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
     Button btnFinish;
     @BindView(R.id.tv_length)
     TextView tvLength;
+    @BindView(R.id.tv_common_title)
+    TextView tvCommonTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +86,10 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
         } else if (getIntent().getStringExtra("name").equals("register")) {
             //注册
             tvRigthTitle.setVisibility(View.VISIBLE);
+        } else if (getIntent().getStringExtra("name").equals("modifyPwd")) {
+            //修改密码
+            tvCommonTitle.setText("修改密码");
+            tvRigthTitle.setVisibility(View.GONE);
         }
     }
 
@@ -206,6 +214,9 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
                 } else if (getIntent().getStringExtra("name").equals("register")) {
                     //注册
                     setPwd();
+                } else if (getIntent().getStringExtra("name").equals("modifyPwd")) {
+                    //修改密码
+                    updatePwd();
                 }
                 break;
             default:
@@ -215,7 +226,7 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
 
 
     /**
-     * 修改密码
+     * 忘记密码、修改密码
      */
     private void updatePwd() {
         String phoneNum = getIntent().getStringExtra("phone");
@@ -276,6 +287,12 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
                         AppConst.loadToken(SetPasswordActivity.this);
                         KeyboardUtils.hideSoftInput(SetPasswordActivity.this);
                         MyActivityManager1.getInstance().finishAllActivity();
+                        if ("0".equals(SaveUserInfo.getInstance(SetPasswordActivity.this).getUserInfo("normal_login")) &&
+                                (getIntent().getStringExtra("name").equals("changePwd"))) {
+                            //正常登录&&忘记密码
+                            startActivity(new Intent(SetPasswordActivity.this, HomePageActivity.class));
+                        }
+
                     }
                 } else {
                     ErrorCodeTools.errorCodePrompt(SetPasswordActivity.this, loginResponse.getErr(), loginResponse.getMsg());

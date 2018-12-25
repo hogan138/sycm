@@ -27,6 +27,7 @@ import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SyckApplication;
+import com.shuyun.qapp.ui.login.VerifyCodeActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
@@ -188,7 +189,10 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
                 }
                 break;
             case R.id.rl_modify_password: //修改密码
-                startActivity(new Intent(this, ChangePasswordActivity.class));
+                Intent modify = new Intent(this, VerifyCodeActivity.class);
+                modify.putExtra("phone", SaveUserInfo.getInstance(this).getUserInfo("phone"));
+                modify.putExtra("name", "modifyPwd");
+                startActivity(modify);
                 break;
             case R.id.ll_real_name_auth: //实名认证
                 startActivity(new Intent(this, RealNameAuthActivity.class));
@@ -264,7 +268,6 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
                     if (!EncodeAndStringTool.isObjectEmpty(headId)) {
                         //首选项存位置信息;用户头像id
                         SharedPrefrenceTool.put(ChangePersonalInfoActivity.this, "headerId", headId);
-                    } else {
                     }
                 } else {
                     ErrorCodeTools.errorCodePrompt(ChangePersonalInfoActivity.this, dataResponse.getErr(), dataResponse.getMsg());
