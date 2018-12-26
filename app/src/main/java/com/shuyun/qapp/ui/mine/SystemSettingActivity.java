@@ -26,6 +26,7 @@ import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.webview.WebPublicActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
+import com.shuyun.qapp.utils.AliPushBind;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.MyActivityManager;
@@ -33,12 +34,9 @@ import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 
-import java.util.Random;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.jpush.android.api.JPushInterface;
 
 import static com.shuyun.qapp.utils.EncodeAndStringTool.encryptMD5ToString;
 import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
@@ -182,26 +180,12 @@ public class SystemSettingActivity extends BaseActivity implements OnRemotingCal
                 .setNegative("确定", new OnMultiClickListener() {
                     @Override
                     public void onMultiClick(View v) {
+
                         //清空数据
-                        SharedPrefrenceTool.clear(mContext);
-                        AppConst.loadToken(mContext);
+                        clearData();
 
-                        //清空缓存
-                        SaveUserInfo.getInstance(mContext).setUserInfo("action.group_count", "");
-                        SaveUserInfo.getInstance(mContext).setUserInfo("action.real_count", "");
-                        SaveUserInfo.getInstance(mContext).setUserInfo("action.h5_count", "");
-                        SaveUserInfo.getInstance(mContext).setUserInfo("action.invite_count", "");
-                        SaveUserInfo.getInstance(mContext).setUserInfo("action.integral_count", "");
-                        SaveUserInfo.getInstance(mContext).setUserInfo("action.answer.against_count", "");
-                        SaveUserInfo.getInstance(mContext).setUserInfo("action.integral.open.box_count", "");
-                        SaveUserInfo.getInstance(mContext).setUserInfo("action.integral.treasure_count", "");
-                        SaveUserInfo.getInstance(mContext).setUserInfo("action.withdraw.info_count", "");
-                        SaveUserInfo.getInstance(mContext).setUserInfo("action.h5.external_count", "");
-                        SaveUserInfo.getInstance(mContext).setUserInfo("action.day.task_count", "");
-                        SaveUserInfo.getInstance(mContext).setUserInfo("action.default_count", "");
-
-                        //清空原先的别名
-                        JPushInterface.setAlias(mContext, new Random().nextInt(), "");
+                        //阿里推送解除绑定别名
+                        AliPushBind.UnbindPush();
 
                         MyActivityManager.getInstance().finishAllActivity();//销毁所有页面
 
@@ -253,5 +237,27 @@ public class SystemSettingActivity extends BaseActivity implements OnRemotingCal
         } else {
             ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
         }
+    }
+
+    //清除缓存数据
+    private void clearData() {
+
+        //清空数据
+        SharedPrefrenceTool.clear(mContext);
+        AppConst.loadToken(mContext);
+
+        //清空缓存
+        SaveUserInfo.getInstance(mContext).setUserInfo("action.group_count", "");
+        SaveUserInfo.getInstance(mContext).setUserInfo("action.real_count", "");
+        SaveUserInfo.getInstance(mContext).setUserInfo("action.h5_count", "");
+        SaveUserInfo.getInstance(mContext).setUserInfo("action.invite_count", "");
+        SaveUserInfo.getInstance(mContext).setUserInfo("action.integral_count", "");
+        SaveUserInfo.getInstance(mContext).setUserInfo("action.answer.against_count", "");
+        SaveUserInfo.getInstance(mContext).setUserInfo("action.integral.open.box_count", "");
+        SaveUserInfo.getInstance(mContext).setUserInfo("action.integral.treasure_count", "");
+        SaveUserInfo.getInstance(mContext).setUserInfo("action.withdraw.info_count", "");
+        SaveUserInfo.getInstance(mContext).setUserInfo("action.h5.external_count", "");
+        SaveUserInfo.getInstance(mContext).setUserInfo("action.day.task_count", "");
+        SaveUserInfo.getInstance(mContext).setUserInfo("action.default_count", "");
     }
 }

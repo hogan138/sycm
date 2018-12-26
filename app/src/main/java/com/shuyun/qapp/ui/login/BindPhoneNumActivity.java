@@ -25,6 +25,7 @@ import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SyckApplication;
 import com.shuyun.qapp.ui.webview.WebPublicActivity;
+import com.shuyun.qapp.utils.AliPushBind;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ToastUtil;
@@ -34,7 +35,6 @@ import java.util.Random;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.jpush.android.api.JPushInterface;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -220,10 +220,8 @@ public class BindPhoneNumActivity extends BaseActivity {
                 @Override
                 public void onSucceed(String action, DataResponse<Object> dataResponse) {
                     if (dataResponse.isSuccees()) {
-
-                        //设置别名
-                        JPushInterface.setAlias(BindPhoneNumActivity.this, new Random().nextInt(), phoneNumber);
-
+                        //阿里推送绑定别名
+                        AliPushBind.bindPush();
                         AppConst.loadToken(SyckApplication.getAppContext());
                         //绑定成功  存token值
                         ToastUtil.showToast(BindPhoneNumActivity.this, "绑定成功");

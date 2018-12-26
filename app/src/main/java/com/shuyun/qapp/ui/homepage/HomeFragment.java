@@ -2,7 +2,6 @@ package com.shuyun.qapp.ui.homepage;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -55,7 +54,6 @@ import com.shuyun.qapp.net.LoginDataManager;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SyckApplication;
-import com.shuyun.qapp.receiver.MyReceiver;
 import com.shuyun.qapp.ui.classify.ClassifyActivity;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
 import com.shuyun.qapp.ui.mine.MinePrizeActivity;
@@ -64,7 +62,6 @@ import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ImageLoaderManager;
-import com.shuyun.qapp.utils.InformatListenner;
 import com.shuyun.qapp.utils.NotificationsUtils;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
@@ -172,7 +169,6 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
     private List<GroupBean> groupBeans;
     private CountDownTimer timer;
     private Activity mContext;
-    private MyReceiver msgReceiver;
     private Handler mHandler = new Handler();
     private GroupBean recommendGroup1;
     private GroupBean recommendGroup2;
@@ -234,27 +230,6 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
         }
         tvCommonTitle.setText("全民共进");
         ivCommonRightIcon.setImageResource(R.mipmap.message_n);//右侧消息按钮;
-
-        /**
-         * 注册极光推送监听
-         */
-        msgReceiver = new MyReceiver();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("cn.jpush.android.intent.MESSAGE_RECEIVED");
-        intentFilter.addAction("cn.jpush.android.intent.NOTIFICATION_RECEIVED");
-        intentFilter.addAction("cn.jpush.android.intent.NOTIFICATION_OPENED");
-        intentFilter.addAction("cn.jpush.android.intent.NOTIFICATION_CLICK_ACTION");
-        intentFilter.addAction("cn.jpush.android.intent.CONNECTION");
-        intentFilter.addCategory("com.shuyun.qapp");
-        mContext.registerReceiver(msgReceiver, intentFilter);
-        msgReceiver.setOnMsgListenner(new InformatListenner() {
-            @Override
-            public void loadInfoRefreshUi() {
-                if (AppConst.hasMsg) {//如果有消息
-                    ivCommonRightIcon.setImageResource(R.mipmap.message_h);
-                }
-            }
-        });
 
         timer = new CountDownTimer(5 * 1000, 1000) {
             @Override
@@ -686,9 +661,6 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (msgReceiver != null) {
-            mContext.unregisterReceiver(msgReceiver);
-        }
         timer.cancel();
 
     }

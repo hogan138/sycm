@@ -33,6 +33,7 @@ import com.shuyun.qapp.net.LoginDataManager;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
+import com.shuyun.qapp.utils.AliPushBind;
 import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
@@ -44,11 +45,8 @@ import com.shuyun.qapp.view.VerifyCodeView;
 
 import org.litepal.crud.DataSupport;
 
-import java.util.Random;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.jpush.android.api.JPushInterface;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -366,8 +364,8 @@ public class VerifyCodeActivity extends BaseActivity {
 
                         }
 
-                        //设置别名
-                        JPushInterface.setAlias(mContext, new Random().nextInt(), phone);
+                        //阿里推送绑定别名
+                        AliPushBind.bindPush();
 
                         if (mode == 2) {
                             try {

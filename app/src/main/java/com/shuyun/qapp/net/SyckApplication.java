@@ -2,10 +2,17 @@ package com.shuyun.qapp.net;
 
 import android.app.ActivityManager;
 import android.app.Application;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.graphics.Color;
+import android.os.Build;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
+import com.alibaba.sdk.android.push.CloudPushService;
+import com.alibaba.sdk.android.push.CommonCallback;
+import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.blankj.utilcode.util.Utils;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -34,8 +41,6 @@ import com.umeng.socialize.PlatformConfig;
 
 import org.litepal.LitePal;
 import org.litepal.tablemanager.Connector;
-
-import cn.jpush.android.api.JPushInterface;
 
 public class SyckApplication extends Application {
 
@@ -83,9 +88,10 @@ public class SyckApplication extends Application {
         //初始化工具类
         Utils.init(this);
 
-        //极光推送
-        //JPushInterface.setDebugMode(true);//打印debug级别的日志
-        JPushInterface.init(appContext);//极光
+
+        //阿里推送
+        initCloudChannel(this);
+
         //Litepal数据库
         LitePal.initialize(appContext);
         /**
@@ -198,29 +204,6 @@ public class SyckApplication extends Application {
         if (isDebugMode) { // 调试时建议设置的开关状态
             // 查看MTA日志及上报数据内容
             StatConfig.setDebugEnable(true);
-            // StatConfig.setEnableSmartReporting(false);
-            // Thread.setDefaultUncaughtExceptionHandler(new
-            // UncaughtExceptionHandler() {
-            //
-            // @Override
-            // public void uncaughtException(Thread thread, Throwable ex) {
-            // logger.error("setDefaultUncaughtExceptionHandler");
-            // }
-            // });
-            // 调试时，使用实时发送
-            // StatConfig.setStatSendStrategy(StatReportStrategy.BATCH);
-            // // 是否按顺序上报
-            // StatConfig.setReportEventsByOrder(false);
-            // // 缓存在内存的buffer日志数量,达到这个数量时会被写入db
-            // StatConfig.setNumEventsCachedInMemory(30);
-            // // 缓存在内存的buffer定期写入的周期
-            // StatConfig.setFlushDBSpaceMS(10 * 1000);
-            // // 如果用户退出后台，记得调用以下接口，将buffer写入db
-            // StatService.flushDataToDB(getApplicationContext());
-
-            // StatConfig.setEnableSmartReporting(false);
-            // StatConfig.setSendPeriodMinutes(1);
-            // StatConfig.setStatSendStrategy(StatReportStrategy.PERIOD);
         } else { // 发布时，建议设置的开关状态，请确保以下开关是否设置合理
             // 禁止MTA打印日志
             StatConfig.setDebugEnable(false);
@@ -304,6 +287,52 @@ public class SyckApplication extends Application {
         // 程序在内存清理的时候执行
         Log.d(TAG, "SyckApplication == onTrimMemory");
         super.onTrimMemory(level);
+    }
+
+    /**
+     * 初始化云推送通道
+     *
+     * @param applicationContext
+     */
+    private void initCloudChannel(Context applicationContext) {
+        //Android 8.0以上设备通知接收不到
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            // 通知渠道的id
+            String id = "1";
+            // 用户可以看到的通知渠道的名字.
+            CharSequence name = "notification channel";
+            // 用户可以看到的通知渠道的描述
+            String description = "notification description";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel(id, name, importance);
+            // 配置通知渠道的属性
+            mChannel.setDescription(description);
+            // 设置通知出现时的闪灯（如果 android 设备支持的话）
+            mChannel.enableLights(true);
+            mChannel.setLightColor(Color.RED);
+            // 设置通知出现时的震动（如果 android 设备支持的话）
+            mChannel.enableVibration(true);
+            mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            //最后在notificationmanager中创建该通知渠道
+            mNotificationManager.createNotificationChannel(mChannel);
+        }
+
+        PushServiceFactory.init(applicationContext);
+        final CloudPushService pushService = PushServiceFactory.getCloudPushService();
+        pushService.register(applicationContext, new CommonCallback() {
+            @Override
+            public void onSuccess(String response) {
+                Log.d(TAG, "init cloudchannel success");
+                Log.d(TAG, pushService.getDeviceId());
+            }
+
+            @Override
+            public void onFailed(String errorCode, String errorMessage) {
+                Log.d(TAG, "init cloudchannel failed -- errorcode:" + errorCode + " -- errorMessage:" + errorMessage);
+            }
+        });
+
     }
 
 }

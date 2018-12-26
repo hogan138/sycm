@@ -1,9 +1,6 @@
 package com.shuyun.qapp.ui.homepage;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -12,7 +9,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
@@ -45,13 +41,12 @@ import com.shuyun.qapp.ui.activity.ActivityFragment;
 import com.shuyun.qapp.ui.classify.ClassifyFragment;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.mine.MineFragment;
-import com.shuyun.qapp.ui.mine.MyPropsActivity;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
+import com.shuyun.qapp.utils.AliPushBind;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.ExampleUtil;
 import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
@@ -112,9 +107,6 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
             skip(bundle);
         }
 
-        //注册极光推送
-        registerMessageReceiver();
-
         pager.setOnPageChangeListener(this);
         radioMain.setOnClickListener(this);
         radioClassify.setOnClickListener(this);
@@ -151,6 +143,11 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         StatusBarUtil.setRootViewFitsSystemWindows(this, false);*/
 
         mHandler.postDelayed(runnable, 500);
+
+        //绑定别名
+        if (AppConst.isLogin()) {
+            AliPushBind.bindPush();
+        }
     }
 
     @Override
@@ -357,21 +354,6 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
 
     }
 
-    //for receive customer msg from jpush server
-    private MessageReceiver mMessageReceiver;
-    public static final String MESSAGE_RECEIVED_ACTION = "com.shuyun.qapp.MESSAGE_RECEIVED_ACTION";
-    public static final String KEY_TITLE = "title";
-    public static final String KEY_MESSAGE = "message";
-    public static final String KEY_EXTRAS = "extras";
-
-    public void registerMessageReceiver() {
-        mMessageReceiver = new MessageReceiver();
-        IntentFilter filter = new IntentFilter();
-        filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
-        filter.addAction(MESSAGE_RECEIVED_ACTION);
-        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, filter);
-    }
-
     @Override
     public void onClick(View v) {
         if (v.getId() == radioActivity.getId()
@@ -429,25 +411,6 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         changeUi(position);
 
         getActivityShow(position);
-    }
-
-    public class MessageReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            try {
-                if (MESSAGE_RECEIVED_ACTION.equals(intent.getAction())) {
-                    String message = intent.getStringExtra(KEY_MESSAGE);
-                    String extras = intent.getStringExtra(KEY_EXTRAS);
-                    StringBuilder showMsg = new StringBuilder();
-                    showMsg.append(KEY_MESSAGE + " : " + message + "\n");
-                    if (!ExampleUtil.isEmpty(extras)) {
-                        showMsg.append(KEY_EXTRAS + " : " + extras + "\n");
-                    }
-                }
-            } catch (Exception e) {
-            }
-        }
     }
 
     private void getActivityShow(final int i) {
@@ -641,4 +604,5 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
             ((BaseFragment) fragment).clear();
         }
     }
+
 }

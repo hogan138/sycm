@@ -40,10 +40,10 @@ import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SyckApplication;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
+import com.shuyun.qapp.utils.AliPushBind;
 import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.MyActivityManager1;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.PermissionsChecker;
@@ -55,12 +55,9 @@ import com.tencent.mm.opensdk.modelmsg.SendAuth;
 
 import org.litepal.crud.DataSupport;
 
-import java.util.Random;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.jpush.android.api.JPushInterface;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -513,9 +510,10 @@ public class LoginActivity extends BaseActivity implements OnRemotingCallBackLis
                     SharedPrefrenceTool.put(mContext, "boxId", loginResp.getBoxId());
                 }
 
-                //设置别名
-                JPushInterface.setAlias(mContext, new Random().nextInt(), etPhoneNumber.getText().toString());
                 btnLogin.setEnabled(false);
+
+                //阿里推送绑定别名
+                AliPushBind.bindPush();
 
                 mHandler.postDelayed(new Runnable() {
                     @Override

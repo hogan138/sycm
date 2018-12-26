@@ -21,6 +21,7 @@ import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
+import com.shuyun.qapp.utils.AliPushBind;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveUserInfo;
@@ -31,7 +32,6 @@ import java.util.Random;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.jpush.android.api.JPushInterface;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -177,13 +177,13 @@ public class ChangePhoneActivity extends BaseActivity implements OnRemotingCallB
         } else if ("verifynewphone".equals(action)) {
             final String phoneNumber = etPhoneNum.getText().toString().trim();
             if (response.isSuccees()) {
-                //清空原先的别名
-                //设置别名
-                JPushInterface.setAlias(this, new Random().nextInt(), phoneNumber);
-
                 //绑定成功
                 ToastUtil.showToast(this, "更换手机号成功");
                 SaveUserInfo.getInstance(this).setUserInfo("phone", phoneNumber);
+
+                //阿里推送绑定别名
+                AliPushBind.bindPush();
+
                 //隐藏输入法
                 KeyboardUtils.hideSoftInput(this);
                 finish();

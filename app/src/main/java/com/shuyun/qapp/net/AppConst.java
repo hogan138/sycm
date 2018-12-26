@@ -108,11 +108,6 @@ public class AppConst {
     public static final String BOX = BASE_URL + "/web/h5/index.html?prize=1";
 
     /**
-     * 是否有极光推送消息
-     */
-    public static boolean hasMsg = false;
-
-    /**
      * 账户记录
      */
     public static final int ACCOUNT_CASH_TYPE = 0;

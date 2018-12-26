@@ -131,6 +131,8 @@ public class ErrorCodeTools {
             AppConst.loadToken(mContext);
             Intent intent = new Intent(mContext, LoginActivity.class);
             mContext.startActivity(intent);
+            //阿里推送解除绑定别名
+            AliPushBind.UnbindPush();
             return false;
         } else {
             if (errCode.containsKey(err)) {

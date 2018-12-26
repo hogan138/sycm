@@ -21,6 +21,7 @@ import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
+import com.shuyun.qapp.utils.AliPushBind;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveUserInfo;
@@ -218,6 +219,10 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
             }
         } else if ("login".equals(action)) {
             if (response.isSuccees()) {
+
+                //阿里推送绑定别名
+                AliPushBind.bindPush();
+
                 LoginResponse loginResp = (LoginResponse) response.getDat();
                 if (!EncodeAndStringTool.isObjectEmpty(loginResp)) {
                     //统一给活动的Activity处理

@@ -567,4 +567,18 @@ public class ApiServiceBean {
     public static String tourists() {
         return "tourists";
     }
+
+    /**
+     * 83、阿里推送绑定
+     */
+    public static String pushBind() {
+        return "pushBind";
+    }
+
+    /**
+     * 84、阿里推送解除绑定
+     */
+    public static String pushUnbind() {
+        return "pushUnbind";
+    }
 }

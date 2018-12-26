@@ -589,4 +589,16 @@ public interface ApiService {
     @GET("/rest/app/tourists")
     Observable<DataResponse<TouristsBean>> tourists();
 
+    /**
+     * 83、阿里推送绑定别名
+     */
+    @GET("/rest/app/push/bind")
+    Observable<DataResponse<Object>> pushBind(@Query("account") String account, @Query("deviceId") String deviceId);
+
+    /**
+     * 84、阿里推送解除绑定别名
+     */
+    @GET("/rest/app/push/unbind")
+    Observable<DataResponse<Object>> pushUnbind(@Query("account") String account, @Query("deviceId") String deviceId);
+
 }

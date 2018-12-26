@@ -7,10 +7,6 @@
     </style>
 
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
-        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
-        <!--<item name="colorAccent">@color/colorAccent</item>-->
         <!--去掉系统默认的标题栏-->
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
@@ -23,11 +19,7 @@
         <!--设置背景图-->
         <item name="android:windowBackground">@color/white</item>
     </style>
-    <!--底部换头像popupwindow对话框动画-->
-    <!--<style name="anim_menu_bottombar">-->
-    <!--<item name="android:windowEnterAnimation">@anim/menu_bottombar_in</item>-->
-    <!--<item name="android:windowExitAnimation">@anim/menu_bottombar_out</item>-->
-    <!--</style>-->
+
     <style name="AuthActivityDialogStyle" parent="AlertDialog.AppCompat.Light">
         <item name="android:windowBackground">@android:color/transparent</item>
         <!--是否半透明-->

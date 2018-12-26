@@ -31,7 +31,6 @@ import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SyckApplication;
-import com.shuyun.qapp.receiver.MyReceiver;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.homepage.InformationActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
@@ -126,7 +125,6 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
     private MineBean mineBean;
     private String remainderTime;
     private Context mContext;
-    private MyReceiver msgReceiver;
     private AnswerOpptyBean answerOpptyBean;
     private TextView tvRemainderTime;
     private Button btnGetImmedicate;
@@ -183,26 +181,6 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
         } else {
             rlInviteShare.setVisibility(View.VISIBLE);
         }
-        /**
-         * 注册极光推送监听
-         */
-        msgReceiver = new MyReceiver();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("cn.jpush.android.intent.MESSAGE_RECEIVED");
-        intentFilter.addAction("cn.jpush.android.intent.NOTIFICATION_RECEIVED");
-        intentFilter.addAction("cn.jpush.android.intent.NOTIFICATION_OPENED");
-        intentFilter.addAction("cn.jpush.android.intent.NOTIFICATION_CLICK_ACTION");
-        intentFilter.addAction("cn.jpush.android.intent.CONNECTION");
-        intentFilter.addCategory("com.shuyun.qapp");
-        mContext.registerReceiver(msgReceiver, intentFilter);
-        msgReceiver.setOnMsgListenner(new InformatListenner() {
-            @Override
-            public void loadInfoRefreshUi() {
-                if (AppConst.hasMsg) {//如果有消息
-                    ivCommonRightIcon.setImageResource(R.mipmap.messagew);
-                }
-            }
-        });
     }
 
     /**
@@ -425,14 +403,6 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (msgReceiver != null) {
-            mContext.unregisterReceiver(msgReceiver);
-        }
     }
 
     @Override

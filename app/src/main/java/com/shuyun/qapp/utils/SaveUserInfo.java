@@ -48,6 +48,7 @@ public class SaveUserInfo {
 
     /**
      * 取出boolean类型的值
+     *
      * @param strName
      * @return
      */
