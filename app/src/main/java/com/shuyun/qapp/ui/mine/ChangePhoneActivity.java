@@ -181,9 +181,6 @@ public class ChangePhoneActivity extends BaseActivity implements OnRemotingCallB
                 ToastUtil.showToast(this, "更换手机号成功");
                 SaveUserInfo.getInstance(this).setUserInfo("phone", phoneNumber);
 
-                //阿里推送绑定别名
-                AliPushBind.bindPush();
-
                 //隐藏输入法
                 KeyboardUtils.hideSoftInput(this);
                 finish();

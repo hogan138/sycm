@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.mtl.appmonitor.APTrack;
 import com.alibaba.sdk.android.push.MessageReceiver;
 import com.alibaba.sdk.android.push.notification.CPushMessage;
 import com.shuyun.qapp.bean.AliPushBean;
+import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.integral.MyPrizeActivity;
 import com.shuyun.qapp.ui.mine.AddWithdrawInfoActivity;
@@ -43,53 +45,52 @@ public class MyALIMessageReceiver extends MessageReceiver {
     public void onNotificationOpened(Context context, String title, String summary, String extraMap) {
         Log.e("MyMessageReceiver", "onNotificationOpened, title: " + title + ", summary: " + summary + ", extraMap:" + extraMap);
         AliPushBean aliPushBean = JSON.parseObject(extraMap, AliPushBean.class);
-
         String pushData = aliPushBean.getPushData();
         String pushAction = aliPushBean.getPushAction();
         Intent i;
-        //积分夺宝中奖通知
-        if (("push.integral.snatch.notify").equals(pushAction)) {
+        if (AppConst.PUSH_INTEGRAL.equals(pushAction)) {
+            //积分夺宝中奖通知
             context.startActivity(new Intent(context, MyPrizeActivity.class));
-        } else if (("push.answer.get.notify").equals(pushAction)) {
-            SaveUserInfo.getInstance(context).setUserInfo("action_msg", "action_msg");
+        } else if (AppConst.PUSH_ANSWER_GET.equals(pushAction)) {
             //每8小时可领取答题次数通知
+            SaveUserInfo.getInstance(context).setUserInfo("action_msg", "action_msg");
             i = new Intent(context, HomePageActivity.class);
             i.putExtra("from", "msg");
             context.startActivity(i);
-        } else if (("push.prize.notity").equals(pushAction) || ("push.prize.expire.notify").equals(pushAction)) {
+        } else if (AppConst.PUSH_PRIZE.equals(pushAction) || AppConst.PUSH_PRIZE_EXPIRE.equals(pushAction)) {
             // 奖品通知、奖品快过期通知
             i = new Intent(context, MinePrizeActivity.class);
             i.putExtra("status", 1);
             i.putExtra("certification", SaveUserInfo.getInstance(context).getUserInfo("cert"));
             context.startActivity(i);
-        } else if (("push.withdraw.success.notify").equals(pushAction)) {
+        } else if (AppConst.PUSH_WITHDRAW_SUCCESS.equals(pushAction)) {
             //提现成功通知
             i = new Intent(context, WebH5Activity.class);
             i.putExtra("url", pushData);
             i.putExtra("name", "提现成功");//名称 标题
             context.startActivity(i);
-        } else if (("push.withdraw.error.notify").equals(pushAction)) {
+        } else if (AppConst.PUSH_WITHDRAW_ERROR.equals(pushAction)) {
             //提现失败通知
             i = new Intent(context, WebH5Activity.class);
             i.putExtra("url", pushData);
             i.putExtra("name", "提现失败");//名称 标题
             context.startActivity(i);
-        } else if (("push.default").equals(pushAction)) {
+        } else if (AppConst.PUSH_DEFAULT.equals(pushAction)) {
             //默认跳转h5
             i = new Intent(context, WebH5Activity.class);
             i.putExtra("url", pushData);
             i.putExtra("name", "全民共进");//名称 标题
             context.startActivity(i);
-        } else if (("push.deliver.goods.notity").equals(pushAction)) {
+        } else if (AppConst.PUSH_DELEVER_GOODS.equals(pushAction)) {
             //发货通知
             i = new Intent(context, MinePrizeActivity.class);
             i.putExtra("status", 2);
             i.putExtra("certification", SaveUserInfo.getInstance(context).getUserInfo("cert"));
             context.startActivity(i);
-        } else if (("push.real").equals(pushAction)) {
+        } else if (AppConst.PUSH_REAL.equals(pushAction)) {
             //实名认证
             context.startActivity(new Intent(context, RealNameAuthActivity.class));
-        } else if (("push.withdraw.info").equals(pushAction)) {
+        } else if (AppConst.PUSH_WITHDRAW_INFO.equals(pushAction)) {
             //完善提现信息
             context.startActivity(new Intent(context, AddWithdrawInfoActivity.class));
         }

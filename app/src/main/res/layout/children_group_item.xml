@@ -51,7 +51,8 @@
                     android:layout_marginBottom="@dimen/text_3"
                     android:text="出题方："
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_11" />
+                    android:textSize="@dimen/text_11"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/recommend_logo"

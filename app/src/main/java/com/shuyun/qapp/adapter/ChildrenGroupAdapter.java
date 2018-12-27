@@ -5,10 +5,12 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -72,21 +74,24 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
             lp.height = height;
             holder.rl.setLayoutParams(lp);
 
+            //出题方
             if (!EncodeAndStringTool.isStringEmpty(childrenBean.getMerchantName())) {
                 holder.tvCompany.setVisibility(View.VISIBLE);
-                holder.tvCompany.setText("出题方：" + childrenBean.getMerchantName()); //出题方
+                holder.tvCompany.setText("出题方：" + childrenBean.getMerchantName());
             } else {
                 holder.tvCompany.setVisibility(View.GONE);
             }
 
-            if (childrenBean.isRecommend()) { //推荐标签
+            //推荐标签
+            if (childrenBean.isRecommend()) {
                 holder.recommendLogo.setVisibility(View.VISIBLE);
             } else {
                 holder.recommendLogo.setVisibility(View.GONE);
             }
 
+            //标签
             if (!EncodeAndStringTool.isStringEmpty(childrenBean.getRemark())) {
-                if (childrenBean.isRecommend()) { //标签
+                if (childrenBean.isRecommend()) {
                     holder.tvTag.setVisibility(View.VISIBLE);
                     holder.tvTag1.setVisibility(View.GONE);
                     holder.tvTag.setText(childrenBean.getRemark().replaceAll(" ", "\n"));
@@ -100,7 +105,19 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
                 holder.tvTag1.setVisibility(View.GONE);
             }
 
-            holder.tvTitle.setText(childrenBean.getName()); //题组名称
+            //题组名称
+            holder.tvTitle.setText(childrenBean.getName());
+
+            //任意位置logo
+            ImageView imageView = new ImageView(context);
+            imageView.setImageResource(R.mipmap.pahys_logo);
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+//            layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            imageView.setLayoutParams(layoutParams);
+            holder.rl.addView(imageView);
+
+
             if ((!EncodeAndStringTool.isObjectEmpty(mOnItemChildClickLitsener))) {
                 holder.itemView.setOnClickListener(new OnMultiClickListener() {
                     @Override

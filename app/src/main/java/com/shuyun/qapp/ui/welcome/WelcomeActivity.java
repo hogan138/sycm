@@ -91,6 +91,7 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
 
         //保存登录状态
         SaveUserInfo.getInstance(this).setUserInfo("LOGIN_MODE", String.valueOf(LOGIN_MODE));
+        SaveUserInfo.getInstance(mContext).setUserInfo("tourists", "0");
 
     }
 
@@ -142,7 +143,8 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
             @Override
             public void onMultiClick(View v) {
                 //TODO 这里不需要进行逻辑判断 一律打开HomePage 在首页进行处理 默认首页不进行数据请求
-                SaveUserInfo.getInstance(mContext).setUserInfo("normal_login", "1");
+                //保存登录模式
+                loginMode();
                 isStop = true;
                 Intent intent = new Intent();
                 intent.putExtra("from", "welcome");
@@ -191,22 +193,18 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
         if (isStop)
             return;
         isStop = true;
-        if ("1".equals(SaveUserInfo.getInstance(mContext).getUserInfo("tourists"))) {
-            //启用游客模式
-            SaveUserInfo.getInstance(mContext).setUserInfo("normal_login", "1");
-            Intent intent = new Intent(mContext, HomePageActivity.class);
-            startActivity(intent);
-        } else {
-            //不启用游客模式
-            SaveUserInfo.getInstance(mContext).setUserInfo("normal_login", "0");
-            if (AppConst.isLogin()) {
-                Intent intent = new Intent(mContext, HomePageActivity.class);
-                startActivity(intent);
-            } else {
-                startActivity(new Intent(mContext, LoginActivity.class));
-            }
-        }
+
+        //保存登录模式
+        loginMode();
+
+        Intent intent = new Intent(mContext, HomePageActivity.class);
+        startActivity(intent);
         finish();
+    }
+
+    //保存登录模式
+    private void loginMode() {
+        SaveUserInfo.getInstance(mContext).setUserInfo("normal_login", SaveUserInfo.getInstance(mContext).getUserInfo("tourists"));
     }
 
     @Override
@@ -226,12 +224,6 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
         if (isLoading)
             return;
         isLoading = true;
-
-        //判断是否是魅族手机
-//        if ("Meizu".equalsIgnoreCase(DeviceUtils.getManufacturer())) {
-//            this.bottomIcon.setImageResource(R.mipmap.bottom_logo);
-//            bottomLayout.setVisibility(View.VISIBLE);
-//        }
 
         mHandler.postDelayed(new Runnable() {
             @Override
@@ -253,6 +245,7 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
 
     @Override
     public void onFailed(String action, String message) {
+        SaveUserInfo.getInstance(mContext).setUserInfo("tourists", "0");
         skip();
     }
 
@@ -283,6 +276,8 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
             if (response.isSuccees()) {
                 TouristsBean touristsBean = (TouristsBean) response.getDat();
                 SaveUserInfo.getInstance(mContext).setUserInfo("tourists", touristsBean.getMode());
+            } else {
+                SaveUserInfo.getInstance(mContext).setUserInfo("tourists", "0");
             }
         }
     }

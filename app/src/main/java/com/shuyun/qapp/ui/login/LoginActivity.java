@@ -520,12 +520,9 @@ public class LoginActivity extends BaseActivity implements OnRemotingCallBackLis
                     public void run() {
                         KeyboardUtils.hideSoftInput(LoginActivity.this);
                         try {
-                            if ("0".equals(SaveUserInfo.getInstance(mContext).getUserInfo("normal_login"))) {
-                                //正常登录
-                                startActivity(new Intent(mContext, HomePageActivity.class));
-                            } else {
+                            setResult(RESULT_OK);
+                            if ("1".equals(SaveUserInfo.getInstance(mContext).getUserInfo("normal_login"))) {
                                 //启用游客模式
-                                setResult(RESULT_OK);
                                 MyActivityManager1.getInstance().finishAllActivity();
                             }
                             finish();

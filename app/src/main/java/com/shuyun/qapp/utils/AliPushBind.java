@@ -3,9 +3,7 @@ package com.shuyun.qapp.utils;
 import android.content.Context;
 
 import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
-import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.net.ApiServiceBean;
-import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 
 /**
@@ -26,49 +24,15 @@ public class AliPushBind {
 
     //阿里推送绑定别名
     public static void bindPush() {
-        String account = SaveUserInfo.getInstance(mContext).getUserInfo("phone");
         String deviceId = PushServiceFactory.getCloudPushService().getDeviceId();
-        RemotingEx.doRequest(ApiServiceBean.pushBind(), new Object[]{account, deviceId}, new OnRemotingCallBackListener<Object>() {
-            @Override
-            public void onCompleted(String action) {
-
-            }
-
-            @Override
-            public void onFailed(String action, String message) {
-
-            }
-
-            @Override
-            public void onSucceed(String action, DataResponse<Object> dataResponse) {
-                if (dataResponse.isSuccees()) {
-                }
-            }
-        });
+        RemotingEx.doRequest(ApiServiceBean.pushBind(), new Object[]{deviceId}, null);
 
     }
 
     //阿里推送解除绑定别名
     public static void UnbindPush() {
-        String account = SaveUserInfo.getInstance(mContext).getUserInfo("phone");
         String deviceId = PushServiceFactory.getCloudPushService().getDeviceId();
-        RemotingEx.doRequest(ApiServiceBean.pushUnbind(), new Object[]{account, deviceId}, new OnRemotingCallBackListener<Object>() {
-            @Override
-            public void onCompleted(String action) {
-
-            }
-
-            @Override
-            public void onFailed(String action, String message) {
-
-            }
-
-            @Override
-            public void onSucceed(String action, DataResponse<Object> dataResponse) {
-                if (dataResponse.isSuccees()) {
-                }
-            }
-        });
+        RemotingEx.doRequest(ApiServiceBean.pushUnbind(), new Object[]{deviceId}, null);
 
     }
 }

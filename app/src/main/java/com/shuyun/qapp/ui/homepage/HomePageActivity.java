@@ -49,6 +49,7 @@ import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
+import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.StatusBarUtil;
 import com.shuyun.qapp.view.NoScrollViewPager;
@@ -92,6 +93,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
     private String show = "";
     //RadioGroup的监听事件
     private int selectedIndex = 0;
+    private Bundle bundle = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,12 +102,8 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
 
         MyActivityManager.getInstance().pushOneActivity(HomePageActivity.this);
 
-        //判断是否从广告页传递数据过来
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null && "welcome".equals(bundle.getString("from"))) {
-            //从广告页过来
-            skip(bundle);
-        }
+        //保存从广告页传递数据
+        bundle = getIntent().getExtras();
 
         pager.setOnPageChangeListener(this);
         radioMain.setOnClickListener(this);
@@ -126,21 +124,6 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
 
         //初始化数据
         initDate();
-
-        /*//沉浸式代码配置
-        //当FitsSystemWindows设置 true 时，会在屏幕最上方预留出状态栏高度的 padding
-        StatusBarUtil.setRootViewFitsSystemWindows(this, true);
-        //设置状态栏透明
-        StatusBarUtil.setTranslucentStatus(this);
-        //一般的手机的状态栏文字和图标都是白色的, 可如果你的应用也是纯白色的, 或导致状态栏文字看不清
-        //所以如果你是这种情况,请使用以下代码, 设置状态使用深色文字图标风格, 否则你可以选择性注释掉这个if内容
-        if (!StatusBarUtil.setStatusBarDarkTheme(this, true)) {
-            //如果不支持设置深色风格 为了兼容总不能让状态栏白白的看不清, 于是设置一个状态栏颜色为半透明,
-            //这样半透明+白=灰, 状态栏的文字能看得清
-            StatusBarUtil.setStatusBarColor(this, 0x55000000);
-        }
-        //用来设置整体下移，状态栏沉浸
-        StatusBarUtil.setRootViewFitsSystemWindows(this, false);*/
 
         mHandler.postDelayed(runnable, 500);
 
@@ -231,6 +214,20 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
     public void onResume() {
         super.onResume();
         isForeground = true;
+
+        //判断是否从广告页点击传递数据过来
+        if (bundle != null && "welcome".equals(bundle.getString("from"))) {
+            //从广告页过来
+            skip(bundle);
+            bundle = null;
+            return;
+        }
+
+        //判断游客模式
+        if ("0".equals(SaveUserInfo.getInstance(this).getUserInfo("tourists")) && !AppConst.isLogin()) {
+            startActivityForResult(new Intent(this, LoginActivity.class), 0x1013);
+            return;
+        }
 
         //版本更新
         updateVersion();
@@ -535,6 +532,9 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
             return;
         } else if (requestCode == 0x0010 || requestCode == 0x0020) {
             refresh();
+            return;
+        } else if (resultCode != RESULT_OK && requestCode == 0x1013) {
+            finish();
             return;
         }
         for (Fragment fragment : fragments) {

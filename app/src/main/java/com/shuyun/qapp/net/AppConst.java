@@ -13,7 +13,7 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 
 public class AppConst {
 
-//            public static final String BASE_URL = "https://api-syksc.25876.com";///线上服务器
+    //            public static final String BASE_URL = "https://api-syksc.25876.com";///线上服务器
     //    public static final String BASE_URL = "http://192.168.3.250:8080";//:8002/公司内部服务器
 //    public static final String BASE_URL = "http://139.224.199.106:8080";//开发测试服务器
     public static final String BASE_URL = "http://192.168.3.157";//测试环境
@@ -152,8 +152,6 @@ public class AppConst {
 
     public static final String APP_ACTION_LOGOUT = "APP_ACTION_LOGOUT";//退出登录
     public static final String APP_ACTION_PARAM = "APP_ACTION";//动作参数
-    public static final String APP_WXINXIN_LOGIN = "APP_WXINXIN_LOGIN";//微信登录
-    public static final String APP_VERIFYCODE_LOGIN = "APP_VERIFYCODE_LOGIN";//验证码登录
 
     public static final String AGAINST_MAIN_INFO = "against_main_info";//答题对战首页
     public static final String AGAINST_SHARE = "against_share";//对战分享
@@ -171,5 +169,18 @@ public class AppConst {
     public static final String WELCOME_AD = "welcome_ad";//广告页
     public static final String TOURISTS = "tourists";//是否是游客模式
 
+    /**
+     * push跳转
+     */
+    public static final String PUSH_INTEGRAL = "push.integral.snatch.notify"; //积分夺宝中奖通知
+    public static final String PUSH_ANSWER_GET = "push.answer.get.notify"; //每8小时可领取答题次数通知
+    public static final String PUSH_PRIZE = "push.prize.notity"; //奖品通知
+    public static final String PUSH_PRIZE_EXPIRE = "push.prize.expire.notify"; //奖品快过期通知
+    public static final String PUSH_WITHDRAW_SUCCESS = "push.withdraw.success.notify"; //提现成功通知
+    public static final String PUSH_WITHDRAW_ERROR = "push.withdraw.error.notify"; //提现失败通知
+    public static final String PUSH_DEFAULT = "push.default"; //默认跳转h5
+    public static final String PUSH_DELEVER_GOODS = "push.deliver.goods.notity"; //发货通知
+    public static final String PUSH_REAL = "push.real"; //实名认证
+    public static final String PUSH_WITHDRAW_INFO = "push.withdraw.info"; //完善提现信息
 
 }
