@@ -169,4 +169,5 @@ dependencies {
 
     //阿里推送
     implementation 'com.aliyun.ams:alicloud-android-push:3.1.4'
+    implementation 'com.aliyun.ams:alicloud-android-third-push:3.0.5@aar'
 }

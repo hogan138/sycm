@@ -421,7 +421,7 @@ public class UploadLetterActivity extends BaseActivity implements CommonPopupWin
         // oss为全局变量，OSS_ENDPOINT是一个OSS区域地址
         oss = new OSSClient(getApplicationContext(), "oss-cn-shanghai.aliyuncs.com", credentialProvider, conf);
 
-        final String picture_name = "syksc/cancel/" + TimeUtils.millis2String(System.currentTimeMillis()) + ".jpg";
+        final String picture_name = "syksc/cancel/" + java.util.UUID.randomUUID().toString().replaceAll("-", "") + ".jpg";
 
         // 构造上传请求
         PutObjectRequest put = new PutObjectRequest("image-syksc", picture_name, path);

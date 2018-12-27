@@ -13,6 +13,8 @@ import android.util.Log;
 import com.alibaba.sdk.android.push.CloudPushService;
 import com.alibaba.sdk.android.push.CommonCallback;
 import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
+import com.alibaba.sdk.android.push.register.HuaWeiRegister;
+import com.alibaba.sdk.android.push.register.MiPushRegister;
 import com.blankj.utilcode.util.Utils;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -295,6 +297,28 @@ public class SyckApplication extends Application {
      * @param applicationContext
      */
     private void initCloudChannel(Context applicationContext) {
+        PushServiceFactory.init(applicationContext);
+        final CloudPushService pushService = PushServiceFactory.getCloudPushService();
+        pushService.register(applicationContext, new CommonCallback() {
+            @Override
+            public void onSuccess(String response) {
+                Log.d(TAG, "init cloudchannel success");
+                Log.d(TAG, pushService.getDeviceId());
+            }
+
+            @Override
+            public void onFailed(String errorCode, String errorMessage) {
+                Log.d(TAG, "init cloudchannel failed -- errorcode:" + errorCode + " -- errorMessage:" + errorMessage);
+            }
+        });
+
+        // 注册方法会自动判断是否支持小米系统推送，如不支持会跳过注册。
+        MiPushRegister.register(applicationContext, "2882303761517539952", "5421753971952");
+        // 注册方法会自动判断是否支持华为系统推送，如不支持会跳过注册。
+        HuaWeiRegister.register(applicationContext);
+        //OPPO通道注册（公测）
+        //OppoRegister.register(applicationContext, appKey, appSecret); // appKey/appSecret在OPPO通道开发者平台获取
+
         //Android 8.0以上设备通知接收不到
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -317,22 +341,6 @@ public class SyckApplication extends Application {
             //最后在notificationmanager中创建该通知渠道
             mNotificationManager.createNotificationChannel(mChannel);
         }
-
-        PushServiceFactory.init(applicationContext);
-        final CloudPushService pushService = PushServiceFactory.getCloudPushService();
-        pushService.register(applicationContext, new CommonCallback() {
-            @Override
-            public void onSuccess(String response) {
-                Log.d(TAG, "init cloudchannel success");
-                Log.d(TAG, pushService.getDeviceId());
-            }
-
-            @Override
-            public void onFailed(String errorCode, String errorMessage) {
-                Log.d(TAG, "init cloudchannel failed -- errorcode:" + errorCode + " -- errorMessage:" + errorMessage);
-            }
-        });
-
     }
 
 }
