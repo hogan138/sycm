@@ -5,11 +5,9 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,6 +17,7 @@ import com.shuyun.qapp.bean.GroupClassifyBean;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
+import com.shuyun.qapp.view.AddImageviewManage;
 import com.shuyun.qapp.view.OvalImageView;
 
 import java.util.List;
@@ -109,14 +108,7 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
             holder.tvTitle.setText(childrenBean.getName());
 
             //任意位置logo
-            ImageView imageView = new ImageView(context);
-            imageView.setImageResource(R.mipmap.pahys_logo);
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-//            layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-            imageView.setLayoutParams(layoutParams);
-            holder.rl.addView(imageView);
-
+            AddImageviewManage.addLogo(holder.rlAddImageview, position, context);
 
             if ((!EncodeAndStringTool.isObjectEmpty(mOnItemChildClickLitsener))) {
                 holder.itemView.setOnClickListener(new OnMultiClickListener() {
@@ -155,6 +147,8 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
         TextView tvTag1; //标题1
         @BindView(R.id.rl)
         RelativeLayout rl;
+        @BindView(R.id.rl_add_imageview)
+        RelativeLayout rlAddImageview;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -175,5 +169,6 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
     public void setOnItemClickLitsener(OnItemClickListener mOnItemChildClickLitsener) {
         this.mOnItemChildClickLitsener = mOnItemChildClickLitsener;
     }
+
 
 }

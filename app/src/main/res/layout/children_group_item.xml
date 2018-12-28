@@ -37,6 +37,11 @@
                     app:type="round" />
 
                 <RelativeLayout
+                    android:id="@+id/rl_add_imageview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <RelativeLayout
                     android:id="@+id/rl_gray_bg"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
