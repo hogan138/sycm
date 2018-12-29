@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.RectF;
-import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.widget.ImageView;
@@ -14,7 +12,6 @@ import android.widget.RelativeLayout;
 import com.shuyun.qapp.R;
 
 import static com.scwang.smartrefresh.layout.util.DensityUtil.dp2px;
-import static com.scwang.smartrefresh.layout.util.DensityUtil.px2dp;
 
 /**
  * @ProjectName: 全民共进
