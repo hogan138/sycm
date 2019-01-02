@@ -3,7 +3,9 @@ package com.shuyun.qapp.utils;
 import android.content.Context;
 import android.content.Intent;
 
+import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.mine.SystemSettingActivity;
 
@@ -99,7 +101,7 @@ public class ErrorCodeTools {
      * @param mContext 上下文
      * @param err
      */
-    public static boolean errorCodePrompt(Context mContext, String err, String message) {
+    public static boolean errorCodePrompt(final Context mContext, String err, String message) {
         if ("E0005".equals(err)) {
             ToastUtil.showToast(mContext, "今天您已经答对此题组，明天再来答哦");
             return false;
@@ -126,13 +128,27 @@ public class ErrorCodeTools {
                 || "TAU10".equals(err)
                 || "TAU11".equals(err)
                 || "TAU12".equals(err)) {
-            //清空数据
-            SharedPrefrenceTool.clear(mContext);
-            AppConst.loadToken(mContext);
-            Intent intent = new Intent(mContext, LoginActivity.class);
-            mContext.startActivity(intent);
             //阿里推送解除绑定别名
-            AliPushBind.UnbindPush();
+            AliPushBind.UnbindPush(new OnRemotingCallBackListener<Object>() {
+                @Override
+                public void onCompleted(String action) {
+                    //清空数据
+                    SharedPrefrenceTool.clear(mContext);
+                    AppConst.loadToken(mContext);
+                    Intent intent = new Intent(mContext, LoginActivity.class);
+                    mContext.startActivity(intent);
+                }
+
+                @Override
+                public void onFailed(String action, String message) {
+
+                }
+
+                @Override
+                public void onSucceed(String action, DataResponse<Object> response) {
+
+                }
+            });
             return false;
         } else {
             if (errCode.containsKey(err)) {

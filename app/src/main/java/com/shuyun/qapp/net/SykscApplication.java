@@ -194,27 +194,20 @@ public class SykscApplication extends Application {
         // 初始化MTA的Crash模块，可监控java、native的Crash，以及Crash后的回调
         MTACrashModule.initMtaCrashModule(appContext);
 
-        //内存检测
-//        if (LeakCanary.isInAnalyzerProcess(this)) {
-//            // This process is dedicated to LeakCanary for heap analysis.
-//            // You should not init your app in this process.
-//            return;
-//        }
-//        LeakCanary.install(this);
-
-
         //阿里百川初始化
-//        AlibcTradeSDK.asyncInit(this, new AlibcTradeInitCallback() {
-//            @Override
-//            public void onSuccess() {
-//               //初始化成功，设置相关的全局配置参数
-//            }
-//
-//            @Override
-//            public void onFailure(int code, String msg) {
-//                //初始化失败，可以根据code和msg判断失败原因，详情参见错误说明
-//            }
-//        });
+        AlibcTradeSDK.asyncInit(this, new AlibcTradeInitCallback() {
+            @Override
+            public void onSuccess() {
+                //初始化成功，设置相关的全局配置参数
+                Log.d(TAG, "电商初始化成功");
+            }
+
+            @Override
+            public void onFailure(int code, String msg) {
+                //初始化失败，可以根据code和msg判断失败原因，详情参见错误说明
+                Log.d(TAG, "电商初始化失败:" + msg);
+            }
+        });
 
     }
 

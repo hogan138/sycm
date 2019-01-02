@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.mtl.appmonitor.APTrack;
 import com.alibaba.sdk.android.push.MessageReceiver;
 import com.alibaba.sdk.android.push.notification.CPushMessage;
 import com.shuyun.qapp.bean.AliPushBean;

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.shuyun.qapp.net.ApiServiceBean;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 
 /**
@@ -30,9 +31,9 @@ public class AliPushBind {
     }
 
     //阿里推送解除绑定别名
-    public static void UnbindPush() {
+    public static void UnbindPush(OnRemotingCallBackListener<Object> listener) {
         String deviceId = PushServiceFactory.getCloudPushService().getDeviceId();
-        RemotingEx.doRequest(ApiServiceBean.pushUnbind(), new Object[]{deviceId}, null);
+        RemotingEx.doRequest(ApiServiceBean.pushUnbind(), new Object[]{deviceId}, listener);
 
     }
 }

@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.alibaba.baichuan.android.trade.AlibcTradeSDK;
 import com.alibaba.fastjson.JSONObject;
 import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.callback.ConfigDialog;
@@ -349,6 +350,10 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
 
         HeartBeatManager.instance().stop();
 
+        /**
+         * 销毁电商SDK相关资源引用，防止内存泄露
+         */
+        AlibcTradeSDK.destory();
     }
 
     @Override

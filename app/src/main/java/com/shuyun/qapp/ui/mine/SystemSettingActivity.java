@@ -180,25 +180,7 @@ public class SystemSettingActivity extends BaseActivity implements OnRemotingCal
                 .setNegative("确定", new OnMultiClickListener() {
                     @Override
                     public void onMultiClick(View v) {
-
-                        //清空数据
-                        clearData();
-
-                        //阿里推送解除绑定别名
-                        AliPushBind.UnbindPush();
-
-                        MyActivityManager.getInstance().finishAllActivity();//销毁所有页面
-
-                        if ("1".equals(SaveUserInfo.getInstance(mContext).getUserInfo("tourists"))) {
-                            //启用游客模式
-                            Intent intent = new Intent(mContext, HomePageActivity.class);
-                            intent.putExtra(AppConst.APP_ACTION_PARAM, AppConst.APP_ACTION_LOGOUT);
-                            startActivity(intent);
-                        } else {
-                            //不启用游客模式
-                            startActivity(new Intent(mContext, LoginActivity.class));
-                        }
-                        finish();
+                        logout();
                     }
                 })
                 .configDialog(new ConfigDialog() {
@@ -208,6 +190,43 @@ public class SystemSettingActivity extends BaseActivity implements OnRemotingCal
                     }
                 })
                 .show();
+    }
+
+    /**
+     * 退出登录
+     */
+    private void logout() {
+        //阿里推送解除绑定别名
+        AliPushBind.UnbindPush(new OnRemotingCallBackListener<Object>() {
+            @Override
+            public void onCompleted(String action) {
+                //清空数据
+                clearData();
+
+                MyActivityManager.getInstance().finishAllActivity();//销毁所有页面
+
+                if ("1".equals(SaveUserInfo.getInstance(mContext).getUserInfo("tourists"))) {
+                    //启用游客模式
+                    Intent intent = new Intent(mContext, HomePageActivity.class);
+                    intent.putExtra(AppConst.APP_ACTION_PARAM, AppConst.APP_ACTION_LOGOUT);
+                    startActivity(intent);
+                } else {
+                    //不启用游客模式
+                    startActivity(new Intent(mContext, LoginActivity.class));
+                }
+                finish();
+            }
+
+            @Override
+            public void onFailed(String action, String message) {
+
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<Object> response) {
+
+            }
+        });
     }
 
     @Override
