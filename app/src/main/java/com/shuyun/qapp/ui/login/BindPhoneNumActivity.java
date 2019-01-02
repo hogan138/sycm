@@ -23,14 +23,12 @@ import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
-import com.shuyun.qapp.net.SyckApplication;
+import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.ui.webview.WebPublicActivity;
 import com.shuyun.qapp.utils.AliPushBind;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ToastUtil;
-
-import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -222,7 +220,7 @@ public class BindPhoneNumActivity extends BaseActivity {
                     if (dataResponse.isSuccees()) {
                         //阿里推送绑定别名
                         AliPushBind.bindPush();
-                        AppConst.loadToken(SyckApplication.getAppContext());
+                        AppConst.loadToken(SykscApplication.getAppContext());
                         //绑定成功  存token值
                         ToastUtil.showToast(BindPhoneNumActivity.this, "绑定成功");
                         finish();

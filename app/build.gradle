@@ -80,6 +80,9 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
+    //fastjson
+    implementation 'com.alibaba:fastjson:1.2.9'
+
     //添加引导页和轮播框架 https://github.com/kevin-mob/banner
     implementation 'cn.bingoogolapple:bga-banner:2.2.4@aar'
 
@@ -178,9 +181,9 @@ dependencies {
     implementation 'com.aliyun.ams:alicloud-android-push:3.1.4'
     implementation 'com.aliyun.ams:alicloud-android-third-push:3.0.5@aar'
 
-    //阿里百川(2019.1.2)
-    //fastjson
-    implementation 'com.alibaba:fastjson:1.2.9'
+    //阿里百川电商SDK(2019.1.2)
+    //支付
+    implementation 'com.alibaba.alipay:alipaySingle:20160825@jar'
     //登陆
     implementation 'com.ali.auth.sdk:alibabauth_core:1.1.4@jar'
     implementation 'com.ali.auth.sdk:alibabauth_ui:1.1.4@aar'
@@ -192,8 +195,8 @@ dependencies {
     //applink
     implementation 'com.taobao.android:alibc_applink:2.0.0.9@jar'
     //UT
-//    implementation 'com.taobao.android:utdid4all:1.1.5.3_proguard@jar'
-//    implementation 'com.alibaba.mtl:app-monitor-sdk:2.5.1.3_for_bc_proguard@jar'
+    implementation 'com.taobao.android:utdid4all:1.1.5.3_proguard@jar'
+    implementation 'com.alibaba.mtl:app-monitor-sdk:2.5.1.3_for_bc_proguard@jar'
     //电商SDK
     implementation 'com.alibaba.sdk.android:alibc_trade_sdk:3.1.1.11@aar'
 }

@@ -47,7 +47,7 @@ import com.shuyun.qapp.bean.ReturnDialogBean;
 import com.shuyun.qapp.bean.SharePublicBean;
 import com.shuyun.qapp.bean.WebAnswerHomeBean;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.net.SyckApplication;
+import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.mine.AccountRecordActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
@@ -236,7 +236,7 @@ public class WebH5Activity extends BaseActivity implements CommonPopupWindow.Vie
                     /**
                      * 检测微信是否安装,如果没有安装,需不显示分享按钮;如果安装了微信则显示分享按钮.
                      */
-                    if (!SyckApplication.mWxApi.isWXAppInstalled()) {
+                    if (!SykscApplication.mWxApi.isWXAppInstalled()) {
 
                     } else {
                         InviteSharePopupUtil.showSharedPop(WebH5Activity.this, rlMain);
@@ -307,7 +307,7 @@ public class WebH5Activity extends BaseActivity implements CommonPopupWindow.Vie
                 public void run() {
                     SharePublicBean sharedBean = new Gson().fromJson(config, SharePublicBean.class);
                     if (sharedBean.isShow()) {
-                        if (!SyckApplication.mWxApi.isWXAppInstalled()) {
+                        if (!SykscApplication.mWxApi.isWXAppInstalled()) {
                             ivRightIcon.setVisibility(View.GONE);
                         } else {
                             ivRightIcon.setImageResource(R.mipmap.share);//右侧分享
@@ -487,7 +487,7 @@ public class WebH5Activity extends BaseActivity implements CommonPopupWindow.Vie
          */
         @JavascriptInterface
         public void doShare(final String config) {
-            if (!SyckApplication.mWxApi.isWXAppInstalled()) {
+            if (!SykscApplication.mWxApi.isWXAppInstalled()) {
 
             } else {
                 runOnUiThread(new Runnable() {
@@ -770,7 +770,7 @@ public class WebH5Activity extends BaseActivity implements CommonPopupWindow.Vie
     protected void onDestroy() {
         super.onDestroy();
         //清空所有Cookie
-        CookieSyncManager.createInstance(SyckApplication.getAppContext());  //Create a singleton CookieSyncManager within a context
+        CookieSyncManager.createInstance(SykscApplication.getAppContext());  //Create a singleton CookieSyncManager within a context
         CookieManager cookieManager = CookieManager.getInstance(); // the singleton CookieManager instance
         cookieManager.removeAllCookie();// Removes all cookies.
         CookieSyncManager.getInstance().sync(); // forces sync manager to sync now

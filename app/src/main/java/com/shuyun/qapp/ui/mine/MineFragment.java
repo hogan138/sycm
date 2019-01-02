@@ -3,7 +3,6 @@ package com.shuyun.qapp.ui.mine;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -27,10 +26,9 @@ import com.shuyun.qapp.bean.AnswerOpptyBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.net.ApiServiceBean;
-import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
-import com.shuyun.qapp.net.SyckApplication;
+import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.homepage.InformationActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
@@ -40,7 +38,6 @@ import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ImageLoaderManager;
-import com.shuyun.qapp.utils.InformatListenner;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
@@ -176,7 +173,7 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
         /**
          * 检测微信是否安装,如果没有安装,需不显示分享按钮;如果安装了微信则显示分享按钮.
          */
-        if (!SyckApplication.mWxApi.isWXAppInstalled()) {
+        if (!SykscApplication.mWxApi.isWXAppInstalled()) {
             rlInviteShare.setVisibility(View.GONE);
         } else {
             rlInviteShare.setVisibility(View.VISIBLE);

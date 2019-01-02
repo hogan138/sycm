@@ -11,31 +11,22 @@ import android.widget.Toast;
 import com.gyf.barlibrary.ImmersionBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.LoginResponse;
-import com.shuyun.qapp.event.MessageEvent;
 import com.shuyun.qapp.net.ActivityCallManager;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.HeartBeatManager;
 import com.shuyun.qapp.net.LoginDataManager;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.login.BindPhoneNumActivity;
-import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
-import com.shuyun.qapp.utils.MyActivityManager1;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
-import com.shuyun.qapp.wxapi.WXEntryActivity;
 import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.UMShareAPI;
 
-import org.greenrobot.eventbus.EventBus;
-import org.json.JSONObject;
-
-import java.util.Map;
-
-import static com.shuyun.qapp.net.SyckApplication.getAppContext;
+import static com.shuyun.qapp.net.SykscApplication.getAppContext;
 
 /**
  * 2018/6/9

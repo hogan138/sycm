@@ -16,7 +16,7 @@ import com.shuyun.qapp.bean.UserWxInfo;
 import com.shuyun.qapp.net.ActivityCallManager;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.net.SyckApplication;
+import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.login.LoginActivity;
@@ -38,7 +38,7 @@ import org.litepal.crud.DataSupport;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
-import static com.shuyun.qapp.net.SyckApplication.getAppContext;
+import static com.shuyun.qapp.net.SykscApplication.getAppContext;
 import static com.shuyun.qapp.utils.EncodeAndStringTool.encryptMD5ToString;
 import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 
@@ -56,7 +56,7 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
         super.onCreate(savedInstanceState);
         mContext = this;
         //如果没回调onResp，八成是这句没有写
-        SyckApplication.mWxApi.handleIntent(getIntent(), this);
+        SykscApplication.mWxApi.handleIntent(getIntent(), this);
     }
 
     // 微信发送请求到第三方应用时，会回调到该方法

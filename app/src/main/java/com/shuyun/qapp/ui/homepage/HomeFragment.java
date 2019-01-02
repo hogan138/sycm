@@ -53,7 +53,7 @@ import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.LoginDataManager;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
-import com.shuyun.qapp.net.SyckApplication;
+import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.ui.classify.ClassifyActivity;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
 import com.shuyun.qapp.ui.mine.MinePrizeActivity;
@@ -223,7 +223,7 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
         /**
          * 检测微信是否安装,如果没有安装,需不显示分享按钮;如果安装了微信则显示分享按钮.
          */
-        if (!SyckApplication.mWxApi.isWXAppInstalled()) {
+        if (!SykscApplication.mWxApi.isWXAppInstalled()) {
             tvInvite.setVisibility(View.GONE);
         } else {
             tvInvite.setVisibility(View.VISIBLE);

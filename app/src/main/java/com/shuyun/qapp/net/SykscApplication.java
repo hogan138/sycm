@@ -52,10 +52,10 @@ import org.litepal.tablemanager.Connector;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SyckApplication extends Application {
+public class SykscApplication extends Application {
 
 
-    private static final String TAG = "SyckApplication";
+    private static final String TAG = "SykscApplication";
 
     /**
      * 取得当前进程名
@@ -295,21 +295,21 @@ public class SyckApplication extends Application {
     @Override
     public void onTerminate() {
         // 程序终止的时候执行
-        Log.d(TAG, "SyckApplication == onTerminate");
+        Log.d(TAG, "SykscApplication == onTerminate");
         super.onTerminate();
     }
 
     @Override
     public void onLowMemory() {
         // 低内存的时候执行
-        Log.d(TAG, "SyckApplication ==onLowMemory");
+        Log.d(TAG, "SykscApplication ==onLowMemory");
         super.onLowMemory();
     }
 
     @Override
     public void onTrimMemory(int level) {
         // 程序在内存清理的时候执行
-        Log.d(TAG, "SyckApplication == onTrimMemory");
+        Log.d(TAG, "SykscApplication == onTrimMemory");
         super.onTrimMemory(level);
     }
 

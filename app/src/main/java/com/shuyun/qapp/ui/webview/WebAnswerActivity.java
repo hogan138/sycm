@@ -59,7 +59,7 @@ import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.LoginDataManager;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
-import com.shuyun.qapp.net.SyckApplication;
+import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.ui.answer.AnswerHistoryActivity;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
@@ -455,7 +455,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
         /**
          * 检测微信是否安装,如果没有安装,需不显示分享按钮,如果安装了,需要显示分享按钮
          */
-        if (!SyckApplication.mWxApi.isWXAppInstalled()) {
+        if (!SykscApplication.mWxApi.isWXAppInstalled()) {
             ivRightIcon.setVisibility(View.GONE);
         } else {
             ivRightIcon.setImageResource(R.mipmap.share);//右侧分享

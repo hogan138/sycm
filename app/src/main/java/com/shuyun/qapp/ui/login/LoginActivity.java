@@ -37,8 +37,7 @@ import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
-import com.shuyun.qapp.net.SyckApplication;
-import com.shuyun.qapp.ui.homepage.HomePageActivity;
+import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.AliPushBind;
 import com.shuyun.qapp.utils.CustomLoadingFactory;
@@ -117,7 +116,7 @@ public class LoginActivity extends BaseActivity implements OnRemotingCallBackLis
         mPermissionsChecker = new PermissionsChecker(this);
         clearEditText(etPhoneNumber, ivClearPhoneNum);
         clearEditText(etPassword, ivClearPwd);
-        if (!SyckApplication.mWxApi.isWXAppInstalled()) {
+        if (!SykscApplication.mWxApi.isWXAppInstalled()) {
             tvWeixinLogo.setVisibility(View.GONE);
         }
 
@@ -354,7 +353,7 @@ public class LoginActivity extends BaseActivity implements OnRemotingCallBackLis
         final SendAuth.Req req = new SendAuth.Req();
         req.scope = "snsapi_userinfo";
         req.state = "diandi_wx_login";
-        SyckApplication.mWxApi.sendReq(req);
+        SykscApplication.mWxApi.sendReq(req);
     }
 
     /**

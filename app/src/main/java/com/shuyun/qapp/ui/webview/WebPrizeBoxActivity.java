@@ -40,12 +40,11 @@ import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.bean.ReturnDialogBean;
 import com.shuyun.qapp.bean.WebAnswerHomeBean;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.net.SyckApplication;
+import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
 import com.shuyun.qapp.ui.mine.NewRedWithdrawActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.view.InviteSharePopupUtil;
@@ -91,7 +90,7 @@ public class WebPrizeBoxActivity extends BaseActivity {
                     /**
                      * 检测微信是否安装,如果没有安装,需不显示分享按钮;如果安装了微信则显示分享按钮.
                      */
-                    if (!SyckApplication.mWxApi.isWXAppInstalled()) {
+                    if (!SykscApplication.mWxApi.isWXAppInstalled()) {
 
                     } else {
                         InviteSharePopupUtil.showSharedPop(WebPrizeBoxActivity.this, llWebBox);

@@ -28,7 +28,7 @@ import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
-import com.shuyun.qapp.net.SyckApplication;
+import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -110,7 +110,7 @@ public class FreeMainActivity extends BaseActivity implements View.OnClickListen
         /**
          * 检测微信是否安装,如果没有安装,需不显示分享按钮;如果安装了微信则显示分享按钮.
          */
-        if (!SyckApplication.mWxApi.isWXAppInstalled()) {
+        if (!SykscApplication.mWxApi.isWXAppInstalled()) {
             ivRightIcon.setVisibility(View.GONE);
         } else {
             ivRightIcon.setVisibility(View.VISIBLE);

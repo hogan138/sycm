@@ -26,7 +26,7 @@ import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
-import com.shuyun.qapp.net.SyckApplication;
+import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.ui.login.VerifyCodeActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.CommonPopUtil;
@@ -117,7 +117,7 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
         /**
          * 检测微信是否安装,如果没有安装,需不显示微信绑定状态;如果安装了微信则显示微信绑定状态.
          */
-        if (!SyckApplication.mWxApi.isWXAppInstalled()) {
+        if (!SykscApplication.mWxApi.isWXAppInstalled()) {
             rlBindWechat.setVisibility(View.GONE);
         } else {
             rlBindWechat.setVisibility(View.VISIBLE);
@@ -354,7 +354,7 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
         final SendAuth.Req req = new SendAuth.Req();
         req.scope = "snsapi_userinfo";
         req.state = "diandi_wx_login";
-        SyckApplication.mWxApi.sendReq(req);
+        SykscApplication.mWxApi.sendReq(req);
     }
 
     @Override
