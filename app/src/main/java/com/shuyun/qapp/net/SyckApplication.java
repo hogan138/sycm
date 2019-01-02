@@ -9,7 +9,11 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.multidex.MultiDex;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.alibaba.baichuan.android.trade.AlibcTradeSDK;
+import com.alibaba.baichuan.android.trade.adapter.ut.AlibcUserTracker;
+import com.alibaba.baichuan.android.trade.callback.AlibcTradeInitCallback;
 import com.alibaba.sdk.android.push.CloudPushService;
 import com.alibaba.sdk.android.push.CommonCallback;
 import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
@@ -40,9 +44,13 @@ import com.tencent.stat.hybrid.StatHybridHandler;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
+import com.ut.mini.internal.UTTeamWork;
 
 import org.litepal.LitePal;
 import org.litepal.tablemanager.Connector;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SyckApplication extends Application {
 
@@ -193,6 +201,20 @@ public class SyckApplication extends Application {
 //            return;
 //        }
 //        LeakCanary.install(this);
+
+
+        //阿里百川初始化
+//        AlibcTradeSDK.asyncInit(this, new AlibcTradeInitCallback() {
+//            @Override
+//            public void onSuccess() {
+//               //初始化成功，设置相关的全局配置参数
+//            }
+//
+//            @Override
+//            public void onFailure(int code, String msg) {
+//                //初始化失败，可以根据code和msg判断失败原因，详情参见错误说明
+//            }
+//        });
 
     }
 

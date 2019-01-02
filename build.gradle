@@ -4,6 +4,10 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
+        //阿里百川
+        maven {
+            url "http://repo.baichuan-android.taobao.com/content/groups/BaichuanRepositories/"
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
@@ -16,6 +20,10 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven {
+            //阿里百川
+            url "http://repo.baichuan-android.taobao.com/content/groups/BaichuanRepositories/"
+        }
         maven {
             url "https://jitpack.io"
         }

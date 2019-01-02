@@ -8,7 +8,6 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,7 +16,6 @@ import com.shuyun.qapp.bean.GroupClassifyBean;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
-import com.shuyun.qapp.view.AddImageviewManage;
 import com.shuyun.qapp.view.OvalImageView;
 
 import java.util.List;
@@ -108,7 +106,7 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
             holder.tvTitle.setText(childrenBean.getName());
 
             //任意位置logo
-            AddImageviewManage.addLogo(holder.rlAddImageview, position, context);
+//            AddImageviewManage.addLogo(holder.rlAddImageview, position, context);
 
             if ((!EncodeAndStringTool.isObjectEmpty(mOnItemChildClickLitsener))) {
                 holder.itemView.setOnClickListener(new OnMultiClickListener() {
