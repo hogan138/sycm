@@ -46,6 +46,7 @@ import com.mylhyl.circledialog.params.DialogParams;
 import com.mylhyl.circledialog.params.TextParams;
 import com.mylhyl.circledialog.params.TitleParams;
 import com.shuyun.qapp.R;
+import com.shuyun.qapp.alipay.AlipayTradeManager;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.AnswerOpptyBean;
 import com.shuyun.qapp.bean.DataResponse;
@@ -409,6 +410,16 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
                     } else if (minePrize.getActionType().equals("action.bp.use")) {
                         //积分
                         startActivity(new Intent(mContext, IntegralExchangeActivity.class));
+                    } else if (minePrize.getActionType().equals("action.alipay.coupon")) {
+                        //优惠券
+                        if (Integer.parseInt(SaveUserInfo.getInstance(mContext).getUserInfo("cert")) == 1) {
+                            //调用使用优惠券接口
+                            RemotingEx.doRequest(ApiServiceBean.useCoupon(), new Object[]{minePrize.getId()}, null);
+                            AlipayTradeManager.instance().showBasePage(WebAnswerActivity.this, minePrize.getH5Url());
+                        } else {
+                            //显示实名认证弹窗
+                            RealNamePopupUtil.showAuthPop(getApplicationContext(), llH5, getString(R.string.real_gift_describe));
+                        }
                     }
                 }
             });

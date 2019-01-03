@@ -1,6 +1,8 @@
 package com.shuyun.qapp.ui.mine;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,14 +18,19 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.PrizeAdapter;
+import com.shuyun.qapp.alipay.AlipayTradeManager;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
+import com.shuyun.qapp.ui.webview.WebH5Activity;
+import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.SaveUserInfo;
+import com.shuyun.qapp.view.RealNamePopupUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,6 +104,20 @@ public class UsePrizeFragment extends Fragment implements OnRemotingCallBackList
         });
 
         prizeAdapter = new PrizeAdapter(getActivity(), minePrizeList);
+        prizeAdapter.setOnItemClickLitsener(new PrizeAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(View view, int position) {
+                MinePrize minePrize = minePrizeList.get(position);
+                if (minePrize.getActionType().equals("action.alipay.coupon")) {
+                    //使用优惠券
+                    if (Integer.parseInt(SaveUserInfo.getInstance(getActivity()).getUserInfo("cert")) == 1) {
+                        AlipayTradeManager.instance().showBasePage(getActivity(), minePrize.getH5Url());
+                    } else {
+                        RealNamePopupUtil.showAuthPop(getContext(), ((MinePrizeActivity) getActivity()).llPrize, getString(R.string.real_gift_describe));
+                    }
+                }
+            }
+        });
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rvPrize.setLayoutManager(layoutManager);
         rvPrize.setAdapter(prizeAdapter);

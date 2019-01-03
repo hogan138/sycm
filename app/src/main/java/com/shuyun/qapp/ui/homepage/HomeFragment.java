@@ -303,7 +303,7 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
         mBannerView.setBannerItemClick(new BannerViewPager.OnBannerItemClick<IBannerItem>() {
             @Override
             public void onClick(IBannerItem data) {
-                /*for (int i = 0; i < bannerData.size(); i++) {
+                for (int i = 0; i < bannerData.size(); i++) {
                     BannerBean bannerBean = bannerData.get(i);
                     if (data.ImageUrl().equals(bannerBean.getPicture())) {
                         LoginDataManager.instance().addData(LoginDataManager.BANNER_LOGIN, bannerBean);
@@ -312,9 +312,10 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
                         Long is_Login = bannerBean.getIsLogin();
                         LoginJumpUtil.dialogSkip(action, mContext, bannerBean.getContent(), h5Url, is_Login);
                     }
-                }*/
-                AlipayTradeManager.instance().showDetailPage(mContext, "564799174125");
+                }
+//                AlipayTradeManager.instance().showDetailPage(mContext, "564799174125");
 //                AlipayTradeManager.instance().showBasePage(mContext, "https://s.click.taobao.com/0AF7rHw");
+//                AlipayTradeManager.instance().showMyOrdersPage(mContext, 0);
             }
         });
         mBannerView.setPageTransformer(true, new YZoomTransFormer(0.9f)); //banner动画
@@ -708,9 +709,12 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
         //获取活动配置信息
         getConfigInfo();
 
-        //获取宝箱数量
         if (AppConst.isLogin()) {
+            //获取宝箱数量
             loadTreasureBoxNum();
+
+            //用户活跃度
+            RemotingEx.doRequest(ApiServiceBean.activeness(), null, null);
         } else {
             try {
                 ivBx.clearAnimation();

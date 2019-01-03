@@ -33,13 +33,16 @@ import com.mylhyl.circledialog.params.DialogParams;
 import com.mylhyl.circledialog.params.TextParams;
 import com.mylhyl.circledialog.params.TitleParams;
 import com.shuyun.qapp.R;
+import com.shuyun.qapp.alipay.AlipayTradeManager;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.BoxBean;
 import com.shuyun.qapp.bean.H5JumpBean;
 import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.bean.ReturnDialogBean;
 import com.shuyun.qapp.bean.WebAnswerHomeBean;
+import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
 import com.shuyun.qapp.ui.mine.NewRedWithdrawActivity;
@@ -251,6 +254,16 @@ public class WebPrizeBoxActivity extends BaseActivity {
                         //积分
                         startActivity(new Intent(WebPrizeBoxActivity.this, IntegralExchangeActivity.class));
 
+                    } else if (minePrize.getActionType().equals("action.alipay.coupon")) {
+                        //优惠券
+                        if (Integer.parseInt(SaveUserInfo.getInstance(WebPrizeBoxActivity.this).getUserInfo("cert")) == 1) {
+                            //调用使用优惠券接口
+                            RemotingEx.doRequest(ApiServiceBean.useCoupon(), new Object[]{minePrize.getId()}, null);
+                            AlipayTradeManager.instance().showBasePage(WebPrizeBoxActivity.this, minePrize.getH5Url());
+                        } else {
+                            //显示实名认证弹窗
+                            RealNamePopupUtil.showAuthPop(getApplicationContext(), llWebBox, getString(R.string.real_gift_describe));
+                        }
                     }
                 }
             });

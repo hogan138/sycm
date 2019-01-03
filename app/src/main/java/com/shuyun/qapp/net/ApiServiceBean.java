@@ -581,4 +581,18 @@ public class ApiServiceBean {
     public static String pushUnbind() {
         return "pushUnbind";
     }
+
+    /**
+     * 85、用户活跃度
+     */
+    public static String activeness() {
+        return "activeness";
+    }
+
+    /**
+     * 86、使用优惠券
+     */
+    public static String useCoupon() {
+        return "useCoupon";
+    }
 }

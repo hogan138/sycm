@@ -22,6 +22,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.PrizeAdapter;
+import com.shuyun.qapp.alipay.AlipayTradeManager;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.net.ApiServiceBean;
@@ -166,6 +167,15 @@ public class NoUsePrizeFragment extends Fragment implements OnRemotingCallBackLi
                     intent.putExtra("ChildMinePrize", minePrize);
                     intent.putExtra("main_box", "my_prize");
                     startActivity(intent);
+                } else if (minePrize.getActionType().equals("action.alipay.coupon")) {
+                    //使用优惠券
+                    if (Integer.parseInt(SaveUserInfo.getInstance(getActivity()).getUserInfo("cert")) == 1) {
+                        //调用使用优惠券接口
+                        RemotingEx.doRequest(ApiServiceBean.useCoupon(), new Object[]{minePrize.getId()}, null);
+                        AlipayTradeManager.instance().showBasePage(getActivity(), minePrize.getH5Url());
+                    } else {
+                        RealNamePopupUtil.showAuthPop(getContext(), ((MinePrizeActivity) getActivity()).llPrize, getString(R.string.real_gift_describe));
+                    }
                 } else {
                     //暂不支持 实物和电子卷 提示用户去下载新版本
                     showDownloadAppDialog();
@@ -236,7 +246,7 @@ public class NoUsePrizeFragment extends Fragment implements OnRemotingCallBackLi
 
     @Override
     public void onFailed(String action, String message) {
-        if(currentPage == 0)
+        if (currentPage == 0)
             refreshLayout.finishRefresh();
         else
             refreshLayout.finishLoadmore();

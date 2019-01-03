@@ -601,4 +601,16 @@ public interface ApiService {
     @GET("/rest/app/push/unbind")
     Observable<DataResponse<Object>> pushUnbind(@Query("deviceId") String deviceId);
 
+    /**
+     * 85、用户活跃度
+     */
+    @GET("/rest/user/activeness")
+    Observable<DataResponse<Object>> activeness();
+
+    /**
+     * 86、使用优惠券
+     */
+    @GET("/rest/user/use/coupon")
+    Observable<DataResponse<Object>> useCoupon(@Query("couponId") String couponId);
+
 }

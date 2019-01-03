@@ -128,8 +128,8 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
 
         mHandler.postDelayed(runnable, 500);
 
-        //绑定别名
         if (AppConst.isLogin()) {
+            //绑定别名
             AliPushBind.bindPush();
         }
     }
@@ -241,6 +241,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
                 }
             }, 10);
         }
+
     }
 
     Runnable runnable = new Runnable() {

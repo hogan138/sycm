@@ -90,8 +90,12 @@ public class PrizeAdapter extends RecyclerView.Adapter<PrizeAdapter.ViewHolder> 
             }
             holder.tvUseLogo.setVisibility(View.GONE);
         } else {
-            holder.tvOpen.setEnabled(false);
             holder.tvUseLogo.setVisibility(View.VISIBLE);
+            if ("action.alipay.coupon".equals(minePrize.getActionType())) {
+                holder.tvOpen.setEnabled(true);
+            } else {
+                holder.tvOpen.setEnabled(false);
+            }
         }
 
         //内容
