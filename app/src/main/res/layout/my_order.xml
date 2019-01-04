@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_my_order"
+    android:layout_width="match_parent"
+    android:layout_height="43.5dp"
+    android:layout_gravity="center_vertical"
+    android:foreground="?attr/selectableItemBackground">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/text_12"
+        android:layout_marginTop="@dimen/text_15"
+        android:text="@string/my_order"
+        android:textColor="@color/color_0"
+        android:textSize="@dimen/text_14" />
+
+    <ImageView
+        android:layout_width="@dimen/text_14"
+        android:layout_height="@dimen/text_14"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/text_12"
+        android:src="@mipmap/gomore" />
+</RelativeLayout>

@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.blankj.utilcode.util.NetworkUtils;
 import com.shuyun.qapp.R;
+import com.shuyun.qapp.alipay.AlipayTradeManager;
 import com.shuyun.qapp.base.BaseFragment;
 import com.shuyun.qapp.bean.AnswerOpptyBean;
 import com.shuyun.qapp.bean.DataResponse;
@@ -189,7 +190,7 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
 
     @OnClick({R.id.rl_back, R.id.iv_common_right_icon, R.id.iv_header_pic, R.id.rl_header, R.id.iv_real_logo,
             R.id.ll_add, R.id.rl_account_record, R.id.btn_immedicate_withdrawal, R.id.ll_score, R.id.ll_gift, R.id.ll_tools,
-            R.id.rl_answer_record, R.id.rl_system_set, R.id.rl_contact_us, R.id.rl_invite_share})
+            R.id.rl_my_order, R.id.rl_answer_record, R.id.rl_system_set, R.id.rl_contact_us, R.id.rl_invite_share})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_back:
@@ -252,6 +253,9 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
                 break;
             case R.id.rl_answer_record: //成绩单
                 startActivity(new Intent(mContext, AnswerRecordActivity.class));
+                break;
+            case R.id.rl_my_order: //我的订单
+                AlipayTradeManager.instance().showMyOrdersPage(getActivity(), 0);
                 break;
             case R.id.rl_system_set: //系统设置
                 startActivity(new Intent(mContext, SystemSettingActivity.class));
