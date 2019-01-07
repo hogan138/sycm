@@ -12,7 +12,7 @@
         android:id="@+id/ll_end"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:background="@drawable/home_often_gray_bg"></RelativeLayout>
+        android:background="@drawable/home_often_gray_bg"/>
 
     <TextView
         android:id="@+id/textView"

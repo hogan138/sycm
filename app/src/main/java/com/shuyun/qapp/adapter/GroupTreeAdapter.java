@@ -79,6 +79,10 @@ public class GroupTreeAdapter extends RecyclerView.Adapter<GroupTreeAdapter.View
         return (classifyBeans == null) ? 0 : classifyBeans.size();
     }
 
+    public void setSelectedPosition(int position) {
+        this.selectedPosition = position;
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.iv_sort_item)
         ImageView ivItem;//题组分类图标

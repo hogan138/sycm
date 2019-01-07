@@ -21,25 +21,44 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.shuyun.qapp.view.OvalImageView
-                android:id="@+id/iv_group_bg"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="104dp"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/zw01"
-                app:type="round" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_group_title"
-                android:layout_width="match_parent"
-                android:layout_height="33dp"
-                android:layout_below="@+id/iv_group_bg"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="标题"
-                android:textColor="@color/color_1"
-                android:textSize="@dimen/text_15" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+
+                    <com.shuyun.qapp.view.OvalImageView
+                        android:id="@+id/iv_group_bg"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/zw01"
+                        app:type="round" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_add_imageview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_group_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="33dp"
+                    android:layout_below="@+id/iv_group_bg"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="标题"
+                    android:textColor="@color/color_1"
+                    android:textSize="@dimen/text_15" />
+
+            </LinearLayout>
+
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </RelativeLayout>

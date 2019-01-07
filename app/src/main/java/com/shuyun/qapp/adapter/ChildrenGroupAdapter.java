@@ -12,10 +12,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.shuyun.qapp.R;
+import com.shuyun.qapp.bean.AnyPositionBean;
 import com.shuyun.qapp.bean.GroupClassifyBean;
+import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
+import com.shuyun.qapp.view.AnyPositionImgManage;
 import com.shuyun.qapp.view.OvalImageView;
 
 import java.util.List;
@@ -62,7 +65,7 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         GroupClassifyBean.ChildrenBean childrenBean = childrenBeans.get(position);
-
+        holder.rlAddImageview.removeAllViews();
         try {
             ImageLoaderManager.LoadImage(context, childrenBean.getPicture(), holder.ivGroup, R.mipmap.zw01);//题组图片
 
@@ -105,9 +108,6 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
             //题组名称
             holder.tvTitle.setText(childrenBean.getName());
 
-            //任意位置logo
-//            AddImageviewManage.addLogo(holder.rlAddImageview, position, context);
-
             if ((!EncodeAndStringTool.isObjectEmpty(mOnItemChildClickLitsener))) {
                 holder.itemView.setOnClickListener(new OnMultiClickListener() {
                     @Override
@@ -117,8 +117,34 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
                     }
                 });
             }
-        } catch (Exception e) {
 
+            //任意位置logo
+            List<GroupClassifyBean.AdConfigs> list = childrenBean.getAdConfigs();
+            if (!EncodeAndStringTool.isObjectEmpty(list)) {
+                for (GroupClassifyBean.AdConfigs adConfigs : list) {
+                    Long type = adConfigs.getType();
+                    if (AppConst.TYPE_GROUP_TREE == type) {
+                        AnyPositionBean anyPositionBean = new AnyPositionBean();
+                        anyPositionBean.setType(adConfigs.getType());
+                        anyPositionBean.setLocation(adConfigs.getLocation());
+                        anyPositionBean.setWidth(adConfigs.getWidth());
+                        anyPositionBean.setHeight(adConfigs.getHeight());
+                        anyPositionBean.setPadding(adConfigs.getPadding());
+                        anyPositionBean.setMargin(adConfigs.getMargin());
+                        anyPositionBean.setShadow(adConfigs.getShadow());
+                        anyPositionBean.setShadowColor(adConfigs.getShadowColor());
+                        anyPositionBean.setShadowAlpha(adConfigs.getShadowAlpha());
+                        anyPositionBean.setShadowRadius(adConfigs.getShadowRadius());
+                        anyPositionBean.setImageUrl(adConfigs.getImageUrl());
+                        //执行
+                        AnyPositionImgManage.execute(anyPositionBean, holder.rlAddImageview, context);
+                    }
+                }
+            } else {
+                holder.rlAddImageview.removeAllViews();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

@@ -35,7 +35,6 @@ import com.shuyun.qapp.adapter.GroupTreeAdapter;
 import com.shuyun.qapp.adapter.HomeSortAdapter;
 import com.shuyun.qapp.adapter.HotGroupAdapter;
 import com.shuyun.qapp.adapter.MarkBannerAdapter;
-import com.shuyun.qapp.alipay.AlipayTradeManager;
 import com.shuyun.qapp.base.BaseFragment;
 import com.shuyun.qapp.bean.BannerBean;
 import com.shuyun.qapp.bean.BannerItem;
@@ -163,6 +162,10 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
     TextBannerView scrollAd; //公告
     @BindView(R.id.rl_ad)
     RelativeLayout rlAd; //公告布局
+    @BindView(R.id.rl_group_one)
+    RelativeLayout rlGroupOne; //推荐题组1任意logo
+    @BindView(R.id.rl_group_two)
+    RelativeLayout rlGroupTwo; //推荐题组2任意logo
 
     /**
      * 网络获取到推荐题组列表
@@ -357,7 +360,7 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
 
         //大家都在答
         groupThermalAdapter = new HotGroupAdapter(groupThermalData, mContext);
-        groupThermalAdapter.setOnItemClickLitsener(new GroupTreeAdapter.OnItemClickListener() {
+        groupThermalAdapter.setOnItemClickLitsener(new HotGroupAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 Long groupId = groupThermalData.get(position).getId();

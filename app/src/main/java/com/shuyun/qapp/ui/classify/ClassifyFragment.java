@@ -145,6 +145,7 @@ public class ClassifyFragment extends BaseFragment implements OnRemotingCallBack
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(mContext);
         rvGroup.setLayoutManager(layoutManager2);
         rvGroup.setAdapter(childrenGroupAdapter);
+
     }
 
     @OnClick({R.id.iv_back})
@@ -226,6 +227,7 @@ public class ClassifyFragment extends BaseFragment implements OnRemotingCallBack
         if (!EncodeAndStringTool.isListEmpty(beans)) {
             classifyBeans.clear();
             classifyBeans.addAll(beans);
+            groupTreeAdapter.setSelectedPosition(0);
             if (mContext instanceof ClassifyActivity) {
                 Long id = mContext.getIntent().getLongExtra("id", 0);
                 for (int i = 0; i < beans.size(); i++) {

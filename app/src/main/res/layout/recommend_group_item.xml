@@ -38,6 +38,11 @@
                     android:src="@mipmap/zw01"
                     app:type="round" />
 
+                <RelativeLayout
+                    android:id="@+id/rl_group_one"
+                    android:layout_width="match_parent"
+                    android:layout_height="132dp" />
+
                 <TextView
                     android:id="@+id/tv_group_name1"
                     android:layout_width="wrap_content"
@@ -118,6 +123,11 @@
                     android:scaleType="centerCrop"
                     android:src="@mipmap/zw01"
                     app:type="round" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_group_two"
+                    android:layout_width="match_parent"
+                    android:layout_height="132dp" />
 
                 <TextView
                     android:id="@+id/tv_group_name2"

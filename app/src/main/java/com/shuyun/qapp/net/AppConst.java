@@ -183,4 +183,25 @@ public class AppConst {
     public static final String PUSH_REAL = "push.real"; //实名认证
     public static final String PUSH_WITHDRAW_INFO = "push.withdraw.info"; //完善提现信息
 
+
+    /**
+     * 题组树广告位
+     */
+    public static final long TYPE_GROUP_TREE = 1;
+
+    /**
+     * H5题组广告位
+     */
+    public static final long TYPE_GROUP_H5 = 2;
+
+    /**
+     * banner广告位
+     */
+    public static final long TYPE_BANNER = 3;
+
+    /**
+     * 首页题组广告位
+     */
+    public static final long TYPE_HOME_GROUP = 4;
+
 }
