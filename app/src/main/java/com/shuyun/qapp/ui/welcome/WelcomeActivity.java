@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
@@ -38,6 +40,7 @@ import com.tencent.stat.common.StatConstants;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.blankj.utilcode.util.SizeUtils.dp2px;
 import static com.shuyun.qapp.utils.EncodeAndStringTool.encryptMD5ToString;
 import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 
@@ -68,6 +71,8 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
     private boolean isLoading = false;
     private boolean isStop = false;
 
+    private int height = 0;
+
     /**
      * 动画
      */
@@ -78,6 +83,15 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         mContext = this;
+
+        DisplayMetrics dm = this.getResources().getDisplayMetrics();
+        int w = (int) Math.ceil(dm.widthPixels);
+        height = (int) Math.ceil(w * (722f / 504f));
+
+        ViewGroup.LayoutParams params = mainImg.getLayoutParams();
+        params.height = height;
+        mainImg.setLayoutParams(params);
+
         //腾讯应用分析
         StatConfig.init(this);
         String appkey = "Aqc1105860265";

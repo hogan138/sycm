@@ -2,6 +2,7 @@ package com.shuyun.qapp.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.blankj.utilcode.util.SizeUtils.dp2px;
+
 /**
  * 活动专区Adapter
  */
@@ -28,11 +31,18 @@ public class ActivityTabAdapter extends RecyclerView.Adapter<ActivityTabAdapter.
     private LayoutInflater layoutInflater;
 
     private List<ActivityTabBean.ResultBean> activityBeanList;
+    private int height = 0;
 
     public ActivityTabAdapter(Context context, List<ActivityTabBean.ResultBean> activityBeanList) {
         layoutInflater = LayoutInflater.from(context);
         this.context = context;
         this.activityBeanList = activityBeanList;
+
+        //获取屏幕宽度
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        int w = (int) Math.ceil(dm.widthPixels) - dp2px(20);
+        height = (int) Math.ceil(w * (300f / 690f));
+
         notifyDataSetChanged();
     }
 
@@ -48,7 +58,11 @@ public class ActivityTabAdapter extends RecyclerView.Adapter<ActivityTabAdapter.
         ActivityTabBean.ResultBean resultBean = activityBeanList.get(position);
         ImageLoaderManager.LoadImage(context, resultBean.getBaseImage(), holder.ivBgImage, R.mipmap.zw01);
 
-        if (resultBean.isStop() == true) {
+        ViewGroup.LayoutParams lp = holder.rlActivityItem.getLayoutParams();
+        lp.height = height;
+        holder.rlActivityItem.setLayoutParams(lp);
+
+        if (resultBean.isStop()) {
             //已结束
             holder.llEnd.setVisibility(View.VISIBLE);
 //            holder.rlActivityItem.setEnabled(false);
