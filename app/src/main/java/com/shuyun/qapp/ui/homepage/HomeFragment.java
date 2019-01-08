@@ -35,9 +35,10 @@ import com.shuyun.qapp.adapter.GroupTreeAdapter;
 import com.shuyun.qapp.adapter.HomeSortAdapter;
 import com.shuyun.qapp.adapter.HotGroupAdapter;
 import com.shuyun.qapp.adapter.MarkBannerAdapter;
+import com.shuyun.qapp.adapter.MarkBannerAdapter1;
 import com.shuyun.qapp.base.BaseFragment;
+import com.shuyun.qapp.bean.AnyPositionBean;
 import com.shuyun.qapp.bean.BannerBean;
-import com.shuyun.qapp.bean.BannerItem;
 import com.shuyun.qapp.bean.BoxBean;
 import com.shuyun.qapp.bean.ConfigDialogBean;
 import com.shuyun.qapp.bean.DataResponse;
@@ -47,6 +48,7 @@ import com.shuyun.qapp.bean.HomeGroupsBean;
 import com.shuyun.qapp.bean.HomeNoticeBean;
 import com.shuyun.qapp.bean.MainConfigBean;
 import com.shuyun.qapp.bean.MarkBannerItem;
+import com.shuyun.qapp.bean.MarkBannerItem1;
 import com.shuyun.qapp.bean.SystemInfo;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
@@ -66,6 +68,7 @@ import com.shuyun.qapp.utils.NotificationsUtils;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
+import com.shuyun.qapp.view.AnyPositionImgManage;
 import com.shuyun.qapp.view.ITextBannerItemClickListener;
 import com.shuyun.qapp.view.InviteSharePopupUtil;
 import com.shuyun.qapp.view.LoginJumpUtil;
@@ -83,7 +86,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import cn.kevin.banner.BannerAdapter;
 import cn.kevin.banner.BannerViewPager;
 import cn.kevin.banner.IBannerItem;
 import cn.kevin.banner.transformer.YZoomTransFormer;
@@ -181,10 +183,10 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
     private boolean isLoading = false;
 
     //banner
+    private MarkBannerAdapter1 markBannerAdapter1;
     private List<IBannerItem> bannerList = new ArrayList<>();
     private List<BannerBean> bannerData = new ArrayList<>();
     private String bannerDataString = null;
-    private BannerAdapter bannerAdapter;
 
     //常答题组
     private MarkBannerAdapter markBannerAdapter;
@@ -286,14 +288,15 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
             }
         });
 
-        bannerList.add(new BannerItem("https://image-syksc.oss-cn-shanghai.aliyuncs.com/syksc/app/banner/xiaji.jpg"));
+        MarkBannerItem1 i = new MarkBannerItem1("https://image-syksc.oss-cn-shanghai.aliyuncs.com/syksc/app/banner/xiaji.jpg");
+        bannerList.add(i);
         //设置轮播图
-        bannerAdapter = new BannerAdapter(new GlideImageLoader());
-        bannerAdapter.setData(mContext, bannerList);
-        mBannerView.setBannerAdapter(bannerAdapter);
+        markBannerAdapter1 = new MarkBannerAdapter1(new GlideImageLoader(), mContext);
+        markBannerAdapter1.setData(mContext, bannerList);
+        mBannerView.setBannerAdapter(markBannerAdapter1);
 
         //设置index 在viewpager下面
-        ViewPager mViewpager = (ViewPager) mBannerView.getChildAt(0);
+        final ViewPager mViewpager = (ViewPager) mBannerView.getChildAt(0);
         //为ViewPager设置高度
         ViewGroup.LayoutParams params = mViewpager.getLayoutParams();
         params.height = getResources().getDimensionPixelSize(R.dimen.viewPager_01);
@@ -302,6 +305,24 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
         ViewPagerScroller pagerScroller = new ViewPagerScroller(getActivity());
         pagerScroller.setScrollDuration(400);
         pagerScroller.initViewPagerScroll(mViewpager);
+
+        mViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                int realPosition = position % bannerList.size();
+                markBannerAdapter1.refreshAdConfig(bannerList.get(realPosition), realPosition);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
 
         mBannerView.setBannerItemClick(new BannerViewPager.OnBannerItemClick<IBannerItem>() {
             @Override
@@ -316,9 +337,6 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
                         LoginJumpUtil.dialogSkip(action, mContext, bannerBean.getContent(), h5Url, is_Login);
                     }
                 }
-//                AlipayTradeManager.instance().showDetailPage(mContext, "564799174125");
-//                AlipayTradeManager.instance().showBasePage(mContext, "https://s.click.taobao.com/0AF7rHw");
-//                AlipayTradeManager.instance().showMyOrdersPage(mContext, 0);
             }
         });
         mBannerView.setPageTransformer(true, new YZoomTransFormer(0.9f)); //banner动画
@@ -327,7 +345,7 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
         MarkBannerItem item = new MarkBannerItem("https://image-syksc.oss-cn-shanghai.aliyuncs.com/syksc/app/banner/xiaji.jpg");
         item.setMarkLabel("默认");
         oftenList.add(item);
-        markBannerAdapter = new MarkBannerAdapter(new GlideImageLoader());
+        markBannerAdapter = new MarkBannerAdapter(new GlideImageLoader(), mContext);
         markBannerAdapter.setData(mContext, oftenList);
         alwaysBanner.setBannerAdapter(markBannerAdapter);
 
@@ -341,6 +359,24 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
         ViewPagerScroller pagerScrollerOften = new ViewPagerScroller(getActivity());
         pagerScrollerOften.setScrollDuration(400);
         pagerScrollerOften.initViewPagerScroll(mViewpagerOften);
+
+        mViewpagerOften.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                int realPosition = position % oftenList.size();
+                markBannerAdapter.refreshAdConfig(oftenList.get(realPosition), realPosition);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
 
         alwaysBanner.setBannerItemClick(new BannerViewPager.OnBannerItemClick<IBannerItem>() {
             @Override
@@ -564,6 +600,38 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
                     tvGroupTag1One.setVisibility(View.INVISIBLE);
                     tvGroupTag1Two.setVisibility(View.INVISIBLE);
                 }
+
+                //左侧任意位置logo
+                rlGroupOne.removeAllViews();
+                List<GroupBean.AdConfigs> list = recommendGroup1.getAdConfigs();
+                if (list == null)
+                    list = new ArrayList<>();
+
+                for (GroupBean.AdConfigs adConfigs : list) {
+                    Long type = adConfigs.getType();
+                    if (AppConst.TYPE_HOME_GROUP != type) {
+                        continue;
+                    }
+                    final AnyPositionBean anyPositionBean = new AnyPositionBean();
+                    anyPositionBean.setType(adConfigs.getType());
+                    anyPositionBean.setLocation(adConfigs.getLocation());
+                    anyPositionBean.setWidth(adConfigs.getWidth());
+                    anyPositionBean.setHeight(adConfigs.getHeight());
+                    anyPositionBean.setPadding(adConfigs.getPadding());
+                    anyPositionBean.setMargin(adConfigs.getMargin());
+                    anyPositionBean.setShadow(adConfigs.getShadow());
+                    anyPositionBean.setShadowColor(adConfigs.getShadowColor());
+                    anyPositionBean.setShadowAlpha(adConfigs.getShadowAlpha());
+                    anyPositionBean.setShadowRadius(adConfigs.getShadowRadius());
+                    anyPositionBean.setImageUrl(adConfigs.getImageUrl());
+                    //执行
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            AnyPositionImgManage.execute(anyPositionBean, rlGroupOne, mContext);
+                        }
+                    }, 0);
+                }
             }
             /**
              * 设置推荐右侧推荐题组的值,界面显示在推荐题组右侧
@@ -604,6 +672,38 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
                 } else {
                     tvGroupTag2One.setVisibility(View.INVISIBLE);
                     tvGroupTag2Two.setVisibility(View.INVISIBLE);
+                }
+
+                //右侧任意位置logo
+                rlGroupTwo.removeAllViews();
+                List<GroupBean.AdConfigs> list = recommendGroup2.getAdConfigs();
+                if (list == null)
+                    list = new ArrayList<>();
+
+                for (GroupBean.AdConfigs adConfigs : list) {
+                    Long type = adConfigs.getType();
+                    if (AppConst.TYPE_HOME_GROUP != type) {
+                        continue;
+                    }
+                    final AnyPositionBean anyPositionBean = new AnyPositionBean();
+                    anyPositionBean.setType(adConfigs.getType());
+                    anyPositionBean.setLocation(adConfigs.getLocation());
+                    anyPositionBean.setWidth(adConfigs.getWidth());
+                    anyPositionBean.setHeight(adConfigs.getHeight());
+                    anyPositionBean.setPadding(adConfigs.getPadding());
+                    anyPositionBean.setMargin(adConfigs.getMargin());
+                    anyPositionBean.setShadow(adConfigs.getShadow());
+                    anyPositionBean.setShadowColor(adConfigs.getShadowColor());
+                    anyPositionBean.setShadowAlpha(adConfigs.getShadowAlpha());
+                    anyPositionBean.setShadowRadius(adConfigs.getShadowRadius());
+                    anyPositionBean.setImageUrl(adConfigs.getImageUrl());
+                    //执行
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            AnyPositionImgManage.execute(anyPositionBean, rlGroupTwo, mContext);
+                        }
+                    }, 0);
                 }
             }
         } catch (Exception e) {
@@ -777,11 +877,15 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
                 //设置轮播图
                 bannerList.clear();
                 for (int i = 0; i < bannerData.size(); i++) {
-                    bannerList.add(new BannerItem(bannerData.get(i).getPicture()));
+                    BannerBean bean = bannerData.get(i);
+                    MarkBannerItem1 item = new MarkBannerItem1(bean.getPicture());
+                    item.setAdConfigs(bean.getAdConfigs());
+                    bannerList.add(item);
                 }
-                bannerAdapter.setData(mContext, bannerList);
+                markBannerAdapter1.clearViews();
+                markBannerAdapter1.setData(mContext, bannerList);
                 //重新生成单位条
-                mBannerView.setBannerAdapter(bannerAdapter);
+                mBannerView.setBannerAdapter(markBannerAdapter1);
             }
         } else if ("getSystemInfo".equals(action)) {
             List<SystemInfo> systemInfos = (List<SystemInfo>) response.getDat();
@@ -846,8 +950,10 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
                             GroupBean bean = oftenData.get(i);
                             MarkBannerItem item = new MarkBannerItem(bean.getPicture());
                             item.setMarkLabel(bean.getName());
+                            item.setAdConfigs(bean.getAdConfigs());
                             oftenList.add(item);
                         }
+                        markBannerAdapter.clearViews();
                         markBannerAdapter.setData(mContext, oftenList);
                         //重新生成单位条
                         alwaysBanner.setBannerAdapter(markBannerAdapter);

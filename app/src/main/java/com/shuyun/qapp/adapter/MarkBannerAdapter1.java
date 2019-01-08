@@ -3,6 +3,7 @@ package com.shuyun.qapp.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,29 +17,28 @@ import com.shuyun.qapp.bean.GroupBean;
 import com.shuyun.qapp.bean.MarkBannerItem;
 import com.shuyun.qapp.bean.MarkBannerItem1;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.ui.activity.ActivityFragment;
 import com.shuyun.qapp.view.AnyPositionImgManage;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.kevin.banner.BannerAdapter;
+import cn.kevin.banner.BannerViewPager;
 import cn.kevin.banner.IBannerItem;
 import cn.kevin.banner.ImageLoader;
 
 /**
- * 扩展角标
+ * banner扩展
  * 创建人：${ganquan}
- * 创建日期：2018/9/19 18:07
  */
-public class MarkBannerAdapter extends BannerAdapter {
+public class MarkBannerAdapter1 extends BannerAdapter {
     private ImageLoader imageLoader;
     private Handler mHandler = new Handler();
     private Activity mContext;
 
     private List<RelativeLayout> views = new ArrayList<>();
 
-    public MarkBannerAdapter(ImageLoader imageLoader, Activity mContext) {
+    public MarkBannerAdapter1(ImageLoader imageLoader, Activity mContext) {
         super(imageLoader);
         this.mContext = mContext;
         this.imageLoader = imageLoader;
@@ -46,20 +46,12 @@ public class MarkBannerAdapter extends BannerAdapter {
 
     @Override
     protected View createView(Context context, IBannerItem item) {
-
-        MarkBannerItem markBannerItem = (MarkBannerItem) item;
-
-        RelativeLayout view = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.mark_banner_layout, null);
-
+        RelativeLayout view = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.mark_banner_layout1, null);
         ImageView itemView = view.findViewById(R.id.imageView);
         itemView.setScaleType(ImageView.ScaleType.FIT_XY);
         if (imageLoader != null) {
             imageLoader.onDisplayImage(context, itemView, item.ImageUrl());
         }
-
-        TextView textView = view.findViewById(R.id.textView);
-        textView.setText(markBannerItem.getMarkLabel());
-
         view.setTag(false);
         views.add(view);
         return view;
@@ -75,19 +67,19 @@ public class MarkBannerAdapter extends BannerAdapter {
         final View parentView = views.get(i);
         if (parentView == null)
             return;
-        if ((Boolean) parentView.getTag())
+        if((Boolean) parentView.getTag())
             return;
         parentView.setTag(true);
         //任意位置logo
-        MarkBannerItem item1 = (MarkBannerItem) bannerItem;
-        List<GroupBean.AdConfigs> configs = item1.getAdConfigs();
+        MarkBannerItem1 item1 = (MarkBannerItem1) bannerItem;
+        List<BannerBean.AdConfigs> configs = item1.getAdConfigs();
         if (configs == null)
             configs = new ArrayList<>();
 
         final RelativeLayout layout = parentView.findViewById(R.id.rl_add_imageview);
-        for (GroupBean.AdConfigs adConfigs : configs) {
+        for (BannerBean.AdConfigs adConfigs : configs) {
             Long type = adConfigs.getType();
-            if (AppConst.TYPE_HOME_GROUP != type) {
+            if (AppConst.TYPE_BANNER != type) {
                 continue;
             }
             final AnyPositionBean anyPositionBean = new AnyPositionBean();
@@ -111,5 +103,4 @@ public class MarkBannerAdapter extends BannerAdapter {
             }, 0);
         }
     }
-
 }

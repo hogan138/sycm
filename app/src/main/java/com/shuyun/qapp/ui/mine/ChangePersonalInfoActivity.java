@@ -143,8 +143,8 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
             //网络头像图片
             ImageLoaderManager.LoadImage(this, SaveUserInfo.getInstance(this).getUserInfo("icon1"), ivHeaderPhoto, R.mipmap.head);
         }
-
-        tvPhoneNum.setText(SaveUserInfo.getInstance(this).getUserInfo("phone"));
+        String phone = SaveUserInfo.getInstance(this).getUserInfo("phone");
+        tvPhoneNum.setText(phone.replace(phone.substring(3, 7), "****"));
         handler.post(runnable);
 
     }

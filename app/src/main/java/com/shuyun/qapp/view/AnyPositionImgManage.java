@@ -31,7 +31,7 @@ public class AnyPositionImgManage {
         int rW = rootView.getMeasuredWidth();
 
         Long location = anyPositionBean.getLocation(); //位置
-        Long shadow = anyPositionBean.getShadow(); //是否有阴影 ture/false
+        Long shadow = anyPositionBean.getShadow(); //是否有阴影
 
         //初始化数据
         //图片间距
