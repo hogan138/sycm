@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.constant.TimeConstants;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.PhoneUtils;
+import com.blankj.utilcode.util.SizeUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.GroupTreeAdapter;
@@ -212,6 +214,11 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
     private String recommendString = null;
     private String HomeNoticeBeanString = null;
 
+    //banner
+    private int bannerWidth = 0, bannerHeight = 0, bannerTotalHeight = 0;
+    //常答题组
+    private int alwaysWidth = 0, alwaysHeight = 0, alwaysTotalHeight = 0;
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
@@ -225,6 +232,16 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mContext = getActivity();
+
+        //获取屏幕宽度
+        DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
+        bannerWidth = (int) Math.ceil(dm.widthPixels) - SizeUtils.dp2px(50);
+        bannerHeight = (int) Math.ceil(bannerWidth * (260f / 750f));
+        bannerTotalHeight = bannerHeight + SizeUtils.dp2px(20);
+
+        alwaysWidth = (int) Math.ceil(dm.widthPixels) - SizeUtils.dp2px(126);
+        alwaysHeight = (int) Math.ceil(alwaysWidth * (264f / 528f));
+        alwaysTotalHeight = alwaysHeight + SizeUtils.dp2px(20);
 
         /**
          * 检测微信是否安装,如果没有安装,需不显示分享按钮;如果安装了微信则显示分享按钮.
@@ -288,6 +305,11 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
             }
         });
 
+        //banner设置
+        ViewGroup.LayoutParams bannerParams = mBannerView.getLayoutParams();
+        bannerParams.height = bannerTotalHeight;
+        mBannerView.setLayoutParams(bannerParams);
+
         MarkBannerItem1 i = new MarkBannerItem1("https://image-syksc.oss-cn-shanghai.aliyuncs.com/syksc/app/banner/xiaji.jpg");
         bannerList.add(i);
         //设置轮播图
@@ -299,7 +321,7 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
         final ViewPager mViewpager = (ViewPager) mBannerView.getChildAt(0);
         //为ViewPager设置高度
         ViewGroup.LayoutParams params = mViewpager.getLayoutParams();
-        params.height = getResources().getDimensionPixelSize(R.dimen.viewPager_01);
+        params.height = bannerHeight;//getResources().getDimensionPixelSize(R.dimen.viewPager_01);
         mViewpager.setLayoutParams(params);
         //设置时间，时间越长，速度越慢
         ViewPagerScroller pagerScroller = new ViewPagerScroller(getActivity());
@@ -342,6 +364,10 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
         mBannerView.setPageTransformer(true, new YZoomTransFormer(0.9f)); //banner动画
 
         //常答题组
+        ViewGroup.LayoutParams alwaysParams = alwaysBanner.getLayoutParams();
+        alwaysParams.height = alwaysTotalHeight;
+        alwaysBanner.setLayoutParams(alwaysParams);
+
         MarkBannerItem item = new MarkBannerItem("https://image-syksc.oss-cn-shanghai.aliyuncs.com/syksc/app/banner/xiaji.jpg");
         item.setMarkLabel("默认");
         oftenList.add(item);
@@ -353,7 +379,7 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
         ViewPager mViewpagerOften = (ViewPager) alwaysBanner.getChildAt(0);
         //为ViewPager设置高度
         params = mViewpagerOften.getLayoutParams();
-        params.height = getResources().getDimensionPixelSize(R.dimen.viewPager_02);
+        params.height = alwaysHeight;//getResources().getDimensionPixelSize(R.dimen.viewPager_02);
         mViewpagerOften.setLayoutParams(params);
         //设置时间，时间越长，速度越慢
         ViewPagerScroller pagerScrollerOften = new ViewPagerScroller(getActivity());
