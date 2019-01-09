@@ -21,26 +21,23 @@ public class BitmapAndStringUtils {
     public static String convertIconToString(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();// outputstream
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] appicon = baos.toByteArray();// 转为byte数组
-        return Base64.encodeToString(appicon, Base64.DEFAULT);
+        byte[] bytes = baos.toByteArray();// 转为byte数组
+        return Base64.encodeToString(bytes, Base64.DEFAULT);
 
     }
 
     /**
      * string转成bitmap
      *
-     * @param st
+     * @param str
      */
-    public static Bitmap convertStringToIcon(String st) {
+    public static Bitmap convertStringToIcon(String str) {
         // OutputStream out;
         Bitmap bitmap = null;
         try {
             // out = new FileOutputStream("/sdcard/aa.jpg");
-            byte[] bitmapArray;
-            bitmapArray = Base64.decode(st, Base64.DEFAULT);
-            bitmap =
-                    BitmapFactory.decodeByteArray(bitmapArray, 0,
-                            bitmapArray.length);
+            byte[] bytes = Base64.decode(str, Base64.DEFAULT);
+            bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             // bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
             return bitmap;
         } catch (Exception e) {

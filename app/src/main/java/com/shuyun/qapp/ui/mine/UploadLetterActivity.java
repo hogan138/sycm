@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.Gravity;
@@ -59,14 +60,19 @@ import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.ScannerUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import id.zelory.compressor.Compressor;
 
 /**
  * 账户注销上传邀请函
@@ -87,7 +93,7 @@ public class UploadLetterActivity extends BaseActivity implements CommonPopupWin
     private Dialog dialog;
     private ImageView mImageView;
     public static final int CHOOSE_PHOTO = 2;
-    private  CommonPopupWindow popupWindow;
+    private CommonPopupWindow popupWindow;
     public static final int TAKE_PHOTO = 1;
     private Uri imageUri;
     private String imagePath = "";
@@ -271,6 +277,7 @@ public class UploadLetterActivity extends BaseActivity implements CommonPopupWin
         startActivityForResult(intent, TAKE_PHOTO);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -303,7 +310,19 @@ public class UploadLetterActivity extends BaseActivity implements CommonPopupWin
                             }
                         }
 
+                        //得到图片路径
                         imagePath = file.getAbsolutePath();
+
+                        //图片压缩
+                        File compressedImage = new Compressor(this)
+                                .setMaxWidth(640)
+                                .setMaxHeight(480)
+                                .setQuality(75)
+                                .setCompressFormat(Bitmap.CompressFormat.WEBP)
+                                .setDestinationDirectoryPath(Environment.getExternalStoragePublicDirectory(
+                                        Environment.DIRECTORY_PICTURES).getAbsolutePath())
+                                .compressToFile(file);
+                        imagePath = compressedImage.getPath();
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -326,6 +345,7 @@ public class UploadLetterActivity extends BaseActivity implements CommonPopupWin
                 break;
         }
     }
+
     /**
      * 从相册中选择照片
      */
@@ -382,12 +402,29 @@ public class UploadLetterActivity extends BaseActivity implements CommonPopupWin
     /**
      * 展示图片
      *
-     * @param imagePath
+     * @param Path
      */
-    private void displayImage(String imagePath) {
-        if (imagePath != null) {
-            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+    private void displayImage(String Path) {
+        if (Path != null) {
+            Bitmap bitmap = BitmapFactory.decodeFile(Path);
             ivCamera.setImageBitmap(bitmap);
+
+            //图片压缩
+            File compressedImage = null;
+            try {
+                compressedImage = new Compressor(this)
+                        .setMaxWidth(640)
+                        .setMaxHeight(480)
+                        .setQuality(75)
+                        .setCompressFormat(Bitmap.CompressFormat.WEBP)
+                        .setDestinationDirectoryPath(Environment.getExternalStoragePublicDirectory(
+                                Environment.DIRECTORY_PICTURES).getAbsolutePath())
+                        .compressToFile(compressImage(bitmap));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            imagePath = compressedImage.getPath();
 
         } else {
             Toast.makeText(this, "failed to get image", Toast.LENGTH_SHORT).show();
@@ -409,9 +446,10 @@ public class UploadLetterActivity extends BaseActivity implements CommonPopupWin
 //    aliyun.oss.bucket=image-syksc
 //    image.prefix=http://img-syksc.25876.com/
 
-    private void initOss(final String path) {
+    private void initOss(String path) {
+
         // ACCESS_ID,ACCESS_KEY是在阿里云申请的
-        OSSCredentialProvider credentialProvider = new OSSPlainTextAKSKCredentialProvider("LTAIb760YJm6mwjQ", "DfGBVevUjAi5yA2pxOCt2wOhWSifSX");
+        OSSCredentialProvider credentialProvider = new OSSPlainTextAKSKCredentialProvider("LTAINHO53n4IXBD9", "6o2qjgATNxo107HXXOn2ni3c0wigVU");
         ClientConfiguration conf = new ClientConfiguration();
         conf.setConnectionTimeout(15 * 1000); // 连接超时，默认15秒
         conf.setSocketTimeout(15 * 1000); // socket超时，默认15秒
@@ -491,5 +529,42 @@ public class UploadLetterActivity extends BaseActivity implements CommonPopupWin
         } else {
             ErrorCodeTools.errorCodePrompt(UploadLetterActivity.this, response.getErr(), response.getMsg());
         }
+    }
+
+
+    //bitmap转file
+    public static File compressImage(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
+        int options = 100;
+        while (baos.toByteArray().length / 1024 > 500) {  //循环判断如果压缩后图片是否大于500kb,大于继续压缩
+            baos.reset();//重置baos即清空baos
+            options -= 10;//每次都减少10
+            bitmap.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
+            long length = baos.toByteArray().length;
+        }
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+        Date date = new Date(System.currentTimeMillis());
+        //图片名
+        String filename = format.format(date);
+
+        File file = new File(Environment.getExternalStorageDirectory(), filename + ".png");
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            try {
+                fos.write(baos.toByteArray());
+                fos.flush();
+                fos.close();
+            } catch (IOException e) {
+
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+
+            e.printStackTrace();
+        }
+        // recycleBitmap(bitmap);
+        return file;
     }
 }
