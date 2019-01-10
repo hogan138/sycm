@@ -282,6 +282,7 @@ public class UploadLetterActivity extends BaseActivity implements CommonPopupWin
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case TAKE_PHOTO:
+
                 if (resultCode == RESULT_OK) {
                     try {
                         Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
