@@ -29,7 +29,6 @@
 
 
             <ImageView
-                android:id="@+id/iv_user_info"
                 android:layout_width="@dimen/text_7"
                 android:layout_height="@dimen/text_12"
                 android:layout_alignParentRight="true"

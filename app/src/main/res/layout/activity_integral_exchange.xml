@@ -186,7 +186,6 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/rl_pull"
                 android:layout_width="match_parent"
                 android:layout_height="190dp"
                 android:layout_marginLeft="@dimen/text_15"
@@ -236,7 +235,6 @@
                     android:scrollbars="none">
 
                     <LinearLayout
-                        android:id="@+id/ll_prize3"
                         android:layout_width="match_parent"
                         android:layout_height="70dp"
                         android:orientation="horizontal">
@@ -248,7 +246,6 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/rl_start_exchange"
                 android:layout_width="match_parent"
                 android:layout_height="190dp"
                 android:layout_marginLeft="@dimen/text_15"
@@ -299,7 +296,6 @@
                     android:scrollbars="none">
 
                     <LinearLayout
-                        android:id="@+id/ll_prize4"
                         android:layout_width="match_parent"
                         android:layout_height="70dp"
                         android:orientation="horizontal">

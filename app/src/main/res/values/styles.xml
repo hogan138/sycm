@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -10,24 +10,6 @@
         <!--去掉系统默认的标题栏-->
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
-    </style>
-
-    <style name="welcome" parent="AppTheme.Base">
-        <item name="android:windowContentOverlay">@null</item>
-        <!--设置全屏-->
-        <item name="android:windowFullscreen">true</item>
-        <!--设置背景图-->
-        <item name="android:windowBackground">@color/white</item>
-    </style>
-
-    <style name="AuthActivityDialogStyle" parent="AlertDialog.AppCompat.Light">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <!--是否半透明-->
-        <item name="android:windowIsTranslucent">true</item>
-        <!--<item name="android:windowBackground">@color/color_17</item>-->
-        <!--是否有标题栏-->
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowCloseOnTouchOutside">true</item>
     </style>
 
     <style name="MyProgress" parent="@android:style/Widget.ProgressBar.Horizontal">
@@ -76,10 +58,6 @@
     </style>
 
     <!-- 非首页（非第一级页面让Activity透明） -->
-    <style name="otherPageStyle" parent="AppTheme">
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="windowNoTitle">true</item>
-    </style>
 
     <style name="textview_style">
         <item name="android:layout_height">48dp</item>
@@ -92,13 +70,5 @@
     </style>
 
     <!--渐入渐出-->
-    <style name="popwin_style_alpha" parent="@android:style/Animation">
-        <item name="android:windowEnterAnimation">@anim/popuwindows_alpha_in</item>
-        <item name="android:windowExitAnimation">@anim/popuwindows_alpha_out</item>
-    </style>
-
-    <style name="Default.Widget.Button" parent="ThemeOverlay.AppCompat.Light">
-        <item name="colorAccent">@color/white</item>
-    </style>
 
 </resources>

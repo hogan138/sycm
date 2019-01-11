@@ -50,12 +50,13 @@ public class BoxRecordAdapter extends RecyclerView.Adapter<BoxRecordAdapter.View
         holder.tvDate.setText(boxRecordBean.getBoxTime());
         holder.tvTitle.setText(boxRecordBean.getTitle());
         holder.tvRemark.setText(Html.fromHtml(boxRecordBean.getRemark()));
+
         if (position == 0) {
-            holder.ivLine.setBackgroundResource(R.mipmap.box_record_top);
+            holder.ivLine.setImageResource(R.mipmap.box_record_top);
         } else if (position == boxRecordBeanList.size() - 1) {
-            holder.ivLine.setBackgroundResource(R.mipmap.box_record_bottom);
+            holder.ivLine.setImageResource(R.mipmap.box_record_bottom);
         } else {
-            holder.ivLine.setBackgroundResource(R.mipmap.box_record_middle);
+            holder.ivLine.setImageResource(R.mipmap.box_record_middle);
         }
 
         holder.itemView.setOnClickListener(new OnMultiClickListener() {

@@ -39,11 +39,9 @@
     <dimen name="text_34">34dp</dimen>
     <dimen name="text_35">35dp</dimen>
     <dimen name="text_36">36dp</dimen>
-    <dimen name="text_38">38dp</dimen>
     <dimen name="text_40">40dp</dimen>
     <dimen name="text_41">41dp</dimen>
     <dimen name="text_42">42dp</dimen>
-    <dimen name="text_43">43dp</dimen>
     <dimen name="text_44">44dp</dimen>
     <dimen name="text_45">45dp</dimen>
     <dimen name="text_45.5">45.5dp</dimen>
@@ -52,8 +50,6 @@
     <dimen name="text_48">48dp</dimen>
     <dimen name="text_49">49dp</dimen>
     <dimen name="text_50">50dp</dimen>
-    <dimen name="text_52">52dp</dimen>
-    <dimen name="text_52.5">52.5dp</dimen>
     <dimen name="text_54">54dp</dimen>
     <dimen name="text_55">55dp</dimen>
     <dimen name="text_57">57dp</dimen>
@@ -61,53 +57,27 @@
     <dimen name="text_63.5">63.5dp</dimen>
     <dimen name="text_68.5">68.5dp</dimen>
     <dimen name="text_70">70dp</dimen>
-    <dimen name="text_71">71dp</dimen>
     <dimen name="text_75">75dp</dimen>
-    <dimen name="text_76">76dp</dimen>
-    <dimen name="text_80">80dp</dimen>
     <dimen name="text_82">82dp</dimen>
     <dimen name="text_82.5">82.5dp</dimen>
-    <dimen name="text_88">88dp</dimen>
     <dimen name="text_90">90dp</dimen>
     <dimen name="text_114">114dp</dimen>
     <dimen name="text_119">119dp</dimen>
-    <dimen name="text_123">123dp</dimen>
     <dimen name="text_125">125dp</dimen>
     <dimen name="text_126">126dp</dimen>
     <dimen name="text_127">127dp</dimen>
 
-    <dimen name="text_130">130dp</dimen>
     <dimen name="text_140">140dp</dimen>
     <dimen name="text_150">150dp</dimen>
-    <dimen name="text_153">153dp</dimen>
     <dimen name="text_156">156dp</dimen>
-    <dimen name="text_165">165dp</dimen>
-    <dimen name="text_180">180dp</dimen>
-    <dimen name="text_103.5">103.5dp</dimen>
-    <dimen name="text_208">208dp</dimen>
-    <dimen name="text_215">215dp</dimen>
-    <dimen name="text_262.5">262.5dp</dimen>
-    <dimen name="text_265">265dp</dimen>
     <dimen name="text_270">270dp</dimen>
     <dimen name="text_250">250dp</dimen>
-    <dimen name="text_282">282dp</dimen>
-    <dimen name="text_286">286dp</dimen>
-    <dimen name="text_300">300dp</dimen>
-    <dimen name="text_312.5">312.5dp</dimen>
     <dimen name="text_325">325dp</dimen>
-    <dimen name="text_334">334dp</dimen>
-    <dimen name="text_352">352dp</dimen>
-    <dimen name="text_400">400dp</dimen>
-    <dimen name="text_425">425dp</dimen>
 
     <dimen name="common_margin">12dp</dimen>
     <dimen name="medium_margin">18dp</dimen>
-    <dimen name="common_padding">12dp</dimen>
     <dimen name="common_item_height">50dp</dimen>
 
-    <dimen name="page_margin">80dp</dimen>
-    <dimen name="viewPager_01">125dp</dimen>
     <dimen name="B_viewPager_01">140dp</dimen>
-    <dimen name="viewPager_02">132dp</dimen>
     <dimen name="B_viewPager_02">152dp</dimen>
 </resources>

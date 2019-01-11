@@ -10,7 +10,6 @@
     <include layout="@layout/common_left_title" />
 
     <ImageView
-        android:id="@+id/iv_auth_result_icon"
         android:layout_width="168dp"
         android:layout_height="122.5dp"
         android:layout_gravity="center_horizontal"
@@ -18,7 +17,6 @@
         android:src="@mipmap/result_real_success" />
 
     <TextView
-        android:id="@+id/tv_auth_rsult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

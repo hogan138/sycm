@@ -42,7 +42,6 @@
                     android:layout_height="match_parent" />
 
                 <RelativeLayout
-                    android:id="@+id/rl_gray_bg"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/classify_gray_bg_image" />

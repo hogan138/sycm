@@ -10,7 +10,6 @@
     <include layout="@layout/common_left_title" />
 
     <ImageView
-        android:id="@+id/iv_cash_result_icon"
         android:layout_width="165dp"
         android:layout_height="124dp"
         android:layout_gravity="center_horizontal"
@@ -18,7 +17,6 @@
         android:src="@mipmap/hongbaojieguo" />
 
     <TextView
-        android:id="@+id/tv_cash_hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

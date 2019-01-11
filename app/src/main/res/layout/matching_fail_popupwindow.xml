@@ -13,7 +13,6 @@
         android:background="@drawable/rule_popup_bg">
 
         <RelativeLayout
-            android:id="@+id/rl_logo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/text_12.5"

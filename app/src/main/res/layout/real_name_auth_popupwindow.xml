@@ -10,7 +10,6 @@
         android:src="@mipmap/new_popupwindow_bg" />
 
     <ImageView
-        android:id="@+id/iv_auth"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_centerHorizontal="true"

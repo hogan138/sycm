@@ -33,9 +33,13 @@ android {
 
     buildTypes {
         release {
-            // 混淆
-            minifyEnabled false
+            //是否开启混淆
+            minifyEnabled true
+            //去除无用的resource文件
+            shrinkResources true
+            //加载混淆的配置文件
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
             debuggable = false
             signingConfig signingConfigs.release
         }
@@ -53,10 +57,16 @@ android {
     dexOptions {
         jumboMode true
     }
+
+    //Add the following configuration
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar','*.aar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
 
     //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:28.0.0'
@@ -161,11 +171,11 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.1.1'
 
     //阿里推送
-    implementation ('com.aliyun.ams:alicloud-android-push:3.1.4'){
+    implementation('com.aliyun.ams:alicloud-android-push:3.1.4') {
         exclude module: 'alicloud-android-utdid' //增加了电商SDK 包冲突
         exclude module: 'alicloud-android-ut' //增加了电商SDK 包冲突
     }
-    implementation ('com.aliyun.ams:alicloud-android-third-push:3.0.5@aar'){
+    implementation('com.aliyun.ams:alicloud-android-third-push:3.0.5@aar') {
         exclude module: 'alicloud-android-utdid' //增加了电商SDK 包冲突
         exclude module: 'alicloud-android-ut' //增加了电商SDK 包冲突
     }
@@ -189,6 +199,6 @@ dependencies {
     //电商SDK
     implementation 'com.alibaba.sdk.android:alibc_trade_sdk:3.1.1.11@aar'
 
-    //图片压缩
+    //图片压缩 https://github.com/zetbaitsu/Compressor
     implementation 'id.zelory:compressor:2.1.0'
 }
