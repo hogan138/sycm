@@ -21,6 +21,7 @@ import android.widget.RadioGroup;
 
 import com.alibaba.baichuan.android.trade.AlibcTradeSDK;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.callback.ConfigDialog;
 import com.mylhyl.circledialog.params.DialogParams;
@@ -32,6 +33,7 @@ import com.shuyun.qapp.bean.ActivityTimeBean;
 import com.shuyun.qapp.bean.AppVersionBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.InviteBean;
+import com.shuyun.qapp.bean.QPushBean;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.HeartBeatManager;
@@ -128,10 +130,6 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
 
         mHandler.postDelayed(runnable, 500);
 
-        if (AppConst.isLogin()) {
-            //绑定别名
-            AliPushBind.bindPush();
-        }
     }
 
     @Override
@@ -241,6 +239,10 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
                 }
             }, 10);
         }
+
+
+        //查询绑定别名
+        queryBind();
 
     }
 
@@ -608,6 +610,39 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         super.clear();
         for (Fragment fragment : fragments) {
             ((BaseFragment) fragment).clear();
+        }
+    }
+
+    //查询绑定别名
+    public void queryBind() {
+        if (AppConst.isLogin()) {
+            //查询绑定别名
+            String deviceId = PushServiceFactory.getCloudPushService().getDeviceId();
+            RemotingEx.doRequest(ApiServiceBean.queryBind(), new Object[]{deviceId}, new OnRemotingCallBackListener<QPushBean>() {
+                @Override
+                public void onCompleted(String action) {
+
+                }
+
+                @Override
+                public void onFailed(String action, String message) {
+
+                }
+
+                @Override
+                public void onSucceed(String action, DataResponse<QPushBean> loginResponse) {
+                    if (loginResponse.isSuccees()) {
+                        QPushBean qPushBean = loginResponse.getDat();
+                        if (qPushBean.getCount().equals("0")) {
+                            //绑定别名
+                            AliPushBind.bindPush();
+                        }
+                    } else {
+                        ErrorCodeTools.errorCodePrompt(HomePageActivity.this, loginResponse.getErr(), loginResponse.getMsg());
+                    }
+                }
+            });
+
         }
     }
 

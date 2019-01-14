@@ -595,4 +595,11 @@ public class ApiServiceBean {
     public static String useCoupon() {
         return "useCoupon";
     }
+
+    /**
+     * 87、查询别名绑定
+     */
+    public static String queryBind() {
+        return "queryBind";
+    }
 }

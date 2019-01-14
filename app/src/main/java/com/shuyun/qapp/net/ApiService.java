@@ -38,6 +38,7 @@ import com.shuyun.qapp.bean.MyPropsBean;
 import com.shuyun.qapp.bean.OutPutWithdraw;
 import com.shuyun.qapp.bean.PrizeDetailBean;
 import com.shuyun.qapp.bean.PrizeHistoryBean;
+import com.shuyun.qapp.bean.QPushBean;
 import com.shuyun.qapp.bean.RealNameBean;
 import com.shuyun.qapp.bean.RobotShowBean;
 import com.shuyun.qapp.bean.SharedBean;
@@ -613,4 +614,9 @@ public interface ApiService {
     @GET("/rest/user/use/coupon")
     Observable<DataResponse<Object>> useCoupon(@Query("couponId") String couponId);
 
+    /**
+     * 87、阿里推送查询绑定别名
+     */
+    @GET("/rest/app/push/query/bind")
+    Observable<DataResponse<QPushBean>> queryBind(@Query("deviceId") String deviceId);
 }
