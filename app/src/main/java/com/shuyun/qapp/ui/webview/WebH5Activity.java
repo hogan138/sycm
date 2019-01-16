@@ -49,7 +49,7 @@ import com.shuyun.qapp.bean.WebAnswerHomeBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
-import com.shuyun.qapp.ui.mine.AccountRecordActivity;
+import com.shuyun.qapp.ui.mine.CashRecordActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -449,7 +449,7 @@ public class WebH5Activity extends BaseActivity implements CommonPopupWindow.Vie
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    startActivity(new Intent(WebH5Activity.this, AccountRecordActivity.class));
+                    startActivity(new Intent(WebH5Activity.this, CashRecordActivity.class));
                 }
             });
         }

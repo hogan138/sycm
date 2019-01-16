@@ -1,30 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:orientation="vertical"
-    tools:context="com.shuyun.qapp.ui.mine.AccountRecordActivity">
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical">
 
     <!--登录头布局-->
     <include layout="@layout/common_left_title" />
 
-    <include layout="@layout/common_line_4" />
-
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tab_layout"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        app:tabIndicatorColor="@color/color_4"
-        app:tabSelectedTextColor="@color/color_4"
-        app:tabTextColor="@color/color_0"></android.support.design.widget.TabLayout>
+        android:layout_height="match_parent">
 
-    <include layout="@layout/common_line_4" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/text_35"
+                android:src="@mipmap/cash_big_logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/text_21"
+                android:text="当前余额（元）"
+                android:textColor="@color/color_66"
+                android:textSize="@dimen/text_13" />
+
+            <TextView
+                android:id="@+id/tv_cash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="¥30.00"
+                android:textColor="@color/color_1"
+                android:textSize="@dimen/text_40" />
+
+            <TextView
+                android:id="@+id/tv_all_cash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/text_4"
+                android:text="累计获得（元）：¥300.00"
+                android:textColor="@color/color_66"
+                android:textSize="@dimen/text_13" />
+
+            <Button
+                android:id="@+id/btn_cash"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginLeft="@dimen/text_20"
+                android:layout_marginTop="23dp"
+                android:layout_marginRight="@dimen/text_20"
+                android:layout_marginBottom="@dimen/text_22"
+                android:background="@drawable/common_btn_bg_4"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="立即提现"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_18"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/text_7"
+                android:background="#EFEFF1" />
+        </LinearLayout>
+
+    </ScrollView>
+
 </LinearLayout>

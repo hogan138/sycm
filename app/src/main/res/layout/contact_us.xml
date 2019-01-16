@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/text_12"
         android:layout_marginTop="@dimen/text_15"
-        android:text="@string/contact_us"
-        android:textColor="@color/color_0"
+        android:text="客服中心"
+        android:textColor="@color/color_66"
         android:textSize="@dimen/text_14" />
 
     <ImageView

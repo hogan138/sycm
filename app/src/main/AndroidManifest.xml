@@ -42,8 +42,8 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
-        tools:replace="label,allowBackup"
-        android:theme="@style/AppTheme.Base">
+        android:theme="@style/AppTheme.Base"
+        tools:replace="label,allowBackup">
 
         <!-- 友盟Key -->
         <meta-data
@@ -161,7 +161,7 @@
             android:screenOrientation="portrait" />
         <!-- 账户记录 -->
         <activity
-            android:name=".ui.mine.AccountRecordActivity"
+            android:name=".ui.mine.CashRecordActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 系统设置 -->
@@ -347,7 +347,10 @@
         <meta-data
             android:name="com.shuyun.qapp.utils.GlideConfiguration"
             android:value="GlideModule" />
-
+        <!--积分账户-->
+        <activity
+            android:name=".ui.mine.IntegralAccountActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

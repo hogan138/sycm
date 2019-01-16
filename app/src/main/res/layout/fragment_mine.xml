@@ -17,19 +17,11 @@
 
             <include layout="@layout/mine_head" />
 
-            <include layout="@layout/my_order" />
-
-            <include layout="@layout/common_line_1" />
-
-            <include layout="@layout/account_record" />
-
-            <include layout="@layout/common_line_1" />
-
-            <include layout="@layout/answer_record" />
-
-            <include layout="@layout/common_line_1" />
-
             <include layout="@layout/system_set" />
+
+            <include layout="@layout/common_line_1" />
+
+            <include layout="@layout/my_suggestion" />
 
             <include layout="@layout/common_line_1" />
 

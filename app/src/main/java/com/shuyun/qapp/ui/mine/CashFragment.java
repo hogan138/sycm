@@ -59,7 +59,7 @@ public class CashFragment extends Fragment implements OnRemotingCallBackListener
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_cash, container, false);
+        View view = inflater.inflate(R.layout.activity_record_cash, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
@@ -131,11 +131,6 @@ public class CashFragment extends Fragment implements OnRemotingCallBackListener
                 accountBeanList.addAll(accountBeanList1);
                 refreshLayout.finishRefresh();
                 refreshLayout.setLoadmoreFinished(false);
-                //进入动画
-                //LayoutAnimationController controller = new LayoutAnimationController(MyLayoutAnimationHelper.getAnimationSetScaleBig());
-                //controller.setDelay(0.1f);
-                //rvAccountRecord.setLayoutAnimation(controller);
-                //rvAccountRecord.scheduleLayoutAnimation();
             } else if (loadState == AppConst.STATE_MORE) {
                 if (accountBeanList1.size() == 0) {//没有数据了
                     refreshLayout.finishLoadmore();

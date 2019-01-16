@@ -1,6 +1,7 @@
 package com.shuyun.qapp.ui.integral;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.shuyun.qapp.bean.IntegralExchangeBean;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
+import com.shuyun.qapp.ui.mine.IntegralAccountActivity;
 import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
@@ -47,6 +49,10 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
     RelativeLayout rlStartBox;
     @BindView(R.id.rl_start_baby)
     RelativeLayout rlStartBaby;
+    @BindView(R.id.tv_look_detail)
+    TextView tvLookDetail;
+    @BindView(R.id.ll_look_detail)
+    LinearLayout llLookDetail;
 
     //开宝箱h5地址
     String h5Url = "";
@@ -56,10 +62,13 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        tvCommonTitle.setText("积分中心");
+        tvCommonTitle.setText("我的积分");
         ivBack.setOnClickListener(this);
         rlStartBox.setOnClickListener(this);
         rlStartBaby.setOnClickListener(this);
+        llLookDetail.setOnClickListener(this);
+
+        tvLookDetail.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
 
     }
 
@@ -82,6 +91,9 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
         switch (v.getId()) {
             case R.id.iv_back:
                 finish();
+                break;
+            case R.id.ll_look_detail:
+                startActivity(new Intent(IntegralExchangeActivity.this, IntegralAccountActivity.class));
                 break;
             case R.id.rl_start_box:
                 //跳到积分抽奖界面
@@ -118,8 +130,8 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
                     IntegralExchangeBean integralExchangeBean = dataResponse.getDat();
                     if (!EncodeAndStringTool.isObjectEmpty(integralExchangeBean)) {
 
-                        tvScore.setText("我的积分：" + integralExchangeBean.getUserBp());
-                        tvReduceScore.setText("最低消费" + integralExchangeBean.getLuckyConsBp() + "积分");
+                        tvScore.setText("" + integralExchangeBean.getUserBp());
+                        tvReduceScore.setText(integralExchangeBean.getLuckyConsBp() + "积分/次");
 
                         //开宝箱h5地址
                         h5Url = integralExchangeBean.getH5Url();
@@ -134,13 +146,13 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
                             //积分开宝箱图片
                             llPrize1.removeAllViews();
                             for (int i = 0; i < integralExchangeBean.getLuckyPicList().size(); i++) {
-                                llPrize1.setPadding(ConvertUtils.dp2px(15), 10, ConvertUtils.dp2px(15), 10);
+                                llPrize1.setPadding(0, 10, ConvertUtils.dp2px(15), 10);
                                 llPrize1.setGravity(Gravity.CENTER_VERTICAL);
                                 ImageView imageView = new ImageView(IntegralExchangeActivity.this);
-                                int imageWidth = ConvertUtils.dp2px(40);
-                                int imageHeight = ConvertUtils.dp2px(40);
+                                int imageWidth = ConvertUtils.dp2px(38);
+                                int imageHeight = ConvertUtils.dp2px(38);
                                 imageView.setLayoutParams(new LinearLayout.LayoutParams(imageWidth, imageHeight));
-                                imageView.setPadding(10, 0, 0, 0);
+                                imageView.setPadding(ConvertUtils.dp2px(7), 0, 0, 0);
                                 GlideUtils.LoadCircleImage(IntegralExchangeActivity.this, integralExchangeBean.getLuckyPicList().get(i), imageView);
                                 llPrize1.addView(imageView);
                             }
@@ -150,13 +162,13 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
                             //积分夺宝图片
                             llPrize2.removeAllViews();
                             for (int i = 0; i < integralExchangeBean.getTreasurePicList().size(); i++) {
-                                llPrize2.setPadding(ConvertUtils.dp2px(15), 10, ConvertUtils.dp2px(15), 10);
+                                llPrize2.setPadding(0, 10, ConvertUtils.dp2px(15), 10);
                                 llPrize2.setGravity(Gravity.CENTER_VERTICAL);
                                 ImageView imageView = new ImageView(IntegralExchangeActivity.this);
-                                int imageWidth = ConvertUtils.dp2px(40);
-                                int imageHeight = ConvertUtils.dp2px(40);
+                                int imageWidth = ConvertUtils.dp2px(38);
+                                int imageHeight = ConvertUtils.dp2px(38);
                                 imageView.setLayoutParams(new LinearLayout.LayoutParams(imageWidth, imageHeight));
-                                imageView.setPadding(10, 0, 0, 0);
+                                imageView.setPadding(ConvertUtils.dp2px(7), 0, 0, 0);
                                 GlideUtils.LoadCircleImage(IntegralExchangeActivity.this, integralExchangeBean.getTreasurePicList().get(i), imageView);
                                 llPrize2.addView(imageView);
                             }

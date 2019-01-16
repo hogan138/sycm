@@ -76,37 +76,19 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
     TextView tvTodayAnswerNum;//今日剩余答题次数
     @BindView(R.id.tv_balance)
     TextView tvBalance;//余额
-    @BindView(R.id.btn_immedicate_withdrawal)
-    Button btnImmedicateWithdrawal;//立即提现
-    @BindView(R.id.rl_answer_record)
-    RelativeLayout rlAnswerRecord;//答题记录
-    @BindView(R.id.rl_system_set)
-    RelativeLayout rlSystemSet;//系统设置
-    @BindView(R.id.rl_contact_us)
-    RelativeLayout rlContactUs;//联系我们
-    @BindView(R.id.rl_header)
-    RelativeLayout rlHeader;
-    @BindView(R.id.rl_invite_share)
-    RelativeLayout rlInviteShare;
     Unbinder unbinder;
-    @BindView(R.id.rl_back)
-    RelativeLayout rlBack; //返回键
     @BindView(R.id.iv_real_logo)
     ImageView ivRealLogo;//实名认证logo
-    @BindView(R.id.tv_integral_balance)
-    TextView tvIntegralBalance;//积分数量
-    @BindView(R.id.ll_score)
-    LinearLayout llScore; //积分
-    @BindView(R.id.tv_gift_num)
-    TextView tvGiftNum; //奖品数量
-    @BindView(R.id.ll_gift)
-    LinearLayout llGift; //奖品
-    @BindView(R.id.tv_tools_num)
-    TextView tvToolsNum; //道具数量
-    @BindView(R.id.ll_tools)
-    LinearLayout llTools; //道具
     @BindView(R.id.ll_add)
     LinearLayout llAdd;//增加答题次数
+    @BindView(R.id.tv_score)
+    TextView tvScore;
+    @BindView(R.id.rl_invite_share)
+    RelativeLayout rlInviteShare;
+    @BindView(R.id.iv_point_prize)
+    ImageView ivPointPrize;
+    @BindView(R.id.iv_point_tools)
+    ImageView ivPointTools;
 
     private CommonPopupWindow popupWindow;
     private static final String LOAD_MINE_HOME_DATA = "loadMineHomeData";//个人信息
@@ -189,8 +171,9 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
     }
 
     @OnClick({R.id.rl_back, R.id.iv_common_right_icon, R.id.iv_header_pic, R.id.rl_header, R.id.iv_real_logo,
-            R.id.ll_add, R.id.rl_account_record, R.id.btn_immedicate_withdrawal, R.id.ll_score, R.id.ll_gift, R.id.ll_tools,
-            R.id.rl_my_order, R.id.rl_answer_record, R.id.rl_system_set, R.id.rl_contact_us, R.id.rl_invite_share})
+            R.id.ll_my_score, R.id.ll_my_cash, R.id.rl_suggestion,
+            R.id.ll_add, R.id.ll_gift, R.id.ll_tools, R.id.ll_my_order, R.id.ll_my_record,
+            R.id.rl_system_set, R.id.rl_contact_us, R.id.rl_invite_share})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_back:
@@ -217,14 +200,18 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
             case R.id.ll_add: //增加答题次数
                 showAddAnswerNum();
                 break;
-            case R.id.rl_account_record:   //账户记录
-                startActivity(new Intent(mContext, AccountRecordActivity.class));
+            case R.id.rl_suggestion: //意见反馈
+                startActivity(new Intent(mContext, FeedbackActivity.class));
                 break;
-            case R.id.btn_immedicate_withdrawal:  //立即提现
+            case R.id.ll_my_score: //我的积分
+                Intent intent = new Intent(mContext, IntegralExchangeActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.ll_my_cash:  //现金提现
                 if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
                     if (mineBean.getCertification() == 1) {
                         if (1 == mineBean.getWithdraw()) {
-                            Intent intent1 = new Intent(mContext, NewCashWithdrawActivity.class);
+                            Intent intent1 = new Intent(mContext, CashRecordActivity.class);
                             intent1.putExtra("cash", mineBean.getCash());
                             startActivity(intent1);
                         } else if (2 == mineBean.getWithdraw()) {
@@ -235,10 +222,6 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
                     }
 
                 }
-                break;
-            case R.id.ll_score: //积分使用
-                Intent intent = new Intent(mContext, IntegralExchangeActivity.class);
-                startActivity(intent);
                 break;
             case R.id.ll_gift: //奖品
                 if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
@@ -251,10 +234,10 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
             case R.id.ll_tools://道具
                 startActivity(new Intent(mContext, MyPropsActivity.class));
                 break;
-            case R.id.rl_answer_record: //成绩单
+            case R.id.ll_my_record: //成绩单
                 startActivity(new Intent(mContext, AnswerRecordActivity.class));
                 break;
-            case R.id.rl_my_order: //我的订单
+            case R.id.ll_my_order: //我的订单
                 AlipayTradeManager.instance().showMyOrdersPage(getActivity(), 0);
                 break;
             case R.id.rl_system_set: //系统设置
@@ -463,24 +446,25 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
                     ivRealLogo.setVisibility(View.VISIBLE);
                 }
                 tvTodayAnswerNum.setText("今日答题次数剩余: " + mineBean.getOpporitunity());
-                tvBalance.setText("余额:￥" + mineBean.getCash());
-                if (!EncodeAndStringTool.isStringEmpty(mineBean.getCash())) {
-                    double money = Double.parseDouble(mineBean.getCash());
-                    if (1 == mineBean.getWithdraw() && money >= 50) {
-                        //可以提现
-                        btnImmedicateWithdrawal.setEnabled(true);
-                    } else {
-                        //不能提现和提现中 按钮变灰
-                        btnImmedicateWithdrawal.setEnabled(false);
-                    }
-                }
+                tvBalance.setText(mineBean.getCash());
+//                if (!EncodeAndStringTool.isStringEmpty(mineBean.getCash())) {
+//                    double money = Double.parseDouble(mineBean.getCash());
+//                    if (1 == mineBean.getWithdraw() && money >= 50) {
+//                        //可以提现
+//                        btnImmedicateWithdrawal.setEnabled(true);
+//                    } else {
+//                        //不能提现和提现中 按钮变灰
+//                        btnImmedicateWithdrawal.setEnabled(false);
+//                    }
+//                }
                 if (!EncodeAndStringTool.isStringEmpty(mineBean.getBp())) {
                     SharedPrefrenceTool.put(mContext, "bp", mineBean.getBp());
                 }
 
-                tvIntegralBalance.setText("可用积分：" + mineBean.getBp());
-                tvGiftNum.setText("可用奖品：" + mineBean.getAvailablePrize());//可使用奖品数
-                tvToolsNum.setText("可用道具：" + mineBean.getPropCount());
+                tvScore.setText(mineBean.getBp());
+
+//                tvGiftNum.setText("可用奖品：" + mineBean.getAvailablePrize());//可使用奖品数
+//                tvToolsNum.setText("可用道具：" + mineBean.getPropCount());
 
                 SaveUserInfo.getInstance(mContext).setUserInfo("my_bp", mineBean.getBp());
 

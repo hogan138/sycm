@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/text_12"
         android:layout_marginTop="@dimen/text_15"
-        android:text="分享"
-        android:textColor="@color/color_0"
+        android:text="分享给好友"
+        android:textColor="@color/color_66"
         android:textSize="@dimen/text_14" />
 
     <ImageView

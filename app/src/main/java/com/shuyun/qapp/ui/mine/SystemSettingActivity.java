@@ -79,7 +79,7 @@ public class SystemSettingActivity extends BaseActivity implements OnRemotingCal
         return R.layout.activity_system_setting;
     }
 
-    @OnClick({R.id.iv_back, R.id.btn_exit_login, R.id.rl_use_info, R.id.rl_about_us, R.id.rl_feed_back, R.id.rl_version, R.id.rl_other_set})
+    @OnClick({R.id.iv_back, R.id.btn_exit_login, R.id.rl_use_info, R.id.rl_about_us, R.id.rl_version, R.id.rl_other_set})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -96,10 +96,6 @@ public class SystemSettingActivity extends BaseActivity implements OnRemotingCal
                 Intent i = new Intent(mContext, WebPublicActivity.class);
                 i.putExtra("name", "about");
                 startActivity(i);
-                break;
-            case R.id.rl_feed_back:
-                //反馈建议
-                startActivity(new Intent(this, FeedbackActivity.class));
                 break;
             case R.id.rl_version:
                 //版本更新
