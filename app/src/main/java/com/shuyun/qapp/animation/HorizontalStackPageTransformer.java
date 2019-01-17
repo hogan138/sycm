@@ -12,11 +12,12 @@ public class HorizontalStackPageTransformer implements ViewPager.PageTransformer
     private static final float CENTER_PAGE_SCALE = 0.85f;
     private float horizontalOffsetBase;
     private int offscreenPageLimit;
+    private int pagerWidth;
 
     public HorizontalStackPageTransformer(Context context, int offscreenPageLimit) {
         this.offscreenPageLimit = offscreenPageLimit;
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
-        int pagerWidth = dm.widthPixels;
+        pagerWidth = dm.widthPixels;
         horizontalOffsetBase = (pagerWidth - pagerWidth * CENTER_PAGE_SCALE)
                 / 2
                 / offscreenPageLimit
@@ -26,9 +27,9 @@ public class HorizontalStackPageTransformer implements ViewPager.PageTransformer
     @Override
     public void transformPage(@NonNull View view, float position) {
         if (position >= 0) {
-            float translationX = (horizontalOffsetBase - view.getWidth()) * position;
+            float translationX = (horizontalOffsetBase - pagerWidth) * position;
             view.setTranslationX(translationX);
-            view.setTranslationY(30 * position);
+            //view.setTranslationY(30 * position);
         }
         if (position > -1 && position < 0) {
             view.setAlpha((position * position * position + 1));
