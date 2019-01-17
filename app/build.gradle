@@ -29,6 +29,7 @@ android {
             //阿里推送要添加的对应cpu类型的.so库。
             abiFilters 'armeabi', 'x86'
         }
+
     }
 
     buildTypes {

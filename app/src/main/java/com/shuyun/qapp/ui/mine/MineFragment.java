@@ -170,8 +170,8 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
         RemotingEx.doRequest(LOAD_MINE_HOME_DATA, ApiServiceBean.getMineHomeData(), null, this);
     }
 
-    @OnClick({R.id.rl_back, R.id.iv_common_right_icon, R.id.iv_header_pic, R.id.rl_header, R.id.iv_real_logo,
-            R.id.ll_my_score, R.id.ll_my_cash, R.id.rl_suggestion,
+    @OnClick({R.id.rl_back, R.id.iv_common_right_icon, R.id.iv_header_pic, R.id.rl_header,
+            R.id.iv_real_logo, R.id.ll_my_score, R.id.ll_my_cash, R.id.rl_suggestion,
             R.id.ll_add, R.id.ll_gift, R.id.ll_tools, R.id.ll_my_order, R.id.ll_my_record,
             R.id.rl_system_set, R.id.rl_contact_us, R.id.rl_invite_share})
     public void onClick(View view) {
