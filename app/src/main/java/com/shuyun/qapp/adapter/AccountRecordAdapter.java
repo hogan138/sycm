@@ -1,6 +1,7 @@
 package com.shuyun.qapp.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -68,12 +69,6 @@ public class AccountRecordAdapter extends RecyclerView.Adapter<AccountRecordAdap
                     holder.tvName.setText("积分抽奖");
                 }
             }
-            //积分
-            if (1 == accountBean.getWay()) {
-                holder.tvNumber.setText("+" + accountBean.getAmount());
-            } else if (2 == accountBean.getWay()) {
-                holder.tvNumber.setText("-" + accountBean.getAmount());
-            }
         } else if (type == AppConst.ACCOUNT_CASH_TYPE) {  //现金提现
             if (1 == accountBean.getWay()) {
                 if (!EncodeAndStringTool.isStringEmpty(accountBean.getName())) {
@@ -117,11 +112,15 @@ public class AccountRecordAdapter extends RecyclerView.Adapter<AccountRecordAdap
                 }
             }
 
-            if (1 == accountBean.getWay()) {
-                holder.tvNumber.setText("+" + accountBean.getAmount() + "元");
-            } else if (2 == accountBean.getWay()) {
-                holder.tvNumber.setText("-" + accountBean.getAmount() + "元");
-            }
+        }
+
+        //金额和积分
+        if (1 == accountBean.getWay()) {
+            holder.tvNumber.setText("+" + accountBean.getAmount());
+            holder.tvNumber.setTextColor(Color.parseColor("#0194EC"));
+        } else if (2 == accountBean.getWay()) {
+            holder.tvNumber.setText("-" + accountBean.getAmount());
+            holder.tvNumber.setTextColor(Color.parseColor("#E03636"));
         }
 
         //时间

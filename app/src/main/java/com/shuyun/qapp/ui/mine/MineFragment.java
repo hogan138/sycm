@@ -138,7 +138,6 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
                         init();
                     }
                     isLoading = true;
-
                     refresh();
                 }
             }, 10);
@@ -211,9 +210,7 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
                 if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
                     if (mineBean.getCertification() == 1) {
                         if (1 == mineBean.getWithdraw()) {
-                            Intent intent1 = new Intent(mContext, CashRecordActivity.class);
-                            intent1.putExtra("cash", mineBean.getCash());
-                            startActivity(intent1);
+                            startActivity(new Intent(mContext, CashRecordActivity.class));
                         } else if (2 == mineBean.getWithdraw()) {
                             ToastUtil.showToast(mContext, "您有一笔资金正在提现中,请耐心等待...");
                         }

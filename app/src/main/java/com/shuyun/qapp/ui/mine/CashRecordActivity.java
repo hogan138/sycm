@@ -18,12 +18,14 @@ import com.shuyun.qapp.adapter.AccountRecordAdapter;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.AccountBean;
 import com.shuyun.qapp.bean.DataResponse;
+import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.umeng.debug.log.E;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,8 +46,6 @@ public class CashRecordActivity extends BaseActivity implements OnRemotingCallBa
     TextView tvCash;
     @BindView(R.id.tv_all_cash)
     TextView tvAllCash;
-    @BindView(R.id.btn_cash)
-    Button btnCash;
     @BindView(R.id.rv_account_record)
     RecyclerView rvAccountRecord;
     @BindView(R.id.refreshLayout)
@@ -55,6 +55,9 @@ public class CashRecordActivity extends BaseActivity implements OnRemotingCallBa
 
 
     String cash = "";//现金
+
+    private static final String LOAD_MINE_HOME_DATA = "loadMineHomeData";//个人信息
+    private static final String LOAD_CASH = "load_cash";//现金记录
 
     private int loadState = AppConst.STATE_NORMAL;
     private int currentPage = 0;
@@ -71,8 +74,16 @@ public class CashRecordActivity extends BaseActivity implements OnRemotingCallBa
         ButterKnife.bind(this);
         tvCommonTitle.setText("现金余额");
 
-        cash = getIntent().getStringExtra("cash");
-        tvCash.setText("¥" + cash);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        RemotingEx.doRequest(LOAD_MINE_HOME_DATA, ApiServiceBean.getMineHomeData(), null, this);
+
+        loadState = AppConst.STATE_NORMAL;
+        currentPage = 0;
 
         loadCashFlow();//要做分页操作
 
@@ -96,7 +107,6 @@ public class CashRecordActivity extends BaseActivity implements OnRemotingCallBa
                 loadCashFlow();
             }
         });
-
     }
 
     @Override
@@ -111,7 +121,7 @@ public class CashRecordActivity extends BaseActivity implements OnRemotingCallBa
                 finish();
                 break;
             case R.id.btn_cash:
-                Intent intent = new Intent(this, CashRecordActivity.class);
+                Intent intent = new Intent(this, NewCashWithdrawActivity.class);
                 intent.putExtra("cash", cash);
                 startActivity(intent);
                 break;
@@ -121,7 +131,7 @@ public class CashRecordActivity extends BaseActivity implements OnRemotingCallBa
     }
 
     private void loadCashFlow() {
-        RemotingEx.doRequest(ApiServiceBean.queryCashFlow(), new Object[]{currentPage}, this);
+        RemotingEx.doRequest(LOAD_CASH, ApiServiceBean.queryCashFlow(), new Object[]{currentPage}, this);
     }
 
     @Override
@@ -140,37 +150,45 @@ public class CashRecordActivity extends BaseActivity implements OnRemotingCallBa
 
     @Override
     public void onSucceed(String action, DataResponse<Object> response) {
+
         if (!response.isSuccees()) {
             ErrorCodeTools.errorCodePrompt(this, response.getErr(), response.getMsg());
             return;
         }
 
-        final List<AccountBean> accountBeanList1 = (List<AccountBean>) response.getDat();
-        if (!EncodeAndStringTool.isListEmpty(accountBeanList1)) {
-            ivEmpty.setVisibility(View.GONE);
-            if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {//首次加載||下拉刷新
-                accountBeanList.clear();
-                accountBeanList.addAll(accountBeanList1);
-                refreshLayout.finishRefresh();
-                refreshLayout.setLoadmoreFinished(false);
-            } else if (loadState == AppConst.STATE_MORE) {
-                if (accountBeanList1.size() == 0) {//没有数据了
-                    refreshLayout.finishLoadmore();
-                    refreshLayout.setLoadmoreFinished(true);
-                } else {
+        if (action.equals(LOAD_CASH)) {
+            final List<AccountBean> accountBeanList1 = (List<AccountBean>) response.getDat();
+            if (!EncodeAndStringTool.isListEmpty(accountBeanList1)) {
+                ivEmpty.setVisibility(View.GONE);
+                if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {//首次加載||下拉刷新
+                    accountBeanList.clear();
                     accountBeanList.addAll(accountBeanList1);
-                    refreshLayout.finishLoadmore();
+                    refreshLayout.finishRefresh();
                     refreshLayout.setLoadmoreFinished(false);
+                } else if (loadState == AppConst.STATE_MORE) {
+                    if (accountBeanList1.size() == 0) {//没有数据了
+                        refreshLayout.finishLoadmore();
+                        refreshLayout.setLoadmoreFinished(true);
+                    } else {
+                        accountBeanList.addAll(accountBeanList1);
+                        refreshLayout.finishLoadmore();
+                        refreshLayout.setLoadmoreFinished(false);
+                    }
                 }
+                recordAdapter.notifyDataSetChanged();
+            } else {
+                if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {
+                    ivEmpty.setVisibility(View.VISIBLE);
+                    refreshLayout.finishRefresh();
+                }
+                refreshLayout.finishLoadmore();
+                refreshLayout.setLoadmoreFinished(true);
             }
-            recordAdapter.notifyDataSetChanged();
-        } else {
-            if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {
-                ivEmpty.setVisibility(View.VISIBLE);
-                refreshLayout.finishRefresh();
-            }
-            refreshLayout.finishLoadmore();
-            refreshLayout.setLoadmoreFinished(true);
+        } else if (action.equals(LOAD_MINE_HOME_DATA)) {
+            MineBean mineBean = (MineBean) response.getDat();
+            cash = mineBean.getCash();
+            tvCash.setText("¥" + cash);
         }
+
     }
 }
