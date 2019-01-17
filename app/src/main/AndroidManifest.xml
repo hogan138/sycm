@@ -178,7 +178,7 @@
         <activity
             android:name=".ui.mine.AnswerRecordActivity"
             android:screenOrientation="portrait" />
-        <!-- 答题记录 -->
+        <!-- 答题记录分享 -->
         <activity
             android:name=".ui.mine.ShareAnswerRecordActivity"
             android:screenOrientation="portrait" />

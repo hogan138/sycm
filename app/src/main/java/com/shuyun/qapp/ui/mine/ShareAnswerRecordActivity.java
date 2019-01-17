@@ -5,41 +5,28 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.shuyun.qapp.R;
-import com.shuyun.qapp.adapter.ViewPagerAdapter;
-import com.shuyun.qapp.animation.HorizontalStackPageTransformer;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.base.BaseFragment;
-import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.HistoryDataBean;
-import com.shuyun.qapp.net.ApiServiceBean;
-import com.shuyun.qapp.net.OnRemotingCallBackListener;
-import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.DisplayUtil;
-import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 import static com.blankj.utilcode.util.SizeUtils.dp2px;
 
@@ -68,6 +55,8 @@ public class ShareAnswerRecordActivity extends BaseActivity implements View.OnCl
     LinearLayout shareHy;
     @BindView(R.id.shareQr)
     ImageView shareQr;
+    @BindView(R.id.iv_back)
+    RelativeLayout ivBack;
 
     private Context mContext;
     private HistoryDataBean.ResultBean recordBean;
@@ -111,7 +100,7 @@ public class ShareAnswerRecordActivity extends BaseActivity implements View.OnCl
 
         //获取屏幕宽度
         DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
-        int w = (int) Math.ceil(dm.widthPixels - DisplayUtil.dp2px(mContext, 16));
+        int w = (int) Math.ceil(dm.widthPixels - DisplayUtil.dp2px(mContext, 90));
         int height = (int) Math.ceil(w * 264f / 528f);
 
         ViewGroup.LayoutParams lp = imageView.getLayoutParams();
@@ -120,9 +109,9 @@ public class ShareAnswerRecordActivity extends BaseActivity implements View.OnCl
 
         ImageLoaderManager.LoadImage(mContext, recordBean.getPicture(), imageView, R.mipmap.zw01);//题组图片
 
+        ivBack.setOnClickListener(this);
         shareHy.setOnClickListener(this);
         sharePyq.setOnClickListener(this);
-        tvCommonTitle.setOnClickListener(this);
 
         mHandler.postDelayed(new Runnable() {
             @Override
@@ -153,7 +142,7 @@ public class ShareAnswerRecordActivity extends BaseActivity implements View.OnCl
     }
 
     private void shareQr() {
-        Bitmap logo = BitmapFactory.decodeResource(getResources(), R.mipmap.logo, null);;
+        Bitmap logo = BitmapFactory.decodeResource(getResources(), R.mipmap.logo, null);
         Bitmap mBitmap = CodeUtils.createImage("https://t.cn/R3rvkuk", dp2px(114), dp2px(114), logo);
         shareQr.setImageBitmap(mBitmap);
     }

@@ -95,7 +95,7 @@ public class HistoryFragment extends BaseFragment implements View.OnClickListene
 
         //获取屏幕宽度
         DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
-        int w = (int) Math.ceil(dm.widthPixels - DisplayUtil.dp2px(mContext, 16));
+        int w = (int) Math.ceil(dm.widthPixels - DisplayUtil.dp2px(mContext, 8));
         int height = (int) Math.ceil(w * 264f / 528f);
 
         ViewGroup.LayoutParams lp = imageView.getLayoutParams();
