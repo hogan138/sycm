@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:foreground="?attr/selectableItemBackground"
-        app:cardCornerRadius="6dp"
+        app:cardCornerRadius="10dp"
         app:cardElevation="1dp"
         app:cardPreventCornerOverlap="false"
         app:cardUseCompatPadding="true"
@@ -141,8 +141,8 @@
 
                     <ImageView
                         android:id="@+id/ivLevel"
-                        android:layout_width="79dp"
-                        android:layout_height="83dp"
+                        android:layout_width="89dp"
+                        android:layout_height="89dp"
                         android:layout_alignParentRight="true"
                         android:layout_marginTop="70dp"
                         android:layout_marginRight="16dp"

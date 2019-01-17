@@ -1,12 +1,13 @@
 package com.shuyun.qapp.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * 用户答题记录
  */
 
-public class HistoryDataBean {
+public class HistoryDataBean implements Serializable {
 
     private Long total;//记录总数
     private List<ResultBean> result;//记录
@@ -27,7 +28,7 @@ public class HistoryDataBean {
         this.result = result;
     }
 
-    public static class ResultBean {
+    public static class ResultBean implements Serializable{
         private String id;//答题id
         private Long groupId;//题组id
         private String picture;//题组主图

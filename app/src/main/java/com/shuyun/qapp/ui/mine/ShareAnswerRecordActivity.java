@@ -1,37 +1,55 @@
 package com.shuyun.qapp.ui.mine;
 
 import android.content.Context;
-import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.os.Handler;
+import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.shuyun.qapp.R;
+import com.shuyun.qapp.adapter.ViewPagerAdapter;
+import com.shuyun.qapp.animation.HorizontalStackPageTransformer;
+import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BaseFragment;
+import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.HistoryDataBean;
-import com.shuyun.qapp.ui.answer.AnswerHistoryActivity;
+import com.shuyun.qapp.net.ApiServiceBean;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.DisplayUtil;
-import com.shuyun.qapp.utils.EncodeAndStringTool;
+import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ImageLoaderManager;
+import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class HistoryFragment extends BaseFragment implements View.OnClickListener {
+import static com.blankj.utilcode.util.SizeUtils.dp2px;
 
+/**
+ * 成绩单
+ */
+public class ShareAnswerRecordActivity extends BaseActivity implements View.OnClickListener {
+
+    @BindView(R.id.tv_common_title)
+    TextView tvCommonTitle;
     @BindView(R.id.image)
     ImageView imageView;
     @BindView(R.id.ivLevel)
@@ -44,31 +62,29 @@ public class HistoryFragment extends BaseFragment implements View.OnClickListene
     TextView tvRate;
     @BindView(R.id.tvClass)
     TextView tvClass;
-    @BindView(R.id.viewDetail)
-    Button viewDetail;
-    @BindView(R.id.tvShare)
-    LinearLayout tvShare;
+    @BindView(R.id.sharePyq)
+    LinearLayout sharePyq;
+    @BindView(R.id.shareHy)
+    LinearLayout shareHy;
+    @BindView(R.id.shareQr)
+    ImageView shareQr;
 
     private Context mContext;
     private HistoryDataBean.ResultBean recordBean;
     private BigDecimal a = new BigDecimal("85");
     private BigDecimal b = new BigDecimal("60");
-
-    public void setRecordBean(HistoryDataBean.ResultBean recordBean) {
-        this.recordBean = recordBean;
-    }
+    private Handler mHandler = new Handler();
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.history_fragment, container, false);
-        ButterKnife.bind(this, view);
-        return view;
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mContext = getActivity();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ButterKnife.bind(this);
+        mContext = this;
+        tvCommonTitle.setText("成绩单分享");
+        Bundle bundle = getIntent().getExtras();
+        recordBean = (HistoryDataBean.ResultBean) bundle.getSerializable("share");
+        if (recordBean == null)
+            return;
 
         tvTitle.setText(recordBean.getTitle());
         Date currentTime = new Date(Long.valueOf(recordBean.getTime()));
@@ -104,33 +120,41 @@ public class HistoryFragment extends BaseFragment implements View.OnClickListene
 
         ImageLoaderManager.LoadImage(mContext, recordBean.getPicture(), imageView, R.mipmap.zw01);//题组图片
 
-        viewDetail.setOnClickListener(this);
-        tvShare.setOnClickListener(this);
+        shareHy.setOnClickListener(this);
+        sharePyq.setOnClickListener(this);
+        tvCommonTitle.setOnClickListener(this);
+
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                shareQr();
+            }
+        }, 0);
+    }
+
+    @Override
+    public int intiLayout() {
+        return R.layout.activity_share_history;
     }
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.viewDetail) {
-            String id = recordBean.getId();
-            String title = recordBean.getTitle();
-            if (!EncodeAndStringTool.isStringEmpty(id)) {
-                Intent intent = new Intent(mContext, AnswerHistoryActivity.class);
-                intent.putExtra("answer_id", id);
-                intent.putExtra("title", title);
-                startActivity(intent);
-            }
-        } else if (v.getId() == R.id.tvShare) {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("share", recordBean);
-
-            Intent intent = new Intent(mContext, ShareAnswerRecordActivity.class);
-            intent.putExtras(bundle);
-            startActivity(intent);
+        switch (v.getId()) {
+            case R.id.iv_back:
+                finish();
+                break;
+            case R.id.shareHy:
+                break;
+            case R.id.sharePyq:
+                break;
+            default:
+                break;
         }
     }
 
-    @Override
-    public void refresh() {
-
+    private void shareQr() {
+        Bitmap logo = BitmapFactory.decodeResource(getResources(), R.mipmap.logo, null);;
+        Bitmap mBitmap = CodeUtils.createImage("https://t.cn/R3rvkuk", dp2px(114), dp2px(114), logo);
+        shareQr.setImageBitmap(mBitmap);
     }
 }

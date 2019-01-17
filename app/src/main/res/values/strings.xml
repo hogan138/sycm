@@ -84,5 +84,8 @@
     <string name="real_gift_describe">认证通过后才能使用\n该奖品哦~</string>
 
     <string name="tv_share"><u>分享</u></string>
+    <string name="tv_share_pengyouquan">分享到朋友圈</string>
+    <string name="tv_share_wx">分享给微信好友</string>
+    <string name="tv_app_remark">打开知识宝藏</string>
 
 </resources>
