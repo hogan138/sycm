@@ -31,7 +31,7 @@ import butterknife.OnClick;
 /**
  * 成绩单
  */
-public class AnswerRecordNewActivity extends BaseActivity implements ViewPager.OnPageChangeListener, OnRemotingCallBackListener<HistoryDataBean> {
+public class AnswerRecordNewActivity extends BaseActivity implements ViewPager.OnPageChangeListener, OnRemotingCallBackListener<HistoryDataBean>, View.OnClickListener {
 
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle;
@@ -71,6 +71,8 @@ public class AnswerRecordNewActivity extends BaseActivity implements ViewPager.O
         viewPager.setAdapter(pagerAdapter);
         viewPager.addOnPageChangeListener(this);
         viewPager.setPageTransformer(true, new HorizontalStackPageTransformer(mContext, 2));
+
+        tvCommonTitle.setOnClickListener(this);
 
         mHandler.postDelayed(new Runnable() {
             @Override
@@ -162,5 +164,12 @@ public class AnswerRecordNewActivity extends BaseActivity implements ViewPager.O
         }
 
         pagerAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.tv_common_title) {
+            viewPager.setCurrentItem(0);
+        }
     }
 }
