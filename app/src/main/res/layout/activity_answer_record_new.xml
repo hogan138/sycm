@@ -51,7 +51,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:clipChildren="false"/>
+                    android:clipChildren="false" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -114,6 +114,32 @@
             android:layout_centerInParent="true"
             android:src="@mipmap/blank"
             android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/ll_guide"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.85"
+            android:background="@color/color_1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iv_guide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/huadong" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_18"
+                android:text="左滑可翻看下一张"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_18" />
+
+        </LinearLayout>
     </RelativeLayout>
 
 </LinearLayout>

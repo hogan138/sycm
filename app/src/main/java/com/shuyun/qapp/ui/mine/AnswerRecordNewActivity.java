@@ -1,11 +1,16 @@
 package com.shuyun.qapp.ui.mine;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.OvershootInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -45,6 +50,10 @@ public class AnswerRecordNewActivity extends BaseActivity implements ViewPager.O
     TextView tvSelect;
     @BindView(R.id.tvTotal)
     TextView tvTotal;
+    @BindView(R.id.ll_guide)
+    LinearLayout llGuide;
+    @BindView(R.id.iv_guide)
+    ImageView ivGuide;
 
     private int currentPage = 0;
     private int pageSize = 10;
@@ -54,6 +63,7 @@ public class AnswerRecordNewActivity extends BaseActivity implements ViewPager.O
     private Context mContext;
     private Handler mHandler = new Handler();
     private boolean isLoading = false;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +90,20 @@ public class AnswerRecordNewActivity extends BaseActivity implements ViewPager.O
                 loadAnswerRecord(currentPage);
             }
         }, 0);
+
+        //第一次进入显示引导
+        sharedPreferences = mContext.getSharedPreferences("FirstRun", 0);
+        Boolean first_run = sharedPreferences.getBoolean("Answer_record", true);
+        if (first_run) {
+            llGuide.setVisibility(View.VISIBLE);
+            TranslateAnimation animation = new TranslateAnimation(50, -50, 0, 0);
+            animation.setInterpolator(new OvershootInterpolator());
+            animation.setDuration(1500);
+            animation.setRepeatCount(Animation.INFINITE);
+            animation.setRepeatMode(Animation.REVERSE);
+            ivGuide.startAnimation(animation);
+        }
+
     }
 
     @Override
@@ -87,11 +111,16 @@ public class AnswerRecordNewActivity extends BaseActivity implements ViewPager.O
         return R.layout.activity_answer_record_new;
     }
 
-    @OnClick({R.id.iv_back})
+    @OnClick({R.id.iv_back, R.id.ll_guide})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
+                sharedPreferences.edit().putBoolean("Answer_record", true).apply();
+                break;
+            case R.id.ll_guide:
+                llGuide.setVisibility(View.GONE);
+                sharedPreferences.edit().putBoolean("Answer_record", false).apply();
                 break;
             default:
                 break;
@@ -110,7 +139,8 @@ public class AnswerRecordNewActivity extends BaseActivity implements ViewPager.O
         if (baseList.size() == totalR)
             return;
 
-        if (baseList.size() - i == 1 && !isLoading) {
+        //提前几条数据时加载下一页
+        if (baseList.size() - i == 3 && !isLoading) {
             loadAnswerRecord(currentPage);
         }
 
@@ -122,6 +152,7 @@ public class AnswerRecordNewActivity extends BaseActivity implements ViewPager.O
     }
 
     private void loadAnswerRecord(int currentPage) {
+        isLoading = true;
         RemotingEx.doRequest(ApiServiceBean.getExamHistoryList(), new Object[]{currentPage, pageSize}, this);
     }
 

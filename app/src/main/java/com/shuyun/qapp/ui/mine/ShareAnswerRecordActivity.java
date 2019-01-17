@@ -23,6 +23,7 @@ import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.ViewToBitmap;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -158,6 +159,7 @@ public class ShareAnswerRecordActivity extends BaseActivity implements View.OnCl
                     @Override
                     public void run() {
                         Toast.makeText(mContext, isSaved + ":" + path, Toast.LENGTH_LONG).show();
+                        File file = new File(path);
                     }
                 }, 0);
             }
