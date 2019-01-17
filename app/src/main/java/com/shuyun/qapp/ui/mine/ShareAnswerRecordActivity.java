@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.CardView;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +13,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.HistoryDataBean;
 import com.shuyun.qapp.utils.DisplayUtil;
 import com.shuyun.qapp.utils.ImageLoaderManager;
+import com.shuyun.qapp.utils.ViewToBitmap;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import java.math.BigDecimal;
@@ -57,6 +60,8 @@ public class ShareAnswerRecordActivity extends BaseActivity implements View.OnCl
     ImageView shareQr;
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;
+    @BindView(R.id.cardView)
+    CardView cardView;
 
     private Context mContext;
     private HistoryDataBean.ResultBean recordBean;
@@ -69,11 +74,12 @@ public class ShareAnswerRecordActivity extends BaseActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         mContext = this;
-        tvCommonTitle.setText("成绩单分享");
         Bundle bundle = getIntent().getExtras();
         recordBean = (HistoryDataBean.ResultBean) bundle.getSerializable("share");
         if (recordBean == null)
             return;
+
+        tvCommonTitle.setText(recordBean.getTitle());
 
         tvTitle.setText(recordBean.getTitle());
         Date currentTime = new Date(Long.valueOf(recordBean.getTime()));
@@ -133,12 +139,30 @@ public class ShareAnswerRecordActivity extends BaseActivity implements View.OnCl
                 finish();
                 break;
             case R.id.shareHy:
-                break;
             case R.id.sharePyq:
+                saveToBitmap(cardView);
                 break;
             default:
                 break;
         }
+    }
+
+    private void saveToBitmap(View view) {
+        ViewToBitmap toBitmap = new ViewToBitmap(this, view, "shareImg");
+        toBitmap.setFileName(recordBean.getId());
+        toBitmap.setOnBitmapSaveListener(new ViewToBitmap.OnBitmapSaveListener() {
+
+            @Override
+            public void onBitmapSaved(final boolean isSaved, final String path) {
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(mContext, isSaved + ":" + path, Toast.LENGTH_LONG).show();
+                    }
+                }, 0);
+            }
+        });
+        toBitmap.saveToBitmap();
     }
 
     private void shareQr() {
