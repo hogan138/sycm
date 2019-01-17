@@ -9,7 +9,7 @@ import android.view.View;
 import com.shuyun.qapp.utils.DisplayUtil;
 
 public class HorizontalStackPageTransformer implements ViewPager.PageTransformer {
-    private static final float CENTER_PAGE_SCALE = 0.8f;
+    private static final float CENTER_PAGE_SCALE = 0.85f;
     private float horizontalOffsetBase;
     private int offscreenPageLimit;
 
@@ -39,11 +39,11 @@ public class HorizontalStackPageTransformer implements ViewPager.PageTransformer
         }
         if (position == 0) {
             view.setScaleX(CENTER_PAGE_SCALE);
-            view.setScaleY(CENTER_PAGE_SCALE + 0.15f);
+            view.setScaleY(CENTER_PAGE_SCALE);
         } else {
             float scaleFactor = Math.min(CENTER_PAGE_SCALE - position * 0.1f, CENTER_PAGE_SCALE);
             view.setScaleX(scaleFactor);
-            view.setScaleY(scaleFactor + 0.15f);
+            view.setScaleY(scaleFactor);
         }
 
     }
