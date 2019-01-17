@@ -4,7 +4,6 @@ package com.shuyun.qapp.bean;
  * Created by sunxiao on 2018/5/21.
  * 用户答题记录
  */
-
 public class AnswerRecordBean {
 
     private String id;//答题id

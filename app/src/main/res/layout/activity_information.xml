@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white"
-    tools:context="com.shuyun.qapp.ui.homepage.InformationActivity">
+    android:background="@color/white">
 
     <include layout="@layout/common_title" />
 

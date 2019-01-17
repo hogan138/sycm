@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context="com.shuyun.qapp.ui.webview.WebPublicActivity">
+    android:background="@color/white">
     <!--共用左边返回按钮标题栏-->
     <include
         android:id="@+id/title"

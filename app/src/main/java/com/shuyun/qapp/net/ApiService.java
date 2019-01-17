@@ -21,6 +21,7 @@ import com.shuyun.qapp.bean.ExchangeHistoryBean;
 import com.shuyun.qapp.bean.ExchangeMyPrizeBean;
 import com.shuyun.qapp.bean.GroupAgainstBean;
 import com.shuyun.qapp.bean.GroupClassifyBean;
+import com.shuyun.qapp.bean.HistoryDataBean;
 import com.shuyun.qapp.bean.HomeGroupsBean;
 import com.shuyun.qapp.bean.HomeNoticeBean;
 import com.shuyun.qapp.bean.IntegralAllPrizeBean;
@@ -214,6 +215,12 @@ public interface ApiService {
      */
     @GET("/rest/act/exam/history")
     Observable<DataResponse<List<AnswerRecordBean>>> getAnswerRecord(@Query("page") int page);
+
+    /**
+     * 30、用户答题记录TODO /activity-center
+     */
+    @GET("/rest/act/exam/history/list")
+    Observable<DataResponse<HistoryDataBean>> getExamHistoryList(@Query("page") int page, @Query("pageSize") int pageSize);
 
     /**
      * 31、答题题目反馈TODO

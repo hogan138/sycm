@@ -232,7 +232,8 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
                 startActivity(new Intent(mContext, MyPropsActivity.class));
                 break;
             case R.id.ll_my_record: //成绩单
-                startActivity(new Intent(mContext, AnswerRecordActivity.class));
+                //startActivity(new Intent(mContext, AnswerRecordActivity.class));
+                startActivity(new Intent(mContext, AnswerRecordNewActivity.class));
                 break;
             case R.id.ll_my_order: //我的订单
                 AlipayTradeManager.instance().showMyOrdersPage(getActivity(), 0);

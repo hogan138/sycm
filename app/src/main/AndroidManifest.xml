@@ -178,6 +178,10 @@
         <activity
             android:name=".ui.mine.AnswerRecordActivity"
             android:screenOrientation="portrait" />
+        <!-- 答题记录new -->
+        <activity
+            android:name=".ui.mine.AnswerRecordNewActivity"
+            android:screenOrientation="portrait" />
         <!-- 我的奖品 -->
         <activity
             android:name=".ui.mine.MinePrizeActivity"

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="1dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="-2dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:gravity="center"
+                    android:text="2019年个税改革"
+                    android:textColor="#000000"
+                    android:textSize="24sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="84dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="答题时间"
+                                android:textColor="@color/color_66"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/tvTime"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="2019.01.11\n19:36"
+                                android:textColor="@color/color_27"
+                                android:textSize="18sp" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="80dp"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginBottom="2dp"
+                            android:background="#D8D8D8" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="84dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="正确率"
+                                android:textColor="@color/color_66"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/tvRate"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="50%"
+                                android:textColor="@color/color_27"
+                                android:textSize="18sp" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="80dp"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginBottom="2dp"
+                            android:background="#D8D8D8" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="84dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="所在分类"
+                                android:textColor="@color/color_66"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/tvClass"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="专题"
+                                android:textColor="@color/color_27"
+                                android:textSize="18sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/ivLevel"
+                        android:layout_width="83dp"
+                        android:layout_height="83dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="70dp"
+                        android:layout_marginRight="10dp"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/b" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-20dp"
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/viewDetail"
+                        android:layout_width="140dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/history_button"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:text="查看详情"
+                        android:textColor="@color/color_66"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tvShare"
+                android:layout_width="80dp"
+                android:layout_height="42dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="10dp"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tv_share"
+                    android:textColor="@color/color_37"
+                    android:textSize="18sp"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+
+</RelativeLayout>

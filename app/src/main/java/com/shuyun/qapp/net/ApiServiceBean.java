@@ -181,6 +181,13 @@ public class ApiServiceBean {
     }
 
     /**
+     * 30、用户答题记录新TODO /activity-center
+     */
+    public static String getExamHistoryList() {
+        return "getExamHistoryList";
+    }
+
+    /**
      * 31、答题题目反馈TODO
      */
     public static String getAnswerFeedBack() {

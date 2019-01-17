@@ -4,8 +4,7 @@
     android:id="@+id/ll_letter"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.shuyun.qapp.ui.mine.UploadLetterActivity">
+    android:orientation="vertical">
 
     <include layout="@layout/common_left_title" />
 

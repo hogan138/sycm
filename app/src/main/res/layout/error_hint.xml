@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/text_17"
-    android:orientation="horizontal"
-    tools:context="com.shuyun.qapp.ui.login.LoginActivity">
+    android:orientation="horizontal">
     <!--密码或者验证码错误提示,根据情况显示或者隐藏-->
     <!--android:text="@string/password_error"-->
     <TextView
