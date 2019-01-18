@@ -20,19 +20,19 @@ public class BoxBean implements Parcelable {
     private List<PrizeInfo> prizes;
     private String id; // 宝箱id，当source=3有效
     private String bulletin; // 奖品的规则公告，仅针对宝箱有效
-    private double beatRate; // 击败率
-    private double accuracy; // 正确率
+    private Double beatRate; // 击败率
+    private Double accuracy; // 正确率
     @JSONField(serializeUsing = ToStringSerializer.class)
     private Long prizeId; // 对应的奖品id
     @JSONField(serializeUsing = ToStringSerializer.class)
     private Long ruleId; // 得奖时的规则id
     private Long expireTime; // 有效期-结束日期
     private Long validTime; // 有效期-开始日期
-    private short status; // 状态：0——待打开（容器:需要打开；单品：需要打开才能拿到）1——正常；2——已用；3——过期；4——使用中
-    private short substatus = 0; // 子状态，根据不同的奖品有不同的定义
+    private Short status; // 状态：0——待打开（容器:需要打开；单品：需要打开才能拿到）1——正常；2——已用；3——过期；4——使用中
+    private Short substatus = 0; // 子状态，根据不同的奖品有不同的定义
     private String substatusName; // 子状态显示名称
-    private short upcomming = 0; // 是否快过期，1表示快过期了
-    private double amount; // 奖品价值
+    private Short upcomming = 0; // 是否快过期，1表示快过期了
+    private Double amount; // 奖品价值
     private String h5Url;
     private String isRealName;//是否实名认证
 
@@ -133,19 +133,19 @@ public class BoxBean implements Parcelable {
         this.bulletin = bulletin;
     }
 
-    public double getBeatRate() {
+    public Double getBeatRate() {
         return beatRate;
     }
 
-    public void setBeatRate(double beatRate) {
+    public void setBeatRate(Double beatRate) {
         this.beatRate = beatRate;
     }
 
-    public double getAccuracy() {
+    public Double getAccuracy() {
         return accuracy;
     }
 
-    public void setAccuracy(double accuracy) {
+    public void setAccuracy(Double accuracy) {
         this.accuracy = accuracy;
     }
 
@@ -181,19 +181,19 @@ public class BoxBean implements Parcelable {
         this.validTime = validTime;
     }
 
-    public short getStatus() {
+    public Short getStatus() {
         return status;
     }
 
-    public void setStatus(short status) {
+    public void setStatus(Short status) {
         this.status = status;
     }
 
-    public short getSubstatus() {
+    public Short getSubstatus() {
         return substatus;
     }
 
-    public void setSubstatus(short substatus) {
+    public void setSubstatus(Short substatus) {
         this.substatus = substatus;
     }
 
@@ -205,19 +205,19 @@ public class BoxBean implements Parcelable {
         this.substatusName = substatusName;
     }
 
-    public short getUpcomming() {
+    public Short getUpcomming() {
         return upcomming;
     }
 
-    public void setUpcomming(short upcomming) {
+    public void setUpcomming(Short upcomming) {
         this.upcomming = upcomming;
     }
 
-    public double getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
@@ -266,9 +266,9 @@ public class BoxBean implements Parcelable {
 
     public static class PrizeInfo implements Parcelable {
         private String name; // 奖品名称
-        private short type; // 奖品类型
+        private Short type; // 奖品类型
         private String description; // 奖品描述
-        private short mode; // 使用方式
+        private Short mode; // 使用方式
         private String purpose; // 奖品的使用方式
         private String content; // 奖品内容，对于h5的，为h5的地址
         private String picture; // 奖品图片
@@ -278,6 +278,7 @@ public class BoxBean implements Parcelable {
         private String mainImage; // 奖品主图
         private String LongImage; // 奖品长图
 
+        @JSONField(serializeUsing = ToStringSerializer.class)
         private Long id; // 奖品id
         private String goodsCode; // 奖品商品编码
         private BigDecimal worthLower = new BigDecimal(0); // 价值范围
@@ -328,11 +329,11 @@ public class BoxBean implements Parcelable {
             this.name = name;
         }
 
-        public short getType() {
+        public Short getType() {
             return type;
         }
 
-        public void setType(short type) {
+        public void setType(Short type) {
             this.type = type;
         }
 
@@ -344,11 +345,11 @@ public class BoxBean implements Parcelable {
             this.description = description;
         }
 
-        public short getMode() {
+        public Short getMode() {
             return mode;
         }
 
-        public void setMode(short mode) {
+        public void setMode(Short mode) {
             this.mode = mode;
         }
 

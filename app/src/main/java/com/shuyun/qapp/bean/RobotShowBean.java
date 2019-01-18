@@ -19,19 +19,19 @@ public class RobotShowBean {
      * robotScore : 110
      */
 
-    private boolean winOrLose;
+    private Boolean winOrLose;
     private String answerId;
     private String answer;//机器人选择的答案0 1 2 3
-    private double timeConsuming;//机器人答题耗时
+    private Double timeConsuming;//机器人答题耗时
     private String robotId;
-    private int userScore;
-    private int robotScore;
+    private Integer userScore;
+    private Integer robotScore;
 
-    public boolean isWinOrLose() {
+    public Boolean getWinOrLose() {
         return winOrLose;
     }
 
-    public void setWinOrLose(boolean winOrLose) {
+    public void setWinOrLose(Boolean winOrLose) {
         this.winOrLose = winOrLose;
     }
 
@@ -51,11 +51,11 @@ public class RobotShowBean {
         this.answer = answer;
     }
 
-    public double getTimeConsuming() {
+    public Double getTimeConsuming() {
         return timeConsuming;
     }
 
-    public void setTimeConsuming(double timeConsuming) {
+    public void setTimeConsuming(Double timeConsuming) {
         this.timeConsuming = timeConsuming;
     }
 
@@ -67,19 +67,19 @@ public class RobotShowBean {
         this.robotId = robotId;
     }
 
-    public int getUserScore() {
+    public Integer getUserScore() {
         return userScore;
     }
 
-    public void setUserScore(int userScore) {
+    public void setUserScore(Integer userScore) {
         this.userScore = userScore;
     }
 
-    public int getRobotScore() {
+    public Integer getRobotScore() {
         return robotScore;
     }
 
-    public void setRobotScore(int robotScore) {
+    public void setRobotScore(Integer robotScore) {
         this.robotScore = robotScore;
     }
 }

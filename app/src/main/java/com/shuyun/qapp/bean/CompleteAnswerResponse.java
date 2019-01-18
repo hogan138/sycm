@@ -3,6 +3,9 @@ package com.shuyun.qapp.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
+
 import java.util.List;
 
 /**
@@ -17,15 +20,15 @@ public class CompleteAnswerResponse implements Parcelable {
     private Long correct;//回答正确的数量
     private Long error;//回答错误的数量
     private Long timeout;//超时回答的数量
-    private double accuracy;//答题正确率
-    private float difficulty;//题目平均难度系数
+    private Double accuracy;//答题正确率
+    private Float difficulty;//题目平均难度系数
     private Long result;//答题结果0:未中奖;1:中奖
-    private float worth;//奖品的价值
+    private Float worth;//奖品的价值
     private String bulletin;//开奖公告
     private List<MinePrize> prize;//中奖的奖品
     private Long beat;//击败多少人
     private Long beat0;//真实击败人次
-    private double beatRate;//击败的人次比例值
+    private Double beatRate;//击败的人次比例值
 
     public  CompleteAnswerResponse(){
 
@@ -100,7 +103,7 @@ public class CompleteAnswerResponse implements Parcelable {
         return beat0;
     }
 
-    public double getBeatRate() {
+    public Double getBeatRate() {
         return beatRate;
     }
 
@@ -125,9 +128,10 @@ public class CompleteAnswerResponse implements Parcelable {
         private String mainImage;
         private String LongImage;
         private String shortImage;
+        @JSONField(serializeUsing = ToStringSerializer.class)
         private Long id;
-        private double worthLower;
-        private double worthUpper;
+        private Double worthLower;
+        private Double worthUpper;
 
         public PrizesBean(){
 
@@ -221,19 +225,19 @@ public class CompleteAnswerResponse implements Parcelable {
             this.id = id;
         }
 
-        public double getWorthLower() {
+        public Double getWorthLower() {
             return worthLower;
         }
 
-        public void setWorthLower(double worthLower) {
+        public void setWorthLower(Double worthLower) {
             this.worthLower = worthLower;
         }
 
-        public double getWorthUpper() {
+        public Double getWorthUpper() {
             return worthUpper;
         }
 
-        public void setWorthUpper(double worthUpper) {
+        public void setWorthUpper(Double worthUpper) {
             this.worthUpper = worthUpper;
         }
 
@@ -281,11 +285,11 @@ public class CompleteAnswerResponse implements Parcelable {
         return timeout;
     }
 
-    public double getAccuracy() {
+    public Double getAccuracy() {
         return accuracy;
     }
 
-    public float getDifficulty() {
+    public Float getDifficulty() {
         return difficulty;
     }
 
@@ -293,7 +297,7 @@ public class CompleteAnswerResponse implements Parcelable {
         return result;
     }
 
-    public float getWorth() {
+    public Float getWorth() {
         return worth;
     }
 

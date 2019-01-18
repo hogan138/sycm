@@ -23,18 +23,18 @@ public class RobotInputAgainstBean {
      * nextQuestionId : 105364
      */
 
-    private int type; //场次
+    private Integer type; //场次
     @JSONField(serializeUsing = ToStringSerializer.class)
     private Long questionId; //上一题目题目id
-    private int userScore; //用户分数
-    private int robotScore; //机器人分数
+    private Integer userScore; //用户分数
+    private Integer robotScore; //机器人分数
     private String robotId; //机器人id
     private String userOptionId; //用户选项id
-    private double userConst; //用户耗时
+    private Double userConst; //用户耗时
     @JSONField(serializeUsing = ToStringSerializer.class)
     private Long nextQuestionId; //当前题目id
     private String questionArry; //选项id
-    private int isLast;
+    private Integer isLast;
     private String robotOptionId; //机器人选项id
     private String examId;
 
@@ -54,11 +54,11 @@ public class RobotInputAgainstBean {
         this.robotOptionId = robotOptionId;
     }
 
-    public int getIsLast() {
+    public Integer getIsLast() {
         return isLast;
     }
 
-    public void setIsLast(int isLast) {
+    public void setIsLast(Integer isLast) {
         this.isLast = isLast;
     }
 
@@ -70,11 +70,11 @@ public class RobotInputAgainstBean {
         this.questionArry = questionArry;
     }
 
-    public int getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
@@ -86,19 +86,19 @@ public class RobotInputAgainstBean {
         this.questionId = questionId;
     }
 
-    public int getUserScore() {
+    public Integer getUserScore() {
         return userScore;
     }
 
-    public void setUserScore(int userScore) {
+    public void setUserScore(Integer userScore) {
         this.userScore = userScore;
     }
 
-    public int getRobotScore() {
+    public Integer getRobotScore() {
         return robotScore;
     }
 
-    public void setRobotScore(int robotScore) {
+    public void setRobotScore(Integer robotScore) {
         this.robotScore = robotScore;
     }
 
@@ -118,11 +118,11 @@ public class RobotInputAgainstBean {
         this.userOptionId = userOptionId;
     }
 
-    public double getUserConst() {
+    public Double getUserConst() {
         return userConst;
     }
 
-    public void setUserConst(double userConst) {
+    public void setUserConst(Double userConst) {
         this.userConst = userConst;
     }
 

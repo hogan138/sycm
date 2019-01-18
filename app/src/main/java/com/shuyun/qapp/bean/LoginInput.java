@@ -14,8 +14,8 @@ public class LoginInput {
     private Long mode;
 
     private String account;//用户账号
-    private double lng;//用户当前经度
-    private double lat;//用户当前纬度
+    private Double lng;//用户当前经度
+    private Double lat;//用户当前纬度
     private String tsn;//登录终端的序列号
     private String salt;//应用随机生成的字符串
     @JSONField(serializeUsing = ToStringSerializer.class)
@@ -49,11 +49,11 @@ public class LoginInput {
         this.account = account;
     }
 
-    public void setLng(double lng) {
+    public void setLng(Double lng) {
         this.lng = lng;
     }
 
-    public void setLat(double lat) {
+    public void setLat(Double lat) {
         this.lat = lat;
     }
 
@@ -99,11 +99,11 @@ public class LoginInput {
         return account;
     }
 
-    public double getLng() {
+    public Double getLng() {
         return lng;
     }
 
-    public double getLat() {
+    public Double getLat() {
         return lat;
     }
 

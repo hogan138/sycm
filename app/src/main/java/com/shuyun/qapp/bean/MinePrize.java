@@ -447,9 +447,10 @@ public class MinePrize implements Parcelable {
         private String mainImage;
         private String LongImage;
         private String shortImage;
+        @JSONField(serializeUsing = ToStringSerializer.class)
         private Long id;
-        private double worthLower;
-        private double worthUpper;
+        private Double worthLower;
+        private Double worthUpper;
 
         public PrizesBean() {
 
@@ -544,19 +545,19 @@ public class MinePrize implements Parcelable {
             this.id = id;
         }
 
-        public double getWorthLower() {
+        public Double getWorthLower() {
             return worthLower;
         }
 
-        public void setWorthLower(double worthLower) {
+        public void setWorthLower(Double worthLower) {
             this.worthLower = worthLower;
         }
 
-        public double getWorthUpper() {
+        public Double getWorthUpper() {
             return worthUpper;
         }
 
-        public void setWorthUpper(double worthUpper) {
+        public void setWorthUpper(Double worthUpper) {
             this.worthUpper = worthUpper;
         }
 

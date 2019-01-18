@@ -14,7 +14,7 @@ public class AnswerRecordBean {
     private Long groupId;//题组id
     private String picture;//题组主图
     private String time;//答题时间
-    private double accuracy;//正确率
+    private Double accuracy;//正确率
     private String title;//题组名称
     private String merchantName;//商户名称
     /**
@@ -40,7 +40,7 @@ public class AnswerRecordBean {
         this.time = time;
     }
 
-    public void setAccuracy(double accuracy) {
+    public void setAccuracy(Double accuracy) {
         this.accuracy = accuracy;
     }
 
@@ -68,7 +68,7 @@ public class AnswerRecordBean {
         return time;
     }
 
-    public double getAccuracy() {
+    public Double getAccuracy() {
         return accuracy;
     }
 

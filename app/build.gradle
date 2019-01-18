@@ -82,7 +82,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     //fastjson
-    implementation 'com.alibaba:fastjson:1.2.49'
+    implementation 'com.alibaba:fastjson:1.2.54'
 
     //添加引导页和轮播框架 https://github.com/kevin-mob/banner
     implementation 'cn.bingoogolapple:bga-banner:2.2.4@aar'

@@ -31,7 +31,7 @@ public class GroupClassifyBean {
     @JSONField(serializeUsing = ToStringSerializer.class)
     private Long parentId;//上级题组
     private String picture;//题组主图
-    private boolean isFlag;//是否点击选中
+    private Boolean isFlag;//是否点击选中
     private Long guideId;//指南id
     private String merchantName;//题组参与的活动商户名称
     private List<ChildrenBean> children;
@@ -56,7 +56,7 @@ public class GroupClassifyBean {
         this.picture = picture;
     }
 
-    public void setFlag(boolean flag) {
+    public void setFlag(Boolean flag) {
         isFlag = flag;
     }
 
@@ -92,7 +92,7 @@ public class GroupClassifyBean {
         return picture;
     }
 
-    public boolean isFlag() {
+    public Boolean getIsFlag() {
         return isFlag;
     }
 
@@ -130,12 +130,14 @@ public class GroupClassifyBean {
          * parentId : 1
          * opportunity : 1
          */
+        @JSONField(serializeUsing = ToStringSerializer.class)
         private Long id;//题组id
         private String name;//题组名称
         private Long opportunity;//消耗答题机会次数0:表示不消耗答题机会次数
+        @JSONField(serializeUsing = ToStringSerializer.class)
         private Long parentId;//上级题组
         private String picture;//题组主图
-        private boolean isFlag;//是否点击选中
+        private Boolean isFlag;//是否点击选中
         private Long guideId;//指南id
         private String merchantName;//题组参与的活动商户名称
         private String h5Url; //答题url
@@ -147,14 +149,14 @@ public class GroupClassifyBean {
         private List<AdConfigs> adConfigs;
 
         //是否推荐
-        private boolean recommend;
+        private Boolean recommend;
         private String remark;
 
-        public boolean isRecommend() {
+        public Boolean isRecommend() {
             return recommend;
         }
 
-        public void setRecommend(boolean recommend) {
+        public void setRecommend(Boolean recommend) {
             this.recommend = recommend;
         }
 
@@ -218,7 +220,7 @@ public class GroupClassifyBean {
             this.picture = picture;
         }
 
-        public void setFlag(boolean flag) {
+        public void setFlag(Boolean flag) {
             isFlag = flag;
         }
 
@@ -250,7 +252,7 @@ public class GroupClassifyBean {
             return picture;
         }
 
-        public boolean isFlag() {
+        public Boolean isFlag() {
             return isFlag;
         }
 

@@ -234,6 +234,7 @@ public class ClassifyFragment extends BaseFragment implements OnRemotingCallBack
                     if (beans.get(i).getId().longValue() == id.longValue()) {
                         beans.get(i).setFlag(true);
                         refreshRightGroup(i, beans);
+                        groupTreeAdapter.setSelectedPosition(i);
                     } else if (id == 0) {
                         beans.get(0).setFlag(true);
                         refreshRightGroup(0, beans);

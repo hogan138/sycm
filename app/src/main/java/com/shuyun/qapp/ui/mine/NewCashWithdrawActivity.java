@@ -71,9 +71,9 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
     RelativeLayout rlMain;
 
     private String cash;
-    private double myCash; //可提现金额
+    private Double myCash; //可提现金额
     private String moneyNumber; //输入的金额
-    private double money = 0.0; //输入的金额转double
+    private Double money = 0.0; //输入的金额转Double
     private InputWithdrawalbean inputWithdrawalbean;
 
     private String bankId = "";

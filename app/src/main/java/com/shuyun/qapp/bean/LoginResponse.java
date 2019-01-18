@@ -1,5 +1,8 @@
 package com.shuyun.qapp.bean;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
+
 import java.io.Serializable;
 
 /**
@@ -11,10 +14,10 @@ public class LoginResponse implements Serializable {
     private Long expire;//token的有效期
     private String key;//对称加密的秘钥。用请求方的私钥加密
     private String random;//接口随机生成的字符串
-    private int bind;//是否绑定用户。0:未绑定;1:已绑定
+    private Integer bind;//是否绑定用户。0:未绑定;1:已绑定
     private String invite;//邀请分享的展现图片地址  当user.share=1时有效
     private User user;//对象
-    private boolean setPwd;
+    private Boolean setPwd;
     private String openId;
     private String wxName;
     private String wxHeadUrl;
@@ -61,11 +64,11 @@ public class LoginResponse implements Serializable {
         this.wxHeadUrl = wxHeadUrl;
     }
 
-    public boolean isSetPwd() {
+    public Boolean isSetPwd() {
         return setPwd;
     }
 
-    public void setSetPwd(boolean setPwd) {
+    public void setSetPwd(Boolean setPwd) {
         this.setPwd = setPwd;
     }
 
@@ -85,7 +88,7 @@ public class LoginResponse implements Serializable {
         this.random = random;
     }
 
-    public void setBind(int bind) {
+    public void setBind(Integer bind) {
         this.bind = bind;
     }
 
@@ -113,7 +116,7 @@ public class LoginResponse implements Serializable {
         return random;
     }
 
-    public int getBind() {
+    public Integer getBind() {
         return bind;
     }
 
@@ -127,10 +130,11 @@ public class LoginResponse implements Serializable {
 
     public static class User implements Serializable {
         private String nickname;//用户的昵称
-        private int type;//用户类型   1——正式用户 0——内部用户
+        private Integer type;//用户类型   1——正式用户 0——内部用户
         private String headerId;//用户的头像
-        private int ob;//是否参与公测 1——参与公测
-        private int share;//是否参与邀请分享   1——参与邀请
+        private Integer ob;//是否参与公测 1——参与公测
+        private Integer share;//是否参与邀请分享   1——参与邀请
+        @JSONField(serializeUsing = ToStringSerializer.class)
         private Long id;
 
         public Long getId() {
@@ -145,7 +149,7 @@ public class LoginResponse implements Serializable {
             this.nickname = nickname;
         }
 
-        public void setType(int type) {
+        public void setType(Integer type) {
             this.type = type;
         }
 
@@ -153,11 +157,11 @@ public class LoginResponse implements Serializable {
             this.headerId = headerId;
         }
 
-        public void setOb(int ob) {
+        public void setOb(Integer ob) {
             this.ob = ob;
         }
 
-        public void setShare(int share) {
+        public void setShare(Integer share) {
             this.share = share;
         }
 
@@ -165,7 +169,7 @@ public class LoginResponse implements Serializable {
             return nickname;
         }
 
-        public int getType() {
+        public Integer getType() {
             return type;
         }
 
@@ -173,11 +177,11 @@ public class LoginResponse implements Serializable {
             return headerId;
         }
 
-        public int getOb() {
+        public Integer getOb() {
             return ob;
         }
 
-        public int getShare() {
+        public Integer getShare() {
             return share;
         }
 

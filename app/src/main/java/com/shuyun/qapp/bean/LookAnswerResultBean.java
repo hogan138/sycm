@@ -1,5 +1,8 @@
 package com.shuyun.qapp.bean;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
+
 import java.util.List;
 
 /**
@@ -30,7 +33,7 @@ public class LookAnswerResultBean {
 
     private Long total;//答题实际回答的数量
     private Long actual;//答题实际回答的数量
-    private double accuracy;//答题正确率
+    private Double accuracy;//答题正确率
     private Long correct;//回答正确的数量
     private Long error;//回答错误的数量
     private Long timeout;//超时未回答的数量
@@ -52,7 +55,7 @@ public class LookAnswerResultBean {
         return actual;
     }
 
-    public double getAccuracy() {
+    public Double getAccuracy() {
         return accuracy;
     }
 
@@ -112,7 +115,7 @@ public class LookAnswerResultBean {
          * finishTime : 1526875506688
          * options : [{"id":2120,"title":"上海戏剧学院","orderNo":4},{"id":2121,"title":"中国传媒大学","orderNo":1},{"id":2118,"title":"中央戏剧学院","orderNo":3},{"id":2119,"title":"北京电影学院","orderNo":2}]
          */
-
+        @JSONField(serializeUsing = ToStringSerializer.class)
         private Long id;//题目id
         private String title;//题目标题
         private String description;//题目描述

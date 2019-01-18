@@ -240,10 +240,8 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
             }, 10);
         }
 
-
         //查询绑定别名
         queryBind();
-
     }
 
     Runnable runnable = new Runnable() {
@@ -311,7 +309,6 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
                 }
             }
         });
-
     }
 
     private void updateDialog(final String url) {

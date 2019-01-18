@@ -16,9 +16,9 @@ public class MatchTimeBean {
      */
 
     private UserBean user;
-    private int robotPic;//机器人头像
+    private Integer robotPic;//机器人头像
     private String robotAccount;//机器人账号
-    private int matchTime;//匹配时间
+    private Integer matchTime;//匹配时间
 
     public UserBean getUser() {
         return user;
@@ -28,11 +28,11 @@ public class MatchTimeBean {
         this.user = user;
     }
 
-    public int getRobotPic() {
+    public Integer getRobotPic() {
         return robotPic;
     }
 
-    public void setRobotPic(int robotPic) {
+    public void setRobotPic(Integer robotPic) {
         this.robotPic = robotPic;
     }
 
@@ -44,11 +44,11 @@ public class MatchTimeBean {
         this.robotAccount = robotAccount;
     }
 
-    public int getMatchTime() {
+    public Integer getMatchTime() {
         return matchTime;
     }
 
-    public void setMatchTime(int matchTime) {
+    public void setMatchTime(Integer matchTime) {
         this.matchTime = matchTime;
     }
 
@@ -79,13 +79,13 @@ public class MatchTimeBean {
         private String nickname;
         private Long obt;
         private String header;
-        private int headerId;//头像id
+        private Integer headerId;//头像id
         private Long status;
-        private int certification;
+        private Integer certification;
         private String certInfo;
         private String phone;
         private Long gender;
-        private double cash;
+        private Double cash;
         private Long bp;//积分
         private Long opporitunity;
         private Long withdraw;
@@ -127,11 +127,11 @@ public class MatchTimeBean {
             this.header = header;
         }
 
-        public int getHeaderId() {
+        public Integer getHeaderId() {
             return headerId;
         }
 
-        public void setHeaderId(int headerId) {
+        public void setHeaderId(Integer headerId) {
             this.headerId = headerId;
         }
 
@@ -143,11 +143,11 @@ public class MatchTimeBean {
             this.status = status;
         }
 
-        public int getCertification() {
+        public Integer getCertification() {
             return certification;
         }
 
-        public void setCertification(int certification) {
+        public void setCertification(Integer certification) {
             this.certification = certification;
         }
 
@@ -175,11 +175,11 @@ public class MatchTimeBean {
             this.gender = gender;
         }
 
-        public double getCash() {
+        public Double getCash() {
             return cash;
         }
 
-        public void setCash(double cash) {
+        public void setCash(Double cash) {
             this.cash = cash;
         }
 

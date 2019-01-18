@@ -50,7 +50,8 @@ public class GroupTreeAdapter extends RecyclerView.Adapter<GroupTreeAdapter.View
         GroupClassifyBean classifyBean = classifyBeans.get(position);
         holder.tvSortName.setText(classifyBean.getName());
         ImageLoaderManager.LoadImage(mContext, classifyBean.getPicture(), holder.ivItem, R.mipmap.zw01);
-        if (classifyBeans.get(position).isFlag()) {
+        GroupClassifyBean bean = classifyBeans.get(position);
+        if (bean.getIsFlag() != null && bean.getIsFlag()) {
             holder.rlSort.setSelected(true);
             holder.tvSortName.setTextColor(ContextCompat.getColor(mContext, R.color.color_35));
         } else {

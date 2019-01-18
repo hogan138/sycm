@@ -1,5 +1,8 @@
 package com.shuyun.qapp.bean;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
+
 import java.util.List;
 
 /**
@@ -60,7 +63,7 @@ public class ApplyAnswer {
          * oks : 37921
          * options : [{"id":37922,"title":"孟浩然","picture":null},{"id":37920,"title":"岑 参","picture":null},{"id":37921,"title":"王 维","picture":null},{"id":37919,"title":"高 适","picture":null}]
          */
-
+        @JSONField(serializeUsing = ToStringSerializer.class)
         private Long id;//题目id
         private String title;//题目标题
         private String picture;//题目的图片
@@ -134,7 +137,7 @@ public class ApplyAnswer {
              * title : 孟浩然
              * picture : null
              */
-
+            @JSONField(serializeUsing = ToStringSerializer.class)
             private Long id;//选项id
             private String title;//选项标题
             private String picture;//选项图片
