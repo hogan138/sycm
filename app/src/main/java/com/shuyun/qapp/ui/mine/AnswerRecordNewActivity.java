@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -50,10 +51,12 @@ public class AnswerRecordNewActivity extends BaseActivity implements ViewPager.O
     TextView tvSelect;
     @BindView(R.id.tvTotal)
     TextView tvTotal;
-    @BindView(R.id.ll_guide)
-    LinearLayout llGuide;
     @BindView(R.id.iv_guide)
     ImageView ivGuide;
+    @BindView(R.id.backTop)
+    LinearLayout backTop;
+    @BindView(R.id.rl_guide)
+    RelativeLayout rlGuide;
 
     private int currentPage = 0;
     private int pageSize = 10;
@@ -93,7 +96,7 @@ public class AnswerRecordNewActivity extends BaseActivity implements ViewPager.O
         sharedPreferences = mContext.getSharedPreferences("FirstRun", 0);
         Boolean first_run = sharedPreferences.getBoolean("Answer_record", true);
         if (first_run) {
-            llGuide.setVisibility(View.VISIBLE);
+            rlGuide.setVisibility(View.VISIBLE);
             TranslateAnimation animation = new TranslateAnimation(50, -50, 0, 0);
             animation.setInterpolator(new OvershootInterpolator());
             animation.setDuration(1500);
@@ -109,17 +112,19 @@ public class AnswerRecordNewActivity extends BaseActivity implements ViewPager.O
         return R.layout.activity_answer_record_new;
     }
 
-    @OnClick({R.id.iv_back, R.id.ll_guide, R.id.tv_common_title})
+    @OnClick({R.id.iv_back, R.id.btn_know, R.id.tv_common_title, R.id.backTop, R.id.rl_guide})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
-            case R.id.ll_guide:
-                llGuide.setVisibility(View.GONE);
+            case R.id.rl_guide:
+            case R.id.btn_know:
+                rlGuide.setVisibility(View.GONE);
                 sharedPreferences.edit().putBoolean("Answer_record", false).apply();
                 break;
             case R.id.tv_common_title:
+            case R.id.backTop:
                 viewPager.setCurrentItem(0);
                 break;
             default:

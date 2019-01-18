@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="53dp">
+    android:layout_height="50dp">
 
     <TextView
         android:id="@+id/tv_name"
@@ -10,7 +10,7 @@
         android:layout_marginLeft="@dimen/text_20"
         android:layout_marginTop="6dp"
         android:textColor="@color/color_66"
-        android:textSize="@dimen/text_15" />
+        android:textSize="@dimen/text_13" />
 
     <ImageView
         android:id="@+id/iv_status"
@@ -41,7 +41,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginBottom="@dimen/text_6"
         android:textColor="@color/login_text"
-        android:textSize="@dimen/text_13" />
+        android:textSize="@dimen/text_11" />
 
     <View
         android:layout_width="match_parent"

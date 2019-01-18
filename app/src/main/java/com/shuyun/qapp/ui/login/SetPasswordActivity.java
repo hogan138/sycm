@@ -286,12 +286,13 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
                         SharedPrefrenceTool.put(SetPasswordActivity.this, "random", changeResult.getRandom());//登录成果后，平台随机生成的字符串
                         AppConst.loadToken(SetPasswordActivity.this);
                         KeyboardUtils.hideSoftInput(SetPasswordActivity.this);
-                        MyActivityManager1.getInstance().finishAllActivity();
                         if ("0".equals(SaveUserInfo.getInstance(SetPasswordActivity.this).getUserInfo("normal_login")) &&
                                 (getIntent().getStringExtra("name").equals("changePwd"))) {
                             //正常登录&&忘记密码
                             startActivity(new Intent(SetPasswordActivity.this, HomePageActivity.class));
                         }
+
+                        MyActivityManager1.getInstance().finishAllActivity();
 
                     }
                 } else {

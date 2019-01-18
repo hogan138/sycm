@@ -199,8 +199,6 @@ public class SystemSettingActivity extends BaseActivity implements OnRemotingCal
                 //清空数据
                 clearData();
 
-                MyActivityManager.getInstance().finishAllActivity();//销毁所有页面
-
                 if ("1".equals(SaveUserInfo.getInstance(mContext).getUserInfo("tourists"))) {
                     //启用游客模式
                     Intent intent = new Intent(mContext, HomePageActivity.class);
@@ -210,7 +208,8 @@ public class SystemSettingActivity extends BaseActivity implements OnRemotingCal
                     //不启用游客模式
                     startActivity(new Intent(mContext, LoginActivity.class));
                 }
-                finish();
+
+                MyActivityManager.getInstance().finishAllActivity();//销毁所有页面
             }
 
             @Override

@@ -147,8 +147,6 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
                                     loadChangeWXbind(code);
                                 }
                             }
-                        } else {
-//                            Toast.makeText(this, "微信返回的code为空", Toast.LENGTH_SHORT).show();
                         }
                         break;
                     case RETURN_MSG_TYPE_SHARE:

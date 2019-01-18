@@ -8,124 +8,112 @@
     <!--登录头布局-->
     <include layout="@layout/common_left_title" />
 
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/refreshLayout"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v4.widget.NestedScrollView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="true">
+            android:orientation="vertical">
 
-            <RelativeLayout
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/text_25"
+                android:drawableLeft="@mipmap/cash_small_logo"
+                android:drawablePadding="@dimen/text_12"
+                android:text="当前余额（元）"
+                android:textColor="@color/color_66"
+                android:textSize="@dimen/text_13" />
+
+            <TextView
+                android:id="@+id/tv_cash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="¥0.00"
+                android:textColor="@color/color_1"
+                android:textSize="@dimen/text_40" />
+
+            <TextView
+                android:id="@+id/tv_all_cash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/text_4"
+                android:text="累计获得（元）：¥0.00"
+                android:textColor="@color/color_66"
+                android:textSize="@dimen/text_13" />
+
+            <Button
+                android:id="@+id/btn_cash"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginLeft="@dimen/text_20"
+                android:layout_marginTop="23dp"
+                android:layout_marginRight="@dimen/text_20"
+                android:layout_marginBottom="@dimen/text_22"
+                android:background="@drawable/selector_cash_withdraw"
+                android:enabled="false"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="立即提现"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_18"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/text_7"
+                android:background="#EFEFF1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/text_10"
+                android:text="现金明细"
+                android:textColor="@color/color_66"
+                android:textSize="@dimen/text_15" />
+
+            <com.scwang.smartrefresh.layout.SmartRefreshLayout
+                android:id="@+id/refreshLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_account_record"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
 
                     <ImageView
+                        android:id="@+id/iv_empty"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/text_35"
-                        android:src="@mipmap/cash_big_logo" />
+                        android:layout_centerInParent="true"
+                        android:src="@mipmap/blank"
+                        android:visibility="gone" />
+                </RelativeLayout>
+            </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+        </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/text_21"
-                        android:text="当前余额（元）"
-                        android:textColor="@color/color_66"
-                        android:textSize="@dimen/text_13" />
-
-                    <TextView
-                        android:id="@+id/tv_cash"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="¥0.00"
-                        android:textColor="@color/color_1"
-                        android:textSize="@dimen/text_40" />
-
-                    <TextView
-                        android:id="@+id/tv_all_cash"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/text_4"
-                        android:text="累计获得（元）：¥0.00"
-                        android:textColor="@color/color_66"
-                        android:textSize="@dimen/text_13" />
-
-                    <Button
-                        android:id="@+id/btn_cash"
-                        android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:layout_marginLeft="@dimen/text_20"
-                        android:layout_marginTop="23dp"
-                        android:layout_marginRight="@dimen/text_20"
-                        android:layout_marginBottom="@dimen/text_22"
-                        android:background="@drawable/selector_cash_withdraw"
-                        android:enabled="false"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:text="立即提现"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/text_18"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/text_7"
-                        android:background="#EFEFF1" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/text_10"
-                        android:text="现金明细"
-                        android:textColor="@color/color_66"
-                        android:textSize="@dimen/text_15" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/rv_account_record"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
-
-                        <ImageView
-                            android:id="@+id/iv_empty"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:src="@mipmap/blank"
-                            android:visibility="gone" />
-                    </RelativeLayout>
-
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="216dp"
-                    android:layout_marginRight="@dimen/text_20"
-                    android:background="@drawable/real_btn_bg"
-                    android:paddingLeft="@dimen/text_4"
-                    android:paddingRight="@dimen/text_4"
-                    android:text="满50元可提现"
-                    android:textColor="#ffffff"
-                    android:textSize="@dimen/text_9" />
-            </RelativeLayout>
-        </android.support.v4.widget.NestedScrollView>
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="70dp"
+            android:layout_marginRight="@dimen/text_20"
+            android:background="@drawable/real_btn_bg"
+            android:paddingLeft="@dimen/text_4"
+            android:paddingRight="@dimen/text_4"
+            android:text="满50元可提现"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/text_9" />
+    </RelativeLayout>
 
 </LinearLayout>

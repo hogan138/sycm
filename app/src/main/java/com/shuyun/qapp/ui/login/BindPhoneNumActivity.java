@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
@@ -221,6 +222,7 @@ public class BindPhoneNumActivity extends BaseActivity {
                         //阿里推送绑定别名
                         AliPushBind.bindPush();
                         AppConst.loadToken(SykscApplication.getAppContext());
+                        KeyboardUtils.hideSoftInput(BindPhoneNumActivity.this);
                         //绑定成功  存token值
                         ToastUtil.showToast(BindPhoneNumActivity.this, "绑定成功");
                         finish();

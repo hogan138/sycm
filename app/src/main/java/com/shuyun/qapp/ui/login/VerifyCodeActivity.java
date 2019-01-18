@@ -380,11 +380,11 @@ public class VerifyCodeActivity extends BaseActivity {
                                 } else {
                                     //已设置密码
                                     KeyboardUtils.hideSoftInput(mContext);
-                                    MyActivityManager1.getInstance().finishAllActivity();
                                     //统一给活动的Activity处理
                                     if (ActivityCallManager.instance().getActivity() != null) {
                                         ActivityCallManager.instance().getActivity().callBack(loginResp);
                                     }
+                                    MyActivityManager1.getInstance().finishAllActivity();
                                 }
                             } catch (Exception e) {
 

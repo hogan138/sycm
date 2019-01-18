@@ -89,7 +89,7 @@ public interface ApiService {
      * @return
      */
     @GET("/rest/act/exam/V3")
-    Observable<DataResponse<ApplyAnswer>> applyAnswer(@Query("groupId") Long groupId, @Query("type") int type, @Query("battle") int battle);
+    Observable<DataResponse<ApplyAnswer>> applyAnswer(@Query("groupId") Long groupId, @Query("type") long type, @Query("battle") long battle);
 
     /**
      * 9、完成答题post请求,提交数据
@@ -124,7 +124,7 @@ public interface ApiService {
      * 13、获取我的奖品/user-center
      */
     @GET("/rest/user/award/v3")
-    Observable<DataResponse<List<MinePrize>>> getMyPrize(@Query("status") int status, @Query("page") int page);
+    Observable<DataResponse<List<MinePrize>>> getMyPrize(@Query("status") long status, @Query("page") long page);
 
     /**
      * 14、申请提现
@@ -138,14 +138,14 @@ public interface ApiService {
      * /user-center
      */
     @GET("/rest/user/cash")
-    Observable<DataResponse<List<AccountBean>>> queryCashFlow(@Query("page") int page);
+    Observable<DataResponse<List<AccountBean>>> queryCashFlow(@Query("page") long page);
 
     /**
      * 17、查询积分流水记录
      * /user-center
      */
     @GET("/rest/user/bp")
-    Observable<DataResponse<List<AccountBean>>> queryIntegralCurrent(@Query("page") int page);
+    Observable<DataResponse<List<AccountBean>>> queryIntegralCurrent(@Query("page") long page);
 
     /**
      * 18、获取验证码
@@ -159,7 +159,7 @@ public interface ApiService {
      * /user-center
      */
     @GET("/rest/user/header")
-    Observable<DataResponse<Integer>> changeHeader(@Query("headerId") int headerId);
+    Observable<DataResponse<Integer>> changeHeader(@Query("headerId") long headerId);
 
     /**
      * 25、获取宝箱数量
@@ -177,7 +177,7 @@ public interface ApiService {
      * @return
      */
     @GET("/rest/share/exam")
-    Observable<DataResponse<SharedBean>> answerShared(@Query("channel") int channel, @Query("id") String id);
+    Observable<DataResponse<SharedBean>> answerShared(@Query("channel") long channel, @Query("id") String id);
 
     /**
      * 27、邀请分享
@@ -187,7 +187,7 @@ public interface ApiService {
      * @return
      */
     @GET("/rest/share/invite")
-    Observable<DataResponse<SharedBean>> inviteShared(@Query("channel") int channel);
+    Observable<DataResponse<SharedBean>> inviteShared(@Query("channel") long channel);
 
     /**
      * 28、分享确认
@@ -199,7 +199,7 @@ public interface ApiService {
      * @return
      */
     @GET("/rest/share/{id}/confirm")
-    Observable<DataResponse> sharedConfirm(@Path("id") Long id, @Query("result") int result, @Query("channel") int channel);
+    Observable<DataResponse> sharedConfirm(@Path("id") Long id, @Query("result") long result, @Query("channel") long channel);
 
     /**
      * 29、获取题组树
@@ -214,20 +214,20 @@ public interface ApiService {
      * 30、用户答题记录TODO /activity-center
      */
     @GET("/rest/act/exam/history")
-    Observable<DataResponse<List<AnswerRecordBean>>> getAnswerRecord(@Query("page") int page);
+    Observable<DataResponse<List<AnswerRecordBean>>> getAnswerRecord(@Query("page") long page);
 
     /**
      * 30、用户答题记录TODO /activity-center
      */
     @GET("/rest/act/exam/history/list")
-    Observable<DataResponse<HistoryDataBean>> getExamHistoryList(@Query("page") int page, @Query("pageSize") int pageSize);
+    Observable<DataResponse<HistoryDataBean>> getExamHistoryList(@Query("page") long page, @Query("pageSize") long pageSize);
 
     /**
      * 31、答题题目反馈TODO
      * /activity-center
      */
     @GET("/rest/act/q/{id}/fb")
-    Observable<DataResponse> getAnswerFeedBack(@Path("id") Long id, @Query("feedbackId") int feedbackId);
+    Observable<DataResponse> getAnswerFeedBack(@Path("id") Long id, @Query("feedbackId") long feedbackId);
 
     /**
      * 32、领取答题机会TODO
@@ -262,15 +262,15 @@ public interface ApiService {
      * 36、获取广告列表 LoginInput /app-center
      */
     @GET("/rest/app/ad")
-    Observable<DataResponse<AdBean>> getAd(@Query("devId") int devId, @Query("appId") int appId,
-                                           @Query("v") int v, @Query("stamp") String stamp, @Query("code") String code);
+    Observable<DataResponse<AdBean>> getAd(@Query("devId") long devId, @Query("appId") long appId,
+                                           @Query("v") long v, @Query("stamp") String stamp, @Query("code") String code);
 
     /**
      * 37、绑定微信 /user-center
      *
      * @param phone 绑定的手机号码
      * @param code  短信验证码
-     *              inviter 邀请人id ,@Query("inviter") int inviter
+     *              inviter 邀请人id ,@Query("inviter") long inviter
      * @return
      */
     @GET("/rest/user/wx/bind")
@@ -293,7 +293,7 @@ public interface ApiService {
      * @return
      */
     @GET("/rest/share/group")
-    Observable<DataResponse<SharedBean>> groupShared(@Query("channel") int channel, @Query("id") Long id);
+    Observable<DataResponse<SharedBean>> groupShared(@Query("channel") long channel, @Query("id") Long id);
 
     /**
      * 40、获取推送消息
@@ -304,7 +304,7 @@ public interface ApiService {
      * @return
      */
     @GET("/rest/app/sys/msg")
-    Observable<DataResponse<List<Msg>>> getMsg(@Query("page") int page, @Query("stamp1") long stamp1, @Query("stamp0") long stamp0);//@Query("page") int page, @Query("stamp1") long stamp1, @Query("stamp0") long stamp0
+    Observable<DataResponse<List<Msg>>> getMsg(@Query("page") long page, @Query("stamp1") long stamp1, @Query("stamp0") long stamp0);//@Query("page") long page, @Query("stamp1") long stamp1, @Query("stamp0") long stamp0
 
 
     /**
@@ -313,9 +313,9 @@ public interface ApiService {
      */
     @GET("/rest/security/pwd/mod")
     Observable<DataResponse<LoginResponse>> modifyPassWord(@Query("phone") String phone, @Query("pwd") String pwd,
-                                                           @Query("devId") int devId, @Query("appId") int appId,
+                                                           @Query("devId") long devId, @Query("appId") long appId,
                                                            @Query("salt") String salt, @Query("tsn") String tsn, @Query("deviceId") String deviceId,
-                                                           @Query("appVersion") String appVersion, @Query("v") int v,
+                                                           @Query("appVersion") String appVersion, @Query("v") long v,
                                                            @Query("stamp") long stamp, @Query("code") String code);
 
     /**
@@ -334,8 +334,8 @@ public interface ApiService {
      * 44、新版本查询
      */
     @GET("/rest/app/upgrade/version")
-    Observable<DataResponse<AppVersionBean>> updateVersion(@Query("appVersion") String appVersion, @Query("devId") int devId,
-                                                           @Query("appId") int appId, @Query("v") int v,
+    Observable<DataResponse<AppVersionBean>> updateVersion(@Query("appVersion") String appVersion, @Query("devId") long devId,
+                                                           @Query("appId") long appId, @Query("v") long v,
                                                            @Query("stamp") long stamp, @Query("code") String code);
 
     /**
@@ -375,7 +375,7 @@ public interface ApiService {
      * 50、答题对战题组
      */
     @GET("/rest/battle/bKnowGroup")
-    Observable<DataResponse<List<GroupAgainstBean>>> groupAgainst(@Query("type") int type);
+    Observable<DataResponse<List<GroupAgainstBean>>> groupAgainst(@Query("type") long type);
 
     /**
      * 51、用户匹配时长
@@ -388,7 +388,7 @@ public interface ApiService {
      * 52、答题对战随机题组
      */
     @GET("/rest/battle/bRandomGroup/V2")
-    Observable<DataResponse<ApplyAnswer>> randomGroup(@Query("type") int type);
+    Observable<DataResponse<ApplyAnswer>> randomGroup(@Query("type") long type);
 
 
     /**
@@ -404,7 +404,7 @@ public interface ApiService {
      * @return
      */
     @GET("/rest/battle/bUserBpCons")
-    Observable<DataResponse> useBpCons(@Query("type") int type);
+    Observable<DataResponse> useBpCons(@Query("type") long type);
 
     /**
      * 55、答题对战结束
@@ -414,7 +414,7 @@ public interface ApiService {
      * @return
      */
     @GET("/rest/battle/bEnd")
-    Observable<DataResponse<Integer>> completeAnswAgainst(@Query("type") int type, @Query("isWin") int isWin);
+    Observable<DataResponse<Integer>> completeAnswAgainst(@Query("type") long type, @Query("isWin") long isWin);
 
     /**
      * 56、答题对战分享
@@ -424,10 +424,10 @@ public interface ApiService {
      * @return
      */
     @GET("/rest/share/battle")
-    Observable<DataResponse<SharedBean>> battleAnswerShared(@Query("channel") int channel);
+    Observable<DataResponse<SharedBean>> battleAnswerShared(@Query("channel") long channel);
 
     @GET("/rest/share/battleEnd")
-    Observable<DataResponse<SharedBean>> battleAnswerShared1(@Query("channel") int channel, @Query("type") int type);
+    Observable<DataResponse<SharedBean>> battleAnswerShared1(@Query("channel") long channel, @Query("type") long type);
 
     /**
      * 57、积分兑换首页
@@ -439,19 +439,19 @@ public interface ApiService {
      * 58、积分夺宝全部奖品
      */
     @GET("/rest/act/bp/treasure/allPrize")
-    Observable<DataResponse<List<IntegralAllPrizeBean>>> getAllPrize(@Query("page") int page);
+    Observable<DataResponse<List<IntegralAllPrizeBean>>> getAllPrize(@Query("page") long page);
 
     /**
      * 59、积分夺宝开奖历史
      */
     @GET("/rest/act/bp/treasure/treasureHistory")
-    Observable<DataResponse<List<PrizeHistoryBean>>> getPrizeHistory(@Query("page") int page);
+    Observable<DataResponse<List<PrizeHistoryBean>>> getPrizeHistory(@Query("page") long page);
 
     /**
      * 60、积分夺宝我的奖券
      */
     @GET("/rest/act/bp/treasure/myTicket")
-    Observable<DataResponse<List<ExchangeMyPrizeBean>>> getMyTicket(@Query("page") int page);
+    Observable<DataResponse<List<ExchangeMyPrizeBean>>> getMyTicket(@Query("page") long page);
 
     /**
      * 61、宝贝详情
@@ -469,7 +469,7 @@ public interface ApiService {
      * 63、兑换记录
      */
     @GET("/rest/act/bp/treasure/changeRecord")
-    Observable<DataResponse<ExchangeHistoryBean>> ExchangeHistory(@Query("scheduleId") String scheduleId, @Query("type") int type, @Query("page") int page);
+    Observable<DataResponse<ExchangeHistoryBean>> ExchangeHistory(@Query("scheduleId") String scheduleId, @Query("type") long type, @Query("page") long page);
 
     /**
      * 64、宝贝详情分享
@@ -479,7 +479,7 @@ public interface ApiService {
      * @return
      */
     @GET("/rest/share/mineTreasureExchange")
-    Observable<DataResponse<SharedBean>> prizeShare(@Query("channel") int channel, @Query("scheduleId") String scheduleId);
+    Observable<DataResponse<SharedBean>> prizeShare(@Query("channel") long channel, @Query("scheduleId") String scheduleId);
 
     /**
      * 65、首页邀请有奖
@@ -497,8 +497,8 @@ public interface ApiService {
      * 67、忘记密码验证
      */
     @GET("/rest/security/code/verify")
-    Observable<DataResponse<String>> verifyPassWord(@Query("phone") String phone, @Query("devId") int devId,
-                                                    @Query("appId") int appId, @Query("type") int type, @Query("v") int v,
+    Observable<DataResponse<String>> verifyPassWord(@Query("phone") String phone, @Query("devId") long devId,
+                                                    @Query("appId") long appId, @Query("type") long type, @Query("v") long v,
                                                     @Query("stamp") long stamp, @Query("code") String code);
 
     /**
@@ -538,10 +538,10 @@ public interface ApiService {
      * @return
      */
     @GET("/rest/share")
-    Observable<DataResponse<SharedBean>> SharedPublic(@Query("channel") int channel, @Query("action") String action, @Query("id") String id);
+    Observable<DataResponse<SharedBean>> SharedPublic(@Query("channel") long channel, @Query("action") String action, @Query("id") String id);
 
     @GET("/rest/share")
-    Observable<DataResponse<SharedBean>> SharedPublic1(@Query("channel") int channel, @Query("action") String action);
+    Observable<DataResponse<SharedBean>> SharedPublic1(@Query("channel") long channel, @Query("action") String action);
 
     /**
      * 74、提现信息完善
@@ -565,7 +565,7 @@ public interface ApiService {
      * 77、宝箱记录
      */
     @GET("/rest/user/boxflow")
-    Observable<DataResponse<List<BoxRecordBean>>> boxRecord(@Query("page") int page);
+    Observable<DataResponse<List<BoxRecordBean>>> boxRecord(@Query("page") long page);
 
     /**
      * 78、我的道具列表

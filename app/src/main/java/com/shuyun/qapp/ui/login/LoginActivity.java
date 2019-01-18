@@ -38,6 +38,7 @@ import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SykscApplication;
+import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.AliPushBind;
 import com.shuyun.qapp.utils.CustomLoadingFactory;
@@ -519,9 +520,12 @@ public class LoginActivity extends BaseActivity implements OnRemotingCallBackLis
                     public void run() {
                         KeyboardUtils.hideSoftInput(LoginActivity.this);
                         try {
-                            setResult(RESULT_OK);
-                            if ("1".equals(SaveUserInfo.getInstance(mContext).getUserInfo("normal_login"))) {
+                            if ("0".equals(SaveUserInfo.getInstance(mContext).getUserInfo("normal_login"))) {
+                                //正常登录
+                                startActivity(new Intent(mContext, HomePageActivity.class));
+                            } else {
                                 //启用游客模式
+                                setResult(RESULT_OK);
                                 MyActivityManager1.getInstance().finishAllActivity();
                             }
                             finish();
