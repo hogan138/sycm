@@ -25,7 +25,6 @@ import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.umeng.debug.log.E;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +57,8 @@ public class CashRecordActivity extends BaseActivity implements OnRemotingCallBa
 
     private static final String LOAD_MINE_HOME_DATA = "loadMineHomeData";//个人信息
     private static final String LOAD_CASH = "load_cash";//现金记录
+    @BindView(R.id.btn_cash)
+    Button btnCash;
 
     private int loadState = AppConst.STATE_NORMAL;
     private int currentPage = 0;
@@ -188,6 +189,17 @@ public class CashRecordActivity extends BaseActivity implements OnRemotingCallBa
             MineBean mineBean = (MineBean) response.getDat();
             cash = mineBean.getCash();
             tvCash.setText("¥" + cash);
+            tvAllCash.setText("累计获得（元）：¥" + mineBean.getCashTotal());
+            if (!EncodeAndStringTool.isStringEmpty(mineBean.getCash())) {
+                double money = Double.parseDouble(mineBean.getCash());
+                if (1 == mineBean.getWithdraw() && money >= 50) {
+                    //可以提现
+                    btnCash.setEnabled(true);
+                } else {
+                    //不能提现和提现中 按钮变灰
+                    btnCash.setEnabled(false);
+                }
+            }
         }
 
     }

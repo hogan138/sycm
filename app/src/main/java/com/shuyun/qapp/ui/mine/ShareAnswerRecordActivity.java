@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.HistoryDataBean;
+import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.utils.DisplayUtil;
 import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.ViewToBitmap;
@@ -63,6 +64,8 @@ public class ShareAnswerRecordActivity extends BaseActivity implements View.OnCl
     RelativeLayout ivBack;
     @BindView(R.id.cardView)
     CardView cardView;
+    @BindView(R.id.ll_share)
+    LinearLayout llShare;
 
     private Context mContext;
     private HistoryDataBean.ResultBean recordBean;
@@ -75,6 +78,17 @@ public class ShareAnswerRecordActivity extends BaseActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         mContext = this;
+
+
+        /**
+         * 检测微信是否安装,如果没有安装,需不显示分享按钮;如果安装了微信则显示分享按钮.
+         */
+        if (!SykscApplication.mWxApi.isWXAppInstalled()) {
+            llShare.setVisibility(View.GONE);
+        } else {
+            llShare.setVisibility(View.VISIBLE);
+        }
+
         Bundle bundle = getIntent().getExtras();
         recordBean = (HistoryDataBean.ResultBean) bundle.getSerializable("share");
         if (recordBean == null)

@@ -36,7 +36,7 @@ import butterknife.OnClick;
 /**
  * 成绩单
  */
-public class AnswerRecordNewActivity extends BaseActivity implements ViewPager.OnPageChangeListener, OnRemotingCallBackListener<HistoryDataBean>, View.OnClickListener {
+public class AnswerRecordNewActivity extends BaseActivity implements ViewPager.OnPageChangeListener, OnRemotingCallBackListener<HistoryDataBean> {
 
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle;
@@ -82,8 +82,6 @@ public class AnswerRecordNewActivity extends BaseActivity implements ViewPager.O
         viewPager.addOnPageChangeListener(this);
         viewPager.setPageTransformer(true, new HorizontalStackPageTransformer(mContext, 2));
 
-        tvCommonTitle.setOnClickListener(this);
-
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -111,16 +109,18 @@ public class AnswerRecordNewActivity extends BaseActivity implements ViewPager.O
         return R.layout.activity_answer_record_new;
     }
 
-    @OnClick({R.id.iv_back, R.id.ll_guide})
+    @OnClick({R.id.iv_back, R.id.ll_guide, R.id.tv_common_title})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
-                sharedPreferences.edit().putBoolean("Answer_record", true).apply();
                 break;
             case R.id.ll_guide:
                 llGuide.setVisibility(View.GONE);
                 sharedPreferences.edit().putBoolean("Answer_record", false).apply();
+                break;
+            case R.id.tv_common_title:
+                viewPager.setCurrentItem(0);
                 break;
             default:
                 break;
@@ -197,10 +197,4 @@ public class AnswerRecordNewActivity extends BaseActivity implements ViewPager.O
         pagerAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.tv_common_title) {
-            viewPager.setCurrentItem(0);
-        }
-    }
 }

@@ -42,7 +42,6 @@ import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
-import com.shuyun.qapp.utils.ToastUtil;
 import com.shuyun.qapp.view.CircleImageView;
 import com.shuyun.qapp.view.InviteSharePopupUtil;
 import com.shuyun.qapp.view.RealNamePopupUtil;
@@ -87,8 +86,6 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
     RelativeLayout rlInviteShare;
     @BindView(R.id.iv_point_prize)
     ImageView ivPointPrize;
-    @BindView(R.id.iv_point_tools)
-    ImageView ivPointTools;
 
     private CommonPopupWindow popupWindow;
     private static final String LOAD_MINE_HOME_DATA = "loadMineHomeData";//个人信息
@@ -209,15 +206,10 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
             case R.id.ll_my_cash:  //现金提现
                 if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
                     if (mineBean.getCertification() == 1) {
-                        if (1 == mineBean.getWithdraw()) {
-                            startActivity(new Intent(mContext, CashRecordActivity.class));
-                        } else if (2 == mineBean.getWithdraw()) {
-                            ToastUtil.showToast(mContext, "您有一笔资金正在提现中,请耐心等待...");
-                        }
+                        startActivity(new Intent(mContext, CashRecordActivity.class));
                     } else {
                         RealNamePopupUtil.showAuthPop(mContext, llMineFragment, getString(R.string.real_withdraw_describe));
                     }
-
                 }
                 break;
             case R.id.ll_gift: //奖品
@@ -445,24 +437,19 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
                 }
                 tvTodayAnswerNum.setText("今日答题次数剩余: " + mineBean.getOpporitunity());
                 tvBalance.setText(mineBean.getCash());
-//                if (!EncodeAndStringTool.isStringEmpty(mineBean.getCash())) {
-//                    double money = Double.parseDouble(mineBean.getCash());
-//                    if (1 == mineBean.getWithdraw() && money >= 50) {
-//                        //可以提现
-//                        btnImmedicateWithdrawal.setEnabled(true);
-//                    } else {
-//                        //不能提现和提现中 按钮变灰
-//                        btnImmedicateWithdrawal.setEnabled(false);
-//                    }
-//                }
+
                 if (!EncodeAndStringTool.isStringEmpty(mineBean.getBp())) {
                     SharedPrefrenceTool.put(mContext, "bp", mineBean.getBp());
                 }
 
                 tvScore.setText(mineBean.getBp());
 
-//                tvGiftNum.setText("可用奖品：" + mineBean.getAvailablePrize());//可使用奖品数
-//                tvToolsNum.setText("可用道具：" + mineBean.getPropCount());
+                //有未使用的奖品，显示小红点
+                if (mineBean.getAvailablePrize() > 0) {
+                    ivPointPrize.setVisibility(View.VISIBLE);
+                } else {
+                    ivPointPrize.setVisibility(View.GONE);
+                }
 
                 SaveUserInfo.getInstance(mContext).setUserInfo("my_bp", mineBean.getBp());
 
