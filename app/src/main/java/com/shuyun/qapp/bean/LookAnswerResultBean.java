@@ -34,8 +34,8 @@ public class LookAnswerResultBean {
     private Long correct;//回答正确的数量
     private Long error;//回答错误的数量
     private Long timeout;//超时未回答的数量
-    private long examTime;//开始答题时间
-    private long finishTime;//完成答题时间 可能为空（中途退出）
+    private Long examTime;//开始答题时间
+    private Long finishTime;//完成答题时间 可能为空（中途退出）
     /**
      * 答题结果:
      * 0——未中奖
@@ -68,11 +68,11 @@ public class LookAnswerResultBean {
         return timeout;
     }
 
-    public long getExamTime() {
+    public Long getExamTime() {
         return examTime;
     }
 
-    public long getFinishTime() {
+    public Long getFinishTime() {
         return finishTime;
     }
 
@@ -134,8 +134,8 @@ public class LookAnswerResultBean {
         private Long result;
         private String oks;//正确答案
         private String answer;//回答的选项
-        private long examTime;//本题目开始答题时间
-        private long finishTime;//本题目开始答题时间
+        private Long examTime;//本题目开始答题时间
+        private Long finishTime;//本题目开始答题时间
         private List<PictureBean> picture;//题目的图片 type=2有效
         private List<OptionsBean> options;//题目的选项
 
@@ -175,11 +175,11 @@ public class LookAnswerResultBean {
             return answer;
         }
 
-        public long getExamTime() {
+        public Long getExamTime() {
             return examTime;
         }
 
-        public long getFinishTime() {
+        public Long getFinishTime() {
             return finishTime;
         }
 

@@ -1,5 +1,8 @@
 package com.shuyun.qapp.bean;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -28,8 +31,9 @@ public class HistoryDataBean implements Serializable {
         this.result = result;
     }
 
-    public static class ResultBean implements Serializable{
+    public static class ResultBean implements Serializable {
         private String id;//答题id
+        @JSONField(serializeUsing = ToStringSerializer.class)
         private Long groupId;//题组id
         private String picture;//题组主图
         private String time;//答题时间

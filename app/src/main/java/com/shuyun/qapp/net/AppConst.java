@@ -32,10 +32,10 @@ public class AppConst {
      * 后台配的appKey
      */
     public static final String APP_KEY = "G9cSpkRWAmrvNmT84rHIhQUeolfk88htOrIxSrQFRxA8lSY9ZNGnztHPNtLeIigXCAFsyXtk7sGkmVlKLp8kLffYvsNy6vE9HMDNLEee2peDbnvvMgk1hxsmGdVIUW";
-    public static final int WX_MODE = 3;
-    public static final int DEV_ID = 1;
-    public static final int APP_ID = 2;
-    public static final int V = 1;
+    public static final long WX_MODE = 3;
+    public static final long DEV_ID = 1;
+    public static final long APP_ID = 2;
+    public static final long V = 1;
     public static String TOKEN;
     public static String SALT;
     public static String RANDOM;

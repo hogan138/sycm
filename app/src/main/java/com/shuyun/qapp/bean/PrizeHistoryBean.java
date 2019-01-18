@@ -1,5 +1,8 @@
 package com.shuyun.qapp.bean;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
+
 /**
  * 项目名称：QMGJ
  * 创建人：${ganquan}
@@ -16,11 +19,11 @@ public class PrizeHistoryBean {
      * schedule : 20187311
      * ticketNum : er63wg35wys34gert
      */
-
+    @JSONField(serializeUsing = ToStringSerializer.class)
     private Long scheduleId;
     private String prizeName;
     private String mainPic;
-    private long endTime;
+    private Long endTime;
     private Long schedule;
     private String ticketNum;
     private String h5Url;

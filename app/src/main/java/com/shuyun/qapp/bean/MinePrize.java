@@ -3,6 +3,9 @@ package com.shuyun.qapp.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
+
 import java.util.List;
 
 /**
@@ -20,7 +23,7 @@ public class MinePrize implements Parcelable {
      * mode : 0
      * picture : http://img-syksc.25876.com/syksc/app/prize/ico/bx.png
      * mainImage : http://img-syksc.25876.com/syksc/app/prize/ico/baoxiang.png
-     * longImage : 1
+     * LongImage : 1
      * id : b41bf51dd64d485cac5d86c23d908a68
      * ruleId : 1
      * expireTime : 1528508929096
@@ -33,7 +36,7 @@ public class MinePrize implements Parcelable {
      * 3、中奖金额超过800元（含）需缴纳中奖全额的20%个人所得税，从奖金中扣除。</br>
      * 4、本平台的抽奖活动，发起方为“全民共进”平台，与其他第三方无关。</br>
      * 4、最终解释权归浙江舒云互联网传媒有限公司所有，未尽说明事项保留法律权利。
-     * prizes : [{"name":"现金","type":1,"mode":1,"purpose":"满50可提现至支付宝","mainImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","longImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","shortImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","id":1001,"worthLower":0.1,"worthUpper":0.5},{"name":"现金","type":1,"mode":1,"purpose":"满50可提现至支付宝","mainImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","longImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","shortImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","id":1001,"worthLower":0.5,"worthUpper":0.9},{"name":"现金","type":1,"mode":1,"purpose":"满50可提现至支付宝","mainImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","longImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","shortImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","id":1001,"worthLower":0.9,"worthUpper":1.1},{"name":"现金","type":1,"mode":1,"purpose":"满50可提现至支付宝","mainImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","longImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","shortImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","id":1001,"worthLower":1.1,"worthUpper":3},{"name":"现金","type":1,"mode":1,"purpose":"满50可提现至支付宝","mainImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","longImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","shortImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","id":1001,"worthLower":3.1,"worthUpper":5},{"name":"积分","type":2,"mode":2,"purpose":"全民共进平台积分，可以进行抽奖等操作","mainImage":"http://img-syksc.25876.com/syksc/app/prize/ico/jf.png","longImage":"http://img-syksc.25876.com/syksc/app/prize/ico/jf.png","shortImage":"http://img-syksc.25876.com/syksc/app/prize/ico/jf.png","id":1002,"worthLower":2,"worthUpper":2},{"name":"积分","type":2,"mode":2,"purpose":"全民共进平台积分，可以进行抽奖等操作","mainImage":"http://img-syksc.25876.com/syksc/app/prize/ico/jf.png","longImage":"http://img-syksc.25876.com/syksc/app/prize/ico/jf.png","shortImage":"http://img-syksc.25876.com/syksc/app/prize/ico/jf.png","id":1002,"worthLower":3,"worthUpper":3},{"name":"增次卡","type":5,"mode":6,"purpose":"增加一次答题次数，仅限当日使用","mainImage":"http://img-syksc.25876.com/syksc/app/prize/ico/zengcik.png","longImage":"http://img-syksc.25876.com/syksc/app/prize/ico/zengcik.png","shortImage":"http://img-syksc.25876.com/syksc/app/prize/ico/zengcik.png","id":1003,"worthLower":1,"worthUpper":1},{"name":"积分","type":2,"mode":2,"purpose":"全民共进平台积分，可以进行抽奖等操作","mainImage":"http://img-syksc.25876.com/syksc/app/prize/ico/jf.png","longImage":"http://img-syksc.25876.com/syksc/app/prize/ico/jf.png","shortImage":"http://img-syksc.25876.com/syksc/app/prize/ico/jf.png","id":1002,"worthLower":20,"worthUpper":20}]
+     * prizes : [{"name":"现金","type":1,"mode":1,"purpose":"满50可提现至支付宝","mainImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","LongImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","shortImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","id":1001,"worthLower":0.1,"worthUpper":0.5},{"name":"现金","type":1,"mode":1,"purpose":"满50可提现至支付宝","mainImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","LongImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","shortImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","id":1001,"worthLower":0.5,"worthUpper":0.9},{"name":"现金","type":1,"mode":1,"purpose":"满50可提现至支付宝","mainImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","LongImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","shortImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","id":1001,"worthLower":0.9,"worthUpper":1.1},{"name":"现金","type":1,"mode":1,"purpose":"满50可提现至支付宝","mainImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","LongImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","shortImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","id":1001,"worthLower":1.1,"worthUpper":3},{"name":"现金","type":1,"mode":1,"purpose":"满50可提现至支付宝","mainImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","LongImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","shortImage":"http://img-syksc.25876.com/syksc/app/prize/ico/qian.png","id":1001,"worthLower":3.1,"worthUpper":5},{"name":"积分","type":2,"mode":2,"purpose":"全民共进平台积分，可以进行抽奖等操作","mainImage":"http://img-syksc.25876.com/syksc/app/prize/ico/jf.png","LongImage":"http://img-syksc.25876.com/syksc/app/prize/ico/jf.png","shortImage":"http://img-syksc.25876.com/syksc/app/prize/ico/jf.png","id":1002,"worthLower":2,"worthUpper":2},{"name":"积分","type":2,"mode":2,"purpose":"全民共进平台积分，可以进行抽奖等操作","mainImage":"http://img-syksc.25876.com/syksc/app/prize/ico/jf.png","LongImage":"http://img-syksc.25876.com/syksc/app/prize/ico/jf.png","shortImage":"http://img-syksc.25876.com/syksc/app/prize/ico/jf.png","id":1002,"worthLower":3,"worthUpper":3},{"name":"增次卡","type":5,"mode":6,"purpose":"增加一次答题次数，仅限当日使用","mainImage":"http://img-syksc.25876.com/syksc/app/prize/ico/zengcik.png","LongImage":"http://img-syksc.25876.com/syksc/app/prize/ico/zengcik.png","shortImage":"http://img-syksc.25876.com/syksc/app/prize/ico/zengcik.png","id":1003,"worthLower":1,"worthUpper":1},{"name":"积分","type":2,"mode":2,"purpose":"全民共进平台积分，可以进行抽奖等操作","mainImage":"http://img-syksc.25876.com/syksc/app/prize/ico/jf.png","LongImage":"http://img-syksc.25876.com/syksc/app/prize/ico/jf.png","shortImage":"http://img-syksc.25876.com/syksc/app/prize/ico/jf.png","id":1002,"worthLower":20,"worthUpper":20}]
      */
 
     private String name;
@@ -42,8 +45,9 @@ public class MinePrize implements Parcelable {
     private Long mode;
     private String picture;
     private String mainImage;
-    private String longImage;
+    private String LongImage;
     private String id;
+    @JSONField(serializeUsing = ToStringSerializer.class)
     private Long ruleId;
     private String expireTime;
     private String validTime;
@@ -52,16 +56,19 @@ public class MinePrize implements Parcelable {
     private String amount;
     private String bulletin;
     private List<PrizesBean> prizes;
-    private long beat0;//正确击败人次
+    private Long beat0;//正确击败人次
     private Double beatRate;//击败人次的比例
     private Double accuracy;//正确率
     private Long source;//奖品来源
     private String substatusName;
     private String h5Url;
     private int orginal;
-    private long scheduleId;
-    private long orderId;
-    private long activityId;//活动id
+    @JSONField(serializeUsing = ToStringSerializer.class)
+    private Long scheduleId;
+    @JSONField(serializeUsing = ToStringSerializer.class)
+    private Long orderId;
+    @JSONField(serializeUsing = ToStringSerializer.class)
+    private Long activityId;//活动id
     public boolean selected = false;
     private String content;
     private String openPicture;//开奖使用的图片
@@ -80,7 +87,7 @@ public class MinePrize implements Parcelable {
         mode = in.readLong();
         picture = in.readString();
         mainImage = in.readString();
-        longImage = in.readString();
+        LongImage = in.readString();
         id = in.readString();
         ruleId = in.readLong();
         expireTime = in.readString();
@@ -170,11 +177,11 @@ public class MinePrize implements Parcelable {
     }
 
     public String getLongImage() {
-        return longImage;
+        return LongImage;
     }
 
-    public void setLongImage(String longImage) {
-        this.longImage = longImage;
+    public void setLongImage(String LongImage) {
+        this.LongImage = LongImage;
     }
 
     public String getId() {
@@ -249,11 +256,11 @@ public class MinePrize implements Parcelable {
         this.prizes = prizes;
     }
 
-    public long getBeat0() {
+    public Long getBeat0() {
         return beat0;
     }
 
-    public void setBeat0(long beat0) {
+    public void setBeat0(Long beat0) {
         this.beat0 = beat0;
     }
 
@@ -305,27 +312,27 @@ public class MinePrize implements Parcelable {
         this.orginal = orginal;
     }
 
-    public long getScheduleId() {
+    public Long getScheduleId() {
         return scheduleId;
     }
 
-    public void setScheduleId(long scheduleId) {
+    public void setScheduleId(Long scheduleId) {
         this.scheduleId = scheduleId;
     }
 
-    public long getOrderId() {
+    public Long getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(long orderId) {
+    public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
 
-    public long getActivityId() {
+    public Long getActivityId() {
         return activityId;
     }
 
-    public void setActivityId(long activityId) {
+    public void setActivityId(Long activityId) {
         this.activityId = activityId;
     }
 
@@ -390,7 +397,7 @@ public class MinePrize implements Parcelable {
         dest.writeLong(mode);
         dest.writeString(picture);
         dest.writeString(mainImage);
-        dest.writeString(longImage);
+        dest.writeString(LongImage);
         dest.writeString(id);
         dest.writeLong(ruleId);
         dest.writeString(expireTime);
@@ -426,7 +433,7 @@ public class MinePrize implements Parcelable {
          * mode : 1
          * purpose : 满50可提现至支付宝
          * mainImage : http://img-syksc.25876.com/syksc/app/prize/ico/qian.png
-         * longImage : http://img-syksc.25876.com/syksc/app/prize/ico/qian.png
+         * LongImage : http://img-syksc.25876.com/syksc/app/prize/ico/qian.png
          * shortImage : http://img-syksc.25876.com/syksc/app/prize/ico/qian.png
          * id : 1001
          * worthLower : 0.1
@@ -438,7 +445,7 @@ public class MinePrize implements Parcelable {
         private Long mode;
         private String purpose;
         private String mainImage;
-        private String longImage;
+        private String LongImage;
         private String shortImage;
         private Long id;
         private double worthLower;
@@ -454,7 +461,7 @@ public class MinePrize implements Parcelable {
             mode = in.readLong();
             purpose = in.readString();
             mainImage = in.readString();
-            longImage = in.readString();
+            LongImage = in.readString();
             shortImage = in.readString();
             id = in.readLong();
             worthLower = in.readDouble();
@@ -514,11 +521,11 @@ public class MinePrize implements Parcelable {
         }
 
         public String getLongImage() {
-            return longImage;
+            return LongImage;
         }
 
-        public void setLongImage(String longImage) {
-            this.longImage = longImage;
+        public void setLongImage(String LongImage) {
+            this.LongImage = LongImage;
         }
 
         public String getShortImage() {
@@ -565,7 +572,7 @@ public class MinePrize implements Parcelable {
             dest.writeLong(mode);
             dest.writeString(purpose);
             dest.writeString(mainImage);
-            dest.writeString(longImage);
+            dest.writeString(LongImage);
             dest.writeString(shortImage);
             dest.writeLong(id);
             dest.writeDouble(worthLower);
@@ -582,7 +589,7 @@ public class MinePrize implements Parcelable {
          * mode : 3
          * picture : http://img-syksc.25876.com/syksc/app/prize/ico/xjhb.png
          * mainImage : http://img-syksc.25876.com/syksc/app/prize/ico/hongbao.png
-         * longImage : http://img-syksc.25876.com/syksc/app/prize/img/hongbao1.png
+         * LongImage : http://img-syksc.25876.com/syksc/app/prize/img/hongbao1.png
          * shortImage : http://img-syksc.25876.com/syksc/app/prize/ico/hongbao.png
          * id : 102065a277bf4830851aab39ff307115
          * prizeId : 1004
@@ -608,10 +615,12 @@ public class MinePrize implements Parcelable {
         private Long mode;
         private String picture;
         private String mainImage;
-        private String longImage;
+        private String LongImage;
         private String shortImage;
         private String id;
+        @JSONField(serializeUsing = ToStringSerializer.class)
         private Long prizeId;
+        @JSONField(serializeUsing = ToStringSerializer.class)
         private Long ruleId;
         private String expireTime;
         private Long validTime;
@@ -695,11 +704,11 @@ public class MinePrize implements Parcelable {
         }
 
         public String getLongImage() {
-            return longImage;
+            return LongImage;
         }
 
-        public void setLongImage(String longImage) {
-            this.longImage = longImage;
+        public void setLongImage(String LongImage) {
+            this.LongImage = LongImage;
         }
 
         public String getShortImage() {
@@ -861,7 +870,7 @@ public class MinePrize implements Parcelable {
             mode = in.readLong();
             picture = in.readString();
             mainImage = in.readString();
-            longImage = in.readString();
+            LongImage = in.readString();
             shortImage = in.readString();
             id = in.readString();
             prizeId = in.readLong();
@@ -909,7 +918,7 @@ public class MinePrize implements Parcelable {
             dest.writeLong(mode);
             dest.writeString(picture);
             dest.writeString(mainImage);
-            dest.writeString(longImage);
+            dest.writeString(LongImage);
             dest.writeString(shortImage);
             dest.writeString(id);
             dest.writeLong(prizeId);

@@ -14,10 +14,10 @@ public class InputVerficationCodeBean {
      * 3:绑定微信
      */
     private int type;
-    private long devId;//开发者id
-    private long appId;//应用内部id
-    private int v;//接口版本
-    private long stamp;//当前时间戳
+    private Long devId;//开发者id
+    private Long appId;//应用内部id
+    private Long v;//接口版本
+    private Long stamp;//当前时间戳
     private String code;//签名验证码
 
     public void setPhone(String phone) {
@@ -28,19 +28,19 @@ public class InputVerficationCodeBean {
         this.type = type;
     }
 
-    public void setDevId(long devId) {
+    public void setDevId(Long devId) {
         this.devId = devId;
     }
 
-    public void setAppId(long appId) {
+    public void setAppId(Long appId) {
         this.appId = appId;
     }
 
-    public void setV(int v) {
+    public void setV(Long v) {
         this.v = v;
     }
 
-    public void setStamp(long stamp) {
+    public void setStamp(Long stamp) {
         this.stamp = stamp;
     }
 
@@ -56,19 +56,19 @@ public class InputVerficationCodeBean {
         return type;
     }
 
-    public long getDevId() {
+    public Long getDevId() {
         return devId;
     }
 
-    public long getAppId() {
+    public Long getAppId() {
         return appId;
     }
 
-    public int getV() {
+    public Long getV() {
         return v;
     }
 
-    public long getStamp() {
+    public Long getStamp() {
         return stamp;
     }
 

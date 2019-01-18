@@ -157,7 +157,7 @@ public class VerifyCodeActivity extends BaseActivity {
     }
 
     //2验证码登录4注册
-    private void register(String code, int mode) {
+    private void register(String code, long mode) {
         String mdCode = encryptMD5ToString(phone + encryptMD5ToString(code));
         long curTime = System.currentTimeMillis();
         String tsn = EncodeAndStringTool.getTsn(this);
@@ -310,7 +310,7 @@ public class VerifyCodeActivity extends BaseActivity {
      * 登录
      */
 
-    public void loadLogin(final Activity mContext, final LoginInput loginInput, final int mode) {
+    public void loadLogin(final Activity mContext, final LoginInput loginInput, final long mode) {
         SaveUserInfo.getInstance(this).setUserInfo("account", loginInput.getAccount());
         SaveUserInfo.getInstance(mContext).setUserInfo("phone", loginInput.getAccount());
         final String account = SaveUserInfo.getInstance(this).getUserInfo("account");

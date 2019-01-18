@@ -24,7 +24,7 @@ public class PrizeDetailBean {
 
     private String prizeName;
     private String mainPic;
-    private long endTime;
+    private Long endTime;
     private Long schedule;
     private Long participate;
     private Long count;
@@ -49,11 +49,11 @@ public class PrizeDetailBean {
         this.mainPic = mainPic;
     }
 
-    public long getEndTime() {
+    public Long getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(long endTime) {
+    public void setEndTime(Long endTime) {
         this.endTime = endTime;
     }
 

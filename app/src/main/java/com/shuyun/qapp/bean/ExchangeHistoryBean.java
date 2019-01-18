@@ -82,17 +82,17 @@ public class ExchangeHistoryBean {
          * isWin : 1
          */
 
-        private long changeTime;
+        private Long changeTime;
         private String userAccount;
         private String ticketNum;
         private Long isMine;
         private Long isWin;
 
-        public long getChangeTime() {
+        public Long getChangeTime() {
             return changeTime;
         }
 
-        public void setChangeTime(long changeTime) {
+        public void setChangeTime(Long changeTime) {
             this.changeTime = changeTime;
         }
 

@@ -1,5 +1,8 @@
 package com.shuyun.qapp.bean;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
+
 /**
  * Created by sunxiao on 2018/6/27.
  * 答题首页需要传给H5的参数
@@ -9,9 +12,11 @@ public class WebAnswerHomeBean {
 
     private String token;//登录返回参数
     private String random;//登录返回参数
+    @JSONField(serializeUsing = ToStringSerializer.class)
     private Long groupId;//题组id
+    @JSONField(serializeUsing = ToStringSerializer.class)
     private Long act;//活动id;获取题组答题详情接口返回
-    private int v;
+    private Long v;
     private String salt;
     /**
      * 后台配的appKey
@@ -65,7 +70,7 @@ public class WebAnswerHomeBean {
         return act;
     }
 
-    public void setV(int v) {
+    public void setV(Long v) {
         this.v = v;
     }
 
@@ -77,7 +82,7 @@ public class WebAnswerHomeBean {
         this.appSecret = appSecret;
     }
 
-    public int getV() {
+    public Long getV() {
         return v;
     }
 

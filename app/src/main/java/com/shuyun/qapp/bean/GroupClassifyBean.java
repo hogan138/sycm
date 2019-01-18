@@ -1,5 +1,8 @@
 package com.shuyun.qapp.bean;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
+
 import java.util.List;
 
 /**
@@ -21,9 +24,11 @@ public class GroupClassifyBean {
      * parentId : 0
      * children : [{"id":234,"name":"全民大探班40期","parentId":1,"opportunity":1}]
      */
+    @JSONField(serializeUsing = ToStringSerializer.class)
     private Long id;//题组id
     private String name;//题组名称
     private Long opportunity;//消耗答题机会次数0:表示不消耗答题机会次数
+    @JSONField(serializeUsing = ToStringSerializer.class)
     private Long parentId;//上级题组
     private String picture;//题组主图
     private boolean isFlag;//是否点击选中

@@ -23,7 +23,7 @@ public class ExchangeMyPrizeBean {
     private Long scheduleId;
     private String prizeName;
     private String mainPic;
-    private long endTime;
+    private Long endTime;
     private Long schedule;
     private Long participate;
     private Long userTicketCount;
@@ -62,11 +62,11 @@ public class ExchangeMyPrizeBean {
         this.mainPic = mainPic;
     }
 
-    public long getEndTime() {
+    public Long getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(long endTime) {
+    public void setEndTime(Long endTime) {
         this.endTime = endTime;
     }
 

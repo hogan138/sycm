@@ -1,5 +1,8 @@
 package com.shuyun.qapp.bean;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
+
 /**
  * 项目名称：QMGJ
  * 创建人：${ganquan}
@@ -21,12 +24,14 @@ public class RobotInputAgainstBean {
      */
 
     private int type; //场次
+    @JSONField(serializeUsing = ToStringSerializer.class)
     private Long questionId; //上一题目题目id
     private int userScore; //用户分数
     private int robotScore; //机器人分数
     private String robotId; //机器人id
     private String userOptionId; //用户选项id
     private double userConst; //用户耗时
+    @JSONField(serializeUsing = ToStringSerializer.class)
     private Long nextQuestionId; //当前题目id
     private String questionArry; //选项id
     private int isLast;

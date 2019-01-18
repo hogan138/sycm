@@ -277,7 +277,7 @@ public class LoginActivity extends BaseActivity implements OnRemotingCallBackLis
 
                     String signCode = getCode(myCode);
                     LoginInput loginInput = new LoginInput();
-                    loginInput.setMode(1);
+                    loginInput.setMode(1L);
                     loginInput.setAccount(phoneNum);
                     loginInput.setTsn(tsn);
                     loginInput.setSalt(salt);

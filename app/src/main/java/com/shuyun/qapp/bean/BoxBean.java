@@ -3,6 +3,9 @@ package com.shuyun.qapp.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -19,10 +22,12 @@ public class BoxBean implements Parcelable {
     private String bulletin; // 奖品的规则公告，仅针对宝箱有效
     private double beatRate; // 击败率
     private double accuracy; // 正确率
-    private long prizeId; // 对应的奖品id
+    @JSONField(serializeUsing = ToStringSerializer.class)
+    private Long prizeId; // 对应的奖品id
+    @JSONField(serializeUsing = ToStringSerializer.class)
     private Long ruleId; // 得奖时的规则id
-    private long expireTime; // 有效期-结束日期
-    private long validTime; // 有效期-开始日期
+    private Long expireTime; // 有效期-结束日期
+    private Long validTime; // 有效期-开始日期
     private short status; // 状态：0——待打开（容器:需要打开；单品：需要打开才能拿到）1——正常；2——已用；3——过期；4——使用中
     private short substatus = 0; // 子状态，根据不同的奖品有不同的定义
     private String substatusName; // 子状态显示名称
@@ -144,11 +149,11 @@ public class BoxBean implements Parcelable {
         this.accuracy = accuracy;
     }
 
-    public long getPrizeId() {
+    public Long getPrizeId() {
         return prizeId;
     }
 
-    public void setPrizeId(long prizeId) {
+    public void setPrizeId(Long prizeId) {
         this.prizeId = prizeId;
     }
 
@@ -160,19 +165,19 @@ public class BoxBean implements Parcelable {
         this.ruleId = ruleId;
     }
 
-    public long getExpireTime() {
+    public Long getExpireTime() {
         return expireTime;
     }
 
-    public void setExpireTime(long expireTime) {
+    public void setExpireTime(Long expireTime) {
         this.expireTime = expireTime;
     }
 
-    public long getValidTime() {
+    public Long getValidTime() {
         return validTime;
     }
 
-    public void setValidTime(long validTime) {
+    public void setValidTime(Long validTime) {
         this.validTime = validTime;
     }
 
@@ -216,15 +221,15 @@ public class BoxBean implements Parcelable {
         this.amount = amount;
     }
 
-    public long getBeat() {
+    public Long getBeat() {
         return beat;
     }
 
-    public void setBeat(long beat) {
+    public void setBeat(Long beat) {
         this.beat = beat;
     }
 
-    private long beat = 0L; // 得到宝箱时击败的人次
+    private Long beat = 0L; // 得到宝箱时击败的人次
 
     @Override
     public int describeContents() {
@@ -271,7 +276,7 @@ public class BoxBean implements Parcelable {
 
         // 新增属性
         private String mainImage; // 奖品主图
-        private String longImage; // 奖品长图
+        private String LongImage; // 奖品长图
 
         private Long id; // 奖品id
         private String goodsCode; // 奖品商品编码
@@ -293,7 +298,7 @@ public class BoxBean implements Parcelable {
             picture = in.readString();
             openPicture = in.readString();
             mainImage = in.readString();
-            longImage = in.readString();
+            LongImage = in.readString();
             if (in.readByte() == 0) {
                 id = null;
             } else {
@@ -388,11 +393,11 @@ public class BoxBean implements Parcelable {
         }
 
         public String getLongImage() {
-            return longImage;
+            return LongImage;
         }
 
-        public void setLongImage(String longImage) {
-            this.longImage = longImage;
+        public void setLongImage(String LongImage) {
+            this.LongImage = LongImage;
         }
 
         public Long getId() {
@@ -451,7 +456,7 @@ public class BoxBean implements Parcelable {
             dest.writeString(picture);
             dest.writeString(openPicture);
             dest.writeString(mainImage);
-            dest.writeString(longImage);
+            dest.writeString(LongImage);
             if (id == null) {
                 dest.writeByte((byte) 0);
             } else {

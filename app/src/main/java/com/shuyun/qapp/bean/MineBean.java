@@ -3,6 +3,9 @@ package com.shuyun.qapp.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
+
 import java.util.List;
 
 /**
@@ -36,6 +39,7 @@ public class MineBean implements Parcelable {
      * datas : [{"stateName":"未完善","bankType":1,"type":"withdraw","title":"点击完善提现信息","message":"支持支付宝提现，快快补充提现信息哦","status":1}]
      */
 
+    @JSONField(serializeUsing = ToStringSerializer.class)
     private Long id;
     private String account;
     private String nickname;

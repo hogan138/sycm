@@ -23,8 +23,8 @@ public class CompleteAnswerResponse implements Parcelable {
     private float worth;//奖品的价值
     private String bulletin;//开奖公告
     private List<MinePrize> prize;//中奖的奖品
-    private long beat;//击败多少人
-    private long beat0;//真实击败人次
+    private Long beat;//击败多少人
+    private Long beat0;//真实击败人次
     private double beatRate;//击败的人次比例值
 
     public  CompleteAnswerResponse(){
@@ -96,7 +96,7 @@ public class CompleteAnswerResponse implements Parcelable {
 
     private List<PrizesBean> prizes;
 
-    public long getBeat0() {
+    public Long getBeat0() {
         return beat0;
     }
 
@@ -111,7 +111,7 @@ public class CompleteAnswerResponse implements Parcelable {
          * mode : 1
          * purpose : 满50可提现至支付宝
          * mainImage : http://img-syksc.25876.com/syksc/app/prize/ico/qian.png
-         * longImage : http://img-syksc.25876.com/syksc/app/prize/ico/qian.png
+         * LongImage : http://img-syksc.25876.com/syksc/app/prize/ico/qian.png
          * shortImage : http://img-syksc.25876.com/syksc/app/prize/ico/qian.png
          * id : 1001
          * worthLower : 0.1
@@ -123,7 +123,7 @@ public class CompleteAnswerResponse implements Parcelable {
         private Long mode;
         private String purpose;
         private String mainImage;
-        private String longImage;
+        private String LongImage;
         private String shortImage;
         private Long id;
         private double worthLower;
@@ -138,7 +138,7 @@ public class CompleteAnswerResponse implements Parcelable {
             mode = in.readLong();
             purpose = in.readString();
             mainImage = in.readString();
-            longImage = in.readString();
+            LongImage = in.readString();
             shortImage = in.readString();
             id = in.readLong();
             worthLower = in.readDouble();
@@ -198,11 +198,11 @@ public class CompleteAnswerResponse implements Parcelable {
         }
 
         public String getLongImage() {
-            return longImage;
+            return LongImage;
         }
 
-        public void setLongImage(String longImage) {
-            this.longImage = longImage;
+        public void setLongImage(String LongImage) {
+            this.LongImage = LongImage;
         }
 
         public String getShortImage() {
@@ -249,7 +249,7 @@ public class CompleteAnswerResponse implements Parcelable {
             dest.writeLong(mode);
             dest.writeString(purpose);
             dest.writeString(mainImage);
-            dest.writeString(longImage);
+            dest.writeString(LongImage);
             dest.writeString(shortImage);
             dest.writeLong(id);
             dest.writeDouble(worthLower);
@@ -305,7 +305,7 @@ public class CompleteAnswerResponse implements Parcelable {
         return prize;
     }
 
-    public long getBeat() {
+    public Long getBeat() {
         return beat;
     }
 

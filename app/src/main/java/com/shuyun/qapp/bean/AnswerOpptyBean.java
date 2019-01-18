@@ -8,13 +8,13 @@ package com.shuyun.qapp.bean;
 public class AnswerOpptyBean {
 
     private Long oppty;//用户当前的答题机会次数
-    private long remainder;//距离下次领取时长
+    private Long remainder;//距离下次领取时长
 
     public Long getOppty() {
         return oppty;
     }
 
-    public long getRemainder() {
+    public Long getRemainder() {
         return remainder;
     }
 

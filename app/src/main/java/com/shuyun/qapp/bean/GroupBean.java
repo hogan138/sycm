@@ -1,5 +1,8 @@
 package com.shuyun.qapp.bean;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
+
 import java.util.List;
 
 /**
@@ -21,11 +24,14 @@ public class GroupBean {
      * opportunityLabel : 不消耗答题次数
      */
 
+    @JSONField(serializeUsing = ToStringSerializer.class)
     private Long id;//题组id
     private String name;//题组名称
+    @JSONField(serializeUsing = ToStringSerializer.class)
     private Long parentId;//上级题组
     private String picture;//题组主图
     private Long opportunity;//消耗答题机会次数
+    @JSONField(serializeUsing = ToStringSerializer.class)
     private Long guideId;//指南id
     private String merchantName;//题组参与的活动商户名称
     private Long sorting;

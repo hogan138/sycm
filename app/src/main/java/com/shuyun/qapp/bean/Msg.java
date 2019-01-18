@@ -1,5 +1,8 @@
 package com.shuyun.qapp.bean;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
+
 import org.litepal.crud.DataSupport;
 
 /**
@@ -8,6 +11,7 @@ import org.litepal.crud.DataSupport;
 
 public class Msg extends DataSupport {
 
+    @JSONField(serializeUsing = ToStringSerializer.class)
     private Long id;//消息id
     /**
      * 消息类型
@@ -36,7 +40,7 @@ public class Msg extends DataSupport {
      * 2——已读
      */
     private int status;
-    private long time;//消息时间
+    private Long time;//消息时间
     private String h5Url; //答题url
 
     public String getH5Url() {
@@ -67,7 +71,7 @@ public class Msg extends DataSupport {
         this.status = status;
     }
 
-    public void setTime(long time) {
+    public void setTime(Long time) {
         this.time = time;
     }
 
@@ -95,7 +99,7 @@ public class Msg extends DataSupport {
         return status;
     }
 
-    public long getTime() {
+    public Long getTime() {
         return time;
     }
 

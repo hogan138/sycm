@@ -1,5 +1,8 @@
 package com.shuyun.qapp.bean;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
+
 /**
  * Created by sunxiao on 2018/5/21.
  * 用户答题记录
@@ -7,6 +10,7 @@ package com.shuyun.qapp.bean;
 public class AnswerRecordBean {
 
     private String id;//答题id
+    @JSONField(serializeUsing = ToStringSerializer.class)
     private Long groupId;//题组id
     private String picture;//题组主图
     private String time;//答题时间

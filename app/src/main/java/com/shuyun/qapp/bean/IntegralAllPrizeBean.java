@@ -1,5 +1,8 @@
 package com.shuyun.qapp.bean;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
+
 /**
  * 项目名称：QMGJ
  * 创建人：${ganquan}
@@ -19,11 +22,12 @@ public class IntegralAllPrizeBean {
      * scheduleStatus : 0
      * bpcons : 200
      */
-
+    @JSONField(serializeUsing = ToStringSerializer.class)
     private Long scheduleId; //档期id
     private String prizeName; //奖品名称
     private String mainPic; //主图
-    private long endTime; //结束时间
+    private Long endTime; //结束时间
+    @JSONField(serializeUsing = ToStringSerializer.class)
     private Long schedule; //期号
     private Long count; //奖品数量
     private Long scheduleStatus; //开奖状态
@@ -64,11 +68,11 @@ public class IntegralAllPrizeBean {
         this.mainPic = mainPic;
     }
 
-    public long getEndTime() {
+    public Long getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(long endTime) {
+    public void setEndTime(Long endTime) {
         this.endTime = endTime;
     }
 

@@ -1,5 +1,8 @@
 package com.shuyun.qapp.bean;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
+
 import java.util.List;
 
 /**
@@ -8,6 +11,7 @@ import java.util.List;
 
 public class BannerBean {
 
+    @JSONField(serializeUsing = ToStringSerializer.class)
     private Long id;
     private String name;//名称
     private String description;//描述
