@@ -56,7 +56,7 @@ public class MinePrize implements Parcelable {
     private String amount;
     private String bulletin;
     private List<PrizesBean> prizes;
-    private Long beat0;//正确击败人次
+    private Long beat0 = 0L;//正确击败人次
     private Double beatRate;//击败人次的比例
     private Double accuracy;//正确率
     private Long source;//奖品来源
@@ -407,7 +407,7 @@ public class MinePrize implements Parcelable {
         dest.writeString(amount);
         dest.writeString(bulletin);
         dest.writeTypedList(prizes);
-        dest.writeLong(beat0);
+        dest.writeLong(beat0 == null ? 0L : beat0);
         dest.writeDouble(beatRate);
         dest.writeDouble(accuracy);
         dest.writeLong(source);

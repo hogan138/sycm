@@ -87,5 +87,6 @@
     <string name="tv_share_pengyouquan">分享到朋友圈</string>
     <string name="tv_share_wx">分享给微信好友</string>
     <string name="tv_app_remark">打开知识宝藏</string>
+    <string name="tv_qr_tip">长按识别二维码\n参与答题赢大奖</string>
 
 </resources>

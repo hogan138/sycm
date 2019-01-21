@@ -25,10 +25,13 @@ import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SykscApplication;
+import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.webview.WebPublicActivity;
 import com.shuyun.qapp.utils.AliPushBind;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.MyActivityManager1;
+import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ToastUtil;
 
 import butterknife.BindView;
@@ -225,7 +228,16 @@ public class BindPhoneNumActivity extends BaseActivity {
                         KeyboardUtils.hideSoftInput(BindPhoneNumActivity.this);
                         //绑定成功  存token值
                         ToastUtil.showToast(BindPhoneNumActivity.this, "绑定成功");
-                        finish();
+
+                        if ("0".equals(SaveUserInfo.getInstance(BindPhoneNumActivity.this).getUserInfo("normal_login"))) {
+                            //正常登录
+                            startActivity(new Intent(BindPhoneNumActivity.this, HomePageActivity.class));
+                            finish();
+                        } else {
+                            //启用游客模式
+                            finish();
+                        }
+
                     } else {
                         ErrorCodeTools.errorCodePrompt(BindPhoneNumActivity.this, dataResponse.getErr(), dataResponse.getMsg());
                     }

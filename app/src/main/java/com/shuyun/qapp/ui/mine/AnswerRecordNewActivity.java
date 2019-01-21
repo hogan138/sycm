@@ -59,7 +59,7 @@ public class AnswerRecordNewActivity extends BaseActivity implements ViewPager.O
     RelativeLayout rlGuide;
 
     private int currentPage = 0;
-    private int pageSize = 10;
+    private int pageSize = 50;
     private long totalR = 0;
     private ViewPagerAdapter pagerAdapter;
     private List<BaseFragment> baseList = new ArrayList<>();

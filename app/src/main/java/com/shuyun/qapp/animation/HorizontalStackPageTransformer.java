@@ -31,11 +31,21 @@ public class HorizontalStackPageTransformer implements ViewPager.PageTransformer
             view.setTranslationX(translationX);
             //view.setTranslationY(30 * position);
         }
-        if (position > -1 && position < 0) {
+        /*if (position > -1 && position < 0) {
             view.setAlpha((position * position * position + 1));
         } else if (position > offscreenPageLimit - 1) {
             view.setAlpha((float) (1 - position + Math.floor(position)));
         } else {
+            view.setAlpha(1);
+        }*/
+        if (position > -1 && position < 0) {
+            float rotation = position * 30;
+            view.setRotation(rotation);
+            view.setAlpha((position * position * position + 1));
+        } else if (position > offscreenPageLimit - 1) {
+            view.setAlpha((float) (1 - position + Math.floor(position)));
+        } else {
+            view.setRotation(0);
             view.setAlpha(1);
         }
         if (position == 0) {

@@ -84,9 +84,6 @@ public class AccountRecordAdapter extends RecyclerView.Adapter<AccountRecordAdap
                     }
                     holder.ivStatus.setVisibility(View.VISIBLE);
                     holder.ivStatus.setImageResource(R.mipmap.fail);//
-                    holder.tvName.setTextColor(ContextCompat.getColor(context, R.color.color_15));
-                    holder.tvNumber.setTextColor(ContextCompat.getColor(context, R.color.color_15));
-                    holder.tvDate.setTextColor(ContextCompat.getColor(context, R.color.color_15));
                 }
                 holder.ivStatus.setVisibility(View.GONE);
             } else if (2 == accountBean.getWay()) {
@@ -104,9 +101,6 @@ public class AccountRecordAdapter extends RecyclerView.Adapter<AccountRecordAdap
                 } else if (3 == accountBean.getStatus()) {//审核失败
                     holder.ivStatus.setVisibility(View.VISIBLE);
                     holder.ivStatus.setImageResource(R.mipmap.fail);//
-                    holder.tvName.setTextColor(ContextCompat.getColor(context, R.color.color_15));
-                    holder.tvNumber.setTextColor(ContextCompat.getColor(context, R.color.color_15));
-                    holder.tvDate.setTextColor(ContextCompat.getColor(context, R.color.color_15));
                 } else {
                     holder.ivStatus.setVisibility(View.GONE);//默认状态
                 }

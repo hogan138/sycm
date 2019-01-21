@@ -14,23 +14,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.HistoryDataBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.net.OnRemotingCallBackListener;
-import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.utils.DisplayUtil;
-import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.ViewToBitmap;
+import com.shuyun.qapp.view.OvalImageView;
 import com.umeng.socialize.ShareAction;
-import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
@@ -54,7 +48,7 @@ public class ShareAnswerRecordActivity extends BaseActivity implements View.OnCl
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle;
     @BindView(R.id.image)
-    ImageView imageView;
+    OvalImageView imageView;
     @BindView(R.id.ivLevel)
     ImageView ivLevel;
     @BindView(R.id.tvTitle)
@@ -189,7 +183,6 @@ public class ShareAnswerRecordActivity extends BaseActivity implements View.OnCl
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-//                        Toast.makeText(mContext, isSaved + ":" + path, Toast.LENGTH_LONG).show();
                         File file = new File(path);
                         wechatShare(file, mContext);
                     }
@@ -206,7 +199,7 @@ public class ShareAnswerRecordActivity extends BaseActivity implements View.OnCl
     }
 
     /**
-     * 微信分享
+     * 微信、朋友圈分享
      */
     private static void wechatShare(final File file, Context context) {
         SHARE_MEDIA media = SHARE_MEDIA.WEIXIN;
@@ -216,54 +209,13 @@ public class ShareAnswerRecordActivity extends BaseActivity implements View.OnCl
             media = SHARE_MEDIA.WEIXIN_CIRCLE;
         }
         UMImage image = new UMImage(context, file);//网络图片
-//        UMImage thumb = new UMImage(context, file);//网络图片
-//        image.setThumb(thumb);
-        //image.compressStyle = UMImage.CompressStyle.SCALE;//大小压缩，默认为大小压缩，适合普通很大的图
+        UMImage thumb = new UMImage(context, file);//缩略图
+        image.setThumb(thumb);
+        image.compressStyle = UMImage.CompressStyle.SCALE;//大小压缩，默认为大小压缩，适合普通很大的图
         new ShareAction((Activity) context)
                 .setPlatform(media)
                 .withMedia(image)
-                .setCallback(new UMShareListener() {
-                    /**
-                     * @descrption 分享开始的回调
-                     * @param share_media 平台类型
-                     */
-                    @Override
-                    public void onStart(SHARE_MEDIA share_media) {
-
-                    }
-
-                    /**
-                     * @descrption 分享成功的回调
-                     * @param share_media 平台类型
-                     */
-                    @Override
-                    public void onResult(SHARE_MEDIA share_media) {
-                        /**
-                         * 入参1:分享id;2:分享结果(①分享成功,②分享失败);3:分享渠道(①微信朋友圈②微信好友)
-                         */
-                    }
-
-                    /**
-                     * @descrption 分享失败的回调
-                     * @param share_media 平台类型
-                     * @param throwable 错误原因
-                     */
-                    @Override
-                    public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-
-                        /**
-                         * 入参1:分享id;2:分享结果(①分享成功,②分享失败);3:分享渠道(①微信朋友圈②微信好友)
-                         */
-                    }
-
-                    /**
-                     * @descrption 分享取消的回调
-                     * @param share_media 平台类型
-                     */
-                    @Override
-                    public void onCancel(SHARE_MEDIA share_media) {
-                    }
-                }).share();
+                .share();
     }
 
 }

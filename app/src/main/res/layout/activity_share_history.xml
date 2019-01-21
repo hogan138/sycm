@@ -57,10 +57,12 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <ImageView
+                    <com.shuyun.qapp.view.OvalImageView
                         android:id="@+id/image"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingLeft="1.5dp"
+                        android:paddingRight="1.5dp"
                         android:scaleType="fitXY" />
 
                     <TextView
@@ -185,6 +187,7 @@
 
                 </LinearLayout>
 
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -192,39 +195,55 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginBottom="20dp"
                     android:gravity="bottom"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:id="@+id/shareQr"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp" />
-                    </LinearLayout>
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
 
-                        <TextView
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:id="@+id/shareQr"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/app_name"
-                            android:textColor="@color/color_1"
-                            android:textSize="16sp" />
+                            android:layout_gravity="bottom"
+                            android:layout_marginLeft="16dp"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="3dp"
-                            android:text="@string/tv_app_remark"
-                            android:textColor="#3f3f3f"
-                            android:textSize="13sp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/app_name"
+                                android:textColor="@color/color_1"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
+                                android:text="@string/tv_app_remark"
+                                android:textColor="#3f3f3f"
+                                android:textSize="13sp" />
+                        </LinearLayout>
                     </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/tv_qr_tip"
+                        android:textColor="@color/color_1"
+                        android:textSize="8sp" />
                 </LinearLayout>
             </RelativeLayout>
         </android.support.v7.widget.CardView>
