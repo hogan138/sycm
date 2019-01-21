@@ -238,13 +238,13 @@ public class BoxBean implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(count);
-        dest.writeLong(source);
+        dest.writeLong(count == null ? 0L : count);
+        dest.writeLong(source == null ? 0L : source);
         dest.writeTypedList(prizes);
         dest.writeString(id);
         dest.writeString(bulletin);
-        dest.writeDouble(beatRate);
-        dest.writeDouble(accuracy);
+        dest.writeDouble(beatRate == null ? 0 : beatRate);
+        dest.writeDouble(accuracy == null ? 0 : accuracy);
         dest.writeLong(prizeId);
         if (ruleId == null) {
             dest.writeByte((byte) 0);
@@ -252,14 +252,14 @@ public class BoxBean implements Parcelable {
             dest.writeByte((byte) 1);
             dest.writeLong(ruleId);
         }
-        dest.writeLong(expireTime);
-        dest.writeLong(validTime);
-        dest.writeInt((int) status);
-        dest.writeInt((int) substatus);
+        dest.writeLong(expireTime == null ? 0L : expireTime);
+        dest.writeLong(validTime == null ? 0L : validTime);
+        dest.writeInt((int) (status == null ? 0 : status));
+        dest.writeInt((int) (substatus == null ? 0 : substatus));
         dest.writeString(substatusName);
-        dest.writeInt((int) upcomming);
-        dest.writeDouble(amount);
-        dest.writeLong(beat);
+        dest.writeInt((int) (upcomming == null ? 0 : upcomming));
+        dest.writeDouble(amount == null ? 0 : amount);
+        dest.writeLong(beat == null ? 0L : beat);
         dest.writeString(h5Url);
     }
 
@@ -449,9 +449,9 @@ public class BoxBean implements Parcelable {
         @Override
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeString(name);
-            dest.writeInt((int) type);
+            dest.writeInt((int) (type == null ? 0 : type));
             dest.writeString(description);
-            dest.writeInt((int) mode);
+            dest.writeInt((int) (mode == null ? 0 : mode));
             dest.writeString(purpose);
             dest.writeString(content);
             dest.writeString(picture);
