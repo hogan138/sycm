@@ -1,5 +1,6 @@
 package com.shuyun.qapp.ui.mine;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,11 +18,21 @@ import android.widget.Toast;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
+import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.HistoryDataBean;
+import com.shuyun.qapp.net.ApiServiceBean;
+import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.utils.DisplayUtil;
+import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.ViewToBitmap;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import java.io.File;
@@ -67,11 +78,13 @@ public class ShareAnswerRecordActivity extends BaseActivity implements View.OnCl
     @BindView(R.id.ll_share)
     LinearLayout llShare;
 
-    private Context mContext;
+    public Context mContext;
     private HistoryDataBean.ResultBean recordBean;
     private BigDecimal a = new BigDecimal("85");
     private BigDecimal b = new BigDecimal("60");
     private Handler mHandler = new Handler();
+
+    private static int SHARE_CHANNEL;//分享渠道2:微信好友;1:微信朋友圈
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,7 +167,11 @@ public class ShareAnswerRecordActivity extends BaseActivity implements View.OnCl
                 finish();
                 break;
             case R.id.shareHy:
+                SHARE_CHANNEL = AppConst.SHARE_MEDIA_WEIXIN;
+                saveToBitmap(cardView);
+                break;
             case R.id.sharePyq:
+                SHARE_CHANNEL = AppConst.SHARE_MEDIA_WEIXIN_CIRCLE;
                 saveToBitmap(cardView);
                 break;
             default:
@@ -172,8 +189,9 @@ public class ShareAnswerRecordActivity extends BaseActivity implements View.OnCl
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(mContext, isSaved + ":" + path, Toast.LENGTH_LONG).show();
+//                        Toast.makeText(mContext, isSaved + ":" + path, Toast.LENGTH_LONG).show();
                         File file = new File(path);
+                        wechatShare(file, mContext);
                     }
                 }, 0);
             }
@@ -186,4 +204,66 @@ public class ShareAnswerRecordActivity extends BaseActivity implements View.OnCl
         Bitmap mBitmap = CodeUtils.createImage("https://t.cn/R3rvkuk", dp2px(114), dp2px(114), logo);
         shareQr.setImageBitmap(mBitmap);
     }
+
+    /**
+     * 微信分享
+     */
+    private static void wechatShare(final File file, Context context) {
+        SHARE_MEDIA media = SHARE_MEDIA.WEIXIN;
+        if (SHARE_CHANNEL == AppConst.SHARE_MEDIA_WEIXIN) {//微信
+            media = SHARE_MEDIA.WEIXIN;
+        } else if (SHARE_CHANNEL == AppConst.SHARE_MEDIA_WEIXIN_CIRCLE) {//朋友圈
+            media = SHARE_MEDIA.WEIXIN_CIRCLE;
+        }
+        UMImage image = new UMImage(context, file);//网络图片
+//        UMImage thumb = new UMImage(context, file);//网络图片
+//        image.setThumb(thumb);
+        //image.compressStyle = UMImage.CompressStyle.SCALE;//大小压缩，默认为大小压缩，适合普通很大的图
+        new ShareAction((Activity) context)
+                .setPlatform(media)
+                .withMedia(image)
+                .setCallback(new UMShareListener() {
+                    /**
+                     * @descrption 分享开始的回调
+                     * @param share_media 平台类型
+                     */
+                    @Override
+                    public void onStart(SHARE_MEDIA share_media) {
+
+                    }
+
+                    /**
+                     * @descrption 分享成功的回调
+                     * @param share_media 平台类型
+                     */
+                    @Override
+                    public void onResult(SHARE_MEDIA share_media) {
+                        /**
+                         * 入参1:分享id;2:分享结果(①分享成功,②分享失败);3:分享渠道(①微信朋友圈②微信好友)
+                         */
+                    }
+
+                    /**
+                     * @descrption 分享失败的回调
+                     * @param share_media 平台类型
+                     * @param throwable 错误原因
+                     */
+                    @Override
+                    public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+
+                        /**
+                         * 入参1:分享id;2:分享结果(①分享成功,②分享失败);3:分享渠道(①微信朋友圈②微信好友)
+                         */
+                    }
+
+                    /**
+                     * @descrption 分享取消的回调
+                     * @param share_media 平台类型
+                     */
+                    @Override
+                    public void onCancel(SHARE_MEDIA share_media) {
+                    }
+                }).share();
+    }
+
 }
