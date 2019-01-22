@@ -609,4 +609,11 @@ public class ApiServiceBean {
     public static String queryBind() {
         return "queryBind";
     }
+
+    /**
+     * 88、提现公告
+     */
+    public static String withdrawNotice() {
+        return "withdrawNotice";
+    }
 }

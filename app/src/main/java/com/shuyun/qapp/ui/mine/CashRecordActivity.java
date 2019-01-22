@@ -19,12 +19,14 @@ import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.AccountBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MineBean;
+import com.shuyun.qapp.bean.WithdrawNoticeBean;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.view.MarqueTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,14 +53,18 @@ public class CashRecordActivity extends BaseActivity implements OnRemotingCallBa
     SmartRefreshLayout refreshLayout;
     @BindView(R.id.iv_empty)
     ImageView ivEmpty;
+    @BindView(R.id.btn_cash)
+    Button btnCash;
+    @BindView(R.id.tv_notice)
+    MarqueTextView tvNotice;
 
 
     String cash = "";//现金
 
     private static final String LOAD_MINE_HOME_DATA = "loadMineHomeData";//个人信息
     private static final String LOAD_CASH = "load_cash";//现金记录
-    @BindView(R.id.btn_cash)
-    Button btnCash;
+    private static final String WITHDRAW_NOTICE = "withdraw_notice";//提现公告
+
 
     private int loadState = AppConst.STATE_NORMAL;
     private int currentPage = 0;
@@ -74,13 +80,14 @@ public class CashRecordActivity extends BaseActivity implements OnRemotingCallBa
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         tvCommonTitle.setText("现金余额");
-
+        tvNotice.setSelected(true);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
+        RemotingEx.doRequest(WITHDRAW_NOTICE, ApiServiceBean.withdrawNotice(), null, this);
         RemotingEx.doRequest(LOAD_MINE_HOME_DATA, ApiServiceBean.getMineHomeData(), null, this);
 
         loadState = AppConst.STATE_NORMAL;
@@ -199,6 +206,18 @@ public class CashRecordActivity extends BaseActivity implements OnRemotingCallBa
                     //不能提现和提现中 按钮变灰
                     btnCash.setEnabled(false);
                 }
+            }
+        } else if (action.equals(WITHDRAW_NOTICE)) { //提现公告
+            WithdrawNoticeBean withdrawNoticeBean = (WithdrawNoticeBean) response.getDat();
+            try {
+                if (!EncodeAndStringTool.isStringEmpty(withdrawNoticeBean.getMessage())) {
+                    tvNotice.setVisibility(View.VISIBLE);
+                    tvNotice.setText(withdrawNoticeBean.getMessage());
+                } else {
+                    tvNotice.setVisibility(View.GONE);
+                }
+            } catch (Exception e) {
+
             }
         }
 

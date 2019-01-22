@@ -184,6 +184,7 @@ public class ShareAnswerRecordActivity extends BaseActivity implements View.OnCl
                     @Override
                     public void run() {
                         File file = new File(path);
+                        //微信分享
                         wechatShare(file, mContext);
                     }
                 }, 0);

@@ -46,6 +46,7 @@ import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.bean.SystemInfo;
 import com.shuyun.qapp.bean.TouristsBean;
 import com.shuyun.qapp.bean.UserWxInfo;
+import com.shuyun.qapp.bean.WithdrawNoticeBean;
 
 import java.util.List;
 
@@ -626,4 +627,10 @@ public interface ApiService {
      */
     @GET("/rest/app/push/query/bind")
     Observable<DataResponse<QPushBean>> queryBind(@Query("deviceId") String deviceId);
+
+    /**
+     * 88、提现公告
+     */
+    @GET("/rest/user/money/withdraw/notice")
+    Observable<DataResponse<WithdrawNoticeBean>> withdrawNotice();
 }

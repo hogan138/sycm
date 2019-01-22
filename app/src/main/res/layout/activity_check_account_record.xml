@@ -8,6 +8,23 @@
     <!--登录头布局-->
     <include layout="@layout/common_left_title" />
 
+    <com.shuyun.qapp.view.MarqueTextView
+        android:id="@+id/tv_notice"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_30"
+        android:background="#FFEAEA"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:paddingLeft="@dimen/text_15"
+        android:paddingRight="@dimen/text_15"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:textColor="@color/color_66"
+        android:textSize="@dimen/text_12" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

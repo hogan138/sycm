@@ -66,6 +66,7 @@ public class MineBean implements Parcelable {
     private String redRuleUrl; //红包提现规则
     private Long certCount;//实名认证次数
     private String cashTotal; //用户现金累计金额
+    private Long orderEnabled;//我的订单是否启用
 
     protected MineBean(Parcel in) {
         id = in.readLong();
@@ -94,6 +95,7 @@ public class MineBean implements Parcelable {
         redRuleUrl = in.readString();
         certCount = in.readLong();
         cashTotal = in.readString();
+        orderEnabled = in.readLong();
     }
 
     public MineBean() {
@@ -320,6 +322,14 @@ public class MineBean implements Parcelable {
         this.cashTotal = cashTotal;
     }
 
+    public Long getOrderEnabled() {
+        return orderEnabled;
+    }
+
+    public void setOrderEnabled(Long orderEnabled) {
+        this.orderEnabled = orderEnabled;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -353,6 +363,7 @@ public class MineBean implements Parcelable {
         dest.writeString(redRuleUrl);
         dest.writeLong(certCount);
         dest.writeString(cashTotal);
+        dest.writeLong(orderEnabled);
     }
 
     public static class DatasBean implements Parcelable {

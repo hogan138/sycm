@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -91,19 +90,6 @@ public class AnswerRecordNewActivity extends BaseActivity implements ViewPager.O
                 loadAnswerRecord(currentPage);
             }
         }, 0);
-
-        //第一次进入显示引导
-        sharedPreferences = mContext.getSharedPreferences("FirstRun", 0);
-        Boolean first_run = sharedPreferences.getBoolean("Answer_record", true);
-        if (first_run) {
-            rlGuide.setVisibility(View.VISIBLE);
-            TranslateAnimation animation = new TranslateAnimation(50, -50, 0, 0);
-            animation.setInterpolator(new OvershootInterpolator());
-            animation.setDuration(1500);
-            animation.setRepeatCount(Animation.INFINITE);
-            animation.setRepeatMode(Animation.REVERSE);
-            ivGuide.startAnimation(animation);
-        }
 
     }
 
@@ -187,6 +173,20 @@ public class AnswerRecordNewActivity extends BaseActivity implements ViewPager.O
         } else {
             ivEmpty.setVisibility(View.GONE);
             rlHistory.setVisibility(View.VISIBLE);
+
+            //第一次进入显示引导
+            sharedPreferences = mContext.getSharedPreferences("FirstRun", 0);
+            Boolean first_run = sharedPreferences.getBoolean("Answer_record", true);
+            if (first_run) {
+                rlGuide.setVisibility(View.VISIBLE);
+                TranslateAnimation animation = new TranslateAnimation(50, -50, 0, 0);
+                animation.setInterpolator(new OvershootInterpolator());
+                animation.setDuration(1500);
+                animation.setRepeatCount(Animation.INFINITE);
+                animation.setRepeatMode(Animation.REVERSE);
+                ivGuide.startAnimation(animation);
+            }
+
         }
         currentPage++;
 
