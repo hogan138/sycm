@@ -87,7 +87,9 @@ public class CashRecordActivity extends BaseActivity implements OnRemotingCallBa
     protected void onResume() {
         super.onResume();
 
+        //提现公告
         RemotingEx.doRequest(WITHDRAW_NOTICE, ApiServiceBean.withdrawNotice(), null, this);
+        //个人信息
         RemotingEx.doRequest(LOAD_MINE_HOME_DATA, ApiServiceBean.getMineHomeData(), null, this);
 
         loadState = AppConst.STATE_NORMAL;

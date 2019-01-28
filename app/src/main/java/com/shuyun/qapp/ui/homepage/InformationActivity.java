@@ -74,7 +74,7 @@ public class InformationActivity extends BaseActivity implements CommonPopupWind
 
         MyActivityManager.getInstance().pushOneActivity(this);
 
-//        loadMsg();
+        loadMsg();
         ivEmpty.setVisibility(View.VISIBLE);
 
     }
@@ -111,11 +111,12 @@ public class InformationActivity extends BaseActivity implements CommonPopupWind
             @Override
             public void onSucceed(String action, DataResponse<List<Msg>> dataResponse) {
                 if (dataResponse.isSuccees()) {
+                    DataSupport.deleteAll(Msg.class);
                     List<Msg> msgList = dataResponse.getDat();
                     if (!EncodeAndStringTool.isListEmpty(msgList)) {
                         for (int i = 0; i < msgList.size(); i++) {
                             Msg msg0 = msgList.get(i);
-                            //查询数据库中的数据,如果不存在,才添加到数据库,不存在则不添加
+                            //查询数据库中的数据,如果不存在,才添加到数据库,存在则不添加
                             Msg msg1 = DataSupport.find(Msg.class, msg0.getId());
                             if (EncodeAndStringTool.isObjectEmpty(msg1)) {
                                 Msg msg = new Msg();

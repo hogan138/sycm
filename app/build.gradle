@@ -35,9 +35,7 @@ android {
     buildTypes {
         release {
             //是否开启混淆
-            minifyEnabled true
-            //去除无用的resource文件
-            shrinkResources true
+            minifyEnabled false
             //加载混淆的配置文件
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 

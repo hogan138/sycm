@@ -52,7 +52,7 @@ public class HistoryFragment extends BaseFragment implements View.OnClickListene
     private Context mContext;
     private HistoryDataBean.ResultBean recordBean;
     private BigDecimal a = new BigDecimal("85");
-    private BigDecimal b = new BigDecimal("60");
+    private BigDecimal b = new BigDecimal("50");
 
     public void setRecordBean(HistoryDataBean.ResultBean recordBean) {
         this.recordBean = recordBean;
@@ -76,14 +76,18 @@ public class HistoryFragment extends BaseFragment implements View.OnClickListene
         String time = formatter.format(currentTime).replace(" ", "\n");
         tvTime.setText(time);
         String fullName = recordBean.getFullName();
-        String[] names = fullName.split("/");
-        tvClass.setText(names[0]);
+        if (fullName != null) {
+            String[] names = fullName.split("/");
+            tvClass.setText(names[0]);
+        } else {
+            tvClass.setText("");
+        }
 
         StringBuffer sb = new StringBuffer();
         sb.append(recordBean.getAccuracy()).append("%");
         tvRate.setText(sb.toString());
 
-        //正确率：85%以上A ，正确率60%~85% 的B，其他C吧
+        //正确率：85%以上A ，正确率50%~85% 的B，其他C吧
         BigDecimal rate = new BigDecimal(recordBean.getAccuracy());
         if (rate.compareTo(a) > 0) {
             ivLevel.setImageResource(R.mipmap.a);
