@@ -284,7 +284,7 @@ public class InformationActivity extends BaseActivity implements CommonPopupWind
         if (msg.getType() == 1) {//题组详情
             try {
                 Intent intent = new Intent(InformationActivity.this, WebAnswerActivity.class);
-                intent.putExtra("groupId", Integer.parseInt(msg.getUrl()));
+                intent.putExtra("groupId", Long.valueOf(msg.getUrl()));
                 intent.putExtra("h5Url", msg.getH5Url());
                 startActivity(intent);
                 finish();
