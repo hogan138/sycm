@@ -43,7 +43,7 @@ import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.view.VerifyCodeView;
 
-import org.litepal.crud.DataSupport;
+import org.litepal.LitePal;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -318,7 +318,7 @@ public class VerifyCodeActivity extends BaseActivity {
          * 如果两次登录用户不是同一用户,则清空本地数据库中的消息表
          */
         if (!loginInput.getAccount().equals(account)) {
-            DataSupport.deleteAll(Msg.class);//清空数据库中消息
+            LitePal.deleteAll(Msg.class);//清空数据库中消息
         }
 
         CustomLoadingFactory factory = new CustomLoadingFactory();
@@ -453,7 +453,7 @@ public class VerifyCodeActivity extends BaseActivity {
          * 如果两次登录用户不是同一用户,则清空本地数据库中的消息表
          */
         if (!phoneNum.equals(account)) {
-            DataSupport.deleteAll(Msg.class);//清空数据库中消息
+            LitePal.deleteAll(Msg.class);//清空数据库中消息
         }
 
         RemotingEx.doRequest(ApiServiceBean.verifyPassWord(), new Object[]{phoneNum, AppConst.DEV_ID, AppConst.APP_ID, 4, AppConst.V, curTime, signCode}, new OnRemotingCallBackListener<String>() {

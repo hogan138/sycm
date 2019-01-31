@@ -1,17 +1,15 @@
 package com.shuyun.qapp.bean;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.alibaba.fastjson.serializer.ToStringSerializer;
-
-import org.litepal.crud.DataSupport;
+import org.litepal.annotation.Column;
+import org.litepal.crud.LitePalSupport;
 
 /**
  * 系统消息bean
  */
 
-public class Msg extends DataSupport {
+public class Msg extends LitePalSupport {
 
-    @JSONField(serializeUsing = ToStringSerializer.class)
+    @Column(unique = true)
     private Long id;//消息id
     /**
      * 消息类型

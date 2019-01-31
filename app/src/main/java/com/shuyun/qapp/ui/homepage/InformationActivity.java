@@ -32,7 +32,7 @@ import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 
-import org.litepal.crud.DataSupport;
+import org.litepal.LitePal;
 
 import java.util.List;
 
@@ -61,7 +61,7 @@ public class InformationActivity extends BaseActivity implements CommonPopupWind
     RecyclerView rvInformation;
     @BindView(R.id.iv_empty)
     ImageView ivEmpty;
-    long stamp0 = System.currentTimeMillis();//当前时间戳
+
     private CommonPopupWindow popupWindow;
 
     @Override
@@ -87,17 +87,16 @@ public class InformationActivity extends BaseActivity implements CommonPopupWind
     private long stamp1;
 
     private void loadMsg() {
-        List<Msg> msgList = DataSupport.findAll(Msg.class);
+        List<Msg> msgList = LitePal.findAll(Msg.class);
         if (!EncodeAndStringTool.isListEmpty(msgList)) {
             //取本地数据库中最新一条消息的时间戳(数据库中第一条数据的时间戳)
             stamp1 = msgList.get(0).getTime();
-
         } else {
             //第一条消息
             stamp1 = 0;
         }
 
-        RemotingEx.doRequest(ApiServiceBean.getMsg(), new Object[]{0, stamp1, stamp0}, new OnRemotingCallBackListener<List<Msg>>() {
+        RemotingEx.doRequest(ApiServiceBean.getMsg(), new Object[]{0, stamp1, System.currentTimeMillis()}, new OnRemotingCallBackListener<List<Msg>>() {
             @Override
             public void onCompleted(String action) {
 
@@ -111,25 +110,24 @@ public class InformationActivity extends BaseActivity implements CommonPopupWind
             @Override
             public void onSucceed(String action, DataResponse<List<Msg>> dataResponse) {
                 if (dataResponse.isSuccees()) {
-                    DataSupport.deleteAll(Msg.class);
                     List<Msg> msgList = dataResponse.getDat();
-                    if (!EncodeAndStringTool.isListEmpty(msgList)) {
-                        for (int i = 0; i < msgList.size(); i++) {
-                            Msg msg0 = msgList.get(i);
-                            //查询数据库中的数据,如果不存在,才添加到数据库,存在则不添加
-                            Msg msg1 = DataSupport.find(Msg.class, msg0.getId());
-                            if (EncodeAndStringTool.isObjectEmpty(msg1)) {
-                                Msg msg = new Msg();
-                                msg.setType(msg0.getType());
-                                msg.setTitle(msg0.getTitle());
-                                msg.setContent(msg0.getContent());
-                                msg.setUrl(msg0.getUrl());
-                                msg.setStatus(msg0.getStatus());
-                                msg.setTime(msg0.getTime());
-                                msg.setId(msg0.getId());
-                                msg.save();
-                            }
-                        }
+                    if (msgList == null || msgList.isEmpty())
+                        return;
+                    for (int i = 0; i < msgList.size(); i++) {
+                        Msg msg0 = msgList.get(i);
+                        //查询数据库中的数据,如果不存在,才添加到数据库,存在则不添加
+                        Msg msg1 = LitePal.find(Msg.class, msg0.getId());
+                        if (msg1 != null)
+                            continue;
+                        Msg msg = new Msg();
+                        msg.setType(msg0.getType());
+                        msg.setTitle(msg0.getTitle());
+                        msg.setContent(msg0.getContent());
+                        msg.setUrl(msg0.getUrl());
+                        msg.setStatus(msg0.getStatus());
+                        msg.setTime(msg0.getTime());
+                        msg.setId(msg0.getId());
+                        msg.save();
                     }
                 } else {
                     ErrorCodeTools.errorCodePrompt(InformationActivity.this, dataResponse.getErr(), dataResponse.getMsg());
@@ -145,7 +143,7 @@ public class InformationActivity extends BaseActivity implements CommonPopupWind
      */
     private void getDataRefreshUi() {
         //查询本地数据库,展示在UI界面
-        final List<Msg> sqlMsgList = DataSupport.findAll(Msg.class);
+        final List<Msg> sqlMsgList = LitePal.findAll(Msg.class);
         if (!EncodeAndStringTool.isListEmpty(sqlMsgList)) {
             ivEmpty.setVisibility(View.GONE);
             setData(sqlMsgList);
@@ -172,7 +170,7 @@ public class InformationActivity extends BaseActivity implements CommonPopupWind
             @Override
             public void onItemChildClick(View view, int position) {
                 //处理消息点击事件
-                Msg msg = DataSupport.find(Msg.class, sqlMsgList.get(position).getId());
+                Msg msg = LitePal.find(Msg.class, sqlMsgList.get(position).getId());
                 msg.setStatus(2);
                 msg.save();
 
@@ -266,7 +264,7 @@ public class InformationActivity extends BaseActivity implements CommonPopupWind
                 tvAllReaded.setOnClickListener(new OnMultiClickListener() {
                     @Override
                     public void onMultiClick(View v) {
-                        List<Msg> msgList = DataSupport.findAll(Msg.class);
+                        List<Msg> msgList = LitePal.findAll(Msg.class);
                         for (int i = 0; i < msgList.size(); i++) {
                             Msg msg = msgList.get(i);
                             msg.setStatus(2);
@@ -286,7 +284,7 @@ public class InformationActivity extends BaseActivity implements CommonPopupWind
                         if (popupWindow != null && popupWindow.isShowing()) {
                             popupWindow.dismiss();
                         }
-                        DataSupport.deleteAll(Msg.class, "status=2");
+                        LitePal.deleteAll(Msg.class, "status=2");
                         getDataRefreshUi();
                     }
                 });

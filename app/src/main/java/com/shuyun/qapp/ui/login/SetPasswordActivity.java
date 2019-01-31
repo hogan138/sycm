@@ -37,7 +37,7 @@ import com.shuyun.qapp.utils.MyActivityManager1;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 
-import org.litepal.crud.DataSupport;
+import org.litepal.LitePal;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -258,7 +258,7 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
          * 如果两次登录用户不是同一用户,则清空本地数据库中的消息表
          */
         if (!phoneNum.equals(account)) {
-            DataSupport.deleteAll(Msg.class);//清空数据库中消息
+            LitePal.deleteAll(Msg.class);//清空数据库中消息
         }
         String deviceId = SmAntiFraud.getDeviceId();
 

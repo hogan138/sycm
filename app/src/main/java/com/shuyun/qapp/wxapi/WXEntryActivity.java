@@ -33,7 +33,7 @@ import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.umeng.socialize.weixin.view.WXCallbackActivity;
 
-import org.litepal.crud.DataSupport;
+import org.litepal.LitePal;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -177,7 +177,7 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
          * 如果两次登录用户不是同一用户,则清空本地数据库中的消息表
          */
         if (!loginInput.getAccount().equals(account)) {
-            DataSupport.deleteAll(Msg.class);//清空数据库中消息
+            LitePal.deleteAll(Msg.class);//清空数据库中消息
         }
         final String inputbean = JSON.toJSONString(loginInput);
         Log.i(TAG, "loadLogin: " + loginInput.toString());
