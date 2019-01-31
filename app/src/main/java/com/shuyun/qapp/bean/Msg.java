@@ -11,6 +11,7 @@ public class Msg extends LitePalSupport {
 
     @Column(unique = true)
     private Long id;//消息id
+    private String msgId; //消息id
     /**
      * 消息类型
      * 0——不跳转
@@ -40,6 +41,14 @@ public class Msg extends LitePalSupport {
     private int status;
     private Long time;//消息时间
     private String h5Url; //答题url
+
+    public String getMsgId() {
+        return msgId;
+    }
+
+    public void setMsgId(String msgId) {
+        this.msgId = msgId;
+    }
 
     public String getH5Url() {
         return h5Url;

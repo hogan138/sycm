@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,7 @@ import com.shuyun.qapp.utils.OnMultiClickListener;
 
 import org.litepal.LitePal;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -43,7 +45,7 @@ import butterknife.OnClick;
 /**
  * 消息界面
  */
-public class InformationActivity extends BaseActivity implements CommonPopupWindow.ViewInterface {//
+public class InformationActivity extends BaseActivity implements CommonPopupWindow.ViewInterface, InfomationAdapter.OnItemClickListener {//
 
     @BindView(R.id.ll_information)
     LinearLayout llInformation;
@@ -62,21 +64,31 @@ public class InformationActivity extends BaseActivity implements CommonPopupWind
     @BindView(R.id.iv_empty)
     ImageView ivEmpty;
 
+    private List<Msg> sqlMsgList = new ArrayList<>();
+
     private CommonPopupWindow popupWindow;
+    private InfomationAdapter infoAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        ivLeftIcon.setImageResource(R.mipmap.guanbi);
-        tvInformationTitle.setText("消息");
-        ivRightIcon.setImageResource(R.mipmap.messager);
 
         MyActivityManager.getInstance().pushOneActivity(this);
 
-        loadMsg();
+        ivLeftIcon.setImageResource(R.mipmap.guanbi);
+        tvInformationTitle.setText("消息");
+        ivRightIcon.setImageResource(R.mipmap.messager);
         ivEmpty.setVisibility(View.VISIBLE);
 
+
+        infoAdapter = new InfomationAdapter(sqlMsgList, InformationActivity.this);
+        LinearLayoutManager manager = new LinearLayoutManager(InformationActivity.this, LinearLayoutManager.VERTICAL, false);
+        rvInformation.setLayoutManager(manager);
+        rvInformation.setAdapter(infoAdapter);
+        infoAdapter.setOnItemClickLitsener(this);
+
+        loadMsg();
     }
 
     @Override
@@ -110,14 +122,14 @@ public class InformationActivity extends BaseActivity implements CommonPopupWind
             @Override
             public void onSucceed(String action, DataResponse<List<Msg>> dataResponse) {
                 if (dataResponse.isSuccees()) {
-                    List<Msg> msgList = dataResponse.getDat();
+                    final List<Msg> msgList = dataResponse.getDat();
                     if (msgList == null || msgList.isEmpty())
                         return;
                     for (int i = 0; i < msgList.size(); i++) {
                         Msg msg0 = msgList.get(i);
                         //查询数据库中的数据,如果不存在,才添加到数据库,存在则不添加
-                        Msg msg1 = LitePal.find(Msg.class, msg0.getId());
-                        if (msg1 != null)
+                        List<Msg> msgs = LitePal.where("msgId = ?", String.valueOf(msg0.getId())).find(Msg.class);
+                        if (msgs != null && !msgs.isEmpty())
                             continue;
                         Msg msg = new Msg();
                         msg.setType(msg0.getType());
@@ -126,13 +138,14 @@ public class InformationActivity extends BaseActivity implements CommonPopupWind
                         msg.setUrl(msg0.getUrl());
                         msg.setStatus(msg0.getStatus());
                         msg.setTime(msg0.getTime());
-                        msg.setId(msg0.getId());
-                        msg.save();
+                        msg.setMsgId(String.valueOf(msg0.getId()));
+                        boolean result = msg.save();
+                        Log.d("DATA", String.valueOf(result));
                     }
                 } else {
                     ErrorCodeTools.errorCodePrompt(InformationActivity.this, dataResponse.getErr(), dataResponse.getMsg());
                 }
-                getDataRefreshUi();
+                dataRefreshUi();
             }
         });
 
@@ -141,76 +154,21 @@ public class InformationActivity extends BaseActivity implements CommonPopupWind
     /**
      * 查询本地数据库,并更新消息列表
      */
-    private void getDataRefreshUi() {
+    private void dataRefreshUi() {
         //查询本地数据库,展示在UI界面
-        final List<Msg> sqlMsgList = LitePal.findAll(Msg.class);
-        if (!EncodeAndStringTool.isListEmpty(sqlMsgList)) {
+        final List<Msg> msgs = LitePal.findAll(Msg.class);
+        if (msgs != null && !msgs.isEmpty()) {
             ivEmpty.setVisibility(View.GONE);
-            setData(sqlMsgList);
+            sqlMsgList.clear();
+            sqlMsgList.addAll(msgs);
+            infoAdapter.notifyDataSetChanged();
         } else {
             //设置空图片
-            InfomationAdapter infoAdapter = new InfomationAdapter(null, InformationActivity.this);
-            LinearLayoutManager manager = new LinearLayoutManager(InformationActivity.this, LinearLayoutManager.VERTICAL, false);
-            rvInformation.setAdapter(infoAdapter);
-            rvInformation.setLayoutManager(manager);
+            sqlMsgList.clear();
+            infoAdapter.notifyDataSetChanged();
             ivEmpty.setVisibility(View.VISIBLE);
         }
-
     }
-
-    /**
-     * 将数据填充到listView
-     *
-     * @param sqlMsgList
-     */
-    private void setData(final List<Msg> sqlMsgList) {
-        final InfomationAdapter infoAdapter = new InfomationAdapter(sqlMsgList, InformationActivity.this);
-        final LinearLayoutManager manager = new LinearLayoutManager(InformationActivity.this, LinearLayoutManager.VERTICAL, false);
-        infoAdapter.setOnItemClickLitsener(new InfomationAdapter.OnItemClickListener() {
-            @Override
-            public void onItemChildClick(View view, int position) {
-                //处理消息点击事件
-                Msg msg = LitePal.find(Msg.class, sqlMsgList.get(position).getId());
-                msg.setStatus(2);
-                msg.save();
-
-                Msg msg1 = sqlMsgList.get(position);
-                msg1.setStatus(2);
-                infoAdapter.notifyDataSetChanged();
-                if (msg.getType() == 0) {//不跳转
-
-                } else if (msg.getType() == 1) {//题组详情
-                    try {
-                        Intent intent = new Intent(InformationActivity.this, WebAnswerActivity.class);
-                        intent.putExtra("groupId", Integer.parseInt(msg.getUrl()));
-                        intent.putExtra("h5Url", msg.getH5Url());
-                        startActivity(intent);
-                        finish();
-                    } catch (Exception e) {
-                    }
-
-                } else if (msg.getType() == 2) {//外部H5
-                    Uri uri = Uri.parse(msg.getUrl());
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    startActivity(intent);
-                } else if (msg.getType() == 3) {//内部链接
-                    Intent intent = new Intent(InformationActivity.this, WebH5Activity.class);
-                    intent.putExtra("url", msg.getUrl());
-                    intent.putExtra("name", msg.getTitle());
-                    startActivity(intent);
-
-                } else if (msg.getType() == 4) {//实名认证
-                    Intent intent = new Intent(InformationActivity.this, RealNameAuthActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            }
-        });
-
-        rvInformation.setLayoutManager(manager);
-        rvInformation.setAdapter(infoAdapter);
-    }
-
 
     @OnClick({R.id.iv_common_left_icon, R.id.iv_right_icon})
     public void onClick(View view) {
@@ -264,28 +222,30 @@ public class InformationActivity extends BaseActivity implements CommonPopupWind
                 tvAllReaded.setOnClickListener(new OnMultiClickListener() {
                     @Override
                     public void onMultiClick(View v) {
+                        if (popupWindow != null && popupWindow.isShowing()) {
+                            popupWindow.dismiss();
+                        }
+                        //status全部置为2、已读状态
                         List<Msg> msgList = LitePal.findAll(Msg.class);
                         for (int i = 0; i < msgList.size(); i++) {
                             Msg msg = msgList.get(i);
                             msg.setStatus(2);
                             msg.save();
                         }
-                        setData(msgList);
-                        //todo status全部置为2、已读状态
-                        if (popupWindow != null && popupWindow.isShowing()) {
-                            popupWindow.dismiss();
-                        }
+                        sqlMsgList.clear();
+                        sqlMsgList.addAll(msgList);
+                        infoAdapter.notifyDataSetChanged();
                     }
                 });
                 tvDeleteReaded.setOnClickListener(new OnMultiClickListener() {
                     @Override
                     public void onMultiClick(View v) {
-                        //TODO 删除所有已读消息
+                        //删除所有已读消息
                         if (popupWindow != null && popupWindow.isShowing()) {
                             popupWindow.dismiss();
                         }
-                        LitePal.deleteAll(Msg.class, "status=2");
-                        getDataRefreshUi();
+                        LitePal.deleteAll(Msg.class, "status = ?", "2");
+                        dataRefreshUi();
                     }
                 });
                 break;
@@ -305,6 +265,51 @@ public class InformationActivity extends BaseActivity implements CommonPopupWind
             }
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onItemChildClick(View view, int position) {
+        Msg msg1 = sqlMsgList.get(position);
+        //处理消息点击事件
+        Msg msg = LitePal.find(Msg.class, msg1.getId());
+        msg.setStatus(2);
+        msg.save();
+
+        msg1.setStatus(2);
+        infoAdapter.notifyDataSetChanged();
+        if (msg.getType() == 0) {//不跳转
+            return;
+        }
+        if (msg.getType() == 1) {//题组详情
+            try {
+                Intent intent = new Intent(InformationActivity.this, WebAnswerActivity.class);
+                intent.putExtra("groupId", Integer.parseInt(msg.getUrl()));
+                intent.putExtra("h5Url", msg.getH5Url());
+                startActivity(intent);
+                finish();
+            } catch (Exception e) {
+            }
+            return;
+        }
+        if (msg.getType() == 2) {//外部H5
+            Uri uri = Uri.parse(msg.getUrl());
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+            return;
+        }
+        if (msg.getType() == 3) {//内部链接
+            Intent intent = new Intent(InformationActivity.this, WebH5Activity.class);
+            intent.putExtra("url", msg.getUrl());
+            intent.putExtra("name", msg.getTitle());
+            startActivity(intent);
+            return;
+        }
+        if (msg.getType() == 4) {//实名认证
+            Intent intent = new Intent(InformationActivity.this, RealNameAuthActivity.class);
+            startActivity(intent);
+            finish();
+            return;
         }
     }
 }
