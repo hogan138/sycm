@@ -167,6 +167,7 @@
         <!-- 系统设置 -->
         <activity
             android:name=".ui.mine.SystemSettingActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 联系我们 -->

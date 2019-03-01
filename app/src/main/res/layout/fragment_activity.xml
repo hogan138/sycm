@@ -29,11 +29,11 @@
             android:id="@+id/tv_common_title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="@dimen/text_40"
             android:layout_marginRight="@dimen/text_40"
             android:ellipsize="end"
+            android:gravity="center_vertical"
             android:singleLine="true"
             android:textColor="@color/color_0"
             android:textSize="@dimen/text_16" />
@@ -59,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/text_10"
-                android:layout_marginRight="@dimen/text_10"></android.support.v7.widget.RecyclerView>
+                android:layout_marginRight="@dimen/text_10" />
 
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 

@@ -14,6 +14,10 @@ public class DataResponse<T> {
         return err;
     }
 
+    public void setErr(String err) {
+        this.err = err;
+    }
+
     public String getMsg() {
         return msg;
     }

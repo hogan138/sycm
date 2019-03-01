@@ -33,6 +33,7 @@ import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,6 +59,10 @@ public class SystemSettingActivity extends BaseActivity implements OnRemotingCal
     TextView tvVersion;
     @BindView(R.id.rl_version)
     RelativeLayout rlVersion;
+//    @BindView(R.id.mNiceVideoPlayer)
+//    NiceVideoPlayer mNiceVideoPlayer;
+//    @BindView(R.id.iv_gif)
+//    ImageView ivGif;
 
     private Context mContext;
 
@@ -72,6 +77,22 @@ public class SystemSettingActivity extends BaseActivity implements OnRemotingCal
         MyActivityManager.getInstance().pushOneActivity(this);
 
         tvVersion.setText("V" + APKVersionCodeTools.getVerName(this));
+
+//        mNiceVideoPlayer.setPlayerType(NiceVideoPlayer.TYPE_IJK); // IjkPlayer or MediaPlayer
+//        String videoUrl = "http://tanzi27niu.cdsb.mobi/wps/wp-content/uploads/2017/05/2017-05-17_17-33-30.mp4";
+////        videoUrl = Environment.getExternalStorageDirectory().getPath().concat("/办公室小野.mp4");
+//        mNiceVideoPlayer.setUp(videoUrl, null);
+//        TxVideoPlayerController controller = new TxVideoPlayerController(this);
+//        controller.setTitle("办公室小野开番外了，居然在办公室开澡堂！老板还点赞？");
+//        controller.setLenght(98000);
+//        Glide.with(this)
+//                .load("http://tanzi27niu.cdsb.mobi/wps/wp-content/uploads/2017/05/2017-05-17_17-30-43.jpg")
+//                .placeholder(R.drawable.img_default)
+//                .crossFade()
+//                .into(controller.imageView());
+//        mNiceVideoPlayer.setController(controller);
+
+//        Glide.with(this).load("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1550485084238&di=62e9b299c82396d93ad0a2e0d5c0922c&imgtype=0&src=http%3A%2F%2Fs9.rr.itc.cn%2Fr%2FwapChange%2F20161_23_9%2Fa4nrzg2161334442352.gif").asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(ivGif);
     }
 
     @Override
@@ -199,6 +220,9 @@ public class SystemSettingActivity extends BaseActivity implements OnRemotingCal
                 //清空数据
                 clearData();
 
+                //友盟统计登出
+                MobclickAgent.onProfileSignOff();
+
                 if ("1".equals(SaveUserInfo.getInstance(mContext).getUserInfo("tourists"))) {
                     //启用游客模式
                     Intent intent = new Intent(mContext, HomePageActivity.class);
@@ -261,17 +285,6 @@ public class SystemSettingActivity extends BaseActivity implements OnRemotingCal
         AppConst.loadToken(mContext);
 
         //清空缓存
-        SaveUserInfo.getInstance(mContext).setUserInfo("action.group_count", "");
-        SaveUserInfo.getInstance(mContext).setUserInfo("action.real_count", "");
-        SaveUserInfo.getInstance(mContext).setUserInfo("action.h5_count", "");
-        SaveUserInfo.getInstance(mContext).setUserInfo("action.invite_count", "");
-        SaveUserInfo.getInstance(mContext).setUserInfo("action.integral_count", "");
-        SaveUserInfo.getInstance(mContext).setUserInfo("action.answer.against_count", "");
-        SaveUserInfo.getInstance(mContext).setUserInfo("action.integral.open.box_count", "");
-        SaveUserInfo.getInstance(mContext).setUserInfo("action.integral.treasure_count", "");
-        SaveUserInfo.getInstance(mContext).setUserInfo("action.withdraw.info_count", "");
-        SaveUserInfo.getInstance(mContext).setUserInfo("action.h5.external_count", "");
-        SaveUserInfo.getInstance(mContext).setUserInfo("action.day.task_count", "");
-        SaveUserInfo.getInstance(mContext).setUserInfo("action.default_count", "");
+        SaveUserInfo.clear(mContext);
     }
 }

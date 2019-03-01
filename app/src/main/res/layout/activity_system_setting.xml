@@ -161,6 +161,18 @@
 
         <include layout="@layout/common_line_6" />
 
+        <ImageView
+            android:id="@+id/iv_gif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:visibility="gone" />
+
+        <!--   <com.xiao.nicevideoplayer.NiceVideoPlayer
+               android:id="@+id/mNiceVideoPlayer"
+               android:layout_width="match_parent"
+               android:layout_height="200dp" />-->
+
     </LinearLayout>
 
     <Button

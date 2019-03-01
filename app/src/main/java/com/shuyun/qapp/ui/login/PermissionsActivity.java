@@ -6,12 +6,19 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
+import com.mylhyl.circledialog.CircleDialog;
+import com.mylhyl.circledialog.callback.ConfigDialog;
+import com.mylhyl.circledialog.params.DialogParams;
+import com.shuyun.qapp.R;
+import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.PermissionsChecker;
 
 /**
@@ -109,27 +116,33 @@ public class PermissionsActivity extends AppCompatActivity {
 
     // 显示缺失权限提示
     private void showMissingPermissionDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(PermissionsActivity.this);
-        builder.setTitle("帮助");
-        builder.setMessage("当前应用缺少必要权限");
 
-        // 拒绝, 退出应用
-        builder.setNegativeButton("退出", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                setResult(PERMISSIONS_DENIED);
-                finish();
-            }
-        });
+        new CircleDialog.Builder(this)
+                .setTitle("温馨提示")
+                .setText("请您先开启通话、读写储存空间权限")
+                .setTextColor(Color.parseColor("#333333"))
+                .setWidth(0.7f)
+                .setPositive("关闭", new OnMultiClickListener() {
+                    @Override
+                    public void onMultiClick(View v) {
+                        setResult(PERMISSIONS_DENIED);
+                        finish();
+                    }
+                })
+                .setNegative("去开启", new OnMultiClickListener() {
+                    @Override
+                    public void onMultiClick(View v) {
+                        startAppSettings();
+                    }
+                })
+                .configDialog(new ConfigDialog() {
+                    @Override
+                    public void onConfig(DialogParams params) {
+                        params.animStyle = R.style.popwin_anim_style;
+                    }
+                })
+                .show();
 
-        builder.setPositiveButton("设置", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                startAppSettings();
-            }
-        });
-
-        builder.show();
     }
 
     // 启动应用的设置

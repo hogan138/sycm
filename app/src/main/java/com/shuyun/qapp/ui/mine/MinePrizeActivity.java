@@ -88,14 +88,12 @@ public class MinePrizeActivity extends BaseActivity implements OnRemotingCallBac
         mTitleList.add("未使用");
         mTitleList.add("使用中");
         mTitleList.add("已使用");
-//        mTitleList.add("全部");
         //设置tablayout模式
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         //tablayout获取集合中的名称
         tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(0)));
         tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(1)));
         tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(2)));
-//        tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(3)));
     }
 
     private void initFragment() {
@@ -103,7 +101,6 @@ public class MinePrizeActivity extends BaseActivity implements OnRemotingCallBac
         mFragmentList.add(NoUsePrizeFragment.newInstance(mineBean.getCertification()));
         mFragmentList.add(UseInPrizeFragment.newInstance(mineBean.getCertification()));
         mFragmentList.add(UsePrizeFragment.newInstance(mineBean.getCertification()));
-//        mFragmentList.add(new AllPrizeFragment().newInstance(mineBean.getCertification()));
         //设置适配器
         vp.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), mFragmentList, mTitleList));
         //将tablayout与fragment关联

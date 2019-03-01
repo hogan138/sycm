@@ -1,6 +1,7 @@
 package com.shuyun.qapp.ui.login;
 
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -66,11 +67,13 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
     TextView tvLength;
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        mContext = this;
         MyActivityManager1.getInstance().pushOneActivity(this);
         btnFinish.setEnabled(false);
         clearEditText(etPassword, ivClearPwd);
@@ -286,7 +289,7 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
                         SharedPrefrenceTool.put(SetPasswordActivity.this, "random", changeResult.getRandom());//登录成果后，平台随机生成的字符串
                         AppConst.loadToken(SetPasswordActivity.this);
                         KeyboardUtils.hideSoftInput(SetPasswordActivity.this);
-                        if ("0".equals(SaveUserInfo.getInstance(SetPasswordActivity.this).getUserInfo("normal_login")) &&
+                        if (AppConst.isNormalLogin(mContext) &&
                                 (getIntent().getStringExtra("name").equals("changePwd"))) {
                             //正常登录&&忘记密码
                             startActivity(new Intent(SetPasswordActivity.this, HomePageActivity.class));

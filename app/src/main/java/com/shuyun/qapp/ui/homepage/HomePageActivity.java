@@ -56,6 +56,7 @@ import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.StatusBarUtil;
 import com.shuyun.qapp.view.NoScrollViewPager;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -215,6 +216,18 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
     public void onResume() {
         super.onResume();
         isForeground = true;
+
+
+        //用户已登录
+        if (AppConst.isLogin()) {
+            //友盟统计
+            String account = SaveUserInfo.getInstance(this).getUserInfo("account");
+            MobclickAgent.onProfileSignIn(account.replace(account.substring(3, 9), "******"));
+
+            //已登录状态把过期跳转登录页设为true
+            SharedPreferences sharedPreferences = getSharedPreferences("FirstRun", 0);
+            sharedPreferences.edit().putBoolean("TAU", true).apply();
+        }
 
         //判断是否从广告页点击传递数据过来
         if (bundle != null && "welcome".equals(bundle.getString("from"))) {
@@ -567,6 +580,10 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
             if (!EncodeAndStringTool.isStringEmpty(content)) {
                 //判断是否需要登录
                 if (isLogin == 1 && !AppConst.isLogin()) {
+                    //登录页只跳转一次
+                    SharedPreferences sharedPreferences = getSharedPreferences("FirstRun", 0);
+                    sharedPreferences.edit().putBoolean("TAU", false).apply();
+
                     LoginDataManager.instance().addData(LoginDataManager.WELCOME_LOGIN, bundle);
                     Intent intent = new Intent(HomePageActivity.this, LoginActivity.class);
                     startActivityForResult(intent, 0x0010);
@@ -582,6 +599,10 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
             if (!EncodeAndStringTool.isStringEmpty(content)) {
                 //判断是否需要登录
                 if (isLogin == 1 && !AppConst.isLogin()) {
+                    //登录页只跳转一次
+                    SharedPreferences sharedPreferences = getSharedPreferences("FirstRun", 0);
+                    sharedPreferences.edit().putBoolean("TAU", false).apply();
+
                     LoginDataManager.instance().addData(LoginDataManager.WELCOME_LOGIN, bundle);
                     Intent intent = new Intent(HomePageActivity.this, LoginActivity.class);
                     startActivityForResult(intent, 0x0020);

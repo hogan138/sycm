@@ -1,6 +1,5 @@
 package com.shuyun.qapp.bean;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
 
 /**

@@ -2,12 +2,14 @@ package com.shuyun.qapp.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.mine.SystemSettingActivity;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -128,6 +130,7 @@ public class ErrorCodeTools {
                 || "TAU10".equals(err)
                 || "TAU11".equals(err)
                 || "TAU12".equals(err)) {
+
             //阿里推送解除绑定别名
             AliPushBind.UnbindPush(new OnRemotingCallBackListener<Object>() {
                 @Override
@@ -135,8 +138,19 @@ public class ErrorCodeTools {
                     //清空数据
                     SharedPrefrenceTool.clear(mContext);
                     AppConst.loadToken(mContext);
-                    Intent intent = new Intent(mContext, LoginActivity.class);
-                    mContext.startActivity(intent);
+
+                    //友盟统计登出
+                    MobclickAgent.onProfileSignOff();
+
+                    //登录过期登录页只跳转一次
+                    SharedPreferences sharedPreferences = mContext.getSharedPreferences("FirstRun", 0);
+                    Boolean first_run = sharedPreferences.getBoolean("TAU", true);
+                    if (first_run) {
+                        sharedPreferences.edit().putBoolean("TAU", false).apply();
+                        Intent intent = new Intent(mContext, LoginActivity.class);
+                        mContext.startActivity(intent);
+                    }
+
                 }
 
                 @Override

@@ -55,4 +55,13 @@ public class SaveUserInfo {
     public Boolean getBooleanValue(String strName) {
         return mSharedPreferences.getBoolean(strName, false);
     }
+
+    /**
+     * 清除所有数据
+     */
+    public static void clear(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.clear().apply();
+    }
 }

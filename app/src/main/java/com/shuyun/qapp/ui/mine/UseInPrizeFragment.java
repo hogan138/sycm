@@ -142,6 +142,8 @@ public class UseInPrizeFragment extends Fragment implements OnRemotingCallBackLi
                 } else if (minePrize.getActionType().equals("action.alipay.coupon")) {
                     //使用优惠券
                     if (Integer.parseInt(SaveUserInfo.getInstance(getActivity()).getUserInfo("cert")) == 1) {
+                        //调用使用优惠券接口
+                        RemotingEx.doRequest(ApiServiceBean.useCoupon(), new Object[]{minePrize.getId()}, null);
                         AlipayTradeManager.instance().showBasePage(getActivity(), minePrize.getH5Url());
                     } else {
                         RealNamePopupUtil.showAuthPop(getContext(), ((MinePrizeActivity) getActivity()).llPrize, getString(R.string.real_gift_describe));

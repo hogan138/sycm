@@ -62,7 +62,8 @@ public class MainActivityDialogInfo {
 
         if (bName == null)
             return;
-        String count = SaveUserInfo.getInstance(mContext).getUserInfo(bName);
+        String localKey = bName + "_" + configDialogBean.getId();
+        String count = SaveUserInfo.getInstance(mContext).getUserInfo(localKey);
         if ("".equals(count))
             _count = 0;
         else
@@ -70,7 +71,7 @@ public class MainActivityDialogInfo {
         if (beanCount > _count) {
             activitydialog(configDialogBean, mContext);
             _count += 1;
-            SaveUserInfo.getInstance(mContext).setUserInfo(bName, _count.toString());
+            SaveUserInfo.getInstance(mContext).setUserInfo(localKey, _count.toString());
         }
     }
 

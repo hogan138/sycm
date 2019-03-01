@@ -28,9 +28,6 @@ import java.lang.reflect.Method;
 public class SystemBarTintManager {
 
     static {
-        // Android allows a system property to override the presence of the navigation bar.
-        // Used by the emulator.
-        // See https://github.com/android/platform_frameworks_base/blob/master/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java#L1076
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             try {
                 Class c = Class.forName("android.os.SystemProperties");

@@ -130,7 +130,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 startActivity(intent);
             } else if (1 == loginResp.getBind()) {
                 //跳转下一级页面
-                if ("0".equals(SaveUserInfo.getInstance(this).getUserInfo("normal_login"))) {
+                if (AppConst.isNormalLogin(this)) {
                     //正常登录
                     startActivity(new Intent(this, HomePageActivity.class));
                 } else {

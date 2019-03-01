@@ -80,6 +80,7 @@ import com.shuyun.qapp.view.OvalImageView;
 import com.shuyun.qapp.view.TextBannerView;
 import com.shuyun.qapp.view.ViewPagerScroller;
 import com.sunfusheng.marqueeview.MarqueeView;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -521,7 +522,7 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
                 PhoneUtils.dial("400-650-9258");
                 break;
             case R.id.tv_number2: //招商电话
-                PhoneUtils.dial("0571-86875104");
+                PhoneUtils.dial("0571-86875102");
                 break;
             default:
                 break;
@@ -838,13 +839,16 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
         //获取活动配置信息
         getConfigInfo();
 
+        //用户已登录
         if (AppConst.isLogin()) {
+
             //获取宝箱数量
             loadTreasureBoxNum();
 
             //用户活跃度
             RemotingEx.doRequest(ApiServiceBean.activeness(), null, null);
         } else {
+            //用户未登录
             try {
                 ivBx.clearAnimation();
                 ivBx.setVisibility(View.GONE);

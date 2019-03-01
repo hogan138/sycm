@@ -18,8 +18,8 @@ android {
         applicationId "com.shuyun.qapp"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 30041
-        versionName "3.4.1"
+        versionCode 30043
+        versionName "3.4.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         // Enabling multidex support.
@@ -214,4 +214,8 @@ dependencies {
     implementation 'id.zelory:compressor:2.1.0'
 
     //lib包下umeng包下的是友盟分享
+
+    //视频播放
+//    implementation project(path: ':nicevideoplayer')
+//    implementation 'com.github.xiaoyanger0825:NiceVieoPlayer:v2.2'
 }

@@ -1,5 +1,6 @@
 package com.shuyun.qapp.ui.login;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -77,10 +78,13 @@ public class BindPhoneNumActivity extends BaseActivity {
      */
     private LoginResponse loginResp;
 
+    private Context mContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        mContext = this;
         tvCommonTitle.setText("绑定微信");
         loginResp = (LoginResponse) getIntent().getSerializableExtra("login_response");
     }
@@ -229,7 +233,7 @@ public class BindPhoneNumActivity extends BaseActivity {
                         //绑定成功  存token值
                         ToastUtil.showToast(BindPhoneNumActivity.this, "绑定成功");
 
-                        if ("0".equals(SaveUserInfo.getInstance(BindPhoneNumActivity.this).getUserInfo("normal_login"))) {
+                        if (AppConst.isNormalLogin(mContext)) {
                             //正常登录
                             startActivity(new Intent(BindPhoneNumActivity.this, HomePageActivity.class));
                             finish();

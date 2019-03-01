@@ -8,6 +8,7 @@ package com.shuyun.qapp.bean;
  */
 public class ConfigDialogBean {
 
+
     /**
      * baseImage : https://image-syksc.oss-cn-shanghai.aliyuncs.com/syksc/app/home/dialogBase.jpg
      * showBtn : true
@@ -17,7 +18,7 @@ public class ConfigDialogBean {
      * content : 611
      * count : 2
      */
-
+    private String id;
     private String baseImage;
     private boolean showBtn;
     private String btnLabel;
@@ -26,6 +27,14 @@ public class ConfigDialogBean {
     private String content;
     private Long count;
     private Long isLogin;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public Long getIsLogin() {
         return isLogin;
