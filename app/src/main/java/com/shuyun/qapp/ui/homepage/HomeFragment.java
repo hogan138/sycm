@@ -34,6 +34,7 @@ import com.blankj.utilcode.util.SizeUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.GroupTreeAdapter;
+import com.shuyun.qapp.adapter.HomeBottomInfoAdapter;
 import com.shuyun.qapp.adapter.HomeSortAdapter;
 import com.shuyun.qapp.adapter.HotGroupAdapter;
 import com.shuyun.qapp.adapter.MarkBannerAdapter;
@@ -46,6 +47,7 @@ import com.shuyun.qapp.bean.ConfigDialogBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.GroupBean;
 import com.shuyun.qapp.bean.GroupClassifyBean;
+import com.shuyun.qapp.bean.HomeBottomInfoBean;
 import com.shuyun.qapp.bean.HomeGroupsBean;
 import com.shuyun.qapp.bean.HomeNoticeBean;
 import com.shuyun.qapp.bean.MainConfigBean;
@@ -80,7 +82,6 @@ import com.shuyun.qapp.view.OvalImageView;
 import com.shuyun.qapp.view.TextBannerView;
 import com.shuyun.qapp.view.ViewPagerScroller;
 import com.sunfusheng.marqueeview.MarqueeView;
-import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -171,6 +172,8 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
     RelativeLayout rlGroupOne; //推荐题组1任意logo
     @BindView(R.id.rl_group_two)
     RelativeLayout rlGroupTwo; //推荐题组2任意logo
+    @BindView(R.id.rv_home_bottom_info)
+    RecyclerView rvHomeBottomInfo; //首页底部信息
 
     /**
      * 网络获取到推荐题组列表
@@ -206,6 +209,10 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
 
     //公告
     private List<HomeNoticeBean> homeNoticeBeanList = new ArrayList<>();
+
+    //首页底部信息
+    private List<HomeBottomInfoBean.ResultBean> homeBottomResult = new ArrayList<>();
+    private HomeBottomInfoAdapter homeBottomInfoAdapter;
 
     private String systemInfosString = null;
     private String mainConfigBeanString = null;
@@ -448,6 +455,33 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
         rvHotGroup.setNestedScrollingEnabled(false);
         rvHotGroup.setAdapter(groupThermalAdapter);
 
+
+        //首页电话底部信息
+        homeBottomInfoAdapter = new HomeBottomInfoAdapter(homeBottomResult, mContext);
+        homeBottomInfoAdapter.setOnItemClickLitsener(new HomeBottomInfoAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                String number = homeBottomResult.get(position).getCall();
+                if (!EncodeAndStringTool.isStringEmpty(number)) {
+                    //拔打电话
+                    PhoneUtils.dial(number);
+                }
+            }
+        });
+        GridLayoutManager gm = new GridLayoutManager(mContext, 1) {
+            @Override
+            public boolean canScrollVertically() {//禁止layout垂直滑动
+                return false;
+            }
+        };
+        gridLayoutManager.setSmoothScrollbarEnabled(true);
+        gridLayoutManager.setAutoMeasureEnabled(true);
+        rvHomeBottomInfo.setLayoutManager(gm);
+        //解决数据加载不完的问题
+        rvHomeBottomInfo.setHasFixedSize(true);
+        rvHomeBottomInfo.setNestedScrollingEnabled(false);
+        rvHomeBottomInfo.setAdapter(homeBottomInfoAdapter);
+
         //分类
         treeGroupAdapter = new HomeSortAdapter(groupClassifyBeans, mContext);
         treeGroupAdapter.setOnItemClickLitsener(new GroupTreeAdapter.OnItemClickListener() {
@@ -521,7 +555,7 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
             case R.id.tv_number1: //客服电话
                 PhoneUtils.dial("400-650-9258");
                 break;
-            case R.id.tv_number2: //招商电话
+            case R.id.tv_number2: //招商合作电话
                 PhoneUtils.dial("0571-86875102");
                 break;
             default:
@@ -555,6 +589,13 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
      */
     private void loadHomeGroups() {
         RemotingEx.doRequest("getHomeGroups", ApiServiceBean.getHomeGroups(), new Object[]{AppUtils.getAppVersionName()}, this);
+    }
+
+    /**
+     * 首页底部信息
+     */
+    private void getBottomInfo() {
+        RemotingEx.doRequest("homeBottomInfo", ApiServiceBean.homeBottomInfo(), null, this);
     }
 
     /**
@@ -836,6 +877,9 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
         //首页题组
         loadHomeGroups();
 
+        //首页底部信息
+        getBottomInfo();
+
         //获取活动配置信息
         getConfigInfo();
 
@@ -1085,6 +1129,20 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
             } else {
                 rlAd.setVisibility(View.GONE);
             }
+        } else if ("homeBottomInfo".equals(action)) {    //首页底部电话信息
+            HomeBottomInfoBean homeBottomInfoBean = (HomeBottomInfoBean) response.getDat();
+            List<HomeBottomInfoBean.ResultBean> resultBeans = homeBottomInfoBean.getResult();
+            if (!EncodeAndStringTool.isListEmpty(resultBeans)) {
+                tvNumber1.setVisibility(View.GONE);
+                tvNumber2.setVisibility(View.GONE);
+                homeBottomResult.clear();
+                homeBottomResult.addAll(resultBeans);
+                homeBottomInfoAdapter.notifyDataSetChanged();
+            } else {
+                tvNumber1.setVisibility(View.VISIBLE);
+                tvNumber2.setVisibility(View.VISIBLE);
+            }
+
         }
     }
 

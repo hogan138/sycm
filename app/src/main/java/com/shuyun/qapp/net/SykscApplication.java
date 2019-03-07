@@ -174,6 +174,7 @@ public class SykscApplication extends Application {
 
         //向微信注册APP
         registToWX();//微信
+
         /**
          * 微信配置
          */

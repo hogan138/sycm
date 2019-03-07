@@ -201,11 +201,11 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.tv_rigth_title:
                 KeyboardUtils.hideSoftInput(SetPasswordActivity.this);
-                MyActivityManager1.getInstance().finishAllActivity();
                 //统一给活动的Activity处理
                 if (ActivityCallManager.instance().getActivity() != null) {
                     ActivityCallManager.instance().getActivity().callBack(null);
                 }
+                MyActivityManager1.getInstance().finishAllActivity();
                 break;
             case R.id.iv_is_show_pwd:
                 isShowPwd(etPassword);
@@ -332,11 +332,11 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
             public void onSucceed(String action, DataResponse<String> dataResponse) {
                 if (dataResponse.isSuccees()) {
                     KeyboardUtils.hideSoftInput(SetPasswordActivity.this);
-                    MyActivityManager1.getInstance().finishAllActivity();
                     //统一给活动的Activity处理
                     if (ActivityCallManager.instance().getActivity() != null) {
                         ActivityCallManager.instance().getActivity().callBack(null);
                     }
+                    MyActivityManager1.getInstance().finishAllActivity();
                 } else {
                     ErrorCodeTools.errorCodePrompt(SetPasswordActivity.this, dataResponse.getErr(), dataResponse.getMsg());
                 }

@@ -336,7 +336,7 @@ public class VerifyCodeActivity extends BaseActivity {
 
             @Override
             public void onFailed(String action, String message) {
-
+                LoadingBar.cancel(llMain);
             }
 
             @Override
@@ -455,16 +455,18 @@ public class VerifyCodeActivity extends BaseActivity {
         if (!phoneNum.equals(account)) {
             LitePal.deleteAll(Msg.class);//清空数据库中消息
         }
+        CustomLoadingFactory factory = new CustomLoadingFactory();
+        LoadingBar.make(llMain, factory).show();
 
         RemotingEx.doRequest(ApiServiceBean.verifyPassWord(), new Object[]{phoneNum, AppConst.DEV_ID, AppConst.APP_ID, 4, AppConst.V, curTime, signCode}, new OnRemotingCallBackListener<String>() {
             @Override
             public void onCompleted(String action) {
-
+                LoadingBar.cancel(llMain);
             }
 
             @Override
             public void onFailed(String action, String message) {
-
+                LoadingBar.cancel(llMain);
             }
 
             @Override

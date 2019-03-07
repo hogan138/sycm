@@ -616,4 +616,11 @@ public class ApiServiceBean {
     public static String withdrawNotice() {
         return "withdrawNotice";
     }
+
+    /**
+     * 89、首页底部信息
+     */
+    public static String homeBottomInfo() {
+        return "homeBottomInfo";
+    }
 }

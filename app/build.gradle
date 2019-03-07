@@ -18,8 +18,8 @@ android {
         applicationId "com.shuyun.qapp"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 30043
-        versionName "3.4.3"
+        versionCode 30044
+        versionName "3.4.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         // Enabling multidex support.
@@ -218,4 +218,7 @@ dependencies {
     //视频播放
 //    implementation project(path: ':nicevideoplayer')
 //    implementation 'com.github.xiaoyanger0825:NiceVieoPlayer:v2.2'
+    implementation 'com.ethanhua:skeleton:1.1.2'
+    //主要是动画的实现
+    implementation 'io.supercharge:shimmerlayout:2.1.0'
 }

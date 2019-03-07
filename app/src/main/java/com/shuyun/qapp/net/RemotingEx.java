@@ -1,9 +1,11 @@
 package com.shuyun.qapp.net;
 
+import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.shuyun.qapp.base.BasePresenter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.utils.SaveErrorTxt;
+import com.shuyun.qapp.utils.ToastUtil;
 
 import java.lang.reflect.Method;
 
@@ -92,6 +94,10 @@ public class RemotingEx {
                         public void onError(Throwable e) {
                             //保存错误信息
                             SaveErrorTxt.writeTxtToFile(e.toString(), SaveErrorTxt.FILE_PATH, TimeUtils.millis2String(System.currentTimeMillis()));
+                            //网络不可用
+                            if (!NetworkUtils.isConnected()) {
+                                ToastUtil.showToast(SykscApplication.getAppContext(), "网络不可用，请检查网络连接");
+                            }
                             if (listener != null)
                                 listener.onFailed(action, e.getMessage());
                         }
@@ -109,4 +115,5 @@ public class RemotingEx {
                 listener.onCompleted(action);
         }
     }
+
 }

@@ -22,6 +22,7 @@ import com.shuyun.qapp.bean.ExchangeMyPrizeBean;
 import com.shuyun.qapp.bean.GroupAgainstBean;
 import com.shuyun.qapp.bean.GroupClassifyBean;
 import com.shuyun.qapp.bean.HistoryDataBean;
+import com.shuyun.qapp.bean.HomeBottomInfoBean;
 import com.shuyun.qapp.bean.HomeGroupsBean;
 import com.shuyun.qapp.bean.HomeNoticeBean;
 import com.shuyun.qapp.bean.IntegralAllPrizeBean;
@@ -633,4 +634,10 @@ public interface ApiService {
      */
     @GET("/rest/user/money/withdraw/notice")
     Observable<DataResponse<WithdrawNoticeBean>> withdrawNotice();
+
+    /**
+     * 89、获取首页底部信息
+     */
+    @GET("/rest/home/bottom")
+    Observable<DataResponse<HomeBottomInfoBean>> homeBottomInfo();
 }

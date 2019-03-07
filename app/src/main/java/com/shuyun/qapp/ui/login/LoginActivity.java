@@ -489,7 +489,7 @@ public class LoginActivity extends BaseActivity implements OnRemotingCallBackLis
 
     @Override
     public void onFailed(String action, String message) {
-
+        LoadingBar.cancel(rlMain);
     }
 
     @Override
