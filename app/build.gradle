@@ -218,7 +218,4 @@ dependencies {
     //视频播放
 //    implementation project(path: ':nicevideoplayer')
 //    implementation 'com.github.xiaoyanger0825:NiceVieoPlayer:v2.2'
-    implementation 'com.ethanhua:skeleton:1.1.2'
-    //主要是动画的实现
-    implementation 'io.supercharge:shimmerlayout:2.1.0'
 }
