@@ -71,7 +71,23 @@
             android:textStyle="bold" />
 
         <RadioButton
-            android:id="@+id/radio_activity"
+            android:id="@+id/radioSevetyYear"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@mipmap/seventy_year"
+            android:gravity="center"
+            android:paddingTop="@dimen/text_7"
+            android:tag="2"
+            android:text="建国70周年"
+            android:textColor="#FFB500"
+            android:textSize="@dimen/text_10"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <RadioButton
+            android:id="@+id/radio_found"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -79,7 +95,7 @@
             android:drawableTop="@drawable/found"
             android:gravity="center"
             android:paddingTop="@dimen/text_7"
-            android:tag="2"
+            android:tag="3"
             android:text="发现"
             android:textColor="@color/home_bottom_tv_color"
             android:textSize="@dimen/text_10"
@@ -94,7 +110,7 @@
             android:drawableTop="@drawable/me"
             android:gravity="center"
             android:paddingTop="@dimen/text_7"
-            android:tag="3"
+            android:tag="4"
             android:text="我的"
             android:textColor="@color/home_bottom_tv_color"
             android:textSize="@dimen/text_10"

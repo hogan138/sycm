@@ -86,6 +86,8 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
     RelativeLayout rlInviteShare;
     @BindView(R.id.iv_point_prize)
     ImageView ivPointPrize;
+    @BindView(R.id.rl_back)
+    RelativeLayout rlBack;
 
     private CommonPopupWindow popupWindow;
     private static final String LOAD_MINE_HOME_DATA = "loadMineHomeData";//个人信息
@@ -128,6 +130,9 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
+
+            rlBack.setVisibility(View.GONE);
+
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {

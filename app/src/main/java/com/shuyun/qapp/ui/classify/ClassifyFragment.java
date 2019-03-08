@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -48,6 +49,8 @@ public class ClassifyFragment extends BaseFragment implements OnRemotingCallBack
     RecyclerView rvGroup;//右侧题组RecyclerView
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle;
+    @BindView(R.id.rl_back)
+    RelativeLayout rlBack;
 
     private Unbinder unbinder;
     private Activity mContext;
@@ -85,6 +88,7 @@ public class ClassifyFragment extends BaseFragment implements OnRemotingCallBack
         super.onActivityCreated(savedInstanceState);
         mContext = getActivity();
         tvCommonTitle.setText("题组分类");
+        rlBack.setVisibility(View.GONE);
     }
 
     @Override
@@ -148,10 +152,10 @@ public class ClassifyFragment extends BaseFragment implements OnRemotingCallBack
 
     }
 
-    @OnClick({R.id.iv_back})
+    @OnClick({R.id.rl_back})
     public void click(View view) {
         switch (view.getId()) {
-            case R.id.iv_back: //返回键
+            case R.id.rl_back: //返回键
                 if (mContext instanceof HomePageActivity) {
                     HomePageActivity homePageActivity = (HomePageActivity) mContext;
                     homePageActivity.radioGroupChange(0);

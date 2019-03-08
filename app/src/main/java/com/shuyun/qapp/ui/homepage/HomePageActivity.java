@@ -41,6 +41,7 @@ import com.shuyun.qapp.net.LoginDataManager;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.activity.ActivityFragment;
+import com.shuyun.qapp.ui.activity.SeventyYearFragment;
 import com.shuyun.qapp.ui.classify.ClassifyFragment;
 import com.shuyun.qapp.ui.found.FoundFragment;
 import com.shuyun.qapp.ui.login.LoginActivity;
@@ -79,14 +80,16 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
     RadioButton radioMain; //首页
     @BindView(R.id.radio_classify)
     RadioButton radioClassify; //分类
-    @BindView(R.id.radio_activity)
-    RadioButton radioActivity; //活动
+    @BindView(R.id.radio_found)
+    RadioButton radioFound; //发现
     @BindView(R.id.radio_mine)
     RadioButton radioMine; //我的
     @BindView(R.id.pager)
     NoScrollViewPager pager;
     @BindView(R.id.iv_no_login_logo)
     ImageView ivNoLoginLogo; //未登陆logo
+    @BindView(R.id.radioSevetyYear)
+    RadioButton radioSevetyYear; //70周年
 
     /**
      * fragment容器
@@ -113,8 +116,10 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         pager.setOnPageChangeListener(this);
         radioMain.setOnClickListener(this);
         radioClassify.setOnClickListener(this);
-        radioActivity.setOnClickListener(this);
+        radioSevetyYear.setOnClickListener(this);
+        radioFound.setOnClickListener(this);
         radioMine.setOnClickListener(this);
+
 
         //记录宝箱第一次进入
         SharedPreferences sharedPreferences = getSharedPreferences("FirstRun", 0);
@@ -146,12 +151,13 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         //添加到集合
         fragments.add(new HomeFragment());
         fragments.add(new ClassifyFragment());
+        fragments.add(new SeventyYearFragment());
         fragments.add(new FoundFragment());
         fragments.add(new MineFragment());
 
         //得到getSupportFragmentManager()的管理器
         //得到适配器
-        pager.setOffscreenPageLimit(4);
+        pager.setOffscreenPageLimit(5);
         //设置适配器
         pager.setAdapter(new MyHomeadapter(getSupportFragmentManager(), fragments, this));
     }
@@ -248,7 +254,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         //版本更新
         updateVersion();
 
-        if (selectedIndex == 3) {
+        if (selectedIndex == 4) {
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -380,16 +386,17 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == radioActivity.getId()
+        if (v.getId() == radioFound.getId()
                 || v.getId() == radioMain.getId()
                 || v.getId() == radioMine.getId()
-                || v.getId() == radioClassify.getId()) {
+                || v.getId() == radioClassify.getId()
+                || v.getId() == radioSevetyYear.getId()) {
             radioGroupChange(Integer.valueOf(v.getTag().toString()));
         }
     }
 
     public void radioGroupChange(int position) {
-        if (position == 3 && !AppConst.isLogin()) {
+        if (position == 4 && !AppConst.isLogin()) {
             //还原选中
             switch (selectedIndex) {
                 case 0:
@@ -399,7 +406,10 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
                     radioGroup.check(radioClassify.getId());
                     break;
                 case 2:
-                    radioGroup.check(radioActivity.getId());
+                    radioGroup.check(radioSevetyYear.getId());
+                    break;
+                case 3:
+                    radioGroup.check(radioFound.getId());
                     break;
             }
             LoginDataManager.instance().addData(LoginDataManager.MINE_LOGIN, new JSONObject());
@@ -410,7 +420,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
 
         //改变顶部状态栏颜色
         StatusBarUtil.setStatusBarColor(this, R.color.white);
-        if (position == 3) {
+        if (position == 4) {
             StatusBarUtil.setStatusBarColor(this, R.color.mine_top);
         } else {
             StatusBarUtil.setStatusBarColor(this, R.color.white);
@@ -463,17 +473,17 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
                             //显示活动角标
                             Drawable drawable = getResources().getDrawable(R.mipmap.activity_s);
                             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
-                            radioActivity.setCompoundDrawables(null, drawable, null, null);
+                            radioFound.setCompoundDrawables(null, drawable, null, null);
                         } else {
                             if (selectedIndex == 2) {
                                 Drawable drawable = getResources().getDrawable(R.mipmap.activity_s);
                                 drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
-                                radioActivity.setCompoundDrawables(null, drawable, null, null);
+                                radioFound.setCompoundDrawables(null, drawable, null, null);
                             } else {
                                 //显示活动角标
                                 Drawable drawable = getResources().getDrawable(R.mipmap.activity_n_red);
                                 drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
-                                radioActivity.setCompoundDrawables(null, drawable, null, null);
+                                radioFound.setCompoundDrawables(null, drawable, null, null);
                             }
 
                         }
