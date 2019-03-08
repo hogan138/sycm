@@ -20,6 +20,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.ActivityTabAdapter;
+import com.shuyun.qapp.adapter.SeventyYearAdapter;
 import com.shuyun.qapp.base.BaseFragment;
 import com.shuyun.qapp.bean.ActivityTabBean;
 import com.shuyun.qapp.bean.DataResponse;
@@ -65,7 +66,7 @@ public class SeventyYearFragment extends BaseFragment implements OnRemotingCallB
     private boolean isLoading = false;
     private Handler mHandler = new Handler();
 
-    private ActivityTabAdapter activityTabAdapter; //活动适配器
+    private SeventyYearAdapter seventyYearAdapter; //适配器
     /**
      * 活动专区
      */
@@ -121,8 +122,8 @@ public class SeventyYearFragment extends BaseFragment implements OnRemotingCallB
             }
         });
 
-        activityTabAdapter = new ActivityTabAdapter(mContext, activityTabBeanList);
-        activityTabAdapter.setOnItemClickLitsener(new ActivityTabAdapter.OnItemClickListener() {
+        seventyYearAdapter = new SeventyYearAdapter(mContext, activityTabBeanList);
+        seventyYearAdapter.setOnItemClickLitsener(new SeventyYearAdapter.OnItemClickListener() {
             @Override
             public void onItemChildClick(View view, int position) {
                 ActivityTabBean.ResultBean resultBean = activityTabBeanList.get(position);
@@ -136,7 +137,7 @@ public class SeventyYearFragment extends BaseFragment implements OnRemotingCallB
         });
         GridLayoutManager glManager = new GridLayoutManager(mContext, 1, LinearLayoutManager.VERTICAL, false);
         rvActivity.setLayoutManager(glManager);
-        rvActivity.setAdapter(activityTabAdapter);
+        rvActivity.setAdapter(seventyYearAdapter);
     }
 
     @OnClick({R.id.iv_back})
@@ -234,7 +235,7 @@ public class SeventyYearFragment extends BaseFragment implements OnRemotingCallB
                     refreshLayout.setLoadmoreFinished(false);
                 }
             }
-            activityTabAdapter.notifyDataSetChanged();
+            seventyYearAdapter.notifyDataSetChanged();
         } else {
             if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {
                 ivActivityEmpty.setVisibility(View.VISIBLE);
