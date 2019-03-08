@@ -68,7 +68,8 @@
         <item name="android:textSize">18dp</item>
         <item name="android:textStyle">bold</item>
     </style>
-
-    <!--渐入渐出-->
-
+    <!--设置Tablayout字体大小-->
+    <style name="TabLayoutTextSize">
+        <item name="android:textSize">15sp</item>
+    </style>
 </resources>

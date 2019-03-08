@@ -42,6 +42,7 @@ import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.activity.ActivityFragment;
 import com.shuyun.qapp.ui.classify.ClassifyFragment;
+import com.shuyun.qapp.ui.found.FoundFragment;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.mine.MineFragment;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
@@ -115,6 +116,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         radioActivity.setOnClickListener(this);
         radioMine.setOnClickListener(this);
 
+        //记录宝箱第一次进入
         SharedPreferences sharedPreferences = getSharedPreferences("FirstRun", 0);
         sharedPreferences.edit().putBoolean("Main", true).apply();
 
@@ -144,7 +146,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         //添加到集合
         fragments.add(new HomeFragment());
         fragments.add(new ClassifyFragment());
-        fragments.add(new ActivityFragment());
+        fragments.add(new FoundFragment());
         fragments.add(new MineFragment());
 
         //得到getSupportFragmentManager()的管理器
@@ -259,6 +261,8 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         queryBind();
     }
 
+
+    //未登陆进入首页显示登录logo
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -326,6 +330,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         });
     }
 
+    //版本更新弹框
     private void updateDialog(final String url) {
         new CircleDialog.Builder(this)
                 .setTitle("监测到新版本")
@@ -360,6 +365,8 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        //重置宝箱第一次进入
         SharedPreferences sharedPreferences = getSharedPreferences("FirstRun", 0);
         sharedPreferences.edit().putBoolean("Main", true).apply();
 
@@ -401,33 +408,36 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
             return;
         }
 
+        //改变顶部状态栏颜色
         StatusBarUtil.setStatusBarColor(this, R.color.white);
         if (position == 3) {
             StatusBarUtil.setStatusBarColor(this, R.color.mine_top);
         } else {
             StatusBarUtil.setStatusBarColor(this, R.color.white);
         }
+
+
         //点击活动专区
-        if (position == 2 && "1".equals(show)) { //未点过红色角标
-            if (AppConst.isLogin()) {
-                Drawable drawable = getResources().getDrawable(R.mipmap.activity_s);
-                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
-                radioActivity.setCompoundDrawables(null, drawable, null, null);
-                clickActivity();
-            }
-        } else if (position == 2) {
-            Drawable drawable = getResources().getDrawable(R.mipmap.activity_s);
-            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
-            radioActivity.setCompoundDrawables(null, drawable, null, null);
-        } else {
-            Drawable drawable = getResources().getDrawable(R.mipmap.activity_n);
-            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
-            radioActivity.setCompoundDrawables(null, drawable, null, null);
-        }
+//        if (position == 2 && "1".equals(show)) { //未点过红色角标
+//            if (AppConst.isLogin()) {
+//                Drawable drawable = getResources().getDrawable(R.mipmap.activity_s);
+//                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
+//                radioActivity.setCompoundDrawables(null, drawable, null, null);
+//                clickActivity();
+//            }
+//        } else if (position == 2) {
+//            Drawable drawable = getResources().getDrawable(R.mipmap.activity_s);
+//            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
+//            radioActivity.setCompoundDrawables(null, drawable, null, null);
+//        } else {
+//            Drawable drawable = getResources().getDrawable(R.mipmap.activity_n);
+//            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
+//            radioActivity.setCompoundDrawables(null, drawable, null, null);
+//        }
 
         changeUi(position);
 
-        getActivityShow(position);
+//        getActivityShow(position);
     }
 
     private void getActivityShow(final int i) {
