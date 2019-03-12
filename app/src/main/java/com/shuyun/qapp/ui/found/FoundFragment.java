@@ -192,7 +192,7 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
         });
     }
 
-    @OnClick({R.id.iv_back})
+    @OnClick({R.id.iv_back, R.id.tv_common_title})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.iv_back: //返回
@@ -200,6 +200,9 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
                     HomePageActivity homePageActivity = (HomePageActivity) mContext;
                     homePageActivity.radioGroupChange(0);
                 }
+                break;
+            case R.id.tv_common_title:
+                startActivity(new Intent(mContext, IntegralExchangeActivity.class));
                 break;
             default:
                 break;
@@ -328,28 +331,19 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
         mTitleList.add("黄山行挑战赛");
         mTitleList.add("排行榜");
         mTitleList.add("热门题组");
-        mTitleList.add("黄山行挑战赛");
-        mTitleList.add("排行榜");
-        mTitleList.add("热门题组");
         //设置tablayout模式
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         //tablayout获取集合中的名称
         tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(0)));
         tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(1)));
         tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(2)));
-        tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(3)));
-        tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(4)));
-        tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(5)));
     }
 
     private void initFragment() {
         mFragmentList = new ArrayList<>();
         mFragmentList.add(NoUsePrizeFragment.newInstance(mineBean.getCertification()));
-        mFragmentList.add(UseInPrizeFragment.newInstance(mineBean.getCertification()));
-        mFragmentList.add(UsePrizeFragment.newInstance(mineBean.getCertification()));
         mFragmentList.add(NoUsePrizeFragment.newInstance(mineBean.getCertification()));
-        mFragmentList.add(UseInPrizeFragment.newInstance(mineBean.getCertification()));
-        mFragmentList.add(UsePrizeFragment.newInstance(mineBean.getCertification()));
+        mFragmentList.add(new HotGroupFragment());
         //设置适配器
         vp.setAdapter(new MyPagerAdapter(getActivity().getSupportFragmentManager(), mFragmentList, mTitleList));
 

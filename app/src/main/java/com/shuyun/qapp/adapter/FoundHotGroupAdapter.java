@@ -2,6 +2,7 @@ package com.shuyun.qapp.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,6 @@ import android.widget.TextView;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.GroupClassifyBean;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
-import com.shuyun.qapp.utils.OnMultiClickListener;
 
 import java.util.List;
 
@@ -19,16 +19,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * 首页分类
+ * 发现热门题组
  */
 
-public class HomeSortAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class FoundHotGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
     //题组分类集合
     private List<GroupClassifyBean> groupClassifyBeans;
 
-    public HomeSortAdapter(List<GroupClassifyBean> groupClassifyBeans, Context mContext) {
+    public FoundHotGroupAdapter(List<GroupClassifyBean> groupClassifyBeans, Context mContext) {
         this.groupClassifyBeans = groupClassifyBeans;
         this.mContext = mContext;
         notifyDataSetChanged();
@@ -40,7 +40,7 @@ public class HomeSortAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         LayoutInflater mInflater = LayoutInflater.from(mContext);
         RecyclerView.ViewHolder holder = null;
-        View view = mInflater.inflate(R.layout.home_sort_group_item, parent, false);
+        View view = mInflater.inflate(R.layout.found_hot_group_item, parent, false);
         holder = new MyViewHolder(view);
         return holder;
 
@@ -53,34 +53,22 @@ public class HomeSortAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         try {
             ((MyViewHolder) holder).tvTitle.setText(groupClassifyBean.getName());
 
-            /**
-             * 同时不为null才可以点击
-             */
-            if (!EncodeAndStringTool.isObjectEmpty(mOnItemClickListener)) {
-                ((MyViewHolder) holder).tvLookMore.setOnClickListener(new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v) {
-                        int position = holder.getLayoutPosition();
-                        mOnItemClickListener.onItemClick(((MyViewHolder) holder).tvLookMore, position);
-                    }
-                });
-            }
-
             List<GroupClassifyBean.ChildrenBean> childrenBeanList = groupClassifyBean.getChildren();
-            if (!EncodeAndStringTool.isListEmpty(childrenBeanList)) {   //首页分类
+            if (!EncodeAndStringTool.isListEmpty(childrenBeanList)) {
                 try {
                     //解决数据加载不完的问题
-                    ((MyViewHolder) holder).rvSortGroup.setHasFixedSize(true);
-                    ((MyViewHolder) holder).rvSortGroup.setNestedScrollingEnabled(false);
-                    SortHomeGroupAdapter hotGroupAdapter = new SortHomeGroupAdapter(childrenBeanList, mContext);
-                    GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2) {
+                    ((MyViewHolder) holder).rvHotGroup.setHasFixedSize(true);
+                    ((MyViewHolder) holder).rvHotGroup.setNestedScrollingEnabled(false);
+                    FoundGroupAdapter foundGroupAdapter = new FoundGroupAdapter(childrenBeanList, mContext);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext) {
                         @Override
                         public boolean canScrollVertically() { //禁止layout垂直滑动
                             return false;
                         }
                     };
-                    ((MyViewHolder) holder).rvSortGroup.setLayoutManager(gridLayoutManager);
-                    ((MyViewHolder) holder).rvSortGroup.setAdapter(hotGroupAdapter);
+                    linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                    ((MyViewHolder) holder).rvHotGroup.setLayoutManager(linearLayoutManager);
+                    ((MyViewHolder) holder).rvHotGroup.setAdapter(foundGroupAdapter);
                 } catch (Exception e) {
                 }
             }
@@ -98,10 +86,8 @@ public class HomeSortAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     class MyViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_title)
         TextView tvTitle;
-        @BindView(R.id.tv_look_more)
-        TextView tvLookMore;
-        @BindView(R.id.rv_sort_group)
-        RecyclerView rvSortGroup;
+        @BindView(R.id.rv_hot_group)
+        RecyclerView rvHotGroup;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -111,17 +97,4 @@ public class HomeSortAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     }
 
-
-    HomeSortAdapter.OnItemClickListener mOnItemClickListener;
-
-    /**
-     * 设置RecyclerView点击事件
-     */
-    public interface OnItemClickListener {
-        void onItemClick(View view, int position);
-    }
-
-    public void setOnItemClickLitsener(HomeSortAdapter.OnItemClickListener mOnItemClickLitsener) {
-        this.mOnItemClickListener = mOnItemClickLitsener;
-    }
 }

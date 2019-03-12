@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="20dp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@mipmap/c" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/text_7"
+        android:text="增次卡"
+        android:textColor="@color/color_1"
+        android:textSize="@dimen/text_12" />
+
+    <TextView
+        android:id="@+id/tv_conten"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="增加一次答题次数"
+        android:textColor="@color/color_27"
+        android:textSize="@dimen/text_9" />
+
+    <TextView
+        android:id="@+id/tv_join"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/text_23"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/text_2"
+        android:background="@drawable/real_btn_bg"
+        android:gravity="center"
+        android:paddingLeft="@dimen/text_8"
+        android:paddingRight="@dimen/text_8"
+        android:text="60积分兑换"
+        android:textColor="#ffffff"
+        android:textSize="@dimen/text_12" />
+
+</LinearLayout>

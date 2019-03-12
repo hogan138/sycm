@@ -40,6 +40,8 @@ public class WebDetailFragment extends Fragment {
 
     AnimationDrawable animationDrawable;
 
+    WebAnswerHomeBean answerHomeBean = new WebAnswerHomeBean();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -52,7 +54,6 @@ public class WebDetailFragment extends Fragment {
         return view;
     }
 
-    WebAnswerHomeBean answerHomeBean = new WebAnswerHomeBean();
 
     @Override
     public void onResume() {

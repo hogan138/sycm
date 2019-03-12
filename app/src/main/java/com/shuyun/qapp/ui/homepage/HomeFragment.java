@@ -484,7 +484,7 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
 
         //分类
         treeGroupAdapter = new HomeSortAdapter(groupClassifyBeans, mContext);
-        treeGroupAdapter.setOnItemClickLitsener(new GroupTreeAdapter.OnItemClickListener() {
+        treeGroupAdapter.setOnItemClickLitsener(new HomeSortAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 Long groupId = groupClassifyBeans.get(position).getId();
