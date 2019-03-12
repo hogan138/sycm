@@ -202,7 +202,7 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
                 }
                 break;
             case R.id.tv_common_title:
-                startActivity(new Intent(mContext, IntegralExchangeActivity.class));
+                startActivity(new Intent(mContext, SignInActivity.class));
                 break;
             default:
                 break;

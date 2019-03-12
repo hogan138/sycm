@@ -74,7 +74,7 @@
                 android:layout_marginRight="@dimen/text_15"
                 android:layout_marginBottom="@dimen/text_15"
                 android:layout_toRightOf="@+id/rl_cash"
-                android:background="@drawable/real_btn_bg"
+                android:background="@drawable/blue_btn_bg"
                 android:gravity="center"
                 android:paddingLeft="@dimen/text_4"
                 android:paddingRight="@dimen/text_4"

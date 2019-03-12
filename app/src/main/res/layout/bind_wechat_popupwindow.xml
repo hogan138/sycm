@@ -59,7 +59,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/text_20"
-        android:background="@drawable/real_btn_bg"
+        android:background="@drawable/blue_btn_bg"
         android:text="更换绑定微信号"
         android:textColor="@color/white"
         android:textSize="@dimen/text_16" />

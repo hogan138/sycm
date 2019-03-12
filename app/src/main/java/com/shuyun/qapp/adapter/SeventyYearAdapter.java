@@ -59,7 +59,7 @@ public class SeventyYearAdapter extends RecyclerView.Adapter<SeventyYearAdapter.
         } else {
             //正常
             holder.ivEnd.setVisibility(View.GONE);
-            holder.tvJoin.setBackgroundResource(R.drawable.real_btn_bg);
+            holder.tvJoin.setBackgroundResource(R.drawable.blue_btn_bg);
             holder.tvJoin.setText("立即参与");
         }
 

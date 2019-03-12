@@ -38,7 +38,7 @@
         android:layout_height="@dimen/text_23"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/text_5"
-        android:background="@drawable/real_btn_bg"
+        android:background="@drawable/blue_btn_bg"
         android:gravity="center"
         android:paddingLeft="@dimen/text_8"
         android:paddingRight="@dimen/text_8"

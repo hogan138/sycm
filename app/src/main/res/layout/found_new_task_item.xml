@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp">
+
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/text_15"
+        android:drawableLeft="@mipmap/new_task_item_logo"
+        android:drawablePadding="@dimen/text_12"
+        android:text="领取1次答题次数"
+        android:textColor="@color/color_1"
+        android:textSize="@dimen/text_12" />
+
+    <TextView
+        android:id="@+id/tv_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="170dp"
+        android:text="100"
+        android:textColor="@color/color_4"
+        android:textSize="@dimen/text_12" />
+
+    <TextView
+        android:id="@+id/tv_count_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:layout_toRightOf="@+id/tv_count"
+        android:text="积分"
+        android:textColor="@color/color_1515"
+        android:textSize="@dimen/text_12" />
+
+    <TextView
+        android:id="@+id/tv_enter"
+        android:layout_width="78dp"
+        android:layout_height="@dimen/text_23"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/text_10"
+        android:background="@drawable/blue_btn_bg"
+        android:gravity="center"
+        android:paddingLeft="@dimen/text_4"
+        android:paddingRight="@dimen/text_4"
+        android:text="领取奖励"
+        android:textColor="#ffffff"
+        android:textSize="@dimen/text_12" />
+</RelativeLayout>

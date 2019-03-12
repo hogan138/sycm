@@ -285,6 +285,8 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
                 }
             } else {
                 ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
+                //进入首页
+                skip();
             }
         } else if (AppConst.TOURISTS.equals(action)) { //是否是游客模式
             if (response.isSuccees()) {

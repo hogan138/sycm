@@ -40,6 +40,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Base"
         tools:replace="label,allowBackup">
+
         <!-- 友盟Key -->
         <meta-data
             android:name="UMENG_APPKEY"
@@ -290,10 +291,13 @@
             android:value="GlideModule" /> <!-- 积分账户 -->
         <activity
             android:name=".ui.mine.IntegralAccountActivity"
-            android:screenOrientation="portrait" />
-        <!--发现积分兑换-->
+            android:screenOrientation="portrait" /> <!-- 发现积分兑换 -->
         <activity
             android:name=".ui.found.IntegralExchangeActivity"
+            android:screenOrientation="portrait" />
+        <!--签到-->
+        <activity
+            android:name=".ui.found.SignInActivity"
             android:screenOrientation="portrait" />
     </application>
 
