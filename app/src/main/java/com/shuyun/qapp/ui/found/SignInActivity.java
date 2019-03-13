@@ -40,6 +40,60 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     ImageView ivSignInLogo;
     @BindView(R.id.tv_signIn_day)
     TextView tvSignInDay;
+    @BindView(R.id.tv_sign_date_one)
+    TextView tvSignDateOne;
+    @BindView(R.id.iv_sign_select_one)
+    ImageView ivSignSelectOne;
+    @BindView(R.id.tv_sign_content_one)
+    TextView tvSignContentOne;
+    @BindView(R.id.line_one)
+    View lineOne;
+    @BindView(R.id.tv_sign_date_two)
+    TextView tvSignDateTwo;
+    @BindView(R.id.iv_sign_select_two)
+    ImageView ivSignSelectTwo;
+    @BindView(R.id.tv_sign_content_two)
+    TextView tvSignContentTwo;
+    @BindView(R.id.line_two)
+    View lineTwo;
+    @BindView(R.id.tv_sign_date_three)
+    TextView tvSignDateThree;
+    @BindView(R.id.iv_sign_select_three)
+    ImageView ivSignSelectThree;
+    @BindView(R.id.tv_sign_content_three)
+    TextView tvSignContentThree;
+    @BindView(R.id.line_three)
+    View lineThree;
+    @BindView(R.id.tv_sign_date_four)
+    TextView tvSignDateFour;
+    @BindView(R.id.iv_sign_select_four)
+    ImageView ivSignSelectFour;
+    @BindView(R.id.tv_sign_content_four)
+    TextView tvSignContentFour;
+    @BindView(R.id.line_four)
+    View lineFour;
+    @BindView(R.id.tv_sign_date_five)
+    TextView tvSignDateFive;
+    @BindView(R.id.iv_sign_select_five)
+    ImageView ivSignSelectFive;
+    @BindView(R.id.tv_sign_content_five)
+    TextView tvSignContentFive;
+    @BindView(R.id.line_five)
+    View lineFive;
+    @BindView(R.id.tv_sign_date_six)
+    TextView tvSignDateSix;
+    @BindView(R.id.iv_sign_select_six)
+    ImageView ivSignSelectSix;
+    @BindView(R.id.tv_sign_content_six)
+    TextView tvSignContentSix;
+    @BindView(R.id.line_six)
+    View lineSix;
+    @BindView(R.id.tv_sign_date_seven)
+    TextView tvSignDateSeven;
+    @BindView(R.id.iv_sign_select_seven)
+    ImageView ivSignSelectSeven;
+    @BindView(R.id.tv_sign_content_seven)
+    TextView tvSignContentSeven;
 
     private List<Fragment> mFragmentList;
     private List<String> mTitleList;

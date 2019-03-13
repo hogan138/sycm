@@ -623,4 +623,18 @@ public class ApiServiceBean {
     public static String homeBottomInfo() {
         return "homeBottomInfo";
     }
+
+    /**
+     * 90、首页底部tab
+     */
+    public static String homeTab() {
+        return "homeTab";
+    }
+
+    /**
+     * 91、发现首页数据
+     */
+    public static String foundInfo() {
+        return "foundInfo";
+    }
 }

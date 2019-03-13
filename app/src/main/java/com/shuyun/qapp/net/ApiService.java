@@ -19,12 +19,14 @@ import com.shuyun.qapp.bean.ConfigDialogBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.ExchangeHistoryBean;
 import com.shuyun.qapp.bean.ExchangeMyPrizeBean;
+import com.shuyun.qapp.bean.FoundDataBean;
 import com.shuyun.qapp.bean.GroupAgainstBean;
 import com.shuyun.qapp.bean.GroupClassifyBean;
 import com.shuyun.qapp.bean.HistoryDataBean;
 import com.shuyun.qapp.bean.HomeBottomInfoBean;
 import com.shuyun.qapp.bean.HomeGroupsBean;
 import com.shuyun.qapp.bean.HomeNoticeBean;
+import com.shuyun.qapp.bean.HomeTabBean;
 import com.shuyun.qapp.bean.IntegralAllPrizeBean;
 import com.shuyun.qapp.bean.IntegralExchangeBean;
 import com.shuyun.qapp.bean.InviteBean;
@@ -640,4 +642,16 @@ public interface ApiService {
      */
     @GET("/rest/home/bottom")
     Observable<DataResponse<HomeBottomInfoBean>> homeBottomInfo();
+
+    /**
+     * 90、获取首页动态tab
+     */
+    @GET("/rest/home/tab")
+    Observable<DataResponse<HomeTabBean>> homeTab();
+
+    /**
+     * 91、获取发现首页数据
+     */
+    @GET("/rest/found/page/base")
+    Observable<DataResponse<FoundDataBean>> foundInfo();
 }

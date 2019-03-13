@@ -58,7 +58,7 @@ public class NewTaskFragment extends Fragment implements OnRemotingCallBackListe
         super.onActivityCreated(savedInstanceState);
         mContext = getActivity();
 
-        //获取题组列表
+        //获取任务列表
         loadHomeData();
 
         //初始化适配器
@@ -81,7 +81,7 @@ public class NewTaskFragment extends Fragment implements OnRemotingCallBackListe
 
 
     /**
-     * 获取题组列表
+     * 获取任务列表
      */
     private void loadHomeData() {
         RemotingEx.doRequest("getHomeGroups", ApiServiceBean.getHomeGroups(), new Object[]{AppUtils.getAppVersionName()}, this);

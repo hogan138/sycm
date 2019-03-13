@@ -1,4 +1,4 @@
-package com.shuyun.qapp.ui.activity;
+package com.shuyun.qapp.ui.found;
 
 import android.app.Activity;
 import android.os.Build;
@@ -12,32 +12,24 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.WebAnswerHomeBean;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.ui.webview.WebDetailFragment;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
-import com.shuyun.qapp.utils.SaveUserInfo;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
- * 70周年Fragment
+ * 发现动态webview
  */
-public class SeventyYearFragment extends Fragment {
+public class WebFragment extends Fragment {
 
-    @BindView(R.id.tv_common_title)
-    TextView tvCommonTitle; //标题文字
     Unbinder unbinder;
-    @BindView(R.id.ll_main)
-    LinearLayout llMain;
     @BindView(R.id.webView)
     WebView webView;
 
@@ -45,10 +37,12 @@ public class SeventyYearFragment extends Fragment {
 
     WebAnswerHomeBean answerHomeBean = new WebAnswerHomeBean();
 
+    String h5_url = "";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_seventyyear, container, false);
+        View view = inflater.inflate(R.layout.fragment_found_web, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
@@ -57,9 +51,15 @@ public class SeventyYearFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mContext = getActivity();
-        tvCommonTitle.setText("建国70周年");
     }
 
+    public static WebFragment newInstance(String h5_url) {
+        Bundle args = new Bundle();
+        args.putString("h5_url", h5_url);
+        WebFragment fragment = new WebFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onResume() {
@@ -82,7 +82,7 @@ public class SeventyYearFragment extends Fragment {
         webView.setWebChromeClient(new WebChromeClient());//解决答题时无法弹出dialog问题.
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webView.addJavascriptInterface(new JsInteration(), "android");
-        webView.loadUrl(SaveUserInfo.getInstance(mContext).getUserInfo("home_tab_url"));
+        webView.loadUrl(h5_url);
 
     }
 
@@ -114,25 +114,8 @@ public class SeventyYearFragment extends Fragment {
             return answerHome;
         }
 
-        /**
-         * 头部标题
-         *
-         * @param page  是否显示分享图标1:显示;其他值不显示
-         * @param title 标题
-         * @param id    答题Id
-         */
-        @JavascriptInterface
-        public void header(final int page, final String title, String id) {
-            mContext.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    tvCommonTitle.setText(title);
-                }
-            });
-        }
 
     }
-
 
 }
 

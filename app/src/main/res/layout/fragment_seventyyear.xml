@@ -45,34 +45,8 @@
             android:background="@color/light_white" />
     </RelativeLayout>
 
-    <RelativeLayout
+    <WebView
+        android:id="@+id/webView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@mipmap/bg_seventy_year"
-        android:paddingTop="120dp">
-
-        <com.scwang.smartrefresh.layout.SmartRefreshLayout
-            android:id="@+id/refreshLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_activity"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/text_10"
-                android:layout_marginRight="@dimen/text_10" />
-
-        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-
-        <ImageView
-            android:id="@+id/iv_activity_empty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:src="@mipmap/blank"
-            android:visibility="gone" />
-    </RelativeLayout>
-
-
+        android:layout_height="match_parent" />
 </LinearLayout>

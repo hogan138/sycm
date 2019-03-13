@@ -2,7 +2,12 @@ package com.shuyun.qapp.ui.homepage;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +15,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -32,6 +38,7 @@ import com.shuyun.qapp.base.BaseFragment;
 import com.shuyun.qapp.bean.ActivityTimeBean;
 import com.shuyun.qapp.bean.AppVersionBean;
 import com.shuyun.qapp.bean.DataResponse;
+import com.shuyun.qapp.bean.HomeTabBean;
 import com.shuyun.qapp.bean.InviteBean;
 import com.shuyun.qapp.bean.QPushBean;
 import com.shuyun.qapp.net.ApiServiceBean;
@@ -52,6 +59,7 @@ import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.AliPushBind;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.ImageUitils;
 import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
@@ -60,6 +68,9 @@ import com.shuyun.qapp.utils.StatusBarUtil;
 import com.shuyun.qapp.view.NoScrollViewPager;
 import com.umeng.analytics.MobclickAgent;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -136,11 +147,15 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         //初始化数据
         initDate();
 
+        //获取首页动态tab
+        homeTab();
+
         mHandler.postDelayed(runnable, 500);
 
         Log.e("token", AppConst.jwtToken + "             " + AppConst.sycm());
 
     }
+
 
     @Override
     public int intiLayout() {
@@ -498,6 +513,47 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         });
 
     }
+
+    //首页tab
+    private void homeTab() {
+
+        RemotingEx.doRequest(ApiServiceBean.homeTab(), new OnRemotingCallBackListener<HomeTabBean>() {
+            @Override
+            public void onCompleted(String action) {
+
+            }
+
+            @Override
+            public void onFailed(String action, String message) {
+
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<HomeTabBean> dataResponse) {
+                if (dataResponse.isSuccees()) {
+                    final HomeTabBean homeTabBean = dataResponse.getDat();
+                    if (homeTabBean.getStatus() == 1) {
+                        //显示tab
+                        radioSevetyYear.setVisibility(View.VISIBLE);
+                        radioSevetyYear.setText(homeTabBean.getLabel());
+                        radioSevetyYear.setTextColor(Color.parseColor(homeTabBean.getColor()));
+                        SaveUserInfo.getInstance(HomePageActivity.this).setUserInfo("home_tab_url", homeTabBean.getH5Url());
+                        Drawable drawable = ImageUitils.loadImageFromNetwork(homeTabBean.getIcon());
+                        //这一步必须要做, 否则不会显示.
+                        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                        radioSevetyYear.setCompoundDrawables(null, drawable, null, null);
+                    } else {
+                        //隐藏tab
+                        radioSevetyYear.setVisibility(View.GONE);
+                    }
+                } else {
+                    ErrorCodeTools.errorCodePrompt(HomePageActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                }
+            }
+        });
+
+    }
+
 
     //活动专区点击
     private void clickActivity() {

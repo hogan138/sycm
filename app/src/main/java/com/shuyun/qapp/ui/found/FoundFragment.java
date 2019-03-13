@@ -24,6 +24,7 @@ import com.shuyun.qapp.adapter.MyPagerAdapter;
 import com.shuyun.qapp.base.BaseFragment;
 import com.shuyun.qapp.bean.BannerBean;
 import com.shuyun.qapp.bean.DataResponse;
+import com.shuyun.qapp.bean.FoundDataBean;
 import com.shuyun.qapp.bean.MainConfigBean;
 import com.shuyun.qapp.bean.MarkBannerItem1;
 import com.shuyun.qapp.bean.MineBean;
@@ -80,20 +81,13 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
     private Handler mHandler = new Handler();
 
     //banner
-    private int bannerWidth = 0, bannerHeight = 0, bannerTotalHeight = 0;
-
-    //banner
     private MarkBannerAdapter1 markBannerAdapter1;
     private List<IBannerItem> bannerList = new ArrayList<>();
-    private List<BannerBean> bannerData = new ArrayList<>();
+    private List<FoundDataBean.BannerBean> bannerData = new ArrayList<>();
     private String bannerDataString = null;
 
     private List<Fragment> mFragmentList;
     private List<String> mTitleList;
-    private int status = 0;
-    private MineBean mineBean;
-
-    private String mainConfigBeanString = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -129,19 +123,6 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
     }
 
     private void init() {
-
-        loadMineHomeData();
-
-        //获取屏幕宽度
-//        DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
-//        bannerWidth = (int) Math.ceil(dm.widthPixels) - SizeUtils.dp2px(40);
-//        bannerHeight = (int) Math.ceil(bannerWidth * (260f / 750f));
-//        bannerTotalHeight = bannerHeight + SizeUtils.dp2px(20);
-
-        //banner设置
-//        ViewGroup.LayoutParams bannerParams = mBannerView.getLayoutParams();
-//        bannerParams.height = bannerTotalHeight;
-//        mBannerView.setLayoutParams(bannerParams);
 
         MarkBannerItem1 i = new MarkBannerItem1("https://image-syksc.oss-cn-shanghai.aliyuncs.com/syksc/app/banner/xiaji.jpg");
         bannerList.add(i);
@@ -179,10 +160,10 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
             @Override
             public void onClick(IBannerItem data) {
                 for (int i = 0; i < bannerData.size(); i++) {
-                    BannerBean bannerBean = bannerData.get(i);
-                    if (data.ImageUrl().equals(bannerBean.getPicture())) {
+                    FoundDataBean.BannerBean bannerBean = bannerData.get(i);
+                    if (data.ImageUrl().equals(bannerBean.getBaseImage())) {
                         LoginDataManager.instance().addData(LoginDataManager.BANNER_LOGIN, bannerBean);
-                        String action = bannerBean.getAction();
+                        String action = bannerBean.getBtnAction();
                         String h5Url = bannerBean.getH5Url();
                         Long is_Login = bannerBean.getIsLogin();
                         LoginJumpUtil.dialogSkip(action, mContext, bannerBean.getContent(), h5Url, is_Login);
@@ -192,42 +173,11 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
         });
     }
 
-    @OnClick({R.id.iv_back, R.id.tv_common_title})
-    public void click(View view) {
-        switch (view.getId()) {
-            case R.id.iv_back: //返回
-                if (mContext instanceof HomePageActivity) {
-                    HomePageActivity homePageActivity = (HomePageActivity) mContext;
-                    homePageActivity.radioGroupChange(0);
-                }
-                break;
-            case R.id.tv_common_title:
-                startActivity(new Intent(mContext, SignInActivity.class));
-                break;
-            default:
-                break;
-        }
-    }
-
     /**
-     * 轮播图数据
+     * 发现页数据
      */
-    public void loadHomeBanners() {
-        RemotingEx.doRequest("getHomeBanner", ApiServiceBean.getHomeBanner(), null, this);
-    }
-
-    /**
-     * 获取到我的首界面数据
-     */
-    private void loadMineHomeData() {
-        RemotingEx.doRequest("mineData", ApiServiceBean.getMineHomeData(), null, this);
-    }
-
-    /**
-     * 获取活动配置信息
-     */
-    private void getConfigInfo() {
-        RemotingEx.doRequest("configMainActivity", ApiServiceBean.configMainActivity(), null, this);
+    public void loadHomeInfo() {
+        RemotingEx.doRequest("foundInfo", ApiServiceBean.foundInfo(), null, this);
     }
 
     @Override
@@ -239,12 +189,8 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
     @Override
     public void refresh() {
 
-        //加载轮播图
-        loadHomeBanners();
-        //加载活动数据
-        loadMineHomeData();
-        //获取活动配置信息
-        getConfigInfo();
+        //发现页数据
+        loadHomeInfo();
     }
 
     @Override
@@ -282,8 +228,10 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
             return;
         }
 
-        if ("getHomeBanner".equals(action)) {
-            bannerData = (List<BannerBean>) response.getDat();
+        if ("foundInfo".equals(action)) {
+            FoundDataBean foundDataBean = (FoundDataBean) response.getDat();
+
+            bannerData = foundDataBean.getBanner();
             if (!EncodeAndStringTool.isListEmpty(bannerData)) {
                 String str = JSON.toJSONString(bannerData);
                 if (bannerDataString != null && bannerDataString.equals(str)) {
@@ -294,9 +242,8 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
                 //设置轮播图
                 bannerList.clear();
                 for (int i = 0; i < bannerData.size(); i++) {
-                    BannerBean bean = bannerData.get(i);
-                    MarkBannerItem1 item = new MarkBannerItem1(bean.getPicture());
-                    item.setAdConfigs(bean.getAdConfigs());
+                    FoundDataBean.BannerBean bean = bannerData.get(i);
+                    MarkBannerItem1 item = new MarkBannerItem1(bean.getBaseImage());
                     bannerList.add(item);
                 }
                 markBannerAdapter1.clearViews();
@@ -304,46 +251,44 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
                 //重新生成单位条
                 mBannerView.setBannerAdapter(markBannerAdapter1);
             }
-        } else if ("mineData".equals(action)) {
-            mineBean = (MineBean) response.getDat();
-            SaveUserInfo.getInstance(mContext).setUserInfo("cer", String.valueOf(mineBean.getCertification()));
-            //添加标题
-            initTitile();
-            //添加fragment
-            initFragment();
 
-        } else if ("configMainActivity".equals(action)) {
-            MainConfigBean mainConfigBean = (MainConfigBean) response.getDat();
-            String str = JSON.toJSONString(mainConfigBean);
-            if (mainConfigBeanString != null && mainConfigBeanString.equals(str)) {
-                return;
-            }
-            mainConfigBeanString = str;
-
+            //动态布局区域
+            FoundDataBean.RegionBean regionBean = foundDataBean.getRegion();
             //动态添加布局
             activityRegion.removeAllViews();
-            activityRegion.addView(ActivityRegionManager.getView(mContext, mainConfigBean, llFound));
+            activityRegion.addView(ActivityRegionManager1.getView(mContext, regionBean, llFound));
+
+
+            //动态tab添加
+            mTitleList = new ArrayList<>();
+            mFragmentList = new ArrayList<>();
+            List<FoundDataBean.TablesBean> tablesBeanList = foundDataBean.getTables();
+            for (int i = 0; i < tablesBeanList.size(); i++) {
+                mTitleList.add(tablesBeanList.get(i).getTitle());
+                if (tablesBeanList.get(i).getType() == 1) {
+                    mFragmentList.add(WebFragment.newInstance(tablesBeanList.get(i).getH5Url()));
+                } else if (tablesBeanList.get(i).getType() == 2) {
+                    mFragmentList.add(new HotGroupFragment());
+                }
+            }
+
+            //设置tablayout模式
+            tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+            //tablayout获取集合中的名称
+            tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(0)));
+            tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(1)));
+            tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(2)));
+
+            //初始化监听
+            initFragment();
+
+
         }
     }
 
-    private void initTitile() {
-        mTitleList = new ArrayList<>();
-        mTitleList.add("黄山行挑战赛");
-        mTitleList.add("排行榜");
-        mTitleList.add("热门题组");
-        //设置tablayout模式
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        //tablayout获取集合中的名称
-        tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(0)));
-        tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(1)));
-        tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(2)));
-    }
 
     private void initFragment() {
-        mFragmentList = new ArrayList<>();
-        mFragmentList.add(NoUsePrizeFragment.newInstance(mineBean.getCertification()));
-        mFragmentList.add(NoUsePrizeFragment.newInstance(mineBean.getCertification()));
-        mFragmentList.add(new HotGroupFragment());
+
         //设置适配器
         vp.setAdapter(new MyPagerAdapter(getActivity().getSupportFragmentManager(), mFragmentList, mTitleList));
 

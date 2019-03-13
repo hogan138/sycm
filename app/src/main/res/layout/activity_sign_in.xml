@@ -128,6 +128,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tv_sign_date_one"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
@@ -136,6 +137,7 @@
                             android:textSize="9sp" />
 
                         <ImageView
+                            android:id="@+id/iv_sign_select_one"
                             android:layout_width="@dimen/text_24"
                             android:layout_height="@dimen/text_24"
                             android:layout_gravity="center"
@@ -144,6 +146,7 @@
                             android:background="@mipmap/sign_select_on" />
 
                         <TextView
+                            android:id="@+id/tv_sign_content_one"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
@@ -155,6 +158,7 @@
                     </LinearLayout>
 
                     <View
+                        android:id="@+id/line_one"
                         android:layout_width="15dp"
                         android:layout_height="2dp"
                         android:layout_gravity="center_vertical"
@@ -168,6 +172,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tv_sign_date_two"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
@@ -176,6 +181,7 @@
                             android:textSize="9sp" />
 
                         <ImageView
+                            android:id="@+id/iv_sign_select_two"
                             android:layout_width="@dimen/text_24"
                             android:layout_height="@dimen/text_24"
                             android:layout_gravity="center"
@@ -184,6 +190,7 @@
                             android:background="@mipmap/sign_select_on" />
 
                         <TextView
+                            android:id="@+id/tv_sign_content_two"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
@@ -195,6 +202,7 @@
                     </LinearLayout>
 
                     <View
+                        android:id="@+id/line_two"
                         android:layout_width="15dp"
                         android:layout_height="2dp"
                         android:layout_gravity="center_vertical"
@@ -208,6 +216,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tv_sign_date_three"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
@@ -216,6 +225,7 @@
                             android:textSize="9sp" />
 
                         <ImageView
+                            android:id="@+id/iv_sign_select_three"
                             android:layout_width="@dimen/text_24"
                             android:layout_height="@dimen/text_24"
                             android:layout_gravity="center"
@@ -224,6 +234,7 @@
                             android:background="@mipmap/sign_select_no" />
 
                         <TextView
+                            android:id="@+id/tv_sign_content_three"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
@@ -235,6 +246,7 @@
                     </LinearLayout>
 
                     <View
+                        android:id="@+id/line_three"
                         android:layout_width="15dp"
                         android:layout_height="2dp"
                         android:layout_gravity="center_vertical"
@@ -248,6 +260,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tv_sign_date_four"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
@@ -256,6 +269,7 @@
                             android:textSize="9sp" />
 
                         <ImageView
+                            android:id="@+id/iv_sign_select_four"
                             android:layout_width="@dimen/text_24"
                             android:layout_height="@dimen/text_24"
                             android:layout_gravity="center"
@@ -264,6 +278,7 @@
                             android:background="@mipmap/sign_select_no" />
 
                         <TextView
+                            android:id="@+id/tv_sign_content_four"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
@@ -275,6 +290,7 @@
                     </LinearLayout>
 
                     <View
+                        android:id="@+id/line_four"
                         android:layout_width="15dp"
                         android:layout_height="2dp"
                         android:layout_gravity="center_vertical"
@@ -288,6 +304,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tv_sign_date_five"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
@@ -296,6 +313,7 @@
                             android:textSize="9sp" />
 
                         <ImageView
+                            android:id="@+id/iv_sign_select_five"
                             android:layout_width="@dimen/text_24"
                             android:layout_height="@dimen/text_24"
                             android:layout_gravity="center"
@@ -304,6 +322,7 @@
                             android:background="@mipmap/sign_select_no" />
 
                         <TextView
+                            android:id="@+id/tv_sign_content_five"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
@@ -315,6 +334,7 @@
                     </LinearLayout>
 
                     <View
+                        android:id="@+id/line_five"
                         android:layout_width="15dp"
                         android:layout_height="2dp"
                         android:layout_gravity="center_vertical"
@@ -328,6 +348,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tv_sign_date_six"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
@@ -336,6 +357,7 @@
                             android:textSize="9sp" />
 
                         <ImageView
+                            android:id="@+id/iv_sign_select_six"
                             android:layout_width="@dimen/text_24"
                             android:layout_height="@dimen/text_24"
                             android:layout_gravity="center"
@@ -344,6 +366,7 @@
                             android:background="@mipmap/sign_select_no" />
 
                         <TextView
+                            android:id="@+id/tv_sign_content_six"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
@@ -355,6 +378,7 @@
                     </LinearLayout>
 
                     <View
+                        android:id="@+id/line_six"
                         android:layout_width="15dp"
                         android:layout_height="2dp"
                         android:layout_gravity="center_vertical"
@@ -368,6 +392,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tv_sign_date_seven"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
@@ -376,6 +401,7 @@
                             android:textSize="9sp" />
 
                         <ImageView
+                            android:id="@+id/iv_sign_select_seven"
                             android:layout_width="@dimen/text_24"
                             android:layout_height="@dimen/text_24"
                             android:layout_gravity="center"
@@ -384,6 +410,7 @@
                             android:background="@mipmap/sign_select_no" />
 
                         <TextView
+                            android:id="@+id/tv_sign_content_seven"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
