@@ -576,7 +576,6 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
                             });
                         }
 
-
                     } else {
                         //隐藏tab
                         radioSevetyYear.setVisibility(View.GONE);

@@ -62,7 +62,7 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        tvCommonTitle.setText("我的积分");
+        tvCommonTitle.setText("积分中心");
         ivBack.setOnClickListener(this);
         rlStartBox.setOnClickListener(this);
         rlStartBaby.setOnClickListener(this);
