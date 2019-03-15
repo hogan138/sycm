@@ -38,6 +38,19 @@ public class GlideUtils {
     }
 
     /**
+     * 加载网络图片
+     *
+     * @param mContext
+     * @param path
+     * @param imageview
+     */
+    public static void LoadImage1(Context mContext, String path,
+                                  ImageView imageview) {
+        Glide.with(mContext).load(path)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageview);
+    }
+
+    /**
      * 加载带尺寸的图片
      *
      * @param mContext

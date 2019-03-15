@@ -38,7 +38,6 @@ public class WebFragment extends Fragment {
 
     WebAnswerHomeBean answerHomeBean = new WebAnswerHomeBean();
 
-    static WebFragment fragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,19 +51,6 @@ public class WebFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mContext = getActivity();
-    }
-
-    public static WebFragment newInstance(String h5_url) {
-        Bundle args = new Bundle();
-        args.putString("h5_url", h5_url);
-        fragment = new WebFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
 
         answerHomeBean.setToken(AppConst.TOKEN);
         answerHomeBean.setRandom(AppConst.RANDOM);
@@ -83,7 +69,9 @@ public class WebFragment extends Fragment {
         webView.setWebChromeClient(new WebChromeClient());//解决答题时无法弹出dialog问题.
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webView.addJavascriptInterface(new JsInteration(), "android");
-        webView.loadUrl(fragment.getArguments().getString("h5_url"));
+        //获取参数
+        Bundle bundle = getArguments();
+        webView.loadUrl(bundle.getString("h5_url"));
         //覆盖WebView默认使用第三方或系统默认浏览器打开网页的行为，使网页用WebView打开
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -94,8 +82,17 @@ public class WebFragment extends Fragment {
                 return true;
             }
         });
-
     }
+
+
+    public static WebFragment newInstance(String h5_url) {
+        WebFragment fragment = new WebFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("h5_url", h5_url);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
 
     @Override
     public void onDestroyView() {

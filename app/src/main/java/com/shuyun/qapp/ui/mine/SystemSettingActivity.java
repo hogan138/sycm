@@ -217,8 +217,6 @@ public class SystemSettingActivity extends BaseActivity implements OnRemotingCal
         AliPushBind.UnbindPush(new OnRemotingCallBackListener<Object>() {
             @Override
             public void onCompleted(String action) {
-                //清空数据
-                clearData();
 
                 //友盟统计登出
                 MobclickAgent.onProfileSignOff();
@@ -232,6 +230,9 @@ public class SystemSettingActivity extends BaseActivity implements OnRemotingCal
                     //不启用游客模式
                     startActivity(new Intent(mContext, LoginActivity.class));
                 }
+
+                //清空数据
+                clearData();
 
                 MyActivityManager.getInstance().finishAllActivity();//销毁所有页面
             }

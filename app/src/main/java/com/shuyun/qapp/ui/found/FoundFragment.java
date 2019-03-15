@@ -2,15 +2,12 @@ package com.shuyun.qapp.ui.found;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,47 +15,33 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.blankj.utilcode.util.SizeUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.MarkBannerAdapter1;
 import com.shuyun.qapp.adapter.MyPagerAdapter;
 import com.shuyun.qapp.base.BaseFragment;
-import com.shuyun.qapp.bean.BannerBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.FoundDataBean;
-import com.shuyun.qapp.bean.MainConfigBean;
 import com.shuyun.qapp.bean.MarkBannerItem1;
-import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.LoginDataManager;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
-import com.shuyun.qapp.ui.homepage.ActivityRegionManager;
-import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
-import com.shuyun.qapp.ui.mine.NoUsePrizeFragment;
-import com.shuyun.qapp.ui.mine.UseInPrizeFragment;
-import com.shuyun.qapp.ui.mine.UsePrizeFragment;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.view.EnhanceTabLayout;
 import com.shuyun.qapp.view.LoginJumpUtil;
 import com.shuyun.qapp.view.ViewPagerScroller;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.kevin.banner.BannerViewPager;
 import cn.kevin.banner.IBannerItem;
-import cn.kevin.banner.transformer.YZoomTransFormer;
 
 /**
  * 活动Fragment
@@ -267,6 +250,7 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
             mTitleList = new ArrayList<>();
             mFragmentList = new ArrayList<>();
             List<FoundDataBean.TablesBean> tablesBeanList = foundDataBean.getTables();
+            //添加fragment
             for (int i = 0; i < tablesBeanList.size(); i++) {
                 mTitleList.add(tablesBeanList.get(i).getTitle());
                 if (tablesBeanList.get(i).getType() == 1) {
@@ -276,10 +260,10 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
                 }
             }
 
+            //添加标题
             for (int i = 0; i < mTitleList.size(); i++) {
                 tabLayout.addTab(mTitleList.get(i));
             }
-
             //设置适配器
             vp.setAdapter(new MyPagerAdapter(getActivity().getSupportFragmentManager(), mFragmentList, mTitleList));
             vp.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout.getTabLayout()));

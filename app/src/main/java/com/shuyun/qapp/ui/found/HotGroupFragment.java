@@ -10,18 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.blankj.utilcode.util.AppUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.FoundHotGroupAdapter;
-import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.FoundDataBean;
-import com.shuyun.qapp.bean.GroupClassifyBean;
-import com.shuyun.qapp.bean.HomeGroupsBean;
-import com.shuyun.qapp.net.ApiServiceBean;
-import com.shuyun.qapp.net.OnRemotingCallBackListener;
-import com.shuyun.qapp.net.RemotingEx;
-import com.shuyun.qapp.utils.EncodeAndStringTool;
-import com.shuyun.qapp.utils.ErrorCodeTools;
 
 import java.util.ArrayList;
 import java.util.List;

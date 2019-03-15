@@ -1,5 +1,6 @@
 package com.shuyun.qapp.ui.homepage;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -12,16 +13,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.alibaba.baichuan.android.trade.AlibcTradeSDK;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
+import com.blankj.utilcode.util.ConvertUtils;
 import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.callback.ConfigDialog;
 import com.mylhyl.circledialog.params.DialogParams;
@@ -52,12 +56,14 @@ import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.AliPushBind;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.GlideUtils;
 import com.shuyun.qapp.utils.ImageUitils;
 import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.StatusBarUtil;
+import com.shuyun.qapp.view.LoginJumpUtil;
 import com.shuyun.qapp.view.NoScrollViewPager;
 import com.umeng.analytics.MobclickAgent;
 
@@ -106,10 +112,13 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
     private int selectedIndex = 0;
     private Bundle bundle = null;
 
+    private Context mContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        mContext = getApplicationContext();
 
         MyActivityManager.getInstance().pushOneActivity(HomePageActivity.this);
 
@@ -524,24 +533,54 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
             }
 
             @Override
-            public void onSucceed(String action, DataResponse<HomeTabBean> dataResponse) {
+            public void onSucceed(final String action, DataResponse<HomeTabBean> dataResponse) {
                 if (dataResponse.isSuccees()) {
                     final HomeTabBean homeTabBean = dataResponse.getDat();
                     if (homeTabBean.getStatus() == 1) {
                         //显示tab
                         radioSevetyYear.setVisibility(View.VISIBLE);
-//                        ivSeventyYear.setVisibility(View.VISIBLE);
-                        radioSevetyYear.setText(homeTabBean.getLabel());
-                        radioSevetyYear.setTextColor(Color.parseColor(homeTabBean.getColor()));
-                        SaveUserInfo.getInstance(HomePageActivity.this).setUserInfo("home_tab_url", homeTabBean.getH5Url());
-                        Drawable drawable = ImageUitils.loadImageFromNetwork(homeTabBean.getIcon());
-                        //这一步必须要做, 否则不会显示.
-                        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-                        radioSevetyYear.setCompoundDrawables(null, drawable, null, null);
+                        if (!EncodeAndStringTool.isStringEmpty(homeTabBean.getTitle())) {
+                            radioSevetyYear.setText(homeTabBean.getTitle());
+                            radioSevetyYear.setTextColor(Color.parseColor(homeTabBean.getColor()));
+                        }
+
+                        if (homeTabBean.getMode() == 1) {
+                            //正常布局
+                            Drawable drawable = ImageUitils.loadImageFromNetwork(homeTabBean.getPicture());
+                            //这一步必须要做, 否则不会显示.
+                            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                            radioSevetyYear.setCompoundDrawables(null, drawable, null, null);
+                        } else {
+                            //图片显示
+                            ivSeventyYear.setVisibility(View.VISIBLE);
+                            radioSevetyYear.setCompoundDrawables(null, null, null, null);
+                            radioSevetyYear.setText("");
+                            GlideUtils.LoadImage1(HomePageActivity.this, homeTabBean.getPicture(), ivSeventyYear);
+                            ViewGroup.LayoutParams params = ivSeventyYear.getLayoutParams();
+                            params.height = ConvertUtils.dp2px(homeTabBean.getHeight());
+                            params.width = ConvertUtils.dp2px(homeTabBean.getWidth());
+                            ivSeventyYear.setLayoutParams(params);
+                        }
+
+                        final String Action = homeTabBean.getAction();
+                        if (AppConst.H5.equals(Action)) {
+                            SaveUserInfo.getInstance(HomePageActivity.this).setUserInfo("home_tab_url", homeTabBean.getH5Url());
+                        } else {
+                            ivSeventyYear.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    String content = homeTabBean.getContent();
+                                    String h5Url = homeTabBean.getH5Url();
+                                    LoginJumpUtil.dialogSkip(Action, HomePageActivity.this, content, h5Url, (long) 0);
+                                }
+                            });
+                        }
+
+
                     } else {
                         //隐藏tab
                         radioSevetyYear.setVisibility(View.GONE);
-//                        ivSeventyYear.setVisibility(View.GONE);
+                        ivSeventyYear.setVisibility(View.GONE);
                     }
                 } else {
                     ErrorCodeTools.errorCodePrompt(HomePageActivity.this, dataResponse.getErr(), dataResponse.getMsg());

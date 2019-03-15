@@ -20,7 +20,6 @@ import com.ishumei.smantifraud.SmAntiFraud;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.WebAnswerHomeBean;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.ui.webview.WebDetailFragment;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.SaveUserInfo;
 
