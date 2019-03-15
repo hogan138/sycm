@@ -2,12 +2,7 @@ package com.shuyun.qapp.ui.homepage;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,7 +10,6 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -47,7 +41,6 @@ import com.shuyun.qapp.net.HeartBeatManager;
 import com.shuyun.qapp.net.LoginDataManager;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
-import com.shuyun.qapp.ui.activity.ActivityFragment;
 import com.shuyun.qapp.ui.activity.SeventyYearFragment;
 import com.shuyun.qapp.ui.classify.ClassifyFragment;
 import com.shuyun.qapp.ui.found.FoundFragment;
@@ -68,9 +61,6 @@ import com.shuyun.qapp.utils.StatusBarUtil;
 import com.shuyun.qapp.view.NoScrollViewPager;
 import com.umeng.analytics.MobclickAgent;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,6 +91,8 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
     ImageView ivNoLoginLogo; //未登陆logo
     @BindView(R.id.radioSevetyYear)
     RadioButton radioSevetyYear; //70周年
+    @BindView(R.id.iv_seventy_year)
+    ImageView ivSeventyYear;
 
     /**
      * fragment容器
@@ -140,7 +132,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         ivNoLoginLogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                radioGroupChange(3);
+                radioGroupChange(4);
             }
         });
 
@@ -225,7 +217,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
             String from = intent.getStringExtra("from");
             //领取答题次数
             if ("msg".equals(from)) {
-                radioGroupChange(3);
+                radioGroupChange(4);
             } else if ("h5".equals(from)) {  //我的奖品h5返回首页
                 radioGroupChange(0);
             }
@@ -426,6 +418,9 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
                 case 3:
                     radioGroup.check(radioFound.getId());
                     break;
+                case 4:
+                    radioGroup.check(radioMine.getId());
+                    break;
             }
             LoginDataManager.instance().addData(LoginDataManager.MINE_LOGIN, new JSONObject());
             //跳转登录
@@ -535,6 +530,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
                     if (homeTabBean.getStatus() == 1) {
                         //显示tab
                         radioSevetyYear.setVisibility(View.VISIBLE);
+//                        ivSeventyYear.setVisibility(View.VISIBLE);
                         radioSevetyYear.setText(homeTabBean.getLabel());
                         radioSevetyYear.setTextColor(Color.parseColor(homeTabBean.getColor()));
                         SaveUserInfo.getInstance(HomePageActivity.this).setUserInfo("home_tab_url", homeTabBean.getH5Url());
@@ -545,6 +541,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
                     } else {
                         //隐藏tab
                         radioSevetyYear.setVisibility(View.GONE);
+//                        ivSeventyYear.setVisibility(View.GONE);
                     }
                 } else {
                     ErrorCodeTools.errorCodePrompt(HomePageActivity.this, dataResponse.getErr(), dataResponse.getMsg());

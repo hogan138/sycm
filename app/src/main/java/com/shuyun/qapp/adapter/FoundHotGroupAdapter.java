@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.shuyun.qapp.R;
+import com.shuyun.qapp.bean.FoundDataBean;
 import com.shuyun.qapp.bean.GroupClassifyBean;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 
@@ -26,10 +27,10 @@ public class FoundHotGroupAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     private Context mContext;
     //题组分类集合
-    private List<GroupClassifyBean> groupClassifyBeans;
+    private List<FoundDataBean.TablesBean.GroupsBean> groupsBeanList;
 
-    public FoundHotGroupAdapter(List<GroupClassifyBean> groupClassifyBeans, Context mContext) {
-        this.groupClassifyBeans = groupClassifyBeans;
+    public FoundHotGroupAdapter(List<FoundDataBean.TablesBean.GroupsBean> groupsBeanList, Context mContext) {
+        this.groupsBeanList = groupsBeanList;
         this.mContext = mContext;
         notifyDataSetChanged();
     }
@@ -49,11 +50,11 @@ public class FoundHotGroupAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        GroupClassifyBean groupClassifyBean = groupClassifyBeans.get(position);
+        FoundDataBean.TablesBean.GroupsBean groupsBean = groupsBeanList.get(position);
         try {
-            ((MyViewHolder) holder).tvTitle.setText(groupClassifyBean.getName());
+            ((MyViewHolder) holder).tvTitle.setText(groupsBean.getTitle());
 
-            List<GroupClassifyBean.ChildrenBean> childrenBeanList = groupClassifyBean.getChildren();
+            List<FoundDataBean.TablesBean.GroupsBean.ChildrenBean> childrenBeanList = groupsBean.getChildren();
             if (!EncodeAndStringTool.isListEmpty(childrenBeanList)) {
                 try {
                     //解决数据加载不完的问题
@@ -80,7 +81,7 @@ public class FoundHotGroupAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public int getItemCount() {
-        return (groupClassifyBeans == null) ? 0 : groupClassifyBeans.size();
+        return (groupsBeanList == null) ? 0 : groupsBeanList.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {

@@ -12,6 +12,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.alibaba.fastjson.JSON;
 import com.ishumei.smantifraud.SmAntiFraud;
@@ -37,7 +38,7 @@ public class WebFragment extends Fragment {
 
     WebAnswerHomeBean answerHomeBean = new WebAnswerHomeBean();
 
-    String h5_url = "";
+    static WebFragment fragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,7 +57,7 @@ public class WebFragment extends Fragment {
     public static WebFragment newInstance(String h5_url) {
         Bundle args = new Bundle();
         args.putString("h5_url", h5_url);
-        WebFragment fragment = new WebFragment();
+        fragment = new WebFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -82,7 +83,17 @@ public class WebFragment extends Fragment {
         webView.setWebChromeClient(new WebChromeClient());//解决答题时无法弹出dialog问题.
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webView.addJavascriptInterface(new JsInteration(), "android");
-        webView.loadUrl(h5_url);
+        webView.loadUrl(fragment.getArguments().getString("h5_url"));
+        //覆盖WebView默认使用第三方或系统默认浏览器打开网页的行为，使网页用WebView打开
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                // TODO Auto-generated method stub
+                //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
+                view.loadUrl(url);
+                return true;
+            }
+        });
 
     }
 

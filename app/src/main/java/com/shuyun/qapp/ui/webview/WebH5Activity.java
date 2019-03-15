@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -40,25 +41,36 @@ import com.mylhyl.circledialog.params.DialogParams;
 import com.mylhyl.circledialog.params.TextParams;
 import com.mylhyl.circledialog.params.TitleParams;
 import com.shuyun.qapp.R;
+import com.shuyun.qapp.alipay.AlipayTradeManager;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.AuthHeader;
 import com.shuyun.qapp.bean.H5JumpBean;
+import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.bean.ReturnDialogBean;
 import com.shuyun.qapp.bean.SharePublicBean;
 import com.shuyun.qapp.bean.WebAnswerHomeBean;
+import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
+import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
 import com.shuyun.qapp.ui.mine.CashRecordActivity;
+import com.shuyun.qapp.ui.mine.NewRedWithdrawActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.JumpTomap;
 import com.shuyun.qapp.utils.OnMultiClickListener;
+import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.view.InviteSharePopupUtil;
 import com.shuyun.qapp.view.LoginJumpUtil;
+import com.shuyun.qapp.view.RealNamePopupUtil;
 import com.shuyun.qapp.view.SharePopupUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -539,6 +551,75 @@ public class WebH5Activity extends BaseActivity implements CommonPopupWindow.Vie
             });
             Log.e("data", data);
         }
+
+
+        /**
+         * 开宝箱奖品跳转
+         */
+        @JavascriptInterface
+        public void gotoprize(final String prizeData) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.e("奖品返回", prizeData);
+//                    MinePrize minePrize = JSONObject.parseObject(prizeData.toString(), MinePrize.class);
+                    MinePrize minePrize = new Gson().fromJson(prizeData, MinePrize.class);
+                    if (minePrize.getActionType().equals("action.h5.url")) {
+                        if (Integer.parseInt(SaveUserInfo.getInstance(WebH5Activity.this).getUserInfo("cert")) == 1) {
+                            //实物
+                            Intent intent = new Intent(WebH5Activity.this, WebH5Activity.class);
+                            intent.putExtra("id", minePrize.getId());
+                            intent.putExtra("url", minePrize.getH5Url());
+                            intent.putExtra("name", minePrize.getName());
+                            startActivity(intent);
+                        } else {
+                            //显示实名认证弹窗
+                            RealNamePopupUtil.showAuthPop(getApplicationContext(), rlMain, getString(R.string.real_gift_describe));
+                        }
+                    } else if (minePrize.getActionType().equals("action.withdraw")) {
+                        //红包
+                        if (Integer.parseInt(SaveUserInfo.getInstance(WebH5Activity.this).getUserInfo("cert")) == 1) {
+                            if (!EncodeAndStringTool.isListEmpty(minePrize.getMinePrizes())) {
+                                List<MinePrize.ChildMinePrize> redPrizeList = new ArrayList<>();
+                                for (int i = 0; i < minePrize.getMinePrizes().size(); i++) {
+                                    MinePrize.ChildMinePrize childMinePrize1 = minePrize.getMinePrizes().get(i);
+                                    if (minePrize.getMinePrizes().get(i).getActionType().equals("action.withdraw")) {
+                                        redPrizeList.add(childMinePrize1);
+                                    }
+                                }
+                                if (!EncodeAndStringTool.isListEmpty(redPrizeList)) {
+                                    Intent intent = new Intent(WebH5Activity.this, NewRedWithdrawActivity.class);
+                                    Bundle bundle = new Bundle();
+                                    bundle.putParcelableArrayList("redPrize", (ArrayList<? extends Parcelable>) redPrizeList);
+                                    bundle.putString("redId", minePrize.getId());
+                                    bundle.putString("from", "box");
+                                    intent.putExtras(bundle);
+                                    startActivity(intent);
+                                }
+                            }
+                        } else {
+                            //显示实名认证弹窗
+                            RealNamePopupUtil.showAuthPop(WebH5Activity.this, rlMain, getString(R.string.real_gift_describe));
+                        }
+                    } else if (minePrize.getActionType().equals("action.bp.use")) {
+                        //积分
+                        startActivity(new Intent(WebH5Activity.this, IntegralExchangeActivity.class));
+                    } else if (minePrize.getActionType().equals("action.alipay.coupon")) {
+                        //优惠券
+                        if (Integer.parseInt(SaveUserInfo.getInstance(WebH5Activity.this).getUserInfo("cert")) == 1) {
+                            //调用使用优惠券接口
+                            RemotingEx.doRequest(ApiServiceBean.useCoupon(), new Object[]{minePrize.getId()}, null);
+                            AlipayTradeManager.instance().showBasePage(WebH5Activity.this, minePrize.getH5Url());
+                        } else {
+                            //显示实名认证弹窗
+                            RealNamePopupUtil.showAuthPop(getApplicationContext(), rlMain, getString(R.string.real_gift_describe));
+                        }
+                    }
+                }
+            });
+
+        }
+
 
     }
 

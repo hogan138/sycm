@@ -114,4 +114,14 @@
             android:textSize="@dimen/text_10"
             android:textStyle="bold" />
     </RadioGroup>
+
+    <ImageView
+        android:id="@+id/iv_seventy_year"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/icon_oval"
+        android:visibility="gone" />
+
 </RelativeLayout>

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.AnyPositionBean;
+import com.shuyun.qapp.bean.FoundDataBean;
 import com.shuyun.qapp.bean.GroupClassifyBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
@@ -37,11 +38,11 @@ public class FoundGroupAdapter extends RecyclerView.Adapter<FoundGroupAdapter.Vi
 
     private Context mContext;
     //题组分类集合
-    private List<GroupClassifyBean.ChildrenBean> childrenBeanList;
+    private List<FoundDataBean.TablesBean.GroupsBean.ChildrenBean> childrenBeanList;
     private LayoutInflater layoutInflater;
     private Handler mHandler = new Handler();
 
-    public FoundGroupAdapter(List<GroupClassifyBean.ChildrenBean> childrenBeanList, Context mContext) {
+    public FoundGroupAdapter(List<FoundDataBean.TablesBean.GroupsBean.ChildrenBean> childrenBeanList, Context mContext) {
         this.childrenBeanList = childrenBeanList;
         this.mContext = mContext;
         layoutInflater = LayoutInflater.from(mContext);
@@ -59,19 +60,19 @@ public class FoundGroupAdapter extends RecyclerView.Adapter<FoundGroupAdapter.Vi
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final GroupClassifyBean.ChildrenBean childrenBean = childrenBeanList.get(position);
+        final FoundDataBean.TablesBean.GroupsBean.ChildrenBean childrenBean = childrenBeanList.get(position);
         holder.rlAddImageview.removeAllViews();
         try {
-            holder.tvGroupTitle.setText(childrenBean.getName() + "");
+            holder.tvGroupTitle.setText(childrenBean.getName());
             ImageLoaderManager.LoadImage(mContext, childrenBean.getPicture(), holder.ivGroupBg, R.mipmap.zw01);
 
-            if (position == 0) {
+            if (childrenBean.getTag() == 1) {
                 holder.ivRanking.setVisibility(View.VISIBLE);
                 holder.ivRanking.setBackgroundResource(R.mipmap.found_hot_group_one);
-            } else if (position == 1) {
+            } else if (childrenBean.getTag() == 2) {
                 holder.ivRanking.setVisibility(View.VISIBLE);
                 holder.ivRanking.setBackgroundResource(R.mipmap.found_hot_group_two);
-            } else if (position == 2) {
+            } else if (childrenBean.getTag() == 3) {
                 holder.ivRanking.setVisibility(View.VISIBLE);
                 holder.ivRanking.setBackgroundResource(R.mipmap.found_hot_group_three);
             } else {
@@ -92,34 +93,34 @@ public class FoundGroupAdapter extends RecyclerView.Adapter<FoundGroupAdapter.Vi
             });
 
             //任意logo
-            List<GroupClassifyBean.AdConfigs> list = childrenBean.getAdConfigs();
-            if (list == null)
-                list = new ArrayList<>();
-            for (GroupClassifyBean.AdConfigs adConfigs : list) {
-                Long type = adConfigs.getType();
-                if (AppConst.TYPE_HOME_GROUP != type) {
-                    continue;
-                }
-                final AnyPositionBean anyPositionBean = new AnyPositionBean();
-                anyPositionBean.setType(adConfigs.getType());
-                anyPositionBean.setLocation(adConfigs.getLocation());
-                anyPositionBean.setWidth(adConfigs.getWidth());
-                anyPositionBean.setHeight(adConfigs.getHeight());
-                anyPositionBean.setPadding(adConfigs.getPadding());
-                anyPositionBean.setMargin(adConfigs.getMargin());
-                anyPositionBean.setShadow(adConfigs.getShadow());
-                anyPositionBean.setShadowColor(adConfigs.getShadowColor());
-                anyPositionBean.setShadowAlpha(adConfigs.getShadowAlpha());
-                anyPositionBean.setShadowRadius(adConfigs.getShadowRadius());
-                anyPositionBean.setImageUrl(adConfigs.getImageUrl());
-                //执行
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        AnyPositionImgManage.execute(anyPositionBean, holder.rlAddImageview, mContext);
-                    }
-                }, 0);
-            }
+//            List<GroupClassifyBean.AdConfigs> list = childrenBean.getAdConfigs();
+//            if (list == null)
+//                list = new ArrayList<>();
+//            for (GroupClassifyBean.AdConfigs adConfigs : list) {
+//                Long type = adConfigs.getType();
+//                if (AppConst.TYPE_HOME_GROUP != type) {
+//                    continue;
+//                }
+//                final AnyPositionBean anyPositionBean = new AnyPositionBean();
+//                anyPositionBean.setType(adConfigs.getType());
+//                anyPositionBean.setLocation(adConfigs.getLocation());
+//                anyPositionBean.setWidth(adConfigs.getWidth());
+//                anyPositionBean.setHeight(adConfigs.getHeight());
+//                anyPositionBean.setPadding(adConfigs.getPadding());
+//                anyPositionBean.setMargin(adConfigs.getMargin());
+//                anyPositionBean.setShadow(adConfigs.getShadow());
+//                anyPositionBean.setShadowColor(adConfigs.getShadowColor());
+//                anyPositionBean.setShadowAlpha(adConfigs.getShadowAlpha());
+//                anyPositionBean.setShadowRadius(adConfigs.getShadowRadius());
+//                anyPositionBean.setImageUrl(adConfigs.getImageUrl());
+//                //执行
+//                mHandler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        AnyPositionImgManage.execute(anyPositionBean, holder.rlAddImageview, mContext);
+//                    }
+//                }, 0);
+//            }
         } catch (Exception e) {
 
         }

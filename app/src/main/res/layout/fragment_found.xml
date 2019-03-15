@@ -80,15 +80,18 @@
                 android:orientation="horizontal"
                 app:layout_scrollFlags="scroll" />
 
-            <android.support.design.widget.TabLayout
+            <com.shuyun.qapp.view.EnhanceTabLayout
                 android:id="@+id/tab_layout"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/white"
                 app:tabIndicatorColor="@color/color_4"
-                app:tabSelectedTextColor="@color/color_1"
+                app:tabIndicatorHeight="3dp"
+                app:tabIndicatorWidth="50dp"
+                app:tabSelectTextColor="@color/color_1"
                 app:tabTextAppearance="@style/TabLayoutTextSize"
-                app:tabTextColor="@color/color_66" />
+                app:tabTextColor="@color/color_66"
+                app:tab_Mode="mode_scrollable" />
+
 
         </android.support.design.widget.AppBarLayout>
 

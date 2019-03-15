@@ -2,6 +2,7 @@ package com.shuyun.qapp.ui.found;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -42,10 +43,13 @@ import com.shuyun.qapp.ui.mine.UsePrizeFragment;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveUserInfo;
+import com.shuyun.qapp.view.EnhanceTabLayout;
 import com.shuyun.qapp.view.LoginJumpUtil;
 import com.shuyun.qapp.view.ViewPagerScroller;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -67,7 +71,7 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
     @BindView(R.id.banner)
     BannerViewPager mBannerView;
     @BindView(R.id.tab_layout)
-    TabLayout tabLayout;
+    EnhanceTabLayout tabLayout;
     @BindView(R.id.vp)
     ViewPager vp;
     @BindView(R.id.activityRegion)
@@ -161,9 +165,9 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
             public void onClick(IBannerItem data) {
                 for (int i = 0; i < bannerData.size(); i++) {
                     FoundDataBean.BannerBean bannerBean = bannerData.get(i);
-                    if (data.ImageUrl().equals(bannerBean.getBaseImage())) {
+                    if (data.ImageUrl().equals(bannerBean.getPicture())) {
                         LoginDataManager.instance().addData(LoginDataManager.BANNER_LOGIN, bannerBean);
-                        String action = bannerBean.getBtnAction();
+                        String action = bannerBean.getAction();
                         String h5Url = bannerBean.getH5Url();
                         Long is_Login = bannerBean.getIsLogin();
                         LoginJumpUtil.dialogSkip(action, mContext, bannerBean.getContent(), h5Url, is_Login);
@@ -266,65 +270,25 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
             for (int i = 0; i < tablesBeanList.size(); i++) {
                 mTitleList.add(tablesBeanList.get(i).getTitle());
                 if (tablesBeanList.get(i).getType() == 1) {
-                    mFragmentList.add(WebFragment.newInstance(tablesBeanList.get(i).getH5Url()));
+                    mFragmentList.add(WebFragment.newInstance(tablesBeanList.get(i).getH5Url())); //h5页面
                 } else if (tablesBeanList.get(i).getType() == 2) {
-                    mFragmentList.add(new HotGroupFragment());
+                    mFragmentList.add(HotGroupFragment.newInstance(tablesBeanList.get(i).getGroups()));//热门题组
                 }
             }
 
-            //设置tablayout模式
-            tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-            //tablayout获取集合中的名称
-            tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(0)));
-            tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(1)));
-            tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(2)));
+            for (int i = 0; i < mTitleList.size(); i++) {
+                tabLayout.addTab(mTitleList.get(i));
+            }
 
-            //初始化监听
-            initFragment();
-
+            //设置适配器
+            vp.setAdapter(new MyPagerAdapter(getActivity().getSupportFragmentManager(), mFragmentList, mTitleList));
+            vp.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout.getTabLayout()));
+            //将tablayout与fragment关联
+            tabLayout.setupWithViewPager(vp);
 
         }
     }
 
 
-    private void initFragment() {
-
-        //设置适配器
-        vp.setAdapter(new MyPagerAdapter(getActivity().getSupportFragmentManager(), mFragmentList, mTitleList));
-
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                View view = tab.getCustomView();
-                if (null == view) {
-                    tab.setCustomView(R.layout.custom_tab_layout_text);
-                }
-                TextView textView = tab.getCustomView().findViewById(android.R.id.text1);
-                textView.setTextColor(tabLayout.getTabTextColors());
-                textView.setTextSize(19);
-                textView.setTypeface(Typeface.DEFAULT_BOLD);
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                View view = tab.getCustomView();
-                if (null == view) {
-                    tab.setCustomView(R.layout.custom_tab_layout_text);
-                }
-                TextView textView = tab.getCustomView().findViewById(android.R.id.text1);
-                textView.setTextSize(15);
-                textView.setTypeface(Typeface.DEFAULT);
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
-        //将tablayout与fragment关联
-        tabLayout.setupWithViewPager(vp);
-
-    }
 }
 

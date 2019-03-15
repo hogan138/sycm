@@ -14,6 +14,7 @@ import com.blankj.utilcode.util.AppUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.FoundHotGroupAdapter;
 import com.shuyun.qapp.bean.DataResponse;
+import com.shuyun.qapp.bean.FoundDataBean;
 import com.shuyun.qapp.bean.GroupClassifyBean;
 import com.shuyun.qapp.bean.HomeGroupsBean;
 import com.shuyun.qapp.net.ApiServiceBean;
@@ -32,17 +33,17 @@ import butterknife.Unbinder;
 /**
  * 热门题组Fragment
  */
-public class HotGroupFragment extends Fragment implements OnRemotingCallBackListener<Object> {
+public class HotGroupFragment extends Fragment {
 
     @BindView(R.id.rv_hot_group)
     RecyclerView rvHotGroup;
 
-    private Activity mContext;
+    private static Activity mContext;
     Unbinder unbinder;
 
     //热门题组
-    private List<GroupClassifyBean> groupClassifyBeans = new ArrayList<>();
-    private FoundHotGroupAdapter foundHotGroupAdapter;
+    public static List<FoundDataBean.TablesBean.GroupsBean> GroupsBeanList = new ArrayList<>();
+    private static FoundHotGroupAdapter foundHotGroupAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,16 +53,21 @@ public class HotGroupFragment extends Fragment implements OnRemotingCallBackList
         return view;
     }
 
+    public static HotGroupFragment newInstance(List<FoundDataBean.TablesBean.GroupsBean> groupsBeanList) {
+        if (GroupsBeanList.isEmpty()) {
+            GroupsBeanList.addAll(groupsBeanList);
+        }
+        HotGroupFragment fragment = new HotGroupFragment();
+        return fragment;
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mContext = getActivity();
 
-        //获取题组列表
-        loadHomeData();
-
         //初始化适配器
-        foundHotGroupAdapter = new FoundHotGroupAdapter(groupClassifyBeans, mContext);
+        foundHotGroupAdapter = new FoundHotGroupAdapter(GroupsBeanList, mContext);
         GridLayoutManager gridLayoutManager1 = new GridLayoutManager(mContext, 1) {
             @Override
             public boolean canScrollVertically() {//禁止layout垂直滑动
@@ -75,15 +81,8 @@ public class HotGroupFragment extends Fragment implements OnRemotingCallBackList
         rvHotGroup.setHasFixedSize(true);
         rvHotGroup.setNestedScrollingEnabled(false);
         rvHotGroup.setAdapter(foundHotGroupAdapter);
+        foundHotGroupAdapter.notifyDataSetChanged();
 
-    }
-
-
-    /**
-     * 获取题组列表
-     */
-    private void loadHomeData() {
-        RemotingEx.doRequest("getHomeGroups", ApiServiceBean.getHomeGroups(), new Object[]{AppUtils.getAppVersionName()}, this);
     }
 
 
@@ -94,31 +93,5 @@ public class HotGroupFragment extends Fragment implements OnRemotingCallBackList
     }
 
 
-    @Override
-    public void onCompleted(String action) {
-
-    }
-
-    @Override
-    public void onFailed(String action, String message) {
-    }
-
-    @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
-        if (!response.isSuccees()) {
-            ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
-            return;
-        }
-
-        if ("getHomeGroups".equals(action)) {
-            HomeGroupsBean homeGroupsBean = (HomeGroupsBean) response.getDat();
-            if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getTree())) {
-                final List<GroupClassifyBean> classifyBeans = homeGroupsBean.getTree();
-                groupClassifyBeans.clear();
-                groupClassifyBeans.addAll(classifyBeans);
-                foundHotGroupAdapter.notifyDataSetChanged();
-            }
-        }
-    }
 }
 

@@ -236,12 +236,15 @@ public class FoundDataBean {
     }
 
     public static class BannerBean {
+
         /**
          * h5Url : http://192.168.3.157/web/h5_hsChallenge/index.html
          * isLogin : 0
          * stop : false
          * baseImage : https://image-syksc.oss-cn-shanghai.aliyuncs.com/syksc/app/activity/huangshan/hstzs-activity-zone.jpg
+         * action : action.h5
          * id : 9
+         * picture : https://image-syksc.oss-cn-shanghai.aliyuncs.com/syksc/app/activity/huangshan/hstzs-activity-zone.jpg
          * btnAction : action.h5
          * content :
          */
@@ -250,7 +253,9 @@ public class FoundDataBean {
         private Long isLogin;
         private boolean stop;
         private String baseImage;
+        private String action;
         private Long id;
+        private String picture;
         private String btnAction;
         private String content;
 
@@ -286,12 +291,28 @@ public class FoundDataBean {
             this.baseImage = baseImage;
         }
 
+        public String getAction() {
+            return action;
+        }
+
+        public void setAction(String action) {
+            this.action = action;
+        }
+
         public Long getId() {
             return id;
         }
 
         public void setId(Long id) {
             this.id = id;
+        }
+
+        public String getPicture() {
+            return picture;
+        }
+
+        public void setPicture(String picture) {
+            this.picture = picture;
         }
 
         public String getBtnAction() {

@@ -128,9 +128,9 @@ public class LoginDataManager {
         if (map == null)
             return;
         String action = (String) map.get(LoginDataManager.KEY);
-        if (mContext instanceof BaseActivity) {
-            ((BaseActivity) mContext).clear();
-        }
+//        if (mContext instanceof BaseActivity) {
+//            ((BaseActivity) mContext).clear();
+//        }
 
         if (LoginDataManager.ACTIVITY_LOGIN.equals(action)) { //活动专区
             ActivityTabBean.ResultBean resultBean = (ActivityTabBean.ResultBean) map.get(LoginDataManager.VALUE);
@@ -172,7 +172,7 @@ public class LoginDataManager {
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        ((HomePageActivity) mContext).radioGroupChange(3);
+                        ((HomePageActivity) mContext).radioGroupChange(4);
                     }
                 }, 10);
             }
