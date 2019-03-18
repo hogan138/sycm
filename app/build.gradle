@@ -218,4 +218,5 @@ dependencies {
     //视频播放
 //    implementation project(path: ':nicevideoplayer')
 //    implementation 'com.github.xiaoyanger0825:NiceVieoPlayer:v2.2'
+
 }

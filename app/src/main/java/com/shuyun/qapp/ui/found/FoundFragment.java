@@ -11,7 +11,9 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -59,8 +61,10 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
     ViewPager vp;
     @BindView(R.id.activityRegion)
     LinearLayout activityRegion;
-    @BindView(R.id.ll_found)
-    LinearLayout llFound;
+    @BindView(R.id.rl_found)
+    RelativeLayout llFound;
+    @BindView(R.id.iv_logo)
+    ImageView ivLogo;
 
     private Activity mContext;
 
@@ -89,6 +93,7 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
         super.onActivityCreated(savedInstanceState);
         mContext = getActivity();
         tvCommonTitle.setText("发现");
+
     }
 
     @Override

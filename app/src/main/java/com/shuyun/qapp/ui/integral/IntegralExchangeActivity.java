@@ -58,7 +58,6 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
     String h5Url = "";
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
