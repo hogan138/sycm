@@ -3,53 +3,48 @@ package com.shuyun.qapp.bean;
 /**
  * @ProjectName: 全民共进
  * @Package: com.shuyun.qapp.bean
- * @ClassName: AnyPositionBean
- * @Description: 任意位置bean
+ * @ClassName: FloatWindowBean
+ * @Description: 浮窗数据
  * @Author: ganquan
- * @CreateDate: 2019/1/7 11:04
+ * @CreateDate: 2019/3/18 13:22
  */
-public class AnyPositionBean {
+public class FloatWindowBean {
+
 
     /**
-     * type : 1
-     * location : 8
-     * width : 150
-     * height : 39
-     * padding : 8,8,8,8
-     * shadow : 1
-     * shadowColor : #000000
-     * shadowAlpha : 0.2
-     * shadowRadius : 8,8,0,0
-     * imageUrl : https://image-syksc.oss-cn-shanghai.aliyuncs.com/syksc/pingan/pahys_logo2.png
+     * picture : http://192.168.3.157:/icon/float_window.png
+     * width : 46
+     * height : 51
+     * padding : 0,0,0,0
+     * margin : 3,3,3,3
+     * shadow : 0
+     * action : action.h5
+     * color :
+     * h5Url : http://192.168.3.157/web/h5_hsChallenge/index.html
+     * status : 1
      */
 
-    private Long type;
-    private Long location;
+    private String picture;
     private Long width;
     private Long height;
     private String padding;
-    private String margin; //广告四周间距
+    private String margin;
     private Long shadow;
+    private String action;
+    private String color;
+    private String h5Url;
+    private Long status;
+    private String content;
     private String shadowColor;
     private String shadowAlpha;
     private String shadowRadius;
-    private String imageUrl;
-    private String action;
 
-    public Long getType() {
-        return type;
+    public String getPicture() {
+        return picture;
     }
 
-    public void setType(Long type) {
-        this.type = type;
-    }
-
-    public Long getLocation() {
-        return location;
-    }
-
-    public void setLocation(Long location) {
-        this.location = location;
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
     public Long getWidth() {
@@ -92,6 +87,46 @@ public class AnyPositionBean {
         this.shadow = shadow;
     }
 
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getH5Url() {
+        return h5Url;
+    }
+
+    public void setH5Url(String h5Url) {
+        this.h5Url = h5Url;
+    }
+
+    public Long getStatus() {
+        return status;
+    }
+
+    public void setStatus(Long status) {
+        this.status = status;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public String getShadowColor() {
         return shadowColor;
     }
@@ -114,21 +149,5 @@ public class AnyPositionBean {
 
     public void setShadowRadius(String shadowRadius) {
         this.shadowRadius = shadowRadius;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
     }
 }

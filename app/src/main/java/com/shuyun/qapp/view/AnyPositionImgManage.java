@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.AnyPositionBean;
 import com.shuyun.qapp.utils.GlideUtils;
+import com.shuyun.qapp.utils.ToastUtil;
 
 /**
  * @ProjectName: 全民共进
@@ -25,12 +26,11 @@ public class AnyPositionImgManage {
     //执行
 
     /**
-     *
      * @param anyPositionBean
      * @param rootView
-     * @param context 被销毁时会报异常
+     * @param context         被销毁时会报异常
      */
-    public static void execute(AnyPositionBean anyPositionBean, RelativeLayout rootView, Context context) {
+    public static void execute(AnyPositionBean anyPositionBean, RelativeLayout rootView, final Context context) {
         try {
             rootView.removeAllViews();
             //获取布局宽高
@@ -94,7 +94,6 @@ public class AnyPositionImgManage {
                     RelativeLayout.LayoutParams.MATCH_PARENT);
             imageParams.setMargins((int) dp2px(context, padds[0]), (int) dp2px(context, padds[1]), (int) dp2px(context, padds[2]), (int) dp2px(context, padds[3]));
             imageView.setLayoutParams(imageParams);
-
             //设置阴影
             RelativeLayout shadowView = childView.findViewById(R.id.shadow);
             if (shadow == 1) {

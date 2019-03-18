@@ -637,4 +637,11 @@ public class ApiServiceBean {
     public static String foundInfo() {
         return "foundInfo";
     }
+
+    /**
+     * 92、发现首页浮窗
+     */
+    public static String floatWindow() {
+        return "floatWindow";
+    }
 }

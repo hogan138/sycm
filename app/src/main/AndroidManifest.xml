@@ -184,7 +184,6 @@
             android:screenOrientation="portrait" /> <!-- H5跳转页面 -->
         <activity
             android:name=".ui.webview.WebH5Activity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" /> <!-- 更改密码 -->
         <activity
             android:name=".ui.mine.ChangePasswordActivity"

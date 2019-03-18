@@ -19,6 +19,7 @@ import com.shuyun.qapp.bean.ConfigDialogBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.ExchangeHistoryBean;
 import com.shuyun.qapp.bean.ExchangeMyPrizeBean;
+import com.shuyun.qapp.bean.FloatWindowBean;
 import com.shuyun.qapp.bean.FoundDataBean;
 import com.shuyun.qapp.bean.GroupAgainstBean;
 import com.shuyun.qapp.bean.GroupClassifyBean;
@@ -654,4 +655,10 @@ public interface ApiService {
      */
     @GET("/rest/found/page/base")
     Observable<DataResponse<FoundDataBean>> foundInfo();
+
+    /**
+     * 92、获取发现首页浮窗
+     */
+    @GET("/rest/found/page/floatWindow")
+    Observable<DataResponse<FloatWindowBean>> floatWindow();
 }

@@ -111,12 +111,11 @@
         </RelativeLayout>
     </android.support.design.widget.CoordinatorLayout>
 
-    <ImageView
-        android:id="@+id/iv_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:id="@+id/rl_logo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:src="@mipmap/alipay_logo" />
+        android:layout_centerVertical="true" />
 
 </RelativeLayout>
