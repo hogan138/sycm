@@ -563,18 +563,18 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
                         }
 
                         final String Action = homeTabBean.getAction();
-                        if (AppConst.H5.equals(Action)) {
-                            SaveUserInfo.getInstance(HomePageActivity.this).setUserInfo("home_tab_url", homeTabBean.getH5Url());
-                        } else {
-                            ivSeventyYear.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    String content = homeTabBean.getContent();
-                                    String h5Url = homeTabBean.getH5Url();
-                                    LoginJumpUtil.dialogSkip(Action, HomePageActivity.this, content, h5Url, (long) 0);
-                                }
-                            });
-                        }
+//                        if (AppConst.H5.equals(Action)) {
+//                            SaveUserInfo.getInstance(HomePageActivity.this).setUserInfo("home_tab_url", homeTabBean.getH5Url());
+//                        } else {
+                        ivSeventyYear.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String content = homeTabBean.getContent();
+                                String h5Url = homeTabBean.getH5Url();
+                                LoginJumpUtil.dialogSkip(Action, HomePageActivity.this, content, h5Url, (long) 0);
+                            }
+                        });
+//                        }
 
                     } else {
                         //隐藏tab

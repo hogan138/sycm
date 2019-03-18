@@ -1,30 +1,42 @@
 package com.shuyun.qapp.ui.found;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.NestedScrollView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.MarkBannerAdapter1;
 import com.shuyun.qapp.adapter.MyPagerAdapter;
 import com.shuyun.qapp.base.BaseFragment;
-import com.shuyun.qapp.bean.AnyPositionBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.FloatWindowBean;
 import com.shuyun.qapp.bean.FoundDataBean;
@@ -34,11 +46,12 @@ import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.LoginDataManager;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
+import com.shuyun.qapp.ui.against.MatchingActivity;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.GlideUtils;
-import com.shuyun.qapp.view.AnyPositionImgManage;
+import com.shuyun.qapp.utils.ToastUtil;
 import com.shuyun.qapp.view.EnhanceTabLayout;
 import com.shuyun.qapp.view.LoginJumpUtil;
 import com.shuyun.qapp.view.ViewPagerScroller;
@@ -72,6 +85,10 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
     RelativeLayout llFound;
     @BindView(R.id.rl_logo)
     RelativeLayout rlLogo;
+    @BindView(R.id.coordinator)
+    CoordinatorLayout coordinator;
+    @BindView(R.id.scrollView)
+    NestedScrollView scrollView;
 
     private Activity mContext;
 
@@ -104,7 +121,17 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
         mContext = getActivity();
         tvCommonTitle.setText("发现");
 
-
+//        coordinator.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
+//            @Override
+//            public void onChildViewAdded(View parent, View child) {
+//                Toast.makeText(mContext, "滑动了", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onChildViewRemoved(View parent, View child) {
+//                Toast.makeText(mContext, "滑动了", Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
     @Override
@@ -307,6 +334,7 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
                 rlLogo.setVisibility(View.GONE);
             }
         }
+
     }
 
 
@@ -383,6 +411,18 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
                     LoginJumpUtil.dialogSkip(action, context, content, h5Url, (long) 0);
                 }
             });
+            final Animation anim = new RotateAnimation(0f, -90f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            anim.setFillAfter(true); // 设置保持动画最后的状态
+            anim.setDuration(500); // 设置动画时间
+            anim.setInterpolator(new AccelerateInterpolator()); // 设置插入器
+            final TranslateAnimation translateAnimation = (TranslateAnimation) AnimationUtils.loadAnimation(mContext, R.anim.trans_float_on);
+            imageView.startAnimation(anim);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    imageView.startAnimation(translateAnimation);
+                }
+            }, 500);
 
 
             //设置阴影
