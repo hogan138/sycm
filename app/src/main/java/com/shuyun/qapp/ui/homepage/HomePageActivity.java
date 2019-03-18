@@ -446,27 +446,27 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         }
 
 
-        //点击活动专区
-//        if (position == 2 && "1".equals(show)) { //未点过红色角标
-//            if (AppConst.isLogin()) {
-//                Drawable drawable = getResources().getDrawable(R.mipmap.activity_s);
-//                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
-//                radioActivity.setCompoundDrawables(null, drawable, null, null);
-//                clickActivity();
-//            }
-//        } else if (position == 2) {
-//            Drawable drawable = getResources().getDrawable(R.mipmap.activity_s);
-//            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
-//            radioActivity.setCompoundDrawables(null, drawable, null, null);
-//        } else {
-//            Drawable drawable = getResources().getDrawable(R.mipmap.activity_n);
-//            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
-//            radioActivity.setCompoundDrawables(null, drawable, null, null);
-//        }
+        //点击发现
+        if (position == 3 && "1".equals(show)) { //未点过红色角标
+            if (AppConst.isLogin()) {
+                Drawable drawable = getResources().getDrawable(R.mipmap.found_s);
+                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
+                radioFound.setCompoundDrawables(null, drawable, null, null);
+                clickActivity();
+            }
+        } else if (position == 3) {
+            Drawable drawable = getResources().getDrawable(R.mipmap.found_s);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
+            radioFound.setCompoundDrawables(null, drawable, null, null);
+        } else {
+            Drawable drawable = getResources().getDrawable(R.mipmap.found_n);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
+            radioFound.setCompoundDrawables(null, drawable, null, null);
+        }
 
         changeUi(position);
 
-//        getActivityShow(position);
+        getActivityShow(position);
     }
 
     private void getActivityShow(final int i) {
@@ -488,19 +488,19 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
                     ActivityTimeBean activityTimeBean = dataResponse.getDat();
                     if ("1".equals(activityTimeBean.getShow())) {
                         show = "1";
-                        if (i == 2) {
+                        if (i == 3) {
                             //显示活动角标
-                            Drawable drawable = getResources().getDrawable(R.mipmap.activity_s);
+                            Drawable drawable = getResources().getDrawable(R.mipmap.found_s);
                             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
                             radioFound.setCompoundDrawables(null, drawable, null, null);
                         } else {
-                            if (selectedIndex == 2) {
-                                Drawable drawable = getResources().getDrawable(R.mipmap.activity_s);
+                            if (selectedIndex == 3) {
+                                Drawable drawable = getResources().getDrawable(R.mipmap.found_s);
                                 drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
                                 radioFound.setCompoundDrawables(null, drawable, null, null);
                             } else {
                                 //显示活动角标
-                                Drawable drawable = getResources().getDrawable(R.mipmap.activity_n_red);
+                                Drawable drawable = getResources().getDrawable(R.mipmap.found_n_red);
                                 drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
                                 radioFound.setCompoundDrawables(null, drawable, null, null);
                             }

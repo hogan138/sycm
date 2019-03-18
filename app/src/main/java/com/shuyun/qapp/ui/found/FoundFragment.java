@@ -94,6 +94,7 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
         mContext = getActivity();
         tvCommonTitle.setText("发现");
 
+
     }
 
     @Override

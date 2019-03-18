@@ -90,7 +90,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:button="@null"
-            android:drawableTop="@drawable/found"
+            android:drawableTop="@mipmap/found_n"
             android:gravity="center"
             android:paddingTop="@dimen/text_7"
             android:tag="3"
