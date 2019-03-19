@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
@@ -411,19 +412,16 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
                     LoginJumpUtil.dialogSkip(action, context, content, h5Url, (long) 0);
                 }
             });
-            final Animation anim = new RotateAnimation(0f, -90f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-            anim.setFillAfter(true); // 设置保持动画最后的状态
-            anim.setDuration(500); // 设置动画时间
-            anim.setInterpolator(new AccelerateInterpolator()); // 设置插入器
-            final TranslateAnimation translateAnimation = (TranslateAnimation) AnimationUtils.loadAnimation(mContext, R.anim.trans_float_on);
-            imageView.startAnimation(anim);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    imageView.startAnimation(translateAnimation);
-                }
-            }, 500);
 
+            //靠边隐藏
+            Animation anim = new RotateAnimation(0f, -90f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            TranslateAnimation translateAnim = new TranslateAnimation(Animation.ABSOLUTE, 0, Animation.ABSOLUTE, 80, Animation.ABSOLUTE, 0, Animation.ABSOLUTE, 0);
+            AnimationSet set = new AnimationSet(false);
+            set.addAnimation(anim);
+            set.addAnimation(translateAnim);
+            set.setFillAfter(true);// 设置保持动画最后的状态
+            anim.setDuration(500); // 设置动画时间
+            imageView.startAnimation(set);
 
             //设置阴影
             RelativeLayout shadowView = childView.findViewById(R.id.shadow);
