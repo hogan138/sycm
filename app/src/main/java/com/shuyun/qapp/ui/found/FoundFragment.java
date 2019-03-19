@@ -1,5 +1,6 @@
 package com.shuyun.qapp.ui.found;
 
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -17,6 +18,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
@@ -27,6 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.blankj.utilcode.util.ConvertUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.MarkBannerAdapter1;
 import com.shuyun.qapp.adapter.MyPagerAdapter;
@@ -41,11 +44,13 @@ import com.shuyun.qapp.net.LoginDataManager;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
+import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.GlideUtils;
 import com.shuyun.qapp.view.EnhanceTabLayout;
 import com.shuyun.qapp.view.LoginJumpUtil;
+import com.shuyun.qapp.view.RippleLayout;
 import com.shuyun.qapp.view.ViewPagerScroller;
 
 import java.util.ArrayList;
@@ -74,7 +79,7 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
     @BindView(R.id.activityRegion)
     LinearLayout activityRegion;
     @BindView(R.id.rl_found)
-    RelativeLayout rlFound;
+    RippleLayout rlFound;
     @BindView(R.id.rl_logo)
     RelativeLayout rlLogo;
     @BindView(R.id.coordinator)
@@ -417,7 +422,13 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
                     String action = anyPositionBean.getAction();
                     String content = anyPositionBean.getContent();
                     String h5Url = anyPositionBean.getH5Url();
-                    LoginJumpUtil.dialogSkip(action, context, content, h5Url, (long) 0);
+//                    LoginJumpUtil.dialogSkip(action, context, content, h5Url, (long) 0);
+
+                    Intent intent = new Intent(context, WebH5Activity.class);
+                    intent.putExtra("url", h5Url);
+                    intent.putExtra("from", "found");
+                    intent.putExtra("name", "全名共进");//名称 标题
+                    context.startActivity(intent);
                 }
             });
 
@@ -465,7 +476,7 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
             set.addAnimation(anim);
             set.addAnimation(translateAnim);
             set.setFillAfter(true);// 设置保持动画最后的状态
-            anim.setDuration(500); // 设置动画时间
+            anim.setDuration(1000); // 设置动画时间
             imageView.startAnimation(set);
         } catch (Exception e) {
 
@@ -487,4 +498,5 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
 
         }
     }
+
 }

@@ -1,5 +1,6 @@
 package com.shuyun.qapp.ui.webview;
 
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.JavascriptInterface;
@@ -28,6 +30,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.PhoneUtils;
 import com.google.gson.Gson;
 import com.ishumei.smantifraud.SmAntiFraud;
@@ -67,6 +70,7 @@ import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.view.InviteSharePopupUtil;
 import com.shuyun.qapp.view.LoginJumpUtil;
 import com.shuyun.qapp.view.RealNamePopupUtil;
+import com.shuyun.qapp.view.RippleLayout;
 import com.shuyun.qapp.view.SharePopupUtil;
 
 import java.util.ArrayList;
@@ -85,7 +89,7 @@ public class WebH5Activity extends BaseActivity implements CommonPopupWindow.Vie
     @BindView(R.id.wv_banner)
     WebView wvBanner; //webview
     @BindView(R.id.rl_main)
-    RelativeLayout rlMain;
+    RippleLayout rlMain;
     @BindView(R.id.iv_back)
     RelativeLayout ivBack; //返回键
     @BindView(R.id.tv_common_title)
@@ -155,6 +159,13 @@ public class WebH5Activity extends BaseActivity implements CommonPopupWindow.Vie
 
         wvBanner.loadUrl(url);
 
+        if (!EncodeAndStringTool.isStringEmpty(splash)) {
+            if (splash.equals("found")) {
+                doRippleAnim(0f, 1);
+            }
+        }
+
+
     }
 
     @Override
@@ -181,6 +192,7 @@ public class WebH5Activity extends BaseActivity implements CommonPopupWindow.Vie
         if (name != null) {
             tvCommonTitle.setText(name);
         }
+
     }
 
     @OnClick({R.id.iv_back})
@@ -199,6 +211,14 @@ public class WebH5Activity extends BaseActivity implements CommonPopupWindow.Vie
                             finish();
                             Intent intent = new Intent(WebH5Activity.this, HomePageActivity.class);
                             startActivity(intent);
+                        } else if (splash.equals("found")) {
+                            doRippleAnim(1, 0f);
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    finish();
+                                }
+                            }, 800);
                         }
                     } else {
                         if (show) {
@@ -228,6 +248,14 @@ public class WebH5Activity extends BaseActivity implements CommonPopupWindow.Vie
                     finish();
                     Intent intent = new Intent(WebH5Activity.this, HomePageActivity.class);
                     startActivity(intent);
+                } else if (splash.equals("found")) {
+                    doRippleAnim(1, 0f);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            finish();
+                        }
+                    }, 800);
                 }
             } else {
                 if (show) {
@@ -862,5 +890,59 @@ public class WebH5Activity extends BaseActivity implements CommonPopupWindow.Vie
         wvBanner.clearCache(true);
     }
 
+    /**
+     * 展开动画
+     */
+    private void expandOther() {
+        final float fromPercent = 0.1f;
+        final float toPercent = 1f;
 
+        final float fromScale = 0.1f;
+        final float toScale = 1f;
+
+        final float fromX = ConvertUtils.dp2px(100);
+        final float fromY = ConvertUtils.dp2px(100);
+        final float toX = 0;
+        final float toY = 0;
+
+        final float fromProgress =
+                (float) (rlMain.getWidth() / Math.hypot(rlMain.getWidth(), rlMain.getHeight()));
+        final float toProgress = 1;
+
+        ValueAnimator animator = ValueAnimator.ofFloat(fromPercent, toPercent).setDuration(500);
+        animator.setInterpolator(new AccelerateDecelerateInterpolator());
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+
+                final float progress = animation.getAnimatedFraction();
+
+                rlMain.setProgress((toProgress - fromProgress) * progress + fromProgress);
+
+                rlMain.setX((toX - fromX) * progress + fromX);
+                rlMain.setY((toY - fromY) * progress + fromY);
+                rlMain.setScaleX((toScale - fromScale) * progress + fromScale);
+                rlMain.setScaleY((toScale - fromScale) * progress + fromScale);
+
+            }
+        });
+        animator.start();
+    }
+
+    private void doRippleAnim(final float fromPercent, final float toPercent) {
+        ValueAnimator animator = ValueAnimator.ofFloat(fromPercent, toPercent).setDuration(1000);
+        animator.setInterpolator(new AccelerateDecelerateInterpolator());
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+
+                final float progress = fromPercent + animation.getAnimatedFraction() * (toPercent - fromPercent);
+
+                rlMain.setProgress(progress);
+
+            }
+        });
+        animator.start();
+
+    }
 }
