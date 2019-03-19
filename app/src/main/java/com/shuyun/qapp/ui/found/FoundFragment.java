@@ -6,25 +6,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
-import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
@@ -47,12 +43,10 @@ import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.LoginDataManager;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
-import com.shuyun.qapp.ui.against.MatchingActivity;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.GlideUtils;
-import com.shuyun.qapp.utils.ToastUtil;
 import com.shuyun.qapp.view.EnhanceTabLayout;
 import com.shuyun.qapp.view.LoginJumpUtil;
 import com.shuyun.qapp.view.ViewPagerScroller;
@@ -83,7 +77,7 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
     @BindView(R.id.activityRegion)
     LinearLayout activityRegion;
     @BindView(R.id.rl_found)
-    RelativeLayout llFound;
+    RelativeLayout rlFound;
     @BindView(R.id.rl_logo)
     RelativeLayout rlLogo;
     @BindView(R.id.coordinator)
@@ -106,7 +100,7 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
     private List<String> mTitleList;
 
 
-    ImageView imageView; //浮窗图片
+    static ImageView imageView; //浮窗图片
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -116,23 +110,13 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
         return view;
     }
 
+    @SuppressLint("NewApi")
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mContext = getActivity();
         tvCommonTitle.setText("发现");
 
-//        coordinator.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
-//            @Override
-//            public void onChildViewAdded(View parent, View child) {
-//                Toast.makeText(mContext, "滑动了", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onChildViewRemoved(View parent, View child) {
-//                Toast.makeText(mContext, "滑动了", Toast.LENGTH_SHORT).show();
-//            }
-//        });
     }
 
     @Override
@@ -268,72 +252,99 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
             ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
             return;
         }
+        try {
+            if ("foundInfo".equals(action)) {
+                FoundDataBean foundDataBean = (FoundDataBean) response.getDat();
 
-        if ("foundInfo".equals(action)) {
-            FoundDataBean foundDataBean = (FoundDataBean) response.getDat();
+                bannerData = foundDataBean.getBanner();
+                if (!EncodeAndStringTool.isListEmpty(bannerData)) {
+                    String str = JSON.toJSONString(bannerData);
+                    if (bannerDataString != null && bannerDataString.equals(str)) {
+                        return;
+                    }
+                    bannerDataString = str;
 
-            bannerData = foundDataBean.getBanner();
-            if (!EncodeAndStringTool.isListEmpty(bannerData)) {
-                String str = JSON.toJSONString(bannerData);
-                if (bannerDataString != null && bannerDataString.equals(str)) {
-                    return;
+                    //设置轮播图
+                    bannerList.clear();
+                    for (int i = 0; i < bannerData.size(); i++) {
+                        FoundDataBean.BannerBean bean = bannerData.get(i);
+                        MarkBannerItem1 item = new MarkBannerItem1(bean.getBaseImage());
+                        bannerList.add(item);
+                    }
+                    markBannerAdapter1.clearViews();
+                    markBannerAdapter1.setData(mContext, bannerList);
+                    //重新生成单位条
+                    mBannerView.setBannerAdapter(markBannerAdapter1);
                 }
-                bannerDataString = str;
 
-                //设置轮播图
-                bannerList.clear();
-                for (int i = 0; i < bannerData.size(); i++) {
-                    FoundDataBean.BannerBean bean = bannerData.get(i);
-                    MarkBannerItem1 item = new MarkBannerItem1(bean.getBaseImage());
-                    bannerList.add(item);
+                //动态布局区域
+                FoundDataBean.RegionBean regionBean = foundDataBean.getRegion();
+                //动态添加布局
+                activityRegion.removeAllViews();
+                activityRegion.addView(ActivityRegionManager1.getView(mContext, regionBean, rlFound));
+
+
+                //动态tab添加
+                mTitleList = new ArrayList<>();
+                mFragmentList = new ArrayList<>();
+                List<FoundDataBean.TablesBean> tablesBeanList = foundDataBean.getTables();
+                //添加fragment
+                for (int i = 0; i < tablesBeanList.size(); i++) {
+                    mTitleList.add(tablesBeanList.get(i).getTitle());
+                    if (tablesBeanList.get(i).getType() == 1) {
+                        mFragmentList.add(WebFragment.newInstance(tablesBeanList.get(i).getH5Url())); //h5页面
+                    } else if (tablesBeanList.get(i).getType() == 2) {
+                        mFragmentList.add(HotGroupFragment.newInstance(tablesBeanList.get(i).getGroups()));//热门题组
+                    }
                 }
-                markBannerAdapter1.clearViews();
-                markBannerAdapter1.setData(mContext, bannerList);
-                //重新生成单位条
-                mBannerView.setBannerAdapter(markBannerAdapter1);
-            }
 
-            //动态布局区域
-            FoundDataBean.RegionBean regionBean = foundDataBean.getRegion();
-            //动态添加布局
-            activityRegion.removeAllViews();
-            activityRegion.addView(ActivityRegionManager1.getView(mContext, regionBean, llFound));
+                //添加标题
+                for (int i = 0; i < mTitleList.size(); i++) {
+                    tabLayout.addTab(mTitleList.get(i));
+                }
+                //设置适配器
+                vp.setAdapter(new MyPagerAdapter(getActivity().getSupportFragmentManager(), mFragmentList, mTitleList));
+                vp.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout.getTabLayout()));
 
+                tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                    @Override
+                    public void onTabSelected(TabLayout.Tab tab) {
+                        hideImageview();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                showImageview();
+                            }
+                        }, 1000);
 
-            //动态tab添加
-            mTitleList = new ArrayList<>();
-            mFragmentList = new ArrayList<>();
-            List<FoundDataBean.TablesBean> tablesBeanList = foundDataBean.getTables();
-            //添加fragment
-            for (int i = 0; i < tablesBeanList.size(); i++) {
-                mTitleList.add(tablesBeanList.get(i).getTitle());
-                if (tablesBeanList.get(i).getType() == 1) {
-                    mFragmentList.add(WebFragment.newInstance(tablesBeanList.get(i).getH5Url())); //h5页面
-                } else if (tablesBeanList.get(i).getType() == 2) {
-                    mFragmentList.add(HotGroupFragment.newInstance(tablesBeanList.get(i).getGroups()));//热门题组
+                    }
+
+                    @Override
+                    public void onTabUnselected(TabLayout.Tab tab) {
+                    }
+
+                    @Override
+                    public void onTabReselected(TabLayout.Tab tab) {
+
+                    }
+                });
+
+                //将tablayout与fragment关联
+                tabLayout.setupWithViewPager(vp);
+
+            } else if ("floatWindow".equals(action)) {
+                final FloatWindowBean floatWindowBean = (FloatWindowBean) response.getDat();
+                Long status = floatWindowBean.getStatus();
+                if (status == 1) {
+                    rlLogo.setVisibility(View.VISIBLE);
+                    //添加图片
+                    execute(floatWindowBean, rlLogo, mContext);
+                } else {
+                    rlLogo.setVisibility(View.GONE);
                 }
             }
+        } catch (Exception e) {
 
-            //添加标题
-            for (int i = 0; i < mTitleList.size(); i++) {
-                tabLayout.addTab(mTitleList.get(i));
-            }
-            //设置适配器
-            vp.setAdapter(new MyPagerAdapter(getActivity().getSupportFragmentManager(), mFragmentList, mTitleList));
-            vp.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout.getTabLayout()));
-            //将tablayout与fragment关联
-            tabLayout.setupWithViewPager(vp);
-
-        } else if ("floatWindow".equals(action)) {
-            final FloatWindowBean floatWindowBean = (FloatWindowBean) response.getDat();
-            Long status = floatWindowBean.getStatus();
-            if (status == 1) {
-                rlLogo.setVisibility(View.VISIBLE);
-                //添加图片
-                execute(floatWindowBean, rlLogo, mContext);
-            } else {
-                rlLogo.setVisibility(View.GONE);
-            }
         }
 
     }
@@ -413,16 +424,6 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
                 }
             });
 
-            //靠边隐藏
-            Animation anim = new RotateAnimation(0f, -90f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-            TranslateAnimation translateAnim = new TranslateAnimation(Animation.ABSOLUTE, 0, Animation.ABSOLUTE, 80, Animation.ABSOLUTE, 0, Animation.ABSOLUTE, 0);
-            AnimationSet set = new AnimationSet(false);
-            set.addAnimation(anim);
-            set.addAnimation(translateAnim);
-            set.setFillAfter(true);// 设置保持动画最后的状态
-            anim.setDuration(500); // 设置动画时间
-            imageView.startAnimation(set);
-
             //设置阴影
             RelativeLayout shadowView = childView.findViewById(R.id.shadow);
             if (shadow == 1) {
@@ -458,6 +459,35 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
         return (int) (dp * scale + 0.5f);
     }
 
+    //恢复显示
+    public static void showImageview() {
+        try {
+            Animation anim = new RotateAnimation(-90f, 0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            TranslateAnimation translateAnim = new TranslateAnimation(Animation.ABSOLUTE, 90, Animation.ABSOLUTE, 0, Animation.ABSOLUTE, 0, Animation.ABSOLUTE, 0);
+            AnimationSet set = new AnimationSet(false);
+            set.addAnimation(anim);
+            set.addAnimation(translateAnim);
+            set.setFillAfter(true);// 设置保持动画最后的状态
+            anim.setDuration(500); // 设置动画时间
+            imageView.startAnimation(set);
+        } catch (Exception e) {
 
+        }
+    }
+
+    //靠边隐藏
+    public static void hideImageview() {
+        try {
+            Animation anim = new RotateAnimation(0f, -90f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            TranslateAnimation translateAnim = new TranslateAnimation(Animation.ABSOLUTE, 0, Animation.ABSOLUTE, 90, Animation.ABSOLUTE, 0, Animation.ABSOLUTE, 0);
+            AnimationSet set = new AnimationSet(false);
+            set.addAnimation(anim);
+            set.addAnimation(translateAnim);
+            set.setFillAfter(true);// 设置保持动画最后的状态
+            anim.setDuration(500); // 设置动画时间
+            imageView.startAnimation(set);
+        } catch (Exception e) {
+
+        }
+    }
 }
-

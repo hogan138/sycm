@@ -5,14 +5,21 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.RotateAnimation;
+import android.view.animation.TranslateAnimation;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.ishumei.smantifraud.SmAntiFraud;
@@ -33,11 +40,12 @@ public class WebFragment extends Fragment {
     Unbinder unbinder;
     @BindView(R.id.webView)
     WebView webView;
+    @BindView(R.id.scrollView)
+    NestedScrollView scrollView;
 
     private Activity mContext;
 
     WebAnswerHomeBean answerHomeBean = new WebAnswerHomeBean();
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,8 +90,21 @@ public class WebFragment extends Fragment {
                 return true;
             }
         });
-    }
+        try {
+            scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    if (scrollY - oldScrollY > 0 || scrollY - oldScrollY < 0) {
+                        FoundFragment.showImageview();
+                    } else {
+                        FoundFragment.hideImageview();
+                    }
+                }
+            });
+        } catch (Exception e) {
 
+        }
+    }
 
     public static WebFragment newInstance(String h5_url) {
         WebFragment fragment = new WebFragment();
@@ -122,8 +143,8 @@ public class WebFragment extends Fragment {
             return answerHome;
         }
 
-
     }
+
 
 }
 

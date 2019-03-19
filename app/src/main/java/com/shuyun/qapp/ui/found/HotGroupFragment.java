@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.FoundHotGroupAdapter;
@@ -35,6 +37,8 @@ public class HotGroupFragment extends Fragment {
     //热门题组
     public static List<FoundDataBean.TablesBean.GroupsBean> GroupsBeanList = new ArrayList<>();
     private static FoundHotGroupAdapter foundHotGroupAdapter;
+    @BindView(R.id.scrollView)
+    NestedScrollView scrollView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,6 +77,22 @@ public class HotGroupFragment extends Fragment {
         rvHotGroup.setNestedScrollingEnabled(false);
         rvHotGroup.setAdapter(foundHotGroupAdapter);
         foundHotGroupAdapter.notifyDataSetChanged();
+
+
+        try {
+            scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    if (scrollY - oldScrollY > 0 || scrollY - oldScrollY < 0) {
+                        FoundFragment.showImageview();
+                    } else {
+                        FoundFragment.hideImageview();
+                    }
+                }
+            });
+        } catch (Exception e) {
+
+        }
 
     }
 
