@@ -79,7 +79,7 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
     @BindView(R.id.activityRegion)
     LinearLayout activityRegion;
     @BindView(R.id.rl_found)
-    RippleLayout rlFound;
+    RelativeLayout rlFound;
     @BindView(R.id.rl_logo)
     RelativeLayout rlLogo;
     @BindView(R.id.coordinator)
@@ -422,13 +422,16 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
                     String action = anyPositionBean.getAction();
                     String content = anyPositionBean.getContent();
                     String h5Url = anyPositionBean.getH5Url();
-//                    LoginJumpUtil.dialogSkip(action, context, content, h5Url, (long) 0);
+                    if (AppConst.H5.equals(action)) {
+                        Intent intent = new Intent(context, WebH5Activity.class);
+                        intent.putExtra("url", h5Url);
+                        intent.putExtra("from", "found");
+                        intent.putExtra("name", "全名共进");//名称 标题
+                        context.startActivity(intent);
+                    } else {
+                        LoginJumpUtil.dialogSkip(action, context, content, h5Url, (long) 0);
+                    }
 
-                    Intent intent = new Intent(context, WebH5Activity.class);
-                    intent.putExtra("url", h5Url);
-                    intent.putExtra("from", "found");
-                    intent.putExtra("name", "全名共进");//名称 标题
-                    context.startActivity(intent);
                 }
             });
 
@@ -476,7 +479,7 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
             set.addAnimation(anim);
             set.addAnimation(translateAnim);
             set.setFillAfter(true);// 设置保持动画最后的状态
-            anim.setDuration(1000); // 设置动画时间
+            anim.setDuration(500); // 设置动画时间
             imageView.startAnimation(set);
         } catch (Exception e) {
 

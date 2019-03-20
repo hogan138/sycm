@@ -95,8 +95,10 @@ public class RippleLayout extends RelativeLayout {
 
         mWidth = getWidth();
         mHeight = getHeight();
-        setCenterXY(mWidth / 2, mHeight / 2);
-        int maxRadius = (int) Math.hypot(mWidth, mHeight) / 2;
+//        setCenterXY(mWidth / 2, mHeight / 2);
+        setCenterXY(mWidth - dp2px(20), mHeight / 2 - dp2px(20));
+//        int maxRadius = (int) Math.hypot(mWidth, mHeight) / 2;
+        int maxRadius = (int) Math.hypot(mWidth, mHeight);
         mRadius = (int) (maxRadius * mProgress);
 
         mPath.reset();

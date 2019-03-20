@@ -1,4 +1,4 @@
-<com.shuyun.qapp.view.RippleLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_found"
     android:layout_width="match_parent"
@@ -124,4 +124,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-</com.shuyun.qapp.view.RippleLayout>
+</RelativeLayout>
