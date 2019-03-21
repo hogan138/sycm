@@ -14,6 +14,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -34,6 +35,7 @@ import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.FloatWindowBean;
 import com.shuyun.qapp.bean.FoundDataBean;
 import com.shuyun.qapp.bean.MarkBannerItem1;
+import com.shuyun.qapp.manager.FragmentTouchManager;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.LoginDataManager;
@@ -44,6 +46,7 @@ import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.GlideUtils;
+import com.shuyun.qapp.utils.ToastUtil;
 import com.shuyun.qapp.view.EnhanceTabLayout;
 import com.shuyun.qapp.view.LoginJumpUtil;
 import com.shuyun.qapp.view.ViewPagerScroller;
@@ -60,7 +63,7 @@ import cn.kevin.banner.IBannerItem;
 /**
  * 活动Fragment
  */
-public class FoundFragment extends BaseFragment implements OnRemotingCallBackListener<Object> {
+public class FoundFragment extends BaseFragment implements OnRemotingCallBackListener<Object>, FragmentTouchManager.FragmentTouchListener {
 
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle; //标题文字
@@ -112,6 +115,7 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
         mContext = getActivity();
         tvCommonTitle.setText("发现");
 
+        FragmentTouchManager.instance().registerFragmentTouchListener(this);
     }
 
     @Override
@@ -495,4 +499,21 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
         }
     }
 
+    @Override
+    public void onDestroy() {
+        FragmentTouchManager.instance().unRegisterFragmentTouchListener(this);
+
+        super.onDestroy();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            ToastUtil.showToast(mContext, "touch被按下");
+        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+            ToastUtil.showToast(mContext, "touch被松开");
+        }
+
+        return false;
+    }
 }

@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -39,6 +40,7 @@ import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.HomeTabBean;
 import com.shuyun.qapp.bean.InviteBean;
 import com.shuyun.qapp.bean.QPushBean;
+import com.shuyun.qapp.manager.FragmentTouchManager;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.HeartBeatManager;
@@ -63,6 +65,7 @@ import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.StatusBarUtil;
+import com.shuyun.qapp.utils.ToastUtil;
 import com.shuyun.qapp.view.LoginJumpUtil;
 import com.shuyun.qapp.view.NoScrollViewPager;
 import com.umeng.analytics.MobclickAgent;
@@ -787,4 +790,11 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         }
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (this.selectedIndex == 3) {
+            FragmentTouchManager.instance().apply(ev);
+        }
+        return super.dispatchTouchEvent(ev);
+    }
 }
