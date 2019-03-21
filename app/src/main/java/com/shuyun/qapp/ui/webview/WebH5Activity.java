@@ -1,22 +1,17 @@
 package com.shuyun.qapp.ui.webview;
 
 import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.os.Parcelable;
-import android.telephony.PhoneNumberUtils;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
@@ -29,9 +24,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
-import com.blankj.utilcode.util.ConvertUtils;
-import com.blankj.utilcode.util.PhoneUtils;
 import com.google.gson.Gson;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.mylhyl.circledialog.CircleDialog;
@@ -46,11 +38,9 @@ import com.mylhyl.circledialog.params.TitleParams;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.alipay.AlipayTradeManager;
 import com.shuyun.qapp.base.BaseActivity;
-import com.shuyun.qapp.bean.AuthHeader;
 import com.shuyun.qapp.bean.H5JumpBean;
 import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.bean.ReturnDialogBean;
-import com.shuyun.qapp.bean.SharePublicBean;
 import com.shuyun.qapp.bean.WebAnswerHomeBean;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
@@ -58,20 +48,14 @@ import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
-import com.shuyun.qapp.ui.mine.CashRecordActivity;
 import com.shuyun.qapp.ui.mine.NewRedWithdrawActivity;
-import com.shuyun.qapp.utils.CommonPopUtil;
-import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
-import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.JumpTomap;
+import com.shuyun.qapp.utils.JsInterationUtil;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
-import com.shuyun.qapp.view.InviteSharePopupUtil;
 import com.shuyun.qapp.view.LoginJumpUtil;
 import com.shuyun.qapp.view.RealNamePopupUtil;
 import com.shuyun.qapp.view.RippleLayout;
-import com.shuyun.qapp.view.SharePopupUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +68,7 @@ import butterknife.OnClick;
  * h5页面（广告、首页邀请、首页轮播图、首页弹框、极光推送消息、消息列表、票务、招商银行）
  */
 
-public class WebH5Activity extends BaseActivity implements CommonPopupWindow.ViewInterface {
+public class WebH5Activity extends BaseActivity {
 
     @BindView(R.id.wv_banner)
     WebView wvBanner; //webview
@@ -104,19 +88,16 @@ public class WebH5Activity extends BaseActivity implements CommonPopupWindow.Vie
     //从广告页进入
     private String splash;
 
-    //经纬度、名称
-    private String Longitude;
-    private String Latitude;
-    private String Name;
-
-    private boolean show = false;
-    ReturnDialogBean returnDialogBean;
-
     WebAnswerHomeBean answerHomeBean = new WebAnswerHomeBean();
+
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        context = getApplicationContext();
+
         ButterKnife.bind(this);
 
         initData();
@@ -133,7 +114,7 @@ public class WebH5Activity extends BaseActivity implements CommonPopupWindow.Vie
         settings.setSupportZoom(true);//支持缩放
         settings.setJavaScriptEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        wvBanner.addJavascriptInterface(new JsInteration(), "android");
+        wvBanner.addJavascriptInterface(new JsInterationUtil(id, (Activity) context, tvCommonTitle, ivRightIcon, rlMain, tvRight, wvBanner, answerHomeBean), "android");
         // 允许混合内容 解决部分手机 加载不出https请求里面的http下的图片
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
@@ -159,6 +140,7 @@ public class WebH5Activity extends BaseActivity implements CommonPopupWindow.Vie
 
         wvBanner.loadUrl(url);
 
+        //从发现页进入展开动画
         if (!EncodeAndStringTool.isStringEmpty(splash)) {
             if (splash.equals("found")) {
                 doRippleAnim(0f, 1);
@@ -200,11 +182,7 @@ public class WebH5Activity extends BaseActivity implements CommonPopupWindow.Vie
         switch (view.getId()) {
             case R.id.iv_back:
                 if (wvBanner.canGoBack()) {
-                    if (show) {
-                        exitDialog(returnDialogBean);
-                    } else {
-                        wvBanner.goBack();
-                    }
+                    JsInterationUtil.WebViewCanBack();
                 } else {
                     if (!EncodeAndStringTool.isStringEmpty(splash)) {
                         if (splash.equals("splash")) {
@@ -212,6 +190,7 @@ public class WebH5Activity extends BaseActivity implements CommonPopupWindow.Vie
                             Intent intent = new Intent(WebH5Activity.this, HomePageActivity.class);
                             startActivity(intent);
                         } else if (splash.equals("found")) {
+                            //从发现页退出动画
                             doRippleAnim(1, 0f);
                             new Handler().postDelayed(new Runnable() {
                                 @Override
@@ -221,11 +200,7 @@ public class WebH5Activity extends BaseActivity implements CommonPopupWindow.Vie
                             }, 800);
                         }
                     } else {
-                        if (show) {
-                            exitDialog(returnDialogBean);
-                        } else {
-                            finish();
-                        }
+                        JsInterationUtil.WebViewNoBack();
                     }
                 }
                 break;
@@ -237,11 +212,7 @@ public class WebH5Activity extends BaseActivity implements CommonPopupWindow.Vie
     @Override
     public void onBackPressed() {
         if (wvBanner.canGoBack()) {
-            if (show) {
-                exitDialog(returnDialogBean);
-            } else {
-                wvBanner.goBack();
-            }
+            JsInterationUtil.WebViewCanBack();
         } else {
             if (!EncodeAndStringTool.isStringEmpty(splash)) {
                 if (splash.equals("splash")) {
@@ -249,6 +220,7 @@ public class WebH5Activity extends BaseActivity implements CommonPopupWindow.Vie
                     Intent intent = new Intent(WebH5Activity.this, HomePageActivity.class);
                     startActivity(intent);
                 } else if (splash.equals("found")) {
+                    //从发现页退出动画
                     doRippleAnim(1, 0f);
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -258,620 +230,9 @@ public class WebH5Activity extends BaseActivity implements CommonPopupWindow.Vie
                     }, 800);
                 }
             } else {
-                if (show) {
-                    exitDialog(returnDialogBean);
-                } else {
-                    finish();
-                }
+                JsInterationUtil.WebViewNoBack();
             }
         }
-    }
-
-    @SuppressLint("HandlerLeak")
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 1:
-                    /**
-                     * 检测微信是否安装,如果没有安装,需不显示分享按钮;如果安装了微信则显示分享按钮.
-                     */
-                    if (!SykscApplication.mWxApi.isWXAppInstalled()) {
-
-                    } else {
-                        InviteSharePopupUtil.showSharedPop(WebH5Activity.this, rlMain);
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
-
-    class JsInteration {
-
-        private static final String TAG = "JsInteration";
-
-        public JsInteration() {
-        }
-
-        @JavascriptInterface
-        public String getTicketData(String jsParams) {
-            AuthHeader authHeader = new AuthHeader();
-            authHeader.setAuthorization(AppConst.TOKEN);
-            authHeader.setSycm(AppConst.sycm());
-            if (!EncodeAndStringTool.isStringEmpty(id)) {
-                authHeader.setId(id);
-            }
-            return JSON.toJSONString(authHeader);
-        }
-
-        /**
-         * JS调用此方法,关闭H5页面进入App页面
-         */
-        @JavascriptInterface
-        public void closeWeb(String jsParams) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    finish();
-                }
-            });
-        }
-
-        /**
-         * 头部标题
-         *
-         * @param page  是否显示分享图标1:显示;其他值不显示
-         * @param title 标题
-         * @param id    答题Id
-         */
-        @JavascriptInterface
-        public void header(final int page, final String title, String id) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    tvCommonTitle.setText(title);
-                }
-            });
-        }
-
-
-        /**
-         * 是否显示右边分享按钮
-         */
-        @JavascriptInterface
-        public void showShare(final String config) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    SharePublicBean sharedBean = new Gson().fromJson(config, SharePublicBean.class);
-                    if (sharedBean.isShow()) {
-                        if (!SykscApplication.mWxApi.isWXAppInstalled()) {
-                            ivRightIcon.setVisibility(View.GONE);
-                        } else {
-                            ivRightIcon.setImageResource(R.mipmap.share);//右侧分享
-                            ivRightIcon.setOnClickListener(new OnMultiClickListener() {
-                                @Override
-                                public void onMultiClick(View v) {
-                                    SharePopupUtil.showSharedPop(config, WebH5Activity.this, rlMain);
-                                }
-                            });
-                        }
-                    } else {
-                        ivRightIcon.setVisibility(View.GONE);
-                    }
-                }
-            });
-
-        }
-
-        /**
-         * 顶部管理按钮显示隐藏
-         */
-        @JavascriptInterface
-        public void headBtn(final String title, final String name, final String type, final String funname) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    tvCommonTitle.setText(title);
-                    if (type.equals("0")) {
-                        //不显示
-                        tvRight.setVisibility(View.GONE);
-                    } else if (type.equals("1")) {
-                        //显示
-                        tvRight.setVisibility(View.VISIBLE);
-                        tvRight.setText(name);
-                        tvRight.setOnClickListener(new OnMultiClickListener() {
-                            @Override
-                            public void onMultiClick(View v) {
-                                wvBanner.loadUrl("javascript:" + funname + "()");
-                            }
-                        });
-                    }
-                }
-            });
-        }
-
-        @JavascriptInterface
-        public String sendKey() {
-            AuthHeader authHeader = new AuthHeader();
-            authHeader.setAuthorization(AppConst.TOKEN);
-            authHeader.setSycm(AppConst.sycm());
-            return JSON.toJSONString(authHeader);
-        }
-
-        /**
-         * h5页面调用网络出现错误码
-         */
-        @JavascriptInterface
-        public void newLoginDate(final String err, final String msg) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ErrorCodeTools.errorCodePrompt(WebH5Activity.this, err, msg);
-                }
-            });
-        }
-
-        /**
-         * 调起本地地图
-         */
-        @JavascriptInterface
-        public void gotomap(String name, String longitude, String latitude) {
-            Longitude = longitude;
-            Latitude = latitude;
-            Name = name;
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (JumpTomap.isAvilible(WebH5Activity.this, "com.tencent.map")
-                            || JumpTomap.isAvilible(WebH5Activity.this, "com.baidu.BaiduMap")
-                            || JumpTomap.isAvilible(WebH5Activity.this, "com.autonavi.minimap")) {
-                        showToMap();
-                    } else {
-                        showDialog();
-                    }
-                }
-            });
-        }
-
-        /**
-         * 登录返回的token需要传给H5
-         *
-         * @return
-         */
-        @JavascriptInterface
-        public String answerLogin() {
-            String answerHome = null;
-            if (!EncodeAndStringTool.isObjectEmpty(answerHomeBean)) {
-                answerHome = JSON.toJSONString(answerHomeBean);
-            }
-            Log.e(TAG, answerHome);
-            return answerHome;
-        }
-
-
-        /**
-         * 提现成功
-         */
-        @JavascriptInterface
-        public void goWebview(final String h5url) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    wvBanner.loadUrl(h5url);
-                }
-            });
-        }
-
-        /**
-         * JS调用此方法,关闭H5页面进入首页面
-         */
-        @JavascriptInterface
-        public void goMain() {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    finish();
-                    Intent intent = new Intent(WebH5Activity.this, HomePageActivity.class);
-                    intent.putExtra("from", "h5");
-                    startActivity(intent);
-                }
-            });
-        }
-
-        /**
-         * 提现失败，进入我的账户
-         */
-        @JavascriptInterface
-        public void goAccount(final String err) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    startActivity(new Intent(WebH5Activity.this, CashRecordActivity.class));
-                }
-            });
-        }
-
-
-        /**
-         * 接收js返回的手机号码,调用打电话业务
-         *
-         * @param phoneNum
-         */
-        @JavascriptInterface
-        public void OpenTel(String phoneNum) {
-            Log.i(TAG, "OpenTel: " + phoneNum);
-            //调用打电话业务
-            call(phoneNum);
-        }
-
-
-        /**
-         * 接收Js传的参数调用分享业务
-         *
-         * @param shareMode
-         */
-        @JavascriptInterface
-        public void Share(String shareMode) {
-            Log.i(TAG, "Share: " + shareMode);
-            Message msg = new Message();
-            msg.what = 1;
-            handler.sendMessage(msg);
-        }
-
-
-        /**
-         * 公共分享方法
-         */
-        @JavascriptInterface
-        public void doShare(final String config) {
-            if (!SykscApplication.mWxApi.isWXAppInstalled()) {
-
-            } else {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        SharePopupUtil.showSharedPop(config, WebH5Activity.this, rlMain);
-                    }
-                });
-            }
-        }
-
-        /**
-         * 接收js返回的手机号码,调用发短信业务
-         *
-         * @param phoneNum
-         */
-        @JavascriptInterface
-        public void sms(String phoneNum) {
-            //调用发短信业务
-            doSendSMSTo(phoneNum);
-        }
-
-        /**
-         * 返回弹框h5调用方法
-         */
-        @JavascriptInterface
-        public void pageLoad(String data) {
-            returnDialogBean = new Gson().fromJson(data, ReturnDialogBean.class);
-            show = returnDialogBean.isShow();
-            Log.e("data", data);
-        }
-
-
-        /**
-         * 与js交互跳转到不同界面
-         */
-        @JavascriptInterface
-        public void doJump(String data) {
-            final H5JumpBean h5JumpBean = new Gson().fromJson(data, H5JumpBean.class);
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    LoginJumpUtil.dialogSkip(h5JumpBean.getBtnAction(),
-                            WebH5Activity.this,
-                            h5JumpBean.getContent(),
-                            h5JumpBean.getH5Url(),
-                            Long.valueOf(0));
-                }
-            });
-            Log.e("data", data);
-        }
-
-
-        /**
-         * 开宝箱奖品跳转
-         */
-        @JavascriptInterface
-        public void gotoprize(final String prizeData) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Log.e("奖品返回", prizeData);
-//                    MinePrize minePrize = JSONObject.parseObject(prizeData.toString(), MinePrize.class);
-                    MinePrize minePrize = new Gson().fromJson(prizeData, MinePrize.class);
-                    if (minePrize.getActionType().equals("action.h5.url")) {
-                        if (Integer.parseInt(SaveUserInfo.getInstance(WebH5Activity.this).getUserInfo("cert")) == 1) {
-                            //实物
-                            Intent intent = new Intent(WebH5Activity.this, WebH5Activity.class);
-                            intent.putExtra("id", minePrize.getId());
-                            intent.putExtra("url", minePrize.getH5Url());
-                            intent.putExtra("name", minePrize.getName());
-                            startActivity(intent);
-                        } else {
-                            //显示实名认证弹窗
-                            RealNamePopupUtil.showAuthPop(getApplicationContext(), rlMain, getString(R.string.real_gift_describe));
-                        }
-                    } else if (minePrize.getActionType().equals("action.withdraw")) {
-                        //红包
-                        if (Integer.parseInt(SaveUserInfo.getInstance(WebH5Activity.this).getUserInfo("cert")) == 1) {
-                            if (!EncodeAndStringTool.isListEmpty(minePrize.getMinePrizes())) {
-                                List<MinePrize.ChildMinePrize> redPrizeList = new ArrayList<>();
-                                for (int i = 0; i < minePrize.getMinePrizes().size(); i++) {
-                                    MinePrize.ChildMinePrize childMinePrize1 = minePrize.getMinePrizes().get(i);
-                                    if (minePrize.getMinePrizes().get(i).getActionType().equals("action.withdraw")) {
-                                        redPrizeList.add(childMinePrize1);
-                                    }
-                                }
-                                if (!EncodeAndStringTool.isListEmpty(redPrizeList)) {
-                                    Intent intent = new Intent(WebH5Activity.this, NewRedWithdrawActivity.class);
-                                    Bundle bundle = new Bundle();
-                                    bundle.putParcelableArrayList("redPrize", (ArrayList<? extends Parcelable>) redPrizeList);
-                                    bundle.putString("redId", minePrize.getId());
-                                    bundle.putString("from", "box");
-                                    intent.putExtras(bundle);
-                                    startActivity(intent);
-                                }
-                            }
-                        } else {
-                            //显示实名认证弹窗
-                            RealNamePopupUtil.showAuthPop(WebH5Activity.this, rlMain, getString(R.string.real_gift_describe));
-                        }
-                    } else if (minePrize.getActionType().equals("action.bp.use")) {
-                        //积分
-                        startActivity(new Intent(WebH5Activity.this, IntegralExchangeActivity.class));
-                    } else if (minePrize.getActionType().equals("action.alipay.coupon")) {
-                        //优惠券
-                        if (Integer.parseInt(SaveUserInfo.getInstance(WebH5Activity.this).getUserInfo("cert")) == 1) {
-                            //调用使用优惠券接口
-                            RemotingEx.doRequest(ApiServiceBean.useCoupon(), new Object[]{minePrize.getId()}, null);
-                            AlipayTradeManager.instance().showBasePage(WebH5Activity.this, minePrize.getH5Url());
-                        } else {
-                            //显示实名认证弹窗
-                            RealNamePopupUtil.showAuthPop(getApplicationContext(), rlMain, getString(R.string.real_gift_describe));
-                        }
-                    }
-                }
-            });
-
-        }
-
-
-    }
-
-    /**
-     * 调用系统已有程序发短信功能
-     *
-     * @param phoneNumber
-     */
-    public void doSendSMSTo(String phoneNumber) {
-        String[] smsInfo = phoneNumber.split("[$]");
-        if (PhoneNumberUtils.isGlobalPhoneNumber(smsInfo[0])) {
-            Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + smsInfo[0]));
-            intent.putExtra("sms_body", smsInfo[1]);
-            startActivity(intent);
-        }
-    }
-
-    /**
-     * 调用打电话业务
-     *
-     * @param phoneNum
-     */
-    private void call(final String phoneNum) {
-        WebH5Activity.this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                /**
-                 * 调用系统打电话
-                 */
-                PhoneUtils.dial(phoneNum);
-            }
-        });
-    }
-
-    /**
-     * 调用本机地图弹窗
-     */
-    private CommonPopupWindow popupWindow;
-
-    public void showToMap() {
-        if ((!EncodeAndStringTool.isObjectEmpty(popupWindow)) && popupWindow.isShowing()) return;
-        View upView = LayoutInflater.from(WebH5Activity.this).inflate(R.layout.share_map_popupwindow, null);
-        //测量View的宽高
-        CommonPopUtil.measureWidthAndHeight(upView);
-        //设置子View点击事件
-        popupWindow = new CommonPopupWindow.Builder(WebH5Activity.this)
-                .setView(R.layout.share_map_popupwindow)
-                .setWidthAndHeight(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-                .setBackGroundLevel(0.5f)//取值范围0.0f-1.0f 值越小越暗
-                .setOutsideTouchable(true)
-                .setAnimationStyle(R.style.popwin_anim_style_bottom)//设置动画
-                //设置子View点击事件
-                .setViewOnclickListener(this)
-                .create();
-
-        popupWindow.showAtLocation(rlMain, Gravity.BOTTOM, 0, 0);
-    }
-
-    @Override
-    public void getChildView(View view, int layoutResId) {
-        switch (layoutResId) {
-            case R.layout.share_map_popupwindow:
-                TextView tv_tencent = view.findViewById(R.id.tv_tencent);
-                TextView tv_baidu = view.findViewById(R.id.tv_baidu);
-                TextView tv_gaode = view.findViewById(R.id.tv_gaode);
-                TextView tv_cancel = view.findViewById(R.id.tv_cancel);
-                tv_cancel.setOnClickListener(new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v) {
-                        if (popupWindow != null && popupWindow.isShowing()) {
-                            popupWindow.dismiss();
-                        }
-                    }
-                });
-                if (JumpTomap.isAvilible(WebH5Activity.this, "com.tencent.map")) {
-                    //腾讯地图
-                    tv_tencent.setVisibility(View.VISIBLE);
-                    tv_tencent.setOnClickListener(new OnMultiClickListener() {
-                        @Override
-                        public void onMultiClick(View v) {
-                            JumpTomap.goToTencent(WebH5Activity.this, Name, Latitude, Longitude);
-                        }
-                    });
-                } else {
-                    tv_tencent.setVisibility(View.GONE);
-                }
-                if (JumpTomap.isAvilible(WebH5Activity.this, "com.baidu.BaiduMap")) {
-                    //百度地图
-                    tv_baidu.setVisibility(View.VISIBLE);
-                    tv_baidu.setOnClickListener(new OnMultiClickListener() {
-                        @Override
-                        public void onMultiClick(View v) {
-                            JumpTomap.goToBaidu(WebH5Activity.this, Name);
-                        }
-                    });
-                } else {
-                    tv_baidu.setVisibility(View.GONE);
-                }
-                if (JumpTomap.isAvilible(WebH5Activity.this, "com.autonavi.minimap")) {
-                    //高德地图
-                    tv_gaode.setVisibility(View.VISIBLE);
-                    tv_gaode.setOnClickListener(new OnMultiClickListener() {
-                        @Override
-                        public void onMultiClick(View v) {
-                            JumpTomap.goToGaode(WebH5Activity.this, Name);
-                        }
-                    });
-                } else {
-                    tv_gaode.setVisibility(View.GONE);
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void showDialog() {
-        new CircleDialog.Builder(this)
-                .setTitle("提示")
-                .setText("您好，未在您的手机中检测到主流地图类App，安装主流地图App后，将打开地图自动导航至目的地")
-                .setTextColor(Color.parseColor("#333333"))
-                .setWidth(0.7f)
-                .setNegative("确定", new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v) {
-
-                    }
-                })
-                .configDialog(new ConfigDialog() {
-                    @Override
-                    public void onConfig(DialogParams params) {
-                        params.animStyle = R.style.popwin_anim_style;
-                    }
-                })
-                .show();
-    }
-
-    /**
-     * 中途退出弹窗
-     */
-    private void exitDialog(final ReturnDialogBean returnDialogBean) {
-        new CircleDialog.Builder(this)
-                .setTitle(returnDialogBean.getTitle())
-                .configTitle(new ConfigTitle() {
-                    @Override
-                    public void onConfig(TitleParams params) {
-                        params.textSize = 40;
-                    }
-                })
-                .setCanceledOnTouchOutside(false)
-                .setText(returnDialogBean.getContent())
-                .configText(new ConfigText() {
-                    @Override
-                    public void onConfig(TextParams params) {
-                        params.textSize = 40;
-                        params.textColor = Color.parseColor("#666666");
-                    }
-                })
-                .setTextColor(Color.parseColor("#333333"))
-                .setWidth(0.7f)
-                .setNegative(returnDialogBean.getBtns().get(0).getLabel(), new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v) {
-                        String action = returnDialogBean.getBtns().get(0).getAction();
-                        if ("return.previous.page".equals(action)) {
-                            //返回上一页
-                            if (wvBanner.canGoBack()) {
-                                wvBanner.goBack();
-                            } else {
-                                finish();
-                            }
-                        } else if ("continue.to.perform".equals(action)) {
-                            //继续执行
-
-                        } else if ("determined.to.leave".equals(action)) {
-                            //确定离开
-                            finish();
-                        } else if ("open.new.page".equals(action)) {
-                            //新开页面
-                            wvBanner.loadUrl(returnDialogBean.getBtns().get(0).getH5Url());
-                        }
-                    }
-                })
-                .configNegative(new ConfigButton() {
-                    @Override
-                    public void onConfig(ButtonParams params) {
-                        params.textColor = Color.parseColor("#333333");
-                    }
-                })
-                .setPositive(returnDialogBean.getBtns().get(1).getLabel(), new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v) {
-                        String action = returnDialogBean.getBtns().get(1).getAction();
-                        if ("return.previous.page".equals(action)) {
-                            //返回上一页
-                            if (wvBanner.canGoBack()) {
-                                wvBanner.goBack();
-                            } else {
-                                finish();
-                            }
-                        } else if ("continue.to.perform".equals(action)) {
-                            //继续执行
-                        } else if ("determined.to.leave".equals(action)) {
-                            //确定离开
-                            finish();
-                        } else if ("open.new.page".equals(action)) {
-                            //新开页面
-                            wvBanner.loadUrl(returnDialogBean.getBtns().get(1).getH5Url());
-                        }
-                    }
-                })
-                .configPositive(new ConfigButton() {
-                    @Override
-                    public void onConfig(ButtonParams params) {
-                        params.textColor = Color.parseColor("#0194ec");
-                    }
-                })
-                .configDialog(new ConfigDialog() {
-                    @Override
-                    public void onConfig(DialogParams params) {
-                        params.animStyle = R.style.popwin_anim_style;
-                    }
-                })
-                .show();
     }
 
 
@@ -890,45 +251,7 @@ public class WebH5Activity extends BaseActivity implements CommonPopupWindow.Vie
         wvBanner.clearCache(true);
     }
 
-    /**
-     * 展开动画
-     */
-    private void expandOther() {
-        final float fromPercent = 0.1f;
-        final float toPercent = 1f;
-
-        final float fromScale = 0.1f;
-        final float toScale = 1f;
-
-        final float fromX = ConvertUtils.dp2px(100);
-        final float fromY = ConvertUtils.dp2px(100);
-        final float toX = 0;
-        final float toY = 0;
-
-        final float fromProgress =
-                (float) (rlMain.getWidth() / Math.hypot(rlMain.getWidth(), rlMain.getHeight()));
-        final float toProgress = 1;
-
-        ValueAnimator animator = ValueAnimator.ofFloat(fromPercent, toPercent).setDuration(500);
-        animator.setInterpolator(new AccelerateDecelerateInterpolator());
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-
-                final float progress = animation.getAnimatedFraction();
-
-                rlMain.setProgress((toProgress - fromProgress) * progress + fromProgress);
-
-                rlMain.setX((toX - fromX) * progress + fromX);
-                rlMain.setY((toY - fromY) * progress + fromY);
-                rlMain.setScaleX((toScale - fromScale) * progress + fromScale);
-                rlMain.setScaleY((toScale - fromScale) * progress + fromScale);
-
-            }
-        });
-        animator.start();
-    }
-
+    //水波纹展开动画
     private void doRippleAnim(final float fromPercent, final float toPercent) {
         ValueAnimator animator = ValueAnimator.ofFloat(fromPercent, toPercent).setDuration(1000);
         animator.setInterpolator(new AccelerateDecelerateInterpolator());

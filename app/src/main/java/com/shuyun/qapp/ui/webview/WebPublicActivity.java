@@ -1,5 +1,7 @@
 package com.shuyun.qapp.ui.webview;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import com.blankj.utilcode.util.PhoneUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.utils.JsInterationUtil;
 import com.shuyun.qapp.utils.SaveUserInfo;
 
 import butterknife.BindView;
@@ -42,10 +45,14 @@ public class WebPublicActivity extends BaseActivity {
 
     String name = "";
 
+    Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+
+        context = getApplicationContext();
 
         name = getIntent().getStringExtra("name");
         if ("useragree".equals(name)) {
@@ -83,58 +90,11 @@ public class WebPublicActivity extends BaseActivity {
         }
     }
 
-    class JsInteration {
-
-        private static final String TAG = "JsInteration";
-
-        public JsInteration() {
-        }
-
-        /**
-         * 接收js返回的手机号码,调用打电话业务
-         *
-         * @param phoneNum
-         */
-        @JavascriptInterface
-        public void OpenTel(String phoneNum) {
-            Log.i(TAG, "OpenTel: " + phoneNum);
-            //调用打电话业务
-            call(phoneNum);
-        }
-
-        /**
-         * 接收js返回的规则
-         *
-         * @param
-         */
-        @JavascriptInterface
-        public String actRule() {//String backParams
-            return bulletin;
-        }
-    }
-
-    /**
-     * 调用打电话业务
-     *
-     * @param phoneNum
-     */
-    private void call(final String phoneNum) {
-        WebPublicActivity.this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                /**
-                 * 调用系统打电话
-                 */
-                PhoneUtils.dial(phoneNum);
-            }
-        });
-    }
-
     public void onResume() {
         super.onResume();
 
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.addJavascriptInterface(new JsInteration(), "android");
+        webView.addJavascriptInterface(new JsInterationUtil((Activity) context, bulletin), "android");
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 
         if ("useragree".equals(name)) {

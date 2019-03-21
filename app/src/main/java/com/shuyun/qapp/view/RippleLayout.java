@@ -4,7 +4,7 @@ package com.shuyun.qapp.view;
  * @ProjectName: 全民共进
  * @Package: com.shuyun.qapp.view
  * @ClassName: RippleLayout
- * @Description: 作用描述
+ * @Description: 圆角的RelativeLayout
  * @Author: ganquan
  * @CreateDate: 2019/3/19 16:43
  */
@@ -17,9 +17,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.RelativeLayout;
 
-/**
- * 圆角的RelativeLayout
- */
 public class RippleLayout extends RelativeLayout {
     private final String TAG = getClass().getSimpleName();
 

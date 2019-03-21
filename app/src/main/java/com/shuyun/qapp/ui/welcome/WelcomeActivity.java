@@ -45,7 +45,7 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.encryptMD5ToString;
 import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 
 /**
- * 启动页
+ * 广告页
  */
 public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackListener<Object> {
     private static final int LOGIN_MODE = 1;

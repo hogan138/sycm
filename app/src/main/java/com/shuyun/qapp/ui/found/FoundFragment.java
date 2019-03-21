@@ -1,6 +1,5 @@
 package com.shuyun.qapp.ui.found;
 
-import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -14,11 +13,9 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
@@ -29,7 +26,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.blankj.utilcode.util.ConvertUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.MarkBannerAdapter1;
 import com.shuyun.qapp.adapter.MyPagerAdapter;
@@ -50,7 +46,6 @@ import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.GlideUtils;
 import com.shuyun.qapp.view.EnhanceTabLayout;
 import com.shuyun.qapp.view.LoginJumpUtil;
-import com.shuyun.qapp.view.RippleLayout;
 import com.shuyun.qapp.view.ViewPagerScroller;
 
 import java.util.ArrayList;
@@ -84,8 +79,6 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
     RelativeLayout rlLogo;
     @BindView(R.id.coordinator)
     CoordinatorLayout coordinator;
-    @BindView(R.id.scrollView)
-    NestedScrollView scrollView;
 
     private Activity mContext;
 

@@ -1,5 +1,7 @@
 package com.shuyun.qapp.ui.webview;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.WebAnswerHomeBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
+import com.shuyun.qapp.utils.JsInterationUtil;
 import com.shuyun.qapp.utils.SaveUserInfo;
 
 import butterknife.BindView;
@@ -42,11 +45,15 @@ public class WebDetailFragment extends Fragment {
 
     WebAnswerHomeBean answerHomeBean = new WebAnswerHomeBean();
 
+    Context context;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.web_prize_fragment, container, false);
         unbinder = ButterKnife.bind(this, view);
+
+        context = getContext();
 
         animationDrawable = (AnimationDrawable) animationIv.getDrawable();
         animationDrawable.start();
@@ -75,7 +82,7 @@ public class WebDetailFragment extends Fragment {
         }
         webViewPrize.setWebChromeClient(new WebChromeClient());//解决答题时无法弹出dialog问题.
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        webViewPrize.addJavascriptInterface(new JsInteration(), "android");
+        webViewPrize.addJavascriptInterface(new JsInterationUtil(answerHomeBean, (Activity) context, getActivity().findViewById(R.id.ll_look_result), getActivity().findViewById(R.id.ll_exchange)), "android");
         webViewPrize.loadUrl(SaveUserInfo.getInstance(getActivity()).getUserInfo("h5_url_prize"));
         webViewPrize.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int progress) {
@@ -88,49 +95,6 @@ public class WebDetailFragment extends Fragment {
         });
 
 
-    }
-
-    class JsInteration {
-
-        private static final String TAG = "JsInteration";
-
-        public JsInteration() {
-        }
-
-        /**
-         * 登录返回的token需要传给H5
-         *
-         * @return
-         */
-        @JavascriptInterface
-        public String answerLogin() {
-            String answerHome = null;
-            if (!EncodeAndStringTool.isObjectEmpty(answerHomeBean)) {
-                answerHome = JSON.toJSONString(answerHomeBean);
-            }
-            return answerHome;
-        }
-
-        /**
-         * 倒计时结束布局设置成开奖信息
-         */
-        @JavascriptInterface
-        public void overTime() {
-            try {
-                //已开奖
-                SaveUserInfo.getInstance(getActivity()).setUserInfo("ScheduleStatus", "1");
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        getActivity().findViewById(R.id.ll_look_result).setVisibility(View.VISIBLE);
-                        getActivity().findViewById(R.id.ll_exchange).setVisibility(View.GONE);
-                    }
-                });
-
-            } catch (Exception e) {
-
-            }
-        }
     }
 
 }
