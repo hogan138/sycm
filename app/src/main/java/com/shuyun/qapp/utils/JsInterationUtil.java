@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
+import android.support.animation.SpringAnimation;
+import android.support.animation.SpringForce;
 import android.support.v4.app.FragmentActivity;
 import android.telephony.PhoneNumberUtils;
 import android.util.Log;
@@ -18,12 +20,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.PhoneUtils;
 import com.google.gson.Gson;
 import com.mylhyl.circledialog.CircleDialog;
@@ -38,6 +43,7 @@ import com.mylhyl.circledialog.params.TitleParams;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.alipay.AlipayTradeManager;
 import com.shuyun.qapp.bean.AuthHeader;
+import com.shuyun.qapp.bean.BoxBean;
 import com.shuyun.qapp.bean.H5JumpBean;
 import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.bean.ReturnDialogBean;
@@ -48,6 +54,7 @@ import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.LoginDataManager;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SykscApplication;
+import com.shuyun.qapp.ui.answer.AnswerHistoryActivity;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
 import com.shuyun.qapp.ui.login.LoginActivity;
@@ -83,7 +90,7 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
     //右边分享按钮
     ImageView ivRightIcon;
     //页面根布局
-    View view;
+    static View view;
     //左边文字
     TextView tvRight;
     //Webview
@@ -105,12 +112,24 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
 
     WebAnswerHomeBean answerHomeBean = new WebAnswerHomeBean();
 
+    String main_box;//开宝箱
+    private MinePrize minePrize;
+
+    private BoxBean boxBean;
+
     public JsInterationUtil() {
     }
 
-    //答题页面
-    public JsInterationUtil(WebAnswerHomeBean answerHomeBean, Activity activity, View view) {
-
+    //开宝箱页面
+    public JsInterationUtil(WebAnswerHomeBean answerHomeBean, Activity activity, View view, String main_box, MinePrize minePrize, BoxBean boxBean, TextView tvCommonTitle, WebView webView) {
+        this.answerHomeBean = answerHomeBean;
+        this.activity = activity;
+        this.view = view;
+        this.main_box = main_box;
+        this.minePrize = minePrize;
+        this.boxBean = boxBean;
+        this.tvCommonTitle = tvCommonTitle;
+        this.webView = webView;
     }
 
 
@@ -153,6 +172,23 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
     }
 
     /**
+     * 衢州活动弹窗和商户引流跳外部链接
+     *
+     * @param url
+     */
+    @JavascriptInterface
+    public void openWeb(final String url) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Uri uri = Uri.parse(url);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                activity.startActivity(intent);
+            }
+        });
+    }
+
+    /**
      * JS调用此方法,关闭H5页面进入App页面
      */
     @JavascriptInterface
@@ -180,7 +216,9 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
                 tvCommonTitle.setText(title);
             }
         });
+
     }
+
 
     /**
      * 是否显示右边分享按钮
@@ -294,6 +332,25 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
         }
         Log.e(TAG, answerHome);
         return answerHome;
+    }
+
+    /**
+     * 我的奖品开宝箱
+     *
+     * @return
+     */
+    @JavascriptInterface
+    public String prizeData() {
+        String prizeBox = null;
+        if (!EncodeAndStringTool.isStringEmpty(main_box) && "main_box".equals(main_box)) {
+            prizeBox = JSON.toJSONString(boxBean);
+        } else {
+            if (!EncodeAndStringTool.isObjectEmpty(minePrize)) {
+                prizeBox = JSON.toJSONString(minePrize);
+            }
+        }
+        Log.i(TAG, prizeBox);
+        return prizeBox;
     }
 
 
@@ -497,7 +554,7 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
      * @param
      */
     @JavascriptInterface
-    public String actRule() {//String backParams
+    public String actRule() {
         return bulletin;
     }
 
@@ -572,22 +629,6 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
                 RealNamePopupUtil.showAuthPop(activity, view, activity.getString(R.string.real_openbox_describe));
             }
         });
-    }
-
-    /**
-     * 增加答题次数弹窗
-     *
-     * @param wCertification
-     */
-    @JavascriptInterface
-    public void addNum(int wCertification) {
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-//                WebAnswerActivity.showAddAnswerNum();
-            }
-        });
-
     }
 
 
@@ -726,6 +767,7 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
                 break;
         }
     }
+
 
     private void showDialog() {
         new CircleDialog.Builder((FragmentActivity) activity)

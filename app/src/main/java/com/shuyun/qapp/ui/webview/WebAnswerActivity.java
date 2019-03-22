@@ -504,6 +504,8 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
             wvAnswerHome.loadUrl(AppConst.ANSWER);
         }
 
+//        wvAnswerHome.loadUrl("http://192.168.191.1:8080?debug=1");
+
     }
 
     @Override
@@ -578,7 +580,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
     }
 
 
-    static CommonPopupWindow commonPopupWindow;
+    CommonPopupWindow commonPopupWindow;
 
     /**
      * 分享弹窗
@@ -718,7 +720,7 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
     /**
      * 增加答题次数弹窗
      */
-    public void showAddAnswerNum() {
+    private void showAddAnswerNum() {
         if (commonPopupWindow != null && commonPopupWindow.isShowing()) return;
         View upView = LayoutInflater.from(this).inflate(R.layout.add_answer_num_popupwindow, null);
         //测量View的宽高

@@ -90,20 +90,6 @@ public class WebFragment extends Fragment {
                 return true;
             }
         });
-        try {
-            scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-                @Override
-                public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                    if (scrollY - oldScrollY > 0 || scrollY - oldScrollY < 0) {
-                        FoundFragment.showImageview();
-                    } else {
-                        FoundFragment.hideImageview();
-                    }
-                }
-            });
-        } catch (Exception e) {
-
-        }
     }
 
     public static WebFragment newInstance(String h5_url) {

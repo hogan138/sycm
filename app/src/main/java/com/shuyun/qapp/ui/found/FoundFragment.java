@@ -305,28 +305,28 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
                 vp.setAdapter(new MyPagerAdapter(getActivity().getSupportFragmentManager(), mFragmentList, mTitleList));
                 vp.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout.getTabLayout()));
 
-                tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                    @Override
-                    public void onTabSelected(TabLayout.Tab tab) {
-                        hideImageview();
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                showImageview();
-                            }
-                        }, 1000);
-
-                    }
-
-                    @Override
-                    public void onTabUnselected(TabLayout.Tab tab) {
-                    }
-
-                    @Override
-                    public void onTabReselected(TabLayout.Tab tab) {
-
-                    }
-                });
+//                tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//                    @Override
+//                    public void onTabSelected(TabLayout.Tab tab) {
+//                        hideImageview();
+//                        new Handler().postDelayed(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                showImageview();
+//                            }
+//                        }, 1000);
+//
+//                    }
+//
+//                    @Override
+//                    public void onTabUnselected(TabLayout.Tab tab) {
+//                    }
+//
+//                    @Override
+//                    public void onTabReselected(TabLayout.Tab tab) {
+//
+//                    }
+//                });
 
                 //将tablayout与fragment关联
                 tabLayout.setupWithViewPager(vp);
@@ -468,7 +468,7 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
     }
 
     //恢复显示
-    public static void showImageview() {
+    public void showImageview() {
         try {
             Animation anim = new RotateAnimation(-90f, 0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
             TranslateAnimation translateAnim = new TranslateAnimation(Animation.ABSOLUTE, 90, Animation.ABSOLUTE, 0, Animation.ABSOLUTE, 0, Animation.ABSOLUTE, 0);
@@ -484,7 +484,7 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
     }
 
     //靠边隐藏
-    public static void hideImageview() {
+    public void hideImageview() {
         try {
             Animation anim = new RotateAnimation(0f, -90f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
             TranslateAnimation translateAnim = new TranslateAnimation(Animation.ABSOLUTE, 0, Animation.ABSOLUTE, 90, Animation.ABSOLUTE, 0, Animation.ABSOLUTE, 0);
@@ -502,18 +502,16 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
     @Override
     public void onDestroy() {
         FragmentTouchManager.instance().unRegisterFragmentTouchListener(this);
-
         super.onDestroy();
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            ToastUtil.showToast(mContext, "touch被按下");
+            hideImageview();
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
-            ToastUtil.showToast(mContext, "touch被松开");
+            showImageview();
         }
-
         return false;
     }
 }

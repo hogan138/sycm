@@ -40,7 +40,7 @@ public class WebPublicActivity extends BaseActivity {
     @BindView(R.id.animation_iv)
     ImageView animationIv;
 
-    private String bulletin;
+    private String bulletin = "";
     AnimationDrawable animationDrawable;
 
     String name = "";
@@ -52,7 +52,7 @@ public class WebPublicActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
 
-        context = getApplicationContext();
+        context = getParent();
 
         name = getIntent().getStringExtra("name");
         if ("useragree".equals(name)) {
@@ -70,6 +70,29 @@ public class WebPublicActivity extends BaseActivity {
         animationDrawable = (AnimationDrawable) animationIv.getDrawable();
         animationDrawable.start();
 
+
+        if ("useragree".equals(name)) {
+            webView.loadUrl(AppConst.USER_AGREEMENT); //用户协议
+        } else if ("about".equals(name)) {
+            webView.loadUrl(AppConst.ABOUT_US); //关于我们
+        } else if ("rule".equals(name)) {//积分夺宝规则
+            webView.loadUrl(SaveUserInfo.getInstance(WebPublicActivity.this).getUserInfo("h5_rule"));
+        } else if ("rules".equals(name)) {
+            webView.loadUrl(AppConst.LOOK_RULES);//积分开宝箱规则
+        }
+
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.addJavascriptInterface(new JsInterationUtil((Activity) context, bulletin), "android");
+        webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webView.setWebChromeClient(new WebChromeClient() {
+            public void onProgressChanged(WebView view, int progress) {
+                //当进度走到100的时候做自己的操作，我这边是弹出dialog
+                if (progress == 100) {
+                    animationDrawable.stop();
+                    animationIv.setVisibility(View.GONE);
+                }
+            }
+        });
 
     }
 
@@ -90,31 +113,4 @@ public class WebPublicActivity extends BaseActivity {
         }
     }
 
-    public void onResume() {
-        super.onResume();
-
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.addJavascriptInterface(new JsInterationUtil((Activity) context, bulletin), "android");
-        webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-
-        if ("useragree".equals(name)) {
-            webView.loadUrl(AppConst.USER_AGREEMENT); //用户协议
-        } else if ("about".equals(name)) {
-            webView.loadUrl(AppConst.ABOUT_US); //关于我们
-        } else if ("rule".equals(name)) {
-            webView.loadUrl(SaveUserInfo.getInstance(WebPublicActivity.this).getUserInfo("h5_rule"));//积分夺宝规则
-        } else if ("rules".equals(name)) {
-            webView.loadUrl(AppConst.LOOK_RULES);//积分开宝箱规则
-        }
-
-        webView.setWebChromeClient(new WebChromeClient() {
-            public void onProgressChanged(WebView view, int progress) {
-                //当进度走到100的时候做自己的操作，我这边是弹出dialog
-                if (progress == 100) {
-                    animationDrawable.stop();
-                    animationIv.setVisibility(View.GONE);
-                }
-            }
-        });
-    }
 }

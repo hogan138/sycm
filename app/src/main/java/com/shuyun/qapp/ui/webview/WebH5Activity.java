@@ -96,7 +96,7 @@ public class WebH5Activity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        context = getApplicationContext();
+        context = this;
 
         ButterKnife.bind(this);
 
@@ -234,6 +234,8 @@ public class WebH5Activity extends BaseActivity {
             }
         }
     }
+
+
 
 
     @Override
