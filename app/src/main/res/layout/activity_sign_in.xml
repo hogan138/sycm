@@ -111,317 +111,338 @@
                     android:layout_gravity="center_vertical"
                     android:background="@color/color_e2" />
 
-
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/text_5"
-                    android:layout_marginRight="@dimen/text_5"
-                    android:background="@color/color_4"
-                    android:orientation="horizontal">
+                    android:layout_height="match_parent">
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
+                        android:layout_marginLeft="@dimen/text_25"
+                        android:layout_marginRight="@dimen/text_25"
+                        android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/tv_sign_date_one"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:text="2.12"
-                            android:textColor="@color/color_e2"
-                            android:textSize="9sp" />
+                        <View
+                            android:id="@+id/line_one"
+                            android:layout_width="0dp"
+                            android:layout_height="2dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:background="@color/color_07" />
 
-                        <ImageView
-                            android:id="@+id/iv_sign_select_one"
-                            android:layout_width="@dimen/text_24"
-                            android:layout_height="@dimen/text_24"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/text_2"
-                            android:layout_marginBottom="@dimen/text_2"
-                            android:background="@mipmap/sign_select_no" />
+                        <View
+                            android:id="@+id/line_two"
+                            android:layout_width="0dp"
+                            android:layout_height="2dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:background="@color/color_07" />
 
-                        <TextView
-                            android:id="@+id/tv_sign_content_one"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:singleLine="true"
-                            android:text="5积分"
-                            android:textColor="@color/color_e2"
-                            android:textSize="9sp" />
+                        <View
+                            android:id="@+id/line_three"
+                            android:layout_width="0dp"
+                            android:layout_height="2dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:background="@color/color_07" />
 
+                        <View
+                            android:id="@+id/line_four"
+                            android:layout_width="0dp"
+                            android:layout_height="2dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:background="@color/color_07" />
+
+                        <View
+                            android:id="@+id/line_five"
+                            android:layout_width="0dp"
+                            android:layout_height="2dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:background="@color/color_07" />
+
+                        <View
+                            android:id="@+id/line_six"
+                            android:layout_width="0dp"
+                            android:layout_height="2dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:background="@color/color_07" />
                     </LinearLayout>
-
-                    <View
-                        android:id="@+id/line_one"
-                        android:layout_width="15dp"
-                        android:layout_height="2dp"
-                        android:layout_gravity="center_vertical"
-                        android:background="@color/color_07" />
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
+                        android:layout_marginLeft="@dimen/text_5"
+                        android:layout_marginRight="@dimen/text_5"
+                        android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/tv_sign_date_two"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:text="2.12"
-                            android:textColor="@color/color_e2"
-                            android:textSize="9sp" />
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/iv_sign_select_two"
-                            android:layout_width="@dimen/text_24"
-                            android:layout_height="@dimen/text_24"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/text_2"
-                            android:layout_marginBottom="@dimen/text_2"
-                            android:background="@mipmap/sign_select_no" />
+                            <TextView
+                                android:id="@+id/tv_sign_date_one"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:text="2.12"
+                                android:textColor="@color/color_e2"
+                                android:textSize="9sp" />
 
-                        <TextView
-                            android:id="@+id/tv_sign_content_two"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:singleLine="true"
-                            android:text="5积分"
-                            android:textColor="@color/color_e2"
-                            android:textSize="9sp" />
+                            <ImageView
+                                android:id="@+id/iv_sign_select_one"
+                                android:layout_width="@dimen/text_17"
+                                android:layout_height="@dimen/text_17"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/text_2"
+                                android:layout_marginBottom="@dimen/text_2"
+                                android:background="@mipmap/sign_select_no" />
 
+                            <TextView
+                                android:id="@+id/tv_sign_content_one"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:singleLine="true"
+                                android:text="5积分"
+                                android:textColor="@color/color_e2"
+                                android:textSize="9sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_sign_date_two"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:text="2.12"
+                                android:textColor="@color/color_e2"
+                                android:textSize="9sp" />
+
+                            <ImageView
+                                android:id="@+id/iv_sign_select_two"
+                                android:layout_width="@dimen/text_17"
+                                android:layout_height="@dimen/text_17"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/text_2"
+                                android:layout_marginBottom="@dimen/text_2"
+                                android:background="@mipmap/sign_select_no" />
+
+                            <TextView
+                                android:id="@+id/tv_sign_content_two"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:singleLine="true"
+                                android:text="5积分"
+                                android:textColor="@color/color_e2"
+                                android:textSize="9sp" />
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_sign_date_three"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:text="2.12"
+                                android:textColor="@color/color_e2"
+                                android:textSize="9sp" />
+
+                            <ImageView
+                                android:id="@+id/iv_sign_select_three"
+                                android:layout_width="@dimen/text_17"
+                                android:layout_height="@dimen/text_17"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/text_2"
+                                android:layout_marginBottom="@dimen/text_2"
+                                android:background="@mipmap/sign_select_no" />
+
+                            <TextView
+                                android:id="@+id/tv_sign_content_three"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:singleLine="true"
+                                android:text="5积分"
+                                android:textColor="@color/color_e2"
+                                android:textSize="9sp" />
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_sign_date_four"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:text="2.12"
+                                android:textColor="@color/color_e2"
+                                android:textSize="9sp" />
+
+                            <ImageView
+                                android:id="@+id/iv_sign_select_four"
+                                android:layout_width="@dimen/text_17"
+                                android:layout_height="@dimen/text_17"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/text_2"
+                                android:layout_marginBottom="@dimen/text_2"
+                                android:background="@mipmap/sign_select_no" />
+
+                            <TextView
+                                android:id="@+id/tv_sign_content_four"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:singleLine="true"
+                                android:text="5积分"
+                                android:textColor="@color/color_e2"
+                                android:textSize="9sp" />
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_sign_date_five"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:text="2.12"
+                                android:textColor="@color/color_e2"
+                                android:textSize="9sp" />
+
+                            <ImageView
+                                android:id="@+id/iv_sign_select_five"
+                                android:layout_width="@dimen/text_17"
+                                android:layout_height="@dimen/text_17"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/text_2"
+                                android:layout_marginBottom="@dimen/text_2"
+                                android:background="@mipmap/sign_select_no" />
+
+                            <TextView
+                                android:id="@+id/tv_sign_content_five"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:singleLine="true"
+                                android:text="5积分"
+                                android:textColor="@color/color_e2"
+                                android:textSize="9sp" />
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_sign_date_six"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:text="2.12"
+                                android:textColor="@color/color_e2"
+                                android:textSize="9sp" />
+
+                            <ImageView
+                                android:id="@+id/iv_sign_select_six"
+                                android:layout_width="@dimen/text_17"
+                                android:layout_height="@dimen/text_17"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/text_2"
+                                android:layout_marginBottom="@dimen/text_2"
+                                android:background="@mipmap/sign_select_no" />
+
+                            <TextView
+                                android:id="@+id/tv_sign_content_six"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:singleLine="true"
+                                android:text="5积分"
+                                android:textColor="@color/color_e2"
+                                android:textSize="9sp" />
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_sign_date_seven"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:text="2.12"
+                                android:textColor="@color/color_e2"
+                                android:textSize="9sp" />
+
+                            <ImageView
+                                android:id="@+id/iv_sign_select_seven"
+                                android:layout_width="@dimen/text_17"
+                                android:layout_height="@dimen/text_17"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/text_2"
+                                android:layout_marginBottom="@dimen/text_2"
+                                android:background="@mipmap/sign_select_no" />
+
+                            <TextView
+                                android:id="@+id/tv_sign_content_seven"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:singleLine="true"
+                                android:text="5积分"
+                                android:textColor="@color/color_e2"
+                                android:textSize="9sp" />
+
+                        </LinearLayout>
                     </LinearLayout>
-
-                    <View
-                        android:id="@+id/line_two"
-                        android:layout_width="15dp"
-                        android:layout_height="2dp"
-                        android:layout_gravity="center_vertical"
-                        android:background="@color/color_07" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tv_sign_date_three"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:text="2.12"
-                            android:textColor="@color/color_e2"
-                            android:textSize="9sp" />
-
-                        <ImageView
-                            android:id="@+id/iv_sign_select_three"
-                            android:layout_width="@dimen/text_24"
-                            android:layout_height="@dimen/text_24"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/text_2"
-                            android:layout_marginBottom="@dimen/text_2"
-                            android:background="@mipmap/sign_select_no" />
-
-                        <TextView
-                            android:id="@+id/tv_sign_content_three"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:singleLine="true"
-                            android:text="5积分"
-                            android:textColor="@color/color_e2"
-                            android:textSize="9sp" />
-
-                    </LinearLayout>
-
-                    <View
-                        android:id="@+id/line_three"
-                        android:layout_width="15dp"
-                        android:layout_height="2dp"
-                        android:layout_gravity="center_vertical"
-                        android:background="@color/color_07" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tv_sign_date_four"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:text="2.12"
-                            android:textColor="@color/color_e2"
-                            android:textSize="9sp" />
-
-                        <ImageView
-                            android:id="@+id/iv_sign_select_four"
-                            android:layout_width="@dimen/text_24"
-                            android:layout_height="@dimen/text_24"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/text_2"
-                            android:layout_marginBottom="@dimen/text_2"
-                            android:background="@mipmap/sign_select_no" />
-
-                        <TextView
-                            android:id="@+id/tv_sign_content_four"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:singleLine="true"
-                            android:text="5积分"
-                            android:textColor="@color/color_e2"
-                            android:textSize="9sp" />
-
-                    </LinearLayout>
-
-                    <View
-                        android:id="@+id/line_four"
-                        android:layout_width="15dp"
-                        android:layout_height="2dp"
-                        android:layout_gravity="center_vertical"
-                        android:background="@color/color_07" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tv_sign_date_five"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:text="2.12"
-                            android:textColor="@color/color_e2"
-                            android:textSize="9sp" />
-
-                        <ImageView
-                            android:id="@+id/iv_sign_select_five"
-                            android:layout_width="@dimen/text_24"
-                            android:layout_height="@dimen/text_24"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/text_2"
-                            android:layout_marginBottom="@dimen/text_2"
-                            android:background="@mipmap/sign_select_no" />
-
-                        <TextView
-                            android:id="@+id/tv_sign_content_five"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:singleLine="true"
-                            android:text="5积分"
-                            android:textColor="@color/color_e2"
-                            android:textSize="9sp" />
-
-                    </LinearLayout>
-
-                    <View
-                        android:id="@+id/line_five"
-                        android:layout_width="15dp"
-                        android:layout_height="2dp"
-                        android:layout_gravity="center_vertical"
-                        android:background="@color/color_07" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tv_sign_date_six"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:text="2.12"
-                            android:textColor="@color/color_e2"
-                            android:textSize="9sp" />
-
-                        <ImageView
-                            android:id="@+id/iv_sign_select_six"
-                            android:layout_width="@dimen/text_24"
-                            android:layout_height="@dimen/text_24"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/text_2"
-                            android:layout_marginBottom="@dimen/text_2"
-                            android:background="@mipmap/sign_select_no" />
-
-                        <TextView
-                            android:id="@+id/tv_sign_content_six"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:singleLine="true"
-                            android:text="5积分"
-                            android:textColor="@color/color_e2"
-                            android:textSize="9sp" />
-
-                    </LinearLayout>
-
-                    <View
-                        android:id="@+id/line_six"
-                        android:layout_width="15dp"
-                        android:layout_height="2dp"
-                        android:layout_gravity="center_vertical"
-                        android:background="@color/color_07" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tv_sign_date_seven"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:text="2.12"
-                            android:textColor="@color/color_e2"
-                            android:textSize="9sp" />
-
-                        <ImageView
-                            android:id="@+id/iv_sign_select_seven"
-                            android:layout_width="@dimen/text_24"
-                            android:layout_height="@dimen/text_24"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/text_2"
-                            android:layout_marginBottom="@dimen/text_2"
-                            android:background="@mipmap/sign_select_no" />
-
-                        <TextView
-                            android:id="@+id/tv_sign_content_seven"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:singleLine="true"
-                            android:text="5积分"
-                            android:textColor="@color/color_e2"
-                            android:textSize="9sp" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
+                </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>
