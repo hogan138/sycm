@@ -591,15 +591,12 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
         View upView = LayoutInflater.from(mContext).inflate(R.layout.share_popupwindow, null);
         //测量View的宽高
         CommonPopUtil.measureWidthAndHeight(upView);
-        //取值范围0.0f-1.0f 值越小越暗
-//        .setAnimationStyle(R.style.AnimUp)//设置动画
         //设置子View点击事件
         commonPopupWindow = new CommonPopupWindow.Builder(mContext)
                 .setView(R.layout.share_popupwindow)
                 .setWidthAndHeight(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                 .setBackGroundLevel(0.5f)//取值范围0.0f-1.0f 值越小越暗
                 .setOutsideTouchable(true)
-//                .setAnimationStyle(R.style.popwin_anim_style)//设置动画
                 //设置子View点击事件
                 .setViewOnclickListener(this)
                 .create();
@@ -1068,7 +1065,6 @@ public class WebAnswerActivity extends BaseActivity implements CommonPopupWindow
         answerHomeBean.setGroupId(groupId);
         answerHomeBean.setDeviceId(SmAntiFraud.getDeviceId());
         rel.put("loginInfo", JSON.toJSONString(answerHomeBean));
-//        rel.put("loginInfo", answerHomeBean);
         wvAnswerHome.post(new Runnable() {
             @Override
             public void run() {

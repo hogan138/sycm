@@ -120,6 +120,13 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
     public JsInterationUtil() {
     }
 
+    //发现页fragment
+    public JsInterationUtil(WebAnswerHomeBean answerHomeBean, Activity activity, WebView webView) {
+        this.answerHomeBean = answerHomeBean;
+        this.activity = activity;
+        this.webView = webView;
+    }
+
     //开宝箱页面
     public JsInterationUtil(WebAnswerHomeBean answerHomeBean, Activity activity, View view, String main_box, MinePrize minePrize, BoxBean boxBean, TextView tvCommonTitle, WebView webView) {
         this.answerHomeBean = answerHomeBean;
@@ -210,12 +217,18 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
      */
     @JavascriptInterface
     public void header(final int page, final String title, String id) {
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                tvCommonTitle.setText(title);
+        try {
+            if (!EncodeAndStringTool.isObjectEmpty(tvCommonTitle)) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvCommonTitle.setText(title);
+                    }
+                });
             }
-        });
+        } catch (Exception e) {
+
+        }
 
     }
 

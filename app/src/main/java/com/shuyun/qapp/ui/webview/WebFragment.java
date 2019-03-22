@@ -1,32 +1,24 @@
-package com.shuyun.qapp.ui.found;
+package com.shuyun.qapp.ui.webview;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.RotateAnimation;
-import android.view.animation.TranslateAnimation;
-import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.WebAnswerHomeBean;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.utils.EncodeAndStringTool;
+import com.shuyun.qapp.utils.JsInterationUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,10 +32,8 @@ public class WebFragment extends Fragment {
     Unbinder unbinder;
     @BindView(R.id.webView)
     WebView webView;
-    @BindView(R.id.scrollView)
-    NestedScrollView scrollView;
 
-    private Activity mContext;
+    private Context mContext;
 
     WebAnswerHomeBean answerHomeBean = new WebAnswerHomeBean();
 
@@ -58,7 +48,7 @@ public class WebFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mContext = getActivity();
+        mContext = getContext();
 
         answerHomeBean.setToken(AppConst.TOKEN);
         answerHomeBean.setRandom(AppConst.RANDOM);
@@ -76,7 +66,7 @@ public class WebFragment extends Fragment {
         }
         webView.setWebChromeClient(new WebChromeClient());//解决答题时无法弹出dialog问题.
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        webView.addJavascriptInterface(new JsInteration(), "android");
+        webView.addJavascriptInterface(new JsInterationUtil(answerHomeBean, (Activity) mContext, webView), "android");
         //获取参数
         Bundle bundle = getArguments();
         webView.loadUrl(bundle.getString("h5_url"));
@@ -106,31 +96,6 @@ public class WebFragment extends Fragment {
         super.onDestroyView();
         unbinder.unbind();
     }
-
-
-    class JsInteration {
-
-        private static final String TAG = "JsInteration";
-
-        public JsInteration() {
-        }
-
-        /**
-         * 登录返回的token需要传给H5
-         *
-         * @return
-         */
-        @JavascriptInterface
-        public String answerLogin() {
-            String answerHome = null;
-            if (!EncodeAndStringTool.isObjectEmpty(answerHomeBean)) {
-                answerHome = JSON.toJSONString(answerHomeBean);
-            }
-            return answerHome;
-        }
-
-    }
-
 
 }
 

@@ -42,11 +42,11 @@ import com.shuyun.qapp.net.LoginDataManager;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
+import com.shuyun.qapp.ui.webview.WebFragment;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.GlideUtils;
-import com.shuyun.qapp.utils.ToastUtil;
 import com.shuyun.qapp.view.EnhanceTabLayout;
 import com.shuyun.qapp.view.LoginJumpUtil;
 import com.shuyun.qapp.view.ViewPagerScroller;
@@ -304,29 +304,6 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
                 //设置适配器
                 vp.setAdapter(new MyPagerAdapter(getActivity().getSupportFragmentManager(), mFragmentList, mTitleList));
                 vp.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout.getTabLayout()));
-
-//                tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//                    @Override
-//                    public void onTabSelected(TabLayout.Tab tab) {
-//                        hideImageview();
-//                        new Handler().postDelayed(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                showImageview();
-//                            }
-//                        }, 1000);
-//
-//                    }
-//
-//                    @Override
-//                    public void onTabUnselected(TabLayout.Tab tab) {
-//                    }
-//
-//                    @Override
-//                    public void onTabReselected(TabLayout.Tab tab) {
-//
-//                    }
-//                });
 
                 //将tablayout与fragment关联
                 tabLayout.setupWithViewPager(vp);
