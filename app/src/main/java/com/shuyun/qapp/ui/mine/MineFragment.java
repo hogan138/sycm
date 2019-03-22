@@ -32,7 +32,7 @@ import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.homepage.InformationActivity;
-import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
+import com.shuyun.qapp.ui.integral.IntegralCenterActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
@@ -205,7 +205,7 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
                 startActivity(new Intent(mContext, FeedbackActivity.class));
                 break;
             case R.id.ll_my_score: //我的积分
-                Intent intent = new Intent(mContext, IntegralExchangeActivity.class);
+                Intent intent = new Intent(mContext, IntegralCenterActivity.class);
                 startActivity(intent);
                 break;
             case R.id.ll_my_cash:  //现金提现

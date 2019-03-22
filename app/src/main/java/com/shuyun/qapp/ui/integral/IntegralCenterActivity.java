@@ -31,7 +31,7 @@ import butterknife.ButterKnife;
 /**
  * 积分中心
  */
-public class IntegralExchangeActivity extends BaseActivity implements View.OnClickListener {
+public class IntegralCenterActivity extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle;
@@ -92,17 +92,17 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
                 finish();
                 break;
             case R.id.ll_look_detail:
-                startActivity(new Intent(IntegralExchangeActivity.this, IntegralAccountActivity.class));
+                startActivity(new Intent(IntegralCenterActivity.this, IntegralAccountActivity.class));
                 break;
             case R.id.rl_start_box:
                 //跳到积分抽奖界面
-                Intent intent = new Intent(IntegralExchangeActivity.this, WebPrizeBoxActivity.class);
+                Intent intent = new Intent(IntegralCenterActivity.this, WebPrizeBoxActivity.class);
                 intent.putExtra("main_box", "score_box");
                 intent.putExtra("h5Url", h5Url);
                 startActivity(intent);
                 break;
             case R.id.rl_start_baby:
-                startActivity(new Intent(IntegralExchangeActivity.this, IntegralMainActivity.class));
+                startActivity(new Intent(IntegralCenterActivity.this, IntegralMainActivity.class));
                 break;
             default:
                 break;
@@ -136,10 +136,10 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
                         h5Url = integralExchangeBean.getH5Url();
 
                         //保存我的积分
-                        SaveUserInfo.getInstance(IntegralExchangeActivity.this).setUserInfo("my_bp", integralExchangeBean.getUserBp() + "");
+                        SaveUserInfo.getInstance(IntegralCenterActivity.this).setUserInfo("my_bp", integralExchangeBean.getUserBp() + "");
 
                         //保存规则地址
-                        SaveUserInfo.getInstance(IntegralExchangeActivity.this).setUserInfo("h5_rule", integralExchangeBean.getRuleUrl());
+                        SaveUserInfo.getInstance(IntegralCenterActivity.this).setUserInfo("h5_rule", integralExchangeBean.getRuleUrl());
 
                         if (!EncodeAndStringTool.isListEmpty(integralExchangeBean.getLuckyPicList())) {
                             //积分开宝箱图片
@@ -147,12 +147,12 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
                             for (int i = 0; i < integralExchangeBean.getLuckyPicList().size(); i++) {
                                 llPrize1.setPadding(0, 10, ConvertUtils.dp2px(15), 10);
                                 llPrize1.setGravity(Gravity.CENTER_VERTICAL);
-                                ImageView imageView = new ImageView(IntegralExchangeActivity.this);
+                                ImageView imageView = new ImageView(IntegralCenterActivity.this);
                                 int imageWidth = ConvertUtils.dp2px(38);
                                 int imageHeight = ConvertUtils.dp2px(38);
                                 imageView.setLayoutParams(new LinearLayout.LayoutParams(imageWidth, imageHeight));
                                 imageView.setPadding(ConvertUtils.dp2px(7), 0, 0, 0);
-                                GlideUtils.LoadCircleImage(IntegralExchangeActivity.this, integralExchangeBean.getLuckyPicList().get(i), imageView);
+                                GlideUtils.LoadCircleImage(IntegralCenterActivity.this, integralExchangeBean.getLuckyPicList().get(i), imageView);
                                 llPrize1.addView(imageView);
                             }
                         }
@@ -163,12 +163,12 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
                             for (int i = 0; i < integralExchangeBean.getTreasurePicList().size(); i++) {
                                 llPrize2.setPadding(0, 10, ConvertUtils.dp2px(15), 10);
                                 llPrize2.setGravity(Gravity.CENTER_VERTICAL);
-                                ImageView imageView = new ImageView(IntegralExchangeActivity.this);
+                                ImageView imageView = new ImageView(IntegralCenterActivity.this);
                                 int imageWidth = ConvertUtils.dp2px(38);
                                 int imageHeight = ConvertUtils.dp2px(38);
                                 imageView.setLayoutParams(new LinearLayout.LayoutParams(imageWidth, imageHeight));
                                 imageView.setPadding(ConvertUtils.dp2px(7), 0, 0, 0);
-                                GlideUtils.LoadCircleImage(IntegralExchangeActivity.this, integralExchangeBean.getTreasurePicList().get(i), imageView);
+                                GlideUtils.LoadCircleImage(IntegralCenterActivity.this, integralExchangeBean.getTreasurePicList().get(i), imageView);
                                 llPrize2.addView(imageView);
                             }
                         }
@@ -176,7 +176,7 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
 
                     }
                 } else {
-                    ErrorCodeTools.errorCodePrompt(IntegralExchangeActivity.this, dataResponse.getErr(), dataResponse.getMsg());
+                    ErrorCodeTools.errorCodePrompt(IntegralCenterActivity.this, dataResponse.getErr(), dataResponse.getMsg());
                 }
             }
         });

@@ -14,7 +14,7 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 
 public class AppConst {
 
-//        public static final String BASE_URL = "https://api-syksc.25876.com";///线上服务器
+    //        public static final String BASE_URL = "https://api-syksc.25876.com";///线上服务器
     //    public static final String BASE_URL = "http://192.168.3.250:8080";//:8002/公司内部服务器
 //    public static final String BASE_URL = "http://139.224.199.106:8080";//开发测试服务器
     public static final String BASE_URL = "http://192.168.3.157";//测试环境
@@ -138,6 +138,8 @@ public class AppConst {
     public static final String TASK = "action.day.task";//每日任务
     public static final String WITHDRAW_INFO = "action.withdraw.info";//提现信息
     public static final String H5_EXTERNAL = "action.h5.external";//h5跳转外部链接
+    public static final String ACTION_SIGN = "action.sign";//签到
+    public static final String ACTION_INTEGRAL_GOODS = "action.integral.goods";//积分兑换
 
     //邀请登录跳转
     public static final int INVITE_CODE = 0x2001;

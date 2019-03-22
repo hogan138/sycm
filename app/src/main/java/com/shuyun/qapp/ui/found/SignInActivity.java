@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,7 +20,6 @@ import com.shuyun.qapp.bean.SignInBean;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
-import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 
 import java.util.ArrayList;
@@ -103,6 +103,8 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     ImageView ivSignSelectSeven;
     @BindView(R.id.tv_sign_content_seven)
     TextView tvSignContentSeven;
+    @BindView(R.id.ll_add_date)
+    LinearLayout llAddDate;
 
     private List<Fragment> mFragmentList;
     private List<String> mTitleList;
@@ -215,6 +217,24 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                 ivSignInLogo.setEnabled(true);
                 nextTaskId = signInBean.getNextTaskId();
             }
+
+//            llAddDate.removeAllViews();
+//            for (int i = 0; i < signInBean.getDatas().size(); i++) {
+//                View view = View.inflate(mContext, R.layout.item_sign_date, null);
+//                TextView date = view.findViewById(R.id.tv_sign_date);
+//                ImageView iv_selected = view.findViewById(R.id.iv_sign_select);
+//                TextView remark = view.findViewById(R.id.tv_sign_content);
+//                date.setText(signInBean.getDatas().get(i).getDay());
+//                Boolean selected = signInBean.getDatas().get(i).isSelected();
+//                if (selected) {
+//                    iv_selected.setBackgroundResource(R.mipmap.sign_select_on);
+//                } else {
+//                    iv_selected.setBackgroundResource(R.mipmap.sign_select_no);
+//                }
+//                remark.setText(signInBean.getDatas().get(i).getRemark());
+//                llAddDate.addView(view);
+//            }
+
             //显示签到信息
             showSignInfo(signInBean);
         } else if ("signIn".equals(action)) {

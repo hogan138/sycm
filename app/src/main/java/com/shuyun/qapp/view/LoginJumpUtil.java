@@ -1,16 +1,14 @@
 package com.shuyun.qapp.view;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
-import android.view.View;
 
-import com.shuyun.qapp.bean.ActivityTabBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.against.MainAgainstActivity;
-import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
+import com.shuyun.qapp.ui.found.IntegralExchangeActivity;
+import com.shuyun.qapp.ui.found.SignInActivity;
+import com.shuyun.qapp.ui.integral.IntegralCenterActivity;
 import com.shuyun.qapp.ui.integral.IntegralMainActivity;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.mine.AddWithdrawInfoActivity;
@@ -60,7 +58,7 @@ public class LoginJumpUtil {
                     Intent intent = new Intent(context, LoginActivity.class);
                     context.startActivityForResult(intent, AppConst.INTEGRAL_CODE);
                 } else {
-                    Intent intent = new Intent(context, IntegralExchangeActivity.class);
+                    Intent intent = new Intent(context, IntegralCenterActivity.class);
                     context.startActivity(intent);
                 }
             } else if (AppConst.TREASURE.equals(action)) {//积分夺宝
@@ -115,6 +113,22 @@ public class LoginJumpUtil {
                 //每日任务
             } else if (AppConst.DEFAULT.equals(action)) {
                 //默认不跳转
+            } else if (AppConst.ACTION_SIGN.equals(action)) { //签到
+                if (isLogin == 1 && !AppConst.isLogin()) {
+                    Intent intent = new Intent(context, LoginActivity.class);
+                    context.startActivityForResult(intent, AppConst.WITHDRAW_INFO_CODE);
+                } else {
+                    Intent intent = new Intent(context, SignInActivity.class);
+                    context.startActivity(intent);
+                }
+            } else if (AppConst.ACTION_INTEGRAL_GOODS.equals(action)) { //积分兑换
+                if (isLogin == 1 && !AppConst.isLogin()) {
+                    Intent intent = new Intent(context, LoginActivity.class);
+                    context.startActivityForResult(intent, AppConst.WITHDRAW_INFO_CODE);
+                } else {
+                    Intent intent = new Intent(context, IntegralExchangeActivity.class);
+                    context.startActivity(intent);
+                }
             }
         } catch (Exception e) {
 

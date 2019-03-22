@@ -50,7 +50,7 @@ import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.ui.answer.AnswerHistoryActivity;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
-import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
+import com.shuyun.qapp.ui.integral.IntegralCenterActivity;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.mine.CashRecordActivity;
 import com.shuyun.qapp.ui.mine.NewRedWithdrawActivity;
@@ -645,7 +645,7 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
                     }
                 } else if (minePrize.getActionType().equals("action.bp.use")) {
                     //积分
-                    activity.startActivity(new Intent(activity, IntegralExchangeActivity.class));
+                    activity.startActivity(new Intent(activity, IntegralCenterActivity.class));
                 } else if (minePrize.getActionType().equals("action.alipay.coupon")) {
                     //优惠券
                     if (Integer.parseInt(SaveUserInfo.getInstance(activity).getUserInfo("cert")) == 1) {

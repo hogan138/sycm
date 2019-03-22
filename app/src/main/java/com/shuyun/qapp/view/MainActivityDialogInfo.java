@@ -42,7 +42,7 @@ public class MainActivityDialogInfo {
             bName = "action.h5_count";
         } else if (AppConst.INVITE.equals(action)) { //邀请
             bName = "action.invite_count";
-        } else if (AppConst.INTEGRAL.equals(action)) {//积分兑换
+        } else if (AppConst.INTEGRAL.equals(action)) {//积分中心
             bName = "action.integral_count";
         } else if (AppConst.AGAINST.equals(action)) {//答题对战
             bName = "action.answer.against_count";
@@ -58,6 +58,10 @@ public class MainActivityDialogInfo {
             bName = "action.h5.external_count";
         } else if (AppConst.DEFAULT.equals(action)) { //默认不跳转
             bName = "action.default_count";
+        } else if (AppConst.ACTION_SIGN.equals(action)) { //签到
+            bName = "action.sign_count";
+        } else if (AppConst.ACTION_INTEGRAL_GOODS.equals(action)) { //积分兑换
+            bName = "action.integral_good_count";
         }
 
         if (bName == null)

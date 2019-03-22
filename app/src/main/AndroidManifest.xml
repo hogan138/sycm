@@ -247,7 +247,7 @@
             android:name=".ui.webview.WebPrizeBoxActivity"
             android:screenOrientation="portrait" /> <!-- 积分兑换 -->
         <activity
-            android:name=".ui.integral.IntegralExchangeActivity"
+            android:name=".ui.integral.IntegralCenterActivity"
             android:screenOrientation="portrait" /> <!-- 积分开宝 -->
         <activity
             android:name=".ui.integral.IntegralMainActivity"
