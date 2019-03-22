@@ -156,7 +156,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
 
         mHandler.postDelayed(runnable, 500);
 
-        Log.e("token", AppConst.jwtToken + "             " + AppConst.sycm());
+        Log.e("token", AppConst.TOKEN + "             " + AppConst.sycm());
 
     }
 

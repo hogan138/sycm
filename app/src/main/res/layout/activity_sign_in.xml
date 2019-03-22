@@ -49,7 +49,6 @@
                     android:id="@+id/tv_my_score"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="360"
                     android:textColor="@color/color_4"
                     android:textSize="@dimen/text_15"
                     android:textStyle="bold" />
@@ -93,7 +92,7 @@
                             android:id="@+id/tv_signIn_day"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="1"
+                            android:text="0"
                             android:textColor="@color/color_e2"
                             android:textSize="@dimen/text_20" />
 
@@ -111,6 +110,7 @@
                     android:layout_height="53dp"
                     android:layout_gravity="center_vertical"
                     android:background="@color/color_e2" />
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -143,7 +143,7 @@
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/text_2"
                             android:layout_marginBottom="@dimen/text_2"
-                            android:background="@mipmap/sign_select_on" />
+                            android:background="@mipmap/sign_select_no" />
 
                         <TextView
                             android:id="@+id/tv_sign_content_one"
@@ -162,7 +162,7 @@
                         android:layout_width="15dp"
                         android:layout_height="2dp"
                         android:layout_gravity="center_vertical"
-                        android:background="@color/color_ca" />
+                        android:background="@color/color_07" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -187,7 +187,7 @@
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/text_2"
                             android:layout_marginBottom="@dimen/text_2"
-                            android:background="@mipmap/sign_select_on" />
+                            android:background="@mipmap/sign_select_no" />
 
                         <TextView
                             android:id="@+id/tv_sign_content_two"
@@ -206,7 +206,7 @@
                         android:layout_width="15dp"
                         android:layout_height="2dp"
                         android:layout_gravity="center_vertical"
-                        android:background="@color/color_ca" />
+                        android:background="@color/color_07" />
 
                     <LinearLayout
                         android:layout_width="0dp"

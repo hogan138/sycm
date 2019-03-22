@@ -644,4 +644,18 @@ public class ApiServiceBean {
     public static String floatWindow() {
         return "floatWindow";
     }
+
+    /**
+     * 93、获取签到信息
+     */
+    public static String getSingInInfo() {
+        return "getSingInInfo";
+    }
+
+    /**
+     * 94、用户签到
+     */
+    public static String SingIn() {
+        return "SingIn";
+    }
 }

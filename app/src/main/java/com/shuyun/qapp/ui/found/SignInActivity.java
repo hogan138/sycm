@@ -1,5 +1,7 @@
 package com.shuyun.qapp.ui.found;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,13 @@ import android.widget.TextView;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.MyPagerAdapter;
 import com.shuyun.qapp.base.BaseActivity;
+import com.shuyun.qapp.bean.DataResponse;
+import com.shuyun.qapp.bean.SignInBean;
+import com.shuyun.qapp.net.ApiServiceBean;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
+import com.shuyun.qapp.utils.EncodeAndStringTool;
+import com.shuyun.qapp.utils.ErrorCodeTools;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +33,7 @@ import butterknife.ButterKnife;
  * 签到
  */
 
-public class SignInActivity extends BaseActivity implements View.OnClickListener {
+public class SignInActivity extends BaseActivity implements View.OnClickListener, OnRemotingCallBackListener<Object> {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;
@@ -98,29 +107,47 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     private List<Fragment> mFragmentList;
     private List<String> mTitleList;
 
-    private boolean isSignIn = false;
+    Context mContext;
+
+    //签到Id
+    String nextTaskId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+
+        mContext = this;
+
         tvCommonTitle.setText("签到");
         ivBack.setOnClickListener(this);
         ivSignInLogo.setOnClickListener(this);
+
+
+        //获取用户签到信息
+        getSignInInfo();
 
         //添加标题
         initTitile();
         //添加fragment
         initFragment();
 
-        if (!isSignIn) {
-            ivSignInLogo.setBackgroundResource(R.mipmap.un_signin_logo);
-        }
     }
 
     @Override
     public int intiLayout() {
         return R.layout.activity_sign_in;
+    }
+
+
+    //获取用户签到信息
+    public void getSignInInfo() {
+        RemotingEx.doRequest("signInInfo", ApiServiceBean.getSingInInfo(), null, this);
+    }
+
+    //签到
+    public void SignIn() {
+        RemotingEx.doRequest("signIn", ApiServiceBean.SingIn(), new Object[]{nextTaskId}, this);
     }
 
     private void initTitile() {
@@ -151,10 +178,172 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                 finish();
                 break;
             case R.id.iv_signIn_logo:
-                ivSignInLogo.setBackgroundResource(R.mipmap.has_signin_logo);
+                //签到
+                SignIn();
                 break;
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onCompleted(String action) {
+
+    }
+
+    @Override
+    public void onFailed(String action, String message) {
+
+    }
+
+    @Override
+    public void onSucceed(String action, DataResponse<Object> response) {
+        if (!response.isSuccees()) {
+            ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
+            return;
+        }
+        if ("signInInfo".equals(action)) {
+            SignInBean signInBean = (SignInBean) response.getDat();
+            tvMyScore.setText(signInBean.getBp() + ""); //我的积分
+            tvSignInDay.setText(signInBean.getDays() + ""); //连续签到天数
+            //是否签到
+            if (signInBean.isSignDay()) {
+                ivSignInLogo.setBackgroundResource(R.mipmap.has_signin_logo);
+                ivSignInLogo.setEnabled(false);
+            } else {
+                ivSignInLogo.setBackgroundResource(R.mipmap.un_signin_logo);
+                ivSignInLogo.setEnabled(true);
+                nextTaskId = signInBean.getNextTaskId();
+            }
+            //显示签到信息
+            showSignInfo(signInBean);
+        } else if ("signIn".equals(action)) {
+            ivSignInLogo.setBackgroundResource(R.mipmap.has_signin_logo);
+            ivSignInLogo.setEnabled(false);
+            //获取用户签到信息
+            getSignInInfo();
+        }
+    }
+
+    //显示签到信息
+    @SuppressLint("NewApi")
+    public void showSignInfo(SignInBean signInBean) {
+        for (int i = 0; i < signInBean.getDatas().size(); i++) {
+            String day = signInBean.getDatas().get(i).getDay();
+            String remark = signInBean.getDatas().get(i).getRemark();
+            Boolean is_selected = signInBean.getDatas().get(i).isSelected();
+            if (i == 0) {
+                //第一天
+                tvSignDateOne.setText(day);
+                tvSignContentOne.setText(remark);
+                if (is_selected) {
+                    ivSignSelectOne.setBackgroundResource(R.mipmap.sign_select_on);
+                } else {
+                    ivSignSelectOne.setBackgroundResource(R.mipmap.sign_select_no);
+                }
+            } else if (i == 1) {
+                //第二天
+                tvSignDateTwo.setText(day);
+                tvSignContentTwo.setText(remark);
+                if (is_selected) {
+                    ivSignSelectTwo.setBackgroundResource(R.mipmap.sign_select_on);
+                } else {
+                    ivSignSelectTwo.setBackgroundResource(R.mipmap.sign_select_no);
+                }
+            } else if (i == 2) {
+                //第三天
+                tvSignDateThree.setText(day);
+                tvSignContentThree.setText(remark);
+                if (is_selected) {
+                    ivSignSelectThree.setBackgroundResource(R.mipmap.sign_select_on);
+                } else {
+                    ivSignSelectThree.setBackgroundResource(R.mipmap.sign_select_no);
+                }
+            } else if (i == 3) {
+                //第四天
+                tvSignDateFour.setText(day);
+                tvSignContentFour.setText(remark);
+                if (is_selected) {
+                    ivSignSelectFour.setBackgroundResource(R.mipmap.sign_select_on);
+                } else {
+                    ivSignSelectFour.setBackgroundResource(R.mipmap.sign_select_no);
+                }
+            } else if (i == 4) {
+                //第五天
+                tvSignDateFive.setText(day);
+                tvSignContentFive.setText(remark);
+                if (is_selected) {
+                    ivSignSelectFive.setBackgroundResource(R.mipmap.sign_select_on);
+                } else {
+                    ivSignSelectFive.setBackgroundResource(R.mipmap.sign_select_no);
+                }
+            } else if (i == 5) {
+                //第六天
+                tvSignDateSix.setText(day);
+                tvSignContentSix.setText(remark);
+                if (is_selected) {
+                    ivSignSelectSix.setBackgroundResource(R.mipmap.sign_select_on);
+                } else {
+                    ivSignSelectSix.setBackgroundResource(R.mipmap.sign_select_no);
+                }
+            } else if (i == 6) {
+                //第七天
+                tvSignDateSeven.setText(day);
+                tvSignContentSeven.setText(remark);
+                if (is_selected) {
+                    ivSignSelectSeven.setBackgroundResource(R.mipmap.sign_select_on);
+                } else {
+                    ivSignSelectSeven.setBackgroundResource(R.mipmap.sign_select_no);
+                }
+            }
+
+            //处理连续签到连接线
+            Boolean selected1 = signInBean.getDatas().get(0).isSelected();
+            Boolean selected2 = signInBean.getDatas().get(1).isSelected();
+            Boolean selected3 = signInBean.getDatas().get(2).isSelected();
+            Boolean selected4 = signInBean.getDatas().get(3).isSelected();
+            Boolean selected5 = signInBean.getDatas().get(4).isSelected();
+            Boolean selected6 = signInBean.getDatas().get(5).isSelected();
+            Boolean selected7 = signInBean.getDatas().get(6).isSelected();
+
+            //第一根线
+            if (selected1 && selected2) {
+                lineOne.setBackgroundColor(getColor(R.color.color_ca));
+            } else {
+                lineOne.setBackgroundColor(getColor(R.color.color_07));
+            }
+            //第二根线
+            if (selected2 && selected3) {
+                lineTwo.setBackgroundColor(getColor(R.color.color_ca));
+            } else {
+                lineTwo.setBackgroundColor(getColor(R.color.color_07));
+            }
+            //第三根线
+            if (selected3 && selected4) {
+                lineThree.setBackgroundColor(getColor(R.color.color_ca));
+            } else {
+                lineThree.setBackgroundColor(getColor(R.color.color_07));
+            }
+            //第四根线
+            if (selected4 && selected5) {
+                lineFour.setBackgroundColor(getColor(R.color.color_ca));
+            } else {
+                lineFour.setBackgroundColor(getColor(R.color.color_07));
+            }
+            //第五根线
+            if (selected5 && selected6) {
+                lineFive.setBackgroundColor(getColor(R.color.color_ca));
+            } else {
+                lineFive.setBackgroundColor(getColor(R.color.color_07));
+            }
+            //第六根线
+            if (selected6 && selected7) {
+                lineSix.setBackgroundColor(getColor(R.color.color_ca));
+            } else {
+                lineSix.setBackgroundColor(getColor(R.color.color_07));
+            }
+
+        }
+
     }
 }

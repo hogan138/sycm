@@ -393,18 +393,19 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String action = anyPositionBean.getAction();
-                    String content = anyPositionBean.getContent();
-                    String h5Url = anyPositionBean.getH5Url();
-                    if (AppConst.H5.equals(action)) {
-                        Intent intent = new Intent(context, WebH5Activity.class);
-                        intent.putExtra("url", h5Url);
-                        intent.putExtra("from", "found");
-                        intent.putExtra("name", "全名共进");//名称 标题
-                        context.startActivity(intent);
-                    } else {
-                        LoginJumpUtil.dialogSkip(action, context, content, h5Url, (long) 0);
-                    }
+//                    String action = anyPositionBean.getAction();
+//                    String content = anyPositionBean.getContent();
+//                    String h5Url = anyPositionBean.getH5Url();
+//                    if (AppConst.H5.equals(action)) {
+//                        Intent intent = new Intent(context, WebH5Activity.class);
+//                        intent.putExtra("url", h5Url);
+//                        intent.putExtra("from", "found");
+//                        intent.putExtra("name", "全名共进");//名称 标题
+//                        context.startActivity(intent);
+//                    } else {
+//                        LoginJumpUtil.dialogSkip(action, context, content, h5Url, (long) 0);
+//                    }
+                    startActivity(new Intent(context, SignInActivity.class));
 
                 }
             });

@@ -47,6 +47,7 @@ import com.shuyun.qapp.bean.QPushBean;
 import com.shuyun.qapp.bean.RealNameBean;
 import com.shuyun.qapp.bean.RobotShowBean;
 import com.shuyun.qapp.bean.SharedBean;
+import com.shuyun.qapp.bean.SignInBean;
 import com.shuyun.qapp.bean.SystemInfo;
 import com.shuyun.qapp.bean.TouristsBean;
 import com.shuyun.qapp.bean.UserWxInfo;
@@ -661,4 +662,18 @@ public interface ApiService {
      */
     @GET("/rest/found/page/floatWindow")
     Observable<DataResponse<FloatWindowBean>> floatWindow();
+
+    /**
+     * 93、获取用户签到信息
+     */
+    @GET("/rest/user/sign/profile")
+    Observable<DataResponse<SignInBean>> getSingInInfo();
+
+    /**
+     * 94、用户签到
+     */
+    @GET("/rest/user/sign/apply")
+    Observable<DataResponse> SingIn(@Query("taskId") String taskId);
+
+
 }

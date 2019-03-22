@@ -9,8 +9,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
-import android.support.animation.SpringAnimation;
-import android.support.animation.SpringForce;
 import android.support.v4.app.FragmentActivity;
 import android.telephony.PhoneNumberUtils;
 import android.util.Log;
@@ -20,15 +18,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.PhoneUtils;
 import com.google.gson.Gson;
 import com.mylhyl.circledialog.CircleDialog;
@@ -60,8 +54,8 @@ import com.shuyun.qapp.ui.integral.IntegralExchangeActivity;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.mine.CashRecordActivity;
 import com.shuyun.qapp.ui.mine.NewRedWithdrawActivity;
-import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
+import com.shuyun.qapp.view.AnswerSharePopupUtil;
 import com.shuyun.qapp.view.InviteSharePopupUtil;
 import com.shuyun.qapp.view.LoginJumpUtil;
 import com.shuyun.qapp.view.RealNamePopupUtil;
@@ -117,7 +111,39 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
 
     private BoxBean boxBean;
 
+    private String splash = "";
+
+    private String from = "";
+
+    /**
+     * 答题Id
+     */
+    public static String wAnswerId = null;
+
+    /**
+     * 题组名称
+     */
+    private String wTitle = "";
+
+    /**
+     * 题组id
+     */
+    private Long groupId;
+
     public JsInterationUtil() {
+    }
+
+    //答题页面
+    public JsInterationUtil(WebAnswerHomeBean answerHomeBean, Activity activity, WebView webView, View view, String splash, String from, TextView tvCommonTitle, ImageView ivRightIcon, Long groupId) {
+        this.answerHomeBean = answerHomeBean;
+        this.activity = activity;
+        this.webView = webView;
+        this.view = view;
+        this.splash = splash;
+        this.from = from;
+        this.tvCommonTitle = tvCommonTitle;
+        this.ivRightIcon = ivRightIcon;
+        this.groupId = groupId;
     }
 
     //发现页fragment
@@ -203,7 +229,15 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                activity.finish();
+                if (!EncodeAndStringTool.isStringEmpty(splash)) {
+                    if (splash.equals("splash")) {
+                        activity.finish();
+                        Intent intent = new Intent(activity, HomePageActivity.class);
+                        activity.startActivity(intent);
+                    }
+                } else {
+                    activity.finish();
+                }
             }
         });
     }
@@ -218,17 +252,84 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
     @JavascriptInterface
     public void header(final int page, final String title, String id) {
         try {
+            wAnswerId = id;
             if (!EncodeAndStringTool.isObjectEmpty(tvCommonTitle)) {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        tvCommonTitle.setText(title);
+                        if (from.equals("anwser")) {
+                            if (page == 1) {
+                                wTitle = title;
+                                tvCommonTitle.setText(title);
+                                ivRightIcon.setVisibility(View.VISIBLE);
+                            } else if (page == 0) {
+                                tvCommonTitle.setText(title);
+                                ivRightIcon.setVisibility(View.GONE);
+                            } else {
+                                tvCommonTitle.setText("");
+                                ivRightIcon.setVisibility(View.GONE);
+                            }
+                        } else {
+                            tvCommonTitle.setText(title);
+                        }
+
                     }
                 });
             }
         } catch (Exception e) {
 
         }
+
+    }
+
+
+    /**
+     * 查看答题历史
+     *
+     * @param id 答题id
+     */
+    @JavascriptInterface
+    public void answerHistory(final String id) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(activity, AnswerHistoryActivity.class);
+                intent.putExtra("answer_id", id);
+                intent.putExtra("title", wTitle);
+                activity.startActivity(intent);
+            }
+        });
+    }
+
+    /**
+     * JS调用此方法,调用答题分享
+     *
+     * @param id 答题Id
+     */
+    @JavascriptInterface
+    public void inviterShare(String id) {
+        wAnswerId = id;
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AnswerSharePopupUtil.showSharedPop(activity, view, groupId);
+            }
+        });
+    }
+
+    /**
+     * 增加答题次数弹窗
+     *
+     * @param wCertification
+     */
+    @JavascriptInterface
+    public void addNum(int wCertification) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AnswerSharePopupUtil.showAddAnswerNum(activity, view, webView);
+            }
+        });
 
     }
 
