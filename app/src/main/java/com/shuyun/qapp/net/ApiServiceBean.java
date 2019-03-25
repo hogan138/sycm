@@ -658,4 +658,18 @@ public class ApiServiceBean {
     public static String SingIn() {
         return "SingIn";
     }
+
+    /**
+     * 95、任务积分
+     */
+    public static String taskInfo() {
+        return "taskInfo";
+    }
+
+    /**
+     * 96、任务积分领取奖励
+     */
+    public static String taskApply() {
+        return "taskApply";
+    }
 }

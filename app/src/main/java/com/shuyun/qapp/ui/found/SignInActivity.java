@@ -17,10 +17,13 @@ import com.shuyun.qapp.adapter.MyPagerAdapter;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.SignInBean;
+import com.shuyun.qapp.bean.TaskBeans;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
+import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,6 +108,8 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     TextView tvSignContentSeven;
     @BindView(R.id.ll_add_date)
     LinearLayout llAddDate;
+    @BindView(R.id.ll_main)
+    LinearLayout llMain;
 
     private List<Fragment> mFragmentList;
     private List<String> mTitleList;
@@ -129,10 +134,8 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         //获取用户签到信息
         getSignInInfo();
 
-        //添加标题
-        initTitile();
-        //添加fragment
-        initFragment();
+        //获取任务信息
+        getTaskInfo();
 
     }
 
@@ -152,25 +155,9 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         RemotingEx.doRequest("signIn", ApiServiceBean.SingIn(), new Object[]{nextTaskId}, this);
     }
 
-    private void initTitile() {
-        mTitleList = new ArrayList<>();
-        mTitleList.add("新手任务");
-        mTitleList.add("每日任务");
-        //设置tablayout模式
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        //tablayout获取集合中的名称
-        tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(0)));
-        tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(1)));
-    }
-
-    private void initFragment() {
-        mFragmentList = new ArrayList<>();
-        mFragmentList.add(new NewTaskFragment());
-        mFragmentList.add(new NewTaskFragment());
-        //设置适配器
-        vp.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), mFragmentList, mTitleList));
-        //将tablayout与fragment关联
-        tabLayout.setupWithViewPager(vp);
+    //获取任务信息
+    public void getTaskInfo() {
+        RemotingEx.doRequest("taskInfo", ApiServiceBean.taskInfo(), null, this);
     }
 
     @Override
@@ -206,8 +193,8 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         }
         if ("signInInfo".equals(action)) {
             SignInBean signInBean = (SignInBean) response.getDat();
-            tvMyScore.setText(signInBean.getBp() + ""); //我的积分
-            tvSignInDay.setText(signInBean.getDays() + ""); //连续签到天数
+            tvMyScore.setText(signInBean.getBp().toString()); //我的积分
+            tvSignInDay.setText(signInBean.getDays().toString()); //连续签到天数
             //是否签到
             if (signInBean.isSignDay()) {
                 ivSignInLogo.setBackgroundResource(R.mipmap.has_signin_logo);
@@ -218,23 +205,6 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                 nextTaskId = signInBean.getNextTaskId();
             }
 
-//            llAddDate.removeAllViews();
-//            for (int i = 0; i < signInBean.getDatas().size(); i++) {
-//                View view = View.inflate(mContext, R.layout.item_sign_date, null);
-//                TextView date = view.findViewById(R.id.tv_sign_date);
-//                ImageView iv_selected = view.findViewById(R.id.iv_sign_select);
-//                TextView remark = view.findViewById(R.id.tv_sign_content);
-//                date.setText(signInBean.getDatas().get(i).getDay());
-//                Boolean selected = signInBean.getDatas().get(i).isSelected();
-//                if (selected) {
-//                    iv_selected.setBackgroundResource(R.mipmap.sign_select_on);
-//                } else {
-//                    iv_selected.setBackgroundResource(R.mipmap.sign_select_no);
-//                }
-//                remark.setText(signInBean.getDatas().get(i).getRemark());
-//                llAddDate.addView(view);
-//            }
-
             //显示签到信息
             showSignInfo(signInBean);
         } else if ("signIn".equals(action)) {
@@ -242,7 +212,31 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             ivSignInLogo.setEnabled(false);
             //获取用户签到信息
             getSignInInfo();
+        } else if ("taskInfo".equals(action)) {
+            //获取任务信息
+            TaskBeans taskBeans = (TaskBeans) response.getDat();
+            initTab(taskBeans);
         }
+    }
+
+    //初始化tab
+    public void initTab(TaskBeans taskBeans) {
+        mTitleList = new ArrayList<>();
+        mFragmentList = new ArrayList<>();
+        for (int i = 0; i < taskBeans.getDatas().size(); i++) {
+            mTitleList.add(taskBeans.getDatas().get(i).getTabTitle());
+        }
+        mFragmentList.add(NewTaskFragment.newInstance(taskBeans.getDatas().get(0).getTasks(), llMain));
+        mFragmentList.add(DayTaskFragment.newInstance(taskBeans.getDatas().get(1).getTasks(), llMain));
+        //设置tablayout模式
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        //tablayout获取集合中的名称
+        tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(0)));
+        tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(1)));
+        //设置适配器
+        vp.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), mFragmentList, mTitleList));
+        //将tablayout与fragment关联
+        tabLayout.setupWithViewPager(vp);
     }
 
     //显示签到信息
@@ -365,5 +359,15 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
         }
 
+    }
+
+    /**
+     * 拉起微信授权页,调用微信登录界面
+     */
+    public static void wxLogin() {
+        final SendAuth.Req req = new SendAuth.Req();
+        req.scope = "snsapi_userinfo";
+        req.state = "diandi_wx_login";
+        SykscApplication.mWxApi.sendReq(req);
     }
 }

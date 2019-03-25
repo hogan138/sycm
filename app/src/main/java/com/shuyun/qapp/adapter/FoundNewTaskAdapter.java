@@ -6,10 +6,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.shuyun.qapp.R;
-import com.shuyun.qapp.bean.GroupClassifyBean;
+import com.shuyun.qapp.bean.TaskBeans;
+import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.utils.GlideUtils;
+import com.shuyun.qapp.utils.OnMultiClickListener;
 
 import java.util.List;
 
@@ -24,10 +28,10 @@ public class FoundNewTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private Context mContext;
     //题组分类集合
-    private List<GroupClassifyBean> groupClassifyBeans;
+    private List<TaskBeans.DatasBean.TasksBean> tasksBeans;
 
-    public FoundNewTaskAdapter(List<GroupClassifyBean> groupClassifyBeans, Context mContext) {
-        this.groupClassifyBeans = groupClassifyBeans;
+    public FoundNewTaskAdapter(List<TaskBeans.DatasBean.TasksBean> tasksBeans, Context mContext) {
+        this.tasksBeans = tasksBeans;
         this.mContext = mContext;
         notifyDataSetChanged();
     }
@@ -47,36 +51,45 @@ public class FoundNewTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        GroupClassifyBean groupClassifyBean = groupClassifyBeans.get(position);
-//        ((MyViewHolder) holder).tvTitle.setText(groupClassifyBean.getName());
-        if (position == 0) {
-            ((MyViewHolder) holder).tvEnter.setBackgroundResource(R.drawable.blue_stroke_btn_bg);
-            ((MyViewHolder) holder).tvEnter.setText("立即前往");
-            ((MyViewHolder) holder).tvEnter.setTextColor(Color.parseColor("#0194ec"));
-        } else if (position == 1) {
-            ((MyViewHolder) holder).tvEnter.setBackgroundResource(R.drawable.blue_btn_bg);
-            ((MyViewHolder) holder).tvEnter.setText("领取奖励");
-            ((MyViewHolder) holder).tvEnter.setTextColor(Color.parseColor("#ffffff"));
-        } else if (position == 2) {
-            ((MyViewHolder) holder).tvEnter.setBackgroundResource(R.drawable.gray_stroke_btn_bg);
-            ((MyViewHolder) holder).tvEnter.setText("已完成");
-            ((MyViewHolder) holder).tvEnter.setTextColor(Color.parseColor("#999999"));
-        }
-        if (position == 3) {
-            ((MyViewHolder) holder).tvEnter.setBackgroundResource(R.drawable.blue_stroke_btn_bg);
-            ((MyViewHolder) holder).tvEnter.setText("立即前往");
-            ((MyViewHolder) holder).tvEnter.setTextColor(Color.parseColor("#0194ec"));
-        } else if (position == 4) {
-            ((MyViewHolder) holder).tvEnter.setBackgroundResource(R.drawable.blue_btn_bg);
-            ((MyViewHolder) holder).tvEnter.setText("领取奖励");
-            ((MyViewHolder) holder).tvEnter.setTextColor(Color.parseColor("#ffffff"));
+        try {
+            TaskBeans.DatasBean.TasksBean tasksBean = tasksBeans.get(position);
+            GlideUtils.LoadImage1(mContext, tasksBean.getPicture(), ((MyViewHolder) holder).ivLogo);
+            ((MyViewHolder) holder).tvTitle.setText(tasksBean.getName());
+            ((MyViewHolder) holder).tvContent.setText(tasksBean.getPurpose());
+            ((MyViewHolder) holder).tvCount.setText(tasksBean.getPrize());
+            ((MyViewHolder) holder).tvEnter.setText(tasksBean.getActionLabel());
+            String action = tasksBean.getAction();
+            if (action.equals(AppConst.ACTION_RECEIVE)) {//可领取
+                ((MyViewHolder) holder).tvEnter.setBackgroundResource(R.drawable.blue_btn_bg);
+                ((MyViewHolder) holder).tvEnter.setTextColor(Color.parseColor("#ffffff"));
+                ((MyViewHolder) holder).tvEnter.setEnabled(true);
+            } else if (action.equals(AppConst.ACTION_FINISH)) { //已完成
+                ((MyViewHolder) holder).tvEnter.setBackgroundResource(R.drawable.gray_stroke_btn_bg);
+                ((MyViewHolder) holder).tvEnter.setTextColor(Color.parseColor("#ffffff"));
+                ((MyViewHolder) holder).tvEnter.setEnabled(false);
+            } else {//其他
+                ((MyViewHolder) holder).tvEnter.setBackgroundResource(R.drawable.blue_stroke_btn_bg);
+                ((MyViewHolder) holder).tvEnter.setTextColor(Color.parseColor("#0194ec"));
+                ((MyViewHolder) holder).tvEnter.setEnabled(true);
+            }
+
+            ((MyViewHolder) holder).tvEnter.setOnClickListener(new OnMultiClickListener() {
+                @Override
+                public void onMultiClick(View v) {
+                    int position = holder.getLayoutPosition();
+                    mOnItemChildClickLitsener.onItemChildClick(((MyViewHolder) holder).tvEnter, position);
+                }
+            });
+
+        } catch (Exception e) {
+
         }
 
     }
 
     @Override
     public int getItemCount() {
-        return (groupClassifyBeans == null) ? 0 : groupClassifyBeans.size();
+        return (tasksBeans == null) ? 0 : tasksBeans.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
@@ -84,10 +97,12 @@ public class FoundNewTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView tvTitle;
         @BindView(R.id.tv_count)
         TextView tvCount;
-        @BindView(R.id.tv_count_content)
-        TextView tvCountContent;
         @BindView(R.id.tv_enter)
         TextView tvEnter;
+        @BindView(R.id.iv_logo)
+        ImageView ivLogo;
+        @BindView(R.id.tv_content)
+        TextView tvContent;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -95,6 +110,19 @@ public class FoundNewTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         }
 
+    }
+
+    OnItemChildClickListener mOnItemChildClickLitsener;
+
+    /**
+     * 设置RecyclerView点击事件
+     */
+    public interface OnItemChildClickListener {
+        void onItemChildClick(View view, int position);
+    }
+
+    public void setOnItemClickLitsener(OnItemChildClickListener mOnItemChildClickLitsener) {
+        this.mOnItemChildClickLitsener = mOnItemChildClickLitsener;
     }
 
 }

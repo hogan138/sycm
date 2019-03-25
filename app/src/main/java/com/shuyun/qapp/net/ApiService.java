@@ -49,6 +49,8 @@ import com.shuyun.qapp.bean.RobotShowBean;
 import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.bean.SignInBean;
 import com.shuyun.qapp.bean.SystemInfo;
+import com.shuyun.qapp.bean.TaskApplayBean;
+import com.shuyun.qapp.bean.TaskBeans;
 import com.shuyun.qapp.bean.TouristsBean;
 import com.shuyun.qapp.bean.UserWxInfo;
 import com.shuyun.qapp.bean.WithdrawNoticeBean;
@@ -675,5 +677,15 @@ public interface ApiService {
     @GET("/rest/user/sign/apply")
     Observable<DataResponse> SingIn(@Query("taskId") String taskId);
 
+    /**
+     * 95、用户任务信息
+     */
+    @GET("/rest/user/task/profile")
+    Observable<DataResponse<TaskBeans>> taskInfo();
 
+    /**
+     * 96、用户任务领取奖励
+     */
+    @GET("/rest/user/task/apply")
+    Observable<DataResponse<TaskApplayBean>> taskApply(@Query("taskId") String taskId);
 }

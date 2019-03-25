@@ -215,4 +215,15 @@ public class AppConst {
      */
     public static final long TYPE_HOME_GROUP = 4;
 
+
+    //任务action
+    public static final String ACTION_RECEIVE = "action.receive";//领取奖励
+    public static final String ACTION_FINISH = "action.finish";//已完成
+    public static final String ACTION_BIND_WX = "action.bind.wx";//绑定微信
+    public static final String ACTION_ONE_EXAM = "action.one.exam";//完成一次答题
+    public static final String action_oppty = "action.oppty";//领取一次答题机会
+    public static final String ACTION_INVITE_FRIENDS = "action.invite.friends";//邀请好友
+    public static final String ACTION_DAY_EXAM = "action.day.exam";//每日答题，跳转到分类页
+    public static final String ACTION_HS_GROUP_EXAM = "action.hs.group.exam";//黄山题组答题一次
+
 }

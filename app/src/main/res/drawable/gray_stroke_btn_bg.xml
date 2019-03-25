@@ -5,8 +5,8 @@
     <corners android:radius="20dp" />
 
     <!-- 矩形的填充色 -->
-    <solid android:color="#ffffff" />
+    <solid android:color="@color/select_blue" />
     <stroke
         android:width="1dp"
-        android:color="@color/login_text" />
+        android:color="@color/select_blue" />
 </shape>

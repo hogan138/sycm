@@ -284,6 +284,16 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
 
         //查询绑定别名
         queryBind();
+
+        //从任务跳转到分类
+        try {
+            String task = getIntent().getStringExtra("from");
+            if (!EncodeAndStringTool.isStringEmpty(task) && task.equals("task")) {
+                radioGroupChange(1);
+            }
+        } catch (Exception e) {
+
+        }
     }
 
 

@@ -12,14 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.blankj.utilcode.util.AppUtils;
 import com.shuyun.qapp.R;
-import com.shuyun.qapp.adapter.FoundHotGroupAdapter;
 import com.shuyun.qapp.adapter.FoundNewTaskAdapter;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.bean.FoundDataBean;
-import com.shuyun.qapp.bean.GroupClassifyBean;
-import com.shuyun.qapp.bean.HomeGroupsBean;
 import com.shuyun.qapp.bean.TaskApplayBean;
 import com.shuyun.qapp.bean.TaskBeans;
 import com.shuyun.qapp.net.ApiServiceBean;
@@ -32,7 +27,6 @@ import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
-import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.view.ShowAddAnswerDialog;
@@ -45,9 +39,9 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
- * 新手任务Fragment
+ * 每日任务Fragment
  */
-public class NewTaskFragment extends Fragment {
+public class DayTaskFragment extends Fragment {
 
 
     @BindView(R.id.rv_new_task)
@@ -55,10 +49,11 @@ public class NewTaskFragment extends Fragment {
     private Activity mContext;
     Unbinder unbinder;
 
-    static List<TaskBeans.DatasBean.TasksBean> tasksBeans = new ArrayList<>();
-
     static View view_main;
+
     FoundNewTaskAdapter foundNewTaskAdapter;
+
+    static List<TaskBeans.DatasBean.TasksBean> tasksBeans = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,11 +63,11 @@ public class NewTaskFragment extends Fragment {
         return view;
     }
 
-    public static NewTaskFragment newInstance(List<TaskBeans.DatasBean.TasksBean> tasksBeanList, View view) {
+    public static DayTaskFragment newInstance(List<TaskBeans.DatasBean.TasksBean> tasksBeanList, View view) {
         tasksBeans.clear();
         tasksBeans.addAll(tasksBeanList);
         view_main = view;
-        NewTaskFragment fragment = new NewTaskFragment();
+        DayTaskFragment fragment = new DayTaskFragment();
         return fragment;
     }
 
@@ -177,7 +172,6 @@ public class NewTaskFragment extends Fragment {
 
         });
     }
-
 
     @Override
     public void onDestroyView() {
