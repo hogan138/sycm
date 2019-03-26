@@ -802,7 +802,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (this.selectedIndex == 3) {
+        if (this.selectedIndex == 3 || this.selectedIndex == 0) {
             FragmentTouchManager.instance().apply(ev);
         }
         return super.dispatchTouchEvent(ev);

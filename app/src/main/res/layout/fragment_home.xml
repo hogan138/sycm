@@ -281,4 +281,11 @@
         android:layout_marginBottom="@dimen/text_70"
         android:src="@mipmap/indexbx"
         android:visibility="gone" />
+
+
+    <RelativeLayout
+        android:id="@+id/rl_logo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </RelativeLayout>

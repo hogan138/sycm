@@ -672,4 +672,25 @@ public class ApiServiceBean {
     public static String taskApply() {
         return "taskApply";
     }
+
+    /**
+     * 97、首页浮窗
+     */
+    public static String homeFloatWindow() {
+        return "homeFloatWindow";
+    }
+
+    /**
+     * 98、发现页面积分兑换列表
+     */
+    public static String scoreExchange() {
+        return "scoreExchange";
+    }
+
+    /**
+     * 99、发现页面积分道具兑换
+     */
+    public static String scoreExchangeApply() {
+        return "scoreExchangeApply";
+    }
 }

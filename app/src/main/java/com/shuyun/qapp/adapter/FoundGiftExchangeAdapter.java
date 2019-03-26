@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.GroupClassifyBean;
+import com.shuyun.qapp.bean.ScoreExchangeBeans;
+import com.shuyun.qapp.utils.GlideUtils;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 
 import java.util.List;
@@ -26,10 +28,10 @@ public class FoundGiftExchangeAdapter extends RecyclerView.Adapter<RecyclerView.
 
     private Context mContext;
     //题组分类集合
-    private List<GroupClassifyBean> groupClassifyBeans;
+    private List<ScoreExchangeBeans.PresentsBean> presentsBeanList;
 
-    public FoundGiftExchangeAdapter(List<GroupClassifyBean> groupClassifyBeans, Context mContext) {
-        this.groupClassifyBeans = groupClassifyBeans;
+    public FoundGiftExchangeAdapter(List<ScoreExchangeBeans.PresentsBean> presentsBeanList, Context mContext) {
+        this.presentsBeanList = presentsBeanList;
         this.mContext = mContext;
         notifyDataSetChanged();
     }
@@ -49,15 +51,29 @@ public class FoundGiftExchangeAdapter extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        GroupClassifyBean groupClassifyBean = groupClassifyBeans.get(position);
+        ScoreExchangeBeans.PresentsBean presentsBean = presentsBeanList.get(position);
         try {
-//            ((MyViewHolder) holder).tvTitle.setText(groupClassifyBean.getName());
+            GlideUtils.LoadImage1(mContext, presentsBean.getPicture(), ((MyViewHolder) holder).ivLogo);
+            ((MyViewHolder) holder).tvTitle.setText(presentsBean.getName());
+            ((MyViewHolder) holder).tvConten.setText(presentsBean.getPurpose());
+            ((MyViewHolder) holder).tvJoin.setText(presentsBean.getActionLabel());
 
-            ((MyViewHolder) holder).llItem.setOnClickListener(new OnMultiClickListener() {
+            String action = presentsBean.getAction();
+            if (action.equals("action.exchange")) {
+                //可兑换
+                ((MyViewHolder) holder).tvJoin.setBackgroundResource(R.drawable.blue_btn_bg);
+                ((MyViewHolder) holder).tvJoin.setEnabled(true);
+            } else if (action.equals("action.replenishment")) {
+                //不可兑换
+                ((MyViewHolder) holder).tvJoin.setBackgroundResource(R.drawable.exchange_gray_btn_bg);
+                ((MyViewHolder) holder).tvJoin.setEnabled(false);
+            }
+
+            ((MyViewHolder) holder).tvJoin.setOnClickListener(new OnMultiClickListener() {
                 @Override
                 public void onMultiClick(View v) {
                     int position = holder.getLayoutPosition();
-                    mOnItemClickListener.onItemClick(((MyViewHolder) holder).llItem, position);
+                    mOnItemClickListener.onItemClick(((MyViewHolder) holder).tvJoin, position);
                 }
             });
 
@@ -68,7 +84,7 @@ public class FoundGiftExchangeAdapter extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public int getItemCount() {
-        return (groupClassifyBeans == null) ? 0 : groupClassifyBeans.size();
+        return (presentsBeanList == null) ? 0 : presentsBeanList.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {

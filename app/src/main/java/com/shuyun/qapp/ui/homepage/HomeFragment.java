@@ -1,9 +1,12 @@
 package com.shuyun.qapp.ui.homepage;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -14,12 +17,15 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
+import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,7 +39,6 @@ import com.blankj.utilcode.util.PhoneUtils;
 import com.blankj.utilcode.util.SizeUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.shuyun.qapp.R;
-import com.shuyun.qapp.adapter.GroupTreeAdapter;
 import com.shuyun.qapp.adapter.HomeBottomInfoAdapter;
 import com.shuyun.qapp.adapter.HomeSortAdapter;
 import com.shuyun.qapp.adapter.HotGroupAdapter;
@@ -45,6 +50,7 @@ import com.shuyun.qapp.bean.BannerBean;
 import com.shuyun.qapp.bean.BoxBean;
 import com.shuyun.qapp.bean.ConfigDialogBean;
 import com.shuyun.qapp.bean.DataResponse;
+import com.shuyun.qapp.bean.FloatWindowBean;
 import com.shuyun.qapp.bean.GroupBean;
 import com.shuyun.qapp.bean.GroupClassifyBean;
 import com.shuyun.qapp.bean.HomeBottomInfoBean;
@@ -54,6 +60,7 @@ import com.shuyun.qapp.bean.MainConfigBean;
 import com.shuyun.qapp.bean.MarkBannerItem;
 import com.shuyun.qapp.bean.MarkBannerItem1;
 import com.shuyun.qapp.bean.SystemInfo;
+import com.shuyun.qapp.manager.FragmentTouchManager;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.LoginDataManager;
@@ -64,9 +71,11 @@ import com.shuyun.qapp.ui.classify.ClassifyActivity;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
 import com.shuyun.qapp.ui.mine.MinePrizeActivity;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
+import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.GlideUtils;
 import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.NotificationsUtils;
 import com.shuyun.qapp.utils.OnMultiClickListener;
@@ -100,7 +109,7 @@ import static com.blankj.utilcode.util.ConvertUtils.dp2px;
 /**
  * 首页
  */
-public class HomeFragment extends BaseFragment implements OnRemotingCallBackListener<Object> {
+public class HomeFragment extends BaseFragment implements OnRemotingCallBackListener<Object>, FragmentTouchManager.FragmentTouchListener {
     @BindView(R.id.tv_invite)
     TextView tvInvite; //分享
     @BindView(R.id.tv_common_title)
@@ -174,6 +183,8 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
     RelativeLayout rlGroupTwo; //推荐题组2任意logo
     @BindView(R.id.rv_home_bottom_info)
     RecyclerView rvHomeBottomInfo; //首页底部信息
+    @BindView(R.id.rl_logo)
+    RelativeLayout rlLogo; //浮窗
 
     /**
      * 网络获取到推荐题组列表
@@ -227,6 +238,8 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
     //常答题组
     private int alwaysWidth = 0, alwaysHeight = 0, alwaysTotalHeight = 0;
 
+    static ImageView imageView; //浮窗图片
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
@@ -236,10 +249,13 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
         return view;
     }
 
+    @SuppressLint({"NewApi", "ClickableViewAccessibility"})
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mContext = getActivity();
+
+        FragmentTouchManager.instance().registerFragmentTouchListener(this);
 
         //获取屏幕宽度
         DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
@@ -277,6 +293,7 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
                 timer.start();
             }
         };
+
     }
 
     @Override
@@ -571,6 +588,13 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
     }
 
     /**
+     * 首页浮窗
+     */
+    public void loadHomeFloatWindow() {
+        RemotingEx.doRequest("getHomefloatwindow", ApiServiceBean.homeFloatWindow(), null, this);
+    }
+
+    /**
      * 获取跑马灯消息
      */
     private void loadSystemInfo() {
@@ -789,6 +813,7 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        FragmentTouchManager.instance().unRegisterFragmentTouchListener(this);
         unbinder.unbind();
     }
 
@@ -883,8 +908,12 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
         //获取活动配置信息
         getConfigInfo();
 
+
         //用户已登录
         if (AppConst.isLogin()) {
+
+            //获取首页浮窗
+            loadHomeFloatWindow();
 
             //获取宝箱数量
             loadTreasureBoxNum();
@@ -1143,6 +1172,17 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
                 tvNumber2.setVisibility(View.VISIBLE);
             }
 
+        } else if ("getHomefloatwindow".equals(action)) {
+            //首页浮窗
+            final FloatWindowBean floatWindowBean = (FloatWindowBean) response.getDat();
+            Long status = floatWindowBean.getStatus();
+            if (status == 1) {
+                rlLogo.setVisibility(View.VISIBLE);
+                //添加图片
+                execute(floatWindowBean, rlLogo, mContext);
+            } else {
+                rlLogo.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -1158,6 +1198,164 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
         oftenString = null;
         recommendString = null;
         HomeNoticeBeanString = null;
+    }
+
+
+    //添加图片
+    public void execute(final FloatWindowBean anyPositionBean, RelativeLayout rootView, final Activity context) {
+        try {
+            rootView.removeAllViews();
+            //获取布局宽高
+            rootView.requestLayout();
+            int rH = rootView.getMeasuredHeight();
+            int rW = rootView.getMeasuredWidth();
+
+            int location = 6; //位置
+            Long shadow = anyPositionBean.getShadow(); //是否有阴影
+
+            //初始化数据
+            //图片间距
+            String[] ps = anyPositionBean.getPadding().split(",");
+            int[] padds = new int[]{Integer.valueOf(ps[0]), Integer.valueOf(ps[1]), Integer.valueOf(ps[2]), Integer.valueOf(ps[3])};
+
+            //广告间距
+            String[] ps1 = anyPositionBean.getMargin().split(",");
+            int[] layout_margin = new int[]{Integer.valueOf(ps1[0]), Integer.valueOf(ps1[1]), Integer.valueOf(ps1[2]), Integer.valueOf(ps1[3])};
+            int x = 0, y = 0, w = (int) dp2px(anyPositionBean.getWidth() + padds[0] + padds[2]), h = (int) dp2px(anyPositionBean.getHeight() + padds[1] + padds[3]);
+            //计算xy
+            if (location == 1) {//左上角
+                x = (int) dp2px(layout_margin[0]);
+                y = (int) dp2px(layout_margin[1]);
+            } else if (location == 2) {//左上中
+                x = (rW - w) / 2;
+                y = (int) dp2px(layout_margin[1]);
+            } else if (location == 3) {//右上角
+                x = (int) (rW - w - dp2px(layout_margin[2]));
+                y = (int) dp2px(layout_margin[1]);
+            } else if (location == 4) {//左中
+                x = (int) dp2px(layout_margin[0]);
+                y = (rH - h) / 2;
+            } else if (location == 5) {//中间
+                x = (rW - w) / 2;
+                y = (rH - h) / 2;
+            } else if (location == 6) {//右中
+                x = (int) (rW - w - dp2px(layout_margin[2]));
+                y = (rH - h) / 2;
+            } else if (location == 7) {//左下角
+                x = (int) dp2px(layout_margin[0]);
+                y = (int) (rH - h - dp2px(layout_margin[3]));
+            } else if (location == 8) {//左下中
+                x = (rW - w) / 2;
+                y = (int) (rH - h - dp2px(layout_margin[3]));
+            } else if (location == 9) {//右下角
+                x = (int) (rW - w - dp2px(layout_margin[2]));
+                y = (int) (rH - h - dp2px(layout_margin[3]));
+            }
+
+            View childView = LayoutInflater.from(context).inflate(R.layout.item_any_position_img, null);
+            RelativeLayout layoutView = childView.findViewById(R.id.layout);
+            //设置位置
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(w, h);
+            params.leftMargin = x;
+            params.topMargin = y;
+            layoutView.setLayoutParams(params);
+
+            imageView = childView.findViewById(R.id.image);
+            GlideUtils.LoadImage(context, anyPositionBean.getPicture(), imageView);
+            RelativeLayout.LayoutParams imageParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+            imageParams.setMargins((int) dp2px(padds[0]), (int) dp2px(padds[1]), (int) dp2px(padds[2]), (int) dp2px(padds[3]));
+            imageView.setLayoutParams(imageParams);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String action = anyPositionBean.getAction();
+                    String content = anyPositionBean.getContent();
+                    String h5Url = anyPositionBean.getH5Url();
+                    if (AppConst.H5.equals(action)) {
+                        Intent intent = new Intent(context, WebH5Activity.class);
+                        intent.putExtra("url", h5Url);
+                        intent.putExtra("from", "home");
+                        intent.putExtra("name", "全名共进");//名称 标题
+                        context.startActivity(intent);
+                    } else {
+                        LoginJumpUtil.dialogSkip(action, context, content, h5Url, (long) 0);
+                    }
+
+                }
+            });
+
+            //设置阴影
+            RelativeLayout shadowView = childView.findViewById(R.id.shadow);
+            if (shadow == 1) {
+                shadowView.setVisibility(View.VISIBLE);
+                GradientDrawable drawable = new GradientDrawable();
+                String[] ds = anyPositionBean.getShadowRadius().split(",");
+                //1、2两个参数表示左上角，3、4表示右上角，5、6表示右下角，7、8表示左下角
+                float[] fs = new float[]{dp2px(Float.valueOf(ds[0])),
+                        dp2px(Float.valueOf(ds[0])),
+                        dp2px(Float.valueOf(ds[1])),
+                        dp2px(Float.valueOf(ds[1])),
+                        dp2px(Float.valueOf(ds[2])),
+                        dp2px(Float.valueOf(ds[2])),
+                        dp2px(Float.valueOf(ds[3])),
+                        dp2px(Float.valueOf(ds[3]))};
+                drawable.setCornerRadii(fs);
+                drawable.setColor(Color.parseColor(anyPositionBean.getShadowColor()));
+                shadowView.setBackground(drawable);
+                shadowView.setAlpha(Float.valueOf(anyPositionBean.getShadowAlpha()));
+
+            } else {
+                shadowView.setVisibility(View.GONE);
+            }
+
+            rootView.addView(childView);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //恢复显示
+    public void showImageview() {
+        try {
+            Animation anim = new RotateAnimation(-90f, 0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            TranslateAnimation translateAnim = new TranslateAnimation(Animation.ABSOLUTE, dp2px(35), Animation.ABSOLUTE, 0, Animation.ABSOLUTE, 0, Animation.ABSOLUTE, 0);
+            AnimationSet set = new AnimationSet(false);
+            set.addAnimation(anim);
+            set.addAnimation(translateAnim);
+            set.setFillAfter(true);// 设置保持动画最后的状态
+            anim.setDuration(500); // 设置动画时间
+            translateAnim.setDuration(500);
+            imageView.startAnimation(set);
+        } catch (Exception e) {
+
+        }
+    }
+
+    //靠边隐藏
+    public void hideImageview() {
+        try {
+            Animation anim = new RotateAnimation(0f, -90f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            TranslateAnimation translateAnim = new TranslateAnimation(Animation.ABSOLUTE, 0, Animation.ABSOLUTE, dp2px(35), Animation.ABSOLUTE, 0, Animation.ABSOLUTE, 0);
+            AnimationSet set = new AnimationSet(false);
+            set.addAnimation(anim);
+            set.addAnimation(translateAnim);
+            set.setFillAfter(true);// 设置保持动画最后的状态
+            anim.setDuration(500); // 设置动画时间
+            translateAnim.setDuration(500);
+            imageView.startAnimation(set);
+        } catch (Exception e) {
+
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            hideImageview();
+        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+            showImageview();
+        }
+        return false;
     }
 }
 

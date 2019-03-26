@@ -60,6 +60,8 @@ import butterknife.Unbinder;
 import cn.kevin.banner.BannerViewPager;
 import cn.kevin.banner.IBannerItem;
 
+import static com.blankj.utilcode.util.ConvertUtils.dp2px;
+
 /**
  * 活动Fragment
  */
@@ -116,6 +118,8 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
         tvCommonTitle.setText("发现");
 
         FragmentTouchManager.instance().registerFragmentTouchListener(this);
+
+
     }
 
     @Override
@@ -448,12 +452,13 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
     public void showImageview() {
         try {
             Animation anim = new RotateAnimation(-90f, 0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-            TranslateAnimation translateAnim = new TranslateAnimation(Animation.ABSOLUTE, 90, Animation.ABSOLUTE, 0, Animation.ABSOLUTE, 0, Animation.ABSOLUTE, 0);
+            TranslateAnimation translateAnim = new TranslateAnimation(Animation.ABSOLUTE, dp2px(mContext, 35), Animation.ABSOLUTE, 0, Animation.ABSOLUTE, 0, Animation.ABSOLUTE, 0);
             AnimationSet set = new AnimationSet(false);
             set.addAnimation(anim);
             set.addAnimation(translateAnim);
             set.setFillAfter(true);// 设置保持动画最后的状态
             anim.setDuration(500); // 设置动画时间
+            translateAnim.setDuration(500);
             imageView.startAnimation(set);
         } catch (Exception e) {
 
@@ -464,12 +469,13 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
     public void hideImageview() {
         try {
             Animation anim = new RotateAnimation(0f, -90f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-            TranslateAnimation translateAnim = new TranslateAnimation(Animation.ABSOLUTE, 0, Animation.ABSOLUTE, 90, Animation.ABSOLUTE, 0, Animation.ABSOLUTE, 0);
+            TranslateAnimation translateAnim = new TranslateAnimation(Animation.ABSOLUTE, 0, Animation.ABSOLUTE, dp2px(mContext, 35), Animation.ABSOLUTE, 0, Animation.ABSOLUTE, 0);
             AnimationSet set = new AnimationSet(false);
             set.addAnimation(anim);
             set.addAnimation(translateAnim);
             set.setFillAfter(true);// 设置保持动画最后的状态
             anim.setDuration(500); // 设置动画时间
+            translateAnim.setDuration(500);
             imageView.startAnimation(set);
         } catch (Exception e) {
 

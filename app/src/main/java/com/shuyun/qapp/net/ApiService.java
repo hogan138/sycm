@@ -46,6 +46,8 @@ import com.shuyun.qapp.bean.PrizeHistoryBean;
 import com.shuyun.qapp.bean.QPushBean;
 import com.shuyun.qapp.bean.RealNameBean;
 import com.shuyun.qapp.bean.RobotShowBean;
+import com.shuyun.qapp.bean.ScoreExchangeBeans;
+import com.shuyun.qapp.bean.ScoreExchangeResult;
 import com.shuyun.qapp.bean.SharedBean;
 import com.shuyun.qapp.bean.SignInBean;
 import com.shuyun.qapp.bean.SystemInfo;
@@ -688,4 +690,22 @@ public interface ApiService {
      */
     @GET("/rest/user/task/apply")
     Observable<DataResponse<TaskApplayBean>> taskApply(@Query("taskId") String taskId);
+
+    /**
+     * 97、获取首页浮窗
+     */
+    @GET("/rest/home/floatWindow")
+    Observable<DataResponse<FloatWindowBean>> homeFloatWindow();
+
+    /**
+     * 98、发现页面积分兑换列表
+     */
+    @GET("/rest/user/goods/profile")
+    Observable<DataResponse<ScoreExchangeBeans>> scoreExchange();
+
+    /**
+     * 99、发现页面积分道具兑换
+     */
+    @GET("/rest/user/goods/apply")
+    Observable<DataResponse<ScoreExchangeResult>> scoreExchangeApply(@Query("goodsId") String goodsId);
 }

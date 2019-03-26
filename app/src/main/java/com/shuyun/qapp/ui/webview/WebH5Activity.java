@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
@@ -34,6 +35,8 @@ import com.shuyun.qapp.view.RippleLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.blankj.utilcode.util.ConvertUtils.dp2px;
 
 /**
  * h5页面（广告、首页邀请、首页轮播图、首页弹框、极光推送消息、消息列表、票务、招商银行）
@@ -113,9 +116,10 @@ public class WebH5Activity extends BaseActivity {
 
         //从发现页进入展开动画
         if (!EncodeAndStringTool.isStringEmpty(splash)) {
-            if (splash.equals("found")) {
+            if (splash.equals("found") || splash.equals("home")) {
                 doRippleAnim(0f, 1);
             }
+
         }
 
 
@@ -160,7 +164,7 @@ public class WebH5Activity extends BaseActivity {
                             finish();
                             Intent intent = new Intent(WebH5Activity.this, HomePageActivity.class);
                             startActivity(intent);
-                        } else if (splash.equals("found")) {
+                        } else if (splash.equals("found") || splash.equals("home")) {
                             //从发现页退出动画
                             doRippleAnim(1, 0f);
                             new Handler().postDelayed(new Runnable() {
@@ -190,7 +194,7 @@ public class WebH5Activity extends BaseActivity {
                     finish();
                     Intent intent = new Intent(WebH5Activity.this, HomePageActivity.class);
                     startActivity(intent);
-                } else if (splash.equals("found")) {
+                } else if (splash.equals("found") || splash.equals("home")) {
                     //从发现页退出动画
                     doRippleAnim(1, 0f);
                     new Handler().postDelayed(new Runnable() {
@@ -205,8 +209,6 @@ public class WebH5Activity extends BaseActivity {
             }
         }
     }
-
-
 
 
     @Override

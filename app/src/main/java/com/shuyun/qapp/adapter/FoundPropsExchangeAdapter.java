@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.GroupClassifyBean;
+import com.shuyun.qapp.bean.ScoreExchangeBeans;
+import com.shuyun.qapp.utils.GlideUtils;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 
 import java.util.List;
@@ -26,10 +28,10 @@ public class FoundPropsExchangeAdapter extends RecyclerView.Adapter<RecyclerView
 
     private Context mContext;
     //题组分类集合
-    private List<GroupClassifyBean> groupClassifyBeans;
+    private List<ScoreExchangeBeans.PropsBean> propsBeanList;
 
-    public FoundPropsExchangeAdapter(List<GroupClassifyBean> groupClassifyBeans, Context mContext) {
-        this.groupClassifyBeans = groupClassifyBeans;
+    public FoundPropsExchangeAdapter(List<ScoreExchangeBeans.PropsBean> propsBeanList, Context mContext) {
+        this.propsBeanList = propsBeanList;
         this.mContext = mContext;
         notifyDataSetChanged();
     }
@@ -49,15 +51,17 @@ public class FoundPropsExchangeAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        GroupClassifyBean groupClassifyBean = groupClassifyBeans.get(position);
+        ScoreExchangeBeans.PropsBean propsBean = propsBeanList.get(position);
         try {
-//            ((MyViewHolder) holder).tvTitle.setText(groupClassifyBean.getName());
-
-            ((MyViewHolder) holder).llItem.setOnClickListener(new OnMultiClickListener() {
+            GlideUtils.LoadImage1(mContext, propsBean.getPicture(), ((MyViewHolder) holder).ivLogo);
+            ((MyViewHolder) holder).tvTitle.setText(propsBean.getName());
+            ((MyViewHolder) holder).tvConten.setText(propsBean.getPurpose());
+            ((MyViewHolder) holder).tvJoin.setText(propsBean.getActionLabel());
+            ((MyViewHolder) holder).tvJoin.setOnClickListener(new OnMultiClickListener() {
                 @Override
                 public void onMultiClick(View v) {
                     int position = holder.getLayoutPosition();
-                    mOnItemClickListener.onItemClick(((MyViewHolder) holder).llItem, position);
+                    mOnItemClickListener.onItemClick(((MyViewHolder) holder).tvJoin, position);
                 }
             });
         } catch (Exception e) {
@@ -67,7 +71,7 @@ public class FoundPropsExchangeAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public int getItemCount() {
-        return (groupClassifyBeans == null) ? 0 : groupClassifyBeans.size();
+        return (propsBeanList == null) ? 0 : propsBeanList.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
