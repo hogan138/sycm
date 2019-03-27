@@ -84,13 +84,13 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
         ButterKnife.bind(this);
         mContext = this;
 
-        DisplayMetrics dm = this.getResources().getDisplayMetrics();
-        int w = (int) Math.ceil(dm.widthPixels);
-        height = (int) Math.ceil(w * (722f / 504f));
-
-        ViewGroup.LayoutParams params = mainImg.getLayoutParams();
-        params.height = height;
-        mainImg.setLayoutParams(params);
+//        DisplayMetrics dm = this.getResources().getDisplayMetrics();
+//        int w = (int) Math.ceil(dm.widthPixels);
+//        height = (int) Math.ceil(w * (722f / 504f));
+//
+//        ViewGroup.LayoutParams params = mainImg.getLayoutParams();
+//        params.height = height;
+//        mainImg.setLayoutParams(params);
 
         //腾讯应用分析
         StatConfig.init(this);

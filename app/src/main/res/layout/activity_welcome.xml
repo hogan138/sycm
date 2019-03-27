@@ -29,7 +29,7 @@
                 <ImageView
                     android:id="@+id/mainImg"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:scaleType="fitXY"
                     android:visibility="gone" />
             </RelativeLayout>
@@ -37,7 +37,7 @@
             <LinearLayout
                 android:id="@+id/bottomLayout"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="90dp"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:visibility="invisible">
