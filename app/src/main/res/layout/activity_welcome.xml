@@ -59,15 +59,31 @@
             android:id="@+id/tv_skip"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:padding="4dp"
             android:layout_alignParentRight="true"
             android:layout_marginTop="30dp"
             android:layout_marginRight="30dp"
             android:background="@drawable/ad_skip_bg"
             android:gravity="center"
+            android:padding="4dp"
             android:text="@string/skip"
             android:textColor="#D8DDE1"
             android:textSize="@dimen/text_16"
             android:visibility="gone" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:scaleType="fitXY"
+            android:src="@mipmap/start_logo" />
+
     </RelativeLayout>
 </FrameLayout>

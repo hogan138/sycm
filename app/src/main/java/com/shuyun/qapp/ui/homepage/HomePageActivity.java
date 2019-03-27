@@ -121,7 +121,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        mContext = getApplicationContext();
+        mContext = this;
 
         MyActivityManager.getInstance().pushOneActivity(HomePageActivity.this);
 
@@ -285,12 +285,14 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         //查询绑定别名
         queryBind();
 
-        //从任务跳转到分类
+        //从任务跳转
         try {
-            String task = getIntent().getStringExtra("from");
-            if (!EncodeAndStringTool.isStringEmpty(task) && task.equals("task")) {
+            String from = getIntent().getStringExtra("from");
+            if (!EncodeAndStringTool.isStringEmpty(from) && from.equals("task")) {
+                //分类
                 radioGroupChange(1);
             }
+
         } catch (Exception e) {
 
         }

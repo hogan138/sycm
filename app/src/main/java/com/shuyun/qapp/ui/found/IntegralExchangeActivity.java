@@ -76,6 +76,7 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
         //初始化适配器
         foundPropsExchangeAdapter = new FoundPropsExchangeAdapter(propsBeanList, mContext);
         foundPropsExchangeAdapter.setOnItemClickLitsener(new FoundPropsExchangeAdapter.OnItemClickListener() {
+
             @Override
             public void onItemClick(View view, int position) {
                 final ScoreExchangeBeans.PropsBean propsBean = propsBeanList.get(position);
@@ -203,7 +204,7 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
             }
 
         } else if ("propExchange".equals(action)) {
-            Toast.makeText(mContext, "道具兑换成功", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "兑换成功", Toast.LENGTH_SHORT).show();
         }
     }
 
