@@ -79,19 +79,16 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- 导航页 -->
+        </activity> <!-- 导航页 -->
         <activity
             android:name=".ui.welcome.NavigationActivity"
-            android:screenOrientation="portrait" />
-        <!--广告页-->
+            android:screenOrientation="portrait" /> <!-- 广告页 -->
         <activity
             android:name=".ui.welcome.WelcomeActivity"
-            android:screenOrientation="portrait" />
-        <!-- 首页 -->
+            android:screenOrientation="portrait" /> <!-- 首页 -->
         <activity
             android:name=".ui.homepage.HomePageActivity"
             android:launchMode="singleTop"
@@ -303,6 +300,10 @@
             android:screenOrientation="portrait" /> <!-- 签到 -->
         <activity
             android:name=".ui.found.SignInActivity"
+            android:screenOrientation="portrait" />
+        <!--商品详情-->
+        <activity
+            android:name=".ui.found.GoodsDetailsActivity"
             android:screenOrientation="portrait" />
     </application>
 

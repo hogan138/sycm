@@ -1,6 +1,7 @@
 package com.shuyun.qapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.GroupClassifyBean;
 import com.shuyun.qapp.bean.ScoreExchangeBeans;
+import com.shuyun.qapp.ui.found.GoodsDetailsActivity;
 import com.shuyun.qapp.utils.GlideUtils;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 
@@ -68,6 +70,14 @@ public class FoundGiftExchangeAdapter extends RecyclerView.Adapter<RecyclerView.
                 ((MyViewHolder) holder).tvJoin.setBackgroundResource(R.drawable.exchange_gray_btn_bg);
                 ((MyViewHolder) holder).tvJoin.setEnabled(false);
             }
+
+            ((MyViewHolder) holder).llItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    Intent intent = new Intent(mContext, GoodsDetailsActivity.class);
+//                    mContext.startActivity(intent);
+                }
+            });
 
             ((MyViewHolder) holder).tvJoin.setOnClickListener(new OnMultiClickListener() {
                 @Override

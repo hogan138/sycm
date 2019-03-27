@@ -3,6 +3,7 @@ package com.shuyun.qapp.ui.classify;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.view.View;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
@@ -23,9 +24,11 @@ public class ClassifyActivity extends BaseActivity {
             @Override
             public void run() {
                 Fragment classify = getSupportFragmentManager().findFragmentById(R.id.classify_fragment);
-                ((BaseFragment)classify).refresh();
+                ((BaseFragment) classify).refresh();
             }
         }, 10);
+
+//        getFragmentManager().findFragmentById(R.id.classify_fragment).getView().findViewById(R.id.rl_back).setVisibility(View.VISIBLE);
     }
 
     @Override
