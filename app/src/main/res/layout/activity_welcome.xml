@@ -22,10 +22,9 @@
 
                 <ImageView
                     android:id="@+id/icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/start_logo"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@mipmap/welcom_center_logo"
                     android:visibility="gone" />
 
                 <ImageView
@@ -42,14 +41,13 @@
                 android:layout_height="100dp"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="invisible">
 
                 <ImageView
                     android:id="@+id/bottomIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/start_logo" />
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@mipmap/welcom_center_logo" />
 
             </LinearLayout>
 
@@ -71,19 +69,4 @@
             android:visibility="gone" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/rl_center"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
-
-        <ImageView
-            android:id="@+id/Icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:scaleType="fitXY"
-            android:src="@mipmap/start_logo" />
-
-    </RelativeLayout>
 </FrameLayout>

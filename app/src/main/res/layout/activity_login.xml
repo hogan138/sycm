@@ -16,13 +16,6 @@
             android:layout_height="@dimen/common_item_height"
             android:background="@color/white">
 
-            <ImageView
-                android:layout_width="85dp"
-                android:layout_height="20dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/text_15"
-                android:src="@mipmap/login_logo" />
 
             <RelativeLayout
                 android:id="@+id/rl_close"
@@ -40,17 +33,11 @@
 
         </RelativeLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/text_15"
-            android:text="@string/login_tip"
-            android:textColor="@color/color_1"
-            android:textSize="@dimen/text_26"
-            android:textStyle="bold" />
-
+        <ImageView
+            android:layout_width="@dimen/text_50"
+            android:layout_height="@dimen/text_50"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/login_top_logo" />
         <!--输入手机号-->
         <TextView
             android:layout_width="50dp"

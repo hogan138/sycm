@@ -140,7 +140,6 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
      */
     public void showPop() {
         icon.setVisibility(View.GONE);
-        bottomIcon.setImageResource(R.mipmap.start_logo);
         bottomLayout.setVisibility(View.VISIBLE);
 
         AdBean.AdInfo info = adBean.getAd().get(0);
@@ -239,13 +238,13 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
             return;
         isLoading = true;
 
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //获取广告
-                getAd();
-            }
-        }, 1600);
+//        mHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+        //获取广告
+        getAd();
+//            }
+//        }, 1600);
 
         //获取是否需要登录
         RemotingEx.doRequest(AppConst.TOURISTS, ApiServiceBean.tourists(), null, this);
@@ -280,8 +279,16 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
                         }
                     }, 1000);
                 } else {
-                    //进入首页
-                    skip();
+                    icon.setVisibility(View.VISIBLE);
+                    bottomLayout.setVisibility(View.INVISIBLE);
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            //进入首页
+                            skip();
+                        }
+                    }, 1000);
+
                 }
             } else {
                 ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
