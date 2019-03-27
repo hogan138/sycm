@@ -130,7 +130,6 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         ivBack.setOnClickListener(this);
         ivSignInLogo.setOnClickListener(this);
 
-
         //获取用户签到信息
         getSignInInfo();
 

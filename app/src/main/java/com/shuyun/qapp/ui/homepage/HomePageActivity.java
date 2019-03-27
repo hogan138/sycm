@@ -211,6 +211,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
     private void changeUi(int index) {
         this.selectedIndex = index;
         pager.setCurrentItem(index, false);
+
     }
 
     @Override
@@ -273,13 +274,17 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         //版本更新
         updateVersion();
 
-        if (selectedIndex == 4) {
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    ((BaseFragment) fragments.get(selectedIndex)).refresh();
-                }
-            }, 10);
+        try {
+            if (selectedIndex == 4) {
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((BaseFragment) fragments.get(selectedIndex)).refresh();
+                    }
+                }, 10);
+            }
+        } catch (Exception e) {
+
         }
 
         //查询绑定别名
@@ -291,6 +296,9 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
             if (!EncodeAndStringTool.isStringEmpty(from) && from.equals("task")) {
                 //分类
                 radioGroupChange(1);
+            } else if (!EncodeAndStringTool.isStringEmpty(from) && from.equals("task_oppty")) {
+                //我的
+                radioGroupChange(4);
             }
 
         } catch (Exception e) {

@@ -88,7 +88,6 @@ public class ClassifyFragment extends BaseFragment implements OnRemotingCallBack
         super.onActivityCreated(savedInstanceState);
         mContext = getActivity();
         tvCommonTitle.setText("题组分类");
-        rlBack.setVisibility(View.GONE);
     }
 
     @Override

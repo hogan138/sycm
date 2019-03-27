@@ -24,8 +24,7 @@
                     android:id="@+id/icon"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:src="@mipmap/welcom_center_logo"
-                    android:visibility="gone" />
+                    android:src="@mipmap/welcom_center_logo" />
 
                 <ImageView
                     android:id="@+id/mainImg"

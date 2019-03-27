@@ -104,7 +104,10 @@ public class NewTaskFragment extends Fragment {
                     mContext.startActivity(intent);
                 } else if (action.equals(AppConst.action_oppty)) {
                     //领取答题弹框
-                    ShowAddAnswerDialog.showAddAnswerNum(mContext, view_main);
+                    Intent intent = new Intent(mContext, HomePageActivity.class);
+                    intent.putExtra("from", "task_oppty");
+                    mContext.startActivity(intent);
+//                    ShowAddAnswerDialog.showAddAnswerNum(mContext, view_main);
                 } else if (action.equals(AppConst.ACTION_INVITE_FRIENDS)) {
                     //邀请好友
                     Intent intent = new Intent(mContext, WebH5Activity.class);

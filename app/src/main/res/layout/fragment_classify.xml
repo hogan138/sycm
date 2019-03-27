@@ -12,7 +12,8 @@
         <RelativeLayout
             android:id="@+id/rl_back"
             android:layout_width="68dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/iv_left_back"

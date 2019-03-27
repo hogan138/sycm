@@ -238,13 +238,13 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
             return;
         isLoading = true;
 
-//        mHandler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-        //获取广告
-        getAd();
-//            }
-//        }, 1600);
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //获取广告
+                getAd();
+            }
+        }, 1600);
 
         //获取是否需要登录
         RemotingEx.doRequest(AppConst.TOURISTS, ApiServiceBean.tourists(), null, this);
@@ -279,16 +279,9 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
                         }
                     }, 1000);
                 } else {
-                    icon.setVisibility(View.VISIBLE);
                     bottomLayout.setVisibility(View.INVISIBLE);
-                    mHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            //进入首页
-                            skip();
-                        }
-                    }, 1000);
-
+                    //进入首页
+                    skip();
                 }
             } else {
                 ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
