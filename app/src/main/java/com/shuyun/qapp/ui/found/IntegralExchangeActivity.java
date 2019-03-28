@@ -35,6 +35,7 @@ import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.OnMultiClickListener;
+import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ToastUtil;
 
 import java.util.ArrayList;
@@ -221,19 +222,7 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
     private void ExchangeTipDialog(String title, final String tv_right, String tv_left, final String goodsId) {
         new CircleDialog.Builder(this)
                 .setTitle("提示")
-                .configTitle(new ConfigTitle() {
-                    @Override
-                    public void onConfig(TitleParams params) {
-                        params.textSize = dp2px(16);
-                    }
-                })
                 .setText(title)
-                .configText(new ConfigText() {
-                    @Override
-                    public void onConfig(TextParams params) {
-                        params.textSize = dp2px(16);
-                    }
-                })
                 .setTextColor(Color.parseColor("#333333"))
                 .setWidth(0.7f)
                 .setNegative(tv_left, null)
@@ -248,6 +237,7 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
                     public void onMultiClick(View v) {
                         if (tv_right.equals("答题赚积分")) {
                             //分类页
+                            SaveUserInfo.getInstance(mContext).setUserInfo("show_back", "show_back");
                             mContext.startActivity(new Intent(mContext, ClassifyActivity.class));
                         } else {
                             propExchange(goodsId);

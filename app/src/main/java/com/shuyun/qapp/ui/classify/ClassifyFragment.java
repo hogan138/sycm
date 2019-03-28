@@ -29,6 +29,7 @@ import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.SaveUserInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +89,21 @@ public class ClassifyFragment extends BaseFragment implements OnRemotingCallBack
         super.onActivityCreated(savedInstanceState);
         mContext = getActivity();
         tvCommonTitle.setText("题组分类");
-//        rlBack.setVisibility(View.GONE);
+
+        try {
+            String showback = SaveUserInfo.getInstance(mContext).getUserInfo("show_back");
+            if (showback.equals("show_back")) {
+                //显示返回按钮
+                rlBack.setVisibility(View.VISIBLE);
+                SaveUserInfo.getInstance(mContext).setUserInfo("show_back", "");
+            } else {
+                //隐藏返回按钮
+                rlBack.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+
+        }
+
     }
 
     @Override
