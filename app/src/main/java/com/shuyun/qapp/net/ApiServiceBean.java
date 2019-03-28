@@ -693,4 +693,11 @@ public class ApiServiceBean {
     public static String scoreExchangeApply() {
         return "scoreExchangeApply";
     }
+
+    /**
+     * 100、获取商品详情信息
+     */
+    public static String getGoodsInfo() {
+        return "getGoodsInfo";
+    }
 }

@@ -47,30 +47,106 @@
             android:background="@color/light_white" />
     </RelativeLayout>
 
-    <WebView
-        android:id="@+id/webView"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/rl_title"
-        android:layout_marginBottom="@dimen/text_45" />
+        android:layout_marginBottom="@dimen/text_50">
 
-    <ImageView
-        android:id="@+id/animation_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:src="@drawable/lottery_animlist" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <cn.kevin.banner.BannerViewPager
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                app:around_visible="false"
+                app:layout_scrollFlags="scroll"
+                app:point_drawable="@drawable/goods_details_banner_selector"
+                app:point_gravity="bottom_center" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_20"
+                android:gravity="center_horizontal"
+                android:textColor="@color/color_1"
+                android:textSize="@dimen/text_16" />
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_6"
+                android:gravity="center_horizontal"
+                android:textColor="@color/color_66"
+                android:textSize="@dimen/text_13" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_11"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_e9"
+                    android:textSize="@dimen/text_20" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="积分"
+                    android:textColor="@color/color_e9"
+                    android:textSize="@dimen/text_14" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/text_10"
+                android:layout_marginTop="@dimen/text_15"
+                android:background="@color/color_f1" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_16"
+                android:gravity="center_horizontal"
+                android:text="商品详情"
+                android:textColor="@color/color_1"
+                android:textSize="@dimen/text_16" />
+
+            <TextView
+                android:id="@+id/tv_rich_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/text_15" />
+
+            <TextView
+                android:id="@+id/tv_rich_text_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/text_15" />
+        </LinearLayout>
+
+    </ScrollView>
 
     <TextView
         android:id="@+id/tv_exchange"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:background="@color/color_4"
         android:gravity="center"
         android:text="立即兑换"
         android:textColor="#ffffff"
-        android:textSize="15sp"
+        android:textSize="17sp"
         android:textStyle="bold" />
 
 </RelativeLayout>

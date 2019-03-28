@@ -15,12 +15,8 @@ import android.widget.Toast;
 import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.callback.ConfigButton;
 import com.mylhyl.circledialog.callback.ConfigDialog;
-import com.mylhyl.circledialog.callback.ConfigText;
-import com.mylhyl.circledialog.callback.ConfigTitle;
 import com.mylhyl.circledialog.params.ButtonParams;
 import com.mylhyl.circledialog.params.DialogParams;
-import com.mylhyl.circledialog.params.TextParams;
-import com.mylhyl.circledialog.params.TitleParams;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.FoundGiftExchangeAdapter;
 import com.shuyun.qapp.adapter.FoundPropsExchangeAdapter;
@@ -31,20 +27,16 @@ import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.classify.ClassifyActivity;
-import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
-import com.shuyun.qapp.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.blankj.utilcode.util.ConvertUtils.dp2px;
 
 
 /**
@@ -112,7 +104,10 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
         foundGiftExchangeAdapter.setOnItemClickLitsener(new FoundGiftExchangeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                ToastUtil.showToast(mContext, "立即兑换");
+                ScoreExchangeBeans.PresentsBean presentsBean = presentsBeanList.get(position);
+                Intent intent = new Intent(mContext, GoodsDetailsActivity.class);
+                intent.putExtra("id", presentsBean.getId());
+                startActivity(intent);
             }
         });
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 3) {

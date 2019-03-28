@@ -21,6 +21,7 @@ import com.shuyun.qapp.bean.ExchangeHistoryBean;
 import com.shuyun.qapp.bean.ExchangeMyPrizeBean;
 import com.shuyun.qapp.bean.FloatWindowBean;
 import com.shuyun.qapp.bean.FoundDataBean;
+import com.shuyun.qapp.bean.GoodsDeatilsBeans;
 import com.shuyun.qapp.bean.GroupAgainstBean;
 import com.shuyun.qapp.bean.GroupClassifyBean;
 import com.shuyun.qapp.bean.HistoryDataBean;
@@ -708,4 +709,11 @@ public interface ApiService {
      */
     @GET("/rest/user/goods/apply")
     Observable<DataResponse<ScoreExchangeResult>> scoreExchangeApply(@Query("goodsId") String goodsId);
+
+    /**
+     * 100、获取商品详情
+     */
+    @GET("/rest/user/goods/detail")
+    Observable<DataResponse<GoodsDeatilsBeans>> getGoodsInfo(@Query("goodsId") String goodsId);
+
 }

@@ -71,19 +71,11 @@ public class FoundGiftExchangeAdapter extends RecyclerView.Adapter<RecyclerView.
                 ((MyViewHolder) holder).tvJoin.setEnabled(false);
             }
 
-            ((MyViewHolder) holder).llItem.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                    Intent intent = new Intent(mContext, GoodsDetailsActivity.class);
-//                    mContext.startActivity(intent);
-                }
-            });
-
-            ((MyViewHolder) holder).tvJoin.setOnClickListener(new OnMultiClickListener() {
+            ((MyViewHolder) holder).llItem.setOnClickListener(new OnMultiClickListener() {
                 @Override
                 public void onMultiClick(View v) {
                     int position = holder.getLayoutPosition();
-                    mOnItemClickListener.onItemClick(((MyViewHolder) holder).tvJoin, position);
+                    mOnItemClickListener.onItemClick(((MyViewHolder) holder).llItem, position);
                 }
             });
 

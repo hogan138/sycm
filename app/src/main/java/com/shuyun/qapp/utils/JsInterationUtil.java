@@ -133,6 +133,17 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
     public JsInterationUtil() {
     }
 
+    //70周年
+    public JsInterationUtil(WebAnswerHomeBean answerHomeBean, Activity activity, WebView webView, View view, TextView tvCommonTitle, ImageView ivRightIcon, TextView tvRight) {
+        this.answerHomeBean = answerHomeBean;
+        this.activity = activity;
+        this.webView = webView;
+        this.view = view;
+        this.tvCommonTitle = tvCommonTitle;
+        this.ivRightIcon = ivRightIcon;
+        this.tvRight = tvRight;
+    }
+
     //答题页面
     public JsInterationUtil(WebAnswerHomeBean answerHomeBean, Activity activity, WebView webView, View view, String splash, String from, TextView tvCommonTitle, ImageView ivRightIcon, Long groupId) {
         this.answerHomeBean = answerHomeBean;
@@ -368,26 +379,31 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
      */
     @JavascriptInterface
     public void headBtn(final String title, final String name, final String type, final String funname) {
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                tvCommonTitle.setText(title);
-                if (type.equals("0")) {
-                    //不显示
-                    tvRight.setVisibility(View.GONE);
-                } else if (type.equals("1")) {
-                    //显示
-                    tvRight.setVisibility(View.VISIBLE);
-                    tvRight.setText(name);
-                    tvRight.setOnClickListener(new OnMultiClickListener() {
-                        @Override
-                        public void onMultiClick(View v) {
-                            webView.loadUrl("javascript:" + funname + "()");
-                        }
-                    });
+        try {
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    tvCommonTitle.setText(title);
+                    if (type.equals("0")) {
+                        //不显示
+                        tvRight.setVisibility(View.GONE);
+                    } else if (type.equals("1")) {
+                        //显示
+                        tvRight.setVisibility(View.VISIBLE);
+                        tvRight.setText(name);
+                        tvRight.setOnClickListener(new OnMultiClickListener() {
+                            @Override
+                            public void onMultiClick(View v) {
+                                webView.loadUrl("javascript:" + funname + "()");
+                            }
+                        });
+                    }
                 }
-            }
-        });
+            });
+        } catch (Exception e) {
+
+        }
+
     }
 
     @JavascriptInterface
