@@ -63,6 +63,7 @@ import com.shuyun.qapp.utils.ImageUitils;
 import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
+import com.shuyun.qapp.utils.SaveUserInfo1;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.StatusBarUtil;
 import com.shuyun.qapp.utils.ToastUtil;
@@ -255,6 +256,11 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
             //已登录状态把过期跳转登录页设为true
             SharedPreferences sharedPreferences = getSharedPreferences("FirstRun", 0);
             sharedPreferences.edit().putBoolean("TAU", true).apply();
+        } else {
+            //显示活动角标
+            Drawable drawable = getResources().getDrawable(R.mipmap.found_n_red);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
+            radioFound.setCompoundDrawables(null, drawable, null, null);
         }
 
         //判断是否从广告页点击传递数据过来
@@ -266,7 +272,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         }
 
         //判断游客模式
-        if ("0".equals(SaveUserInfo.getInstance(this).getUserInfo("tourists")) && !AppConst.isLogin()) {
+        if ("0".equals(SaveUserInfo1.getInstance(this).getUserInfo("tourists")) && !AppConst.isLogin()) {
             startActivityForResult(new Intent(this, LoginActivity.class), 0x1013);
             return;
         }

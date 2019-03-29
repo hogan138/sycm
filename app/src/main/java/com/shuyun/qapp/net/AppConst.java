@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.SaveUserInfo;
+import com.shuyun.qapp.utils.SaveUserInfo1;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 
 import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
@@ -68,7 +69,7 @@ public class AppConst {
 
     //登录方式（强制或游客模式）
     public static boolean isNormalLogin(Context mContext) {
-        String mode = SaveUserInfo.getInstance(mContext).getUserInfo("normal_login");
+        String mode = SaveUserInfo1.getInstance(mContext).getUserInfo("normal_login");
         if (mode == null || "".equals(mode) || "0".equals(mode))
             return true;
         return false;

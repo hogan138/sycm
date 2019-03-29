@@ -304,6 +304,7 @@
         <!--商品详情-->
         <activity
             android:name=".ui.found.GoodsDetailsActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
     </application>
 

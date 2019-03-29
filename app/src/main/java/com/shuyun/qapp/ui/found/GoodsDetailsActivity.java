@@ -5,14 +5,15 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.MarkBannerAdapter1;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.bean.FoundDataBean;
 import com.shuyun.qapp.bean.GoodsDeatilsBeans;
 import com.shuyun.qapp.bean.MarkBannerItem1;
 import com.shuyun.qapp.net.ApiServiceBean;
@@ -21,6 +22,8 @@ import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.view.ViewPagerScroller;
+import com.xiao.nicevideoplayer.NiceVideoPlayer;
+import com.xiao.nicevideoplayer.TxVideoPlayerController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +59,8 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
     TextView tvRichTextBottom;
     @BindView(R.id.rl_main)
     RelativeLayout rlMain;
+    @BindView(R.id.ll_add_video)
+    LinearLayout llAddVideo;
 
     Context mContext;
 
@@ -143,6 +148,24 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
                 tvScore.setText(goodsDeatilsBeans.getBp().toString());
                 tvRichText.setText(Html.fromHtml(goodsDeatilsBeans.getDetail()));
                 tvRichTextBottom.setText(Html.fromHtml(goodsDeatilsBeans.getRemark()));
+
+                //视频播放
+                if (!goodsDeatilsBeans.getVideos().isEmpty()) {
+                    llAddVideo.removeAllViews();
+                    for (int i = 0; i < goodsDeatilsBeans.getVideos().size(); i++) {
+                        View view = View.inflate(mContext, R.layout.item_video_player, null);
+                        NiceVideoPlayer niceVideoPlayer = view.findViewById(R.id.mNiceVideoPlayer);
+                        niceVideoPlayer.setUp(goodsDeatilsBeans.getVideos().get(i), null);
+                        TxVideoPlayerController controller = new TxVideoPlayerController(this);
+                        controller.setTitle("");
+                        Glide.with(this)
+                                .load(goodsDeatilsBeans.getPictures().get(0))
+                                .crossFade()
+                                .into(controller.imageView());
+                        niceVideoPlayer.setController(controller);
+                        llAddVideo.addView(view);
+                    }
+                }
 
             } catch (Exception e) {
 

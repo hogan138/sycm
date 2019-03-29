@@ -32,6 +32,7 @@ import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
+import com.shuyun.qapp.utils.SaveUserInfo1;
 import com.tencent.stat.MtaSDkException;
 import com.tencent.stat.StatConfig;
 import com.tencent.stat.StatService;
@@ -104,8 +105,8 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
         }
 
         //保存登录状态
-        SaveUserInfo.getInstance(this).setUserInfo("LOGIN_MODE", String.valueOf(LOGIN_MODE));
-        SaveUserInfo.getInstance(mContext).setUserInfo("tourists", "0");
+        SaveUserInfo1.getInstance(this).setUserInfo("LOGIN_MODE", String.valueOf(LOGIN_MODE));
+        SaveUserInfo1.getInstance(mContext).setUserInfo("tourists", "0");
 
     }
 
@@ -217,7 +218,7 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
 
     //保存登录模式
     private void loginMode() {
-        SaveUserInfo.getInstance(mContext).setUserInfo("normal_login", SaveUserInfo.getInstance(mContext).getUserInfo("tourists"));
+        SaveUserInfo1.getInstance(mContext).setUserInfo("normal_login", SaveUserInfo1.getInstance(mContext).getUserInfo("tourists"));
     }
 
     @Override
@@ -258,7 +259,7 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
 
     @Override
     public void onFailed(String action, String message) {
-        SaveUserInfo.getInstance(mContext).setUserInfo("tourists", "0");
+        SaveUserInfo1.getInstance(mContext).setUserInfo("tourists", "0");
         skip();
     }
 
@@ -291,9 +292,9 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
         } else if (AppConst.TOURISTS.equals(action)) { //是否是游客模式
             if (response.isSuccees()) {
                 TouristsBean touristsBean = (TouristsBean) response.getDat();
-                SaveUserInfo.getInstance(mContext).setUserInfo("tourists", touristsBean.getMode());
+                SaveUserInfo1.getInstance(mContext).setUserInfo("tourists", touristsBean.getMode());
             } else {
-                SaveUserInfo.getInstance(mContext).setUserInfo("tourists", "0");
+                SaveUserInfo1.getInstance(mContext).setUserInfo("tourists", "0");
             }
         }
     }

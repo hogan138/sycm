@@ -32,6 +32,7 @@ import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
+import com.shuyun.qapp.utils.SaveUserInfo1;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.umeng.analytics.MobclickAgent;
 
@@ -221,7 +222,7 @@ public class SystemSettingActivity extends BaseActivity implements OnRemotingCal
                 //友盟统计登出
                 MobclickAgent.onProfileSignOff();
 
-                if ("1".equals(SaveUserInfo.getInstance(mContext).getUserInfo("tourists"))) {
+                if ("1".equals(SaveUserInfo1.getInstance(mContext).getUserInfo("tourists"))) {
                     //启用游客模式
                     Intent intent = new Intent(mContext, HomePageActivity.class);
                     intent.putExtra(AppConst.APP_ACTION_PARAM, AppConst.APP_ACTION_LOGOUT);

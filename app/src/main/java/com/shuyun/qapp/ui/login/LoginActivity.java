@@ -50,6 +50,7 @@ import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.PermissionsChecker;
 import com.shuyun.qapp.utils.RegularTool;
 import com.shuyun.qapp.utils.SaveUserInfo;
+import com.shuyun.qapp.utils.SaveUserInfo1;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.ToastUtil;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
@@ -125,7 +126,7 @@ public class LoginActivity extends BaseActivity implements OnRemotingCallBackLis
         MyActivityManager1.getInstance().pushOneActivity(this);
 
 
-        if ("1".equals(SaveUserInfo.getInstance(mContext).getUserInfo("tourists"))) {
+        if ("1".equals(SaveUserInfo1.getInstance(mContext).getUserInfo("tourists"))) {
             //启用游客模式
             rlClose.setVisibility(View.VISIBLE);
         } else {

@@ -128,6 +128,12 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/text_15" />
 
+            <LinearLayout
+                android:id="@+id/ll_add_video"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
             <TextView
                 android:id="@+id/tv_rich_text_bottom"
                 android:layout_width="match_parent"
