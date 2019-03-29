@@ -133,7 +133,7 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
     public JsInterationUtil() {
     }
 
-    //70周年
+    //fragment
     public JsInterationUtil(WebAnswerHomeBean answerHomeBean, Activity activity, WebView webView, View view, TextView tvCommonTitle, ImageView ivRightIcon, TextView tvRight) {
         this.answerHomeBean = answerHomeBean;
         this.activity = activity;
@@ -155,13 +155,6 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
         this.tvCommonTitle = tvCommonTitle;
         this.ivRightIcon = ivRightIcon;
         this.groupId = groupId;
-    }
-
-    //发现页fragment
-    public JsInterationUtil(WebAnswerHomeBean answerHomeBean, Activity activity, WebView webView) {
-        this.answerHomeBean = answerHomeBean;
-        this.activity = activity;
-        this.webView = webView;
     }
 
     //开宝箱页面

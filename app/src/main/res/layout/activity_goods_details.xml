@@ -126,7 +126,8 @@
                 android:id="@+id/tv_rich_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_15" />
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="@dimen/text_15" />
 
             <LinearLayout
                 android:id="@+id/ll_add_video"

@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.shuyun.qapp.R;
@@ -32,6 +35,14 @@ public class WebFragment extends Fragment {
     Unbinder unbinder;
     @BindView(R.id.webView)
     WebView webView;
+    @BindView(R.id.tv_common_title)
+    TextView tvCommonTitle;
+    @BindView(R.id.tv_right)
+    TextView tvRight;
+    @BindView(R.id.iv_right_icon)
+    ImageView ivRightIcon;
+    @BindView(R.id.scrollView)
+    NestedScrollView scrollView;
 
     private Context mContext;
 
@@ -66,7 +77,7 @@ public class WebFragment extends Fragment {
         }
         webView.setWebChromeClient(new WebChromeClient());//解决答题时无法弹出dialog问题.
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        webView.addJavascriptInterface(new JsInterationUtil(answerHomeBean, (Activity) mContext, webView), "android");
+        webView.addJavascriptInterface(new JsInterationUtil(answerHomeBean, (Activity) mContext, webView, scrollView, tvCommonTitle, ivRightIcon, tvRight), "android");
         //获取参数
         Bundle bundle = getArguments();
         webView.loadUrl(bundle.getString("h5_url"));

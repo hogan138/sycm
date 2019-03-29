@@ -1272,7 +1272,7 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
                     String action = anyPositionBean.getAction();
                     String content = anyPositionBean.getContent();
                     String h5Url = anyPositionBean.getH5Url();
-                    if (AppConst.H5.equals(action)) {
+                    if (AppConst.H5.equals(action) || AppConst.INVITE.equals(action)) {
                         Intent intent = new Intent(context, WebH5Activity.class);
                         intent.putExtra("url", h5Url);
                         intent.putExtra("from", "home");

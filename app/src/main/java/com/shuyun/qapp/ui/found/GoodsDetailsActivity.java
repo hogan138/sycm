@@ -4,10 +4,14 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.shuyun.qapp.R;
@@ -20,13 +24,24 @@ import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
+import com.shuyun.qapp.utils.CommonPopUtil;
+import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.GlideUtils;
+import com.shuyun.qapp.view.NumberAddSubView;
+import com.shuyun.qapp.view.RoundImageView;
 import com.shuyun.qapp.view.ViewPagerScroller;
 import com.xiao.nicevideoplayer.NiceVideoPlayer;
 import com.xiao.nicevideoplayer.TxVideoPlayerController;
+import com.zhy.view.flowlayout.FlowLayout;
+import com.zhy.view.flowlayout.TagAdapter;
+import com.zhy.view.flowlayout.TagFlowLayout;
+import com.zzhoujay.richtext.ImageHolder;
+import com.zzhoujay.richtext.RichText;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,17 +79,24 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
 
     Context mContext;
 
+    GoodsDeatilsBeans goodsDeatilsBeans;
+
     //banner
     private MarkBannerAdapter1 markBannerAdapter1;
     private List<IBannerItem> bannerList = new ArrayList<>();
+
+    private static CommonPopupWindow popupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         mContext = this;
+        //初始化缓存
+        RichText.initCacheDir(this);
 
         rlBack.setOnClickListener(this);
+        tvExchange.setOnClickListener(this);
 
 
         //初始化
@@ -127,7 +149,7 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
             return;
         }
         if ("getGoodsInfo".equals(action)) {
-            GoodsDeatilsBeans goodsDeatilsBeans = (GoodsDeatilsBeans) response.getDat();
+            goodsDeatilsBeans = (GoodsDeatilsBeans) response.getDat();
             try {
                 //设置轮播图
                 bannerList.clear();
@@ -146,8 +168,14 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
                 tvName.setText(goodsDeatilsBeans.getName());
                 tvContent.setText(goodsDeatilsBeans.getPurpose());
                 tvScore.setText(goodsDeatilsBeans.getBp().toString());
-                tvRichText.setText(Html.fromHtml(goodsDeatilsBeans.getDetail()));
-                tvRichTextBottom.setText(Html.fromHtml(goodsDeatilsBeans.getRemark()));
+                RichText.from(goodsDeatilsBeans.getDetail()).bind(this)
+                        .showBorder(false)
+                        .size(ImageHolder.MATCH_PARENT, ImageHolder.WRAP_CONTENT)
+                        .into(tvRichText);
+                RichText.from(goodsDeatilsBeans.getRemark()).bind(this)
+                        .showBorder(false)
+                        .size(ImageHolder.MATCH_PARENT, ImageHolder.WRAP_CONTENT)
+                        .into(tvRichTextBottom);
 
                 //视频播放
                 if (!goodsDeatilsBeans.getVideos().isEmpty()) {
@@ -180,8 +208,116 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
             case R.id.rl_back:
                 finish();
                 break;
+            case R.id.tv_exchange:
+                //立即兑换
+                showExchangePop(goodsDeatilsBeans);
+                break;
             default:
                 break;
         }
+    }
+
+
+    /**
+     * 立即兑换弹窗
+     */
+    private int count = 1;
+    private List<String> mVals = new ArrayList<>();
+
+    public void showExchangePop(final GoodsDeatilsBeans goodsDeatilsBeans) {
+        View upView = LayoutInflater.from(mContext).inflate(R.layout.goods_exchange_popupwindow, null);
+        //测量View的宽高
+        CommonPopUtil.measureWidthAndHeight(upView);
+        //设置子View点击事件
+        popupWindow = new CommonPopupWindow.Builder(mContext)
+                .setView(R.layout.goods_exchange_popupwindow)
+                .setWidthAndHeight(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                .setBackGroundLevel(0.5f)//取值范围0.0f-1.0f 值越小越暗
+                .setAnimationStyle(R.style.popwin_anim_style_bottom)
+                .setOutsideTouchable(false)
+                //设置子View点击事件
+                .setViewOnclickListener(new CommonPopupWindow.ViewInterface() {
+                    @Override
+                    public void getChildView(View view, int layoutResId) {
+                        switch (layoutResId) {
+                            case R.layout.goods_exchange_popupwindow:
+                                RelativeLayout rl_close = view.findViewById(R.id.rl_close);
+                                rl_close.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        count = 1;
+                                        popupWindow.dismiss();
+                                    }
+                                });
+                                mVals.clear();
+                                for (int i = 0; i < goodsDeatilsBeans.getStandards().get(0).getStas().size(); i++) {
+                                    mVals.add(goodsDeatilsBeans.getStandards().get(0).getStas().get(i).getLabel());
+                                }
+
+                                final TagFlowLayout tagFlowLayout = view.findViewById(R.id.id_flowlayout);
+                                tagFlowLayout.setMaxSelectCount(1);
+                                tagFlowLayout.setAdapter(new TagAdapter<String>(mVals) {
+                                    @Override
+                                    public View getView(FlowLayout parent, int position, String s) {
+                                        TextView tv = (TextView) LayoutInflater.from(mContext).inflate(R.layout.tv,
+                                                tagFlowLayout, false);
+                                        tv.setText(s);
+                                        return tv;
+                                    }
+                                });
+                                tagFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
+                                    @Override
+                                    public boolean onTagClick(View view, int position, FlowLayout parent) {
+                                        Toast.makeText(mContext, mVals.get(position), Toast.LENGTH_SHORT).show();
+                                        return true;
+                                    }
+                                });
+
+                                RoundImageView iv_picture = view.findViewById(R.id.iv_picture);
+                                TextView tv_score = view.findViewById(R.id.tv_score);
+                                TextView tv_exchange = view.findViewById(R.id.tv_exchange);
+                                TextView tv_one = view.findViewById(R.id.tv_one);
+                                TextView tv_two = view.findViewById(R.id.tv_two);
+                                tv_one.setText(goodsDeatilsBeans.getStandards().get(0).getLabel());
+                                tv_two.setText(goodsDeatilsBeans.getStandards().get(1).getLabel());
+
+                                GlideUtils.LoadImage1(mContext, goodsDeatilsBeans.getPicture(), iv_picture);
+                                tv_score.setText(goodsDeatilsBeans.getPrice());
+                                NumberAddSubView numberAddSubView = view.findViewById(R.id.nb_addsub_view);
+                                numberAddSubView.setOnButtonClickListenter(new NumberAddSubView.OnButtonClickListenter() {
+                                    @Override
+                                    public void onButtonAddClick(View view, int value) {
+                                        count = value;
+                                    }
+
+                                    @Override
+                                    public void onButtonSubClick(View view, int value) {
+                                        count = value;
+                                    }
+                                });
+                                tv_exchange.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Toast.makeText(mContext, "" + count, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                })
+                .create();
+
+        popupWindow.showAtLocation(rlMain, Gravity.BOTTOM, 0, 0);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //释放富文本内存
+        RichText.clear(this);
+        RichText.recycle();
     }
 }

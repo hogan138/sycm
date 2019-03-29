@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="50dp"
+    android:layout_height="30dp"
+    android:layout_marginRight="@dimen/text_22"
+    android:layout_marginTop="@dimen/text_8"
+    android:background="@drawable/tag_bg"
+    android:gravity="center"
+    android:text="Helloworld"
+    android:textColor="@color/color_66"
+    android:textSize="@dimen/text_16">
+
+</TextView>
