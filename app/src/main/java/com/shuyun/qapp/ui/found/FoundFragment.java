@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -249,6 +251,7 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
     public void onFailed(String action, String message) {
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
     @Override
     public void onSucceed(String action, DataResponse<Object> response) {
         if (!response.isSuccees()) {
@@ -258,16 +261,15 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
         try {
             if ("foundInfo".equals(action)) {
                 FoundDataBean foundDataBean = (FoundDataBean) response.getDat();
+                String str = JSON.toJSONString(foundDataBean);
+                if (bannerDataString != null && bannerDataString.equals(str)) {
+                    return;
+                }
+                bannerDataString = str;
 
+                //设置轮播图
                 bannerData = foundDataBean.getBanner();
                 if (!EncodeAndStringTool.isListEmpty(bannerData)) {
-                    String str = JSON.toJSONString(bannerData);
-                    if (bannerDataString != null && bannerDataString.equals(str)) {
-                        return;
-                    }
-                    bannerDataString = str;
-
-                    //设置轮播图
                     bannerList.clear();
                     for (int i = 0; i < bannerData.size(); i++) {
                         FoundDataBean.BannerBean bean = bannerData.get(i);
@@ -286,11 +288,11 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
                 activityRegion.removeAllViews();
                 activityRegion.addView(ActivityRegionManager1.getView(mContext, regionBean, rlFound));
 
-
                 //动态tab添加
                 mTitleList = new ArrayList<>();
                 mFragmentList = new ArrayList<>();
                 List<FoundDataBean.TablesBean> tablesBeanList = foundDataBean.getTables();
+
                 //添加fragment
                 for (int i = 0; i < tablesBeanList.size(); i++) {
                     mTitleList.add(tablesBeanList.get(i).getTitle());
@@ -302,15 +304,19 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
                 }
 
                 //添加标题
+                tabLayout.getTabLayout().removeAllTabs();
                 for (int i = 0; i < mTitleList.size(); i++) {
                     tabLayout.addTab(mTitleList.get(i));
                 }
-                //设置适配器
-                vp.setAdapter(new MyPagerAdapter(getActivity().getSupportFragmentManager(), mFragmentList, mTitleList));
-                vp.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout.getTabLayout()));
 
+                //设置适配器
+                MyPagerAdapter myPagerAdapter = new MyPagerAdapter(getActivity().getSupportFragmentManager(), mFragmentList, mTitleList);
+                vp.setAdapter(myPagerAdapter);
+                myPagerAdapter.notifyDataSetChanged();
+                vp.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout.getTabLayout()));
                 //将tablayout与fragment关联
                 tabLayout.setupWithViewPager(vp);
+
 
             } else if ("floatWindow".equals(action)) {
                 final FloatWindowBean floatWindowBean = (FloatWindowBean) response.getDat();
@@ -496,5 +502,11 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
             showImageview();
         }
         return false;
+    }
+
+    @Override
+    public void clear() {
+        super.clear();
+        bannerDataString = null;
     }
 }

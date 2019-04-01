@@ -24,4 +24,9 @@ public abstract class BaseFragment extends Fragment {
     public void clear() {
 
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+    }
 }

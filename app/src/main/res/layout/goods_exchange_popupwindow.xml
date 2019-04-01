@@ -1,120 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:zhy="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/bg_pop_top_radiu"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:id="@+id/rl_close"
-            android:layout_width="@dimen/text_50"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true">
-
-            <ImageView
-                android:layout_width="@dimen/text_12"
-                android:layout_height="@dimen/text_12"
-                android:layout_alignParentRight="true"
-                android:layout_margin="@dimen/text_15"
-                android:src="@mipmap/close_pop_logo" />
-        </RelativeLayout>
-    </RelativeLayout>
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_above="@id/tv_exchange"
+        android:background="@drawable/bg_pop_top_radiu">
 
-        <com.shuyun.qapp.view.RoundImageView
-            android:id="@+id/iv_picture"
-            android:layout_width="@dimen/text_90"
-            android:layout_height="@dimen/text_90"
-            android:layout_marginLeft="@dimen/text_15" />
-
-        <TextView
-            android:id="@+id/tv_score"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/text_9"
-            android:text="5000积分"
-            android:textColor="@color/color_e9"
-            android:textSize="@dimen/text_18" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/text_15"
-        android:layout_marginTop="37dp"
-        android:layout_marginRight="@dimen/text_15"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/tv_one"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textColor="@color/color_66"
-            android:textSize="@dimen/text_14" />
-
-        <com.zhy.view.flowlayout.TagFlowLayout
-            android:id="@+id/id_flowlayout"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            zhy:max_select="1" />
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <RelativeLayout
+                android:id="@+id/rl_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/text_15"
-        android:layout_marginTop="17dp"
-        android:layout_marginRight="@dimen/text_15"
-        android:orientation="vertical">
+                <RelativeLayout
+                    android:id="@+id/rl_close"
+                    android:layout_width="@dimen/text_50"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true">
 
-        <TextView
-            android:id="@+id/tv_two"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textColor="@color/color_66"
-            android:textSize="@dimen/text_14" />
+                    <ImageView
+                        android:layout_width="@dimen/text_12"
+                        android:layout_height="@dimen/text_12"
+                        android:layout_alignParentRight="true"
+                        android:layout_margin="@dimen/text_15"
+                        android:src="@mipmap/close_pop_logo" />
+                </RelativeLayout>
+            </RelativeLayout>
 
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/text_15"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="@dimen/text_15"
-        android:layout_marginBottom="165dp">
+                <com.shuyun.qapp.view.RoundImageView
+                    android:id="@+id/iv_picture"
+                    android:layout_width="@dimen/text_90"
+                    android:layout_height="@dimen/text_90"
+                    android:layout_marginLeft="@dimen/text_15" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="购买数量"
-            android:textColor="@color/color_66"
-            android:textSize="@dimen/text_14" />
+                <TextView
+                    android:id="@+id/tv_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/text_9"
+                    android:text="5000积分"
+                    android:textColor="@color/color_e9"
+                    android:textSize="@dimen/text_18" />
+            </LinearLayout>
 
-        <com.shuyun.qapp.view.NumberAddSubView
-            android:id="@+id/nb_addsub_view"
-            android:layout_width="137dp"
-            android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            app:maxValue="100"
-            app:minValue="1"
-            app:value="1" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_15"
+                android:layout_marginTop="37dp"
+                android:layout_marginRight="@dimen/text_15"
+                android:orientation="vertical">
 
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/tv_one"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/color_66"
+                    android:textSize="@dimen/text_14" />
+
+                <com.zhy.view.flowlayout.TagFlowLayout
+                    android:id="@+id/standard_flowlayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    zhy:max_select="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_15"
+                android:layout_marginTop="17dp"
+                android:layout_marginRight="@dimen/text_15"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_two"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/color_66"
+                    android:textSize="@dimen/text_14" />
+
+                <com.zhy.view.flowlayout.TagFlowLayout
+                    android:id="@+id/color_flowlayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    zhy:max_select="1" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_15"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="@dimen/text_15"
+                android:layout_marginBottom="165dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="购买数量"
+                    android:textColor="@color/color_66"
+                    android:textSize="@dimen/text_14" />
+
+                <com.shuyun.qapp.view.NumberAddSubView
+                    android:id="@+id/nb_addsub_view"
+                    android:layout_width="137dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    app:maxValue="100"
+                    app:minValue="1"
+                    app:value="1" />
+
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
 
     <TextView
         android:id="@+id/tv_exchange"
@@ -127,4 +146,4 @@
         android:textColor="#ffffff"
         android:textSize="17sp"
         android:textStyle="bold" />
-</LinearLayout>
+</RelativeLayout>

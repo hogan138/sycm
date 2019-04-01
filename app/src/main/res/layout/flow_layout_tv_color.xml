@@ -5,11 +5,13 @@
     android:layout_marginTop="@dimen/text_8"
     android:layout_marginRight="@dimen/text_22"
     android:background="@drawable/tag_bg"
+    android:drawableLeft="@drawable/oval"
+    android:drawablePadding="5dp"
     android:gravity="center"
-    android:paddingLeft="@dimen/text_20"
-    android:paddingRight="@dimen/text_20"
+    android:paddingLeft="@dimen/text_5"
+    android:paddingRight="@dimen/text_5"
     android:text="Helloworld"
     android:textColor="@color/color_66"
-    android:textSize="@dimen/text_14">
+    android:textSize="@dimen/text_13">
 
 </TextView>
