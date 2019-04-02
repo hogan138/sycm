@@ -25,6 +25,7 @@ import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.UMShareAPI;
+import com.zzhoujay.richtext.RichText;
 
 import static com.shuyun.qapp.net.SykscApplication.getAppContext;
 
@@ -95,6 +96,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         try {
             //防止内存泄露
             UMShareAPI.get(this).release();
+
+            //释放富文本内存
+            RichText.recycle();
         } catch (Exception e) {
 
         }

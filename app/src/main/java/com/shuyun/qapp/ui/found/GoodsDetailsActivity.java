@@ -6,7 +6,6 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.text.Html;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -34,8 +33,6 @@ import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.GlideUtils;
-import com.shuyun.qapp.utils.ToastUtil;
-import com.shuyun.qapp.view.HtmlFromUtils;
 import com.shuyun.qapp.view.NumberAddSubView;
 import com.shuyun.qapp.view.RoundImageView;
 import com.shuyun.qapp.view.ViewPagerScroller;
@@ -49,7 +46,6 @@ import com.zzhoujay.richtext.RichText;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -158,66 +154,61 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
         }
         if ("getGoodsInfo".equals(action)) {
             goodsDeatilsBeans = (GoodsDeatilsBeans) response.getDat();
-            try {
-                //设置轮播图
-                bannerList.clear();
-                if (!goodsDeatilsBeans.getPictures().isEmpty()) {
-                    for (int i = 0; i < goodsDeatilsBeans.getPictures().size(); i++) {
-                        String pictureList = goodsDeatilsBeans.getPictures().get(i);
-                        MarkBannerItem1 item = new MarkBannerItem1(pictureList);
-                        bannerList.add(item);
-                    }
-                    markBannerAdapter1.clearViews();
-                    markBannerAdapter1.setData(mContext, bannerList);
-                    //重新生成单位条
-                    mBannerView.setBannerAdapter(markBannerAdapter1);
+            //设置轮播图
+            bannerList.clear();
+            if (!goodsDeatilsBeans.getPictures().isEmpty()) {
+                for (int i = 0; i < goodsDeatilsBeans.getPictures().size(); i++) {
+                    String pictureList = goodsDeatilsBeans.getPictures().get(i);
+                    MarkBannerItem1 item = new MarkBannerItem1(pictureList);
+                    bannerList.add(item);
                 }
-
-                tvName.setText(goodsDeatilsBeans.getName());
-                tvContent.setText(goodsDeatilsBeans.getPurpose());
-                tvScore.setText(goodsDeatilsBeans.getBp().toString());
-                //图文详情
-                if (!EncodeAndStringTool.isStringEmpty(goodsDeatilsBeans.getDetail())) {
-//                    RichText.from(goodsDeatilsBeans.getDetail()).bind(this)
-//                            .showBorder(false)
-//                            .size(ImageHolder.MATCH_PARENT, ImageHolder.WRAP_CONTENT)
-//                            .into(tvRichText);
-                    HtmlFromUtils.setTextFromHtml(this, tvRichText, goodsDeatilsBeans.getDetail());
-                }
-                //底部文字
-                if (!EncodeAndStringTool.isStringEmpty(goodsDeatilsBeans.getRemark())) {
-//                    RichText.from(goodsDeatilsBeans.getRemark()).bind(this)
-//                            .showBorder(false)
-//                            .size(ImageHolder.MATCH_PARENT, ImageHolder.WRAP_CONTENT)
-//                            .into(tvRichTextBottom);
-                    HtmlFromUtils.setTextFromHtml(this, tvRichTextBottom, goodsDeatilsBeans.getRemark());
-                }
-
-                //视频播放
-                if (!goodsDeatilsBeans.getVideos().isEmpty()) {
-                    llAddVideo.removeAllViews();
-                    for (int i = 0; i < goodsDeatilsBeans.getVideos().size(); i++) {
-                        GoodsDeatilsBeans.VideosBean videosBean = goodsDeatilsBeans.getVideos().get(i);
-                        View view = View.inflate(mContext, R.layout.item_video_player, null);
-                        NiceVideoPlayer niceVideoPlayer = view.findViewById(R.id.mNiceVideoPlayer);
-                        niceVideoPlayer.setUp(videosBean.getValue(), null);
-                        TxVideoPlayerController controller = new TxVideoPlayerController(this);
-                        if (!EncodeAndStringTool.isStringEmpty(videosBean.getTitle())) {
-                            controller.setTitle(videosBean.getTitle());
-                        }
-                        Glide.with(this)
-                                .load(videosBean.getPicture())
-                                .crossFade()
-                                .into(controller.imageView());
-                        niceVideoPlayer.setController(controller);
-                        llAddVideo.addView(view);
-                    }
-                }
-
-            } catch (Exception e) {
-
-
+                markBannerAdapter1.clearViews();
+                markBannerAdapter1.setData(mContext, bannerList);
+                //重新生成单位条
+                mBannerView.setBannerAdapter(markBannerAdapter1);
             }
+
+            tvName.setText(goodsDeatilsBeans.getName());
+            tvContent.setText(goodsDeatilsBeans.getPurpose());
+            tvScore.setText(goodsDeatilsBeans.getBp().toString());
+            //图文详情
+            if (!EncodeAndStringTool.isStringEmpty(goodsDeatilsBeans.getDetail())) {
+                RichText.from(goodsDeatilsBeans.getDetail()).bind(this)
+                        .showBorder(false)
+                        .size(ImageHolder.MATCH_PARENT, ImageHolder.WRAP_CONTENT)
+                        .into(tvRichText);
+//                    HtmlFromUtils.setTextFromHtml(this, tvRichText, goodsDeatilsBeans.getDetail());
+            }
+            //底部文字
+            if (!EncodeAndStringTool.isStringEmpty(goodsDeatilsBeans.getRemark())) {
+                RichText.from(goodsDeatilsBeans.getRemark()).bind(this)
+                        .showBorder(false)
+                        .size(ImageHolder.MATCH_PARENT, ImageHolder.WRAP_CONTENT)
+                        .into(tvRichTextBottom);
+//                    HtmlFromUtils.setTextFromHtml(this, tvRichTextBottom, goodsDeatilsBeans.getRemark());
+            }
+
+            //视频播放
+            if (!goodsDeatilsBeans.getVideos().isEmpty()) {
+                llAddVideo.removeAllViews();
+                for (int i = 0; i < goodsDeatilsBeans.getVideos().size(); i++) {
+                    GoodsDeatilsBeans.VideosBean videosBean = goodsDeatilsBeans.getVideos().get(i);
+                    View view = View.inflate(mContext, R.layout.item_video_player, null);
+                    NiceVideoPlayer niceVideoPlayer = view.findViewById(R.id.mNiceVideoPlayer);
+                    niceVideoPlayer.setUp(videosBean.getValue(), null);
+                    TxVideoPlayerController controller = new TxVideoPlayerController(this);
+                    if (!EncodeAndStringTool.isStringEmpty(videosBean.getTitle())) {
+                        controller.setTitle(videosBean.getTitle());
+                    }
+                    Glide.with(this)
+                            .load(videosBean.getPicture())
+                            .crossFade()
+                            .into(controller.imageView());
+                    niceVideoPlayer.setController(controller);
+                    llAddVideo.addView(view);
+                }
+            }
+
         }
     }
 
@@ -271,7 +262,6 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
         super.onDestroy();
         //释放富文本内存
         RichText.clear(this);
-//        RichText.recycle();
     }
 
     @Override
