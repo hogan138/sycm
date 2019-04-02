@@ -92,6 +92,13 @@ public class WebFragment extends Fragment {
                 return true;
             }
         });
+        //禁止长按复制
+        webView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                return true;
+            }
+        });
     }
 
     public static WebFragment newInstance(String h5_url) {
