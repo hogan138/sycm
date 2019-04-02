@@ -35,6 +35,7 @@ import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.GlideUtils;
 import com.shuyun.qapp.utils.ToastUtil;
+import com.shuyun.qapp.view.HtmlFromUtils;
 import com.shuyun.qapp.view.NumberAddSubView;
 import com.shuyun.qapp.view.RoundImageView;
 import com.shuyun.qapp.view.ViewPagerScroller;
@@ -177,17 +178,19 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
                 tvScore.setText(goodsDeatilsBeans.getBp().toString());
                 //图文详情
                 if (!EncodeAndStringTool.isStringEmpty(goodsDeatilsBeans.getDetail())) {
-                    RichText.from(goodsDeatilsBeans.getDetail()).bind(this)
-                            .showBorder(false)
-                            .size(ImageHolder.MATCH_PARENT, ImageHolder.WRAP_CONTENT)
-                            .into(tvRichText);
+//                    RichText.from(goodsDeatilsBeans.getDetail()).bind(this)
+//                            .showBorder(false)
+//                            .size(ImageHolder.MATCH_PARENT, ImageHolder.WRAP_CONTENT)
+//                            .into(tvRichText);
+                    HtmlFromUtils.setTextFromHtml(this, tvRichText, goodsDeatilsBeans.getDetail());
                 }
                 //底部文字
                 if (!EncodeAndStringTool.isStringEmpty(goodsDeatilsBeans.getRemark())) {
-                    RichText.from(goodsDeatilsBeans.getRemark()).bind(this)
-                            .showBorder(false)
-                            .size(ImageHolder.MATCH_PARENT, ImageHolder.WRAP_CONTENT)
-                            .into(tvRichTextBottom);
+//                    RichText.from(goodsDeatilsBeans.getRemark()).bind(this)
+//                            .showBorder(false)
+//                            .size(ImageHolder.MATCH_PARENT, ImageHolder.WRAP_CONTENT)
+//                            .into(tvRichTextBottom);
+                    HtmlFromUtils.setTextFromHtml(this, tvRichTextBottom, goodsDeatilsBeans.getRemark());
                 }
 
                 //视频播放
@@ -268,7 +271,7 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
         super.onDestroy();
         //释放富文本内存
         RichText.clear(this);
-        RichText.recycle();
+//        RichText.recycle();
     }
 
     @Override
