@@ -60,7 +60,8 @@
             android:id="@+id/appbar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white">
+            android:background="@color/white"
+            app:elevation="0dp">
 
             <cn.kevin.banner.BannerViewPager
                 android:id="@+id/banner"
@@ -97,7 +98,7 @@
                 app:tabTextColor="@color/color_66"
                 app:tab_Mode="mode_scrollable" />
 
-
+            <include layout="@layout/common_line_4" />
         </android.support.design.widget.AppBarLayout>
 
 

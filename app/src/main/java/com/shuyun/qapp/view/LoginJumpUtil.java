@@ -53,7 +53,7 @@ public class LoginJumpUtil {
                     intent.putExtra("h5Url", h5Url);
                     context.startActivity(intent);
                 }
-            } else if (AppConst.INTEGRAL.equals(action)) {//积分兑换
+            } else if (AppConst.INTEGRAL.equals(action)) {//积分中心
                 if (isLogin == 1 && !AppConst.isLogin()) {
                     Intent intent = new Intent(context, LoginActivity.class);
                     context.startActivityForResult(intent, AppConst.INTEGRAL_CODE);

@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ishumei.smantifraud.SmAntiFraud;
@@ -22,6 +22,7 @@ import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.WebAnswerHomeBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.utils.JsInterationUtil;
+import com.shuyun.qapp.view.NestedScrollWebView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,15 +35,15 @@ public class WebFragment extends Fragment {
 
     Unbinder unbinder;
     @BindView(R.id.webView)
-    WebView webView;
+    NestedScrollWebView webView;
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle;
     @BindView(R.id.tv_right)
     TextView tvRight;
     @BindView(R.id.iv_right_icon)
     ImageView ivRightIcon;
-    @BindView(R.id.scrollView)
-    NestedScrollView scrollView;
+    @BindView(R.id.rl_main)
+    RelativeLayout rlMain;
 
     private Context mContext;
 
@@ -77,7 +78,7 @@ public class WebFragment extends Fragment {
         }
         webView.setWebChromeClient(new WebChromeClient());//解决答题时无法弹出dialog问题.
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        webView.addJavascriptInterface(new JsInterationUtil(answerHomeBean, (Activity) mContext, webView, scrollView, tvCommonTitle, ivRightIcon, tvRight), "android");
+        webView.addJavascriptInterface(new JsInterationUtil(answerHomeBean, (Activity) mContext, webView, rlMain, tvCommonTitle, ivRightIcon, tvRight), "android");
         //获取参数
         Bundle bundle = getArguments();
         webView.loadUrl(bundle.getString("h5_url"));

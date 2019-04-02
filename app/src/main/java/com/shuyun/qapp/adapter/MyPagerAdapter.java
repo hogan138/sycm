@@ -2,7 +2,7 @@ package com.shuyun.qapp.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
  * 创建日期：2018/6/9 18:16
  * 公用Fragment适配器
  */
-public class MyPagerAdapter extends FragmentPagerAdapter {
+public class MyPagerAdapter extends FragmentStatePagerAdapter {
     //添加fragment的集合
     private List<Fragment> mFragmentList;
     //添加标题的集合

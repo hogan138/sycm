@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.alibaba.fastjson.JSON;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.FoundHotGroupAdapter;
 import com.shuyun.qapp.bean.FoundDataBean;
@@ -39,6 +40,8 @@ public class HotGroupFragment extends Fragment {
     @BindView(R.id.scrollView)
     NestedScrollView scrollView;
 
+    private static String GroupsBeanListStr = null;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -48,7 +51,12 @@ public class HotGroupFragment extends Fragment {
     }
 
     public static HotGroupFragment newInstance(List<FoundDataBean.TablesBean.GroupsBean> groupsBeanList) {
-        if (GroupsBeanList.isEmpty()) {
+        String str = JSON.toJSONString(GroupsBeanListStr);
+        if (GroupsBeanListStr != null && GroupsBeanListStr.equals(str)) {
+
+        } else {
+            GroupsBeanListStr = str;
+            GroupsBeanList.clear();
             GroupsBeanList.addAll(groupsBeanList);
         }
         HotGroupFragment fragment = new HotGroupFragment();
@@ -84,8 +92,13 @@ public class HotGroupFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        GroupsBeanListStr = null;
+    }
 }
 
