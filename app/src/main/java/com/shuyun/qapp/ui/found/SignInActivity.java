@@ -283,9 +283,9 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         for (int i = 0, j = mFragmentList.size(); i < j; i++) {
             Fragment fragment = mFragmentList.get(i);
             if (fragment instanceof NewTaskFragment) {
-                ((NewTaskFragment) fragment).refreshUI(taskBeans.getDatas().get(0).getTasks());
+                ((NewTaskFragment) fragment).refreshTaskUI(taskBeans.getDatas().get(0).getTasks());
             } else if (fragment instanceof DayTaskFragment) {
-                ((DayTaskFragment) fragment).refreshUI(taskBeans.getDatas().get(1).getTasks());
+                ((DayTaskFragment) fragment).refreshTaskUI(taskBeans.getDatas().get(1).getTasks());
             }
         }
     }

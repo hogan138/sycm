@@ -58,7 +58,7 @@ public class NewTaskFragment extends Fragment implements FoundTaskAdapter.OnItem
         return view;
     }
 
-    public void refreshUI(List<TaskBeans.DatasBean.TasksBean> tasksBeans) {
+    public void refreshTaskUI(List<TaskBeans.DatasBean.TasksBean> tasksBeans) {
         for (int i = 0, j = tasksBeans.size(); i < j; i++) {
             TaskBeans.DatasBean.TasksBean bean = tasksBeans.get(i);
             TaskBeans.DatasBean.TasksBean bean0 = getTask(bean.getTaskId());
