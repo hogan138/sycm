@@ -24,18 +24,17 @@ import butterknife.ButterKnife;
  * 发现新手任务
  */
 
-public class FoundNewTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class FoundTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
     //题组分类集合
     private List<TaskBeans.DatasBean.TasksBean> tasksBeans;
 
-    public FoundNewTaskAdapter(List<TaskBeans.DatasBean.TasksBean> tasksBeans, Context mContext) {
+    public FoundTaskAdapter(List<TaskBeans.DatasBean.TasksBean> tasksBeans, Context mContext) {
         this.tasksBeans = tasksBeans;
         this.mContext = mContext;
         notifyDataSetChanged();
     }
-
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

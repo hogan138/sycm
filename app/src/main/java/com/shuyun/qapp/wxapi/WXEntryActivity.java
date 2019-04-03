@@ -214,7 +214,7 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
                 SaveUserInfo.getInstance(mContext).setUserInfo("wxHeader", wxBindResultBean.getWxHeader());
                 ToastUtil.showToast(mContext, "成功变更绑定微信!");
                 //通知任务更新
-                EventBus.getDefault().post(new MessageEvent("成功绑定"));
+                EventBus.getDefault().post(new MessageEvent("wx_bind_success"));
             } else {//错误码提示
 //                ToastUtil.showToast(mContext, "您的微信号已被其他账号绑定!");
                 ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());

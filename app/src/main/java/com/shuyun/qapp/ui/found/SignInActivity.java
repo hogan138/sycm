@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.MyPagerAdapter;
@@ -22,12 +21,11 @@ import com.shuyun.qapp.bean.MessageEvent;
 import com.shuyun.qapp.bean.SignInBean;
 import com.shuyun.qapp.bean.TaskBeans;
 import com.shuyun.qapp.net.ApiServiceBean;
+import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SykscApplication;
-import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.SaveUserInfo;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 
 import org.greenrobot.eventbus.EventBus;
@@ -120,31 +118,23 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     @BindView(R.id.ll_main)
     LinearLayout llMain;
 
-    private List<Fragment> mFragmentList;
-    private List<String> mTitleList;
-
-    Context mContext;
-
+    private List<Fragment> mFragmentList = new ArrayList<>();
+    private List<String> mTitleList = new ArrayList<>();
+    private Context mContext;
     //签到Id
-    String nextTaskId = "";
-
-    //任务bean
-    TaskBeans taskBeans;
+    private String nextTaskId = "";
+    private Handler mHandler = new Handler();
+    private boolean isLoading = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-
         mContext = this;
-
         tvCommonTitle.setText("签到");
         ivBack.setOnClickListener(this);
         ivSignInLogo.setOnClickListener(this);
-
-        SaveUserInfo.getInstance(mContext).setUserInfo("current", "0");
         EventBus.getDefault().register(this);//注册Eventbus
-
     }
 
     @Override
@@ -172,26 +162,10 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     protected void onResume() {
         super.onResume();
 
-        //获取数据
-        getInfo();
-
-    }
-
-    //获取数据
-    private void getInfo() {
         //获取用户签到信息
         getSignInInfo();
-
         //获取任务信息
         getTaskInfo();
-
-        //初始化tab
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                initTab(taskBeans);
-            }
-        }, 500);
     }
 
     @Override
@@ -248,19 +222,29 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             getSignInInfo();
         } else if ("taskInfo".equals(action)) {
             //获取任务信息
-            taskBeans = (TaskBeans) response.getDat();
+            final TaskBeans taskBeans = (TaskBeans) response.getDat();
+            if (!isLoading) {
+                isLoading = true;
+                initTab(taskBeans);
+            } else { //更新数据
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        updateTab(taskBeans);
+                    }
+                }, 0);
+            }
         }
     }
 
     //初始化tab
-    public void initTab(TaskBeans taskBeans) {
-        mTitleList = new ArrayList<>();
-        mFragmentList = new ArrayList<>();
+    public void initTab(final TaskBeans taskBeans) {
+        //tab页
         for (int i = 0; i < taskBeans.getDatas().size(); i++) {
             mTitleList.add(taskBeans.getDatas().get(i).getTabTitle());
         }
-        mFragmentList.add(NewTaskFragment.newInstance(taskBeans.getDatas().get(0).getTasks(), llMain));
-        mFragmentList.add(DayTaskFragment.newInstance(taskBeans.getDatas().get(1).getTasks(), llMain));
+        mFragmentList.add(new NewTaskFragment());
+        mFragmentList.add(new DayTaskFragment());
         //设置tablayout模式
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         //tablayout获取集合中的名称
@@ -271,22 +255,50 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         //将tablayout与fragment关联
         tabLayout.setupWithViewPager(vp);
 
-        String current = SaveUserInfo.getInstance(mContext).getUserInfo("current");
-        if (!EncodeAndStringTool.isStringEmpty(current) && current.equals("1")) {
-            vp.setCurrentItem(1);
-        } else {
-            vp.setCurrentItem(0);
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                updateTab(taskBeans);
+            }
+        }, 0);
+    }
+
+    //更新tab列表数据
+    public void updateTab(TaskBeans taskBeans) {
+        //根据新手任务状态是否全部完成 来显示
+        boolean isNewAll = true;
+        List<TaskBeans.DatasBean.TasksBean> news = taskBeans.getDatas().get(0).getTasks();
+        for (int i = 0, j = news.size(); i < j; i++) {
+            TaskBeans.DatasBean.TasksBean bean = news.get(i);
+            if (!AppConst.ACTION_FINISH.equals(bean.getAction())) {
+                isNewAll = false;
+                break;
+            }
         }
 
+        if (isNewAll) {
+            vp.setCurrentItem(1);
+        }
+
+        for (int i = 0, j = mFragmentList.size(); i < j; i++) {
+            Fragment fragment = mFragmentList.get(i);
+            if (fragment instanceof NewTaskFragment) {
+                ((NewTaskFragment) fragment).refreshUI(taskBeans.getDatas().get(0).getTasks());
+            } else if (fragment instanceof DayTaskFragment) {
+                ((DayTaskFragment) fragment).refreshUI(taskBeans.getDatas().get(1).getTasks());
+            }
+        }
     }
 
     //显示签到信息
     @SuppressLint("NewApi")
     public void showSignInfo(SignInBean signInBean) {
-        for (int i = 0; i < signInBean.getDatas().size(); i++) {
-            String day = signInBean.getDatas().get(i).getDay();
-            String remark = signInBean.getDatas().get(i).getRemark();
-            Boolean is_selected = signInBean.getDatas().get(i).isSelected();
+        List<SignInBean.DatasBean> list = signInBean.getDatas();
+        for (int i = 0, j = list.size(); i < j; i++) {
+            SignInBean.DatasBean bean = list.get(i);
+            String day = bean.getDay();
+            String remark = bean.getRemark();
+            boolean is_selected = bean.isSelected();
             if (i == 0) {
                 //第一天
                 tvSignDateOne.setText(day);
@@ -353,12 +365,12 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             }
 
             //处理连续签到连接线
-            Boolean selected1 = signInBean.getDatas().get(0).isSelected();
-            Boolean selected2 = signInBean.getDatas().get(1).isSelected();
-            Boolean selected3 = signInBean.getDatas().get(2).isSelected();
-            Boolean selected4 = signInBean.getDatas().get(3).isSelected();
-            Boolean selected5 = signInBean.getDatas().get(4).isSelected();
-            Boolean selected6 = signInBean.getDatas().get(5).isSelected();
+            boolean selected1 = signInBean.getDatas().get(0).isSelected();
+            boolean selected2 = signInBean.getDatas().get(1).isSelected();
+            boolean selected3 = signInBean.getDatas().get(2).isSelected();
+            boolean selected4 = signInBean.getDatas().get(3).isSelected();
+            boolean selected5 = signInBean.getDatas().get(4).isSelected();
+            boolean selected6 = signInBean.getDatas().get(5).isSelected();
 
             //第一根线
             if (selected1) {
@@ -413,9 +425,9 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(MessageEvent messageEvent) {
-        if (messageEvent.getMessage().equals("成功绑定")) {
-            //获取数据
-            getInfo();
+        if ("wx_bind_success".equals(messageEvent.getMessage())) {
+            //获取任务信息
+            getTaskInfo();
         }
     }
 
