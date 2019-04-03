@@ -102,9 +102,6 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
     private List<Fragment> mFragmentList;
     private List<String> mTitleList;
 
-
-    static ImageView imageView; //浮窗图片
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

@@ -27,6 +27,7 @@ import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.ToastUtil;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 
 import org.greenrobot.eventbus.EventBus;
@@ -213,12 +214,12 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                 ivSignInLogo.setEnabled(true);
                 nextTaskId = signInBean.getNextTaskId();
             }
-
             //显示签到信息
             showSignInfo(signInBean);
         } else if ("signIn".equals(action)) {
             ivSignInLogo.setBackgroundResource(R.mipmap.has_signin_logo);
             ivSignInLogo.setEnabled(false);
+            ToastUtil.showToast(mContext, "签到成功");
             //获取用户签到信息
             getSignInInfo();
         } else if ("taskInfo".equals(action)) {
@@ -238,20 +239,20 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         //tab页
         for (int i = 0; i < taskBeans.getDatas().size(); i++) {
             mTitleList.add(taskBeans.getDatas().get(i).getTabTitle());
+            mFragmentList.add(new TaskDataFragment());
         }
-        mFragmentList.add(new NewTaskFragment());
-        mFragmentList.add(new DayTaskFragment());
         //设置tablayout模式
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         //tablayout获取集合中的名称
-        tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(0)));
-        tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(1)));
+        for (int i = 0; i < mTitleList.size(); i++) {
+            tabLayout.addTab(tabLayout.newTab().setText(mTitleList.get(i)));
+        }
         //设置适配器
         vp.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), mFragmentList, mTitleList));
         //将tablayout与fragment关联
         tabLayout.setupWithViewPager(vp);
 
-        //根据新手任务状态是否全部完成 来显示
+        //根据新手任务状态是否全部完成来显示
         boolean isNewAll = true;
         List<TaskBeans.DatasBean.TasksBean> news = taskBeans.getDatas().get(0).getTasks();
         for (int i = 0, j = news.size(); i < j; i++) {

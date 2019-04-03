@@ -3,7 +3,6 @@ package com.shuyun.qapp.ui.found;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -39,9 +38,9 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
- * 每日任务Fragment
+ * 任务Fragment
  */
-public class DayTaskFragment extends TaskFragment implements FoundTaskAdapter.OnItemChildClickListener {
+public class TaskDataFragment extends TaskFragment implements FoundTaskAdapter.OnItemChildClickListener {
 
 
     @BindView(R.id.rv_new_task)
@@ -49,13 +48,11 @@ public class DayTaskFragment extends TaskFragment implements FoundTaskAdapter.On
     private Activity mContext;
     Unbinder unbinder;
 
-    private FoundTaskAdapter foundTaskAdapter;
     private List<TaskBeans.DatasBean.TasksBean> tasksBeans = new ArrayList<>();
-    private Handler mHandler = new Handler();
+    private FoundTaskAdapter foundTaskAdapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater,
-                             ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_found_new_task, container, false);
         unbinder = ButterKnife.bind(this, view);
@@ -152,7 +149,6 @@ public class DayTaskFragment extends TaskFragment implements FoundTaskAdapter.On
                     ErrorCodeTools.errorCodePrompt(mContext, dataResponse.getErr(), dataResponse.getMsg());
                 }
             }
-
         });
     }
 

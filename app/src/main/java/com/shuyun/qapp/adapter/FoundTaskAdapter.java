@@ -21,7 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * 发现新手任务
+ * 发现任务适配器
  */
 
 public class FoundTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

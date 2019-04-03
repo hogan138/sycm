@@ -52,6 +52,8 @@ public class ClassifyFragment extends BaseFragment implements OnRemotingCallBack
     TextView tvCommonTitle;
     @BindView(R.id.rl_back)
     RelativeLayout rlBack;
+    @BindView(R.id.rl_title)
+    RelativeLayout rlTitle;
 
     private Unbinder unbinder;
     private Activity mContext;
@@ -93,12 +95,12 @@ public class ClassifyFragment extends BaseFragment implements OnRemotingCallBack
         try {
             String showback = SaveUserInfo.getInstance(mContext).getUserInfo("show_back");
             if (showback.equals("show_back")) {
-                //显示返回按钮
-                rlBack.setVisibility(View.VISIBLE);
+                //从首页、积分兑换进入答题分类显示标题栏
+                rlTitle.setVisibility(View.VISIBLE);
                 SaveUserInfo.getInstance(mContext).setUserInfo("show_back", "");
             } else {
-                //隐藏返回按钮
-                rlBack.setVisibility(View.GONE);
+                //隐藏标题栏
+                rlTitle.setVisibility(View.GONE);
             }
         } catch (Exception e) {
 
