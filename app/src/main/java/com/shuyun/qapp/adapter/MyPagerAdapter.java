@@ -16,12 +16,12 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter {
     //添加fragment的集合
     private List<Fragment> mFragmentList;
     //添加标题的集合
-    private List<String> mTilteLis;
+    private List<String> mTList;
 
-    public MyPagerAdapter(FragmentManager fm, List<Fragment> fragmentList, List<String> tilteLis) {
+    public MyPagerAdapter(FragmentManager fm, List<Fragment> fragmentList, List<String> tList) {
         super(fm);
         mFragmentList = fragmentList;
-        mTilteLis = tilteLis;
+        mTList = tList;
         notifyDataSetChanged();
     }
 
@@ -39,7 +39,7 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
 
-        return mTilteLis.get(position);
+        return mTList.get(position);
     }
 
     @Override

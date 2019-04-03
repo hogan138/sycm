@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.FoundTaskAdapter;
+import com.shuyun.qapp.base.TaskFragment;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.TaskApplayBean;
 import com.shuyun.qapp.bean.TaskBeans;
@@ -40,7 +41,7 @@ import butterknife.Unbinder;
 /**
  * 每日任务Fragment
  */
-public class DayTaskFragment extends Fragment implements FoundTaskAdapter.OnItemChildClickListener {
+public class DayTaskFragment extends TaskFragment implements FoundTaskAdapter.OnItemChildClickListener {
 
 
     @BindView(R.id.rv_new_task)
@@ -61,6 +62,7 @@ public class DayTaskFragment extends Fragment implements FoundTaskAdapter.OnItem
         return view;
     }
 
+    @Override
     public void refreshTaskUI(List<TaskBeans.DatasBean.TasksBean> tasksBeans) {
         for (int i = 0, j = tasksBeans.size(); i < j; i++) {
             TaskBeans.DatasBean.TasksBean bean = tasksBeans.get(i);

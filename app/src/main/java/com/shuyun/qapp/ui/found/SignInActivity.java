@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.MyPagerAdapter;
 import com.shuyun.qapp.base.BaseActivity;
+import com.shuyun.qapp.base.TaskFragment;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MessageEvent;
 import com.shuyun.qapp.bean.SignInBean;
@@ -227,12 +228,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                 isLoading = true;
                 initTab(taskBeans);
             } else { //更新数据
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        updateTab(taskBeans);
-                    }
-                }, 0);
+                updateTab(taskBeans);
             }
         }
     }
@@ -255,16 +251,6 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         //将tablayout与fragment关联
         tabLayout.setupWithViewPager(vp);
 
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                updateTab(taskBeans);
-            }
-        }, 0);
-    }
-
-    //更新tab列表数据
-    public void updateTab(TaskBeans taskBeans) {
         //根据新手任务状态是否全部完成 来显示
         boolean isNewAll = true;
         List<TaskBeans.DatasBean.TasksBean> news = taskBeans.getDatas().get(0).getTasks();
@@ -275,18 +261,24 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                 break;
             }
         }
-
         if (isNewAll) {
             vp.setCurrentItem(1);
         }
 
-        for (int i = 0, j = mFragmentList.size(); i < j; i++) {
-            Fragment fragment = mFragmentList.get(i);
-            if (fragment instanceof NewTaskFragment) {
-                ((NewTaskFragment) fragment).refreshTaskUI(taskBeans.getDatas().get(0).getTasks());
-            } else if (fragment instanceof DayTaskFragment) {
-                ((DayTaskFragment) fragment).refreshTaskUI(taskBeans.getDatas().get(1).getTasks());
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                updateTab(taskBeans);
             }
+        }, 0);
+    }
+
+    //更新tab列表数据
+    public void updateTab(TaskBeans taskBeans) {
+        for (int i = 0, j = mFragmentList.size(); i < j; i++) {
+            TaskFragment fragment = (TaskFragment) mFragmentList.get(i);
+            TaskBeans.DatasBean bean = taskBeans.getDatas().get(i);
+            fragment.refreshTaskUI(bean.getTasks());
         }
     }
 
