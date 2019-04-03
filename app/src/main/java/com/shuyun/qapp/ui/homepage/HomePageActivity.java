@@ -298,13 +298,15 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
 
         //从任务跳转
         try {
-            String from = getIntent().getStringExtra("from");
-            if (!EncodeAndStringTool.isStringEmpty(from) && from.equals("task")) {
+            String task_jump = SaveUserInfo.getInstance(mContext).getUserInfo("task_jump");
+            if (!EncodeAndStringTool.isStringEmpty(task_jump) && task_jump.equals("task_answer")) {
                 //分类
                 radioGroupChange(1);
-            } else if (!EncodeAndStringTool.isStringEmpty(from) && from.equals("task_oppty")) {
+                SaveUserInfo.getInstance(mContext).setUserInfo("task_jump", "");
+            } else if (!EncodeAndStringTool.isStringEmpty(task_jump) && task_jump.equals("task_oppty")) {
                 //我的
                 radioGroupChange(4);
+                SaveUserInfo.getInstance(mContext).setUserInfo("task_jump", "");
             }
 
         } catch (Exception e) {

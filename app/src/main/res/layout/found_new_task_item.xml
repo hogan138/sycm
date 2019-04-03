@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="78dp">
 
@@ -9,8 +10,7 @@
         android:layout_width="35dp"
         android:layout_height="@dimen/text_35"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/text_19"
-        android:src="@mipmap/logo" />
+        android:layout_marginLeft="@dimen/text_19" />
 
     <TextView
         android:id="@+id/tv_title"
@@ -19,7 +19,6 @@
         android:layout_marginLeft="@dimen/text_20"
         android:layout_marginTop="@dimen/text_16"
         android:layout_toRightOf="@+id/iv_logo"
-        android:text="领取1次答题次数"
         android:textColor="@color/color_1"
         android:textSize="@dimen/text_13" />
 
@@ -32,7 +31,6 @@
         android:layout_toRightOf="@+id/tv_title"
         android:ellipsize="end"
         android:singleLine="true"
-        android:text="100积分"
         android:textColor="@color/color_F5A623"
         android:textSize="@dimen/text_13" />
 
@@ -44,7 +42,6 @@
         android:layout_marginLeft="@dimen/text_20"
         android:layout_marginTop="@dimen/text_10"
         android:layout_toRightOf="@+id/iv_logo"
-        android:text="context"
         android:textColor="@color/color_9b"
         android:textSize="@dimen/text_11" />
 
@@ -59,7 +56,6 @@
         android:gravity="center"
         android:paddingLeft="@dimen/text_8"
         android:paddingRight="@dimen/text_8"
-        android:text="领取奖励"
         android:textColor="#ffffff"
         android:textSize="@dimen/text_12" />
 

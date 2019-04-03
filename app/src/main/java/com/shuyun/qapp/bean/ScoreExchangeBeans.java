@@ -16,6 +16,8 @@ public class ScoreExchangeBeans {
     private List<PropsBean> props;
     private List<PresentsBean> presents;
 
+    private String ruleUrl;
+
     public List<PropsBean> getProps() {
         return props;
     }
@@ -30,6 +32,14 @@ public class ScoreExchangeBeans {
 
     public void setPresents(List<PresentsBean> presents) {
         this.presents = presents;
+    }
+
+    public String getRuleUrl() {
+        return ruleUrl;
+    }
+
+    public void setRuleUrl(String ruleUrl) {
+        this.ruleUrl = ruleUrl;
     }
 
     public static class PropsBean {

@@ -3,6 +3,7 @@ package com.shuyun.qapp.ui.found;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -11,19 +12,27 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.MyPagerAdapter;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
+import com.shuyun.qapp.bean.MessageEvent;
 import com.shuyun.qapp.bean.SignInBean;
 import com.shuyun.qapp.bean.TaskBeans;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SykscApplication;
+import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.SaveUserInfo;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,6 +128,9 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     //签到Id
     String nextTaskId = "";
 
+    //任务bean
+    TaskBeans taskBeans;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,11 +142,8 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         ivBack.setOnClickListener(this);
         ivSignInLogo.setOnClickListener(this);
 
-        //获取用户签到信息
-        getSignInInfo();
-
-        //获取任务信息
-        getTaskInfo();
+        SaveUserInfo.getInstance(mContext).setUserInfo("current", "0");
+        EventBus.getDefault().register(this);//注册Eventbus
 
     }
 
@@ -157,6 +166,32 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     //获取任务信息
     public void getTaskInfo() {
         RemotingEx.doRequest("taskInfo", ApiServiceBean.taskInfo(), null, this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //获取数据
+        getInfo();
+
+    }
+
+    //获取数据
+    private void getInfo() {
+        //获取用户签到信息
+        getSignInInfo();
+
+        //获取任务信息
+        getTaskInfo();
+
+        //初始化tab
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                initTab(taskBeans);
+            }
+        }, 500);
     }
 
     @Override
@@ -213,8 +248,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             getSignInInfo();
         } else if ("taskInfo".equals(action)) {
             //获取任务信息
-            TaskBeans taskBeans = (TaskBeans) response.getDat();
-            initTab(taskBeans);
+            taskBeans = (TaskBeans) response.getDat();
         }
     }
 
@@ -236,6 +270,14 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         vp.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), mFragmentList, mTitleList));
         //将tablayout与fragment关联
         tabLayout.setupWithViewPager(vp);
+
+        String current = SaveUserInfo.getInstance(mContext).getUserInfo("current");
+        if (!EncodeAndStringTool.isStringEmpty(current) && current.equals("1")) {
+            vp.setCurrentItem(1);
+        } else {
+            vp.setCurrentItem(0);
+        }
+
     }
 
     //显示签到信息
@@ -317,40 +359,39 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             Boolean selected4 = signInBean.getDatas().get(3).isSelected();
             Boolean selected5 = signInBean.getDatas().get(4).isSelected();
             Boolean selected6 = signInBean.getDatas().get(5).isSelected();
-            Boolean selected7 = signInBean.getDatas().get(6).isSelected();
 
             //第一根线
-            if (selected1 && selected2) {
+            if (selected1) {
                 lineOne.setBackgroundColor(getColor(R.color.color_ca));
             } else {
                 lineOne.setBackgroundColor(getColor(R.color.color_07));
             }
             //第二根线
-            if (selected2 && selected3) {
+            if (selected2) {
                 lineTwo.setBackgroundColor(getColor(R.color.color_ca));
             } else {
                 lineTwo.setBackgroundColor(getColor(R.color.color_07));
             }
             //第三根线
-            if (selected3 && selected4) {
+            if (selected3) {
                 lineThree.setBackgroundColor(getColor(R.color.color_ca));
             } else {
                 lineThree.setBackgroundColor(getColor(R.color.color_07));
             }
             //第四根线
-            if (selected4 && selected5) {
+            if (selected4) {
                 lineFour.setBackgroundColor(getColor(R.color.color_ca));
             } else {
                 lineFour.setBackgroundColor(getColor(R.color.color_07));
             }
             //第五根线
-            if (selected5 && selected6) {
+            if (selected5) {
                 lineFive.setBackgroundColor(getColor(R.color.color_ca));
             } else {
                 lineFive.setBackgroundColor(getColor(R.color.color_07));
             }
             //第六根线
-            if (selected6 && selected7) {
+            if (selected6) {
                 lineSix.setBackgroundColor(getColor(R.color.color_ca));
             } else {
                 lineSix.setBackgroundColor(getColor(R.color.color_07));
@@ -368,5 +409,21 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         req.scope = "snsapi_userinfo";
         req.state = "diandi_wx_login";
         SykscApplication.mWxApi.sendReq(req);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(MessageEvent messageEvent) {
+        if (messageEvent.getMessage().equals("成功绑定")) {
+            //获取数据
+            getInfo();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 }

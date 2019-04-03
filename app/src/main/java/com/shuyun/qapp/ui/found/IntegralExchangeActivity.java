@@ -27,6 +27,7 @@ import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.classify.ClassifyActivity;
+import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.OnMultiClickListener;
@@ -57,6 +58,8 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
     LinearLayout llProp;
     @BindView(R.id.ll_gift)
     LinearLayout llGift;
+    @BindView(R.id.tv_right_title)
+    TextView tvRightTitle;
 
     private List<ScoreExchangeBeans.PropsBean> propsBeanList = new ArrayList<>();
     private FoundPropsExchangeAdapter foundPropsExchangeAdapter;
@@ -66,6 +69,10 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
 
     private Context mContext;
 
+
+    //积分说明
+    String ruleUrl = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +81,7 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
 
         tvCommonTitle.setText("积分兑换");
         ivBack.setOnClickListener(this);
+        tvRightTitle.setOnClickListener(this);
 
         //初始化适配器
         foundPropsExchangeAdapter = new FoundPropsExchangeAdapter(propsBeanList, mContext);
@@ -140,6 +148,12 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
             case R.id.iv_back:
                 finish();
                 break;
+            case R.id.tv_right_title:
+                Intent intent = new Intent(this, WebH5Activity.class);
+                intent.putExtra("url", ruleUrl);
+                intent.putExtra("name", "");//名称 标题
+                startActivity(intent);
+                break;
             default:
                 break;
         }
@@ -182,6 +196,9 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
         if ("getGoodsList".equals(action)) {
             try {
                 ScoreExchangeBeans scoreExchangeBeans = (ScoreExchangeBeans) response.getDat();
+
+                ruleUrl = scoreExchangeBeans.getRuleUrl();
+
                 //道具
                 List<ScoreExchangeBeans.PropsBean> propsBeans = scoreExchangeBeans.getProps();
                 if (!EncodeAndStringTool.isListEmpty(propsBeans)) {

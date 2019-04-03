@@ -1,7 +1,6 @@
 package com.shuyun.qapp.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.shuyun.qapp.R;
-import com.shuyun.qapp.bean.GroupClassifyBean;
 import com.shuyun.qapp.bean.ScoreExchangeBeans;
-import com.shuyun.qapp.ui.found.GoodsDetailsActivity;
 import com.shuyun.qapp.utils.GlideUtils;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 

@@ -11,6 +11,7 @@ import com.ishumei.smantifraud.SmAntiFraud;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.LoginInput;
 import com.shuyun.qapp.bean.LoginResponse;
+import com.shuyun.qapp.bean.MessageEvent;
 import com.shuyun.qapp.bean.Msg;
 import com.shuyun.qapp.bean.UserWxInfo;
 import com.shuyun.qapp.net.ActivityCallManager;
@@ -33,6 +34,7 @@ import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.umeng.socialize.weixin.view.WXCallbackActivity;
 
+import org.greenrobot.eventbus.EventBus;
 import org.litepal.LitePal;
 
 import okhttp3.MediaType;
@@ -211,8 +213,10 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
                 SaveUserInfo.getInstance(mContext).setUserInfo("wxBind", String.valueOf(wxBindResultBean.getWxBind()));
                 SaveUserInfo.getInstance(mContext).setUserInfo("wxHeader", wxBindResultBean.getWxHeader());
                 ToastUtil.showToast(mContext, "成功变更绑定微信!");
+                //通知任务更新
+                EventBus.getDefault().post(new MessageEvent("成功绑定"));
             } else {//错误码提示
-                ToastUtil.showToast(mContext, "您的微信号已被其他账号绑定!");
+//                ToastUtil.showToast(mContext, "您的微信号已被其他账号绑定!");
                 ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
             }
         } else if ("login".equals(action)) {

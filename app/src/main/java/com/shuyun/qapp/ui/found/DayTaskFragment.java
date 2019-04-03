@@ -94,15 +94,12 @@ public class DayTaskFragment extends Fragment {
                     SignInActivity.wxLogin();
                 } else if (action.equals(AppConst.ACTION_ONE_EXAM) || action.equals(AppConst.ACTION_DAY_EXAM)) {
                     //完成一次答题、每日答题 跳转到分类页
-                    Intent intent = new Intent(mContext, HomePageActivity.class);
-                    intent.putExtra("from", "task");
-                    mContext.startActivity(intent);
+                    SaveUserInfo.getInstance(mContext).setUserInfo("task_jump", "task_answer");
+                    mContext.finish();
                 } else if (action.equals(AppConst.action_oppty)) {
-                    //领取答题弹框
-                    Intent intent = new Intent(mContext, HomePageActivity.class);
-                    intent.putExtra("from", "task_oppty");
-                    mContext.startActivity(intent);
-//                    ShowAddAnswerDialog.showAddAnswerNum(mContext, view_main);
+                    //领取答题弹框，跳转到我的页面
+                    SaveUserInfo.getInstance(mContext).setUserInfo("task_jump", "task_oppty");
+                    mContext.finish();
                 } else if (action.equals(AppConst.ACTION_INVITE_FRIENDS)) {
                     //邀请好友
                     Intent intent = new Intent(mContext, WebH5Activity.class);
@@ -126,6 +123,7 @@ public class DayTaskFragment extends Fragment {
                     SaveUserInfo.getInstance(mContext).setUserInfo("h5_rule", tasksBean.getH5Url());
                     mContext.startActivity(new Intent(mContext, IntegralMainActivity.class));
                 }
+                SaveUserInfo.getInstance(mContext).setUserInfo("current", "1");
             }
         });
         GridLayoutManager gridLayoutManager1 = new GridLayoutManager(mContext, 1) {
