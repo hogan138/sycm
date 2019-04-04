@@ -7,6 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/bar_height"
+        android:visibility="gone"
         android:background="@color/white">
 
         <RelativeLayout
