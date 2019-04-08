@@ -249,12 +249,12 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
     /**
      * 头部标题
      *
-     * @param page  是否显示分享图标1:显示;其他值不显示
+     * @param type  是否显示分享图标1:显示;其他值不显示
      * @param title 标题
      * @param id    答题Id
      */
     @JavascriptInterface
-    public void header(final int page, final String title, String id) {
+    public void header(final int type, final String title, String id) {
         try {
             wAnswerId = id;
             if (!EncodeAndStringTool.isObjectEmpty(tvCommonTitle)) {
@@ -262,11 +262,11 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
                     @Override
                     public void run() {
                         if (from.equals("anwser")) {
-                            if (page == 1) {
+                            if (type == 1) {
                                 wTitle = title;
                                 tvCommonTitle.setText(title);
                                 ivRightIcon.setVisibility(View.VISIBLE);
-                            } else if (page == 0) {
+                            } else if (type == 0) {
                                 tvCommonTitle.setText(title);
                                 ivRightIcon.setVisibility(View.GONE);
                             } else {

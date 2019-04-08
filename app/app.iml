@@ -234,5 +234,6 @@
     <orderEntry type="library" name="Gradle: com.android.support:multidex:1.0.3@aar" level="project" />
     <orderEntry type="module" module-name="nicevideoplayer" />
     <orderEntry type="module" module-name="nicevideoplayer" />
+    <orderEntry type="module" module-name="nicevideoplayer" />
   </component>
 </module>
