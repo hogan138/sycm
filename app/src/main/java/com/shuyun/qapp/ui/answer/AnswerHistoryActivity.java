@@ -2,29 +2,30 @@ package com.shuyun.qapp.ui.answer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.AnswerHistoryAdapter;
 import com.shuyun.qapp.adapter.GroupTreeAdapter;
-import com.shuyun.qapp.animation.MyLayoutAnimationHelper;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
+import com.shuyun.qapp.bean.HistoryDataBean;
 import com.shuyun.qapp.bean.LookAnswerResultBean;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
+import com.shuyun.qapp.ui.mine.ShareAnswerRecordActivity;
 import com.shuyun.qapp.utils.Base64Utils;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
@@ -34,8 +35,12 @@ import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.RSAUtils;
 import com.shuyun.qapp.utils.ToastUtil;
 
+import java.math.BigDecimal;
 import java.security.PrivateKey;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,14 +52,34 @@ import butterknife.OnClick;
 public class AnswerHistoryActivity extends BaseActivity implements CommonPopupWindow.ViewInterface, OnRemotingCallBackListener<Object> {
 
     @BindView(R.id.ll_answer_history)
-    LinearLayout llAnswerHistory;
+    RelativeLayout llAnswerHistory;
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle; //答题标题
     @BindView(R.id.rv_error_answer)
     RecyclerView rvErrorAnswer; //recycleview
+    @BindView(R.id.tvTitle)
+    TextView tvTitle;
+    @BindView(R.id.tvTime)
+    TextView tvTime;
+    @BindView(R.id.tvRate)
+    TextView tvRate;
+    @BindView(R.id.tvClass)
+    TextView tvClass;
+    @BindView(R.id.ivLevel)
+    ImageView ivLevel;
+    @BindView(R.id.cardView)
+    CardView cardView;
 
     CommonPopupWindow popupWindow;
+
+    LookAnswerResultBean lookAnswerResult;
+
     private String answerId; //答题id
+
+    private BigDecimal a = new BigDecimal("85");
+    private BigDecimal b = new BigDecimal("50");
+
+    private String from = "";
 
 
     @Override
@@ -63,8 +88,11 @@ public class AnswerHistoryActivity extends BaseActivity implements CommonPopupWi
         ButterKnife.bind(this);
         Intent intent = getIntent();
         answerId = intent.getStringExtra("answer_id");
-        String title = intent.getStringExtra("title");
-        tvCommonTitle.setText(title);
+//        String title = intent.getStringExtra("title");
+//        tvCommonTitle.setText(title);
+
+        from = intent.getStringExtra("from");
+
         if (!EncodeAndStringTool.isStringEmpty(answerId)) {
             loadLookAnswerResult(answerId);
         }
@@ -88,11 +116,26 @@ public class AnswerHistoryActivity extends BaseActivity implements CommonPopupWi
 
     }
 
-    @OnClick({R.id.iv_back})
+    @OnClick({R.id.iv_back, R.id.tv_share})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.iv_back: //返回键
                 finish();
+                break;
+            case R.id.tv_share: //分享
+                HistoryDataBean.ResultBean recordBean = new HistoryDataBean.ResultBean();
+                recordBean.setId(lookAnswerResult.getId());
+                recordBean.setTitle(lookAnswerResult.getGroupName());
+                recordBean.setAccuracy(lookAnswerResult.getAccuracy());
+                recordBean.setFullName(lookAnswerResult.getFullName());
+                recordBean.setPicture(lookAnswerResult.getGroupPicture());
+                recordBean.setTime(lookAnswerResult.getExamTime().toString());
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("share", recordBean);
+                Intent intent = new Intent(this, ShareAnswerRecordActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
                 break;
             default:
                 break;
@@ -184,8 +227,43 @@ public class AnswerHistoryActivity extends BaseActivity implements CommonPopupWi
     public void onSucceed(String action, DataResponse<Object> response) {
         if (AppConst.ANSWER_HISTORY.equals(action)) { //答题历史
             if (response.isSuccees()) {
-                LookAnswerResultBean lookAnswerResult = (LookAnswerResultBean) response.getDat();
+                lookAnswerResult = (LookAnswerResultBean) response.getDat();
                 if (!EncodeAndStringTool.isObjectEmpty(lookAnswerResult)) {
+
+                    tvCommonTitle.setText(lookAnswerResult.getGroupName());
+                    if (from.equals("h5")) {
+                        cardView.setVisibility(View.VISIBLE);
+                        tvTitle.setText(lookAnswerResult.getGroupName());
+                        Date currentTime = new Date(Long.valueOf(lookAnswerResult.getExamTime()));
+                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
+                        String time = formatter.format(currentTime).replace(" ", "\n");
+                        tvTime.setText(time);
+                        String fullName = lookAnswerResult.getFullName();
+                        if (fullName != null) {
+                            String[] names = fullName.split("/");
+                            tvClass.setText(names[0]);
+                        } else {
+                            tvClass.setText("");
+                        }
+
+                        StringBuffer sb = new StringBuffer();
+                        sb.append(lookAnswerResult.getAccuracy()).append("%");
+                        tvRate.setText(sb.toString());
+
+                        //正确率：85%以上A ，正确率50%~85% 的B，其他C吧
+                        BigDecimal rate = new BigDecimal(lookAnswerResult.getAccuracy());
+                        if (rate.compareTo(a) > 0) {
+                            ivLevel.setImageResource(R.mipmap.a);
+                        } else if (rate.compareTo(b) >= 0 && rate.compareTo(a) <= 0) {
+                            ivLevel.setImageResource(R.mipmap.b);
+                        } else {
+                            ivLevel.setImageResource(R.mipmap.c);
+                        }
+                    } else {
+                        cardView.setVisibility(View.GONE);
+                    }
+
+
                     final List<LookAnswerResultBean.QuestionsBean> questionsBeans = lookAnswerResult.getQuestions();
                     if (!EncodeAndStringTool.isListEmpty(questionsBeans)) {
                         AnswerHistoryAdapter historyAdapter = new AnswerHistoryAdapter(AnswerHistoryActivity.this, questionsBeans);
@@ -224,12 +302,10 @@ public class AnswerHistoryActivity extends BaseActivity implements CommonPopupWi
                         });
                         LinearLayoutManager layoutManager = new LinearLayoutManager(AnswerHistoryActivity.this);
                         rvErrorAnswer.setLayoutManager(layoutManager);
+                        //解决数据加载不完的问题
+                        rvErrorAnswer.setHasFixedSize(true);
+                        rvErrorAnswer.setNestedScrollingEnabled(false);
                         rvErrorAnswer.setAdapter(historyAdapter);
-                        //进入动画
-                        LayoutAnimationController controller = new LayoutAnimationController(MyLayoutAnimationHelper.getAnimationSetFromTop());
-                        controller.setDelay(0.1f);
-                        rvErrorAnswer.setLayoutAnimation(controller);
-                        rvErrorAnswer.scheduleLayoutAnimation();
                     }
 
                 } else {

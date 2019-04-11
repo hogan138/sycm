@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,6 +19,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ishumei.smantifraud.SmAntiFraud;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.WebAnswerHomeBean;
 import com.shuyun.qapp.net.AppConst;
@@ -44,8 +48,11 @@ public class WebFragment extends Fragment {
     ImageView ivRightIcon;
     @BindView(R.id.rl_main)
     RelativeLayout rlMain;
+    @BindView(R.id.refreshLayout)
+    SmartRefreshLayout refreshLayout;
 
     private Context mContext;
+    private Handler mHandler = new Handler();
 
     WebAnswerHomeBean answerHomeBean = new WebAnswerHomeBean();
 
@@ -61,6 +68,8 @@ public class WebFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mContext = getContext();
+        //获取参数
+        final Bundle bundle = getArguments();
 
         answerHomeBean.setToken(AppConst.TOKEN);
         answerHomeBean.setRandom(AppConst.RANDOM);
@@ -79,9 +88,7 @@ public class WebFragment extends Fragment {
         webView.setWebChromeClient(new WebChromeClient());//解决答题时无法弹出dialog问题.
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webView.addJavascriptInterface(new JsInterationUtil(answerHomeBean, (Activity) mContext, webView, rlMain, tvCommonTitle, ivRightIcon, tvRight), "android");
-        //获取参数
-        Bundle bundle = getArguments();
-        webView.loadUrl(bundle.getString("h5_url"));
+
         //覆盖WebView默认使用第三方或系统默认浏览器打开网页的行为，使网页用WebView打开
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -99,6 +106,25 @@ public class WebFragment extends Fragment {
                 return true;
             }
         });
+
+
+        //下拉刷新
+        refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+            }
+
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                refreshlayout.finishRefresh();
+                if (bundle != null)
+                    webView.loadUrl(bundle.getString("h5_url"));
+            }
+        });
+        //禁止上拉加载
+        refreshLayout.setEnableLoadmore(false);
+        if (bundle != null)
+            webView.loadUrl(bundle.getString("h5_url"));
     }
 
     public static WebFragment newInstance(String h5_url) {

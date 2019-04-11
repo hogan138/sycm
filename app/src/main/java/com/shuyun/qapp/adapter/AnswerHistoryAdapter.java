@@ -1,19 +1,22 @@
 package com.shuyun.qapp.adapter;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ConvertUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.LookAnswerResultBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.utils.Base64Utils;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
+import com.shuyun.qapp.utils.GlideUtils;
+import com.shuyun.qapp.utils.NumberFormatUtil;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.RSAUtils;
 
@@ -52,6 +55,21 @@ public class AnswerHistoryAdapter extends RecyclerView.Adapter<AnswerHistoryAdap
     public void onBindViewHolder(final ViewHolder holder, int position) {
         if (!EncodeAndStringTool.isListEmpty(questionsBeans) && !EncodeAndStringTool.isObjectEmpty(questionsBeans.get(position))) {
             LookAnswerResultBean.QuestionsBean questionsBean = questionsBeans.get(position);
+
+            //题目index
+            String index = NumberFormatUtil.formatInteger(position + 1);
+            holder.tvIndex.setText("- 第" + index + "题 -");
+
+
+            //图片题目主图
+            Long type = questionsBean.getType();
+            if (type == 2) {
+                holder.ivMainImg.setVisibility(View.VISIBLE);
+                GlideUtils.LoadImage1(context, questionsBean.getPicture(), holder.ivMainImg);
+            } else {
+                holder.ivMainImg.setVisibility(View.GONE);
+            }
+
             if (!EncodeAndStringTool.isListEmpty(questionsBean.getOptions())) {
                 List<LookAnswerResultBean.QuestionsBean.OptionsBean> optionsBeans = questionsBean.getOptions();
 
@@ -74,18 +92,12 @@ public class AnswerHistoryAdapter extends RecyclerView.Adapter<AnswerHistoryAdap
                     e.printStackTrace();
                 }
 
-                if (questionsBean.getResult() == 1) {
-                    holder.ivIsCorrect.setImageResource(R.mipmap.duihuao);
-                } else {  //回答错误
-                    holder.ivIsCorrect.setImageResource(R.mipmap.cuohao);
-                }
-
-                //超时未答
-                if (questionsBean.getResult() == -1
-                        || EncodeAndStringTool.isStringEmpty(questionsBean.getAnswer())
-                        || "0".equals(questionsBean.getAnswer())) {
-                    holder.tvYourAnswer.setText("您的答案:超时未答或中途异常");
-                    holder.tvYourAnswer.setTextColor(ContextCompat.getColor(context, R.color.color_20));
+                if (questionsBean.getResult() == 1) { //回答正确
+                    holder.ivResultLogo.setImageResource(R.mipmap.anwser_logo_right);
+                } else if (questionsBean.getResult() == 0) {  //回答错误
+                    holder.ivResultLogo.setImageResource(R.mipmap.anwser_logo_error);
+                } else { //超时未答
+                    holder.ivResultLogo.setImageResource(R.mipmap.anwser_logo_no);
                 }
 
                 for (int i = 0; i < optionsBeans.size(); i++) {
@@ -102,20 +114,22 @@ public class AnswerHistoryAdapter extends RecyclerView.Adapter<AnswerHistoryAdap
 
                     //显示正确答案
                     if (optionsBean.getId().equals(oks)) {
-                        holder.tvRightAnswer1.setText("正确答案:" + title);
+
+                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        //正确答案图片
+                        if (type == 2) {
+                            holder.ivRightImg.setVisibility(View.VISIBLE);
+                            GlideUtils.LoadImage1(context, optionsBean.getPicture(), holder.ivRightImg);
+                            lp.setMargins(ConvertUtils.dp2px(22), 0, 0, ConvertUtils.dp2px(3));
+                            holder.tvRightAnswer.setLayoutParams(lp);
+                        } else {
+                            holder.tvRightAnswer.setText("正确答案: " + title);
+                            holder.ivRightImg.setVisibility(View.GONE);
+                            lp.setMargins(ConvertUtils.dp2px(22), 0, 0, ConvertUtils.dp2px(22));
+                            holder.tvRightAnswer.setLayoutParams(lp);
+                        }
                     }
 
-                    //显示用户答案
-                    if (optionsBean.getId().equals(questionsBean.getAnswer())) {
-                        holder.tvYourAnswer.setText("您的答案:" + title);
-                    }
-
-                    //用户答案颜色
-                    if (oks.equals(questionsBean.getAnswer())) {
-                        holder.tvYourAnswer.setTextColor(ContextCompat.getColor(context, R.color.color_4));
-                    } else {
-                        holder.tvYourAnswer.setTextColor(ContextCompat.getColor(context, R.color.color_20));
-                    }
 
                 }
             }
@@ -147,12 +161,16 @@ public class AnswerHistoryAdapter extends RecyclerView.Adapter<AnswerHistoryAdap
         TextView tvQuestion2;
         @BindView(R.id.tv_feedback)
         TextView tvFeedback;
-        @BindView(R.id.tv_right_answer1)
-        TextView tvRightAnswer1;
-        @BindView(R.id.tv_your_answer)
-        TextView tvYourAnswer;
-        @BindView(R.id.iv_is_correct)
-        ImageView ivIsCorrect;
+        @BindView(R.id.tv_right_answer)
+        TextView tvRightAnswer;
+        @BindView(R.id.iv_result_logo)
+        ImageView ivResultLogo;
+        @BindView(R.id.iv_main_img)
+        ImageView ivMainImg;
+        @BindView(R.id.iv_right_img)
+        ImageView ivRightImg;
+        @BindView(R.id.tv_index)
+        TextView tvIndex;
 
         public ViewHolder(View itemView) {
             super(itemView);

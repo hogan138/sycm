@@ -121,12 +121,12 @@ public class HistoryFragment extends BaseFragment implements View.OnClickListene
                 Intent intent = new Intent(mContext, AnswerHistoryActivity.class);
                 intent.putExtra("answer_id", id);
                 intent.putExtra("title", title);
+                intent.putExtra("from", "answer");
                 startActivity(intent);
             }
         } else if (v.getId() == R.id.tvShare) {
             Bundle bundle = new Bundle();
             bundle.putSerializable("share", recordBean);
-
             Intent intent = new Intent(mContext, ShareAnswerRecordActivity.class);
             intent.putExtras(bundle);
             startActivity(intent);

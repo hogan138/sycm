@@ -9,491 +9,503 @@
 
     <include layout="@layout/common_left_title" />
 
-
-    <android.support.v7.widget.CardView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/text_15"
-        android:layout_marginTop="@dimen/text_20"
-        android:layout_marginRight="@dimen/text_15"
-        android:foreground="?attr/selectableItemBackground"
-        app:cardBackgroundColor="#FBFDFF"
-        app:cardCornerRadius="6dp"
-        app:cardElevation="@dimen/text_1"
-        app:cardPreventCornerOverlap="false"
-        app:cardUseCompatPadding="true"
-        app:contentPadding="-2dp">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/text_13"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/text_15"
-                    android:drawableLeft="@mipmap/score_logo"
-                    android:drawablePadding="@dimen/text_5"
-                    android:text="我的积分："
-                    android:textColor="@color/color_66"
-                    android:textSize="@dimen/text_15" />
-
-                <TextView
-                    android:id="@+id/tv_my_score"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/color_4"
-                    android:textSize="@dimen/text_15"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/iv_signIn_logo"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/text_15" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_marginTop="18dp"
-                android:background="@color/color_4"
-                android:orientation="horizontal">
+                android:layout_marginLeft="@dimen/text_15"
+                android:layout_marginTop="@dimen/text_20"
+                android:layout_marginRight="@dimen/text_15"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="#FBFDFF"
+                app:cardCornerRadius="6dp"
+                app:cardElevation="@dimen/text_1"
+                app:cardPreventCornerOverlap="false"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="-2dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/text_5"
-                    android:layout_marginRight="@dimen/text_5"
-                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="已连续签到"
-                        android:textColor="@color/color_e2"
-                        android:textSize="@dimen/text_10" />
-
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/text_13"
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/tv_signIn_day"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
-                            android:textColor="@color/color_e2"
-                            android:textSize="@dimen/text_20" />
+                            android:layout_marginLeft="@dimen/text_15"
+                            android:drawableLeft="@mipmap/score_logo"
+                            android:drawablePadding="@dimen/text_5"
+                            android:text="我的积分："
+                            android:textColor="@color/color_66"
+                            android:textSize="@dimen/text_15" />
 
                         <TextView
+                            android:id="@+id/tv_my_score"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="天"
-                            android:textColor="@color/color_e2"
-                            android:textSize="@dimen/text_12" />
+                            android:textColor="@color/color_4"
+                            android:textSize="@dimen/text_15"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_signIn_logo"
+                        android:layout_width="65dp"
+                        android:layout_height="65dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/text_15" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:layout_marginTop="18dp"
+                        android:background="@color/color_4"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/text_5"
+                            android:layout_marginRight="@dimen/text_5"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="已连续签到"
+                                android:textColor="@color/color_e2"
+                                android:textSize="@dimen/text_10" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_signIn_day"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0"
+                                    android:textColor="@color/color_e2"
+                                    android:textSize="@dimen/text_20" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="天"
+                                    android:textColor="@color/color_e2"
+                                    android:textSize="@dimen/text_12" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="0.5dp"
+                            android:layout_height="53dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@color/color_e2" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="@dimen/text_25"
+                                android:layout_marginRight="@dimen/text_25"
+                                android:orientation="horizontal">
+
+                                <View
+                                    android:id="@+id/line_one"
+                                    android:layout_width="0dp"
+                                    android:layout_height="2dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_weight="1"
+                                    android:background="@color/color_07" />
+
+                                <View
+                                    android:id="@+id/line_two"
+                                    android:layout_width="0dp"
+                                    android:layout_height="2dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_weight="1"
+                                    android:background="@color/color_07" />
+
+                                <View
+                                    android:id="@+id/line_three"
+                                    android:layout_width="0dp"
+                                    android:layout_height="2dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_weight="1"
+                                    android:background="@color/color_07" />
+
+                                <View
+                                    android:id="@+id/line_four"
+                                    android:layout_width="0dp"
+                                    android:layout_height="2dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_weight="1"
+                                    android:background="@color/color_07" />
+
+                                <View
+                                    android:id="@+id/line_five"
+                                    android:layout_width="0dp"
+                                    android:layout_height="2dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_weight="1"
+                                    android:background="@color/color_07" />
+
+                                <View
+                                    android:id="@+id/line_six"
+                                    android:layout_width="0dp"
+                                    android:layout_height="2dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_weight="1"
+                                    android:background="@color/color_07" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ll_add_date"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="@dimen/text_5"
+                                android:layout_marginRight="@dimen/text_5"
+                                android:orientation="horizontal">
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:gravity="center_vertical"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/tv_sign_date_one"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_horizontal"
+                                        android:text="2.12"
+                                        android:textColor="@color/color_e2"
+                                        android:textSize="9sp" />
+
+                                    <ImageView
+                                        android:id="@+id/iv_sign_select_one"
+                                        android:layout_width="@dimen/text_17"
+                                        android:layout_height="@dimen/text_17"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="@dimen/text_2"
+                                        android:layout_marginBottom="@dimen/text_2"
+                                        android:background="@mipmap/sign_select_no" />
+
+                                    <TextView
+                                        android:id="@+id/tv_sign_content_one"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal"
+                                        android:singleLine="true"
+                                        android:text="5积分"
+                                        android:textColor="@color/color_e2"
+                                        android:textSize="9sp" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:gravity="center_vertical"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/tv_sign_date_two"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_horizontal"
+                                        android:text="2.12"
+                                        android:textColor="@color/color_e2"
+                                        android:textSize="9sp" />
+
+                                    <ImageView
+                                        android:id="@+id/iv_sign_select_two"
+                                        android:layout_width="@dimen/text_17"
+                                        android:layout_height="@dimen/text_17"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="@dimen/text_2"
+                                        android:layout_marginBottom="@dimen/text_2"
+                                        android:background="@mipmap/sign_select_no" />
+
+                                    <TextView
+                                        android:id="@+id/tv_sign_content_two"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal"
+                                        android:singleLine="true"
+                                        android:text="5积分"
+                                        android:textColor="@color/color_e2"
+                                        android:textSize="9sp" />
+
+                                </LinearLayout>
+
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:gravity="center_vertical"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/tv_sign_date_three"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_horizontal"
+                                        android:text="2.12"
+                                        android:textColor="@color/color_e2"
+                                        android:textSize="9sp" />
+
+                                    <ImageView
+                                        android:id="@+id/iv_sign_select_three"
+                                        android:layout_width="@dimen/text_17"
+                                        android:layout_height="@dimen/text_17"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="@dimen/text_2"
+                                        android:layout_marginBottom="@dimen/text_2"
+                                        android:background="@mipmap/sign_select_no" />
+
+                                    <TextView
+                                        android:id="@+id/tv_sign_content_three"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal"
+                                        android:singleLine="true"
+                                        android:text="5积分"
+                                        android:textColor="@color/color_e2"
+                                        android:textSize="9sp" />
+
+                                </LinearLayout>
+
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:gravity="center_vertical"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/tv_sign_date_four"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_horizontal"
+                                        android:text="2.12"
+                                        android:textColor="@color/color_e2"
+                                        android:textSize="9sp" />
+
+                                    <ImageView
+                                        android:id="@+id/iv_sign_select_four"
+                                        android:layout_width="@dimen/text_17"
+                                        android:layout_height="@dimen/text_17"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="@dimen/text_2"
+                                        android:layout_marginBottom="@dimen/text_2"
+                                        android:background="@mipmap/sign_select_no" />
+
+                                    <TextView
+                                        android:id="@+id/tv_sign_content_four"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal"
+                                        android:singleLine="true"
+                                        android:text="5积分"
+                                        android:textColor="@color/color_e2"
+                                        android:textSize="9sp" />
+
+                                </LinearLayout>
+
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:gravity="center_vertical"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/tv_sign_date_five"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_horizontal"
+                                        android:text="2.12"
+                                        android:textColor="@color/color_e2"
+                                        android:textSize="9sp" />
+
+                                    <ImageView
+                                        android:id="@+id/iv_sign_select_five"
+                                        android:layout_width="@dimen/text_17"
+                                        android:layout_height="@dimen/text_17"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="@dimen/text_2"
+                                        android:layout_marginBottom="@dimen/text_2"
+                                        android:background="@mipmap/sign_select_no" />
+
+                                    <TextView
+                                        android:id="@+id/tv_sign_content_five"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal"
+                                        android:singleLine="true"
+                                        android:text="5积分"
+                                        android:textColor="@color/color_e2"
+                                        android:textSize="9sp" />
+
+                                </LinearLayout>
+
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:gravity="center_vertical"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/tv_sign_date_six"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_horizontal"
+                                        android:text="2.12"
+                                        android:textColor="@color/color_e2"
+                                        android:textSize="9sp" />
+
+                                    <ImageView
+                                        android:id="@+id/iv_sign_select_six"
+                                        android:layout_width="@dimen/text_17"
+                                        android:layout_height="@dimen/text_17"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="@dimen/text_2"
+                                        android:layout_marginBottom="@dimen/text_2"
+                                        android:background="@mipmap/sign_select_no" />
+
+                                    <TextView
+                                        android:id="@+id/tv_sign_content_six"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal"
+                                        android:singleLine="true"
+                                        android:text="5积分"
+                                        android:textColor="@color/color_e2"
+                                        android:textSize="9sp" />
+
+                                </LinearLayout>
+
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:gravity="center_vertical"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/tv_sign_date_seven"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_horizontal"
+                                        android:text="2.12"
+                                        android:textColor="@color/color_e2"
+                                        android:textSize="9sp" />
+
+                                    <ImageView
+                                        android:id="@+id/iv_sign_select_seven"
+                                        android:layout_width="@dimen/text_17"
+                                        android:layout_height="@dimen/text_17"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="@dimen/text_2"
+                                        android:layout_marginBottom="@dimen/text_2"
+                                        android:background="@mipmap/sign_select_no" />
+
+                                    <TextView
+                                        android:id="@+id/tv_sign_content_seven"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal"
+                                        android:singleLine="true"
+                                        android:text="5积分"
+                                        android:textColor="@color/color_e2"
+                                        android:textSize="9sp" />
+
+                                </LinearLayout>
+                            </LinearLayout>
+                        </RelativeLayout>
                     </LinearLayout>
                 </LinearLayout>
+            </android.support.v7.widget.CardView>
 
-                <View
-                    android:layout_width="0.5dp"
-                    android:layout_height="53dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@color/color_e2" />
 
-                <RelativeLayout
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_15"
+                android:layout_marginTop="@dimen/text_14"
+                android:text="做任务赚积分"
+                android:textColor="@color/color_1"
+                android:textSize="@dimen/text_17"
+                android:textStyle="bold" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_15"
+                android:layout_marginTop="@dimen/text_12"
+                android:layout_marginRight="@dimen/text_15"
+                android:layout_marginBottom="@dimen/text_20"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="#ffffff"
+                app:cardCornerRadius="6dp"
+                app:cardElevation="@dimen/text_1"
+                app:cardPreventCornerOverlap="false"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="-2dp">
+
+                <LinearLayout
+                    android:id="@+id/ll_task"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <LinearLayout
+                    <android.support.design.widget.TabLayout
+                        android:id="@+id/tab_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/text_25"
-                        android:layout_marginRight="@dimen/text_25"
-                        android:orientation="horizontal">
+                        android:layout_height="38dp"
+                        app:tabIndicatorColor="@color/color_4"
+                        app:tabSelectedTextColor="@color/color_4"
+                        app:tabTextColor="@color/color_9b" />
 
-                        <View
-                            android:id="@+id/line_one"
-                            android:layout_width="0dp"
-                            android:layout_height="2dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="1"
-                            android:background="@color/color_07" />
+                    <include layout="@layout/common_line_4" />
 
-                        <View
-                            android:id="@+id/line_two"
-                            android:layout_width="0dp"
-                            android:layout_height="2dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="1"
-                            android:background="@color/color_07" />
-
-                        <View
-                            android:id="@+id/line_three"
-                            android:layout_width="0dp"
-                            android:layout_height="2dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="1"
-                            android:background="@color/color_07" />
-
-                        <View
-                            android:id="@+id/line_four"
-                            android:layout_width="0dp"
-                            android:layout_height="2dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="1"
-                            android:background="@color/color_07" />
-
-                        <View
-                            android:id="@+id/line_five"
-                            android:layout_width="0dp"
-                            android:layout_height="2dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="1"
-                            android:background="@color/color_07" />
-
-                        <View
-                            android:id="@+id/line_six"
-                            android:layout_width="0dp"
-                            android:layout_height="2dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="1"
-                            android:background="@color/color_07" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/ll_add_date"
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/vp"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/text_5"
-                        android:layout_marginRight="@dimen/text_5"
-                        android:orientation="horizontal">
+                        android:layout_height="match_parent" />
 
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/tv_sign_date_one"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:text="2.12"
-                                android:textColor="@color/color_e2"
-                                android:textSize="9sp" />
-
-                            <ImageView
-                                android:id="@+id/iv_sign_select_one"
-                                android:layout_width="@dimen/text_17"
-                                android:layout_height="@dimen/text_17"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="@dimen/text_2"
-                                android:layout_marginBottom="@dimen/text_2"
-                                android:background="@mipmap/sign_select_no" />
-
-                            <TextView
-                                android:id="@+id/tv_sign_content_one"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:singleLine="true"
-                                android:text="5积分"
-                                android:textColor="@color/color_e2"
-                                android:textSize="9sp" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/tv_sign_date_two"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:text="2.12"
-                                android:textColor="@color/color_e2"
-                                android:textSize="9sp" />
-
-                            <ImageView
-                                android:id="@+id/iv_sign_select_two"
-                                android:layout_width="@dimen/text_17"
-                                android:layout_height="@dimen/text_17"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="@dimen/text_2"
-                                android:layout_marginBottom="@dimen/text_2"
-                                android:background="@mipmap/sign_select_no" />
-
-                            <TextView
-                                android:id="@+id/tv_sign_content_two"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:singleLine="true"
-                                android:text="5积分"
-                                android:textColor="@color/color_e2"
-                                android:textSize="9sp" />
-
-                        </LinearLayout>
-
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/tv_sign_date_three"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:text="2.12"
-                                android:textColor="@color/color_e2"
-                                android:textSize="9sp" />
-
-                            <ImageView
-                                android:id="@+id/iv_sign_select_three"
-                                android:layout_width="@dimen/text_17"
-                                android:layout_height="@dimen/text_17"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="@dimen/text_2"
-                                android:layout_marginBottom="@dimen/text_2"
-                                android:background="@mipmap/sign_select_no" />
-
-                            <TextView
-                                android:id="@+id/tv_sign_content_three"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:singleLine="true"
-                                android:text="5积分"
-                                android:textColor="@color/color_e2"
-                                android:textSize="9sp" />
-
-                        </LinearLayout>
-
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/tv_sign_date_four"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:text="2.12"
-                                android:textColor="@color/color_e2"
-                                android:textSize="9sp" />
-
-                            <ImageView
-                                android:id="@+id/iv_sign_select_four"
-                                android:layout_width="@dimen/text_17"
-                                android:layout_height="@dimen/text_17"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="@dimen/text_2"
-                                android:layout_marginBottom="@dimen/text_2"
-                                android:background="@mipmap/sign_select_no" />
-
-                            <TextView
-                                android:id="@+id/tv_sign_content_four"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:singleLine="true"
-                                android:text="5积分"
-                                android:textColor="@color/color_e2"
-                                android:textSize="9sp" />
-
-                        </LinearLayout>
-
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/tv_sign_date_five"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:text="2.12"
-                                android:textColor="@color/color_e2"
-                                android:textSize="9sp" />
-
-                            <ImageView
-                                android:id="@+id/iv_sign_select_five"
-                                android:layout_width="@dimen/text_17"
-                                android:layout_height="@dimen/text_17"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="@dimen/text_2"
-                                android:layout_marginBottom="@dimen/text_2"
-                                android:background="@mipmap/sign_select_no" />
-
-                            <TextView
-                                android:id="@+id/tv_sign_content_five"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:singleLine="true"
-                                android:text="5积分"
-                                android:textColor="@color/color_e2"
-                                android:textSize="9sp" />
-
-                        </LinearLayout>
-
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/tv_sign_date_six"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:text="2.12"
-                                android:textColor="@color/color_e2"
-                                android:textSize="9sp" />
-
-                            <ImageView
-                                android:id="@+id/iv_sign_select_six"
-                                android:layout_width="@dimen/text_17"
-                                android:layout_height="@dimen/text_17"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="@dimen/text_2"
-                                android:layout_marginBottom="@dimen/text_2"
-                                android:background="@mipmap/sign_select_no" />
-
-                            <TextView
-                                android:id="@+id/tv_sign_content_six"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:singleLine="true"
-                                android:text="5积分"
-                                android:textColor="@color/color_e2"
-                                android:textSize="9sp" />
-
-                        </LinearLayout>
-
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/tv_sign_date_seven"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:text="2.12"
-                                android:textColor="@color/color_e2"
-                                android:textSize="9sp" />
-
-                            <ImageView
-                                android:id="@+id/iv_sign_select_seven"
-                                android:layout_width="@dimen/text_17"
-                                android:layout_height="@dimen/text_17"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="@dimen/text_2"
-                                android:layout_marginBottom="@dimen/text_2"
-                                android:background="@mipmap/sign_select_no" />
-
-                            <TextView
-                                android:id="@+id/tv_sign_content_seven"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:singleLine="true"
-                                android:text="5积分"
-                                android:textColor="@color/color_e2"
-                                android:textSize="9sp" />
-
-                        </LinearLayout>
-                    </LinearLayout>
-                </RelativeLayout>
-            </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
         </LinearLayout>
-    </android.support.v7.widget.CardView>
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/text_15"
-        android:layout_marginTop="@dimen/text_14"
-        android:text="做任务赚积分"
-        android:textColor="@color/color_1"
-        android:textSize="@dimen/text_17"
-        android:textStyle="bold" />
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/text_15"
-        android:layout_marginTop="@dimen/text_12"
-        android:layout_marginRight="@dimen/text_15"
-        android:layout_marginBottom="@dimen/text_20"
-        android:foreground="?attr/selectableItemBackground"
-        app:cardBackgroundColor="#ffffff"
-        app:cardCornerRadius="6dp"
-        app:cardElevation="@dimen/text_1"
-        app:cardPreventCornerOverlap="false"
-        app:cardUseCompatPadding="true"
-        app:contentPadding="-2dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <android.support.design.widget.TabLayout
-                android:id="@+id/tab_layout"
-                android:layout_width="match_parent"
-                android:layout_height="38dp"
-                app:tabIndicatorColor="@color/color_4"
-                app:tabSelectedTextColor="@color/color_4"
-                app:tabTextColor="@color/color_9b" />
-
-            <include layout="@layout/common_line_4" />
-
-            <android.support.v4.view.ViewPager
-                android:id="@+id/vp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
+    </ScrollView>
 </LinearLayout>

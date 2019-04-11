@@ -5,20 +5,25 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -39,6 +44,8 @@ import com.shuyun.qapp.alipay.AlipayTradeManager;
 import com.shuyun.qapp.bean.AuthHeader;
 import com.shuyun.qapp.bean.BoxBean;
 import com.shuyun.qapp.bean.H5JumpBean;
+import com.shuyun.qapp.bean.H5JumpElseBean;
+import com.shuyun.qapp.bean.H5StatuBarBean;
 import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.bean.ReturnDialogBean;
 import com.shuyun.qapp.bean.SharePublicBean;
@@ -130,6 +137,17 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
      */
     private Long groupId;
 
+    /**
+     * 右边icon
+     */
+    ImageView ivLeftIcon;
+
+    /**
+     * 标题栏
+     */
+    View rlTitle;
+
+
     public JsInterationUtil() {
     }
 
@@ -186,7 +204,7 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
     }
 
     //h5页面
-    public JsInterationUtil(String id, Activity activity, TextView tvCommonTitle, ImageView ivRightIcon, View view, TextView tvRight, WebView webView, WebAnswerHomeBean answerHomeBean) {
+    public JsInterationUtil(String id, Activity activity, TextView tvCommonTitle, ImageView ivRightIcon, View view, TextView tvRight, WebView webView, WebAnswerHomeBean answerHomeBean, ImageView ivLeftIcon, RelativeLayout rltitle) {
         this.id = id;
         this.activity = activity;
         this.tvCommonTitle = tvCommonTitle;
@@ -195,6 +213,8 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
         this.tvRight = tvRight;
         this.webView = webView;
         this.answerHomeBean = answerHomeBean;
+        this.ivLeftIcon = ivLeftIcon;
+        this.rlTitle = rltitle;
     }
 
     @JavascriptInterface
@@ -300,6 +320,7 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
                 Intent intent = new Intent(activity, AnswerHistoryActivity.class);
                 intent.putExtra("answer_id", id);
                 intent.putExtra("title", wTitle);
+                intent.putExtra("from", "h5");
                 activity.startActivity(intent);
             }
         });
@@ -598,10 +619,61 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
                         activity,
                         h5JumpBean.getContent(),
                         h5JumpBean.getH5Url(),
-                        Long.valueOf(0));
+                        0L);
             }
         });
         Log.e("data", data);
+    }
+
+
+    /**
+     * 改变标题栏颜色
+     */
+    @JavascriptInterface
+    public void setBarColor(String data) {
+        H5StatuBarBean h5StatuBarBean = new Gson().fromJson(data, H5StatuBarBean.class);
+        final String bgColor = h5StatuBarBean.getBgColor();
+        final String titleColor = h5StatuBarBean.getTitleColor();
+        final int backType = h5StatuBarBean.getBackType();
+
+        activity.runOnUiThread(new Runnable() {
+            @SuppressLint("ResourceType")
+            @Override
+            public void run() {
+                tvCommonTitle.setTextColor(Color.parseColor(titleColor));
+                if (backType == -1) {
+                    ivLeftIcon.setVisibility(View.GONE);
+                } else if (backType == 0) {
+                    ivLeftIcon.setImageResource(R.mipmap.backb);
+                } else if (backType == 1) {
+                    ivLeftIcon.setImageResource(R.mipmap.back_white);
+                }
+                rlTitle.setBackgroundColor(Color.parseColor(bgColor));
+
+                //改变状态栏颜色
+                StatusBarUtil.setStatusBarColor(activity, Color.parseColor(bgColor), false);
+            }
+        });
+    }
+
+    /**
+     * 跳转外部app
+     */
+    @JavascriptInterface
+    public void openExternalApp(String param) {
+
+        H5JumpElseBean h5JumpElseBean = new Gson().fromJson(param, H5JumpElseBean.class);
+        String urlScheme = h5JumpElseBean.getUrlScheme();
+        String appName = h5JumpElseBean.getAppName();
+        try {
+            Intent intent = new Intent();
+            intent.setData(Uri.parse(urlScheme));
+            intent.setAction(Intent.ACTION_VIEW);
+            activity.startActivity(intent);
+        } catch (Exception e) {
+            ToastUtil.showToast(activity, "您尚未安装" + appName);
+        }
+
     }
 
     /**
@@ -917,6 +989,7 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
     public static void WebViewCanBack() {
         if (show) {
             exitDialog(returnDialogBean);
+            show = false;
         } else {
             webView.goBack();
         }
@@ -926,6 +999,7 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
     public static void WebViewNoBack() {
         if (show) {
             exitDialog(returnDialogBean);
+            show = false;
         } else {
             activity.finish();
         }

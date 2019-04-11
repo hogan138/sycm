@@ -5,11 +5,10 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
-import android.view.Window;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
@@ -30,13 +29,12 @@ import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.JsInterationUtil;
+import com.shuyun.qapp.utils.StatusBarUtil;
 import com.shuyun.qapp.view.RippleLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.blankj.utilcode.util.ConvertUtils.dp2px;
 
 /**
  * h5页面（广告、首页邀请、首页轮播图、首页弹框、极光推送消息、消息列表、票务、招商银行）
@@ -56,6 +54,10 @@ public class WebH5Activity extends BaseActivity {
     TextView tvRight;
     @BindView(R.id.iv_right_icon)
     ImageView ivRightIcon; //右边分享按钮
+    @BindView(R.id.iv_left_back)
+    ImageView ivLeftBack;
+    @BindView(R.id.rl_title)
+    RelativeLayout rlTitle;
 
     private String url;
     private String id;
@@ -88,7 +90,7 @@ public class WebH5Activity extends BaseActivity {
         settings.setSupportZoom(true);//支持缩放
         settings.setJavaScriptEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        wvBanner.addJavascriptInterface(new JsInterationUtil(id, (Activity) context, tvCommonTitle, ivRightIcon, rlMain, tvRight, wvBanner, answerHomeBean), "android");
+        wvBanner.addJavascriptInterface(new JsInterationUtil(id, (Activity) context, tvCommonTitle, ivRightIcon, rlMain, tvRight, wvBanner, answerHomeBean, ivLeftBack, rlTitle), "android");
         // 允许混合内容 解决部分手机 加载不出https请求里面的http下的图片
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
@@ -114,14 +116,13 @@ public class WebH5Activity extends BaseActivity {
 
         wvBanner.loadUrl(url);
 
-        //从发现页进入展开动画
-        if (!EncodeAndStringTool.isStringEmpty(splash)) {
-            if (splash.equals("found") || splash.equals("home")) {
-                doRippleAnim(0f, 1);
-            }
-
-        }
-
+//        //从发现页进入展开动画
+//        if (!EncodeAndStringTool.isStringEmpty(splash)) {
+//            if (splash.equals("found") || splash.equals("home")) {
+//                doRippleAnim(0f, 1);
+//            }
+//
+//        }
 
     }
 
@@ -165,14 +166,14 @@ public class WebH5Activity extends BaseActivity {
                             Intent intent = new Intent(WebH5Activity.this, HomePageActivity.class);
                             startActivity(intent);
                         } else if (splash.equals("found") || splash.equals("home")) {
-                            //从发现页退出动画
-                            doRippleAnim(1, 0f);
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    finish();
-                                }
-                            }, 800);
+//                            //从发现页退出动画
+//                            doRippleAnim(1, 0f);
+//                            new Handler().postDelayed(new Runnable() {
+//                                @Override
+//                                public void run() {
+                            finish();
+//                                }
+//                            }, 800);
                         }
                     } else {
                         JsInterationUtil.WebViewNoBack();
@@ -196,13 +197,13 @@ public class WebH5Activity extends BaseActivity {
                     startActivity(intent);
                 } else if (splash.equals("found") || splash.equals("home")) {
                     //从发现页退出动画
-                    doRippleAnim(1, 0f);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            finish();
-                        }
-                    }, 800);
+//                    doRippleAnim(1, 0f);
+//                    new Handler().postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+                    finish();
+//                        }
+//                    }, 800);
                 }
             } else {
                 JsInterationUtil.WebViewNoBack();

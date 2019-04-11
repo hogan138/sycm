@@ -72,6 +72,12 @@ public class FoundTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 ((MyViewHolder) holder).tvEnter.setEnabled(true);
             }
 
+            if (position == tasksBeans.size() - 1) {
+                ((MyViewHolder) holder).viewLine.setVisibility(View.GONE);
+            } else {
+                ((MyViewHolder) holder).viewLine.setVisibility(View.VISIBLE);
+            }
+
             ((MyViewHolder) holder).tvEnter.setOnClickListener(new OnMultiClickListener() {
                 @Override
                 public void onMultiClick(View v) {
@@ -102,6 +108,8 @@ public class FoundTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         ImageView ivLogo;
         @BindView(R.id.tv_content)
         TextView tvContent;
+        @BindView(R.id.view_line)
+        View viewLine;
 
         public MyViewHolder(View itemView) {
             super(itemView);

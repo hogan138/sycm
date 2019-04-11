@@ -8,11 +8,13 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ConvertUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.MyPagerAdapter;
 import com.shuyun.qapp.base.BaseActivity;
@@ -117,8 +119,8 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     TextView tvSignContentSeven;
     @BindView(R.id.ll_add_date)
     LinearLayout llAddDate;
-    @BindView(R.id.ll_main)
-    LinearLayout llMain;
+    @BindView(R.id.ll_task)
+    LinearLayout llTask;
 
     private List<Fragment> mFragmentList = new ArrayList<>();
     private List<String> mTitleList = new ArrayList<>();
@@ -281,6 +283,28 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             TaskBeans.DatasBean bean = taskBeans.getDatas().get(i);
             fragment.refreshTaskUI(bean.getTasks());
         }
+
+        setHeight(taskBeans);
+    }
+
+    /**
+     * 设置tab的绝对高度
+     */
+    private void setHeight(TaskBeans taskBeans) {
+        //获取列表中最大记录数
+        int max = 0;
+        List<TaskBeans.DatasBean> list = taskBeans.getDatas();
+        for (int i = 0, j = list.size(); i < j; i++) {
+            int size = list.get(i).getTasks().size();
+            if(size > max)
+                max = size;
+        }
+        //计算高度
+        //最大列表数 * 78dp + 38dp
+        int height = max * ConvertUtils.dp2px(78) + ConvertUtils.dp2px(38);
+        ViewGroup.LayoutParams params = llTask.getLayoutParams();
+        params.height = height;
+        llTask.setLayoutParams(params);
     }
 
     //显示签到信息

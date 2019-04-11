@@ -83,7 +83,6 @@ public class WebDetailFragment extends Fragment {
         webViewPrize.setWebChromeClient(new WebChromeClient());//解决答题时无法弹出dialog问题.
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webViewPrize.addJavascriptInterface(new JsInterationUtil(answerHomeBean, (Activity) context, getActivity().findViewById(R.id.ll_look_result), getActivity().findViewById(R.id.ll_exchange)), "android");
-        webViewPrize.loadUrl(SaveUserInfo.getInstance(getActivity()).getUserInfo("h5_url_prize"));
         webViewPrize.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int progress) {
                 //当进度走到100的时候做自己的操作，我这边是弹出dialog
@@ -93,8 +92,7 @@ public class WebDetailFragment extends Fragment {
                 }
             }
         });
-
-
+        webViewPrize.loadUrl(SaveUserInfo.getInstance(getActivity()).getUserInfo("h5_url_prize"));
     }
 
 }

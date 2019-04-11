@@ -65,10 +65,16 @@
             android:background="@color/light_white" />
     </RelativeLayout>
 
-    <com.shuyun.qapp.view.NestedScrollWebView
-        android:id="@+id/webView"
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:focusable="true"
-        android:focusableInTouchMode="true" />
+        android:layout_height="match_parent">
+
+        <com.shuyun.qapp.view.NestedScrollWebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true" />
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </RelativeLayout>

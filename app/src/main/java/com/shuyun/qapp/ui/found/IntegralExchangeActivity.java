@@ -6,11 +6,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.callback.ConfigButton;
@@ -23,13 +26,18 @@ import com.shuyun.qapp.adapter.FoundPropsExchangeAdapter;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.ScoreExchangeBeans;
+import com.shuyun.qapp.bean.ScoreExchangeResult;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.classify.ClassifyActivity;
+import com.shuyun.qapp.ui.mine.ChangePersonalInfoActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
+import com.shuyun.qapp.utils.CommonPopUtil;
+import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.GlideUtils;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
 
@@ -60,6 +68,8 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
     LinearLayout llGift;
     @BindView(R.id.tv_right_title)
     TextView tvRightTitle;
+    @BindView(R.id.ll_main)
+    LinearLayout llMain;
 
     private List<ScoreExchangeBeans.PropsBean> propsBeanList = new ArrayList<>();
     private FoundPropsExchangeAdapter foundPropsExchangeAdapter;
@@ -226,7 +236,10 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
             }
 
         } else if ("propExchange".equals(action)) {
-            Toast.makeText(mContext, "兑换成功", Toast.LENGTH_SHORT).show();
+            //兑换道具成功
+            ScoreExchangeResult scoreExchangeResult = (ScoreExchangeResult) response.getDat();
+            showSuccessPop(scoreExchangeResult);
+//            Toast.makeText(mContext, "兑换成功", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -264,4 +277,50 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
                 })
                 .show();
     }
+
+    CommonPopupWindow commonPopupWindow;
+
+    /**
+     * 兑换道具成功popupWindow
+     */
+    public void showSuccessPop(final ScoreExchangeResult scoreExchangeResult) {
+        if ((!EncodeAndStringTool.isObjectEmpty(commonPopupWindow)) && commonPopupWindow.isShowing())
+            return;
+        View upView = LayoutInflater.from(this).inflate(R.layout.exchange_prop_popupwindow, null);
+        //测量View的宽高
+        CommonPopUtil.measureWidthAndHeight(upView);
+        commonPopupWindow = new CommonPopupWindow.Builder(this)
+                .setView(R.layout.exchange_prop_popupwindow)
+                .setWidthAndHeight(upView.getMeasuredWidth(), upView.getMeasuredHeight())
+                .setBackGroundLevel(0.5f)//取值范围0.0f-1.0f 值越小越暗
+                .setOutsideTouchable(true)
+                .setAnimationStyle(R.style.popwin_anim_style)//设置动画
+                //设置子View点击事件
+                .setViewOnclickListener(new CommonPopupWindow.ViewInterface() {
+                    @Override
+                    public void getChildView(View view, int layoutResId) {
+                        switch (layoutResId) {
+                            case R.layout.exchange_prop_popupwindow:
+                                TextView tvcontent = view.findViewById(R.id.tv_content);
+                                ImageView ivLogo = view.findViewById(R.id.iv_logo);
+                                ImageView image_close = view.findViewById(R.id.iv_close);
+                                tvcontent.setText(scoreExchangeResult.getTitle());
+                                GlideUtils.LoadImage1(mContext, scoreExchangeResult.getPicture(), ivLogo);
+                                image_close.setOnClickListener(new OnMultiClickListener() {
+                                    @Override
+                                    public void onMultiClick(View v) {
+                                        commonPopupWindow.dismiss();
+                                    }
+                                });
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                })
+                .create();
+
+        commonPopupWindow.showAtLocation(llMain, Gravity.CENTER, 0, 0);
+    }
+
 }

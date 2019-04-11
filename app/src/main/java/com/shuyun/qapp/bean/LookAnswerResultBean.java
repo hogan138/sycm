@@ -18,6 +18,7 @@ public class LookAnswerResultBean {
      * dat : {"total":3,"actual":3,"accuracy":0,"correct":0,"error":3,"timeout":0,"examTime":1526875504882,"finishTime":1526875510896,"result":0,"questions":[{"id":532,"title":"请问《画壁》的主演孙俪毕业于哪个院校？","orderNo":2,"result":0,"oks":"2120","answer":"2121","examTime":1526875504680,"finishTime":1526875506688,"options":[{"id":2120,"title":"上海戏剧学院","orderNo":4},{"id":2121,"title":"中国传媒大学","orderNo":1},{"id":2118,"title":"中央戏剧学院","orderNo":3},{"id":2119,"title":"北京电影学院","orderNo":2}]},{"id":26969,"title":"乒乓球十九世纪始于哪个国家？","orderNo":1,"result":0,"oks":"96487","answer":"96484","examTime":1526875503651,"finishTime":1526875504680,"options":[{"id":96484,"title":"中国","orderNo":1},{"id":96486,"title":"法国","orderNo":2},{"id":96485,"title":"瑞典","orderNo":4},{"id":96487,"title":"英国","orderNo":3}]},{"id":26977,"title":"我国发现最早的纸币是在哪个时期？","orderNo":3,"result":0,"oks":"96507","answer":"96508","examTime":1526875506688,"finishTime":1526875510295,"options":[{"id":96508,"title":"元朝","orderNo":1},{"id":96506,"title":"唐朝","orderNo":3},{"id":96507,"title":"宋朝","orderNo":4},{"id":96509,"title":"明朝","orderNo":2}]}]}
      */
 
+
     /**
      * total : 3
      * actual : 3
@@ -30,10 +31,10 @@ public class LookAnswerResultBean {
      * result : 0
      * questions : [{"id":532,"title":"请问《画壁》的主演孙俪毕业于哪个院校？","orderNo":2,"result":0,"oks":"2120","answer":"2121","examTime":1526875504680,"finishTime":1526875506688,"options":[{"id":2120,"title":"上海戏剧学院","orderNo":4},{"id":2121,"title":"中国传媒大学","orderNo":1},{"id":2118,"title":"中央戏剧学院","orderNo":3},{"id":2119,"title":"北京电影学院","orderNo":2}]},{"id":26969,"title":"乒乓球十九世纪始于哪个国家？","orderNo":1,"result":0,"oks":"96487","answer":"96484","examTime":1526875503651,"finishTime":1526875504680,"options":[{"id":96484,"title":"中国","orderNo":1},{"id":96486,"title":"法国","orderNo":2},{"id":96485,"title":"瑞典","orderNo":4},{"id":96487,"title":"英国","orderNo":3}]},{"id":26977,"title":"我国发现最早的纸币是在哪个时期？","orderNo":3,"result":0,"oks":"96507","answer":"96508","examTime":1526875506688,"finishTime":1526875510295,"options":[{"id":96508,"title":"元朝","orderNo":1},{"id":96506,"title":"唐朝","orderNo":3},{"id":96507,"title":"宋朝","orderNo":4},{"id":96509,"title":"明朝","orderNo":2}]}]
      */
-
+    private String id; //答题id
     private Long total;//答题实际回答的数量
     private Long actual;//答题实际回答的数量
-    private Double accuracy;//答题正确率
+    private String accuracy;//答题正确率
     private Long correct;//回答正确的数量
     private Long error;//回答错误的数量
     private Long timeout;//超时未回答的数量
@@ -46,6 +47,44 @@ public class LookAnswerResultBean {
      */
     private Long result;
     private List<QuestionsBean> questions;
+    private String fullName; //分类
+    private String groupName; //题组名称
+    private String groupPicture;//题组图片
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getGroupPicture() {
+        return groupPicture;
+    }
+
+    public void setGroupPicture(String groupPicture) {
+        this.groupPicture = groupPicture;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
 
     public Long getTotal() {
         return total;
@@ -55,7 +94,7 @@ public class LookAnswerResultBean {
         return actual;
     }
 
-    public Double getAccuracy() {
+    public String getAccuracy() {
         return accuracy;
     }
 
@@ -139,8 +178,16 @@ public class LookAnswerResultBean {
         private String answer;//回答的选项
         private Long examTime;//本题目开始答题时间
         private Long finishTime;//本题目开始答题时间
-        private List<PictureBean> picture;//题目的图片 type=2有效
+        private String picture;//题目的图片 type=2有效
         private List<OptionsBean> options;//题目的选项
+
+        public String getPicture() {
+            return picture;
+        }
+
+        public void setPicture(String picture) {
+            this.picture = picture;
+        }
 
         public Long getId() {
             return id;
@@ -186,9 +233,6 @@ public class LookAnswerResultBean {
             return finishTime;
         }
 
-        public List<PictureBean> getPicture() {
-            return picture;
-        }
 
         public List<OptionsBean> getOptions() {
             return options;
@@ -211,21 +255,6 @@ public class LookAnswerResultBean {
                     ", picture=" + picture +
                     ", options=" + options +
                     '}';
-        }
-
-        public static class PictureBean {
-            private String url;//图片的地址
-
-            public String getUrl() {
-                return url;
-            }
-
-            @Override
-            public String toString() {
-                return "PictureBean{" +
-                        "url='" + url + '\'' +
-                        '}';
-            }
         }
 
         public static class OptionsBean {

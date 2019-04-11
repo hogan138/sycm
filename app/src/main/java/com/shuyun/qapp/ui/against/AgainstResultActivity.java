@@ -198,6 +198,7 @@ public class AgainstResultActivity extends BaseActivity implements View.OnClickL
                 Intent intent = new Intent(this, AnswerHistoryActivity.class);
                 intent.putExtra("answer_id", answerId);
                 intent.putExtra("title", tvCommonTitle.getText().toString());
+                intent.putExtra("from", "answer");
                 startActivity(intent);
                 break;
             default:

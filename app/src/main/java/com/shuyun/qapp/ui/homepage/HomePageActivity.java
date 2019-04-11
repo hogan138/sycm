@@ -469,11 +469,11 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         }
 
         //改变顶部状态栏颜色
-        StatusBarUtil.setStatusBarColor(this, R.color.white);
+        StatusBarUtil.setStatusBarColor(this, R.color.white, true);
         if (position == 4) {
-            StatusBarUtil.setStatusBarColor(this, R.color.mine_top);
+            StatusBarUtil.setStatusBarColor(this, R.color.mine_top, true);
         } else {
-            StatusBarUtil.setStatusBarColor(this, R.color.white);
+            StatusBarUtil.setStatusBarColor(this, R.color.white, true);
         }
 
 

@@ -38,7 +38,7 @@ public class StatusBarUtil {
      *
      * @param colorId 颜色
      */
-    public static void setStatusBarColor(Activity activity, int colorId) {
+    public static void setStatusBarColor(Activity activity, int colorId, boolean isResource) {
         /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = activity.getWindow();
             window.setStatusBarColor(colorId);
@@ -54,7 +54,11 @@ public class StatusBarUtil {
             Window window = activity.getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(ContextCompat.getColor(activity, colorId));
+            if (isResource) {
+                window.setStatusBarColor(ContextCompat.getColor(activity, colorId));
+            } else {
+                window.setStatusBarColor(colorId);
+            }
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //使用SystemBarTint库使4.4版本状态栏变色，需要先将状态栏设置为透明
             setTranslucentStatus(activity);

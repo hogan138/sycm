@@ -16,6 +16,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ishumei.smantifraud.SmAntiFraud;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.WebAnswerHomeBean;
 import com.shuyun.qapp.net.AppConst;
@@ -42,6 +45,8 @@ public class SeventyYearFragment extends Fragment {
     TextView tvRight;
     @BindView(R.id.iv_right_icon)
     ImageView ivRightIcon;
+    @BindView(R.id.refreshLayout)
+    SmartRefreshLayout refreshLayout;
 
     private Activity mContext;
 
@@ -61,6 +66,20 @@ public class SeventyYearFragment extends Fragment {
         mContext = getActivity();
         tvCommonTitle.setText("建国70周年");
 
+        //下拉刷新
+        refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+            }
+
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                refreshlayout.finishRefresh();
+                webView.loadUrl(SaveUserInfo.getInstance(mContext).getUserInfo("home_tab_url"));
+            }
+        });
+        //禁止上拉加载
+        refreshLayout.setEnableLoadmore(false);
     }
 
 
