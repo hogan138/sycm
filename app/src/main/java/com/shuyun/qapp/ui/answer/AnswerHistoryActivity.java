@@ -57,16 +57,12 @@ public class AnswerHistoryActivity extends BaseActivity implements CommonPopupWi
     TextView tvCommonTitle; //答题标题
     @BindView(R.id.rv_error_answer)
     RecyclerView rvErrorAnswer; //recycleview
-    @BindView(R.id.tvTitle)
-    TextView tvTitle;
     @BindView(R.id.tvTime)
     TextView tvTime;
     @BindView(R.id.tvRate)
     TextView tvRate;
     @BindView(R.id.tvClass)
     TextView tvClass;
-    @BindView(R.id.ivLevel)
-    ImageView ivLevel;
     @BindView(R.id.cardView)
     CardView cardView;
 
@@ -233,7 +229,6 @@ public class AnswerHistoryActivity extends BaseActivity implements CommonPopupWi
                     tvCommonTitle.setText(lookAnswerResult.getGroupName());
                     if (from.equals("h5")) {
                         cardView.setVisibility(View.VISIBLE);
-                        tvTitle.setText(lookAnswerResult.getGroupName());
                         Date currentTime = new Date(Long.valueOf(lookAnswerResult.getExamTime()));
                         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
                         String time = formatter.format(currentTime).replace(" ", "\n");
@@ -250,15 +245,6 @@ public class AnswerHistoryActivity extends BaseActivity implements CommonPopupWi
                         sb.append(lookAnswerResult.getAccuracy()).append("%");
                         tvRate.setText(sb.toString());
 
-                        //正确率：85%以上A ，正确率50%~85% 的B，其他C吧
-                        BigDecimal rate = new BigDecimal(lookAnswerResult.getAccuracy());
-                        if (rate.compareTo(a) > 0) {
-                            ivLevel.setImageResource(R.mipmap.a);
-                        } else if (rate.compareTo(b) >= 0 && rate.compareTo(a) <= 0) {
-                            ivLevel.setImageResource(R.mipmap.b);
-                        } else {
-                            ivLevel.setImageResource(R.mipmap.c);
-                        }
                     } else {
                         cardView.setVisibility(View.GONE);
                     }

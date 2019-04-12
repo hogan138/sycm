@@ -1,62 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/tv_index"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/text_14"
-        android:layout_marginBottom="@dimen/text_9"
         android:text="- 第一题 -"
         android:textColor="#232323"
         android:textSize="@dimen/text_15" />
 
-    <android.support.v7.widget.CardView
+    <RelativeLayout
+        android:id="@+id/rl_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/text_27"
-        android:layout_marginRight="@dimen/text_27"
-        android:foreground="?attr/selectableItemBackground"
-        app:cardBackgroundColor="#ffffff"
-        app:cardCornerRadius="6dp"
-        app:cardElevation="0dp"
-        app:cardPreventCornerOverlap="false"
-        app:cardUseCompatPadding="true"
-        app:contentPadding="-2dp">
+        android:layout_below="@+id/tv_index">
 
-
-        <LinearLayout
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_27"
+            android:layout_marginTop="@dimen/text_9"
+            android:layout_marginRight="@dimen/text_27"
+            android:foreground="?attr/selectableItemBackground"
+            app:cardBackgroundColor="#ffffff"
+            app:cardCornerRadius="6dp"
+            app:cardElevation="0dp"
+            app:cardPreventCornerOverlap="false"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="-2dp">
 
-            <!--题目问题-->
-            <TextView
-                android:id="@+id/tv_question2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/text_22"
-                android:layout_marginTop="@dimen/text_17"
-                android:layout_marginBottom="@dimen/text_17"
-                android:textColor="@color/color_00"
-                android:textSize="@dimen/text_16" />
 
-            <ImageView
-                android:id="@+id/iv_main_img"
-                android:layout_width="143dp"
-                android:layout_height="71dp"
-                android:layout_marginLeft="@dimen/text_22"
-                android:scaleType="fitXY"
-                android:visibility="gone" />
-
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <!--题目问题-->
+                <TextView
+                    android:id="@+id/tv_question2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/text_22"
+                    android:layout_marginTop="@dimen/text_17"
+                    android:layout_marginBottom="@dimen/text_17"
+                    android:textColor="@color/color_00"
+                    android:textSize="@dimen/text_16" />
+
+                <ImageView
+                    android:id="@+id/iv_main_img"
+                    android:layout_width="143dp"
+                    android:layout_height="71dp"
+                    android:layout_marginLeft="@dimen/text_22"
+                    android:layout_marginBottom="@dimen/text_17"
+                    android:scaleType="fitXY"
+                    android:visibility="gone" />
+
 
                 <View
                     android:layout_width="match_parent"
@@ -66,43 +69,67 @@
                     android:layout_marginRight="@dimen/text_5"
                     android:background="#ebebeb" />
 
+
+                <TextView
+                    android:id="@+id/tv_right_answer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/text_22"
+                    android:layout_marginTop="@dimen/text_17"
+                    android:layout_marginBottom="@dimen/text_17"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="正确答案："
+                    android:textColor="@color/color_4"
+                    android:textSize="@dimen/text_15" />
+
                 <ImageView
-                    android:id="@+id/iv_result_logo"
-                    android:layout_width="@dimen/text_40"
-                    android:layout_height="@dimen/text_40"
-                    android:layout_alignParentRight="true"
+                    android:id="@+id/iv_right_img"
+                    android:layout_width="87dp"
+                    android:layout_height="61dp"
+                    android:layout_marginLeft="@dimen/text_22"
+                    android:layout_marginBottom="@dimen/text_17"
+                    android:scaleType="fitXY"
+                    android:visibility="gone" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp" />
-            </RelativeLayout>
+                    android:layout_marginLeft="@dimen/text_5"
+                    android:layout_marginRight="@dimen/text_5"
+                    android:background="#ebebeb" />
 
+                <TextView
+                    android:id="@+id/tv_mine_answer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/text_22"
+                    android:layout_marginTop="@dimen/text_17"
+                    android:layout_marginBottom="@dimen/text_17"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="您的答案："
+                    android:textColor="@color/login_text"
+                    android:textSize="@dimen/text_15" />
 
-            <TextView
-                android:id="@+id/tv_right_answer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/text_22"
-                android:layout_marginBottom="@dimen/text_22"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:text="正确答案："
-                android:textColor="@color/color_4"
-                android:textSize="@dimen/text_15" />
+                <ImageView
+                    android:id="@+id/iv_mine_img"
+                    android:layout_width="87dp"
+                    android:layout_height="61dp"
+                    android:layout_marginLeft="@dimen/text_22"
+                    android:layout_marginBottom="@dimen/text_17"
+                    android:scaleType="fitXY"
+                    android:visibility="gone" />
 
-            <ImageView
-                android:id="@+id/iv_right_img"
-                android:layout_width="87dp"
-                android:layout_height="61dp"
-                android:layout_marginLeft="@dimen/text_22"
-                android:layout_marginBottom="@dimen/text_22"
-                android:scaleType="fitXY"
-                android:visibility="gone" />
-
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_content"
         android:layout_marginRight="@dimen/text_14">
         <!--反馈-->
         <TextView
@@ -117,4 +144,12 @@
             android:textColor="#4a4a4a"
             android:textSize="@dimen/text_12" />
     </RelativeLayout>
-</LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_result_logo"
+        android:layout_width="@dimen/text_40"
+        android:layout_height="@dimen/text_40"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/text_25"
+        android:layout_marginRight="@dimen/text_33" />
+</RelativeLayout>

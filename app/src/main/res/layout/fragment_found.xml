@@ -68,6 +68,7 @@
                 android:id="@+id/banner"
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
+                android:layout_marginTop="@dimen/text_15"
                 app:around_visible="true"
                 app:item_margin="5dp"
                 app:layout_scrollFlags="scroll"

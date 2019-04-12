@@ -112,21 +112,35 @@ public class AnswerHistoryAdapter extends RecyclerView.Adapter<AnswerHistoryAdap
                         e.printStackTrace();
                     }
 
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                     //显示正确答案
                     if (optionsBean.getId().equals(oks)) {
-
-                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                         //正确答案图片
                         if (type == 2) {
                             holder.ivRightImg.setVisibility(View.VISIBLE);
                             GlideUtils.LoadImage1(context, optionsBean.getPicture(), holder.ivRightImg);
-                            lp.setMargins(ConvertUtils.dp2px(22), 0, 0, ConvertUtils.dp2px(3));
+                            lp.setMargins(ConvertUtils.dp2px(22), ConvertUtils.dp2px(17), 0, ConvertUtils.dp2px(3));
                             holder.tvRightAnswer.setLayoutParams(lp);
                         } else {
                             holder.tvRightAnswer.setText("正确答案: " + title);
                             holder.ivRightImg.setVisibility(View.GONE);
-                            lp.setMargins(ConvertUtils.dp2px(22), 0, 0, ConvertUtils.dp2px(22));
+                            lp.setMargins(ConvertUtils.dp2px(22), ConvertUtils.dp2px(17), 0, ConvertUtils.dp2px(17));
                             holder.tvRightAnswer.setLayoutParams(lp);
+                        }
+                    }
+
+                    //显示我的答案
+                    if (optionsBean.getId().equals(questionsBean.getAnswer())) {
+                        if (type == 2) {
+                            holder.ivMineImg.setVisibility(View.VISIBLE);
+                            GlideUtils.LoadImage1(context, optionsBean.getPicture(), holder.ivMineImg);
+                            lp.setMargins(ConvertUtils.dp2px(22), ConvertUtils.dp2px(17), 0, ConvertUtils.dp2px(3));
+                            holder.tvMineAnswer.setLayoutParams(lp);
+                        } else {
+                            holder.tvMineAnswer.setText("您的答案: " + title);
+                            holder.ivMineImg.setVisibility(View.GONE);
+                            lp.setMargins(ConvertUtils.dp2px(22), ConvertUtils.dp2px(17), 0, ConvertUtils.dp2px(17));
+                            holder.tvMineAnswer.setLayoutParams(lp);
                         }
                     }
 
@@ -171,6 +185,10 @@ public class AnswerHistoryAdapter extends RecyclerView.Adapter<AnswerHistoryAdap
         ImageView ivRightImg;
         @BindView(R.id.tv_index)
         TextView tvIndex;
+        @BindView(R.id.tv_mine_answer)
+        TextView tvMineAnswer;
+        @BindView(R.id.iv_mine_img)
+        ImageView ivMineImg;
 
         public ViewHolder(View itemView) {
             super(itemView);

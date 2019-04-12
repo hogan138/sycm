@@ -213,7 +213,7 @@ public class NoUsePrizeFragment extends Fragment implements OnRemotingCallBackLi
                 })
                 .setNegativeButton("去更新", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Uri uri = Uri.parse("http://sj.qq.com/myapp/detail.htm?apkName=com.shuyun.qapp");
+                        Uri uri = Uri.parse("https://sj.qq.com/myapp/detail.htm?apkName=com.shuyun.qapp");
                         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                         startActivity(intent);
 
