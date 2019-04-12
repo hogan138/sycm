@@ -52,7 +52,6 @@ public class WebFragment extends Fragment {
     SmartRefreshLayout refreshLayout;
 
     private Context mContext;
-    private Handler mHandler = new Handler();
 
     WebAnswerHomeBean answerHomeBean = new WebAnswerHomeBean();
 

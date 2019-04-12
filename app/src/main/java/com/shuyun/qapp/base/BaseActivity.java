@@ -20,6 +20,7 @@ import com.shuyun.qapp.ui.login.BindPhoneNumActivity;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
+import com.shuyun.qapp.utils.JsInterationUtil;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.tencent.stat.StatService;
@@ -94,6 +95,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onDestroy();
 
         try {
+            JsInterationUtil.setShow(false);
             //防止内存泄露
             UMShareAPI.get(this).release();
 

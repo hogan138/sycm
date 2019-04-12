@@ -35,6 +35,8 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
+import java.util.logging.Handler;
+
 import static com.blankj.utilcode.util.SizeUtils.dp2px;
 import static com.umeng.socialize.net.dplus.CommonNetImpl.TAG;
 
@@ -52,7 +54,7 @@ public class InviteSharePopupUtil {
      * 邀请分享弹窗
      */
     public static void showSharedPop(final Context context, View view) {
-        if ((!EncodeAndStringTool.isObjectEmpty(popupWindow)) && popupWindow.isShowing()) return;
+//        if ((!EncodeAndStringTool.isObjectEmpty(popupWindow)) && popupWindow.isShowing()) return;
         View upView = LayoutInflater.from(context).inflate(R.layout.share_popupwindow, null);
         //测量View的宽高
         CommonPopUtil.measureWidthAndHeight(upView);
@@ -124,7 +126,12 @@ public class InviteSharePopupUtil {
                 })
                 .create();
 
-        popupWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
+        try {
+            popupWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
+        } catch (Exception e) {
+
+        }
+
     }
 
     /**
