@@ -75,6 +75,7 @@ import com.shuyun.qapp.utils.NotificationsUtils;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
+import com.shuyun.qapp.utils.UmengPageUtil;
 import com.shuyun.qapp.view.AnyPositionImgManage;
 import com.shuyun.qapp.view.FloatImageviewManage;
 import com.shuyun.qapp.view.ITextBannerItemClickListener;
@@ -305,6 +306,12 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
                     refresh();
                 }
             }, 10);
+
+            //友盟页面统计
+            UmengPageUtil.startPage(AppConst.APP_HOME);
+
+            //记录标记
+            SaveUserInfo.getInstance(mContext).setUserInfo("umeng_from", "home");
         }
     }
 

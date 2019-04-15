@@ -15,7 +15,7 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 
 public class AppConst {
 
-//            public static final String BASE_URL = "https://api-syksc.25876.com";///线上服务器
+    //            public static final String BASE_URL = "https://api-syksc.25876.com";///线上服务器
     //    public static final String BASE_URL = "http://192.168.3.250:8080";//:8002/公司内部服务器
 //    public static final String BASE_URL = "http://139.224.199.106:8080";//开发测试服务器
     public static final String BASE_URL = "http://192.168.3.157";//测试环境
@@ -226,5 +226,19 @@ public class AppConst {
     public static final String ACTION_INVITE_FRIENDS = "action.invite.friends";//邀请好友
     public static final String ACTION_DAY_EXAM = "action.day.exam";//每日答题，跳转到分类页
     public static final String ACTION_HS_GROUP_EXAM = "action.hs.group.exam";//黄山题组答题一次
+
+
+    //友盟页面统计
+    public static final String APP_HOME = "app_home"; //首页
+    public static final String APP_GROUP_CLASS = "app_group_class"; //分类
+    public static final String APP_FOUND = "app_found"; //发现
+    public static final String APP_PERSONAL = "app_personal"; //我的
+    public static final String APP_FOUND_HOT_GROUP = "app_found_hot_group"; //发现-热门题组
+    public static final String APP_PERSONAL_BP = "app_personal_bp"; //积分中心
+    public static final String APP_PERSONAL_CASH = "app_personal_cash"; //现金金额
+    public static final String APP_PERSONAL_PRIZE = "app_personal_prize"; //我的奖品
+    public static final String APP_PERSONAL_PROP = "app_personal_prop"; //我的道具
+    public static final String APP_PERSONAL_TRANSCRIPT = "app_personal_transcript"; //成绩单
+
 
 }

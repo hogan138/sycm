@@ -33,6 +33,8 @@ import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.OnMultiClickListener;
+import com.shuyun.qapp.utils.SaveUserInfo;
+import com.shuyun.qapp.utils.UmengPageUtil;
 import com.shuyun.qapp.view.RoundImageView;
 import com.shuyun.qapp.view.TiaoZiView;
 
@@ -127,6 +129,12 @@ public class MatchingActivity extends BaseActivity implements View.OnClickListen
     int type;
     private String name;
 
+    //友盟统计场次类型
+    String type_name = "";
+
+    //答题对战进入标记
+    String umeng_from = "";
+
     @Override
     public int intiLayout() {
         return R.layout.activity_matching;
@@ -148,6 +156,39 @@ public class MatchingActivity extends BaseActivity implements View.OnClickListen
         ivLeftIcon.setImageResource(R.mipmap.backb);//左侧返回
         rlCancelMatching.setOnClickListener(this);
 
+        //记录答题对战首页标记
+        umeng_from = SaveUserInfo.getInstance(this).getUserInfo("umeng_from");
+
+        //友盟统计type
+        if (type == 0) {
+            type_name = "free";
+        } else if (type == 1) {
+            type_name = "novice";
+        } else if (type == 2) {
+            type_name = "intermediate";
+        } else if (type == 3) {
+            type_name = "advanced";
+        }
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //友盟统计
+                startPage(type_name);
+            }
+        }, 300);
+
+
+    }
+
+    //友盟页面统计
+    private void startPage(String type) {
+
+        if (!EncodeAndStringTool.isStringEmpty(umeng_from) && umeng_from.equals("home")) {
+            UmengPageUtil.startPage("app_home_battle_${" + type + "}_begin");
+        } else if (!EncodeAndStringTool.isStringEmpty(umeng_from) && umeng_from.equals("found")) {
+            UmengPageUtil.startPage("app_found_battle_${" + type + "}_begin");
+        }
     }
 
     /**

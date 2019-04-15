@@ -130,7 +130,6 @@
     <orderEntry type="library" name="Gradle: cn.yipianfengye.android:zxing-library:2.2@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.alibaba.sdk.android:alibc_trade_sdk:3.1.1.11@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.3.1@jar" level="project" />
-    <orderEntry type="library" name="Gradle: __local_aars__:D.\android_workspace\android\app\libs\umeng-analytics-7.5.0.jar:unspecified@jar" level="project" />
     <orderEntry type="library" name="Gradle: cn.kevin:bannerview:1.0.8@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: javax.inject:javax.inject:1@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.scwang.smartrefresh:SmartRefreshHeader:1.0.4@aar" level="project" />
@@ -223,6 +222,7 @@
     <orderEntry type="library" name="Gradle: com.android.support:versionedparcelable:28.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.jakewharton:disklrucache:2.0.2@jar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: junit:junit:4.12@jar" level="project" />
+    <orderEntry type="library" name="Gradle: __local_aars__:D.\android_workspace\android\app\libs\umeng-analytics-8.0.0.jar:unspecified@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.alibaba:fastjson:1.2.54@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.8.2@jar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.hamcrest:hamcrest-integration:1.3@jar" level="project" />

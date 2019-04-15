@@ -69,7 +69,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        MobclickAgent.onResume(this); //友盟统计时长
         StatService.onResume(this); //腾讯统计
 
         HeartBeatManager.instance().start(this);
@@ -86,7 +85,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        MobclickAgent.onPause(this); //统计时长
         StatService.onPause(this);
     }
 

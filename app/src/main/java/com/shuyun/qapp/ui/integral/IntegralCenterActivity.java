@@ -16,6 +16,7 @@ import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.IntegralExchangeBean;
 import com.shuyun.qapp.net.ApiServiceBean;
+import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.mine.IntegralAccountActivity;
@@ -24,6 +25,7 @@ import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.GlideUtils;
 import com.shuyun.qapp.utils.SaveUserInfo;
+import com.shuyun.qapp.utils.UmengPageUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,6 +71,9 @@ public class IntegralCenterActivity extends BaseActivity implements View.OnClick
 
         tvLookDetail.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
 
+
+        //友盟页面统计
+        UmengPageUtil.startPage(AppConst.APP_PERSONAL_BP);
     }
 
     @Override

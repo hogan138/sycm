@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ll_mine_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,23 +14,349 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/color_f8"
             android:orientation="vertical">
 
             <include layout="@layout/mine_head" />
 
-            <include layout="@layout/system_set" />
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_17"
+                android:layout_marginRight="@dimen/text_17"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="#ffffff"
+                app:cardCornerRadius="6dp"
+                app:cardElevation="10dp"
+                app:cardPreventCornerOverlap="false"
+                app:cardUseCompatPadding="false"
+                app:contentPadding="-2dp">
 
-            <include layout="@layout/common_line_1" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-            <include layout="@layout/my_suggestion" />
+                    <RelativeLayout
+                        android:id="@+id/rl_prize"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_vertical"
+                        android:foreground="?attr/selectableItemBackground">
 
-            <include layout="@layout/common_line_1" />
+                        <TextView
+                            android:id="@+id/tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/text_14"
+                            android:drawableLeft="@mipmap/mine_drawleft_prize"
+                            android:drawablePadding="@dimen/text_12"
+                            android:text="我的奖品"
+                            android:textColor="@color/color_4a"
+                            android:textSize="@dimen/text_15" />
 
-            <include layout="@layout/contact_us" />
+                        <ImageView
+                            android:id="@+id/iv_point_prize"
+                            android:layout_width="6dp"
+                            android:layout_height="6dp"
+                            android:layout_marginTop="@dimen/text_15"
+                            android:layout_toRightOf="@+id/tv"
+                            android:src="@mipmap/tip_circle_point"
+                            android:visibility="gone" />
 
-            <include layout="@layout/common_line_1" />
+                        <ImageView
+                            android:layout_width="@dimen/text_14"
+                            android:layout_height="@dimen/text_14"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="@dimen/text_18"
+                            android:src="@mipmap/gomore" />
+                    </RelativeLayout>
 
-            <include layout="@layout/invite_share" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/text_1"
+                        android:background="@color/color_f5" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_prop"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_vertical"
+                        android:foreground="?attr/selectableItemBackground">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/text_14"
+                            android:drawableLeft="@mipmap/mine_drawleft_prop"
+                            android:drawablePadding="@dimen/text_12"
+                            android:text="我的道具"
+                            android:textColor="@color/color_4a"
+                            android:textSize="@dimen/text_15" />
+
+
+                        <ImageView
+                            android:layout_width="@dimen/text_14"
+                            android:layout_height="@dimen/text_14"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="@dimen/text_18"
+                            android:src="@mipmap/gomore" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/text_1"
+                        android:background="@color/color_f5" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_order"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_vertical"
+                        android:foreground="?attr/selectableItemBackground">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/text_14"
+                            android:drawableLeft="@mipmap/mine_drawleft_order"
+                            android:drawablePadding="@dimen/text_12"
+                            android:text="我的订单"
+                            android:textColor="@color/color_4a"
+                            android:textSize="@dimen/text_15" />
+
+
+                        <ImageView
+                            android:layout_width="@dimen/text_14"
+                            android:layout_height="@dimen/text_14"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="@dimen/text_18"
+                            android:src="@mipmap/gomore" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/text_1"
+                        android:background="@color/color_f5" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_my_record"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_vertical"
+                        android:foreground="?attr/selectableItemBackground">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/text_14"
+                            android:drawableLeft="@mipmap/mine_drawleft_answer_record"
+                            android:drawablePadding="@dimen/text_12"
+                            android:text="成绩单"
+                            android:textColor="@color/color_4a"
+                            android:textSize="@dimen/text_15" />
+
+
+                        <ImageView
+                            android:layout_width="@dimen/text_14"
+                            android:layout_height="@dimen/text_14"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="@dimen/text_18"
+                            android:src="@mipmap/gomore" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/text_1"
+                        android:background="@color/color_f5" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_exchange_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_vertical"
+                        android:foreground="?attr/selectableItemBackground">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/text_14"
+                            android:drawableLeft="@mipmap/mine_drawleft_exchange_code"
+                            android:drawablePadding="@dimen/text_12"
+                            android:text="兑换码"
+                            android:textColor="@color/color_4a"
+                            android:textSize="@dimen/text_15" />
+
+
+                        <ImageView
+                            android:layout_width="@dimen/text_14"
+                            android:layout_height="@dimen/text_14"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="@dimen/text_18"
+                            android:src="@mipmap/gomore" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_17"
+                android:layout_marginTop="@dimen/text_20"
+                android:layout_marginRight="@dimen/text_17"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="#ffffff"
+                app:cardCornerRadius="6dp"
+                app:cardElevation="10dp"
+                app:cardPreventCornerOverlap="false"
+                app:cardUseCompatPadding="false"
+                app:contentPadding="-2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_setting"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_vertical"
+                        android:foreground="?attr/selectableItemBackground">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/text_14"
+                            android:drawableLeft="@mipmap/mine_drawleft_setting"
+                            android:drawablePadding="@dimen/text_12"
+                            android:text="系统设置"
+                            android:textColor="@color/color_4a"
+                            android:textSize="@dimen/text_15" />
+
+
+                        <ImageView
+                            android:layout_width="@dimen/text_14"
+                            android:layout_height="@dimen/text_14"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="@dimen/text_18"
+                            android:src="@mipmap/gomore" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/text_1"
+                        android:background="@color/color_f5" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_suggestion"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_vertical"
+                        android:foreground="?attr/selectableItemBackground">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/text_14"
+                            android:drawableLeft="@mipmap/mine_drawleft_suggestion"
+                            android:drawablePadding="@dimen/text_12"
+                            android:text="意见反馈"
+                            android:textColor="@color/color_4a"
+                            android:textSize="@dimen/text_15" />
+
+
+                        <ImageView
+                            android:layout_width="@dimen/text_14"
+                            android:layout_height="@dimen/text_14"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="@dimen/text_18"
+                            android:src="@mipmap/gomore" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/text_1"
+                        android:background="@color/color_f5" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_call"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_vertical"
+                        android:foreground="?attr/selectableItemBackground">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/text_14"
+                            android:drawableLeft="@mipmap/mine_drawleft_call"
+                            android:drawablePadding="@dimen/text_12"
+                            android:text="客服中心"
+                            android:textColor="@color/color_4a"
+                            android:textSize="@dimen/text_15" />
+
+
+                        <ImageView
+                            android:layout_width="@dimen/text_14"
+                            android:layout_height="@dimen/text_14"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="@dimen/text_18"
+                            android:src="@mipmap/gomore" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/text_1"
+                        android:background="@color/color_f5" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_share"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_vertical"
+                        android:foreground="?attr/selectableItemBackground">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/text_14"
+                            android:drawableLeft="@mipmap/mine_drawleft_share"
+                            android:drawablePadding="@dimen/text_12"
+                            android:text="分享给好友"
+                            android:textColor="@color/color_4a"
+                            android:textSize="@dimen/text_15" />
+
+
+                        <ImageView
+                            android:layout_width="@dimen/text_14"
+                            android:layout_height="@dimen/text_14"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="@dimen/text_18"
+                            android:src="@mipmap/gomore" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
 
             <include layout="@layout/bottom_logo" />
         </LinearLayout>

@@ -31,7 +31,9 @@ import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.OnMultiClickListener;
+import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ScannerUtils;
+import com.shuyun.qapp.utils.UmengPageUtil;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -89,6 +91,10 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
 
     private static int share_style = 0;
 
+
+    //答题对战进入标记
+    String umeng_from = "";
+
     @Override
     public int intiLayout() {
         return R.layout.activity_main_against;
@@ -123,6 +129,9 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
         //获取答题对战首页
         RemotingEx.doRequest(AppConst.AGAINST_MAIN_INFO, ApiServiceBean.mainAgainst(), null, this);
 
+
+        //记录答题对战首页标记
+        umeng_from = SaveUserInfo.getInstance(this).getUserInfo("umeng_from");
     }
 
     @Override
@@ -145,6 +154,9 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
                 showSharedPop();
                 break;
             case R.id.rl_free:
+                //友盟页面统计
+                startPage("free");
+
                 intent.putExtra("title", "自由对战");
                 intent.putExtra("score", "");
                 intent.putExtra("type", 0);
@@ -153,6 +165,9 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.rl_new:
                 if (my_score >= new_score) {
+                    //友盟页面统计
+                    startPage("novice");
+
                     intent.putExtra("title", "新手场");
                     intent.putExtra("score", "" + new_score);
                     intent.putExtra("type", 1);
@@ -166,6 +181,9 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
             case R.id.rl_common:
                 //普通场
                 if (my_score >= common_score) {
+                    //友盟页面统计
+                    startPage("intermediate");
+
                     intent.putExtra("title", "普通场");
                     intent.putExtra("score", "" + common_score);
                     intent.putExtra("type", 2);
@@ -178,6 +196,9 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
             case R.id.rl_high:
                 //高级场
                 if (my_score >= high_score) {
+                    //友盟页面统计
+                    startPage("advanced");
+
                     intent.putExtra("title", "高级场");
                     intent.putExtra("score", "" + high_score);
                     intent.putExtra("type", 3);
@@ -191,6 +212,17 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
                 break;
         }
     }
+
+    //友盟页面统计
+    private void startPage(String type) {
+
+        if (!EncodeAndStringTool.isStringEmpty(umeng_from) && umeng_from.equals("home")) {
+            UmengPageUtil.startPage("app_home_battle_${" + type + "}");
+        } else if (!EncodeAndStringTool.isStringEmpty(umeng_from) && umeng_from.equals("found")) {
+            UmengPageUtil.startPage("app_found_battle_${" + type + "}");
+        }
+    }
+
 
     CommonPopupWindow popupWindow;
 

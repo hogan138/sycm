@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.animation.SpringAnimation;
 import android.support.animation.SpringForce;
 import android.view.Gravity;
@@ -33,7 +34,9 @@ import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.OnMultiClickListener;
+import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ScannerUtils;
+import com.shuyun.qapp.utils.UmengPageUtil;
 import com.shuyun.qapp.view.CircleImageView;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
@@ -97,6 +100,12 @@ public class AgainstResultActivity extends BaseActivity implements View.OnClickL
     int type;
 
     private String answerId;//答题id
+
+    //友盟统计场次类型
+    String type_name = "";
+
+    //答题对战进入标记
+    String umeng_from = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,7 +171,34 @@ public class AgainstResultActivity extends BaseActivity implements View.OnClickL
             ivRightIcon.setVisibility(View.VISIBLE);
             ivRightIcon.setImageResource(R.mipmap.share);//右侧分享
         }
+
+        //记录答题对战首页标记
+        umeng_from = SaveUserInfo.getInstance(this).getUserInfo("umeng_from");
+
+        //友盟统计type
+        if (type == 0) {
+            type_name = "free";
+        } else if (type == 1) {
+            type_name = "novice";
+        } else if (type == 2) {
+            type_name = "intermediate";
+        } else if (type == 3) {
+            type_name = "advanced";
+        }
+
     }
+
+
+    //友盟页面统计
+    private void startPage(String type) {
+
+        if (!EncodeAndStringTool.isStringEmpty(umeng_from) && umeng_from.equals("home")) {
+            UmengPageUtil.startPage("app_home_battle_${" + type + "}_again");
+        } else if (!EncodeAndStringTool.isStringEmpty(umeng_from) && umeng_from.equals("found")) {
+            UmengPageUtil.startPage("app_found_battle_${" + type + "}_again");
+        }
+    }
+
 
     /**
      * 答题对战结束
@@ -192,6 +228,9 @@ public class AgainstResultActivity extends BaseActivity implements View.OnClickL
                 showSharedPop();
                 break;
             case R.id.rl_again://再来一局
+                //友盟统计
+                startPage(type_name);
+
                 finish();
                 break;
             case R.id.btn_look_fail: //查看错题

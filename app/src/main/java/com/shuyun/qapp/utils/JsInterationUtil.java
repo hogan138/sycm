@@ -21,6 +21,7 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -45,6 +46,7 @@ import com.shuyun.qapp.bean.H5StatuBarBean;
 import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.bean.ReturnDialogBean;
 import com.shuyun.qapp.bean.SharePublicBean;
+import com.shuyun.qapp.bean.StartPagerBean;
 import com.shuyun.qapp.bean.WebAnswerHomeBean;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
@@ -63,6 +65,7 @@ import com.shuyun.qapp.view.InviteSharePopupUtil;
 import com.shuyun.qapp.view.LoginJumpUtil;
 import com.shuyun.qapp.view.RealNamePopupUtil;
 import com.shuyun.qapp.view.SharePopupUtil;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -673,6 +676,30 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
     }
 
     /**
+     * 友盟页面开始页面统计
+     */
+    @JavascriptInterface
+    public void startStatPage(String param) {
+        StartPagerBean startPagerBean = new Gson().fromJson(param, StartPagerBean.class);
+        String page = startPagerBean.getPage();
+
+        MobclickAgent.onPageStart(page); //开始统计页面
+
+    }
+
+    /**
+     * 友盟页面结束页面统计
+     */
+    @JavascriptInterface
+    public void stopStatPage(String param) {
+        StartPagerBean startPagerBean = new Gson().fromJson(param, StartPagerBean.class);
+        String page = startPagerBean.getPage();
+
+        MobclickAgent.onPageEnd(page);//结束统计页面
+    }
+
+
+    /**
      * 开宝箱奖品跳转
      */
     @JavascriptInterface
@@ -1090,7 +1117,7 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
                 .show();
     }
 
-    public static void setShow(boolean showd){
+    public static void setShow(boolean showd) {
         show = showd;
     }
 

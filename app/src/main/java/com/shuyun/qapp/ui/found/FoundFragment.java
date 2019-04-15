@@ -2,10 +2,7 @@ package com.shuyun.qapp.ui.found;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,11 +16,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.RotateAnimation;
-import android.view.animation.TranslateAnimation;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -45,10 +37,10 @@ import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
 import com.shuyun.qapp.ui.webview.WebFragment;
-import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.GlideUtils;
+import com.shuyun.qapp.utils.SaveUserInfo;
+import com.shuyun.qapp.utils.UmengPageUtil;
 import com.shuyun.qapp.view.EnhanceTabLayout;
 import com.shuyun.qapp.view.FloatImageviewManage;
 import com.shuyun.qapp.view.LoginJumpUtil;
@@ -62,8 +54,6 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cn.kevin.banner.BannerViewPager;
 import cn.kevin.banner.IBannerItem;
-
-import static com.blankj.utilcode.util.ConvertUtils.dp2px;
 
 /**
  * 活动Fragment
@@ -136,6 +126,12 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
                     refresh();
                 }
             }, 10);
+
+            //友盟页面统计
+            UmengPageUtil.startPage(AppConst.APP_FOUND);
+
+            //记录标记
+            SaveUserInfo.getInstance(mContext).setUserInfo("umeng_from", "found");
         }
     }
 

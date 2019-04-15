@@ -15,6 +15,8 @@ import com.alibaba.fastjson.JSON;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.FoundHotGroupAdapter;
 import com.shuyun.qapp.bean.FoundDataBean;
+import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.utils.UmengPageUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +89,15 @@ public class HotGroupFragment extends Fragment {
 
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isVisibleToUser) {
+            //友盟页面统计
+            UmengPageUtil.startPage(AppConst.APP_FOUND_HOT_GROUP);
+        }
+    }
 
     @Override
     public void onDestroyView() {

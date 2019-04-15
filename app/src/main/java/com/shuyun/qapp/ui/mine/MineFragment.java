@@ -27,6 +27,7 @@ import com.shuyun.qapp.bean.AnswerOpptyBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.net.ApiServiceBean;
+import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SykscApplication;
@@ -42,6 +43,7 @@ import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
+import com.shuyun.qapp.utils.UmengPageUtil;
 import com.shuyun.qapp.view.CircleImageView;
 import com.shuyun.qapp.view.InviteSharePopupUtil;
 import com.shuyun.qapp.view.RealNamePopupUtil;
@@ -83,7 +85,7 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
     LinearLayout llAdd;//增加答题次数
     @BindView(R.id.tv_score)
     TextView tvScore;
-    @BindView(R.id.rl_invite_share)
+    @BindView(R.id.rl_share)
     RelativeLayout rlInviteShare;
     @BindView(R.id.iv_point_prize)
     ImageView ivPointPrize;
@@ -140,6 +142,9 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
                     refresh();
                 }
             }, 10);
+
+            //友盟页面统计
+            UmengPageUtil.startPage(AppConst.APP_PERSONAL);
         }
     }
 
@@ -169,9 +174,9 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
     }
 
     @OnClick({R.id.rl_back, R.id.iv_common_right_icon, R.id.iv_header_pic, R.id.rl_header,
-            R.id.iv_real_logo, R.id.ll_my_score, R.id.ll_my_cash, R.id.rl_suggestion,
-            R.id.ll_add, R.id.ll_gift, R.id.ll_tools, R.id.ll_my_order, R.id.ll_my_record,
-            R.id.rl_system_set, R.id.rl_contact_us, R.id.rl_invite_share})
+            R.id.iv_real_logo, R.id.rl_my_score, R.id.rl_my_cash, R.id.rl_suggestion,
+            R.id.ll_add, R.id.rl_prize, R.id.rl_prop, R.id.rl_order, R.id.rl_my_record,
+            R.id.rl_exchange_code, R.id.rl_setting, R.id.rl_call, R.id.rl_share})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_back:
@@ -201,11 +206,11 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
             case R.id.rl_suggestion: //意见反馈
                 startActivity(new Intent(mContext, FeedbackActivity.class));
                 break;
-            case R.id.ll_my_score: //我的积分
+            case R.id.rl_my_score: //我的积分
                 Intent intent = new Intent(mContext, IntegralCenterActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.ll_my_cash:  //现金提现
+            case R.id.rl_my_cash:  //现金提现
                 if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
                     if (mineBean.getCertification() == 1) {
                         startActivity(new Intent(mContext, CashRecordActivity.class));
@@ -214,7 +219,7 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
                     }
                 }
                 break;
-            case R.id.ll_gift: //奖品
+            case R.id.rl_prize: //奖品
                 if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
                     Intent notUse = new Intent(mContext, MinePrizeActivity.class);
                     notUse.putExtra("status", 1);
@@ -222,30 +227,33 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
                     startActivity(notUse);
                 }
                 break;
-            case R.id.ll_tools://道具
+            case R.id.rl_prop://道具
                 startActivity(new Intent(mContext, MyPropsActivity.class));
                 break;
-            case R.id.ll_my_record: //成绩单
+            case R.id.rl_my_record: //成绩单
                 //startActivity(new Intent(mContext, AnswerRecordActivity.class));
                 startActivity(new Intent(mContext, AnswerRecordNewActivity.class));
                 break;
-            case R.id.ll_my_order: //我的订单
+            case R.id.rl_exchange_code://兑换码
+                Toast.makeText(mContext, "兑换码", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.rl_order: //我的订单
                 if (mineBean.getOrderEnabled() == 0) {
                     Toast.makeText(mContext, "敬请期待", Toast.LENGTH_SHORT).show();
                 } else if (mineBean.getOrderEnabled() == 1) {
                     AlipayTradeManager.instance().showMyOrdersPage(getActivity(), 0);
                 }
                 break;
-            case R.id.rl_system_set: //系统设置
+            case R.id.rl_setting: //系统设置
                 startActivity(new Intent(mContext, SystemSettingActivity.class));
                 break;
-            case R.id.rl_contact_us: //联系客服
+            case R.id.rl_call: //客服中心
                 Intent in = new Intent(mContext, WebH5Activity.class);
                 in.putExtra("url", SaveUserInfo.getInstance(mContext).getUserInfo("contactUs_url"));
                 in.putExtra("name", "联系客服");
                 startActivity(in);
                 break;
-            case R.id.rl_invite_share: //分享
+            case R.id.rl_share: //分享
                 InviteSharePopupUtil.showSharedPop(mContext, llMineFragment);
                 break;
             default:

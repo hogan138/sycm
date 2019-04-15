@@ -27,7 +27,9 @@ import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.JsInterationUtil;
+import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
+import com.shuyun.qapp.utils.UmengPageUtil;
 import com.shuyun.qapp.view.AnswerSharePopupUtil;
 
 import butterknife.BindView;
@@ -57,12 +59,18 @@ public class WebAnswerActivity extends BaseActivity {
     private String splash = "";
     private Context mContext;
 
+    //进入标记
+    String umeng_from = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         mContext = this;
         SharedPrefrenceTool.put(mContext, "boxId", "");//清空答题免登录返回宝箱id
+
+        //记录标记
+        umeng_from = SaveUserInfo.getInstance(this).getUserInfo("umeng_from");
 
         /**
          * 检测微信是否安装,如果没有安装,需不显示分享按钮,如果安装了,需要显示分享按钮
@@ -89,6 +97,18 @@ public class WebAnswerActivity extends BaseActivity {
         answerHomeBean.setShare(share);
         String deviceId = SmAntiFraud.getDeviceId();
         answerHomeBean.setDeviceId(deviceId);
+
+        //友盟页面统计
+        if (!EncodeAndStringTool.isStringEmpty(umeng_from) && umeng_from.equals("home")) { //首页
+            String pages = "app_home_group_${" + groupId + "},app_home_group_box_${" + groupId + "},app_home_group_again_${" + groupId + "}";
+            answerHomeBean.setPages(pages);
+        } else if (!EncodeAndStringTool.isStringEmpty(umeng_from) && umeng_from.equals("classify")) { //分类
+            String pages = "app_group_class_${" + groupId + "},app_group_class_box_${" + groupId + "},app_group_class_again_${" + groupId + "}";
+            answerHomeBean.setPages(pages);
+        } else { //其他
+            answerHomeBean.setPages("");
+        }
+
 
         WebSettings settings = wvAnswerHome.getSettings();
         settings.setJavaScriptEnabled(true);

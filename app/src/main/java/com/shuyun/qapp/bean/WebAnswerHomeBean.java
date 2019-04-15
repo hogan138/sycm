@@ -25,6 +25,11 @@ public class WebAnswerHomeBean {
     //是否参与邀请分享 1——参与邀请
     private Integer share;
     private String deviceId;//设备id  数美sdk得到的设备id
+    private String pages; //友盟页面统计记录
+
+    public void setPages(String pages) {
+        this.pages = pages;
+    }
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;

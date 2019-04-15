@@ -210,6 +210,9 @@ public class SykscApplication extends Application {
             }
         });
 
+        // 友盟选用AUTO页面采集模式
+        MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
+
     }
 
     /**

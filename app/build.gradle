@@ -100,6 +100,7 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
 
     //添加LitePal数据库框架依赖 https://github.com/LitePalFramework/LitePal
+
     //implementation 'org.litepal.android:core:1.6.1'
     implementation 'org.litepal.android:java:3.0.0'
 
@@ -212,15 +213,19 @@ dependencies {
 
     //图片压缩 https://github.com/zetbaitsu/Compressor
     implementation 'id.zelory:compressor:2.1.0'
+
     //lib包下umeng包下的是友盟分享
 
     //视频播放
     implementation project(path: ':nicevideoplayer')
-//    implementation 'com.github.xiaoyanger0825:NiceVieoPlayer:v2.2'
+
+    //    implementation 'com.github.xiaoyanger0825:NiceVieoPlayer:v2.2'
+
     //https://github.com/zzhoujay/RichText 富文本加载
     implementation 'com.zzhoujay.richtext:richtext:3.0.8'
     implementation 'com.zzhoujay:html:1.0.2'
+
     //流式布局
     implementation 'com.hyman:flowlayout-lib:1.1.2'
-
+    implementation files('libs/umeng-analytics-8.0.0.jar')
 }

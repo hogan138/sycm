@@ -18,10 +18,12 @@ import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MyPropsBean;
 import com.shuyun.qapp.net.ApiServiceBean;
+import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.UmengPageUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,6 +88,9 @@ public class MyPropsActivity extends BaseActivity implements OnRemotingCallBackL
                 loadProps();
             }
         }, 10);
+
+        //友盟页面统计
+        UmengPageUtil.startPage(AppConst.APP_PERSONAL_PROP);
     }
 
     @Override

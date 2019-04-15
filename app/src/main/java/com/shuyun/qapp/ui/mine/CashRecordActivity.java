@@ -26,6 +26,7 @@ import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.UmengPageUtil;
 import com.shuyun.qapp.view.MarqueTextView;
 
 import java.util.ArrayList;
@@ -81,6 +82,9 @@ public class CashRecordActivity extends BaseActivity implements OnRemotingCallBa
         ButterKnife.bind(this);
         tvCommonTitle.setText("现金余额");
         tvNotice.setSelected(true);
+
+        //友盟页面统计
+        UmengPageUtil.startPage(AppConst.APP_PERSONAL_CASH);
     }
 
     @Override

@@ -23,6 +23,7 @@ import com.shuyun.qapp.base.BaseFragment;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.GroupClassifyBean;
 import com.shuyun.qapp.net.ApiServiceBean;
+import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
@@ -30,6 +31,7 @@ import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveUserInfo;
+import com.shuyun.qapp.utils.UmengPageUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,6 +120,12 @@ public class ClassifyFragment extends BaseFragment implements OnRemotingCallBack
                     refresh();
                 }
             }, 10);
+
+            //友盟页面统计
+            UmengPageUtil.startPage(AppConst.APP_GROUP_CLASS);
+
+            //记录标记
+            SaveUserInfo.getInstance(mContext).setUserInfo("umeng_from", "classify");
         }
     }
 
