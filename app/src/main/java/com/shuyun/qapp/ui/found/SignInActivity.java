@@ -391,39 +391,39 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
             //第一根线
             if (selected1) {
-                lineOne.setBackgroundColor(getColor(R.color.color_ca));
+                lineOne.setBackgroundColor(getResources().getColor(R.color.color_ca));
             } else {
-                lineOne.setBackgroundColor(getColor(R.color.color_07));
+                lineOne.setBackgroundColor(getResources().getColor(R.color.color_07));
             }
             //第二根线
             if (selected2) {
-                lineTwo.setBackgroundColor(getColor(R.color.color_ca));
+                lineTwo.setBackgroundColor(getResources().getColor(R.color.color_ca));
             } else {
-                lineTwo.setBackgroundColor(getColor(R.color.color_07));
+                lineTwo.setBackgroundColor(getResources().getColor(R.color.color_07));
             }
             //第三根线
             if (selected3) {
-                lineThree.setBackgroundColor(getColor(R.color.color_ca));
+                lineThree.setBackgroundColor(getResources().getColor(R.color.color_ca));
             } else {
-                lineThree.setBackgroundColor(getColor(R.color.color_07));
+                lineThree.setBackgroundColor(getResources().getColor(R.color.color_07));
             }
             //第四根线
             if (selected4) {
-                lineFour.setBackgroundColor(getColor(R.color.color_ca));
+                lineFour.setBackgroundColor(getResources().getColor(R.color.color_ca));
             } else {
-                lineFour.setBackgroundColor(getColor(R.color.color_07));
+                lineFour.setBackgroundColor(getResources().getColor(R.color.color_07));
             }
             //第五根线
             if (selected5) {
-                lineFive.setBackgroundColor(getColor(R.color.color_ca));
+                lineFive.setBackgroundColor(getResources().getColor(R.color.color_ca));
             } else {
-                lineFive.setBackgroundColor(getColor(R.color.color_07));
+                lineFive.setBackgroundColor(getResources().getColor(R.color.color_07));
             }
             //第六根线
             if (selected6) {
-                lineSix.setBackgroundColor(getColor(R.color.color_ca));
+                lineSix.setBackgroundColor(getResources().getColor(R.color.color_ca));
             } else {
-                lineSix.setBackgroundColor(getColor(R.color.color_07));
+                lineSix.setBackgroundColor(getResources().getColor(R.color.color_07));
             }
 
         }
