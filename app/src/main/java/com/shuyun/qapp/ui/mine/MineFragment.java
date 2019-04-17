@@ -111,6 +111,9 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
     private ImageView add_answernum_logo;
     private CountDownTimer timer;
 
+
+    private String codeUrl = ""; //兑换码链接
+
     public MineFragment() {
     }
 
@@ -235,7 +238,12 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
                 startActivity(new Intent(mContext, AnswerRecordNewActivity.class));
                 break;
             case R.id.rl_exchange_code://兑换码
-                Toast.makeText(mContext, "兑换码", Toast.LENGTH_SHORT).show();
+                if (!EncodeAndStringTool.isStringEmpty(codeUrl)) {
+                    Intent code = new Intent(mContext, WebH5Activity.class);
+                    code.putExtra("url", codeUrl);
+                    code.putExtra("name", "");//名称 标题
+                    startActivity(code);
+                }
                 break;
             case R.id.rl_order: //我的订单
                 if (mineBean.getOrderEnabled() == 0) {
@@ -478,6 +486,9 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
 
                 //保存联系客服
                 SaveUserInfo.getInstance(mContext).setUserInfo("contactUs_url", mineBean.getContactUs());
+
+                //兑换码
+                codeUrl = mineBean.getCodeUrl();
             }
         } else if (LOAD_ANSWER_OPPTY_REMAINDER.equals(action)) {
             remainderTime = (String) response.getDat();

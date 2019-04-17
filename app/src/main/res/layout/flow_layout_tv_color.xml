@@ -3,7 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="30dp"
     android:layout_marginTop="@dimen/text_8"
-    android:layout_marginRight="@dimen/text_22"
+    android:layout_marginRight="@dimen/text_10"
     android:background="@drawable/tag_bg"
     android:drawableLeft="@drawable/oval"
     android:drawablePadding="5dp"

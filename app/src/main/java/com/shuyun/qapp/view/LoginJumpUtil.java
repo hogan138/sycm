@@ -12,6 +12,7 @@ import com.shuyun.qapp.ui.integral.IntegralCenterActivity;
 import com.shuyun.qapp.ui.integral.IntegralMainActivity;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.mine.AddWithdrawInfoActivity;
+import com.shuyun.qapp.ui.mine.MinePrizeActivity;
 import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
@@ -129,6 +130,10 @@ public class LoginJumpUtil {
                     Intent intent = new Intent(context, IntegralExchangeActivity.class);
                     context.startActivity(intent);
                 }
+            } else if (AppConst.ACTION_PRIZE.equals(action)) { //我的奖品
+                Intent intent = new Intent(context, MinePrizeActivity.class);
+                intent.putExtra("status", 1);
+                context.startActivity(intent);
             }
         } catch (Exception e) {
 

@@ -380,6 +380,7 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
                         count = value;
                     }
                 });
+
                 //立即兑换
                 tv_exchange.setOnClickListener(new View.OnClickListener() {
                     @Override

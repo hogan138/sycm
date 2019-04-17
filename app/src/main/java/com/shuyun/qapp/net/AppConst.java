@@ -141,6 +141,7 @@ public class AppConst {
     public static final String H5_EXTERNAL = "action.h5.external";//h5跳转外部链接
     public static final String ACTION_SIGN = "action.sign";//签到
     public static final String ACTION_INTEGRAL_GOODS = "action.integral.goods";//积分兑换
+    public static final String ACTION_PRIZE = "action.prize";//我的奖品
 
     //邀请登录跳转
     public static final int INVITE_CODE = 0x2001;

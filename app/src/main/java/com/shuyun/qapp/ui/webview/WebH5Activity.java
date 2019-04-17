@@ -59,10 +59,10 @@ public class WebH5Activity extends BaseActivity {
     @BindView(R.id.rl_title)
     RelativeLayout rlTitle;
 
-    private String url;
-    private String id;
+    private String url = "";
+    private String id = "";
     //从广告页进入
-    private String splash;
+    private String splash = "";
 
     WebAnswerHomeBean answerHomeBean = new WebAnswerHomeBean();
 
