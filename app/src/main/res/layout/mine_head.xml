@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#f8f8f8">
+    android:background="@color/color_f8">
 
     <RelativeLayout
         android:id="@+id/rl_header"
@@ -27,12 +27,11 @@
         android:layout_marginTop="37dp"
         android:layout_marginRight="@dimen/text_17"
         android:layout_marginBottom="@dimen/text_20"
-        android:clickable="true"
-        android:foreground="?attr/selectableItemBackground"
-        app:cardBackgroundColor="#f2ffffff"
+        android:alpha="0.95"
+        android:background="@color/white"
         app:cardCornerRadius="6dp"
-        app:cardElevation="10dp"
-        app:cardPreventCornerOverlap="true"
+        app:cardElevation="6dp"
+        app:cardPreventCornerOverlap="false"
         app:cardUseCompatPadding="false"
         app:contentPadding="-2dp">
 
