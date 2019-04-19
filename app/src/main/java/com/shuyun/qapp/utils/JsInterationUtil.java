@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.PhoneUtils;
 import com.google.gson.Gson;
 import com.mylhyl.circledialog.CircleDialog;
@@ -1024,6 +1025,7 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
             exitDialog(returnDialogBean);
             show = false;
         } else {
+            KeyboardUtils.hideSoftInput(activity);
             activity.finish();
         }
     }

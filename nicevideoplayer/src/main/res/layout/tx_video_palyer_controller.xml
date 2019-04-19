@@ -207,7 +207,6 @@
             android:layout_weight="1"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="真实死亡游戏“蓝鲸”疑似进入国内，家长们要注意了"
             android:textColor="@android:color/white"
             android:textSize="14sp" />
 

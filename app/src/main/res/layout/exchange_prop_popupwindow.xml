@@ -29,6 +29,18 @@
         android:textColor="#ffffff"
         android:textSize="@dimen/text_18" />
 
+    <TextView
+        android:id="@+id/tv_look_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="查看详情 >"
+        android:textColor="@color/color_4"
+        android:textSize="@dimen/text_15"
+        android:visibility="invisible" />
+
     <ImageView
         android:id="@+id/iv_close"
         android:layout_width="33dp"

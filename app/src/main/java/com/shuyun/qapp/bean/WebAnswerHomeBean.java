@@ -31,6 +31,10 @@ public class WebAnswerHomeBean {
         this.pages = pages;
     }
 
+    public String getPages() {
+        return pages;
+    }
+
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
     }
@@ -115,6 +119,8 @@ public class WebAnswerHomeBean {
                 ", appSecret='" + appSecret + '\'' +
                 ", share=" + share +
                 ", deviceId='" + deviceId + '\'' +
+                ", pages='" + pages + '\'' +
                 '}';
     }
+
 }

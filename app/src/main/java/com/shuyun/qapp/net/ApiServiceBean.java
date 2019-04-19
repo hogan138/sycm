@@ -700,4 +700,11 @@ public class ApiServiceBean {
     public static String getGoodsInfo() {
         return "getGoodsInfo";
     }
+
+    /**
+     * 101、发现页面积分商品兑换
+     */
+    public static String scoreExchangeApplyGoods() {
+        return "scoreExchangeApplyGoods";
+    }
 }

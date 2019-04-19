@@ -176,7 +176,7 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
         RemotingEx.doRequest(LOAD_MINE_HOME_DATA, ApiServiceBean.getMineHomeData(), null, this);
     }
 
-    @OnClick({R.id.rl_back, R.id.iv_common_right_icon, R.id.iv_header_pic,
+    @OnClick({R.id.rl_back, R.id.iv_common_right_icon, R.id.iv_header_pic, R.id.rl_cardview,
             R.id.iv_real_logo, R.id.rl_my_score, R.id.rl_my_cash, R.id.rl_suggestion,
             R.id.ll_add, R.id.rl_prize, R.id.rl_prop, R.id.rl_order, R.id.rl_my_record,
             R.id.rl_exchange_code, R.id.rl_setting, R.id.rl_call, R.id.rl_share})
@@ -193,6 +193,7 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
                 startActivity(new Intent(mContext, InformationActivity.class));
                 break;
             case R.id.iv_header_pic://点击头像和修改个人信息走相同的逻辑
+            case R.id.rl_cardview:
                 if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
                     Intent intent = new Intent(mContext, ChangePersonalInfoActivity.class);
                     startActivity(intent);

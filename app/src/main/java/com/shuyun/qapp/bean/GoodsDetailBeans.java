@@ -5,12 +5,12 @@ import java.util.List;
 /**
  * @ProjectName: 全民共进
  * @Package: com.shuyun.qapp.bean
- * @ClassName: GoodsDeatilsBeans
+ * @ClassName: GoodsDetailBeans
  * @Description: 商品详情
  * @Author: ganquan
  * @CreateDate: 2019/3/28 16:56
  */
-public class GoodsDeatilsBeans {
+public class GoodsDetailBeans {
 
 
     /**
@@ -223,10 +223,10 @@ public class GoodsDeatilsBeans {
              * value : M
              * label : M
              */
-
             private String value;
             private String label;
             private String color;
+            private boolean selected = false;
 
             public String getValue() {
                 return value;
@@ -252,6 +252,13 @@ public class GoodsDeatilsBeans {
                 this.color = color;
             }
 
+            public boolean isSelected() {
+                return selected;
+            }
+
+            public void setSelected(boolean selected) {
+                this.selected = selected;
+            }
         }
     }
 }

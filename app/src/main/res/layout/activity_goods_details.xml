@@ -61,7 +61,7 @@
             <cn.kevin.banner.BannerViewPager
                 android:id="@+id/banner"
                 android:layout_width="match_parent"
-                android:layout_height="280dp"
+                android:layout_height="350dp"
                 app:around_visible="false"
                 app:layout_scrollFlags="scroll"
                 app:point_drawable="@drawable/goods_details_banner_selector"
@@ -82,7 +82,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/text_6"
                 android:gravity="center_horizontal"
-                android:textColor="@color/color_66"
+                android:lineSpacingExtra="4dp"
+                android:textColor="@color/login_text"
                 android:textSize="@dimen/text_13" />
 
             <LinearLayout
@@ -102,6 +103,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/text_4"
                     android:text="积分"
                     android:textColor="@color/color_e9"
                     android:textSize="@dimen/text_14" />
@@ -114,20 +116,9 @@
                 android:background="@color/color_f1" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/text_16"
-                android:gravity="center_horizontal"
-                android:text="商品详情"
-                android:textColor="@color/color_1"
-                android:textSize="@dimen/text_16" />
-
-            <TextView
                 android:id="@+id/tv_rich_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="@dimen/text_15" />
+                android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:id="@+id/ll_add_video"
@@ -138,8 +129,7 @@
             <TextView
                 android:id="@+id/tv_rich_text_bottom"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_15" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
     </ScrollView>

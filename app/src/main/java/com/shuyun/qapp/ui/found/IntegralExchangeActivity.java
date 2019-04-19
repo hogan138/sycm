@@ -146,7 +146,6 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
         loadHomeData();
     }
 
-
     @Override
     public int intiLayout() {
         return R.layout.activity_integral_exchange2;
@@ -239,7 +238,6 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
             //兑换道具成功
             ScoreExchangeResult scoreExchangeResult = (ScoreExchangeResult) response.getDat();
             showSuccessPop(scoreExchangeResult);
-//            Toast.makeText(mContext, "兑换成功", Toast.LENGTH_SHORT).show();
         }
     }
 

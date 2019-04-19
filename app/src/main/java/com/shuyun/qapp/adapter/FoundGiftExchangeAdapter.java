@@ -62,10 +62,12 @@ public class FoundGiftExchangeAdapter extends RecyclerView.Adapter<RecyclerView.
                 //可兑换
                 ((MyViewHolder) holder).tvJoin.setBackgroundResource(R.drawable.blue_btn_bg);
                 ((MyViewHolder) holder).tvJoin.setEnabled(true);
+                ((MyViewHolder) holder).llItem.setEnabled(true);
             } else if (action.equals("action.replenishment")) {
                 //不可兑换
                 ((MyViewHolder) holder).tvJoin.setBackgroundResource(R.drawable.exchange_gray_btn_bg);
                 ((MyViewHolder) holder).tvJoin.setEnabled(false);
+                ((MyViewHolder) holder).llItem.setEnabled(false);
             }
 
             ((MyViewHolder) holder).llItem.setOnClickListener(new OnMultiClickListener() {

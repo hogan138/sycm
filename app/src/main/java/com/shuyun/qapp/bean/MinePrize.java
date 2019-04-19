@@ -48,7 +48,6 @@ public class MinePrize implements Parcelable {
     private String LongImage;
     private String id;
     @JSONField(serializeUsing = ToStringSerializer.class)
-    private Long ruleId;
     private String expireTime;
     private String validTime;
     private Long status;
@@ -68,7 +67,6 @@ public class MinePrize implements Parcelable {
     @JSONField(serializeUsing = ToStringSerializer.class)
     private Long orderId;
     @JSONField(serializeUsing = ToStringSerializer.class)
-    private Long activityId;//活动id
     public boolean selected = false;
     private String content;
     private String openPicture;//开奖使用的图片
@@ -89,7 +87,6 @@ public class MinePrize implements Parcelable {
         mainImage = in.readString();
         LongImage = in.readString();
         id = in.readString();
-        ruleId = in.readLong();
         expireTime = in.readString();
         validTime = in.readString();
         status = in.readLong();
@@ -106,7 +103,6 @@ public class MinePrize implements Parcelable {
         orginal = in.readInt();
         scheduleId = in.readLong();
         orderId = in.readLong();
-        activityId = in.readLong();
         selected = in.readByte() != 0;
         content = in.readString();
         openPicture = in.readString();
@@ -190,14 +186,6 @@ public class MinePrize implements Parcelable {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public Long getRuleId() {
-        return ruleId;
-    }
-
-    public void setRuleId(Long ruleId) {
-        this.ruleId = ruleId;
     }
 
     public String getExpireTime() {
@@ -328,14 +316,6 @@ public class MinePrize implements Parcelable {
         this.orderId = orderId;
     }
 
-    public Long getActivityId() {
-        return activityId;
-    }
-
-    public void setActivityId(Long activityId) {
-        this.activityId = activityId;
-    }
-
     public boolean isSelected() {
         return selected;
     }
@@ -399,7 +379,6 @@ public class MinePrize implements Parcelable {
         dest.writeString(mainImage);
         dest.writeString(LongImage);
         dest.writeString(id);
-        dest.writeLong(ruleId);
         dest.writeString(expireTime);
         dest.writeString(validTime);
         dest.writeLong(status);
@@ -416,7 +395,6 @@ public class MinePrize implements Parcelable {
         dest.writeInt(orginal);
         dest.writeLong(scheduleId);
         dest.writeLong(orderId);
-        dest.writeLong(activityId);
         dest.writeByte((byte) (selected ? 1 : 0));
         dest.writeString(content);
         dest.writeString(openPicture);
@@ -622,7 +600,6 @@ public class MinePrize implements Parcelable {
         @JSONField(serializeUsing = ToStringSerializer.class)
         private Long prizeId;
         @JSONField(serializeUsing = ToStringSerializer.class)
-        private Long ruleId;
         private String expireTime;
         private Long validTime;
         private Long status;
@@ -734,14 +711,6 @@ public class MinePrize implements Parcelable {
 
         public void setPrizeId(Long prizeId) {
             this.prizeId = prizeId;
-        }
-
-        public Long getRuleId() {
-            return ruleId;
-        }
-
-        public void setRuleId(Long ruleId) {
-            this.ruleId = ruleId;
         }
 
         public String getExpireTime() {
@@ -875,7 +844,6 @@ public class MinePrize implements Parcelable {
             shortImage = in.readString();
             id = in.readString();
             prizeId = in.readLong();
-            ruleId = in.readLong();
             expireTime = in.readString();
             validTime = in.readLong();
             status = in.readLong();
@@ -923,7 +891,6 @@ public class MinePrize implements Parcelable {
             dest.writeString(shortImage);
             dest.writeString(id);
             dest.writeLong(prizeId);
-            dest.writeLong(ruleId);
             dest.writeString(expireTime);
             dest.writeLong(validTime);
             dest.writeLong(status);
