@@ -93,6 +93,14 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
     TextView tvWithdrawTitle;
     @BindView(R.id.tv_real_status)
     TextView tvRealStatus; //实名认证状态
+    @BindView(R.id.tv_withdraw_weixin_title)
+    TextView tvWithdrawWeixinTitle;
+    @BindView(R.id.tv_withdraw_weixin_status)
+    TextView tvWithdrawWeixinStatus;
+    @BindView(R.id.tv_withdraw_weixin_description)
+    TextView tvWithdrawWeixinDescription;
+    @BindView(R.id.ll_withdraw_weixin)
+    LinearLayout llWithdrawWeixin; //微信提现
 
 
     private boolean mIsShowing = false;
@@ -164,7 +172,7 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
 
 
     @OnClick({R.id.iv_back, R.id.rl_change_head_icon, R.id.rl_bind_phone_num, R.id.rl_bind_wechat, R.id.rl_modify_password,
-            R.id.ll_real_name_auth, R.id.ll_withdraw_info, R.id.btn_contact_our})
+            R.id.ll_real_name_auth, R.id.ll_withdraw_info, R.id.ll_withdraw_weixin, R.id.btn_contact_our})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -197,10 +205,14 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
             case R.id.ll_real_name_auth: //实名认证
                 startActivity(new Intent(this, RealNameAuthActivity.class));
                 break;
-            case R.id.ll_withdraw_info: //提现信息
+            case R.id.ll_withdraw_info: //支付宝提现信息
                 Intent intent1 = new Intent(this, AddWithdrawInfoActivity.class);
                 intent1.putExtra("info", real_info);
                 startActivity(intent1);
+                break;
+            case R.id.ll_withdraw_weixin://微信提现信息
+                //拉起微信
+                wxLogin();
                 break;
             case R.id.btn_contact_our: //联系客服
                 Intent i = new Intent(this, WebH5Activity.class);
@@ -391,49 +403,71 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
                     MineBean mineBean = listDataResponse.getDat();
                     if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
                         try {
-                            for (int i = 0; i < mineBean.getDatas().size(); i++) {
-                                String status_name = mineBean.getDatas().get(i).getStateName();
-                                String title = mineBean.getDatas().get(i).getTitle();
-                                String message = mineBean.getDatas().get(i).getMessage();
-                                Long status = mineBean.getDatas().get(i).getStatus();
-                                if ("withdraw".equals(mineBean.getDatas().get(i).getType())) {
+                            //实名认证
+                            MineBean.CertBaseBean certBaseBean = mineBean.getCertBase();
+                            Long status = certBaseBean.getStatus();
+                            boolean enabled = certBaseBean.isEnabled();
+                            //实名信息
+                            tvRealTitle.setText(certBaseBean.getTitle());
+                            tvRealStatus.setText(certBaseBean.getStateName());
+                            tvRealDescription.setText(certBaseBean.getMessage());
+                            //更改颜色
+                            if (status == 3) {
+                                tvRealStatus.setTextColor(Color.parseColor("#0194EC"));
+                            } else {
+                                tvRealStatus.setTextColor(Color.parseColor("#F53434"));
+                            }
+                            //是否可以点击
+                            if (enabled) {
+                                llRealNameAuth.setEnabled(true);
+                            } else {
+                                llRealNameAuth.setEnabled(false);
+                            }
 
+                            //提现信息
+                            List<MineBean.WithdrawBaseBean> withdrawBaseBean = mineBean.getWithdrawBase();
+                            for (int i = 0; i < withdrawBaseBean.size(); i++) {
+                                String status_name = withdrawBaseBean.get(i).getStateName();
+                                String title = withdrawBaseBean.get(i).getTitle();
+                                String message = withdrawBaseBean.get(i).getMessage();
+                                Long status_withdraw = withdrawBaseBean.get(i).getStatus();
+                                Long bankType = withdrawBaseBean.get(i).getBankType();
+                                boolean enabled_withdraw = withdrawBaseBean.get(i).isEnabled();
+                                if (bankType == 1) {
                                     real_info = title;
-
                                     //提现信息
                                     tvWithdrawTitle.setText(title);
                                     tvWithdrawStatus.setText(status_name);
                                     tvWithdrawDescription.setText(message);
                                     //更改颜色
-                                    if (status == 3) {
+                                    if (status_withdraw == 3) {
                                         tvWithdrawStatus.setTextColor(Color.parseColor("#0194EC"));
                                     } else {
                                         tvWithdrawStatus.setTextColor(Color.parseColor("#F53434"));
                                     }
                                     //是否可以点击
-                                    if (mineBean.getDatas().get(i).isEnabled()) {
+                                    if (enabled_withdraw) {
                                         llWithdrawInfo.setEnabled(true);
                                     } else {
                                         llWithdrawInfo.setEnabled(false);
                                     }
-                                } else if ("cert".equals(mineBean.getDatas().get(i).getType())) {
-                                    //实名信息
-                                    tvRealTitle.setText(title);
-                                    tvRealStatus.setText(status_name);
-                                    tvRealDescription.setText(message);
+                                } else if (bankType == 2) {
+                                    //微信提现信息
+                                    tvWithdrawWeixinTitle.setText(title);
+                                    tvWithdrawWeixinStatus.setText(status_name);
+                                    tvWithdrawWeixinDescription.setText(message);
                                     //更改颜色
-                                    if (status == 3) {
-                                        tvRealStatus.setTextColor(Color.parseColor("#0194EC"));
+                                    if (status_withdraw == 3) {
+                                        tvWithdrawWeixinStatus.setTextColor(Color.parseColor("#0194EC"));
                                     } else {
-                                        tvRealStatus.setTextColor(Color.parseColor("#F53434"));
+                                        tvWithdrawWeixinStatus.setTextColor(Color.parseColor("#F53434"));
                                     }
                                     //是否可以点击
-                                    if (mineBean.getDatas().get(i).isEnabled()) {
-                                        llRealNameAuth.setEnabled(true);
+                                    if (enabled_withdraw) {
+                                        llWithdrawWeixin.setEnabled(true);
                                     } else {
-                                        llRealNameAuth.setEnabled(false);
+                                        llWithdrawWeixin.setEnabled(false);
                                     }
-
                                 }
                             }
                         } catch (Exception e) {

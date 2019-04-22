@@ -83,21 +83,21 @@ public class AddWithdrawInfoActivity extends BaseActivity implements View.OnClic
         addListener(etName, ivClearName);//给支付宝绑定姓名EditText设置变化监听事件
         addListener(etAccount, ivClearAccount);//给支付宝账户EditText设置变化监听事件
 
-        try {
-            String name = getIntent().getStringExtra("info").replaceAll(" ", "");
-            if (!EncodeAndStringTool.isStringEmpty(name) && name.indexOf("|") != -1) {
-                String[] temp = null;
-                temp = name.split("[|]");
-                if (temp.length >= 2) {
-                    etName.setText(temp[1]);
-                    etName.setSelection(temp[1].length());
-                    etAccount.setText(temp[2]);
-                    etAccount.setSelection(temp[2].length());
-                }
-            }
-        } catch (Exception e) {
-
-        }
+//        try {
+//            String name = getIntent().getStringExtra("info").replaceAll(" ", "");
+//            if (!EncodeAndStringTool.isStringEmpty(name) && name.indexOf("|") != -1) {
+//                String[] temp = null;
+//                temp = name.split("[|]");
+//                if (temp.length >= 2) {
+//                    etName.setText(temp[1]);
+//                    etName.setSelection(temp[1].length());
+//                    etAccount.setText(temp[2]);
+//                    etAccount.setSelection(temp[2].length());
+//                }
+//            }
+//        } catch (Exception e) {
+//
+//        }
 
     }
 

@@ -145,9 +145,9 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
                             } else {
                                 Log.i(TAG, "onResp: " + code);
                                 SaveUserInfo.getInstance(mContext).setUserInfo("wxcode", code);//将微信code存本地
-                                if (!EncodeAndStringTool.isStringEmpty(code)) {
-                                    loadChangeWXbind(code);
-                                }
+
+                                //变更微信绑定
+                                loadChangeWXbind(code);
                             }
                         }
                         break;
@@ -215,8 +215,8 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
                 ToastUtil.showToast(mContext, "成功变更绑定微信!");
                 //通知任务更新
                 EventBus.getDefault().post(new MessageEvent("wx_bind_success"));
-            } else {//错误码提示
-//                ToastUtil.showToast(mContext, "您的微信号已被其他账号绑定!");
+            } else {
+                //错误码提示
                 ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
             }
         } else if ("login".equals(action)) {
