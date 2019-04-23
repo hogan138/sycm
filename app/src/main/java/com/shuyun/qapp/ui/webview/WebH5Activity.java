@@ -131,6 +131,11 @@ public class WebH5Activity extends BaseActivity {
         return R.layout.activity_web_banner;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        wvBanner.addJavascriptInterface(new JsInterationUtil(id, (Activity) context, tvCommonTitle, ivRightIcon, rlMain, tvRight, wvBanner, answerHomeBean, ivLeftBack, rlTitle), "android");
+    }
 
     /**
      * 初始化数据

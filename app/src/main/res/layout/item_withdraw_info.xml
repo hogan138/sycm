@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:foreground="?attr/selectableItemBackground"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_0.5"
+        android:layout_marginLeft="@dimen/text_15"
+        android:layout_marginRight="@dimen/text_15"
+        android:background="#C8C7CC"></View>
+
+    <LinearLayout
+        android:id="@+id/ll_withdraw_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?attr/selectableItemBackground"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_16"
+            android:layout_marginBottom="@dimen/text_15"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_withdraw_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/text_15"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_withdraw_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/text_42"
+                android:layout_toLeftOf="@+id/iv_more"
+                android:textColor="#0194ec"
+                android:textSize="@dimen/text_15" />
+
+            <ImageView
+                android:layout_width="@dimen/text_7"
+                android:layout_height="@dimen/text_12"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/text_12"
+                android:src="@mipmap/gomore" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_withdraw_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_15"
+            android:layout_marginBottom="@dimen/text_16"
+            android:textColor="@color/login_text"
+            android:textSize="@dimen/text_11" />
+
+    </LinearLayout>
+
+</LinearLayout>

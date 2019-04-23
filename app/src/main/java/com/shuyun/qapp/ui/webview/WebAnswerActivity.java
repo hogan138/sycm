@@ -69,9 +69,6 @@ public class WebAnswerActivity extends BaseActivity {
         mContext = this;
         SharedPrefrenceTool.put(mContext, "boxId", "");//清空答题免登录返回宝箱id
 
-        //记录标记
-        umeng_from = SaveUserInfo.getInstance(this).getUserInfo("umeng_from");
-
         /**
          * 检测微信是否安装,如果没有安装,需不显示分享按钮,如果安装了,需要显示分享按钮
          */
@@ -80,6 +77,10 @@ public class WebAnswerActivity extends BaseActivity {
         } else {
             ivRightIcon.setImageResource(R.mipmap.share);//右侧分享
         }
+
+
+        //记录标记
+        umeng_from = SaveUserInfo.getInstance(this).getUserInfo("umeng_from");
 
         Intent intent = getIntent();
         splash = intent.getStringExtra("from");
@@ -125,6 +126,14 @@ public class WebAnswerActivity extends BaseActivity {
             wvAnswerHome.loadUrl(AppConst.ANSWER);
         }
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        wvAnswerHome.addJavascriptInterface(new JsInterationUtil(answerHomeBean, (Activity) mContext, wvAnswerHome, llH5, splash, "anwser", tvCommonTitle, ivRightIcon, groupId), "android");
 
     }
 

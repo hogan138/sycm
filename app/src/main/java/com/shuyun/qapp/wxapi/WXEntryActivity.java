@@ -5,14 +5,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.View;
 
 import com.alibaba.fastjson.JSON;
 import com.ishumei.smantifraud.SmAntiFraud;
+import com.shuyun.qapp.bean.AddWithdrawResultBean;
+import com.shuyun.qapp.bean.AddWxWithdrawBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.LoginInput;
 import com.shuyun.qapp.bean.LoginResponse;
 import com.shuyun.qapp.bean.MessageEvent;
 import com.shuyun.qapp.bean.Msg;
+import com.shuyun.qapp.bean.SubmitWithdrawInfoBean;
 import com.shuyun.qapp.bean.UserWxInfo;
 import com.shuyun.qapp.net.ActivityCallManager;
 import com.shuyun.qapp.net.ApiServiceBean;
@@ -21,6 +25,8 @@ import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.login.LoginActivity;
+import com.shuyun.qapp.ui.mine.AddWithdrawInfoActivity;
+import com.shuyun.qapp.ui.mine.WithdrawResultActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.AliPushBind;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -146,8 +152,16 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
                                 Log.i(TAG, "onResp: " + code);
                                 SaveUserInfo.getInstance(mContext).setUserInfo("wxcode", code);//将微信code存本地
 
-                                //变更微信绑定
-                                loadChangeWXbind(code);
+                                String weixin_addwithdraw = SaveUserInfo.getInstance(this).getUserInfo("bind_weixin_addwithdraw");
+                                if (!EncodeAndStringTool.isStringEmpty(weixin_addwithdraw) && weixin_addwithdraw.equals("add")) {
+                                    //完善微信提现信息
+                                    addWxWtihdraw(code);
+                                    SaveUserInfo.getInstance(this).setUserInfo("bind_weixin_addwithdraw", "");
+                                } else {
+                                    //变更微信绑定
+                                    loadChangeWXbind(code);
+                                }
+
                             }
                         }
                         break;
@@ -160,6 +174,16 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
     }
 
     /**
+     * 完善微信提现信息
+     *
+     * @param wxcode
+     */
+    public void addWxWtihdraw(String wxcode) {
+        RemotingEx.doRequest("addWxWtihdraw", ApiServiceBean.addWxWithdraw(), new Object[]{wxcode}, this);
+    }
+
+
+    /**
      * 变更绑定微信
      *
      * @param wxcode
@@ -167,6 +191,7 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
     public void loadChangeWXbind(String wxcode) {
         RemotingEx.doRequest("changeWXbind", ApiServiceBean.changeWXbind(), new Object[]{wxcode}, this);
     }
+
 
     /**
      * 登录
@@ -236,6 +261,48 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
             } else {
                 ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
             }
+        } else if ("addWxWtihdraw".equals(action)) {  //完善微信提现信息
+            if (response.isSuccees()) {
+                AddWxWithdrawBean addWxWithdrawBean = (AddWxWithdrawBean) response.getDat();
+                String card = addWxWithdrawBean.getCard();
+                String name = addWxWithdrawBean.getName();
+                SubmitWithdrawInfoBean submitWithdrawInfoBean = new SubmitWithdrawInfoBean(2, card, name);
+                //提交微信信息
+                AddWithdrawalInfo(submitWithdrawInfoBean);
+
+            } else {
+                ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
+            }
         }
     }
+
+    //完善提现信息
+    private void AddWithdrawalInfo(SubmitWithdrawInfoBean submitWithdrawInfoBean) {
+        final String inputbean = JSON.toJSONString(submitWithdrawInfoBean);
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
+
+        RemotingEx.doRequest(ApiServiceBean.submitWithdrawInfo(), new Object[]{body}, new OnRemotingCallBackListener<AddWithdrawResultBean>() {
+            @Override
+            public void onCompleted(String action) {
+
+            }
+
+            @Override
+            public void onFailed(String action, String message) {
+
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<AddWithdrawResultBean> listDataResponse) {
+                if (listDataResponse.isSuccees()) {
+                    //通知任务更新
+                    EventBus.getDefault().post(new MessageEvent("wx_commit_success"));
+                } else {
+                    ErrorCodeTools.errorCodePrompt(mContext, listDataResponse.getErr(), listDataResponse.getMsg());
+                }
+            }
+        });
+
+    }
+
 }

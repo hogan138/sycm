@@ -1,9 +1,13 @@
 package com.shuyun.qapp.ui.mine;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +24,13 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.shuyun.qapp.R;
+import com.shuyun.qapp.adapter.FoundPropsExchangeAdapter;
+import com.shuyun.qapp.adapter.WithdrawInfoAdapter;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
+import com.shuyun.qapp.bean.MessageEvent;
 import com.shuyun.qapp.bean.MineBean;
+import com.shuyun.qapp.bean.ScoreExchangeBeans;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -40,6 +48,10 @@ import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,34 +89,22 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
     TextView tvBindStatus;//微信绑定状态
     @BindView(R.id.ll_real_name_auth)
     LinearLayout llRealNameAuth;
-    @BindView(R.id.tv_withdraw_status)
-    TextView tvWithdrawStatus;
-    @BindView(R.id.tv_withdraw_description)
-    TextView tvWithdrawDescription;
-    @BindView(R.id.ll_withdraw_info)
-    LinearLayout llWithdrawInfo;
     @BindView(R.id.btn_contact_our)
     Button btnContactOur;
     @BindView(R.id.tv_real_title)
     TextView tvRealTitle;
     @BindView(R.id.tv_real_description)
     TextView tvRealDescription;
-    @BindView(R.id.tv_withdraw_title)
-    TextView tvWithdrawTitle;
     @BindView(R.id.tv_real_status)
     TextView tvRealStatus; //实名认证状态
-    @BindView(R.id.tv_withdraw_weixin_title)
-    TextView tvWithdrawWeixinTitle;
-    @BindView(R.id.tv_withdraw_weixin_status)
-    TextView tvWithdrawWeixinStatus;
-    @BindView(R.id.tv_withdraw_weixin_description)
-    TextView tvWithdrawWeixinDescription;
-    @BindView(R.id.ll_withdraw_weixin)
-    LinearLayout llWithdrawWeixin; //微信提现
-
+    @BindView(R.id.rv_add_withdraw)
+    RecyclerView rvAddWithdraw;
 
     private boolean mIsShowing = false;
 
+    private WithdrawInfoAdapter withdrawInfoAdapter;
+
+    private Context mContext;
 
     //实名信息
     String real_info = "";
@@ -121,6 +121,7 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         tvCommonTitle.setText("基本信息修改");
+        mContext = this;
 
         /**
          * 检测微信是否安装,如果没有安装,需不显示微信绑定状态;如果安装了微信则显示微信绑定状态.
@@ -132,6 +133,8 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
         }
 
         MyActivityManager.getInstance().pushOneActivity(this);
+
+        EventBus.getDefault().register(this);//注册Eventbus
     }
 
     @Override
@@ -172,7 +175,7 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
 
 
     @OnClick({R.id.iv_back, R.id.rl_change_head_icon, R.id.rl_bind_phone_num, R.id.rl_bind_wechat, R.id.rl_modify_password,
-            R.id.ll_real_name_auth, R.id.ll_withdraw_info, R.id.ll_withdraw_weixin, R.id.btn_contact_our})
+            R.id.ll_real_name_auth, R.id.btn_contact_our})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -204,15 +207,6 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
                 break;
             case R.id.ll_real_name_auth: //实名认证
                 startActivity(new Intent(this, RealNameAuthActivity.class));
-                break;
-            case R.id.ll_withdraw_info: //支付宝提现信息
-                Intent intent1 = new Intent(this, AddWithdrawInfoActivity.class);
-                intent1.putExtra("info", real_info);
-                startActivity(intent1);
-                break;
-            case R.id.ll_withdraw_weixin://微信提现信息
-                //拉起微信
-                wxLogin();
                 break;
             case R.id.btn_contact_our: //联系客服
                 Intent i = new Intent(this, WebH5Activity.class);
@@ -383,6 +377,10 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
     protected void onDestroy() {
         super.onDestroy();
         handler.removeCallbacks(runnable);
+
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     private void loadMineHomeData1() {
@@ -425,51 +423,32 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
                             }
 
                             //提现信息
-                            List<MineBean.WithdrawBaseBean> withdrawBaseBean = mineBean.getWithdrawBase();
-                            for (int i = 0; i < withdrawBaseBean.size(); i++) {
-                                String status_name = withdrawBaseBean.get(i).getStateName();
-                                String title = withdrawBaseBean.get(i).getTitle();
-                                String message = withdrawBaseBean.get(i).getMessage();
-                                Long status_withdraw = withdrawBaseBean.get(i).getStatus();
-                                Long bankType = withdrawBaseBean.get(i).getBankType();
-                                boolean enabled_withdraw = withdrawBaseBean.get(i).isEnabled();
-                                if (bankType == 1) {
-                                    real_info = title;
-                                    //提现信息
-                                    tvWithdrawTitle.setText(title);
-                                    tvWithdrawStatus.setText(status_name);
-                                    tvWithdrawDescription.setText(message);
-                                    //更改颜色
-                                    if (status_withdraw == 3) {
-                                        tvWithdrawStatus.setTextColor(Color.parseColor("#0194EC"));
-                                    } else {
-                                        tvWithdrawStatus.setTextColor(Color.parseColor("#F53434"));
-                                    }
-                                    //是否可以点击
-                                    if (enabled_withdraw) {
-                                        llWithdrawInfo.setEnabled(true);
-                                    } else {
-                                        llWithdrawInfo.setEnabled(false);
-                                    }
-                                } else if (bankType == 2) {
-                                    //微信提现信息
-                                    tvWithdrawWeixinTitle.setText(title);
-                                    tvWithdrawWeixinStatus.setText(status_name);
-                                    tvWithdrawWeixinDescription.setText(message);
-                                    //更改颜色
-                                    if (status_withdraw == 3) {
-                                        tvWithdrawWeixinStatus.setTextColor(Color.parseColor("#0194EC"));
-                                    } else {
-                                        tvWithdrawWeixinStatus.setTextColor(Color.parseColor("#F53434"));
-                                    }
-                                    //是否可以点击
-                                    if (enabled_withdraw) {
-                                        llWithdrawWeixin.setEnabled(true);
-                                    } else {
-                                        llWithdrawWeixin.setEnabled(false);
+                            final List<MineBean.WithdrawBaseBean> withdrawBaseBeanList = mineBean.getWithdrawBase();
+                            //初始化适配器
+                            withdrawInfoAdapter = new WithdrawInfoAdapter(withdrawBaseBeanList, ChangePersonalInfoActivity.this);
+                            withdrawInfoAdapter.setOnItemClickLitsener(new WithdrawInfoAdapter.OnItemClickListener() {
+
+                                @Override
+                                public void onItemClick(View view, int position) {
+                                    MineBean.WithdrawBaseBean withdrawBaseBean = withdrawBaseBeanList.get(position);
+                                    Long bankType = withdrawBaseBean.getBankType();
+                                    if (bankType == 1) {//支付宝提现信息
+                                        startActivity(new Intent(mContext, AddWithdrawInfoActivity.class));
+                                    } else if (bankType == 2) {//微信提现信息
+                                        //拉起微信
+                                        SaveUserInfo.getInstance(mContext).setUserInfo("bind_weixin_addwithdraw", "add");
+                                        wxLogin();
                                     }
                                 }
-                            }
+                            });
+                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ChangePersonalInfoActivity.this);
+                            linearLayoutManager.setSmoothScrollbarEnabled(true);
+                            linearLayoutManager.setAutoMeasureEnabled(true);
+                            rvAddWithdraw.setLayoutManager(linearLayoutManager);
+                            //解决数据加载不完的问题
+                            rvAddWithdraw.setHasFixedSize(true);
+                            rvAddWithdraw.setNestedScrollingEnabled(false);
+                            rvAddWithdraw.setAdapter(withdrawInfoAdapter);
                         } catch (Exception e) {
 
                         }
@@ -482,4 +461,13 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
         });
 
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(MessageEvent messageEvent) {
+        if ("wx_commit_success".equals(messageEvent.getMessage())) {
+            //获取任务信息
+            loadMineHomeData1();
+        }
+    }
+
 }

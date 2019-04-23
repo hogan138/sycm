@@ -119,6 +119,14 @@ public class WebPrizeBoxActivity extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        wvPrizeBox.addJavascriptInterface(new JsInterationUtil(answerHomeBean, (Activity) context, llWebBox, main_box, minePrize, boxBean, tvCommonTitle, wvPrizeBox), "android");
+
+    }
+
+    @Override
     public int intiLayout() {
         return R.layout.activity_web_prize_box;
     }

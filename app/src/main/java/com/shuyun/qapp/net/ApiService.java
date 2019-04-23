@@ -6,6 +6,7 @@ import com.shuyun.qapp.bean.ActivityTabBean;
 import com.shuyun.qapp.bean.ActivityTimeBean;
 import com.shuyun.qapp.bean.AdBean;
 import com.shuyun.qapp.bean.AddWithdrawResultBean;
+import com.shuyun.qapp.bean.AddWxWithdrawBean;
 import com.shuyun.qapp.bean.AnswerOpptyBean;
 import com.shuyun.qapp.bean.AnswerRecordBean;
 import com.shuyun.qapp.bean.AppVersionBean;
@@ -719,10 +720,17 @@ public interface ApiService {
     /**
      * 101、发现页面积分商品兑换
      */
-    /**
-     * 99、发现页面积分道具兑换
-     */
     @GET("/rest/user/goods/apply")
     Observable<DataResponse<ScoreExchangeResult>> scoreExchangeApplyGoods(@Query("goodsId") String goodsId, @Query("detail") String detail);
+
+
+    /**
+     * 102、完善微信提现信息
+     *
+     * @param code 微信的临时票据
+     * @return
+     */
+    @GET("/rest/user/money/withdraw/alter/wx")
+    Observable<DataResponse<AddWxWithdrawBean>> addWxWithdraw(@Query("code") String code);
 
 }

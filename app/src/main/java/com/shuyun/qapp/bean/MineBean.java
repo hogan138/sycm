@@ -664,6 +664,8 @@ public class MineBean implements Parcelable {
         private String message;
         private boolean enabled;
         private Long status;
+        private boolean isSelected;
+
 
         protected WithdrawBaseBean(Parcel in) {
             bankId = in.readString();
@@ -682,6 +684,7 @@ public class MineBean implements Parcelable {
             } else {
                 status = in.readLong();
             }
+            isSelected = in.readByte() != 0;
         }
 
         public static final Creator<WithdrawBaseBean> CREATOR = new Creator<WithdrawBaseBean>() {
@@ -760,6 +763,14 @@ public class MineBean implements Parcelable {
             this.status = status;
         }
 
+        public boolean isSelected() {
+            return isSelected;
+        }
+
+        public void setSelected(boolean selected) {
+            isSelected = selected;
+        }
+
         @Override
         public int describeContents() {
             return 0;
@@ -785,6 +796,7 @@ public class MineBean implements Parcelable {
                 dest.writeByte((byte) 1);
                 dest.writeLong(status);
             }
+            dest.writeByte((byte) (isSelected ? 1 : 0));
         }
     }
 

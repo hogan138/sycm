@@ -22,11 +22,13 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.shuyun.qapp.R;
+import com.shuyun.qapp.adapter.ChooseWithdrawInfoAdapter;
 import com.shuyun.qapp.adapter.RedPacketAdapter;
 import com.shuyun.qapp.adapter.RedPacketAdapter1;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.InputWithdrawalbean;
+import com.shuyun.qapp.bean.MessageEvent;
 import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.bean.OutPutWithdraw;
@@ -39,6 +41,10 @@ import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ToastUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -59,12 +65,6 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
     RelativeLayout rlBack;
     @BindView(R.id.tv_rule)
     TextView tvRule;
-    @BindView(R.id.iv_add_user_info)
-    ImageView ivAddUserInfo;
-    @BindView(R.id.tv_name_account)
-    TextView tvNameAccount;
-    @BindView(R.id.rl_user_info)
-    RelativeLayout rlUserInfo;
     @BindView(R.id.tv_money)
     EditText tvMoney;
     @BindView(R.id.rv_red_packet)
@@ -75,6 +75,8 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
     Button btnContactOur;
 
     List<String> redIdList = new ArrayList<String>();
+    @BindView(R.id.rv_withdraw_info)
+    RecyclerView rvWithdrawInfo;
 
 
     private int DELYED = 100;
@@ -87,6 +89,8 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
     String real_info = "";
     private Context mContext;
 
+    private ChooseWithdrawInfoAdapter chooseWithdrawInfoAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,11 +100,9 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
 
         rlBack.setOnClickListener(this);
         tvRule.setOnClickListener(this);
-        ivAddUserInfo.setOnClickListener(this);
         btnEnter.setOnClickListener(this);
         btnContactOur.setOnClickListener(this);
         tvMoney.setInputType(InputType.TYPE_NULL);
-        rlUserInfo.setOnClickListener(this);
 
         SpannableString ss = new SpannableString("请选择您要提现的红包");
         // 新建一个属性对象,设置文字的大小
@@ -195,6 +197,8 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
             }
         }
 
+        EventBus.getDefault().register(this);//注册Eventbus
+
     }
 
     //定时器
@@ -241,21 +245,13 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
                 i.putExtra("name", "红包提现");
                 startActivity(i);
                 break;
-            case R.id.iv_add_user_info:
-                startActivity(new Intent(mContext, AddWithdrawInfoActivity.class));
-                break;
-            case R.id.rl_user_info:
-                Intent intent = new Intent(this, AddWithdrawInfoActivity.class);
-                intent.putExtra("info", real_info);
-                startActivity(intent);
-                break;
             case R.id.btn_enter:
                 /**
                  * 针对哪几个红包提现,多个红包id用逗号分隔
                  * 字符串数组
                  */
                 if (EncodeAndStringTool.isStringEmpty(bankId)) {
-                    ToastUtil.showToast(mContext, "请先完善提现信息");
+                    ToastUtil.showToast(mContext, "请先选择提现方式");
                 } else {
                     String moneyNumber = tvMoney.getText().toString().trim();
                     String[] redsId = new String[redIdList.size()];
@@ -328,34 +324,46 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
         } else if ("getMineHomeData".equals(action)) {
             MineBean mineBean = (MineBean) response.getDat();
             if (!EncodeAndStringTool.isObjectEmpty(mineBean)) {
-                redrules = mineBean.getRedRuleUrl();
-                List<MineBean.DatasBean> list = mineBean.getDatas();
-                for (int i = 0; i < list.size(); i++) {
-                    MineBean.DatasBean datasBean = list.get(i);
-                    String type = datasBean.getType();
-                    Long status = datasBean.getStatus();
-                    if ("withdraw".equals(type) && status == 3) {
-                        //是否完善提现信息
-                        bankId = mineBean.getDatas().get(i).getBankId();
-                        String title = mineBean.getDatas().get(i).getTitle().replaceAll(" ", "");
-                        real_info = title;
-                        ivAddUserInfo.setVisibility(View.GONE);
-                        rlUserInfo.setVisibility(View.VISIBLE);
-                        String[] args = title.split("[|]");
-                        String str = args[1] + "   " + args[2];
-                        tvNameAccount.setText(str);
-                        if (mineBean.getDatas().get(i).isEnabled()) {
-                            rlUserInfo.setEnabled(true);
-                        } else {
-                            rlUserInfo.setEnabled(false);
-                        }
-                        break;
-                    } else {
-                        ivAddUserInfo.setVisibility(View.VISIBLE);
-                        rlUserInfo.setVisibility(View.GONE);
+                redrules = mineBean.getRedRuleUrl(); //红包规则
+
+                //提现信息
+                final List<MineBean.WithdrawBaseBean> withdrawBaseBeanList = mineBean.getWithdrawBase();
+                //初始化适配器
+                chooseWithdrawInfoAdapter = new ChooseWithdrawInfoAdapter(withdrawBaseBeanList, mContext);
+                chooseWithdrawInfoAdapter.setOnItemClickLitsener(new ChooseWithdrawInfoAdapter.OnItemClickListener() {
+
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        MineBean.WithdrawBaseBean withdrawBaseBean = withdrawBaseBeanList.get(position);
+                        bankId = withdrawBaseBean.getBankId();
                     }
-                }
+                });
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+                linearLayoutManager.setSmoothScrollbarEnabled(true);
+                linearLayoutManager.setAutoMeasureEnabled(true);
+                rvWithdrawInfo.setLayoutManager(linearLayoutManager);
+                //解决数据加载不完的问题
+                rvWithdrawInfo.setHasFixedSize(true);
+                rvWithdrawInfo.setNestedScrollingEnabled(false);
+                rvWithdrawInfo.setAdapter(chooseWithdrawInfoAdapter);
+
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(MessageEvent messageEvent) {
+        if ("wx_commit_success".equals(messageEvent.getMessage())) {
+            //获取个人信息
+            loadMineHomeData();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
         }
     }
 }

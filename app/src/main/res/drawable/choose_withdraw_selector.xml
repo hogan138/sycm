@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Button正常状态下的背景 -->
+    <item android:drawable="@mipmap/no_checked_logo_add_info" android:state_checkable="true" />
+    <!-- Button按下时的背景 -->
+    <item android:drawable="@mipmap/checked_logo_add_info" android:state_checkable="false" />
+</selector>

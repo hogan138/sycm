@@ -707,4 +707,11 @@ public class ApiServiceBean {
     public static String scoreExchangeApplyGoods() {
         return "scoreExchangeApplyGoods";
     }
+
+    /**
+     * 102、完善微信提现信息
+     */
+    public static String addWxWithdraw() {
+        return "addWxWithdraw";
+    }
 }
