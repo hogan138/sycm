@@ -6,11 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.SpannedString;
 import android.text.TextWatcher;
-import android.text.style.AbsoluteSizeSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -74,6 +70,8 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
     RecyclerView rvWithdrawInfo; //提现信息
     @BindView(R.id.ll_main)
     LinearLayout llMain;
+    @BindView(R.id.tv_all_withdraw)
+    TextView tvAllWithdraw;
 
     private String cash;
     private Double myCash; //可提现金额
@@ -84,7 +82,7 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
     private String bankId = "";
     private String cashRuls = "";   //现金提现规则
     //实名信息
-    String real_info = "";
+//    String real_info = "";
     private Context mContext;
 
     private ChooseWithdrawInfoAdapter chooseWithdrawInfoAdapter;
@@ -98,6 +96,7 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
         rlBack.setOnClickListener(this);
         tvRule.setOnClickListener(this);
         ivClearMoney.setOnClickListener(this);
+        tvAllWithdraw.setOnClickListener(this);
         btnEnter.setOnClickListener(this);
         btnContactOur.setOnClickListener(this);
 
@@ -168,6 +167,9 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
                 ivClearMoney.setVisibility(View.GONE);
                 btnEnter.setEnabled(false);
                 break;
+            case R.id.tv_all_withdraw:
+                tvMoney.setText(cash);
+                break;
             case R.id.btn_enter:
                 if (EncodeAndStringTool.isStringEmpty(bankId)) {
                     ToastUtil.showToast(mContext, "请先选择提现方式");
@@ -192,6 +194,7 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
         }
     }
 
+    //申请提现
     private void loadApplyWithdrawal(InputWithdrawalbean inputWithdrawalbean) {
         CustomLoadingFactory factory = new CustomLoadingFactory();
         LoadingBar.make(llMain, factory).show();

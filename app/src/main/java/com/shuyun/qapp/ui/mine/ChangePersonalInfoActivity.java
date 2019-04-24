@@ -107,7 +107,7 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
     private Context mContext;
 
     //实名信息
-    String real_info = "";
+//    String real_info = "";
     /**
      * 底部gridView数据
      */

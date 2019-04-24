@@ -136,6 +136,12 @@ public class WebFragment extends Fragment {
 
 
     @Override
+    public void onResume() {
+        super.onResume();
+        webView.addJavascriptInterface(new JsInterationUtil(answerHomeBean, (Activity) mContext, webView, rlMain, tvCommonTitle, ivRightIcon, tvRight), "android");
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
