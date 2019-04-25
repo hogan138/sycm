@@ -733,4 +733,13 @@ public interface ApiService {
     @GET("/rest/user/money/withdraw/alter/wx")
     Observable<DataResponse<AddWxWithdrawBean>> addWxWithdraw(@Query("code") String code);
 
+    /**
+     * 103、绑定微信邀请码
+     *
+     * @param code 邀请码
+     * @return
+     */
+    @GET("/rest/user/invite/manager/code/use")
+    Observable<DataResponse<AddWxWithdrawBean>> bindInviteCode(@Query("code") String code);
+
 }

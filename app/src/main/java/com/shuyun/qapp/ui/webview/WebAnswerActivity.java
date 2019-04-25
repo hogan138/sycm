@@ -50,7 +50,6 @@ public class WebAnswerActivity extends BaseActivity {
     ImageView ivRightIcon;
     @BindView(R.id.wv_answer_home)
     WebView wvAnswerHome;
-    WebAnswerHomeBean answerHomeBean = new WebAnswerHomeBean();
     @BindView(R.id.ll_h5)
     LinearLayout llH5;
 
@@ -61,6 +60,8 @@ public class WebAnswerActivity extends BaseActivity {
 
     //进入标记
     String umeng_from = "";
+
+    WebAnswerHomeBean answerHomeBean = new WebAnswerHomeBean();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

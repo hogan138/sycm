@@ -11,7 +11,7 @@
         android:layout_height="@dimen/text_0.5"
         android:layout_marginLeft="@dimen/text_15"
         android:layout_marginRight="@dimen/text_15"
-        android:background="#C8C7CC"></View>
+        android:background="#C8C7CC" />
 
     <LinearLayout
         android:id="@+id/ll_withdraw_info"
@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/text_15"
-                android:textColor="#000000"
+                android:textColor="@color/color_00"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -45,7 +45,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/text_42"
                 android:layout_toLeftOf="@+id/iv_more"
-                android:textColor="#0194ec"
+                android:textColor="@color/color_4"
                 android:textSize="@dimen/text_15" />
 
             <ImageView

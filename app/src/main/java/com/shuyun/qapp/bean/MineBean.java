@@ -77,10 +77,13 @@ public class MineBean implements Parcelable {
     private String cashRuleUrl;
     private String redRuleUrl;
     private String codeUrl;
+    private String inviteUrl;
+    private Long inviteCode;
     private Long certCount;
     private CertBaseBean certBase;
     private List<WithdrawBaseBean> withdrawBase;
     private List<DatasBean> datas;
+
 
     protected MineBean(Parcel in) {
         if (in.readByte() == 0) {
@@ -158,6 +161,12 @@ public class MineBean implements Parcelable {
         cashRuleUrl = in.readString();
         redRuleUrl = in.readString();
         codeUrl = in.readString();
+        inviteUrl = in.readString();
+        if (in.readByte() == 0) {
+            inviteCode = null;
+        } else {
+            inviteCode = in.readLong();
+        }
         if (in.readByte() == 0) {
             certCount = null;
         } else {
@@ -428,6 +437,22 @@ public class MineBean implements Parcelable {
         this.datas = datas;
     }
 
+    public String getInviteUrl() {
+        return inviteUrl;
+    }
+
+    public void setInviteUrl(String inviteUrl) {
+        this.inviteUrl = inviteUrl;
+    }
+
+    public Long getInviteCode() {
+        return inviteCode;
+    }
+
+    public void setInviteCode(Long inviteCode) {
+        this.inviteCode = inviteCode;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -522,6 +547,13 @@ public class MineBean implements Parcelable {
         dest.writeString(cashRuleUrl);
         dest.writeString(redRuleUrl);
         dest.writeString(codeUrl);
+        dest.writeString(inviteUrl);
+        if (inviteCode == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(inviteCode);
+        }
         if (certCount == null) {
             dest.writeByte((byte) 0);
         } else {
@@ -532,6 +564,7 @@ public class MineBean implements Parcelable {
         dest.writeTypedList(withdrawBase);
         dest.writeTypedList(datas);
     }
+
 
     public static class CertBaseBean implements Parcelable {
         /**

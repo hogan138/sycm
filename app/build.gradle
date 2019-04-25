@@ -216,7 +216,6 @@ dependencies {
 
     //视频播放
     implementation project(path: ':nicevideoplayer')
-
     //    implementation 'com.github.xiaoyanger0825:NiceVieoPlayer:v2.2'
 
     //https://github.com/zzhoujay/RichText 富文本加载

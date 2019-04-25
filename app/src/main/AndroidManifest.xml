@@ -40,6 +40,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Base"
         tools:replace="label,allowBackup">
+
         <!-- 友盟Key -->
         <meta-data
             android:name="UMENG_APPKEY"
@@ -300,11 +301,14 @@
             android:screenOrientation="portrait" /> <!-- 签到 -->
         <activity
             android:name=".ui.found.SignInActivity"
-            android:screenOrientation="portrait" />
-        <!--商品详情-->
+            android:screenOrientation="portrait" /> <!-- 商品详情 -->
         <activity
             android:name=".ui.found.GoodsDetailsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+        <!--绑定邀请码-->
+        <activity
+            android:name=".ui.mine.BindInviteCodeActivity"
             android:screenOrientation="portrait" />
     </application>
 

@@ -19,7 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * 提现信息adapter
+ * 基本信息-提现信息adapter
  */
 
 public class WithdrawInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

@@ -88,5 +88,7 @@
     <string name="tv_share_wx">分享给微信好友</string>
     <string name="tv_app_remark">打开知识宝藏</string>
     <string name="tv_qr_tip">长按识别二维码\n参与答题赢大奖</string>
-
+    <string name="tv_invite">邀请码</string>
+    <string name="input_invite_code">输入好友的邀请码，好友可得奖励</string>
+    <string name="tv_commit">马上提交</string>
 </resources>

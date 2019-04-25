@@ -44,9 +44,8 @@ public class ChooseWithdrawInfoAdapter extends RecyclerView.Adapter<RecyclerView
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         LayoutInflater mInflater = LayoutInflater.from(mContext);
-        RecyclerView.ViewHolder holder = null;
         View view = mInflater.inflate(R.layout.item_choose_withdraw_info, parent, false);
-        holder = new MyViewHolder(view);
+        RecyclerView.ViewHolder holder = new MyViewHolder(view);
         return holder;
 
     }
@@ -64,7 +63,7 @@ public class ChooseWithdrawInfoAdapter extends RecyclerView.Adapter<RecyclerView
             if (bankType == 1) {//支付宝
                 ((MyViewHolder) holder).ivLogo.setBackgroundResource(R.mipmap.alipay_logo);
                 ((MyViewHolder) holder).tvTitle.setText("支付宝");
-                if (status == 3) {
+                if (status == 3) { //已绑定支付宝提现信息
                     String str = args[1] + " | " + args[2];
                     ((MyViewHolder) holder).tvContent.setText(str);
                     ((MyViewHolder) holder).ivMore.setVisibility(View.GONE);
@@ -83,13 +82,14 @@ public class ChooseWithdrawInfoAdapter extends RecyclerView.Adapter<RecyclerView
                             mOnItemClickListener.onItemClick(((MyViewHolder) holder).rlWithdrawInfo, position);
                         }
                     });
-                } else {
+                } else { //未绑定支付宝提现信息
                     ((MyViewHolder) holder).tvContent.setText("请先完善支付宝信息");
                     ((MyViewHolder) holder).ivMore.setVisibility(View.VISIBLE);
                     ((MyViewHolder) holder).ivSelect.setVisibility(View.GONE);
                     ((MyViewHolder) holder).rlWithdrawInfo.setOnClickListener(new OnMultiClickListener() {
                         @Override
                         public void onMultiClick(View v) {
+                            //完善支付宝信息
                             mContext.startActivity(new Intent(mContext, AddWithdrawInfoActivity.class));
                         }
                     });
@@ -97,7 +97,7 @@ public class ChooseWithdrawInfoAdapter extends RecyclerView.Adapter<RecyclerView
             } else if (bankType == 2) { //微信
                 ((MyViewHolder) holder).ivLogo.setBackgroundResource(R.mipmap.wx_logo);
                 ((MyViewHolder) holder).tvTitle.setText("微信");
-                if (status == 3) {
+                if (status == 3) {//已绑定微信提现信息
                     String str = args[1];
                     ((MyViewHolder) holder).tvContent.setText(str);
                     ((MyViewHolder) holder).ivMore.setVisibility(View.GONE);
@@ -116,7 +116,7 @@ public class ChooseWithdrawInfoAdapter extends RecyclerView.Adapter<RecyclerView
                             mOnItemClickListener.onItemClick(((MyViewHolder) holder).rlWithdrawInfo, position);
                         }
                     });
-                } else {
+                } else { //未绑定微信提现信息
                     ((MyViewHolder) holder).tvContent.setText("请先绑定微信");
                     ((MyViewHolder) holder).ivMore.setVisibility(View.VISIBLE);
                     ((MyViewHolder) holder).ivSelect.setVisibility(View.GONE);

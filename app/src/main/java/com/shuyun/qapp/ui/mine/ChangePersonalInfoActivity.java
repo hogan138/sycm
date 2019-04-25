@@ -102,6 +102,7 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
 
     private boolean mIsShowing = false;
 
+    //提现信息适配器
     private WithdrawInfoAdapter withdrawInfoAdapter;
 
     private Context mContext;
@@ -219,6 +220,7 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
         }
     }
 
+    //初始化头像弹框
     private void initPopup() {
         View pop = View.inflate(this, R.layout.change_header_popupwindow, null);
         GridView gvIcon = pop.findViewById(R.id.gv_head_icon);
@@ -368,7 +370,7 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
         super.onResume();
         initData();
 
-        loadMineHomeData1();
+        loadMineHomeData();
 
         KeyboardUtils.hideSoftInput(ChangePersonalInfoActivity.this);
     }
@@ -383,7 +385,7 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
         }
     }
 
-    private void loadMineHomeData1() {
+    private void loadMineHomeData() {
         RemotingEx.doRequest(ApiServiceBean.getMineHomeData(), new OnRemotingCallBackListener<MineBean>() {
             @Override
             public void onCompleted(String action) {
@@ -465,8 +467,8 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(MessageEvent messageEvent) {
         if ("wx_commit_success".equals(messageEvent.getMessage())) {
-            //获取任务信息
-            loadMineHomeData1();
+            //获取个人信息
+            loadMineHomeData();
         }
     }
 

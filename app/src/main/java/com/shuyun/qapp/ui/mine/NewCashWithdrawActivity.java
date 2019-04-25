@@ -115,7 +115,9 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
             //如果账户金额为空,按钮设置成不可点击
             btnEnter.setEnabled(false);
         }
-        addListener(tvMoney, ivClearMoney);//给提现金额EditText设置变化监听事件
+
+        //提现金额EditText设置变化监听事件
+        addListener(tvMoney, ivClearMoney);
 
 //        SpannableString ss = new SpannableString("最低提现金额为50元");
 //        // 新建一个属性对象,设置文字的大小

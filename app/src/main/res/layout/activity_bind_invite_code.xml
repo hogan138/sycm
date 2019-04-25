@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_f5"
+    android:orientation="vertical">
+
+    <!--头布局-->
+    <include layout="@layout/common_left_title" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_50"
+        android:layout_marginTop="@dimen/text_18"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/tv_invite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/text_17"
+            android:text="@string/tv_invite"
+            android:textColor="@color/color_1"
+            android:textSize="@dimen/text_14" />
+
+        <EditText
+            android:id="@+id/et_invite_code"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/text_13"
+            android:layout_marginRight="@dimen/text_50"
+            android:layout_toRightOf="@+id/tv_invite"
+            android:background="@null"
+            android:hint="@string/input_invite_code"
+            android:singleLine="true"
+            android:textColor="@color/color_1"
+            android:textColorHint="@color/login_text"
+            android:textSize="@dimen/text_14" />
+
+        <ImageView
+            android:id="@+id/iv_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/text_15"
+            android:src="@mipmap/cuowu1"
+            android:visibility="gone" />
+
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_commit"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginLeft="@dimen/text_20"
+        android:layout_marginTop="@dimen/text_35"
+        android:layout_marginRight="@dimen/text_20"
+        android:layout_marginBottom="@dimen/text_22"
+        android:background="@drawable/selector_cash_withdraw"
+        android:enabled="false"
+        android:foreground="?attr/selectableItemBackground"
+        android:text="@string/tv_commit"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_18"
+        android:textStyle="bold" />
+
+
+</LinearLayout>

@@ -30,7 +30,6 @@ import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
-import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.homepage.InformationActivity;
 import com.shuyun.qapp.ui.integral.IntegralCenterActivity;
@@ -45,9 +44,7 @@ import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.UmengPageUtil;
 import com.shuyun.qapp.view.CircleImageView;
-import com.shuyun.qapp.view.InviteSharePopupUtil;
 import com.shuyun.qapp.view.RealNamePopupUtil;
-import com.shuyun.qapp.view.ShowAddAnswerDialog;
 import com.tencent.stat.StatConfig;
 
 import java.text.SimpleDateFormat;
@@ -89,13 +86,14 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
     RelativeLayout rlInviteShare;
     @BindView(R.id.iv_point_prize)
     ImageView ivPointPrize;
+    @BindView(R.id.ll_invite_code)
+    LinearLayout llInviteCode; //邀请码
 
     private CommonPopupWindow popupWindow;
     private static final String LOAD_MINE_HOME_DATA = "loadMineHomeData";//个人信息
     private static final String LOAD_ANSWER_OPPTY_REMAINDER = "loadAnswerOpptyRemainder";//答题机会领取
     private static final String LOAD_ANSWER_OPPTY = "loadAnswerOppty"; //领取答题机会
     private Handler mHandler = new Handler();
-    private boolean isLoading = false;
     //图标
     private int[] icon = new int[]{R.mipmap.header02, R.mipmap.header03, R.mipmap.header04,
             R.mipmap.header05, R.mipmap.header06, R.mipmap.header07, R.mipmap.header08, R.mipmap.header09};
@@ -113,6 +111,7 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
 
 
     private String codeUrl = ""; //兑换码链接
+    private String inviteUrl = "";//邀请码链接
 
     public MineFragment() {
     }
@@ -138,10 +137,6 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (!isLoading) {
-                        init();
-                    }
-                    isLoading = true;
                     refresh();
                 }
             }, 10);
@@ -158,17 +153,6 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
         mContext = getActivity();
     }
 
-    private void init() {
-        /**
-         * 检测微信是否安装,如果没有安装,需不显示分享按钮;如果安装了微信则显示分享按钮.
-         */
-        if (!SykscApplication.mWxApi.isWXAppInstalled()) {
-            rlInviteShare.setVisibility(View.GONE);
-        } else {
-            rlInviteShare.setVisibility(View.VISIBLE);
-        }
-    }
-
     /**
      * 获取到我的首界面数据
      */
@@ -179,7 +163,7 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
     @OnClick({R.id.rl_back, R.id.iv_common_right_icon, R.id.iv_header_pic, R.id.rl_cardview,
             R.id.iv_real_logo, R.id.rl_my_score, R.id.rl_my_cash, R.id.rl_suggestion,
             R.id.ll_add, R.id.rl_prize, R.id.rl_prop, R.id.rl_order, R.id.rl_my_record,
-            R.id.rl_exchange_code, R.id.rl_setting, R.id.rl_call, R.id.rl_share})
+            R.id.rl_exchange_code, R.id.rl_setting, R.id.rl_call, R.id.rl_share, R.id.ll_invite_code})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_back:
@@ -234,7 +218,6 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
                 startActivity(new Intent(mContext, MyPropsActivity.class));
                 break;
             case R.id.rl_my_record: //成绩单
-                //startActivity(new Intent(mContext, AnswerRecordActivity.class));
                 startActivity(new Intent(mContext, AnswerRecordNewActivity.class));
                 break;
             case R.id.rl_exchange_code://兑换码
@@ -262,7 +245,15 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
                 startActivity(in);
                 break;
             case R.id.rl_share: //分享
-                InviteSharePopupUtil.showSharedPop(mContext, llMineFragment);
+                if (!EncodeAndStringTool.isStringEmpty(inviteUrl)) {
+                    Intent code = new Intent(mContext, WebH5Activity.class);
+                    code.putExtra("url", inviteUrl);
+                    code.putExtra("name", "");//名称 标题
+                    startActivity(code);
+                }
+                break;
+            case R.id.ll_invite_code:
+                startActivity(new Intent(mContext, BindInviteCodeActivity.class));
                 break;
             default:
                 break;
@@ -489,6 +480,20 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
 
                 //兑换码
                 codeUrl = mineBean.getCodeUrl();
+
+                //邀请码
+                inviteUrl = mineBean.getInviteUrl();
+
+                //是否显示绑定邀请码入口
+                Long inviteCode = mineBean.getInviteCode();
+                if (inviteCode == 0) {
+                    //隐藏
+                    llInviteCode.setVisibility(View.GONE);
+                } else if (inviteCode == 1) {
+                    //显示
+                    llInviteCode.setVisibility(View.VISIBLE);
+                }
+
             }
         } else if (LOAD_ANSWER_OPPTY_REMAINDER.equals(action)) {
             remainderTime = (String) response.getDat();

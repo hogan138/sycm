@@ -175,7 +175,6 @@
                         android:id="@+id/tv_my_money"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="最多可提现51.45元"
                         android:textColor="@color/color_4a"
                         android:textSize="@dimen/text_12" />
 

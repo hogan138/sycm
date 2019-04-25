@@ -714,4 +714,11 @@ public class ApiServiceBean {
     public static String addWxWithdraw() {
         return "addWxWithdraw";
     }
+
+    /**
+     * 103、绑定邀请码
+     */
+    public static String bindInviteCode() {
+        return "bindInviteCode";
+    }
 }
