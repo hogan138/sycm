@@ -35,7 +35,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="54dp"
                     android:gravity="center"
-                    android:text="2019年个税改革"
                     android:textColor="#000000"
                     android:textSize="18sp" />
 
@@ -68,7 +67,6 @@
                                 android:layout_height="0dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="2019.01.11\n19:36"
                                 android:textColor="@color/color_27"
                                 android:textSize="13sp" />
                         </LinearLayout>
@@ -100,7 +98,6 @@
                                 android:layout_height="0dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="50%"
                                 android:textColor="@color/color_27"
                                 android:textSize="13sp" />
                         </LinearLayout>
@@ -132,7 +129,6 @@
                                 android:layout_height="0dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="专题"
                                 android:textColor="@color/color_27"
                                 android:textSize="13sp" />
                         </LinearLayout>

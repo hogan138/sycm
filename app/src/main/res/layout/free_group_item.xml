@@ -38,8 +38,7 @@
                 android:layout_marginRight="@dimen/text_10"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="@string/create_city"
-                android:textColor="#333333"
+                android:textColor="@color/color_1"
                 android:textSize="@dimen/text_15" />
 
             <com.shuyun.qapp.view.PrinterTextView

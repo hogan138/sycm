@@ -69,7 +69,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/text_9"
-                    android:text="5000积分"
                     android:textColor="@color/color_e9"
                     android:textSize="@dimen/text_18" />
             </LinearLayout>

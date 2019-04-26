@@ -33,7 +33,6 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="答题答题"
                 android:textColor="@color/color_1"
                 android:textSize="@dimen/text_15"
                 android:textStyle="bold" />
@@ -88,7 +87,6 @@
             android:layout_toRightOf="@+id/iv_prize_icon"
             android:ellipsize="end"
             android:lines="2"
-            android:text="@string/about_us"
             android:textColor="@color/login_text"
             android:textSize="@dimen/text_12" />
         <!--到期时间-->

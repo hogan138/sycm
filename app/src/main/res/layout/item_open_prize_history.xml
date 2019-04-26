@@ -34,7 +34,6 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="iphone X 256G黑色"
                 android:textColor="@color/color_1"
                 android:textSize="@dimen/text_15"
                 android:textStyle="bold" />
@@ -44,7 +43,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/text_8"
-                android:text="开奖时间：2018/8/15"
                 android:textColor="#ffb11c"
                 android:textSize="@dimen/text_13" />
 
@@ -58,8 +56,7 @@
                     android:id="@+id/tv_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="期号：269953"
-                    android:textColor="#999999"
+                    android:textColor="@color/login_text"
                     android:textSize="@dimen/text_13" />
 
                 <TextView
@@ -71,8 +68,7 @@
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:visibility="gone"
-                    android:text="中奖奖券：666686688666686688"
-                    android:textColor="#999999"
+                    android:textColor="@color/login_text"
                     android:textSize="@dimen/text_13" />
 
                 <TextView

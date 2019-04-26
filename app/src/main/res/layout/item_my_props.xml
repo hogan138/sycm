@@ -48,7 +48,6 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="标题"
                 android:textColor="@color/color_1"
                 android:textSize="@dimen/text_15"
                 android:textStyle="bold" />

@@ -118,7 +118,6 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/text_25"
-                android:text="3.0.3"
                 android:textColor="@color/color_9b"
                 android:textSize="@dimen/text_15" />
 

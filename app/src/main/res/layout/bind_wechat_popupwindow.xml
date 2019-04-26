@@ -34,7 +34,6 @@
         android:layout_marginLeft="@dimen/text_15"
         android:layout_marginTop="@dimen/text_125"
         android:layout_marginRight="@dimen/text_15"
-        android:text="昵称"
         android:textColor="#000000"
         android:textSize="@dimen/text_17" />
 

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.view.View;
 
 import com.alibaba.fastjson.JSON;
 import com.ishumei.smantifraud.SmAntiFraud;
@@ -21,12 +20,10 @@ import com.shuyun.qapp.bean.UserWxInfo;
 import com.shuyun.qapp.net.ActivityCallManager;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
+import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.ui.login.LoginActivity;
-import com.shuyun.qapp.ui.mine.AddWithdrawInfoActivity;
-import com.shuyun.qapp.ui.mine.WithdrawResultActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.AliPushBind;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -269,7 +266,6 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
                 SubmitWithdrawInfoBean submitWithdrawInfoBean = new SubmitWithdrawInfoBean(2, card, name);
                 //提交微信信息
                 AddWithdrawalInfo(submitWithdrawInfoBean);
-
             } else {
                 ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
             }

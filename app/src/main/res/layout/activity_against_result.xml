@@ -47,8 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="200"
-            android:textColor="#0194EC"
+            android:textColor="@color/color_4"
             android:textSize="@dimen/text_20" />
 
         <com.shuyun.qapp.view.CircleImageView
@@ -85,8 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="200"
-            android:textColor="#0194EC"
+            android:textColor="@color/color_4"
             android:textSize="@dimen/text_20" />
 
         <com.shuyun.qapp.view.CircleImageView

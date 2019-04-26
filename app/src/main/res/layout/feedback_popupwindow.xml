@@ -37,7 +37,6 @@
             android:layout_marginLeft="@dimen/text_20"
             android:layout_marginRight="@dimen/text_20"
             android:layout_marginTop="@dimen/text_20"
-            android:text="黑大汉是哪一年诞生的?黑大汉是哪一年诞生的?黑大汉是哪一年诞生的?黑大汉是哪一年诞生的?黑大汉是哪一年诞生的?黑大汉是哪一年诞生的?"
             android:textColor="@color/color_1"
             android:textSize="@dimen/text_12" />
 

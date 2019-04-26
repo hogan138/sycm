@@ -21,7 +21,7 @@
         <View
             android:layout_width="@dimen/text_0.5"
             android:layout_height="35dp"
-            android:background="#e3e4e4"></View>
+            android:background="#e3e4e4" />
 
         <TextView
             android:id="@+id/tv_number"
@@ -37,7 +37,7 @@
             android:layout_width="@dimen/text_0.5"
             android:layout_height="35dp"
             android:layout_gravity="center_vertical"
-            android:background="#e3e4e4"></View>
+            android:background="#e3e4e4" />
 
         <TextView
             android:id="@+id/tv_no"

@@ -11,7 +11,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="客服热线：400-650-9258"
         android:textColor="@color/color_35"
         android:textSize="@dimen/text_12" />
 

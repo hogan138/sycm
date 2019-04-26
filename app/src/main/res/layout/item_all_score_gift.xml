@@ -33,7 +33,6 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="iphone X 256G黑色"
                 android:textColor="@color/color_1"
                 android:textSize="@dimen/text_15"
                 android:textStyle="bold" />
@@ -42,7 +41,7 @@
                 android:id="@+id/tv_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/text_4"></com.shuyun.qapp.view.RushBuyCountDownTimerView>
+                android:layout_marginTop="@dimen/text_4" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -57,7 +56,6 @@
                     android:background="@drawable/common_tv_bg_1"
                     android:paddingLeft="@dimen/text_6"
                     android:paddingRight="@dimen/text_6"
-                    android:text="消耗200积分"
                     android:textColor="#3ea8e7"
                     android:textSize="@dimen/text_11" />
 
@@ -69,7 +67,6 @@
                     android:background="@drawable/common_tv_bg_1"
                     android:paddingLeft="@dimen/text_6"
                     android:paddingRight="@dimen/text_6"
-                    android:text="5份"
                     android:textColor="#3ea8e7"
                     android:textSize="@dimen/text_11" />
 
@@ -84,8 +81,7 @@
                     android:id="@+id/tv_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="期号：269953"
-                    android:textColor="#999999"
+                    android:textColor="@color/login_text"
                     android:textSize="@dimen/text_13" />
 
                 <TextView
@@ -94,8 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_number"
                     android:layout_marginTop="@dimen/text_5"
-                    android:text="参与人数：668"
-                    android:textColor="#999999"
+                    android:textColor="@color/login_text"
                     android:textSize="@dimen/text_13" />
 
                 <TextView
@@ -117,8 +112,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/text_0.5"
             android:layout_below="@+id/iv_picture"
-            android:layout_marginBottom="@dimen/text_20"
             android:layout_marginTop="@dimen/text_20"
+            android:layout_marginBottom="@dimen/text_20"
             android:background="#e3e4e4"></View>
 
     </RelativeLayout>

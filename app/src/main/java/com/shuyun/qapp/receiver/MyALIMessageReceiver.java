@@ -60,7 +60,6 @@ public class MyALIMessageReceiver extends MessageReceiver {
             // 奖品通知、奖品快过期通知
             i = new Intent(context, MinePrizeActivity.class);
             i.putExtra("status", 1);
-            i.putExtra("certification", SaveUserInfo.getInstance(context).getUserInfo("cert"));
             context.startActivity(i);
         } else if (AppConst.PUSH_WITHDRAW_SUCCESS.equals(pushAction)) {
             //提现成功通知
@@ -84,7 +83,6 @@ public class MyALIMessageReceiver extends MessageReceiver {
             //发货通知
             i = new Intent(context, MinePrizeActivity.class);
             i.putExtra("status", 2);
-            i.putExtra("certification", SaveUserInfo.getInstance(context).getUserInfo("cert"));
             context.startActivity(i);
         } else if (AppConst.PUSH_REAL.equals(pushAction)) {
             //实名认证

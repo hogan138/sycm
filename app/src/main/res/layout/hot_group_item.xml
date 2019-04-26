@@ -53,7 +53,6 @@
                     android:ellipsize="end"
                     android:gravity="center"
                     android:singleLine="true"
-                    android:text="标题"
                     android:textColor="@color/color_1"
                     android:textSize="@dimen/text_15" />
 

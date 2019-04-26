@@ -102,7 +102,6 @@ public class LoginJumpUtil {
                     Intent intent = new Intent(context, LoginActivity.class);
                     context.startActivityForResult(intent, AppConst.WITHDRAW_INFO_CODE);
                 } else {
-                    SaveUserInfo.getInstance(context).setUserInfo("h5_rule", h5Url);
                     Intent intent = new Intent(context, AddWithdrawInfoActivity.class);
                     context.startActivity(intent);
                 }
