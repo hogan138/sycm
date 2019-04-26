@@ -141,6 +141,7 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
         super.onResume();
         //访问个人信息
         loadMineHomeData();
+        bankId = "";
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

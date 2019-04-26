@@ -82,6 +82,7 @@ public class BindInviteCodeActivity extends BaseActivity implements View.OnClick
                 break;
             case R.id.btn_commit:
                 String code = etInviteCode.getText().toString();
+                //提交绑定邀请码
                 RemotingEx.doRequest("bindInviteCode", ApiServiceBean.bindInviteCode(), new Object[]{code}, this);
                 break;
             default:
@@ -124,29 +125,6 @@ public class BindInviteCodeActivity extends BaseActivity implements View.OnClick
                     btnCommit.setEnabled(false);
 
                 }
-            }
-        });
-        /**
-         * 焦点变化监听
-         */
-        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                /**
-                 * 如果输入文字内容不为空,而且获得焦点,则显示清空editText内容的图标;
-                 * 否则不显示清空editText内容的图标;
-                 */
-                String et = editText.getText().toString().trim();
-                if (!EncodeAndStringTool.isStringEmpty(et) && hasFocus) {//不等于空,且得到焦点
-                    clearPic.setVisibility(View.VISIBLE);
-                } else if (!EncodeAndStringTool.isStringEmpty(et) && !hasFocus) {//不等于空,且失去焦点
-                    clearPic.setVisibility(View.GONE);
-                } else if (EncodeAndStringTool.isStringEmpty(et) && hasFocus) {
-                    clearPic.setVisibility(View.GONE);
-                } else if (EncodeAndStringTool.isStringEmpty(et) && !hasFocus) {
-                    clearPic.setVisibility(View.GONE);
-                }
-
             }
         });
     }

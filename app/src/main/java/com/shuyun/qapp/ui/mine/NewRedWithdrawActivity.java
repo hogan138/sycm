@@ -86,7 +86,7 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
     private String redrules = "";
 
     //实名信息
-    String real_info = "";
+//    String real_info = "";
     private Context mContext;
 
     private ChooseWithdrawInfoAdapter chooseWithdrawInfoAdapter;
@@ -231,6 +231,7 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
 
         //访问个人信息
         loadMineHomeData();
+        bankId = "";
     }
 
     @Override
