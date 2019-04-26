@@ -117,7 +117,7 @@ public class FeedbackActivity extends BaseActivity implements OnRemotingCallBack
     }
 
     /**
-     * 反馈建议99999
+     * 反馈建议
      */
     private void loadFeedBack(FeedBackSuggestBean feedBackSuggestBean) {
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), JSON.toJSONString(feedBackSuggestBean));

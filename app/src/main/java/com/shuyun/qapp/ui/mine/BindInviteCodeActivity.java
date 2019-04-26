@@ -96,18 +96,15 @@ public class BindInviteCodeActivity extends BaseActivity implements View.OnClick
      *
      * @param editText 需要监听的EditText控件
      * @param clearPic 清空数据的图片
-     *                 考虑如何和登录页监听抽取出同样的方法
      */
     protected void addListener(final EditText editText, final ImageView clearPic) {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //输入文本之前的状态
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override

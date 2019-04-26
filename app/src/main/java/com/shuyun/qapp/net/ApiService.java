@@ -734,7 +734,7 @@ public interface ApiService {
     Observable<DataResponse<AddWxWithdrawBean>> addWxWithdraw(@Query("code") String code);
 
     /**
-     * 103、绑定微信邀请码
+     * 103、绑定邀请码
      *
      * @param code 邀请码
      * @return
