@@ -162,9 +162,10 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            if (Integer.parseInt(SaveUserInfo.getInstance(ChangePersonalInfoActivity.this).getUserInfo("wxBind")) == 1) {
+            int wxBind = Integer.parseInt(SaveUserInfo.getInstance(ChangePersonalInfoActivity.this).getUserInfo("wxBind"));
+            if (wxBind == 1) {
                 tvBindStatus.setText("已绑定");
-            } else if (Integer.parseInt(SaveUserInfo.getInstance(ChangePersonalInfoActivity.this).getUserInfo("wxBind")) == 0) {
+            } else if (wxBind == 0) {
                 tvBindStatus.setText("未绑定");
             }
             handler.postDelayed(runnable, 500);
@@ -189,10 +190,11 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
                 startActivity(intent);
                 break;
             case R.id.rl_bind_wechat:
-                if (Integer.parseInt(SaveUserInfo.getInstance(ChangePersonalInfoActivity.this).getUserInfo("wxBind")) == 0) {
+                int wxBind = Integer.parseInt(SaveUserInfo.getInstance(ChangePersonalInfoActivity.this).getUserInfo("wxBind"));
+                if (wxBind == 0) {
                     //未绑定拉起微信页
                     wxLogin();
-                } else if (Integer.parseInt(SaveUserInfo.getInstance(ChangePersonalInfoActivity.this).getUserInfo("wxBind")) == 1) {
+                } else if (wxBind == 1) {
                     //微信绑定弹窗
                     showWechatPop();
                 }

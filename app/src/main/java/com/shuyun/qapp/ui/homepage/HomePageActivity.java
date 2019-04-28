@@ -19,7 +19,6 @@ import android.view.animation.Animation;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -66,7 +65,6 @@ import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SaveUserInfo1;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.StatusBarUtil;
-import com.shuyun.qapp.utils.ToastUtil;
 import com.shuyun.qapp.view.LoginJumpUtil;
 import com.shuyun.qapp.view.NoScrollViewPager;
 import com.umeng.analytics.MobclickAgent;

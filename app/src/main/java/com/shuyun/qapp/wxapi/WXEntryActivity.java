@@ -158,7 +158,6 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
                                     //变更微信绑定
                                     loadChangeWXbind(code);
                                 }
-
                             }
                         }
                         break;
