@@ -10,7 +10,6 @@ import java.util.Arrays;
 
 public class InputWithdrawalbean {
 
-    //    private BigDecimal amount;//提现金额
     private String amount;//提现金额
     private int type;//现金类型1:现金提现;2:红包提现
     private String cardNo;//支付宝账号

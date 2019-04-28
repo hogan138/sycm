@@ -83,6 +83,8 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
 
     private String bankId = "";
 
+    private Long bankType = 0L;
+
     private String redrules = "";
 
     //实名信息
@@ -259,9 +261,21 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
                     redIdList.toArray(redsId);
                     final InputWithdrawalbean inputWithdrawalbean = new InputWithdrawalbean(moneyNumber, 2, redsId, bankId);//针对哪几个红包提现,多个红包id用逗号分隔;
                     if (redIdList.size() > 0) {
-                        redWithDrawal(inputWithdrawalbean);
+                        if (bankType == 1) {
+                            //支付宝提现
+                            redWithDrawal(inputWithdrawalbean);
+                        } else if (bankType == 2) {
+                            //微信提现
+                            //红包金额大于0.3元方可提现
+                            Double money = Double.parseDouble(moneyNumber);
+                            if (money >= 0.3) {
+                                redWithDrawal(inputWithdrawalbean);
+                            } else {
+                                ToastUtil.showToast(this, "红包金额需大于0.3元");
+                            }
+                        }
                     } else {
-                        ToastUtil.showToast(this, "请选择提现红包金额!");
+                        ToastUtil.showToast(this, "请选择提现红包金额");
                     }
                 }
                 break;
@@ -337,6 +351,7 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
                     public void onItemClick(View view, int position) {
                         MineBean.WithdrawBaseBean withdrawBaseBean = withdrawBaseBeanList.get(position);
                         bankId = withdrawBaseBean.getBankId();
+                        bankType = withdrawBaseBean.getBankType();
                     }
                 });
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
