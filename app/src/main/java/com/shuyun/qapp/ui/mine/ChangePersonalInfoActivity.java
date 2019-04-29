@@ -173,7 +173,7 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
     };
 
 
-    @OnClick({R.id.iv_back, R.id.rl_change_head_icon, R.id.rl_bind_phone_num, R.id.rl_bind_wechat, R.id.rl_modify_password,
+    @OnClick({R.id.iv_back, R.id.rl_change_head_icon, R.id.rl_bind_phone_num, R.id.rl_bind_wechat, R.id.rl_modify_password, R.id.rl_address_info,
             R.id.ll_real_name_auth, R.id.btn_contact_our})
     public void click(View view) {
         switch (view.getId()) {
@@ -204,6 +204,9 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
                 modify.putExtra("phone", SaveUserInfo.getInstance(this).getUserInfo("phone"));
                 modify.putExtra("name", "modifyPwd");
                 startActivity(modify);
+                break;
+            case R.id.rl_address_info:  //收货地址
+                startActivity(new Intent(this, AddressListActivity.class));
                 break;
             case R.id.ll_real_name_auth: //实名认证
                 startActivity(new Intent(this, RealNameAuthActivity.class));

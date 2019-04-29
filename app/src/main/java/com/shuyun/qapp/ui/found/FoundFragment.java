@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -21,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.androidkun.xtablayout.XTabLayout;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.MarkBannerAdapter1;
 import com.shuyun.qapp.adapter.MyPagerAdapter;
@@ -41,7 +41,6 @@ import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.UmengPageUtil;
-import com.shuyun.qapp.view.EnhanceTabLayout;
 import com.shuyun.qapp.view.FloatImageviewManage;
 import com.shuyun.qapp.view.LoginJumpUtil;
 import com.shuyun.qapp.view.ViewPagerScroller;
@@ -66,7 +65,7 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
     @BindView(R.id.banner)
     BannerViewPager mBannerView;
     @BindView(R.id.tab_layout)
-    EnhanceTabLayout tabLayout;
+    XTabLayout tabLayout;
     @BindView(R.id.vp)
     ViewPager vp;
     @BindView(R.id.activityRegion)
@@ -286,6 +285,7 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
                 mFragmentList = new ArrayList<>();
                 List<FoundDataBean.TablesBean> tablesBeanList = foundDataBean.getTables();
 
+                //添加标题
                 //添加fragment
                 for (int i = 0; i < tablesBeanList.size(); i++) {
                     mTitleList.add(tablesBeanList.get(i).getTitle());
@@ -296,16 +296,12 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
                     }
                 }
 
-                //添加标题
-                tabLayout.getTabLayout().removeAllTabs(); //tablayou清空tab
+                tabLayout.removeAllTabs(); //tablayout移除所有tab
                 vp.removeAllViewsInLayout(); //viewpager清空view
-                for (int i = 0; i < mTitleList.size(); i++) {
-                    tabLayout.addTab(mTitleList.get(i));
-                }
 
                 //设置适配器
                 vp.setAdapter(new MyPagerAdapter(getActivity().getSupportFragmentManager(), mFragmentList, mTitleList));
-                vp.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout.getTabLayout()));
+                vp.addOnPageChangeListener(new XTabLayout.TabLayoutOnPageChangeListener(tabLayout));
                 //将tablayout与fragment关联
                 tabLayout.setupWithViewPager(vp);
 

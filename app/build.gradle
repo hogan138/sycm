@@ -226,4 +226,7 @@ dependencies {
     implementation 'com.hyman:flowlayout-lib:1.1.2'
     //lib包下umeng包下的是友盟分享
     implementation files('libs/umeng-analytics-8.0.0.jar')
+
+    //tablayout   地址https://github.com/AndroidKun/XTabLayout
+    implementation 'com.androidkun:XTabLayout:1.1.4'
 }

@@ -32,6 +32,11 @@
             <!--修改密码-->
             <include layout="@layout/modify_password_num" />
 
+            <include layout="@layout/common_line_6" />
+
+            <!--收货地址-->
+            <include layout="@layout/address_info" />
+
             <!--实名认证-->
             <include layout="@layout/real_name_auth" />
 

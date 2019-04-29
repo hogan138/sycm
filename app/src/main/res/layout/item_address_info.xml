@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="83dp"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_15"
+            android:layout_marginTop="@dimen/text_5"
+            android:text="甘泉"
+            android:textColor="@color/color_1"
+            android:textSize="@dimen/text_14" />
+
+        <TextView
+            android:id="@+id/tv_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_15"
+            android:layout_marginTop="@dimen/text_5"
+            android:text="15868421563"
+            android:textColor="@color/color_1"
+            android:textSize="@dimen/text_14" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_5"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_default"
+                android:layout_width="@dimen/text_35"
+                android:layout_height="20dp"
+                android:layout_marginLeft="@dimen/text_15"
+                android:background="@color/color_4"
+                android:gravity="center"
+                android:text="默认"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_14" />
+
+            <TextView
+                android:id="@+id/tv_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_15"
+                android:text="浙江省 杭州市 西湖区 花园小区…"
+                android:textColor="@color/color_1"
+                android:textSize="@dimen/text_14" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="64dp"
+        android:background="@color/color_13" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/text_19"
+        android:text="编辑"
+        android:textColor="@color/login_text"
+        android:textSize="@dimen/text_15" />
+
+    <View
+        android:id="@+id/view_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/text_15"
+        android:layout_marginRight="@dimen/text_15"
+        android:background="@color/color_32" />
+</RelativeLayout>

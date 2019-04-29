@@ -40,7 +40,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Base"
         tools:replace="label,allowBackup">
-
+        <activity android:name=".ui.mine.AddNewAddressActivity"></activity>
         <!-- 友盟Key -->
         <meta-data
             android:name="UMENG_APPKEY"
@@ -305,10 +305,12 @@
         <activity
             android:name=".ui.found.GoodsDetailsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
-        <!--绑定邀请码-->
+            android:screenOrientation="portrait" /> <!-- 绑定邀请码 -->
         <activity
             android:name=".ui.mine.BindInviteCodeActivity"
+            android:screenOrientation="portrait" /> <!-- 收货地址 -->
+        <activity
+            android:name=".ui.mine.AddressListActivity"
             android:screenOrientation="portrait" />
     </application>
 

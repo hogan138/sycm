@@ -146,6 +146,7 @@ public class BindInviteCodeActivity extends BaseActivity implements View.OnClick
         if (action.equals("bindInviteCode")) {
             //绑定邀请码
             ToastUtil.showToast(mContext, "提交成功");
+            finish();
         }
     }
 }

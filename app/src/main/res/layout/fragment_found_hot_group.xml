@@ -20,8 +20,6 @@
             android:layout_marginRight="@dimen/text_5"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:nestedScrollingEnabled="false">
-
-        </android.support.v7.widget.RecyclerView>
+            android:nestedScrollingEnabled="false" />
     </RelativeLayout>
 </android.support.v4.widget.NestedScrollView>

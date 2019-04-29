@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rl_bind_wechat"
+    android:id="@+id/rl_address_info"
     android:layout_width="match_parent"
     android:layout_height="45.5dp"
     android:foreground="?attr/selectableItemBackground">
@@ -10,27 +10,16 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/text_12"
         android:layout_marginTop="@dimen/text_14"
-        android:text="@string/bind_wechat"
+        android:text="收货地址"
         android:textColor="@color/color_1"
         android:textSize="@dimen/text_15" />
-    <!--android:text="已绑定"-->
-    <TextView
-        android:id="@+id/tv_bind_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/iv_bind_icon"
-        android:layout_marginTop="@dimen/text_14"
-        android:layout_marginRight="@dimen/text_16"
-        android:textColor="@color/color_15"
-        android:textSize="@dimen/text_14" />
-
 
     <ImageView
-        android:id="@+id/iv_bind_icon"
+        android:id="@+id/iv_change_icon"
         android:layout_width="@dimen/text_7"
         android:layout_height="@dimen/text_12"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/text_18"
+        android:layout_marginTop="@dimen/text_17"
         android:layout_marginRight="@dimen/text_12"
         android:src="@mipmap/gomore" />
 </RelativeLayout>

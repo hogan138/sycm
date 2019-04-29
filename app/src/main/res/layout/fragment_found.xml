@@ -85,21 +85,25 @@
                 android:layout_marginLeft="@dimen/text_15"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="@dimen/text_15"
-                android:layout_marginBottom="@dimen/text_15"
+                android:layout_marginBottom="@dimen/text_10"
                 android:orientation="horizontal"
                 app:layout_scrollFlags="scroll" />
 
-            <com.shuyun.qapp.view.EnhanceTabLayout
+            <com.androidkun.xtablayout.XTabLayout
                 android:id="@+id/tab_layout"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                app:tabIndicatorColor="@color/color_4"
-                app:tabIndicatorHeight="3dp"
-                app:tabIndicatorWidth="50dp"
-                app:tabSelectTextColor="@color/color_1"
-                app:tabTextAppearance="@style/TabLayoutTextSize"
-                app:tabTextColor="@color/color_66"
-                app:tab_Mode="mode_scrollable" />
+                app:xTabBackgroundColor="@color/white"
+                app:xTabDividerWidthWidthText="false"
+                app:xTabIndicatorColor="@color/color_4"
+                app:xTabIndicatorHeight="3dp"
+                app:xTabIndicatorWidth="50dp"
+                app:xTabMode="scrollable"
+                app:xTabSelectedTextColor="@color/color_1"
+                app:xTabSelectedTextSize="@dimen/text_19"
+                app:xTabTextColor="@color/color_66"
+                app:xTabTextSelectedBold="true"
+                app:xTabTextSize="@dimen/text_15" />
 
             <include layout="@layout/common_line_4" />
         </android.support.design.widget.AppBarLayout>
