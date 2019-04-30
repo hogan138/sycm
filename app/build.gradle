@@ -227,6 +227,14 @@ dependencies {
     //lib包下umeng包下的是友盟分享
     implementation files('libs/umeng-analytics-8.0.0.jar')
 
-    //tablayout   地址https://github.com/AndroidKun/XTabLayout
+    //tablayout   地址：https://github.com/AndroidKun/XTabLayout
     implementation 'com.androidkun:XTabLayout:1.1.4'
+
+    //省市区选择器   //地址：https://github.com/Bigkoo/Android-PickerView
+    implementation 'com.contrarywind:Android-PickerView:4.1.8'
+
+    //lombok
+    compileOnly "org.projectlombok:lombok:1.18.6"
+    annotationProcessor "org.projectlombok:lombok:1.18.6"
+    implementation 'org.glassfish:javax.annotation:10.0-b28'
 }

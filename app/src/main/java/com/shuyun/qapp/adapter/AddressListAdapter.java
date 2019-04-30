@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.alibaba.sdk.android.ams.common.util.StringUtil;
 import com.shuyun.qapp.R;
+import com.shuyun.qapp.bean.AddressListBeans;
 import com.shuyun.qapp.bean.BoxRecordBean;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 
@@ -25,12 +27,12 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
     private Context context;
     private LayoutInflater layoutInflater;
 
-    private List<BoxRecordBean> boxRecordBeanList;
+    private List<AddressListBeans> addressListBeansList;
 
-    public AddressListAdapter(Context context, List<BoxRecordBean> boxRecordBeanList) {
+    public AddressListAdapter(Context context, List<AddressListBeans> addressListBeansList) {
         layoutInflater = LayoutInflater.from(context);
         this.context = context;
-        this.boxRecordBeanList = boxRecordBeanList;
+        this.addressListBeansList = addressListBeansList;
         notifyDataSetChanged();
     }
 
@@ -43,12 +45,32 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-//        BoxRecordBean boxRecordBean = boxRecordBeanList.get(position);
-//        holder.tvDate.setText(boxRecordBean.getBoxTime());
+
+        AddressListBeans addressListBeans = addressListBeansList.get(position);
+        holder.tvName.setText(addressListBeans.getUserName());
+        holder.tvNumber.setText(addressListBeans.getUserPhone());
+        StringBuilder sb = new StringBuilder();
+        sb.append(addressListBeans.getProvinceName());
+        if (!StringUtil.isBlank(addressListBeans.getCityName())) {
+            sb.append(" ") .append(addressListBeans.getCityName());
+        }
+        if (!StringUtil.isBlank(addressListBeans.getCountyName())) {
+            sb.append(" ") .append(addressListBeans.getCountyName());
+        }
+        sb.append(" ").append(addressListBeans.getDetail());
+        String address = sb.toString();
+        holder.tvAddress.setText(address);
+
+        Long isDefault = addressListBeans.getIsDefault();
+        if (isDefault == 1) {
+            holder.tvDefault.setVisibility(View.VISIBLE);
+        } else {
+            holder.tvDefault.setVisibility(View.GONE);
+        }
 
 
         //最后一条隐藏下划线
-        if (position == boxRecordBeanList.size() - 1) {
+        if (position == addressListBeansList.size() - 1) {
             holder.viewLine.setVisibility(View.GONE);
         }
 
@@ -65,7 +87,7 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
 
     @Override
     public int getItemCount() {
-        return boxRecordBeanList == null ? 0 : boxRecordBeanList.size();
+        return addressListBeansList == null ? 0 : addressListBeansList.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

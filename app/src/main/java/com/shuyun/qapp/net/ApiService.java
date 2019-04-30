@@ -7,6 +7,7 @@ import com.shuyun.qapp.bean.ActivityTimeBean;
 import com.shuyun.qapp.bean.AdBean;
 import com.shuyun.qapp.bean.AddWithdrawResultBean;
 import com.shuyun.qapp.bean.AddWxWithdrawBean;
+import com.shuyun.qapp.bean.AddressListBeans;
 import com.shuyun.qapp.bean.AnswerOpptyBean;
 import com.shuyun.qapp.bean.AnswerRecordBean;
 import com.shuyun.qapp.bean.AppVersionBean;
@@ -45,6 +46,7 @@ import com.shuyun.qapp.bean.MyPropsBean;
 import com.shuyun.qapp.bean.OutPutWithdraw;
 import com.shuyun.qapp.bean.PrizeDetailBean;
 import com.shuyun.qapp.bean.PrizeHistoryBean;
+import com.shuyun.qapp.bean.ProvinceBean;
 import com.shuyun.qapp.bean.QPushBean;
 import com.shuyun.qapp.bean.RealNameBean;
 import com.shuyun.qapp.bean.RobotShowBean;
@@ -741,5 +743,37 @@ public interface ApiService {
      */
     @GET("/rest/user/invite/manager/code/use")
     Observable<DataResponse<AddWxWithdrawBean>> bindInviteCode(@Query("code") String code);
+
+    /**
+     * 104、获取用户地址列表
+     *
+     * @return
+     */
+    @GET("/rest/user/address/list")
+    Observable<DataResponse<List<AddressListBeans>>> getAddressList();
+
+    /**
+     * 105、获取城市列表
+     *
+     * @return
+     */
+    @GET("/rest/user/address/province/list")
+    Observable<DataResponse<List<ProvinceBean>>> getProvinceList();
+
+    /**
+     * 106、增加用户地址
+     *
+     * @return
+     */
+    @POST("/rest/user/address/add")
+    Observable<DataResponse<Object>> addAddress(@Body RequestBody body);
+
+    /**
+     * 107、修改用户地址
+     *
+     * @return
+     */
+    @POST("/rest/user/address/modify")
+    Observable<DataResponse<Object>> modifyAddress(@Body RequestBody body);
 
 }

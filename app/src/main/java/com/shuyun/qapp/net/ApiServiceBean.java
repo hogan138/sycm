@@ -721,4 +721,32 @@ public class ApiServiceBean {
     public static String bindInviteCode() {
         return "bindInviteCode";
     }
+
+    /**
+     * 104、获取用户地址列表
+     */
+    public static String getAddressList() {
+        return "getAddressList";
+    }
+
+    /**
+     * 105、获取城市列表
+     */
+    public static String getProvinceList() {
+        return "getProvinceList";
+    }
+
+    /**
+     * 106、增加用户地址
+     */
+    public static String addAddress() {
+        return "addAddress";
+    }
+
+    /**
+     * 107、修改用户地址
+     */
+    public static String modifyAddress() {
+        return "modifyAddress";
+    }
 }

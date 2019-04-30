@@ -15,7 +15,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/text_15"
             android:layout_marginTop="@dimen/text_5"
-            android:text="甘泉"
             android:textColor="@color/color_1"
             android:textSize="@dimen/text_14" />
 
@@ -25,7 +24,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/text_15"
             android:layout_marginTop="@dimen/text_5"
-            android:text="15868421563"
             android:textColor="@color/color_1"
             android:textSize="@dimen/text_14" />
 
@@ -51,7 +49,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/text_15"
-                android:text="浙江省 杭州市 西湖区 花园小区…"
                 android:textColor="@color/color_1"
                 android:textSize="@dimen/text_14" />
 

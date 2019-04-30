@@ -7,18 +7,13 @@
         android:id="@+id/rl_title"
         layout="@layout/common_left_title" />
 
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/refreshLayout"
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_address_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/rl_title"
-        android:layout_marginBottom="@dimen/text_50">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_address_info"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+        android:layout_marginBottom="@dimen/text_50" />
 
     <LinearLayout
         android:id="@+id/ll_empty"
