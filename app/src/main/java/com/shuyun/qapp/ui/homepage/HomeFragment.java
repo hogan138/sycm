@@ -828,37 +828,6 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
         RemotingEx.doRequest("homeNotice", ApiServiceBean.homeNotice(), null, this);
     }
 
-    // scrollview滚动监听
-    private void changeTitle() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                @Override
-                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                    if (scrollY > dp2px(60)) {
-                        tvInvite.setTextColor(Color.parseColor("#333333"));
-                        ivCommonRightIcon.setImageResource(R.mipmap.message_n);//右侧消息按钮;
-                        tvCommonTitle.setVisibility(View.VISIBLE);
-                    } else {
-                        tvInvite.setTextColor(Color.parseColor("#ffffff"));
-                        ivCommonRightIcon.setImageResource(R.mipmap.messagew_n);//右侧消息按钮;
-                        tvCommonTitle.setVisibility(View.GONE);
-                    }
-                    //顶部栏颜色渐变
-                    if (scrollY <= 0) {
-                        rlTitle.setBackgroundColor(Color.argb((int) 0, 255, 255, 255));//AGB由相关工具获得，或者美工提供
-                    } else if (scrollY > 0 && scrollY <= dp2px(130)) {
-                        float scale = (float) scrollY / dp2px(130);
-                        float alpha = (255 * scale);
-                        // 只是layout背景透明
-                        rlTitle.setBackgroundColor(Color.argb((int) alpha, 255, 255, 255));
-                    } else {
-                        rlTitle.setBackgroundColor(Color.argb(255, 255, 255, 255));
-                    }
-                }
-            });
-        }
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
