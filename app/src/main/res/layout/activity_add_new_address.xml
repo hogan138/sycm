@@ -136,7 +136,6 @@
                 android:layout_height="59dp"
                 android:orientation="horizontal"
                 android:paddingLeft="@dimen/text_15"
-                android:paddingTop="@dimen/text_10"
                 android:paddingRight="@dimen/text_15">
 
                 <TextView
@@ -149,7 +148,7 @@
                 <EditText
                     android:id="@+id/et_address_deatail"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="55dp"
                     android:layout_marginLeft="34dp"
                     android:background="@null"
                     android:hint="@string/tv_hint_address_detail"

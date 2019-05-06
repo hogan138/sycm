@@ -5,12 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.sdk.android.ams.common.util.StringUtil;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.AddressListBeans;
-import com.shuyun.qapp.bean.BoxRecordBean;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 
 import java.util.List;
@@ -52,15 +52,16 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
         StringBuilder sb = new StringBuilder();
         sb.append(addressListBeans.getProvinceName());
         if (!StringUtil.isBlank(addressListBeans.getCityName())) {
-            sb.append(" ") .append(addressListBeans.getCityName());
+            sb.append(" ").append(addressListBeans.getCityName());
         }
         if (!StringUtil.isBlank(addressListBeans.getCountyName())) {
-            sb.append(" ") .append(addressListBeans.getCountyName());
+            sb.append(" ").append(addressListBeans.getCountyName());
         }
         sb.append(" ").append(addressListBeans.getDetail());
         String address = sb.toString();
         holder.tvAddress.setText(address);
 
+        //是否显示默认地址
         Long isDefault = addressListBeans.getIsDefault();
         if (isDefault == 1) {
             holder.tvDefault.setVisibility(View.VISIBLE);
@@ -72,15 +73,28 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
         //最后一条隐藏下划线
         if (position == addressListBeansList.size() - 1) {
             holder.viewLine.setVisibility(View.GONE);
+        } else {
+            holder.viewLine.setVisibility(View.VISIBLE);
         }
 
-        holder.itemView.setOnClickListener(new OnMultiClickListener() {
+        //点击编辑
+        holder.tvEditor.setOnClickListener(new OnMultiClickListener() {
             @Override
             public void onMultiClick(View v) {
                 int position = holder.getLayoutPosition();
-                mOnItemChildClickLitsener.onItemChildClick(holder.itemView, position);
+                mOnEditorClickListener.onEditorClick(holder.tvEditor, position);
             }
         });
+
+        //点击地址信息
+        holder.llItem.setOnClickListener(new OnMultiClickListener() {
+            @Override
+            public void onMultiClick(View v) {
+                int position = holder.getLayoutPosition();
+                mOnItemChildClickLitsener.onItemChildClick(holder.llItem, position);
+            }
+        });
+
 
     }
 
@@ -101,6 +115,10 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
         TextView tvAddress;
         @BindView(R.id.view_line)
         View viewLine;
+        @BindView(R.id.tv_editor)
+        TextView tvEditor;
+        @BindView(R.id.ll_item)
+        LinearLayout llItem;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -109,10 +127,28 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
         }
     }
 
+    //编辑
+    OnEditorClickListener mOnEditorClickListener;
+
+    /**
+     * 设置编辑点击事件
+     */
+    public interface OnEditorClickListener {
+        void onEditorClick(View view, int position);
+    }
+
+    public void setEditorClickLitsener(OnEditorClickListener onEditorClickListener) {
+        this.mOnEditorClickListener = onEditorClickListener;
+    }
+
+
+    /**
+     * 设置item点击事件
+     */
     OnItemClickListener mOnItemChildClickLitsener;
 
     /**
-     * 设置RecyclerView点击事件
+     * 设置编辑点击事件
      */
     public interface OnItemClickListener {
         void onItemChildClick(View view, int position);
@@ -121,5 +157,6 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
     public void setOnItemClickLitsener(OnItemClickListener mOnItemChildClickLitsener) {
         this.mOnItemChildClickLitsener = mOnItemChildClickLitsener;
     }
+
 
 }

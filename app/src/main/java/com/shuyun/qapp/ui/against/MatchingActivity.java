@@ -185,9 +185,9 @@ public class MatchingActivity extends BaseActivity implements View.OnClickListen
     private void startPage(String type) {
 
         if (!EncodeAndStringTool.isStringEmpty(umeng_from) && umeng_from.equals("home")) {
-            UmengPageUtil.startPage("app_home_battle_${" + type + "}_begin");
+            UmengPageUtil.startPage("app_home_battle_" + type + "_begin");
         } else if (!EncodeAndStringTool.isStringEmpty(umeng_from) && umeng_from.equals("found")) {
-            UmengPageUtil.startPage("app_found_battle_${" + type + "}_begin");
+            UmengPageUtil.startPage("app_found_battle_" + type + "_begin");
         }
     }
 

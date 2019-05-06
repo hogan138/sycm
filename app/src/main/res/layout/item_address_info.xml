@@ -5,8 +5,10 @@
     android:background="@color/white">
 
     <LinearLayout
+        android:id="@+id/ll_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginRight="64dp"
         android:orientation="vertical">
 
         <TextView
@@ -42,13 +44,17 @@
                 android:gravity="center"
                 android:text="默认"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_14" />
+                android:textSize="@dimen/text_14"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/text_15"
+                android:layout_marginRight="64dp"
+                android:ellipsize="end"
+                android:singleLine="true"
                 android:textColor="@color/color_1"
                 android:textSize="@dimen/text_14" />
 
@@ -65,11 +71,12 @@
         android:background="@color/color_13" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/tv_editor"
+        android:layout_width="64dp"
+        android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/text_19"
+        android:gravity="center"
         android:text="编辑"
         android:textColor="@color/login_text"
         android:textSize="@dimen/text_15" />

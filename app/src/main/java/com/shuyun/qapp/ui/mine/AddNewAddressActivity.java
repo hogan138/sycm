@@ -1,9 +1,8 @@
 package com.shuyun.qapp.ui.mine;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -15,6 +14,7 @@ import com.alibaba.sdk.android.ams.common.util.StringUtil;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.AddressListBeans;
@@ -26,6 +26,7 @@ import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.UserAddressBean;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,6 +79,13 @@ public class AddNewAddressActivity extends BaseActivity implements View.OnClickL
 
     private String from = "";
 
+    private Long id = 0L;//地址id
+
+    //省市区默认选中
+    private int selectItemOne = 0;
+    private int selectItemTwo = 0;
+    private int selectItemThree = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,9 +101,11 @@ public class AddNewAddressActivity extends BaseActivity implements View.OnClickL
 
         from = getIntent().getStringExtra("from");
         if (from.equals("modify")) {
-            //修改用户地址
+            tvCommonTitle.setText("编辑收货地址");
+            //编辑收货地址
             AddressListBeans addressListBeans = getIntent().getParcelableExtra("address");
             etName.setText(addressListBeans.getUserName());
+            etName.setSelection(addressListBeans.getUserName().length());
             etNumber.setText(addressListBeans.getUserPhone());
             StringBuilder sb = new StringBuilder();
             sb.append(addressListBeans.getProvinceName());
@@ -126,6 +136,8 @@ public class AddNewAddressActivity extends BaseActivity implements View.OnClickL
             cityName = addressListBeans.getCityName();
             countyName = addressListBeans.getCountyName();
 
+            id = Long.valueOf(addressListBeans.getId());
+
         }
 
 
@@ -155,7 +167,7 @@ public class AddNewAddressActivity extends BaseActivity implements View.OnClickL
     public void modifyAddress(UserAddressBean userAddressBean) {
         String inputbean = JSON.toJSONString(userAddressBean);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
-        RemotingEx.doRequest("addAddress", ApiServiceBean.modifyAddress(), new Object[]{body}, this);
+        RemotingEx.doRequest("modifyAddress", ApiServiceBean.modifyAddress(), new Object[]{body}, this);
     }
 
     @Override
@@ -167,13 +179,20 @@ public class AddNewAddressActivity extends BaseActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
+                //隐藏键盘
+                KeyboardUtils.hideSoftInput(this);
                 finish();
                 break;
             case R.id.rl_address:
+                //设置默认选中项
+                selectDefault();
+                //隐藏键盘
+                KeyboardUtils.hideSoftInput(this);
                 //省市区选择器
                 chooseProvince();
                 break;
             case R.id.iv_default:
+                //是否设置为默认地址
                 if (!is_default) {
                     ivDefault.setImageResource(R.mipmap.default_checked_logo);
                     is_default = true;
@@ -195,28 +214,46 @@ public class AddNewAddressActivity extends BaseActivity implements View.OnClickL
 
     //确定
     private void enter() {
-        String userName = etName.getText().toString();
-        String userPhone = etNumber.getText().toString();
-        String detail = etAddressDeatail.getText().toString();
 
-        UserAddressBean userAddressBean = new UserAddressBean();
-        userAddressBean.setUserName(userName);
-        userAddressBean.setUserPhone(userPhone);
-        userAddressBean.setIsDefault(isDefault);
-        userAddressBean.setProvince(province);
-        userAddressBean.setCity(city);
-        userAddressBean.setCounty(county);
-        userAddressBean.setProvinceName(provinceName);
-        userAddressBean.setCityName(cityName);
-        userAddressBean.setCountyName(countyName);
-        userAddressBean.setDetail(detail);
+        String userName = etName.getText().toString().trim();
+        String userPhone = etNumber.getText().toString().trim();
+        String detail = etAddressDeatail.getText().toString().trim();
+        if (!EncodeAndStringTool.isStringEmpty(userName)) {
+            if (!EncodeAndStringTool.isStringEmpty(userPhone)) {
+                if (!EncodeAndStringTool.isStringEmpty(province) || !EncodeAndStringTool.isStringEmpty(city) || !EncodeAndStringTool.isStringEmpty(county)) {
+                    if (!EncodeAndStringTool.isStringEmpty(detail)) {
 
-        if (from.equals("add")) {
-            //添加用户地址
-            addAddress(userAddressBean);
-        } else if (from.equals("modify")) {
-            //修改用户地址
-            modifyAddress(userAddressBean);
+                        UserAddressBean userAddressBean = new UserAddressBean();
+                        userAddressBean.setUserName(userName);
+                        userAddressBean.setUserPhone(userPhone);
+                        userAddressBean.setIsDefault(isDefault);
+                        userAddressBean.setProvince(province);
+                        userAddressBean.setCity(city);
+                        userAddressBean.setCounty(county);
+                        userAddressBean.setProvinceName(provinceName);
+                        userAddressBean.setCityName(cityName);
+                        userAddressBean.setCountyName(countyName);
+                        userAddressBean.setDetail(detail);
+
+                        if (from.equals("add")) {
+                            //添加用户地址
+                            addAddress(userAddressBean);
+                        } else if (from.equals("modify")) {
+                            //修改用户地址
+                            userAddressBean.setId(id);
+                            modifyAddress(userAddressBean);
+                        }
+                    } else {
+                        ToastUtil.showToast(mContext, "请输入详细地址");
+                    }
+                } else {
+                    ToastUtil.showToast(mContext, "请选择所在地区");
+                }
+            } else {
+                ToastUtil.showToast(mContext, "请输入手机号码");
+            }
+        } else {
+            ToastUtil.showToast(mContext, "请输入收货人姓名");
         }
 
     }
@@ -247,7 +284,7 @@ public class AddNewAddressActivity extends BaseActivity implements View.OnClickL
             for (int i = 0; i < provinceBeanList.size(); i++) {
                 ProvinceBean bean = provinceBeanList.get(i);
                 options1Items.add(bean);
-                //取出省份对应的市、
+                //取出省份对应的市
                 List<ProvinceBean> list = bean.getChilds();
                 if (list == null || list.isEmpty()) {
                     list = new ArrayList<>();
@@ -274,6 +311,10 @@ public class AddNewAddressActivity extends BaseActivity implements View.OnClickL
                 options3Items.add(childs);
             }
         } else if (action.equals("addAddress")) {
+            ToastUtil.showToast(mContext, "添加成功");
+            finish();
+        } else if (action.equals("modifyAddress")) {
+            ToastUtil.showToast(mContext, "修改成功");
             finish();
         }
     }
@@ -292,10 +333,41 @@ public class AddNewAddressActivity extends BaseActivity implements View.OnClickL
                 countyName = options3Items.get(options1).get(option2).get(options3).getName();
 
                 tvAddress.setText(provinceName + " " + cityName + " " + countyName);
-                tvAddress.setTextColor(Color.parseColor("#333333"));
+                tvAddress.setTextColor(ContextCompat.getColor(mContext, R.color.color_1));
             }
-        }).setCancelColor(Color.parseColor("#333333")).isRestoreItem(true).build();
+        }).setCancelColor(ContextCompat.getColor(mContext, R.color.color_1))
+                .isRestoreItem(true)
+                .setSelectOptions(selectItemOne, selectItemTwo, selectItemThree)
+                .build();
         optionsPickerView.setPicker(options1Items, options2Items, options3Items);
         optionsPickerView.show();
+    }
+
+    //默认选中项
+    private void selectDefault() {
+        selectItemOne = 0;
+        selectItemTwo = 0;
+        selectItemThree = 0;
+        for (int i = 0; i < options1Items.size(); i++) {
+            if (province.equals(options1Items.get(i).getCode())) {
+                //省
+                selectItemOne = i;
+                List<ProvinceBean> list = options2Items.get(i);
+                for (int j = 0; j < list.size(); j++) {
+                    if (city.equals(list.get(j).getCode())) {
+                        //市
+                        selectItemTwo = j;
+                        List<ProvinceBean> list2 = options3Items.get(i).get(j);
+                        for (int k = 0; k < list2.size(); k++) {
+                            if (county.equals(list2.get(k).getCode())) {
+                                //区
+                                selectItemThree = k;
+                            }
+                        }
+                    }
+                }
+                break;
+            }
+        }
     }
 }

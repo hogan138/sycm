@@ -215,11 +215,10 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
 
     //友盟页面统计
     private void startPage(String type) {
-
         if (!EncodeAndStringTool.isStringEmpty(umeng_from) && umeng_from.equals("home")) {
-            UmengPageUtil.startPage("app_home_battle_${" + type + "}");
+            UmengPageUtil.startPage("app_home_battle_" + type);
         } else if (!EncodeAndStringTool.isStringEmpty(umeng_from) && umeng_from.equals("found")) {
-            UmengPageUtil.startPage("app_found_battle_${" + type + "}");
+            UmengPageUtil.startPage("app_found_battle_" + type);
         }
     }
 

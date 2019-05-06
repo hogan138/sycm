@@ -102,10 +102,10 @@ public class WebAnswerActivity extends BaseActivity {
 
         //友盟页面统计
         if (!EncodeAndStringTool.isStringEmpty(umeng_from) && umeng_from.equals("home")) { //首页
-            String pages = "app_home_group_${" + groupId + "},app_home_group_box_${" + groupId + "},app_home_group_again_${" + groupId + "}";
+            String pages = "app_home_group_" + groupId + ",app_home_group_box_" + groupId + ",app_home_group_again_" + groupId;
             answerHomeBean.setPages(pages);
         } else if (!EncodeAndStringTool.isStringEmpty(umeng_from) && umeng_from.equals("classify")) { //分类
-            String pages = "app_group_class_${" + groupId + "},app_group_class_box_${" + groupId + "},app_group_class_again_${" + groupId + "}";
+            String pages = "app_group_class_" + groupId + ",app_group_class_box_" + groupId + ",app_group_class_again_" + groupId;
             answerHomeBean.setPages(pages);
         } else { //其他
             answerHomeBean.setPages("");

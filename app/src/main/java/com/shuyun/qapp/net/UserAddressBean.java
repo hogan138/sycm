@@ -19,6 +19,7 @@ public class UserAddressBean {
     private String cityName;//城市名称
     private String provinceName;//省份名称
     private String countyName; //区县名称
+    private Long id;//地址id
 
     public String getUserName() {
         return userName;
@@ -100,5 +101,12 @@ public class UserAddressBean {
         this.countyName = countyName;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
 }

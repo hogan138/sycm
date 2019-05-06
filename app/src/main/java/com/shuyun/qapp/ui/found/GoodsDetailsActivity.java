@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -18,8 +19,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONPObject;
 import com.blankj.utilcode.util.ConvertUtils;
 import com.bumptech.glide.Glide;
 import com.mylhyl.circledialog.CircleDialog;
@@ -30,6 +29,7 @@ import com.mylhyl.circledialog.params.DialogParams;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.MarkBannerAdapter1;
 import com.shuyun.qapp.base.BaseActivity;
+import com.shuyun.qapp.bean.AddressListBeans;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.GoodsCommitBean;
 import com.shuyun.qapp.bean.GoodsDetailBeans;
@@ -40,6 +40,7 @@ import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.classify.ClassifyActivity;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
+import com.shuyun.qapp.ui.mine.AddressListActivity;
 import com.shuyun.qapp.ui.mine.MinePrizeActivity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
@@ -109,7 +110,11 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
 
     private static CommonPopupWindow popupWindow;
 
-    String goods_id = "";
+    private String goods_id = ""; //商品id
+
+    GoodsCommitBean goodsCommitBean; //立即兑换实体类
+
+    private String id = ""; //地址id
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -237,6 +242,7 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
 
         } else if ("goodsExchange".equals(action)) {
             popupWindow.dismiss();
+            id = "";
             //兑换商品成功
             ScoreExchangeResult scoreExchangeResult = (ScoreExchangeResult) response.getDat();
             showSuccessPop(scoreExchangeResult);
@@ -425,7 +431,7 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
                     @Override
                     public void onClick(View v) {
 
-                        GoodsCommitBean goodsCommitBean = new GoodsCommitBean();
+                        goodsCommitBean = new GoodsCommitBean();
                         List<GoodsCommitBean.StandardsBean> standardsBeanList = new ArrayList<>();
 
                         for (int i = 0; i < stasViewList.size(); i++) {
@@ -451,11 +457,25 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
                         }
 
                         goodsCommitBean.setCount((long) count);
-                        String detail = JSON.toJSONString(goodsCommitBean);
-
-                        //兑换弹框
                         Long bp = goodsDetailBeans.getBp() * count;
-                        ExchangeTipDialog("您将消耗" + bp + "积分兑换", "确认兑换", "我点错了", goods_id, detail);
+
+                        if (goodsDetailBeans.getMode() == 2) {
+                            if (!EncodeAndStringTool.isStringEmpty(id)) {
+                                goodsCommitBean.setAddressId(Long.valueOf(id));
+                                String detail = JSON.toJSONString(goodsCommitBean);
+                                //兑换弹框
+                                ExchangeTipDialog("您将消耗" + bp + "积分兑换", "确认兑换", "我点错了", goods_id, detail);
+                            } else {
+                                ExchangeTipDialog("请选择收货地址", "去选择", "取消", "", "");
+                            }
+                        } else {
+                            //直接进行兑换
+                            String detail = JSON.toJSONString(goodsCommitBean);
+                            //兑换弹框
+                            ExchangeTipDialog("您将消耗" + bp + "积分兑换", "确认兑换", "我点错了", goods_id, detail);
+                        }
+
+
                     }
                 });
                 break;
@@ -493,6 +513,8 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
                             //分类页
                             SaveUserInfo.getInstance(mContext).setUserInfo("show_back", "show_back");
                             mContext.startActivity(new Intent(mContext, ClassifyActivity.class));
+                        } else if (tv_right.equals("去选择")) {
+                            startActivityForResult(new Intent(mContext, AddressListActivity.class).putExtra("from", "goodsExchange"), 0);
                         } else {
                             propExchange(goodsId, detail);
                         }
@@ -506,5 +528,17 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
                     }
                 })
                 .show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0 && resultCode == RESULT_OK) {
+            if (data != null) {
+                //地址信息
+                AddressListBeans addressListBeans = data.getParcelableExtra("address");
+                id = addressListBeans.getId();
+            }
+        }
     }
 }

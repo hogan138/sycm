@@ -24,6 +24,7 @@ import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,9 +67,10 @@ public class AddressListActivity extends BaseActivity implements View.OnClickLis
 
 
         addressListAdapter = new AddressListAdapter(mContext, addressListBeansList);
-        addressListAdapter.setOnItemClickLitsener(new AddressListAdapter.OnItemClickListener() {
+        addressListAdapter.setEditorClickLitsener(new AddressListAdapter.OnEditorClickListener() {
             @Override
-            public void onItemChildClick(View view, int position) {
+            public void onEditorClick(View view, int position) {
+                //点击编辑
                 AddressListBeans addressListBeans = addressListBeansList.get(position);
                 Intent intent = new Intent(mContext, AddNewAddressActivity.class);
                 intent.putExtra("from", "modify");
@@ -76,6 +78,21 @@ public class AddressListActivity extends BaseActivity implements View.OnClickLis
                 startActivity(intent);
             }
         });
+        addressListAdapter.setOnItemClickLitsener(new AddressListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemChildClick(View view, int position) {
+                String from = getIntent().getStringExtra("from");
+                if (!EncodeAndStringTool.isStringEmpty(from) && from.equals("goodsExchange")) {
+                    //商品详情兑换选择地址
+                    AddressListBeans addressListBeans = addressListBeansList.get(position);
+                    Intent data = new Intent();
+                    data.putExtra("address", addressListBeans);
+                    setResult(RESULT_OK, data);
+                    finish();
+                }
+            }
+        });
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         rvAddressInfo.setLayoutManager(layoutManager);
         rvAddressInfo.setAdapter(addressListAdapter);
