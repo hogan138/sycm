@@ -23,6 +23,7 @@ import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.NetWorkUtils;
 import com.shuyun.qapp.utils.ToastUtil;
 
 import butterknife.BindView;
@@ -48,11 +49,15 @@ public class FeedbackActivity extends BaseActivity implements OnRemotingCallBack
     EditText etFeedContent;//反馈内容
     @BindView(R.id.btn_commit)
     Button btnCommit;//提交
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+
+        mContext = this;
+
         tvCommonTitle.setText("反馈建议");
 
         etFeedContent.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -107,10 +112,10 @@ public class FeedbackActivity extends BaseActivity implements OnRemotingCallBack
             feedBackSuggestBean.setPhone(contact);
             feedBackSuggestBean.setContent(feedContent);
 
-            if (NetworkUtils.isAvailableByPing()) {
+            if (NetWorkUtils.isNetworkConnected(mContext)) {
                 loadFeedBack(feedBackSuggestBean);
             } else {
-                Toast.makeText(this, "网络链接失败，请检查网络链接！", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.network_error), Toast.LENGTH_SHORT).show();
             }
 
         }

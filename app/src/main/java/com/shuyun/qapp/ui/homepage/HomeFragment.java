@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -56,10 +54,11 @@ import com.shuyun.qapp.bean.MainConfigBean;
 import com.shuyun.qapp.bean.MarkBannerItem;
 import com.shuyun.qapp.bean.MarkBannerItem1;
 import com.shuyun.qapp.bean.SystemInfo;
+import com.shuyun.qapp.manager.ActivityRegionManager;
 import com.shuyun.qapp.manager.FragmentTouchManager;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.net.LoginDataManager;
+import com.shuyun.qapp.manager.LoginDataManager;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SykscApplication;
@@ -77,10 +76,10 @@ import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.UmengPageUtil;
 import com.shuyun.qapp.view.AnyPositionImgManage;
-import com.shuyun.qapp.view.FloatImageviewManage;
+import com.shuyun.qapp.manager.FloatImageviewManage;
 import com.shuyun.qapp.view.ITextBannerItemClickListener;
 import com.shuyun.qapp.view.InviteSharePopupUtil;
-import com.shuyun.qapp.view.LoginJumpUtil;
+import com.shuyun.qapp.view.ActionJumpUtil;
 import com.shuyun.qapp.view.MainActivityDialogInfo;
 import com.shuyun.qapp.view.NotifyDialog;
 import com.shuyun.qapp.view.OvalImageView;
@@ -98,8 +97,6 @@ import butterknife.Unbinder;
 import cn.kevin.banner.BannerViewPager;
 import cn.kevin.banner.IBannerItem;
 import cn.kevin.banner.transformer.YZoomTransFormer;
-
-import static com.blankj.utilcode.util.ConvertUtils.dp2px;
 
 
 /**
@@ -322,7 +319,7 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
             public void onItemClick(String data, int position) {
                 HomeNoticeBean homeNoticeBean = homeNoticeBeanList.get(position);
                 LoginDataManager.instance().addData(LoginDataManager.HOME_NOTICE_LOGIN, homeNoticeBean);
-                LoginJumpUtil.dialogSkip(homeNoticeBean.getAction(),
+                ActionJumpUtil.dialogSkip(homeNoticeBean.getAction(),
                         mContext,
                         homeNoticeBean.getGroupId(),
                         homeNoticeBean.getH5Url(),
@@ -381,7 +378,7 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
                         String action = bannerBean.getAction();
                         String h5Url = bannerBean.getH5Url();
                         Long is_Login = bannerBean.getIsLogin();
-                        LoginJumpUtil.dialogSkip(action, mContext, bannerBean.getContent(), h5Url, is_Login);
+                        ActionJumpUtil.dialogSkip(action, mContext, bannerBean.getContent(), h5Url, is_Login);
                     }
                 }
             }
@@ -832,7 +829,6 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
     public void onDestroy() {
         super.onDestroy();
         timer.cancel();
-
     }
 
     @Override
@@ -996,20 +992,18 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
             if (!EncodeAndStringTool.isObjectEmpty(homeGroupsBean)) {
                 //推荐题组
                 if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getRecommend())) {
-                    if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getRecommend())) {
-                        String str = JSON.toJSONString(homeGroupsBean.getRecommend());
-                        groupBeans = homeGroupsBean.getRecommend();
-                        if (recommendString == null || !recommendString.equals(str)) {
-                            recommendIndex = 0;
-                            rollRecommendGroup();
-                            if (groupBeans.size() <= 2) {
-                                llChangeGroup.setVisibility(View.GONE);
-                            } else {
-                                llChangeGroup.setVisibility(View.VISIBLE);
-                            }
+                    String str = JSON.toJSONString(homeGroupsBean.getRecommend());
+                    groupBeans = homeGroupsBean.getRecommend();
+                    if (recommendString == null || !recommendString.equals(str)) {
+                        recommendIndex = 0;
+                        rollRecommendGroup();
+                        if (groupBeans.size() <= 2) {
+                            llChangeGroup.setVisibility(View.GONE);
+                        } else {
+                            llChangeGroup.setVisibility(View.VISIBLE);
                         }
-                        recommendString = str;
                     }
+                    recommendString = str;
                 }
                 //常答题组
                 if (!EncodeAndStringTool.isListEmpty(homeGroupsBean.getOften())) {
@@ -1180,6 +1174,8 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
         }
         return false;
     }
+
+
 }
 
 

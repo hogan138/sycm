@@ -3,8 +3,6 @@ package com.shuyun.qapp.view;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -12,9 +10,8 @@ import android.widget.RelativeLayout;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.ConfigDialogBean;
-import com.shuyun.qapp.bean.MainConfigBean;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.net.LoginDataManager;
+import com.shuyun.qapp.manager.LoginDataManager;
 import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
@@ -158,7 +155,7 @@ public class MainActivityDialogInfo {
         final String h5Url = selectedItem.getH5Url(); //跳转地址
         final String content = selectedItem.getContent();//题组id
         final Long isLogin = selectedItem.getIsLogin();//是否需要登录
-        LoginJumpUtil.dialogSkip(action, context, content, h5Url, isLogin);
+        ActionJumpUtil.dialogSkip(action, context, content, h5Url, isLogin);
     }
 
 }

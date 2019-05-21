@@ -20,6 +20,7 @@ import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
+import com.shuyun.qapp.utils.NetWorkUtils;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 
 import java.text.SimpleDateFormat;
@@ -86,11 +87,7 @@ public class ShowAddAnswerDialog {
                                 btnGetImmedicate.setOnClickListener(new OnMultiClickListener() {
                                     @Override
                                     public void onMultiClick(View v) {
-                                        if (NetworkUtils.isAvailableByPing()) {
-                                            loadAnswerOppty();
-                                        } else {
-                                            Toast.makeText(mContext, "网络链接失败，请检查网络链接！", Toast.LENGTH_SHORT).show();
-                                        }
+                                        loadAnswerOppty();
                                     }
                                 });
                                 break;

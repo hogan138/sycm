@@ -103,4 +103,12 @@
     <string name="tv_hint_address_detail">如道路、门牌号、小区、单元室等</string>
     <string name="tv_enter">确定</string>
     <string name="tv_default_address">设为默认地址</string>
+    <string name="tv_delete_address">删除收货地址</string>
+    <string name="tv_cancel">取消</string>
+    <string name="tv_recommend">为你推荐</string>
+    <string name="tv_label_recommend">推荐</string>
+    <string name="tv_new_group">最新上线</string>
+    <string name="tv_guess_like">猜你喜欢</string>
+    <string name="network_error">网络不可用，请检查网络连接</string>
+    <string name="tv_game_tip">-以上内容由上海友玩网络科技有限公司提供-</string>
 </resources>

@@ -2,12 +2,15 @@ package com.shuyun.qapp.bean;
 
 import java.util.List;
 
+import lombok.Data;
+
 /**
  * 项目名称：QMGJ
  * 创建人：${ganquan}
  * 创建日期：2018/8/2 14:13
  * 积分兑换首页
  */
+@Data
 public class IntegralExchangeBean {
 
     /**
@@ -19,56 +22,26 @@ public class IntegralExchangeBean {
 
     private Long userBp;
     private Long luckyConsBp;
+    private Long flipConsBp;
     private List<String> luckyPicList;
     private List<String> treasurePicList;
+    private List<String> flipPicList;
     private String ruleUrl;
     private String h5Url; //开宝箱地址
+    private String flipUrl; //翻牌地址
+    private BpExpireBean bpExpire; //积分过期
 
-    public String getH5Url() {
-        return h5Url;
+    @Data
+    public static class BpExpireBean {
+        /**
+         * bp : 275
+         * time : 2019年06月30日
+         */
+
+        private Long bp;
+        private String time;
+        private String h5Url;
     }
 
-    public void setH5Url(String h5Url) {
-        this.h5Url = h5Url;
-    }
 
-    public String getRuleUrl() {
-        return ruleUrl;
-    }
-
-    public void setRuleUrl(String ruleUrl) {
-        this.ruleUrl = ruleUrl;
-    }
-
-    public Long getUserBp() {
-        return userBp;
-    }
-
-    public void setUserBp(Long userBp) {
-        this.userBp = userBp;
-    }
-
-    public Long getLuckyConsBp() {
-        return luckyConsBp;
-    }
-
-    public void setLuckyConsBp(Long luckyConsBp) {
-        this.luckyConsBp = luckyConsBp;
-    }
-
-    public List<String> getLuckyPicList() {
-        return luckyPicList;
-    }
-
-    public void setLuckyPicList(List<String> luckyPicList) {
-        this.luckyPicList = luckyPicList;
-    }
-
-    public List<String> getTreasurePicList() {
-        return treasurePicList;
-    }
-
-    public void setTreasurePicList(List<String> treasurePicList) {
-        this.treasurePicList = treasurePicList;
-    }
 }

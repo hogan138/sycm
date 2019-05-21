@@ -2,6 +2,7 @@ package com.shuyun.qapp.net;
 
 import android.content.Context;
 
+import com.shuyun.qapp.bean.AddressListBeans;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SaveUserInfo1;
@@ -142,6 +143,8 @@ public class AppConst {
     public static final String ACTION_SIGN = "action.sign";//签到
     public static final String ACTION_INTEGRAL_GOODS = "action.integral.goods";//积分兑换
     public static final String ACTION_PRIZE = "action.prize";//我的奖品
+    public static final String ACTION_GAME = "action.third.game";//游戏中心
+    public static final String ACTION_SCHEME = "action.url.scheme";//scheme
 
     //邀请登录跳转
     public static final int INVITE_CODE = 0x2001;
@@ -242,4 +245,14 @@ public class AppConst {
     public static final String APP_PERSONAL_TRANSCRIPT = "app_personal_transcript"; //成绩单
 
 
+    //商品详情选择地址
+    public static AddressListBeans addressListBeans;
+
+    public static AddressListBeans getAddressListBeans() {
+        return addressListBeans;
+    }
+
+    public static void setAddressListBeans(AddressListBeans addressListBeans) {
+        AppConst.addressListBeans = addressListBeans;
+    }
 }

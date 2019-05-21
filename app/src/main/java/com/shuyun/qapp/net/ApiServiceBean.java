@@ -749,4 +749,53 @@ public class ApiServiceBean {
     public static String modifyAddress() {
         return "modifyAddress";
     }
+
+    /**
+     * 108、删除用户地址
+     */
+    public static String deleteAddress() {
+        return "deleteAddress";
+    }
+
+    /**
+     * 109、新版首页数据
+     */
+    public static String homeSelectInfo() {
+        return "homeSelectInfo";
+    }
+
+    /**
+     * 110、新版首页tab
+     */
+    public static String newHometab() {
+        return "newHometab";
+    }
+
+    /**
+     * 111、获取首页tab内容
+     */
+    public static String HometabContent() {
+        return "HometabContent";
+    }
+
+    /**
+     * 112、游戏列表
+     */
+    public static String gameList() {
+        return "gameList";
+    }
+
+    /**
+     * 113、游戏认证
+     */
+    public static String gameAuth() {
+        return "gameAuth";
+    }
+
+    /**
+     * 114、新版答题对战题组列表
+     */
+    public static String getAgainstList() {
+        return "getAgainstList";
+    }
 }

@@ -40,8 +40,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Base"
         tools:replace="label,allowBackup">
-        <activity android:name=".ui.mine.AddNewAddressActivity"></activity>
-        <!-- 友盟Key -->
+        <activity android:name=".ui.found.GameCenterActivity"></activity>
+        <activity android:name=".ui.mine.AddNewAddressActivity" /> <!-- 友盟Key -->
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="581bf94d734be436a600147a" /> <!-- 渠道 -->
@@ -222,6 +222,9 @@
             android:screenOrientation="portrait" /> <!-- 自由对战首页 -->
         <activity
             android:name=".ui.against.FreeMainActivity"
+            android:screenOrientation="portrait" /> <!-- 新版自由对战首页 -->
+        <activity
+            android:name=".ui.against.NewFreeMainActivity"
             android:screenOrientation="portrait" /> <!-- 自由对战题组详情 -->
         <activity
             android:name=".ui.against.FreeDetailActivity"

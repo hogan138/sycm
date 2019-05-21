@@ -1,11 +1,14 @@
-package com.shuyun.qapp.net;
+package com.shuyun.qapp.manager;
 
 import android.content.Context;
 import android.os.Handler;
 
 import com.shuyun.qapp.bean.DataResponse;
+import com.shuyun.qapp.net.ApiServiceBean;
+import com.shuyun.qapp.net.AppConst;
+import com.shuyun.qapp.net.OnRemotingCallBackListener;
+import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
-import com.shuyun.qapp.ui.welcome.WelcomeActivity;
 
 /**
  * 心跳检测 在Activity的onResume中执行

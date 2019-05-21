@@ -72,7 +72,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:foreground="?attr/selectableItemBackground"
-                    app:cardBackgroundColor="#F8F8F8"
+                    app:cardBackgroundColor="@color/color_f8"
                     app:cardCornerRadius="6dp"
                     app:cardElevation="@dimen/text_1"
                     app:cardPreventCornerOverlap="false"

@@ -1,4 +1,4 @@
-package com.shuyun.qapp.net;
+package com.shuyun.qapp.manager;
 
 import com.shuyun.qapp.base.BaseActivity;
 

@@ -85,9 +85,7 @@ public class AddressListActivity extends BaseActivity implements View.OnClickLis
                 if (!EncodeAndStringTool.isStringEmpty(from) && from.equals("goodsExchange")) {
                     //商品详情兑换选择地址
                     AddressListBeans addressListBeans = addressListBeansList.get(position);
-                    Intent data = new Intent();
-                    data.putExtra("address", addressListBeans);
-                    setResult(RESULT_OK, data);
+                    AppConst.setAddressListBeans(addressListBeans);
                     finish();
                 }
             }

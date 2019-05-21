@@ -12,17 +12,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.shuyun.qapp.R;
-import com.shuyun.qapp.bean.AnyPositionBean;
 import com.shuyun.qapp.bean.FoundDataBean;
-import com.shuyun.qapp.bean.GroupClassifyBean;
-import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
-import com.shuyun.qapp.view.AnyPositionImgManage;
 import com.shuyun.qapp.view.OvalImageView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -40,7 +35,6 @@ public class FoundGroupAdapter extends RecyclerView.Adapter<FoundGroupAdapter.Vi
     //题组分类集合
     private List<FoundDataBean.TablesBean.GroupsBean.ChildrenBean> childrenBeanList;
     private LayoutInflater layoutInflater;
-    private Handler mHandler = new Handler();
 
     public FoundGroupAdapter(List<FoundDataBean.TablesBean.GroupsBean.ChildrenBean> childrenBeanList, Context mContext) {
         this.childrenBeanList = childrenBeanList;
@@ -91,36 +85,6 @@ public class FoundGroupAdapter extends RecyclerView.Adapter<FoundGroupAdapter.Vi
                     startActivity(intent);
                 }
             });
-
-            //任意logo
-//            List<GroupClassifyBean.AdConfigs> list = childrenBean.getAdConfigs();
-//            if (list == null)
-//                list = new ArrayList<>();
-//            for (GroupClassifyBean.AdConfigs adConfigs : list) {
-//                Long type = adConfigs.getType();
-//                if (AppConst.TYPE_HOME_GROUP != type) {
-//                    continue;
-//                }
-//                final AnyPositionBean anyPositionBean = new AnyPositionBean();
-//                anyPositionBean.setType(adConfigs.getType());
-//                anyPositionBean.setLocation(adConfigs.getLocation());
-//                anyPositionBean.setWidth(adConfigs.getWidth());
-//                anyPositionBean.setHeight(adConfigs.getHeight());
-//                anyPositionBean.setPadding(adConfigs.getPadding());
-//                anyPositionBean.setMargin(adConfigs.getMargin());
-//                anyPositionBean.setShadow(adConfigs.getShadow());
-//                anyPositionBean.setShadowColor(adConfigs.getShadowColor());
-//                anyPositionBean.setShadowAlpha(adConfigs.getShadowAlpha());
-//                anyPositionBean.setShadowRadius(adConfigs.getShadowRadius());
-//                anyPositionBean.setImageUrl(adConfigs.getImageUrl());
-//                //执行
-//                mHandler.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        AnyPositionImgManage.execute(anyPositionBean, holder.rlAddImageview, mContext);
-//                    }
-//                }, 0);
-//            }
         } catch (Exception e) {
 
         }

@@ -57,6 +57,12 @@
         <item name="android:windowExitAnimation">@anim/popuwindows_out</item>
     </style>
 
+    <!--popuwindows顶部弹出-->
+    <style name="popwin_anim_style_top">
+        <item name="android:windowEnterAnimation">@anim/popuwindows_out</item>
+        <item name="android:windowExitAnimation">@anim/popuwindows_in</item>
+    </style>
+
     <!-- 非首页（非第一级页面让Activity透明） -->
 
     <style name="textview_style">

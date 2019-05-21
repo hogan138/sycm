@@ -1,0 +1,76 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_home_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rl_top"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <com.androidkun.xtablayout.XTabLayout
+                android:id="@+id/home_tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginRight="33dp"
+                app:xTabBackgroundColor="@color/white"
+                app:xTabDividerWidthWidthText="false"
+                app:xTabIndicatorColor="@color/color_4"
+                app:xTabIndicatorHeight="3dp"
+                app:xTabIndicatorWidth="22.5dp"
+                app:xTabMode="scrollable"
+                app:xTabSelectedTextColor="@color/color_4"
+                app:xTabSelectedTextSize="@dimen/text_18"
+                app:xTabTextColor="@color/color_49"
+                app:xTabTextSelectedBold="false"
+                app:xTabTextSize="@dimen/text_14" />
+
+            <LinearLayout
+                android:id="@+id/ll_sort"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:gravity="end|center_vertical">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginRight="@dimen/text_10"
+                    android:src="@mipmap/home_group_more" />
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+        <include layout="@layout/common_line_4" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_bx"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="@dimen/text_10"
+        android:layout_marginBottom="@dimen/text_70"
+        android:src="@mipmap/indexbx"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/rl_logo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</RelativeLayout>

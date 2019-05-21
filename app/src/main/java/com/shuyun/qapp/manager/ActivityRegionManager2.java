@@ -1,4 +1,4 @@
-package com.shuyun.qapp.ui.found;
+package com.shuyun.qapp.manager;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,11 +12,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.shuyun.qapp.R;
-import com.shuyun.qapp.bean.FoundDataBean;
-import com.shuyun.qapp.net.LoginDataManager;
+import com.shuyun.qapp.bean.NewHomeSelectBean;
+import com.shuyun.qapp.manager.LoginDataManager;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
 import com.shuyun.qapp.utils.GlideUtils;
-import com.shuyun.qapp.view.LoginJumpUtil;
+import com.shuyun.qapp.view.ActionJumpUtil;
 import com.shuyun.qapp.view.RoundImageView;
 
 import java.util.Collections;
@@ -24,11 +24,11 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * 发现活动区域封装
+ * 首页活动区域封装
  */
-public class ActivityRegionManager1 {
+public class ActivityRegionManager2 {
 
-    public static RelativeLayout getView(final Activity context, FoundDataBean.RegionBean data, final View layout) {
+    public static RelativeLayout getView(final Activity context, NewHomeSelectBean.RegionBean data, final View layout) {
         Resources resources = context.getResources();
         DisplayMetrics dm = resources.getDisplayMetrics();
 
@@ -53,7 +53,7 @@ public class ActivityRegionManager1 {
             //int rowH = (totalHeight - (totalRow - 1) * spacing) / totalRow; //每行高度
 
             //遍历datas
-            List<FoundDataBean.RegionBean.DatasBean> datasBeans = data.getDatas();
+            List<NewHomeSelectBean.RegionBean.DatasBean> datasBeans = data.getDatas();
             int xList[] = new int[totalColumn];
             int yList[] = new int[totalRow];
             for (int i = 0; i < totalColumn; i++) {
@@ -61,15 +61,15 @@ public class ActivityRegionManager1 {
             }
 
             //降序
-            Collections.sort(datasBeans, new Comparator<FoundDataBean.RegionBean.DatasBean>() {
+            Collections.sort(datasBeans, new Comparator<NewHomeSelectBean.RegionBean.DatasBean>() {
                 @Override
-                public int compare(FoundDataBean.RegionBean.DatasBean t1, FoundDataBean.RegionBean.DatasBean t2) {
+                public int compare(NewHomeSelectBean.RegionBean.DatasBean t1, NewHomeSelectBean.RegionBean.DatasBean t2) {
                     return t1.getRow().compareTo(t2.getRow());
                 }
             });
             int yDiff = 0;
             for (int i = 0, j = datasBeans.size(); i < j; i++) {
-                FoundDataBean.RegionBean.DatasBean datasBean = datasBeans.get(i);
+                NewHomeSelectBean.RegionBean.DatasBean datasBean = datasBeans.get(i);
                 int rowD = Integer.valueOf(datasBean.getRow());//所在行
                 int colD = Integer.valueOf(datasBean.getColumn());//所在列
                 if (colD > 1)
@@ -79,7 +79,7 @@ public class ActivityRegionManager1 {
                 yDiff += heightD;
             }
 
-            for (FoundDataBean.RegionBean.DatasBean datasBean : datasBeans) {
+            for (NewHomeSelectBean.RegionBean.DatasBean datasBean : datasBeans) {
                 int rowD = Integer.valueOf(datasBean.getRow());//所在行
                 int colD = Integer.valueOf(datasBean.getColumn());//所在列
                 int rowspan = Integer.valueOf(datasBean.getRowspan());//跨行
@@ -90,7 +90,7 @@ public class ActivityRegionManager1 {
                 String name = datasBean.getTitle(); //标题
                 String remark = datasBean.getRemark();//描述
                 String icon = datasBean.getIcon(); //图片地址
-                String count = datasBean.getCount();//积分数量
+//                String count = datasBean.getCount();//积分数量
 
                 //计算 top left
                 int x = xList[colD - 1];
@@ -139,12 +139,12 @@ public class ActivityRegionManager1 {
                     TextView tv_score = view.findViewById(R.id.tv_score);
                     ImageView iv_icon3 = view.findViewById(R.id.iv_icon);
                     //赋值
-                    if (Integer.parseInt(count) == 0) {
-                        tv_score.setVisibility(View.GONE);
-                    } else {
-                        tv_score.setVisibility(View.VISIBLE);
-                        tv_score.setText("+" + count);
-                    }
+//                    if (Integer.parseInt(count) == 0) {
+//                        tv_score.setVisibility(View.GONE);
+//                    } else {
+//                        tv_score.setVisibility(View.VISIBLE);
+//                        tv_score.setText("+" + count);
+//                    }
                     tv_name3.setText(name);
                     tv_remark3.setText(remark);
                     GlideUtils.LoadImageWithSize(context, icon, dp2px(context, 33), dp2px(context, 25), iv_icon3);
@@ -206,13 +206,13 @@ public class ActivityRegionManager1 {
      * @param view
      */
     private static void dialogSkip(View view, Activity context) {
-        FoundDataBean.RegionBean.DatasBean selectedItem = (FoundDataBean.RegionBean.DatasBean) view.getTag();
+        NewHomeSelectBean.RegionBean.DatasBean selectedItem = (NewHomeSelectBean.RegionBean.DatasBean) view.getTag();
         LoginDataManager.instance().addData(LoginDataManager.HOME_ACTIVITY_LOGIN, selectedItem);
 
         final String action = selectedItem.getAction(); //跳转action
         final String h5Url = selectedItem.getH5Url(); //跳转地址
         final String content = selectedItem.getContent();//题组id
         final Long isLogin = selectedItem.getIsLogin();//是否需要登录
-        LoginJumpUtil.dialogSkip(action, context, content, h5Url, isLogin);
+        ActionJumpUtil.dialogSkip(action, context, content, h5Url, isLogin);
     }
 }

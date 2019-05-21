@@ -32,6 +32,7 @@ import com.shuyun.qapp.utils.AliPushBind;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.MyActivityManager1;
+import com.shuyun.qapp.utils.NetWorkUtils;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ToastUtil;
 
@@ -127,11 +128,11 @@ public class BindPhoneNumActivity extends BaseActivity {
                     verficationCodeBean.setV(AppConst.V);
                     verficationCodeBean.setStamp(curTime0);
                     verficationCodeBean.setCode(signCode);
-                    if (NetworkUtils.isAvailableByPing()) {
+                    if (NetWorkUtils.isNetworkConnected(mContext)) {
                         //调用获取验证码的接口
                         getVerficationCode(verficationCodeBean);
                     } else {
-                        Toast.makeText(this, "网络链接失败，请检查网络链接！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getResources().getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                     }
 
                 } else {

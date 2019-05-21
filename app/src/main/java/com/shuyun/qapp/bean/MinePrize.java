@@ -8,11 +8,14 @@ import com.alibaba.fastjson.serializer.ToStringSerializer;
 
 import java.util.List;
 
+import lombok.Data;
+
 /**
  * Created by sunxiao on 2018/5/5.
  * 我的奖品
  */
 
+@Data
 public class MinePrize implements Parcelable {
 
 
@@ -73,6 +76,8 @@ public class MinePrize implements Parcelable {
     private String actionType; //动作值
     private String actionTypeLabel;//按钮名称
     private List<ChildMinePrize> groups; //红包集合
+    private Long lock;//显示锁遮罩层
+    private LockConfigBean lockConfig;//锁弹框信息
 
     public MinePrize() {
 
@@ -80,36 +85,80 @@ public class MinePrize implements Parcelable {
 
     protected MinePrize(Parcel in) {
         name = in.readString();
-        type = in.readLong();
+        if (in.readByte() == 0) {
+            type = null;
+        } else {
+            type = in.readLong();
+        }
         description = in.readString();
-        mode = in.readLong();
+        if (in.readByte() == 0) {
+            mode = null;
+        } else {
+            mode = in.readLong();
+        }
         picture = in.readString();
         mainImage = in.readString();
         LongImage = in.readString();
         id = in.readString();
         expireTime = in.readString();
         validTime = in.readString();
-        status = in.readLong();
-        upcomming = in.readLong();
+        if (in.readByte() == 0) {
+            status = null;
+        } else {
+            status = in.readLong();
+        }
+        if (in.readByte() == 0) {
+            upcomming = null;
+        } else {
+            upcomming = in.readLong();
+        }
         amount = in.readString();
         bulletin = in.readString();
         prizes = in.createTypedArrayList(PrizesBean.CREATOR);
-        beat0 = in.readLong();
-        beatRate = in.readDouble();
-        accuracy = in.readDouble();
-        source = in.readLong();
+        if (in.readByte() == 0) {
+            beat0 = null;
+        } else {
+            beat0 = in.readLong();
+        }
+        if (in.readByte() == 0) {
+            beatRate = null;
+        } else {
+            beatRate = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            accuracy = null;
+        } else {
+            accuracy = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            source = null;
+        } else {
+            source = in.readLong();
+        }
         substatusName = in.readString();
         h5Url = in.readString();
         orginal = in.readInt();
-        scheduleId = in.readLong();
-        orderId = in.readLong();
+        if (in.readByte() == 0) {
+            scheduleId = null;
+        } else {
+            scheduleId = in.readLong();
+        }
+        if (in.readByte() == 0) {
+            orderId = null;
+        } else {
+            orderId = in.readLong();
+        }
         selected = in.readByte() != 0;
         content = in.readString();
         openPicture = in.readString();
         actionType = in.readString();
         actionTypeLabel = in.readString();
         groups = in.createTypedArrayList(ChildMinePrize.CREATOR);
-
+        if (in.readByte() == 0) {
+            lock = null;
+        } else {
+            lock = in.readLong();
+        }
     }
 
     public static final Creator<MinePrize> CREATOR = new Creator<MinePrize>() {
@@ -124,246 +173,6 @@ public class MinePrize implements Parcelable {
         }
     };
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getType() {
-        return type;
-    }
-
-    public void setType(Long type) {
-        this.type = type;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Long getMode() {
-        return mode;
-    }
-
-    public void setMode(Long mode) {
-        this.mode = mode;
-    }
-
-    public String getPicture() {
-        return picture;
-    }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
-
-    public String getMainImage() {
-        return mainImage;
-    }
-
-    public void setMainImage(String mainImage) {
-        this.mainImage = mainImage;
-    }
-
-    public String getLongImage() {
-        return LongImage;
-    }
-
-    public void setLongImage(String LongImage) {
-        this.LongImage = LongImage;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getExpireTime() {
-        return expireTime;
-    }
-
-    public void setExpireTime(String expireTime) {
-        this.expireTime = expireTime;
-    }
-
-    public String getValidTime() {
-        return validTime;
-    }
-
-    public void setValidTime(String validTime) {
-        this.validTime = validTime;
-    }
-
-    public Long getStatus() {
-        return status;
-    }
-
-    public void setStatus(Long status) {
-        this.status = status;
-    }
-
-    public Long getUpcomming() {
-        return upcomming;
-    }
-
-    public void setUpcomming(Long upcomming) {
-        this.upcomming = upcomming;
-    }
-
-    public String getAmount() {
-        return amount;
-    }
-
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
-
-    public String getBulletin() {
-        return bulletin;
-    }
-
-    public void setBulletin(String bulletin) {
-        this.bulletin = bulletin;
-    }
-
-    public List<PrizesBean> getPrizes() {
-        return prizes;
-    }
-
-    public void setPrizes(List<PrizesBean> prizes) {
-        this.prizes = prizes;
-    }
-
-    public Long getBeat0() {
-        return beat0;
-    }
-
-    public void setBeat0(Long beat0) {
-        this.beat0 = beat0;
-    }
-
-    public Double getBeatRate() {
-        return beatRate;
-    }
-
-    public void setBeatRate(Double beatRate) {
-        this.beatRate = beatRate;
-    }
-
-    public Double getAccuracy() {
-        return accuracy;
-    }
-
-    public void setAccuracy(Double accuracy) {
-        this.accuracy = accuracy;
-    }
-
-    public Long getSource() {
-        return source;
-    }
-
-    public void setSource(Long source) {
-        this.source = source;
-    }
-
-    public String getSubstatusName() {
-        return substatusName;
-    }
-
-    public void setSubstatusName(String substatusName) {
-        this.substatusName = substatusName;
-    }
-
-    public String getH5Url() {
-        return h5Url;
-    }
-
-    public void setH5Url(String h5Url) {
-        this.h5Url = h5Url;
-    }
-
-    public int getOrginal() {
-        return orginal;
-    }
-
-    public void setOrginal(int orginal) {
-        this.orginal = orginal;
-    }
-
-    public Long getScheduleId() {
-        return scheduleId;
-    }
-
-    public void setScheduleId(Long scheduleId) {
-        this.scheduleId = scheduleId;
-    }
-
-    public Long getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-
-    public boolean isSelected() {
-        return selected;
-    }
-
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getOpenPicture() {
-        return openPicture;
-    }
-
-    public void setOpenPicture(String openPicture) {
-        this.openPicture = openPicture;
-    }
-
-    public String getActionType() {
-        return actionType;
-    }
-
-    public void setActionType(String actionType) {
-        this.actionType = actionType;
-    }
-
-    public String getActionTypeLabel() {
-        return actionTypeLabel;
-    }
-
-    public void setActionTypeLabel(String actionTypeLabel) {
-        this.actionTypeLabel = actionTypeLabel;
-    }
-
-    public List<ChildMinePrize> getMinePrizes() {
-        return groups;
-    }
-
-    public void setMinePrizes(List<ChildMinePrize> ChildMinePrizes) {
-        this.groups = ChildMinePrizes;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -372,35 +181,118 @@ public class MinePrize implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
-        dest.writeLong(type);
+        if (type == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(type);
+        }
         dest.writeString(description);
-        dest.writeLong(mode);
+        if (mode == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(mode);
+        }
         dest.writeString(picture);
         dest.writeString(mainImage);
         dest.writeString(LongImage);
         dest.writeString(id);
         dest.writeString(expireTime);
         dest.writeString(validTime);
-        dest.writeLong(status);
-        dest.writeLong(upcomming);
+        if (status == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(status);
+        }
+        if (upcomming == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(upcomming);
+        }
         dest.writeString(amount);
         dest.writeString(bulletin);
         dest.writeTypedList(prizes);
-        dest.writeLong(beat0 == null ? 0L : beat0);
-        dest.writeDouble(beatRate);
-        dest.writeDouble(accuracy);
-        dest.writeLong(source);
+        if (beat0 == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(beat0);
+        }
+        if (beatRate == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(beatRate);
+        }
+        if (accuracy == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(accuracy);
+        }
+        if (source == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(source);
+        }
         dest.writeString(substatusName);
         dest.writeString(h5Url);
         dest.writeInt(orginal);
-        dest.writeLong(scheduleId);
-        dest.writeLong(orderId);
+        if (scheduleId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(scheduleId);
+        }
+        if (orderId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(orderId);
+        }
         dest.writeByte((byte) (selected ? 1 : 0));
         dest.writeString(content);
         dest.writeString(openPicture);
         dest.writeString(actionType);
         dest.writeString(actionTypeLabel);
         dest.writeTypedList(groups);
+        if (lock == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(lock);
+        }
+    }
+
+    @Data
+    public static class LockConfigBean {
+        /**
+         * msg : 您在平安好医生APP完成的订单确认收货15天后可以提现
+         * button : 查看订单
+         * h5Url : pajkdoctor://jk.cn/jump?query=PEDOMETER
+         * action : action.url.scheme
+         */
+
+        private String msg;
+        private String button;
+        private String h5Url;
+        private String action;
+        private String content;
+
+
+    }
+
+
+    public List<ChildMinePrize> getMinePrizes() {
+        return groups;
+    }
+
+    public void setMinePrizes(List<ChildMinePrize> ChildMinePrizes) {
+        this.groups = ChildMinePrizes;
     }
 
 
@@ -459,85 +351,6 @@ public class MinePrize implements Parcelable {
             }
         };
 
-        public String getShowName() {
-            return showName;
-        }
-
-        public void setShowName(String name) {
-            this.showName = name;
-        }
-
-        public Long getType() {
-            return type;
-        }
-
-        public void setType(Long type) {
-            this.type = type;
-        }
-
-        public Long getMode() {
-            return mode;
-        }
-
-        public void setMode(Long mode) {
-            this.mode = mode;
-        }
-
-        public String getPurpose() {
-            return purpose;
-        }
-
-        public void setPurpose(String purpose) {
-            this.purpose = purpose;
-        }
-
-        public String getMainImage() {
-            return mainImage;
-        }
-
-        public void setMainImage(String mainImage) {
-            this.mainImage = mainImage;
-        }
-
-        public String getLongImage() {
-            return LongImage;
-        }
-
-        public void setLongImage(String LongImage) {
-            this.LongImage = LongImage;
-        }
-
-        public String getShortImage() {
-            return shortImage;
-        }
-
-        public void setShortImage(String shortImage) {
-            this.shortImage = shortImage;
-        }
-
-        public Long getId() {
-            return id;
-        }
-
-        public void setId(Long id) {
-            this.id = id;
-        }
-
-        public Double getWorthLower() {
-            return worthLower;
-        }
-
-        public void setWorthLower(Double worthLower) {
-            this.worthLower = worthLower;
-        }
-
-        public Double getWorthUpper() {
-            return worthUpper;
-        }
-
-        public void setWorthUpper(Double worthUpper) {
-            this.worthUpper = worthUpper;
-        }
 
         @Override
         public int describeContents() {
@@ -559,6 +372,7 @@ public class MinePrize implements Parcelable {
         }
     }
 
+    @Data
     public static class ChildMinePrize implements Parcelable {
 
         /**
@@ -617,213 +431,6 @@ public class MinePrize implements Parcelable {
         private String actionType; //动作值
         private String actionTypeLabel;//按钮名称
 
-        public String getActionType() {
-            return actionType;
-        }
-
-        public void setActionType(String actionType) {
-            this.actionType = actionType;
-        }
-
-        public String getActionTypeLabel() {
-            return actionTypeLabel;
-        }
-
-        public void setActionTypeLabel(String actionTypeLabel) {
-            this.actionTypeLabel = actionTypeLabel;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public Long getType() {
-            return type;
-        }
-
-        public void setType(Long type) {
-            this.type = type;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
-        }
-
-        public Long getMode() {
-            return mode;
-        }
-
-        public void setMode(Long mode) {
-            this.mode = mode;
-        }
-
-        public String getPicture() {
-            return picture;
-        }
-
-        public void setPicture(String picture) {
-            this.picture = picture;
-        }
-
-        public String getMainImage() {
-            return mainImage;
-        }
-
-        public void setMainImage(String mainImage) {
-            this.mainImage = mainImage;
-        }
-
-        public String getLongImage() {
-            return LongImage;
-        }
-
-        public void setLongImage(String LongImage) {
-            this.LongImage = LongImage;
-        }
-
-        public String getShortImage() {
-            return shortImage;
-        }
-
-        public void setShortImage(String shortImage) {
-            this.shortImage = shortImage;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public Long getPrizeId() {
-            return prizeId;
-        }
-
-        public void setPrizeId(Long prizeId) {
-            this.prizeId = prizeId;
-        }
-
-        public String getExpireTime() {
-            return expireTime;
-        }
-
-        public void setExpireTime(String expireTime) {
-            this.expireTime = expireTime;
-        }
-
-        public Long getValidTime() {
-            return validTime;
-        }
-
-        public void setValidTime(Long validTime) {
-            this.validTime = validTime;
-        }
-
-        public Long getStatus() {
-            return status;
-        }
-
-        public void setStatus(Long status) {
-            this.status = status;
-        }
-
-        public Long getSubstatus() {
-            return substatus;
-        }
-
-        public void setSubstatus(Long substatus) {
-            this.substatus = substatus;
-        }
-
-        public Long getUpcomming() {
-            return upcomming;
-        }
-
-        public void setUpcomming(Long upcomming) {
-            this.upcomming = upcomming;
-        }
-
-        public String getAmount() {
-            return amount;
-        }
-
-        public void setAmount(String amount) {
-            this.amount = amount;
-        }
-
-        public Long getBeat() {
-            return beat;
-        }
-
-        public void setBeat(Long beat) {
-            this.beat = beat;
-        }
-
-        public Double getBeatRate() {
-            return beatRate;
-        }
-
-        public void setBeatRate(Double beatRate) {
-            this.beatRate = beatRate;
-        }
-
-        public Double getAccuracy() {
-            return accuracy;
-        }
-
-        public void setAccuracy(Double accuracy) {
-            this.accuracy = accuracy;
-        }
-
-        public Long getOriginal() {
-            return original;
-        }
-
-        public void setOriginal(Long original) {
-            this.original = original;
-        }
-
-        public Long getSource() {
-            return source;
-        }
-
-        public void setSource(Long source) {
-            this.source = source;
-        }
-
-        public Long getScheduleId() {
-            return scheduleId;
-        }
-
-        public void setScheduleId(Long scheduleId) {
-            this.scheduleId = scheduleId;
-        }
-
-        public Long getOrderId() {
-            return orderId;
-        }
-
-        public void setOrderId(Long orderId) {
-            this.orderId = orderId;
-        }
-
-        public boolean isSelected() {
-            return selected;
-        }
-
-        public void setSelected(boolean selected) {
-            this.selected = selected;
-        }
 
         public static Creator<ChildMinePrize> getCREATOR() {
             return CREATOR;

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
+import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -20,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
@@ -27,6 +29,7 @@ import com.shuyun.qapp.bean.WebAnswerHomeBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
+import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.JsInterationUtil;
 import com.shuyun.qapp.utils.StatusBarUtil;
@@ -78,6 +81,10 @@ public class WebH5Activity extends BaseActivity {
 
         initData();
 
+        //显示加载进度
+        CustomLoadingFactory factory = new CustomLoadingFactory();
+        LoadingBar.make(rlMain, factory).show();
+
         answerHomeBean.setToken(AppConst.TOKEN);
         answerHomeBean.setRandom(AppConst.RANDOM);
         answerHomeBean.setV(AppConst.V);
@@ -115,7 +122,14 @@ public class WebH5Activity extends BaseActivity {
         });
 
         wvBanner.loadUrl(url);
-
+        wvBanner.setWebChromeClient(new WebChromeClient() {
+            public void onProgressChanged(WebView view, int progress) {
+                if (progress == 100) {
+                    //隐藏进度条
+                    LoadingBar.cancel(rlMain);
+                }
+            }
+        });
 //        //从发现页进入展开动画
 //        if (!EncodeAndStringTool.isStringEmpty(splash)) {
 //            if (splash.equals("found") || splash.equals("home")) {

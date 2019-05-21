@@ -6,7 +6,6 @@
     android:layout_marginTop="@dimen/text_7"
     android:orientation="horizontal">
 
-
     <RelativeLayout
         android:id="@+id/rl_commend_one"
         android:layout_width="0dp"

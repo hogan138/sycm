@@ -1,11 +1,10 @@
-package com.shuyun.qapp.net;
+package com.shuyun.qapp.manager;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.ActivityTabBean;
 import com.shuyun.qapp.bean.BannerBean;
 import com.shuyun.qapp.bean.ConfigDialogBean;
@@ -15,7 +14,7 @@ import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
-import com.shuyun.qapp.view.LoginJumpUtil;
+import com.shuyun.qapp.view.ActionJumpUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -134,35 +133,35 @@ public class LoginDataManager {
 
         if (LoginDataManager.ACTIVITY_LOGIN.equals(action)) { //活动专区
             ActivityTabBean.ResultBean resultBean = (ActivityTabBean.ResultBean) map.get(LoginDataManager.VALUE);
-            LoginJumpUtil.dialogSkip(resultBean.getBtnAction(),
+            ActionJumpUtil.dialogSkip(resultBean.getBtnAction(),
                     mContext,
                     resultBean.getContent(),
                     resultBean.getH5Url(),
                     resultBean.getIsLogin());
         } else if (LoginDataManager.BANNER_LOGIN.equals(action)) {//banner
             BannerBean bannerBean = (BannerBean) map.get(LoginDataManager.VALUE);
-            LoginJumpUtil.dialogSkip(bannerBean.getAction(),
+            ActionJumpUtil.dialogSkip(bannerBean.getAction(),
                     mContext,
                     bannerBean.getContent(),
                     bannerBean.getH5Url(),
                     bannerBean.getIsLogin());
         } else if (LoginDataManager.HOME_DIALOG_LOGIN.equals(action)) { //首页弹框
             ConfigDialogBean configDialogBean = (ConfigDialogBean) map.get(LoginDataManager.VALUE);
-            LoginJumpUtil.dialogSkip(configDialogBean.getBtnAction(),
+            ActionJumpUtil.dialogSkip(configDialogBean.getBtnAction(),
                     mContext,
                     configDialogBean.getContent(),
                     configDialogBean.getH5Url(),
                     configDialogBean.getIsLogin());
         } else if (LoginDataManager.HOME_ACTIVITY_LOGIN.equals(action)) { //首页活动专区
             MainConfigBean.DatasBean datasBean = (MainConfigBean.DatasBean) map.get(LoginDataManager.VALUE);
-            LoginJumpUtil.dialogSkip(datasBean.getAction(),
+            ActionJumpUtil.dialogSkip(datasBean.getAction(),
                     mContext,
                     datasBean.getContent(),
                     datasBean.getH5Url(),
                     datasBean.getIsLogin());
         } else if (LoginDataManager.HOME_NOTICE_LOGIN.equals(action)) { //首页公告
             HomeNoticeBean homeNoticeBean = (HomeNoticeBean) map.get(LoginDataManager.VALUE);
-            LoginJumpUtil.dialogSkip(homeNoticeBean.getAction(),
+            ActionJumpUtil.dialogSkip(homeNoticeBean.getAction(),
                     mContext,
                     homeNoticeBean.getContent(),
                     homeNoticeBean.getH5Url(),

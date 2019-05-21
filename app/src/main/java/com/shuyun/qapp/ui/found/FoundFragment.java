@@ -29,10 +29,11 @@ import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.FloatWindowBean;
 import com.shuyun.qapp.bean.FoundDataBean;
 import com.shuyun.qapp.bean.MarkBannerItem1;
+import com.shuyun.qapp.manager.ActivityRegionManager1;
 import com.shuyun.qapp.manager.FragmentTouchManager;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.net.LoginDataManager;
+import com.shuyun.qapp.manager.LoginDataManager;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
@@ -41,8 +42,8 @@ import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.UmengPageUtil;
-import com.shuyun.qapp.view.FloatImageviewManage;
-import com.shuyun.qapp.view.LoginJumpUtil;
+import com.shuyun.qapp.manager.FloatImageviewManage;
+import com.shuyun.qapp.view.ActionJumpUtil;
 import com.shuyun.qapp.view.ViewPagerScroller;
 
 import java.util.ArrayList;
@@ -178,7 +179,7 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
                         String action = bannerBean.getAction();
                         String h5Url = bannerBean.getH5Url();
                         Long is_Login = bannerBean.getIsLogin();
-                        LoginJumpUtil.dialogSkip(action, mContext, bannerBean.getContent(), h5Url, is_Login);
+                        ActionJumpUtil.dialogSkip(action, mContext, bannerBean.getContent(), h5Url, is_Login);
                     }
                 }
             }
@@ -300,7 +301,7 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
                 vp.removeAllViewsInLayout(); //viewpager清空view
 
                 //设置适配器
-                vp.setAdapter(new MyPagerAdapter(getActivity().getSupportFragmentManager(), mFragmentList, mTitleList));
+                vp.setAdapter(new MyPagerAdapter(getChildFragmentManager(), mFragmentList, mTitleList));
                 vp.addOnPageChangeListener(new XTabLayout.TabLayoutOnPageChangeListener(tabLayout));
                 //将tablayout与fragment关联
                 tabLayout.setupWithViewPager(vp);

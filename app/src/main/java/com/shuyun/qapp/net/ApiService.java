@@ -8,6 +8,7 @@ import com.shuyun.qapp.bean.AdBean;
 import com.shuyun.qapp.bean.AddWithdrawResultBean;
 import com.shuyun.qapp.bean.AddWxWithdrawBean;
 import com.shuyun.qapp.bean.AddressListBeans;
+import com.shuyun.qapp.bean.AgainstGruopListBeans;
 import com.shuyun.qapp.bean.AnswerOpptyBean;
 import com.shuyun.qapp.bean.AnswerRecordBean;
 import com.shuyun.qapp.bean.AppVersionBean;
@@ -23,6 +24,7 @@ import com.shuyun.qapp.bean.ExchangeHistoryBean;
 import com.shuyun.qapp.bean.ExchangeMyPrizeBean;
 import com.shuyun.qapp.bean.FloatWindowBean;
 import com.shuyun.qapp.bean.FoundDataBean;
+import com.shuyun.qapp.bean.GameListBeans;
 import com.shuyun.qapp.bean.GoodsDetailBeans;
 import com.shuyun.qapp.bean.GroupAgainstBean;
 import com.shuyun.qapp.bean.GroupClassifyBean;
@@ -31,6 +33,8 @@ import com.shuyun.qapp.bean.HomeBottomInfoBean;
 import com.shuyun.qapp.bean.HomeGroupsBean;
 import com.shuyun.qapp.bean.HomeNoticeBean;
 import com.shuyun.qapp.bean.HomeTabBean;
+import com.shuyun.qapp.bean.HomeTabBeans;
+import com.shuyun.qapp.bean.HomeTabContentBean;
 import com.shuyun.qapp.bean.IntegralAllPrizeBean;
 import com.shuyun.qapp.bean.IntegralExchangeBean;
 import com.shuyun.qapp.bean.InviteBean;
@@ -43,6 +47,7 @@ import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.bean.Msg;
 import com.shuyun.qapp.bean.MyPropsBean;
+import com.shuyun.qapp.bean.NewHomeSelectBean;
 import com.shuyun.qapp.bean.OutPutWithdraw;
 import com.shuyun.qapp.bean.PrizeDetailBean;
 import com.shuyun.qapp.bean.PrizeHistoryBean;
@@ -775,5 +780,50 @@ public interface ApiService {
      */
     @POST("/rest/user/address/modify")
     Observable<DataResponse<Object>> modifyAddress(@Body RequestBody body);
+
+    /**
+     * 108、删除用户地址
+     *
+     * @return
+     */
+    @GET("/rest/user/address/delete")
+    Observable<DataResponse<Object>> deleteAddress(@Query("addressId") Long code);
+
+    /**
+     * 109、新版首页数据
+     */
+    @GET("/rest/home/data/handpick")
+    Observable<DataResponse<NewHomeSelectBean>> homeSelectInfo();
+
+    /**
+     * 110、新版首页tab
+     */
+    @GET("/rest/home/data/tabs")
+    Observable<DataResponse<List<HomeTabBeans>>> newHometab();
+
+    /**
+     * 111、获取首页tab内容
+     */
+    @GET("/rest/home/data/detail")
+    Observable<DataResponse<HomeTabContentBean>> HometabContent(@Query("tabId") Long tabId);
+
+
+    /**
+     * 112、游戏列表
+     */
+    @GET("/rest/act/game/third/list")
+    Observable<DataResponse<List<GameListBeans>>> gameList();
+
+    /**
+     * 113、游戏认证
+     */
+    @GET("/rest/act/game/third/auth")
+    Observable<DataResponse<GameListBeans>> gameAuth(@Query("url") String url);
+
+    /**
+     * 114、新版答题对战题组列表
+     */
+    @GET("/rest/battle/groups/list")
+    Observable<DataResponse<List<AgainstGruopListBeans>>> getAgainstList(@Query("type") int type);
 
 }

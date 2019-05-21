@@ -126,12 +126,16 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
             ivRightIcon.setImageResource(R.mipmap.share);//右侧分享
         }
 
-        //获取答题对战首页
-        RemotingEx.doRequest(AppConst.AGAINST_MAIN_INFO, ApiServiceBean.mainAgainst(), null, this);
-
-
         //记录答题对战首页标记
         umeng_from = SaveUserInfo.getInstance(this).getUserInfo("umeng_from");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //获取答题对战首页
+        RemotingEx.doRequest(AppConst.AGAINST_MAIN_INFO, ApiServiceBean.mainAgainst(), null, this);
     }
 
     @Override
@@ -154,13 +158,13 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
                 showSharedPop();
                 break;
             case R.id.rl_free:
-                //友盟页面统计
+                //友盟页面统计11
                 startPage("free");
 
                 intent.putExtra("title", "自由对战");
                 intent.putExtra("score", "");
                 intent.putExtra("type", 0);
-                intent.setClass(MainAgainstActivity.this, FreeMainActivity.class);
+                intent.setClass(MainAgainstActivity.this, NewFreeMainActivity.class);
                 startActivity(intent);
                 break;
             case R.id.rl_new:
@@ -171,7 +175,7 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
                     intent.putExtra("title", "新手场");
                     intent.putExtra("score", "" + new_score);
                     intent.putExtra("type", 1);
-                    intent.setClass(MainAgainstActivity.this, FreeMainActivity.class);
+                    intent.setClass(MainAgainstActivity.this, NewFreeMainActivity.class);
                     startActivity(intent);
                 } else {
                     showPopupWindows();
@@ -187,7 +191,7 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
                     intent.putExtra("title", "普通场");
                     intent.putExtra("score", "" + common_score);
                     intent.putExtra("type", 2);
-                    intent.setClass(MainAgainstActivity.this, FreeMainActivity.class);
+                    intent.setClass(MainAgainstActivity.this, NewFreeMainActivity.class);
                     startActivity(intent);
                 } else {
                     showPopupWindows();
@@ -202,7 +206,7 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
                     intent.putExtra("title", "高级场");
                     intent.putExtra("score", "" + high_score);
                     intent.putExtra("type", 3);
-                    intent.setClass(MainAgainstActivity.this, FreeMainActivity.class);
+                    intent.setClass(MainAgainstActivity.this, NewFreeMainActivity.class);
                     startActivity(intent);
                 } else {
                     showPopupWindows();

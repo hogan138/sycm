@@ -27,7 +27,7 @@ public class AddressListBeans implements Parcelable {
      * provinceName : 山西省
      * countyName : 小店区
      */
-    private String id;
+    private Long id;
     private String userName;
     private String userPhone;
     private Long isDefault;
@@ -39,8 +39,12 @@ public class AddressListBeans implements Parcelable {
     private String provinceName;
     private String countyName;
 
+    public AddressListBeans() {
+        super();
+    }
+
     protected AddressListBeans(Parcel in) {
-        id = in.readString();
+        id = in.readLong();
         userName = in.readString();
         userPhone = in.readString();
         if (in.readByte() == 0) {
@@ -76,7 +80,7 @@ public class AddressListBeans implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
+        dest.writeLong(id);
         dest.writeString(userName);
         dest.writeString(userPhone);
         if (isDefault == null) {

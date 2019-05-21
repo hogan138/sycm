@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.sdk.android.ams.common.util.StringUtil;
 import com.blankj.utilcode.util.ConvertUtils;
 import com.bumptech.glide.Glide;
 import com.mylhyl.circledialog.CircleDialog;
@@ -36,6 +37,7 @@ import com.shuyun.qapp.bean.GoodsDetailBeans;
 import com.shuyun.qapp.bean.MarkBannerItem1;
 import com.shuyun.qapp.bean.ScoreExchangeResult;
 import com.shuyun.qapp.net.ApiServiceBean;
+import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.classify.ClassifyActivity;
@@ -114,7 +116,9 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
 
     GoodsCommitBean goodsCommitBean; //立即兑换实体类
 
-    private String id = ""; //地址id
+    private Long id = 0L; //地址id
+
+    Long mode = 0L;//mode
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,6 +205,8 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
                 mBannerView.setBannerAdapter(markBannerAdapter1);
             }
 
+            mode = goodsDetailBeans.getMode();
+
             tvName.setText(goodsDetailBeans.getName());
             tvContent.setText(goodsDetailBeans.getPurpose());
             tvScore.setText(goodsDetailBeans.getBp().toString());
@@ -242,7 +248,9 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
 
         } else if ("goodsExchange".equals(action)) {
             popupWindow.dismiss();
-            id = "";
+            id = 0L;
+            rlAddress.setVisibility(View.GONE);
+            AppConst.setAddressListBeans(null);
             //兑换商品成功
             ScoreExchangeResult scoreExchangeResult = (ScoreExchangeResult) response.getDat();
             showSuccessPop(scoreExchangeResult);
@@ -327,10 +335,10 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
         CommonPopUtil.measureWidthAndHeight(upView);
         //设置子View点击事件
         DisplayMetrics dm = this.getResources().getDisplayMetrics();
-        int height = (dm.heightPixels / 10) * 7;
+        double height = (dm.heightPixels / 10) * 7.8;
         popupWindow = new CommonPopupWindow.Builder(mContext)
                 .setView(R.layout.goods_exchange_popupwindow)
-                .setWidthAndHeight(ViewGroup.LayoutParams.MATCH_PARENT, height)
+                .setWidthAndHeight(ViewGroup.LayoutParams.MATCH_PARENT, (int) height)
                 .setBackGroundLevel(0.5f)//取值范围0.0f-1.0f 值越小越暗
                 .setAnimationStyle(R.style.popwin_anim_style_bottom)
                 .setOutsideTouchable(false)
@@ -346,7 +354,12 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
         super.onDestroy();
         //释放富文本内存
         RichText.clear(this);
+        AppConst.setAddressListBeans(null);
     }
+
+    //收货信息
+    RelativeLayout rlAddress;
+    TextView tvAddressName, tvPhone, tvAddress;
 
     @Override
     public void getChildView(View view, int layoutResId) {
@@ -356,11 +369,19 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
                 LinearLayout ll_flowlayout = view.findViewById(R.id.ll_flowlayout);
                 NumberAddSubView numberAddSubView = view.findViewById(R.id.nb_addsub_view);
                 RelativeLayout rl_close = view.findViewById(R.id.rl_close);
+                TextView tv_name = view.findViewById(R.id.tv_name);
                 TextView tv_score = view.findViewById(R.id.tv_score);
                 TextView tv_exchange = view.findViewById(R.id.tv_exchange);
+                rlAddress = view.findViewById(R.id.rl_address);
+                tvAddressName = view.findViewById(R.id.tv_address_name);
+                tvPhone = view.findViewById(R.id.tv_address_phone);
+                tvAddress = view.findViewById(R.id.tv_address);
 
                 //主图
                 GlideUtils.LoadImage1(mContext, goodsDetailBeans.getPicture(), iv_picture);
+
+                //名称
+                tv_name.setText(goodsDetailBeans.getShortName());
 
                 //积分
                 tv_score.setText(goodsDetailBeans.getPrice());
@@ -369,8 +390,19 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
                 rl_close.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        id = 0L;
+                        rlAddress.setVisibility(View.GONE);
                         count = 1;
                         popupWindow.dismiss();
+
+                    }
+                });
+
+                //收货地址
+                rlAddress.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivityForResult(new Intent(mContext, AddressListActivity.class).putExtra("from", "goodsExchange"), 0);
                     }
                 });
 
@@ -393,17 +425,15 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
                                 @Override
                                 public View getView(FlowLayout parent, int position, GoodsDetailBeans.StandardsBean.StasBean bean) {
                                     View view = LayoutInflater.from(mContext).inflate(R.layout.stas_layout, tagFlowLayout, false);
-                                    TextView color = view.findViewById(R.id.color);
                                     TextView label = view.findViewById(R.id.label);
                                     //设置label
                                     label.setText(bean.getLabel());
                                     //设置颜色
                                     if (!EncodeAndStringTool.isStringEmpty(bean.getColor())) {
-                                        color.setVisibility(View.VISIBLE);
                                         Drawable drawable = getResources().getDrawable(R.mipmap.color_logo_iv).mutate();
                                         drawable.setBounds(0, 0, ConvertUtils.dp2px(20), ConvertUtils.dp2px(20));
                                         drawable.setColorFilter(Color.parseColor(bean.getColor()), PorterDuff.Mode.SRC_ATOP);
-                                        color.setCompoundDrawables(drawable, null, null, null);
+                                        label.setCompoundDrawables(drawable, null, null, null);
                                     }
                                     return view;
                                 }
@@ -459,9 +489,10 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
                         goodsCommitBean.setCount((long) count);
                         Long bp = goodsDetailBeans.getBp() * count;
 
-                        if (goodsDetailBeans.getMode() == 2) {
-                            if (!EncodeAndStringTool.isStringEmpty(id)) {
-                                goodsCommitBean.setAddressId(Long.valueOf(id));
+                        if (mode == 2) {
+                            //进行地址选择
+                            if (id != 0L) {
+                                goodsCommitBean.setAddressId(id);
                                 String detail = JSON.toJSONString(goodsCommitBean);
                                 //兑换弹框
                                 ExchangeTipDialog("您将消耗" + bp + "积分兑换", "确认兑换", "我点错了", goods_id, detail);
@@ -514,8 +545,10 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
                             SaveUserInfo.getInstance(mContext).setUserInfo("show_back", "show_back");
                             mContext.startActivity(new Intent(mContext, ClassifyActivity.class));
                         } else if (tv_right.equals("去选择")) {
+                            //选择收货地址
                             startActivityForResult(new Intent(mContext, AddressListActivity.class).putExtra("from", "goodsExchange"), 0);
                         } else {
+                            //立即兑换
                             propExchange(goodsId, detail);
                         }
 
@@ -531,14 +564,32 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 0 && resultCode == RESULT_OK) {
-            if (data != null) {
-                //地址信息
-                AddressListBeans addressListBeans = data.getParcelableExtra("address");
+    protected void onResume() {
+        super.onResume();
+
+        if (popupWindow != null && popupWindow.isShowing() && mode == 2) {
+            if (!EncodeAndStringTool.isObjectEmpty(AppConst.getAddressListBeans())) {
+                AddressListBeans addressListBeans = AppConst.getAddressListBeans();
                 id = addressListBeans.getId();
+                rlAddress.setVisibility(View.VISIBLE);
+                tvAddressName.setText("收货人：" + addressListBeans.getUserName());
+                tvPhone.setText(addressListBeans.getUserPhone());
+                StringBuilder sb = new StringBuilder();
+                sb.append(addressListBeans.getProvinceName());
+                if (!StringUtil.isBlank(addressListBeans.getCityName())) {
+                    sb.append(addressListBeans.getCityName());
+                }
+                if (!StringUtil.isBlank(addressListBeans.getCountyName())) {
+                    sb.append(addressListBeans.getCountyName());
+                }
+                sb.append(addressListBeans.getDetail());
+                String address = sb.toString();
+                tvAddress.setText("收货地址：" + address);
+            } else {
+                rlAddress.setVisibility(View.GONE);
+                id = 0L;
             }
         }
     }
+
 }

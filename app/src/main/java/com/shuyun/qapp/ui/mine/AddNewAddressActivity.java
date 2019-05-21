@@ -1,6 +1,7 @@
 package com.shuyun.qapp.ui.mine;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -15,17 +16,25 @@ import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.blankj.utilcode.util.KeyboardUtils;
+import com.blankj.utilcode.util.PhoneUtils;
+import com.mylhyl.circledialog.CircleDialog;
+import com.mylhyl.circledialog.callback.ConfigButton;
+import com.mylhyl.circledialog.callback.ConfigDialog;
+import com.mylhyl.circledialog.params.ButtonParams;
+import com.mylhyl.circledialog.params.DialogParams;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.AddressListBeans;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.ProvinceBean;
 import com.shuyun.qapp.net.ApiServiceBean;
+import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
-import com.shuyun.qapp.net.UserAddressBean;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.OnMultiClickListener;
+import com.shuyun.qapp.utils.RegularTool;
 import com.shuyun.qapp.utils.ToastUtil;
 
 import java.util.ArrayList;
@@ -59,6 +68,8 @@ public class AddNewAddressActivity extends BaseActivity implements View.OnClickL
     TextView tvAddAddress;
     @BindView(R.id.iv_default)
     ImageView ivDefault;
+    @BindView(R.id.tv_delete)
+    TextView tvDelete;
 
     private boolean is_default = false;
 
@@ -86,6 +97,8 @@ public class AddNewAddressActivity extends BaseActivity implements View.OnClickL
     private int selectItemTwo = 0;
     private int selectItemThree = 0;
 
+    AddressListBeans userAddressBean;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,10 +111,12 @@ public class AddNewAddressActivity extends BaseActivity implements View.OnClickL
         tvAddAddress.setOnClickListener(this);
         ivDefault.setOnClickListener(this);
         rlAddress.setOnClickListener(this);
+        tvDelete.setOnClickListener(this);
 
         from = getIntent().getStringExtra("from");
         if (from.equals("modify")) {
             tvCommonTitle.setText("编辑收货地址");
+            tvDelete.setVisibility(View.VISIBLE);
             //编辑收货地址
             AddressListBeans addressListBeans = getIntent().getParcelableExtra("address");
             etName.setText(addressListBeans.getUserName());
@@ -155,7 +170,7 @@ public class AddNewAddressActivity extends BaseActivity implements View.OnClickL
     /**
      * 增加用户地址
      */
-    public void addAddress(UserAddressBean userAddressBean) {
+    public void addAddress(AddressListBeans userAddressBean) {
         String inputbean = JSON.toJSONString(userAddressBean);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
         RemotingEx.doRequest("addAddress", ApiServiceBean.addAddress(), new Object[]{body}, this);
@@ -164,10 +179,17 @@ public class AddNewAddressActivity extends BaseActivity implements View.OnClickL
     /**
      * 修改用户地址
      */
-    public void modifyAddress(UserAddressBean userAddressBean) {
+    public void modifyAddress(AddressListBeans userAddressBean) {
         String inputbean = JSON.toJSONString(userAddressBean);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
         RemotingEx.doRequest("modifyAddress", ApiServiceBean.modifyAddress(), new Object[]{body}, this);
+    }
+
+    /**
+     * 删除用户地址
+     */
+    public void deleteAddress() {
+        RemotingEx.doRequest("deleteAddress", ApiServiceBean.deleteAddress(), new Object[]{id}, this);
     }
 
     @Override
@@ -203,6 +225,10 @@ public class AddNewAddressActivity extends BaseActivity implements View.OnClickL
                     isDefault = 0L;
                 }
                 break;
+            case R.id.tv_delete:
+                //删除收货地址
+                deleteDialog();
+                break;
             case R.id.tv_add_address:
                 //确定
                 enter();
@@ -220,34 +246,38 @@ public class AddNewAddressActivity extends BaseActivity implements View.OnClickL
         String detail = etAddressDeatail.getText().toString().trim();
         if (!EncodeAndStringTool.isStringEmpty(userName)) {
             if (!EncodeAndStringTool.isStringEmpty(userPhone)) {
-                if (!EncodeAndStringTool.isStringEmpty(province) || !EncodeAndStringTool.isStringEmpty(city) || !EncodeAndStringTool.isStringEmpty(county)) {
-                    if (!EncodeAndStringTool.isStringEmpty(detail)) {
+                if (RegularTool.isMobileExact(userPhone)) {
+                    if (!EncodeAndStringTool.isStringEmpty(province) || !EncodeAndStringTool.isStringEmpty(city) || !EncodeAndStringTool.isStringEmpty(county)) {
+                        if (!EncodeAndStringTool.isStringEmpty(detail)) {
 
-                        UserAddressBean userAddressBean = new UserAddressBean();
-                        userAddressBean.setUserName(userName);
-                        userAddressBean.setUserPhone(userPhone);
-                        userAddressBean.setIsDefault(isDefault);
-                        userAddressBean.setProvince(province);
-                        userAddressBean.setCity(city);
-                        userAddressBean.setCounty(county);
-                        userAddressBean.setProvinceName(provinceName);
-                        userAddressBean.setCityName(cityName);
-                        userAddressBean.setCountyName(countyName);
-                        userAddressBean.setDetail(detail);
+                            userAddressBean = new AddressListBeans();
+                            userAddressBean.setUserName(userName);
+                            userAddressBean.setUserPhone(userPhone);
+                            userAddressBean.setIsDefault(isDefault);
+                            userAddressBean.setProvince(province);
+                            userAddressBean.setCity(city);
+                            userAddressBean.setCounty(county);
+                            userAddressBean.setProvinceName(provinceName);
+                            userAddressBean.setCityName(cityName);
+                            userAddressBean.setCountyName(countyName);
+                            userAddressBean.setDetail(detail);
 
-                        if (from.equals("add")) {
-                            //添加用户地址
-                            addAddress(userAddressBean);
-                        } else if (from.equals("modify")) {
-                            //修改用户地址
-                            userAddressBean.setId(id);
-                            modifyAddress(userAddressBean);
+                            if (from.equals("add")) {
+                                //添加用户地址
+                                addAddress(userAddressBean);
+                            } else if (from.equals("modify")) {
+                                userAddressBean.setId(id);
+                                modifyAddress(userAddressBean);
+
+                            }
+                        } else {
+                            ToastUtil.showToast(mContext, "请输入详细地址");
                         }
                     } else {
-                        ToastUtil.showToast(mContext, "请输入详细地址");
+                        ToastUtil.showToast(mContext, "请选择所在地区");
                     }
                 } else {
-                    ToastUtil.showToast(mContext, "请选择所在地区");
+                    ToastUtil.showToast(mContext, "请输入正确的手机号码");
                 }
             } else {
                 ToastUtil.showToast(mContext, "请输入手机号码");
@@ -314,7 +344,25 @@ public class AddNewAddressActivity extends BaseActivity implements View.OnClickL
             ToastUtil.showToast(mContext, "添加成功");
             finish();
         } else if (action.equals("modifyAddress")) {
+            //修改用户地址
+            if (!EncodeAndStringTool.isObjectEmpty(AppConst.getAddressListBeans())) {
+                //若商品详情选择地址相同,则更新
+                AddressListBeans addressListBeans = AppConst.getAddressListBeans();
+                if (id.equals(addressListBeans.getId())) {
+                    AppConst.setAddressListBeans(userAddressBean);
+                }
+            }
             ToastUtil.showToast(mContext, "修改成功");
+            finish();
+        } else if (action.equals("deleteAddress")) {
+            if (!EncodeAndStringTool.isObjectEmpty(AppConst.getAddressListBeans())) {
+                //若商品详情选择地址相同,则更新
+                AddressListBeans addressListBeans = AppConst.getAddressListBeans();
+                if (id.equals(addressListBeans.getId())) {
+                    AppConst.setAddressListBeans(null);
+                }
+            }
+            ToastUtil.showToast(mContext, "删除地址成功");
             finish();
         }
     }
@@ -369,5 +417,35 @@ public class AddNewAddressActivity extends BaseActivity implements View.OnClickL
                 break;
             }
         }
+    }
+
+    //删除弹框
+    private void deleteDialog() {
+        new CircleDialog.Builder(this)
+                .setTitle("提示")
+                .setText("你确定要删除吗？")
+                .setTextColor(Color.parseColor("#333333"))
+                .setWidth(0.7f)
+                .setNegative("取消", null)
+                .configNegative(new ConfigButton() {
+                    @Override
+                    public void onConfig(ButtonParams params) {
+                        params.textColor = Color.parseColor("#9B9B9B");
+                    }
+                })
+                .setPositive("确定", new OnMultiClickListener() {
+                    @Override
+                    public void onMultiClick(View v) {
+                        //删除收货地址
+                        deleteAddress();
+                    }
+                })
+                .configDialog(new ConfigDialog() {
+                    @Override
+                    public void onConfig(DialogParams params) {
+                        params.animStyle = R.style.popwin_anim_style;
+                    }
+                })
+                .show();
     }
 }

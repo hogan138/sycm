@@ -25,13 +25,13 @@ import com.shuyun.qapp.bean.ActivityTabBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.net.LoginDataManager;
+import com.shuyun.qapp.manager.LoginDataManager;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.view.LoginJumpUtil;
+import com.shuyun.qapp.view.ActionJumpUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -127,7 +127,7 @@ public class ActivityFragment extends BaseFragment implements OnRemotingCallBack
             public void onItemChildClick(View view, int position) {
                 ActivityTabBean.ResultBean resultBean = activityTabBeanList.get(position);
                 LoginDataManager.instance().addData(LoginDataManager.ACTIVITY_LOGIN, resultBean);
-                LoginJumpUtil.dialogSkip(resultBean.getBtnAction(),
+                ActionJumpUtil.dialogSkip(resultBean.getBtnAction(),
                         mContext,
                         resultBean.getContent(),
                         resultBean.getH5Url(),

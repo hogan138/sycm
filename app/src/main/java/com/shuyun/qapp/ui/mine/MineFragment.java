@@ -39,6 +39,7 @@ import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ImageLoaderManager;
+import com.shuyun.qapp.utils.NetWorkUtils;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
@@ -308,10 +309,10 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
                 btnGetImmedicate.setOnClickListener(new OnMultiClickListener() {
                     @Override
                     public void onMultiClick(View v) {
-                        if (NetworkUtils.isAvailableByPing()) {
+                        if (NetWorkUtils.isNetworkConnected(mContext)) {
                             loadAnswerOppty();
                         } else {
-                            Toast.makeText(mContext, "网络链接失败，请检查网络链接！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, getResources().getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

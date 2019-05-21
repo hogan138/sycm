@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.shuyun.qapp.R;
@@ -101,6 +102,14 @@ public class PrizeAdapter extends RecyclerView.Adapter<PrizeAdapter.ViewHolder> 
         //内容
         holder.tvContent.setText(TextviewUtil.ToDBC(minePrize.getDescription()));
 
+        //是否显示锁遮罩层
+        Long lock = minePrize.getLock();
+        if (lock == 0) {
+            holder.rlShadow.setVisibility(View.GONE);
+        } else if (lock == 1) {
+            holder.rlShadow.setVisibility(View.VISIBLE);
+        }
+
         holder.tvOpen.setOnClickListener(new OnMultiClickListener() {
             @Override
             public void onMultiClick(View v) {
@@ -136,6 +145,8 @@ public class PrizeAdapter extends RecyclerView.Adapter<PrizeAdapter.ViewHolder> 
         TextView tvUseStatus;
         @BindView(R.id.tv_use_logo)
         TextView tvUseLogo;
+        @BindView(R.id.rl_shadow)
+        RelativeLayout rlShadow;//锁遮罩层
 
         public ViewHolder(View itemView) {
             super(itemView);

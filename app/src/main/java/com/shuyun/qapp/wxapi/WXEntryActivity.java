@@ -17,7 +17,7 @@ import com.shuyun.qapp.bean.MessageEvent;
 import com.shuyun.qapp.bean.Msg;
 import com.shuyun.qapp.bean.SubmitWithdrawInfoBean;
 import com.shuyun.qapp.bean.UserWxInfo;
-import com.shuyun.qapp.net.ActivityCallManager;
+import com.shuyun.qapp.manager.ActivityCallManager;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;

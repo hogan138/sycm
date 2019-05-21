@@ -1,4 +1,4 @@
-package com.shuyun.qapp.ui.homepage;
+package com.shuyun.qapp.manager;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,10 +13,10 @@ import android.widget.TextView;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.MainConfigBean;
-import com.shuyun.qapp.net.LoginDataManager;
+import com.shuyun.qapp.manager.LoginDataManager;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
 import com.shuyun.qapp.utils.GlideUtils;
-import com.shuyun.qapp.view.LoginJumpUtil;
+import com.shuyun.qapp.view.ActionJumpUtil;
 import com.shuyun.qapp.view.RoundImageView;
 
 import java.util.Collections;
@@ -213,6 +213,6 @@ public class ActivityRegionManager {
         final String h5Url = selectedItem.getH5Url(); //跳转地址
         final String content = selectedItem.getContent();//题组id
         final Long isLogin = selectedItem.getIsLogin();//是否需要登录
-        LoginJumpUtil.dialogSkip(action, context, content, h5Url, isLogin);
+        ActionJumpUtil.dialogSkip(action, context, content, h5Url, isLogin);
     }
 }

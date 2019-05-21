@@ -1,5 +1,6 @@
 package com.shuyun.qapp.ui.mine;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -23,6 +24,7 @@ import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.NetWorkUtils;
 import com.shuyun.qapp.utils.ToastUtil;
 
 import butterknife.BindView;
@@ -54,11 +56,13 @@ public class ChangePhoneNumActivity extends BaseActivity implements OnRemotingCa
     @BindView(R.id.btn_next)
     Button btnNext;//确定按钮
     private static final String TAG = "ChangePhoneNumActivity";
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        mContext = this;
         tvCommonTitle.setText("更改手机号");
         Intent intent = getIntent();
         String phoneNum = intent.getStringExtra("bind_phone");
@@ -97,11 +101,11 @@ public class ChangePhoneNumActivity extends BaseActivity implements OnRemotingCa
                     verficationCodeBean.setV(AppConst.V);
                     verficationCodeBean.setStamp(curTime0);
                     verficationCodeBean.setCode(signCode);
-                    if (NetworkUtils.isAvailableByPing()) {
+                    if (NetWorkUtils.isNetworkConnected(mContext)) {
                         //调用获取验证码的接口
                         getCodeNum(verficationCodeBean);
                     } else {
-                        Toast.makeText(this, "网络链接失败，请检查网络链接！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getResources().getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                     }
 
                 } else {

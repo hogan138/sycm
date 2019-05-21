@@ -37,13 +37,12 @@ import com.shuyun.qapp.bean.ActivityTimeBean;
 import com.shuyun.qapp.bean.AppVersionBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.HomeTabBean;
-import com.shuyun.qapp.bean.InviteBean;
 import com.shuyun.qapp.bean.QPushBean;
 import com.shuyun.qapp.manager.FragmentTouchManager;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.net.HeartBeatManager;
-import com.shuyun.qapp.net.LoginDataManager;
+import com.shuyun.qapp.manager.HeartBeatManager;
+import com.shuyun.qapp.manager.LoginDataManager;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.activity.SeventyYearFragment;
@@ -63,9 +62,8 @@ import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SaveUserInfo1;
-import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.StatusBarUtil;
-import com.shuyun.qapp.view.LoginJumpUtil;
+import com.shuyun.qapp.view.ActionJumpUtil;
 import com.shuyun.qapp.view.NoScrollViewPager;
 import com.umeng.analytics.MobclickAgent;
 
@@ -156,7 +154,6 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         mHandler.postDelayed(runnable, 500);
 
         Log.e("token", AppConst.TOKEN + "             " + AppConst.sycm());
-
     }
 
 
@@ -167,7 +164,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
 
     private void initDate() {
         //添加到集合
-        fragments.add(new HomeFragment());
+        fragments.add(new NewHomeFragment());
         fragments.add(new ClassifyFragment());
         fragments.add(new SeventyYearFragment());
         fragments.add(new FoundFragment());
@@ -608,7 +605,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
                                 public void onClick(View v) {
                                     String content = homeTabBean.getContent();
                                     String h5Url = homeTabBean.getH5Url();
-                                    LoginJumpUtil.dialogSkip(Action, HomePageActivity.this, content, h5Url, (long) 0);
+                                    ActionJumpUtil.dialogSkip(Action, HomePageActivity.this, content, h5Url, (long) 0);
                                 }
                             });
                             ivSeventyYear.setOnClickListener(new View.OnClickListener() {
@@ -616,7 +613,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
                                 public void onClick(View v) {
                                     String content = homeTabBean.getContent();
                                     String h5Url = homeTabBean.getH5Url();
-                                    LoginJumpUtil.dialogSkip(Action, HomePageActivity.this, content, h5Url, (long) 0);
+                                    ActionJumpUtil.dialogSkip(Action, HomePageActivity.this, content, h5Url, (long) 0);
                                 }
                             });
                         }
@@ -660,41 +657,6 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
 
     }
 
-    //邀请有奖
-    private void invite() {
-
-        RemotingEx.doRequest(ApiServiceBean.inviteShare(), new OnRemotingCallBackListener<InviteBean>() {
-            @Override
-            public void onCompleted(String action) {
-
-            }
-
-            @Override
-            public void onFailed(String action, String message) {
-
-            }
-
-            @Override
-            public void onSucceed(String action, DataResponse<InviteBean> dataResponse) {
-                if (dataResponse.isSuccees()) {
-                    InviteBean inviteBean = dataResponse.getDat();
-                    //邀请有奖
-                    try {
-                        if (inviteBean.getShare() == 1) {
-                            SharedPrefrenceTool.put(HomePageActivity.this, "share", inviteBean.getShare());//是否参与邀请分享 1——参与邀请
-                        } else {
-                            SharedPrefrenceTool.put(HomePageActivity.this, "share", inviteBean.getShare());//是否参与邀请分享 1——参与邀请
-                        }
-                    } catch (Exception e) {
-
-                    }
-                } else {
-                    ErrorCodeTools.errorCodePrompt(HomePageActivity.this, dataResponse.getErr(), dataResponse.getMsg());
-                }
-            }
-        });
-
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

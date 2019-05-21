@@ -6,6 +6,7 @@ import android.net.Uri;
 
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.ui.against.MainAgainstActivity;
+import com.shuyun.qapp.ui.found.GameCenterActivity;
 import com.shuyun.qapp.ui.found.IntegralExchangeActivity;
 import com.shuyun.qapp.ui.found.SignInActivity;
 import com.shuyun.qapp.ui.integral.IntegralCenterActivity;
@@ -22,7 +23,7 @@ import com.shuyun.qapp.utils.SaveUserInfo;
 /**
  * h5交互跳转
  */
-public class LoginJumpUtil {
+public class ActionJumpUtil {
 
     /**
      * @param action
@@ -105,7 +106,7 @@ public class LoginJumpUtil {
                     Intent intent = new Intent(context, AddWithdrawInfoActivity.class);
                     context.startActivity(intent);
                 }
-            } else if (AppConst.H5_EXTERNAL.equals(action)) { //外部链接
+            } else if (AppConst.H5_EXTERNAL.equals(action) || AppConst.ACTION_SCHEME.equals(action)) { //外部链接、scheme
                 Uri uri = Uri.parse(h5Url);
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 context.startActivity(intent);
@@ -133,6 +134,8 @@ public class LoginJumpUtil {
                 Intent intent = new Intent(context, MinePrizeActivity.class);
                 intent.putExtra("status", 1);
                 context.startActivity(intent);
+            } else if (AppConst.ACTION_GAME.equals(action)) { //游戏中心
+                context.startActivity(new Intent(context, GameCenterActivity.class));
             }
         } catch (Exception e) {
 

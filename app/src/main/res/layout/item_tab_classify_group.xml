@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_group"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#00000000"
+    android:foreground="?attr/selectableItemBackground">
+
+    <com.shuyun.qapp.view.RoundImageView
+        android:id="@+id/iv_group_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/zw01"
+        app:radius="@dimen/text_4"
+        app:type="round" />
+
+    <TextView
+        android:id="@+id/tv_group_name"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/text_42"
+        android:layout_below="@+id/iv_group_bg"
+        android:layout_marginLeft="@dimen/text_10"
+        android:layout_marginRight="75dp"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:textColor="@color/color_1"
+        android:textSize="@dimen/text_15" />
+
+
+    <TextView
+        android:id="@+id/tv_button_name"
+        android:layout_width="62dp"
+        android:layout_height="21dp"
+        android:layout_below="@+id/iv_group_bg"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/text_11"
+        android:layout_marginRight="@dimen/text_12"
+        android:background="@drawable/common_contact_our_bg"
+        android:gravity="center"
+        android:textColor="@color/color_4"
+        android:textSize="@dimen/text_12" />
+
+</RelativeLayout>

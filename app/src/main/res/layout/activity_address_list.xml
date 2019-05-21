@@ -21,7 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/rl_title"
         android:layout_marginTop="110dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="wrap_content"

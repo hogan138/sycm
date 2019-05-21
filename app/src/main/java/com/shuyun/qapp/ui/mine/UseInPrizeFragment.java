@@ -31,6 +31,7 @@ import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.LockSkipUtils;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ToastUtil;
 import com.shuyun.qapp.view.RealNamePopupUtil;
@@ -110,47 +111,54 @@ public class UseInPrizeFragment extends Fragment implements OnRemotingCallBackLi
             @Override
             public void onItemChildClick(View view, int position) {
                 MinePrize minePrize = minePrizeList.get(position);
-                if (minePrize.getActionType().equals("action.use.props")) {
-                    //道具（增次卡）
-                    useAddCard(minePrize.getId());
-                    minePrizeList.remove(position);
-                    prizeAdapter.notifyDataSetChanged();
-                } else if (minePrize.getActionType().equals("action.use.loading") || minePrize.getActionType().equals("action.h5.url")) {
-                    if (Integer.parseInt(SaveUserInfo.getInstance(getActivity()).getUserInfo("cert")) == 1) {
-                        //票务
-                        Intent intent = new Intent(getActivity(), WebH5Activity.class);
-                        intent.putExtra("id", minePrize.getId());
-                        intent.putExtra("url", minePrize.getH5Url());
-                        intent.putExtra("name", minePrize.getName());
+                String actionType = minePrize.getActionType();
+                Long lock = minePrize.getLock();
+                if (lock == 1) {
+                    //锁定信息
+                    LockSkipUtils.ExchangeTipDialog(getActivity(), minePrize);
+                } else if (lock == 0) {
+                    if (actionType.equals("action.use.props")) {
+                        //道具（增次卡）
+                        useAddCard(minePrize.getId());
+                        minePrizeList.remove(position);
+                        prizeAdapter.notifyDataSetChanged();
+                    } else if (actionType.equals("action.use.loading") || actionType.equals("action.h5.url")) {
+                        if (Integer.parseInt(SaveUserInfo.getInstance(getActivity()).getUserInfo("cert")) == 1) {
+                            //票务
+                            Intent intent = new Intent(getActivity(), WebH5Activity.class);
+                            intent.putExtra("id", minePrize.getId());
+                            intent.putExtra("url", minePrize.getH5Url());
+                            intent.putExtra("name", minePrize.getName());
+                            startActivity(intent);
+                        } else {
+                            RealNamePopupUtil.showAuthPop(getContext(), ((MinePrizeActivity) getActivity()).llPrize, getString(R.string.real_gift_describe));
+                        }
+                    } else if (actionType.equals("action.use.record")) {
+                        //红包
+                        if (Integer.parseInt(SaveUserInfo.getInstance(getActivity()).getUserInfo("cert")) == 1) {
+                            startActivity(new Intent(getActivity(), CashResultActivity.class));
+                        } else {
+                            RealNamePopupUtil.showAuthPop(getContext(), ((MinePrizeActivity) getActivity()).llPrize, getString(R.string.real_gift_describe));
+                        }
+                    } else if (actionType.equals("action.open.box")) {
+                        //宝箱
+                        Intent intent = new Intent(getActivity(), WebPrizeBoxActivity.class);
+                        intent.putExtra("ChildMinePrize", minePrize);
+                        intent.putExtra("main_box", "my_prize");
                         startActivity(intent);
+                    } else if (actionType.equals("action.alipay.coupon")) {
+                        //使用优惠券
+                        if (Integer.parseInt(SaveUserInfo.getInstance(getActivity()).getUserInfo("cert")) == 1) {
+                            //调用使用优惠券接口
+                            RemotingEx.doRequest(ApiServiceBean.useCoupon(), new Object[]{minePrize.getId()}, null);
+                            AlipayTradeManager.instance().showBasePage(getActivity(), minePrize.getH5Url());
+                        } else {
+                            RealNamePopupUtil.showAuthPop(getContext(), ((MinePrizeActivity) getActivity()).llPrize, getString(R.string.real_gift_describe));
+                        }
                     } else {
-                        RealNamePopupUtil.showAuthPop(getContext(), ((MinePrizeActivity) getActivity()).llPrize, getString(R.string.real_gift_describe));
+                        //暂不支持 实物和电子卷 提示用户去下载新版本
+                        showDownloadAppDialog();
                     }
-                } else if (minePrize.getActionType().equals("action.use.record")) {
-                    //红包
-                    if (Integer.parseInt(SaveUserInfo.getInstance(getActivity()).getUserInfo("cert")) == 1) {
-                        startActivity(new Intent(getActivity(), CashResultActivity.class));
-                    } else {
-                        RealNamePopupUtil.showAuthPop(getContext(), ((MinePrizeActivity) getActivity()).llPrize, getString(R.string.real_gift_describe));
-                    }
-                } else if (minePrize.getActionType().equals("action.open.box")) {
-                    //宝箱
-                    Intent intent = new Intent(getActivity(), WebPrizeBoxActivity.class);
-                    intent.putExtra("ChildMinePrize", minePrize);
-                    intent.putExtra("main_box", "my_prize");
-                    startActivity(intent);
-                } else if (minePrize.getActionType().equals("action.alipay.coupon")) {
-                    //使用优惠券
-                    if (Integer.parseInt(SaveUserInfo.getInstance(getActivity()).getUserInfo("cert")) == 1) {
-                        //调用使用优惠券接口
-                        RemotingEx.doRequest(ApiServiceBean.useCoupon(), new Object[]{minePrize.getId()}, null);
-                        AlipayTradeManager.instance().showBasePage(getActivity(), minePrize.getH5Url());
-                    } else {
-                        RealNamePopupUtil.showAuthPop(getContext(), ((MinePrizeActivity) getActivity()).llPrize, getString(R.string.real_gift_describe));
-                    }
-                } else {
-                    //暂不支持 实物和电子卷 提示用户去下载新版本
-                    showDownloadAppDialog();
                 }
             }
         });

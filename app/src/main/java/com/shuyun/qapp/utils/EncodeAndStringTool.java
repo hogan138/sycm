@@ -207,11 +207,7 @@ public class EncodeAndStringTool {
      * @return
      */
     public static boolean isObjectEmpty(Object str) {
-        if (str == null || str == "") {
-            return true;
-        } else {
-            return false;
-        }
+        return str == null;
     }
 
     /**

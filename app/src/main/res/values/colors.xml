@@ -59,5 +59,14 @@
     <color name="color_c2">#C2C4CA</color>
     <color name="color_26">#262628</color>
     <color name="color_4a">#4A4A4A</color>
-
+    <color name="color_d0">#D0021B</color>
+    <color name="color_23">#232323</color>
+    <color name="color_49">#494949</color>
+    <color name="color_b3">#b3b3b3</color>
+    <color name="color_f7">#F7F8FA</color>
+    <color name="color_1f">#1F1F1F</color>
+    <color name="color_cb">#CBCBCB</color>
+    <color name="color_323">#323643</color>
+    <color name="color_FFF3DC">#FFF3DC</color>
+    <color name="color_ffd0">#FFD052</color>
 </resources>

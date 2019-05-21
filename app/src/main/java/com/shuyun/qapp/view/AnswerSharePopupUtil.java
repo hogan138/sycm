@@ -33,6 +33,7 @@ import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.JsInterationUtil;
+import com.shuyun.qapp.utils.NetWorkUtils;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.ScannerUtils;
 import com.umeng.socialize.ShareAction;
@@ -494,11 +495,7 @@ public class AnswerSharePopupUtil {
                                 btnGetImmedicate.setOnClickListener(new OnMultiClickListener() {
                                     @Override
                                     public void onMultiClick(View v) {
-                                        if (NetworkUtils.isAvailableByPing()) {
-                                            loadAnswerOppty(context, webView);
-                                        } else {
-                                            Toast.makeText(context, "网络链接失败，请检查网络链接！", Toast.LENGTH_SHORT).show();
-                                        }
+                                        loadAnswerOppty(context, webView);
                                     }
                                 });
                                 break;

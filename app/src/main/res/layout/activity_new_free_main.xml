@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_free_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/common_title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/text_15"
+        android:layout_marginTop="@dimen/text_15"
+        android:layout_marginRight="@dimen/text_15"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rl_random"
+            android:layout_width="match_parent"
+            android:layout_height="85dp"
+            android:foreground="?attr/selectableItemBackground">
+
+            <com.shuyun.qapp.view.RoundImageView
+                android:layout_width="match_parent"
+                android:layout_height="85dp"
+                android:background="@mipmap/rand_bg" />
+
+            <TextView
+                android:id="@+id/tv_score"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/text_20"
+                android:layout_marginLeft="@dimen/text_1"
+                android:background="@drawable/btn_against_score_bg"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/text_5"
+                android:paddingRight="@dimen/text_5"
+                android:text="不消耗积分"
+                android:textColor="@color/color_4a"
+                android:textSize="@dimen/text_10" />
+
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="85dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/text_15"
+                android:background="@mipmap/roud_logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="随机题目"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_18" />
+
+        </RelativeLayout>
+
+        <com.androidkun.xtablayout.XTabLayout
+            android:id="@+id/against_tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:layout_marginTop="@dimen/text_15"
+            app:xTabDividerWidthWidthText="false"
+            app:xTabIndicatorColor="@color/color_4"
+            app:xTabIndicatorHeight="3dp"
+            app:xTabIndicatorWidth="@dimen/text_30"
+            app:xTabMode="scrollable"
+            app:xTabSelectedTextColor="@color/color_4"
+            app:xTabSelectedTextSize="@dimen/text_16"
+            app:xTabTextColor="@color/color_1"
+            app:xTabTextSelectedBold="false"
+            app:xTabTextSize="@dimen/text_14" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </LinearLayout>
+</LinearLayout>

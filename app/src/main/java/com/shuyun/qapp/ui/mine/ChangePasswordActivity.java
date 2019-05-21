@@ -1,5 +1,6 @@
 package com.shuyun.qapp.ui.mine;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
@@ -34,6 +35,7 @@ import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.MyActivityManager;
+import com.shuyun.qapp.utils.NetWorkUtils;
 import com.shuyun.qapp.utils.RegularTool;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
@@ -89,11 +91,13 @@ public class ChangePasswordActivity extends BaseActivity {
     TextView tvNewPsw;//新密码
     private static final String TAG = "ChangePasswordActivity";
 
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        mContext = this;
         tvCommonTitle.setText("修改密码");
         tvNewPsw.setText("新密码");
 
@@ -150,11 +154,11 @@ public class ChangePasswordActivity extends BaseActivity {
                     verficationCodeBean.setV(AppConst.V);
                     verficationCodeBean.setStamp(curTime0);
                     verficationCodeBean.setCode(signCode);
-                    if (NetworkUtils.isAvailableByPing()) {
+                    if (NetWorkUtils.isNetworkConnected(mContext)) {
                         //调用获取验证码的接口
                         getVerficationCode(verficationCodeBean);
                     } else {
-                        Toast.makeText(this, "网络链接失败，请检查网络链接！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getResources().getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                     }
 
                 } else {

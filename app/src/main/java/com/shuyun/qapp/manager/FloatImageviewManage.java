@@ -1,7 +1,6 @@
-package com.shuyun.qapp.view;
+package com.shuyun.qapp.manager;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
@@ -15,9 +14,8 @@ import android.widget.RelativeLayout;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.FloatWindowBean;
-import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.GlideUtils;
+import com.shuyun.qapp.view.ActionJumpUtil;
 
 import static com.blankj.utilcode.util.ConvertUtils.dp2px;
 
@@ -110,7 +108,7 @@ public class FloatImageviewManage {
 //                        intent.putExtra("name", "全名共进");//名称 标题
 //                        context.startActivity(intent);
 //                    } else {
-                    LoginJumpUtil.dialogSkip(action, context, content, h5Url, (long) 0);
+                    ActionJumpUtil.dialogSkip(action, context, content, h5Url, (long) 0);
 //                    }
 
                 }

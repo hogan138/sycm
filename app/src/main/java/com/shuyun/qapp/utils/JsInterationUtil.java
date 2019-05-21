@@ -21,7 +21,6 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -51,7 +50,7 @@ import com.shuyun.qapp.bean.StartPagerBean;
 import com.shuyun.qapp.bean.WebAnswerHomeBean;
 import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.net.LoginDataManager;
+import com.shuyun.qapp.manager.LoginDataManager;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.ui.answer.AnswerHistoryActivity;
@@ -63,7 +62,7 @@ import com.shuyun.qapp.ui.mine.NewRedWithdrawActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.view.AnswerSharePopupUtil;
 import com.shuyun.qapp.view.InviteSharePopupUtil;
-import com.shuyun.qapp.view.LoginJumpUtil;
+import com.shuyun.qapp.view.ActionJumpUtil;
 import com.shuyun.qapp.view.RealNamePopupUtil;
 import com.shuyun.qapp.view.SharePopupUtil;
 import com.umeng.analytics.MobclickAgent;
@@ -615,7 +614,7 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                LoginJumpUtil.dialogSkip(h5JumpBean.getBtnAction(),
+                ActionJumpUtil.dialogSkip(h5JumpBean.getBtnAction(),
                         activity,
                         h5JumpBean.getContent(),
                         h5JumpBean.getH5Url(),

@@ -25,6 +25,7 @@ import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.LockSkipUtils;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.view.RealNamePopupUtil;
 
@@ -104,12 +105,19 @@ public class UsePrizeFragment extends Fragment implements OnRemotingCallBackList
             @Override
             public void onItemChildClick(View view, int position) {
                 MinePrize minePrize = minePrizeList.get(position);
-                if (minePrize.getActionType().equals("action.alipay.coupon")) {
-                    //使用优惠券
-                    if (Integer.parseInt(SaveUserInfo.getInstance(getActivity()).getUserInfo("cert")) == 1) {
-                        AlipayTradeManager.instance().showBasePage(getActivity(), minePrize.getH5Url());
-                    } else {
-                        RealNamePopupUtil.showAuthPop(getContext(), ((MinePrizeActivity) getActivity()).llPrize, getString(R.string.real_gift_describe));
+                String actionType = minePrize.getActionType();
+                Long lock = minePrize.getLock();
+                if (lock == 1) {
+                    //锁定信息
+                    LockSkipUtils.ExchangeTipDialog(getActivity(), minePrize);
+                } else if (lock == 0) {
+                    if (actionType.equals("action.alipay.coupon")) {
+                        //使用优惠券
+                        if (Integer.parseInt(SaveUserInfo.getInstance(getActivity()).getUserInfo("cert")) == 1) {
+                            AlipayTradeManager.instance().showBasePage(getActivity(), minePrize.getH5Url());
+                        } else {
+                            RealNamePopupUtil.showAuthPop(getContext(), ((MinePrizeActivity) getActivity()).llPrize, getString(R.string.real_gift_describe));
+                        }
                     }
                 }
             }

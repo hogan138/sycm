@@ -1,5 +1,6 @@
 package com.shuyun.qapp.ui.mine;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -24,6 +25,7 @@ import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.AliPushBind;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.NetWorkUtils;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ToastUtil;
 
@@ -59,11 +61,13 @@ public class ChangePhoneActivity extends BaseActivity implements OnRemotingCallB
     Button btnSure2;//确定绑定手机号
 
     private static final String TAG = "ChangePhoneActivity";
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        mContext = this;
         tvCommonTitle.setText("更改新手机号");
     }
 
@@ -103,11 +107,11 @@ public class ChangePhoneActivity extends BaseActivity implements OnRemotingCallB
                     verficationCodeBean.setV(AppConst.V);
                     verficationCodeBean.setStamp(curTime0);
                     verficationCodeBean.setCode(signCode);
-                    if (NetworkUtils.isAvailableByPing()) {
+                    if (NetWorkUtils.isNetworkConnected(mContext)) {
                         //调用获取验证码的接口
                         getCodeNum(verficationCodeBean);
                     } else {
-                        Toast.makeText(this, "网络链接失败，请检查网络链接！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getResources().getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     ToastUtil.showToast(this, "请输入正确的手机号");
