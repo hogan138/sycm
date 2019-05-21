@@ -54,8 +54,6 @@ public class IntegralCenterActivity extends BaseActivity implements View.OnClick
     RelativeLayout rlStartBaby;
     @BindView(R.id.tv_look_detail)
     TextView tvLookDetail;
-    @BindView(R.id.ll_look_detail)
-    LinearLayout llLookDetail;
     @BindView(R.id.tv_flip_card_reduce_score)
     TextView tvFlipCardReduceScore;
     @BindView(R.id.ll_card)
