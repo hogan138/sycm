@@ -156,9 +156,6 @@ public class GameCenterActivity extends BaseActivity implements OnRemotingCallBa
             intent.putExtra("url", url);
             intent.putExtra("name", title);//标题
             startActivity(intent);
-//            Uri uri = Uri.parse(url);
-//            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-//            startActivity(intent);
         }
 
     }

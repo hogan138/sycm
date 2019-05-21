@@ -71,6 +71,7 @@ public class WebH5Activity extends BaseActivity {
 
     Context context;
 
+    //    @TargetApi(19)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +97,12 @@ public class WebH5Activity extends BaseActivity {
         WebSettings settings = wvBanner.getSettings();
         settings.setSupportZoom(true);//支持缩放
         settings.setJavaScriptEnabled(true);
+        settings.setDomStorageEnabled(true);// 打开本地缓存提供JS调用,至关重要
+        settings.setAppCacheMaxSize(1024 * 1024 * 8);// 实现8倍缓存
+        settings.setAllowFileAccess(true);
+        settings.setAppCacheEnabled(true);
+        settings.setAppCachePath(this.getCacheDir().getAbsolutePath());
+        settings.setDatabaseEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         wvBanner.addJavascriptInterface(new JsInterationUtil(id, (Activity) context, tvCommonTitle, ivRightIcon, rlMain, tvRight, wvBanner, answerHomeBean, ivLeftBack, rlTitle), "android");
         // 允许混合内容 解决部分手机 加载不出https请求里面的http下的图片
@@ -130,6 +137,7 @@ public class WebH5Activity extends BaseActivity {
                 }
             }
         });
+//        WebView.setWebContentsDebuggingEnabled(true);
 //        //从发现页进入展开动画
 //        if (!EncodeAndStringTool.isStringEmpty(splash)) {
 //            if (splash.equals("found") || splash.equals("home")) {
