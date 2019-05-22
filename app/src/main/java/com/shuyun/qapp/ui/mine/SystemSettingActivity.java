@@ -11,6 +11,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.callback.ConfigDialog;
 import com.mylhyl.circledialog.params.DialogParams;
@@ -36,6 +40,10 @@ import com.shuyun.qapp.utils.SaveUserInfo1;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.umeng.analytics.MobclickAgent;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -60,10 +68,6 @@ public class SystemSettingActivity extends BaseActivity implements OnRemotingCal
     TextView tvVersion;
     @BindView(R.id.rl_version)
     RelativeLayout rlVersion;
-//    @BindView(R.id.mNiceVideoPlayer)
-//    NiceVideoPlayer mNiceVideoPlayer;
-//    @BindView(R.id.iv_gif)
-//    ImageView ivGif;
 
     private Context mContext;
 
@@ -79,21 +83,6 @@ public class SystemSettingActivity extends BaseActivity implements OnRemotingCal
 
         tvVersion.setText("V" + APKVersionCodeTools.getVerName(this));
 
-//        mNiceVideoPlayer.setPlayerType(NiceVideoPlayer.TYPE_IJK); // IjkPlayer or MediaPlayer
-//        String videoUrl = "http://tanzi27niu.cdsb.mobi/wps/wp-content/uploads/2017/05/2017-05-17_17-33-30.mp4";
-////        videoUrl = Environment.getExternalStorageDirectory().getPath().concat("/办公室小野.mp4");
-//        mNiceVideoPlayer.setUp(videoUrl, null);
-//        TxVideoPlayerController controller = new TxVideoPlayerController(this);
-//        controller.setTitle("办公室小野开番外了，居然在办公室开澡堂！老板还点赞？");
-//        controller.setLenght(98000);
-//        Glide.with(this)
-//                .load("http://tanzi27niu.cdsb.mobi/wps/wp-content/uploads/2017/05/2017-05-17_17-30-43.jpg")
-//                .placeholder(R.drawable.img_default)
-//                .crossFade()
-//                .into(controller.imageView());
-//        mNiceVideoPlayer.setController(controller);
-
-//        Glide.with(this).load("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1550485084238&di=62e9b299c82396d93ad0a2e0d5c0922c&imgtype=0&src=http%3A%2F%2Fs9.rr.itc.cn%2Fr%2FwapChange%2F20161_23_9%2Fa4nrzg2161334442352.gif").asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(ivGif);
     }
 
     @Override

@@ -37,6 +37,7 @@ import com.shuyun.qapp.base.BaseFragment;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.HomeBottomInfoBean;
 import com.shuyun.qapp.bean.MarkBannerItem2;
+import com.shuyun.qapp.bean.MessageEvent;
 import com.shuyun.qapp.bean.NewHomeSelectBean;
 import com.shuyun.qapp.manager.ActivityRegionManager2;
 import com.shuyun.qapp.manager.LoginDataManager;
@@ -52,6 +53,10 @@ import com.shuyun.qapp.view.ActionJumpUtil;
 import com.shuyun.qapp.view.GridSpacingItemDecoration;
 import com.shuyun.qapp.view.ViewPagerScroller;
 import com.sunfusheng.marqueeview.MarqueeView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -185,6 +190,9 @@ public class HomeSelectFragment extends BaseFragment implements OnRemotingCallBa
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        EventBus.getDefault().register(this);//注册Eventbus
+
         mContext = getActivity();
         homeDataString = null;
         timer = new CountDownTimer(5 * 1000, 1000) {
@@ -211,6 +219,8 @@ public class HomeSelectFragment extends BaseFragment implements OnRemotingCallBa
 
         //初始化
         init();
+
+
     }
 
     @Override
@@ -413,11 +423,22 @@ public class HomeSelectFragment extends BaseFragment implements OnRemotingCallBa
         RemotingEx.doRequest("homeBottomInfo", ApiServiceBean.homeBottomInfo(), null, this);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(MessageEvent messageEvent) {
+        if ("refresh".equals(messageEvent.getMessage())) {
+            refresh();
+        }
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
+
 
     @Override
     public void onCompleted(String action) {
@@ -775,4 +796,6 @@ public class HomeSelectFragment extends BaseFragment implements OnRemotingCallBa
 
         }
     }
+
+
 }

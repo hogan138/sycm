@@ -32,6 +32,7 @@ import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.LoginInput;
 import com.shuyun.qapp.bean.LoginResponse;
+import com.shuyun.qapp.bean.MessageEvent;
 import com.shuyun.qapp.bean.Msg;
 import com.shuyun.qapp.net.ApiService;
 import com.shuyun.qapp.net.ApiServiceBean;
@@ -55,6 +56,7 @@ import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.ToastUtil;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 
+import org.greenrobot.eventbus.EventBus;
 import org.litepal.LitePal;
 
 import butterknife.BindView;
@@ -532,6 +534,8 @@ public class LoginActivity extends BaseActivity implements OnRemotingCallBackLis
                                 setResult(RESULT_OK);
                                 finish();
                                 MyActivityManager1.getInstance().finishAllActivity();
+                                //通知刷新推荐数据
+                                EventBus.getDefault().post(new MessageEvent("refresh"));
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
