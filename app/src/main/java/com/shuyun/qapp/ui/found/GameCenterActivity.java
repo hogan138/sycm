@@ -43,8 +43,6 @@ public class GameCenterActivity extends BaseActivity implements OnRemotingCallBa
     TextView tvCommonTitle;
     @BindView(R.id.rv_game_center)
     RecyclerView rvGameCenter;
-    @BindView(R.id.iv_empty)
-    ImageView ivEmpty;
     @BindView(R.id.ll_main)
     LinearLayout llMain;
 
@@ -80,6 +78,8 @@ public class GameCenterActivity extends BaseActivity implements OnRemotingCallBa
         });
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         rvGameCenter.setLayoutManager(layoutManager);
+        rvGameCenter.setHasFixedSize(true);
+        rvGameCenter.setNestedScrollingEnabled(false);
         rvGameCenter.setAdapter(gameCenterAdapter);
 
         mHandler.postDelayed(new Runnable() {
@@ -139,13 +139,11 @@ public class GameCenterActivity extends BaseActivity implements OnRemotingCallBa
             //游戏列表
             List<GameListBeans> gameListBeansList1 = ObjectUtil.cast(response.getDat());
             if (!EncodeAndStringTool.isListEmpty(gameListBeansList1)) {
-                ivEmpty.setVisibility(View.GONE);
                 rvGameCenter.setVisibility(View.VISIBLE);
                 gameListBeansList.clear();
                 gameListBeansList.addAll(gameListBeansList1);
                 gameCenterAdapter.notifyDataSetChanged();
             } else {
-                ivEmpty.setVisibility(View.VISIBLE);
                 rvGameCenter.setVisibility(View.GONE);
             }
         } else if ("gameAuth".equals(action)) {

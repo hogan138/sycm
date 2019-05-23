@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/text_10"
+    android:layout_marginTop="@dimen/text_15"
     android:layout_marginRight="@dimen/text_10"
-    android:layout_marginBottom="@dimen/text_15"
     android:foreground="?attr/selectableItemBackground"
     android:orientation="vertical">
 

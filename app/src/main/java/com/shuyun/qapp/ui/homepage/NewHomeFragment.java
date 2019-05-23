@@ -168,12 +168,12 @@ public class NewHomeFragment extends BaseFragment implements OnRemotingCallBackL
     }
 
     //初始化tablayout
-    private void init() {
+    private void init(int size) {
         tabViewPagerAdapter = new TabViewPagerAdapter(getChildFragmentManager(),
                 mFragmentList,
                 homeTabBeansList);
         //设置适配器
-        viewpager.setOffscreenPageLimit(7);
+        viewpager.setOffscreenPageLimit(size);
         viewpager.setAdapter(tabViewPagerAdapter);
         viewpager.addOnPageChangeListener(new XTabLayout.TabLayoutOnPageChangeListener(homeTabLayout));
         //将tablayout与fragment关联
@@ -365,7 +365,8 @@ public class NewHomeFragment extends BaseFragment implements OnRemotingCallBackL
             }
 
             //初始化tablayout
-            init();
+            int size = homeTabBeansList.size();
+            init(size);
 
         } else if ("loadTreasureBoxNum".equals(action)) {
             BoxBean boxBean = (BoxBean) response.getDat();
