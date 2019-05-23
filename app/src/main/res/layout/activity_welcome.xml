@@ -22,8 +22,8 @@
 
                 <ImageView
                     android:id="@+id/icon"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:src="@mipmap/welcom_center_logo" />
 
                 <ImageView

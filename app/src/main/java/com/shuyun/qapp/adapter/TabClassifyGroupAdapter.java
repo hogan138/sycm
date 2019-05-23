@@ -6,6 +6,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -89,7 +90,7 @@ public class TabClassifyGroupAdapter extends RecyclerView.Adapter<TabClassifyGro
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.iv_group_bg)
-        RoundImageView ivGroupBg;
+        ImageView ivGroupBg;
         @BindView(R.id.tv_group_name)
         TextView tvGroupName;
         @BindView(R.id.tv_button_name)

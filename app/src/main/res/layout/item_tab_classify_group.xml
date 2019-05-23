@@ -7,20 +7,30 @@
     android:background="#00000000"
     android:foreground="?attr/selectableItemBackground">
 
-    <com.shuyun.qapp.view.RoundImageView
-        android:id="@+id/iv_group_bg"
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/zw01"
-        app:radius="@dimen/text_4"
-        app:type="round" />
+        android:foreground="?attr/selectableItemBackground"
+        app:cardBackgroundColor="#F8F8F8"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="@dimen/text_1"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="false">
+
+        <ImageView
+            android:id="@+id/iv_group_bg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/zw01" />
+    </android.support.v7.widget.CardView>
 
     <TextView
         android:id="@+id/tv_group_name"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/text_42"
-        android:layout_below="@+id/iv_group_bg"
+        android:layout_below="@+id/cardView"
         android:layout_marginLeft="@dimen/text_10"
         android:layout_marginRight="75dp"
         android:ellipsize="end"
@@ -34,7 +44,7 @@
         android:id="@+id/tv_button_name"
         android:layout_width="62dp"
         android:layout_height="21dp"
-        android:layout_below="@+id/iv_group_bg"
+        android:layout_below="@+id/cardView"
         android:layout_alignParentRight="true"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/text_11"
