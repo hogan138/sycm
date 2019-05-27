@@ -20,7 +20,6 @@ import com.shuyun.qapp.bean.AccountBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.bean.WithdrawNoticeBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -39,7 +38,7 @@ import butterknife.OnClick;
 /**
  * 现金记录
  */
-public class CashRecordActivity extends BaseActivity implements OnRemotingCallBackListener<Object> {
+public class CashRecordActivity extends BaseActivity implements OnRemotingCallBackListener {
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;
     @BindView(R.id.tv_common_title)
@@ -92,9 +91,9 @@ public class CashRecordActivity extends BaseActivity implements OnRemotingCallBa
         super.onResume();
 
         //提现公告
-        RemotingEx.doRequest(WITHDRAW_NOTICE, ApiServiceBean.withdrawNotice(), null, this);
+        RemotingEx.doRequest(WITHDRAW_NOTICE, RemotingEx.Builder().withdrawNotice(), this);
         //个人信息
-        RemotingEx.doRequest(LOAD_MINE_HOME_DATA, ApiServiceBean.getMineHomeData(), null, this);
+        RemotingEx.doRequest(LOAD_MINE_HOME_DATA, RemotingEx.Builder().getMineHomeData(), this);
 
         loadState = AppConst.STATE_NORMAL;
         currentPage = 0;
@@ -145,7 +144,7 @@ public class CashRecordActivity extends BaseActivity implements OnRemotingCallBa
     }
 
     private void loadCashFlow() {
-        RemotingEx.doRequest(LOAD_CASH, ApiServiceBean.queryCashFlow(), new Object[]{currentPage}, this);
+        RemotingEx.doRequest(LOAD_CASH, RemotingEx.Builder().queryCashFlow(currentPage), this);
     }
 
     @Override
@@ -163,7 +162,7 @@ public class CashRecordActivity extends BaseActivity implements OnRemotingCallBa
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse response) {
 
         if (!response.isSuccees()) {
             ErrorCodeTools.errorCodePrompt(this, response.getErr(), response.getMsg());

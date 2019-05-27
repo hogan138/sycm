@@ -33,7 +33,6 @@ import com.shuyun.qapp.bean.ApplyAnswer;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.RobotInputAgainstBean;
 import com.shuyun.qapp.bean.RobotShowBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -62,7 +61,7 @@ import okhttp3.RequestBody;
  * 答题对战页面
  */
 
-public class AgainstActivity extends BaseActivity implements OnRemotingCallBackListener<Object> {
+public class AgainstActivity extends BaseActivity implements OnRemotingCallBackListener {
 
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle; //标题
@@ -354,14 +353,14 @@ public class AgainstActivity extends BaseActivity implements OnRemotingCallBackL
      * 申请答题
      */
     private void applyAnswer(Long groupId) {
-        RemotingEx.doRequest(AppConst.AGAINST_APPLY_ANSWER, ApiServiceBean.applyAnswer(), new Object[]{groupId, 1, type}, this);
+        RemotingEx.doRequest(AppConst.AGAINST_APPLY_ANSWER, RemotingEx.Builder().applyAnswer(groupId, 1, type), this);
     }
 
     /**
      * 随机题目
      */
     private void randomGroup() {
-        RemotingEx.doRequest(AppConst.AGAINST_RANDOM_ANSWER, ApiServiceBean.randomGroup(), new Object[]{type}, this);
+        RemotingEx.doRequest(AppConst.AGAINST_RANDOM_ANSWER, RemotingEx.Builder().randomGroup(type), this);
     }
 
     private void initTimer() {
@@ -1048,7 +1047,7 @@ public class AgainstActivity extends BaseActivity implements OnRemotingCallBackL
         String inputbean = JSON.toJSONString(robotInputAgainstBean);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
 
-        RemotingEx.doRequest(AppConst.AGAINST_ROBOT, ApiServiceBean.against(), new Object[]{body}, this);
+        RemotingEx.doRequest(AppConst.AGAINST_ROBOT, RemotingEx.Builder().against(body), this);
 
     }
 
@@ -1071,7 +1070,7 @@ public class AgainstActivity extends BaseActivity implements OnRemotingCallBackL
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> listDataResponse) {
+    public void onSucceed(String action, DataResponse listDataResponse) {
         if (AppConst.AGAINST_APPLY_ANSWER.equals(action)) { //用户申请答题
             String err = listDataResponse.getErr();
             if (listDataResponse.isSuccees()) {

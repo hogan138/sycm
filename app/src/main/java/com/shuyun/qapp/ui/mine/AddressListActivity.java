@@ -10,21 +10,16 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.AddressListAdapter;
-import com.shuyun.qapp.adapter.MyPropsAdapter;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.AddressListBeans;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.bean.MyPropsBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +31,7 @@ import butterknife.ButterKnife;
 /**
  * 收货地址列表
  */
-public class AddressListActivity extends BaseActivity implements View.OnClickListener, OnRemotingCallBackListener<Object> {
+public class AddressListActivity extends BaseActivity implements View.OnClickListener, OnRemotingCallBackListener<List<AddressListBeans>> {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;
@@ -106,7 +101,7 @@ public class AddressListActivity extends BaseActivity implements View.OnClickLis
 
     //获取收货地址
     private void getAddressInfo() {
-        RemotingEx.doRequest("addressList", ApiServiceBean.getAddressList(), null, this);
+        RemotingEx.doRequest("addressList", RemotingEx.Builder().getAddressList(), this);
     }
 
     @Override
@@ -141,14 +136,14 @@ public class AddressListActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse<List<AddressListBeans>> response) {
         if (!response.isSuccees()) {
             ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
             return;
         }
         if ("addressList".equals(action)) {
             if (!EncodeAndStringTool.isObjectEmpty(response.getDat())) {
-                List<AddressListBeans> addressListBeans = (List<AddressListBeans>) response.getDat();
+                List<AddressListBeans> addressListBeans = response.getDat();
                 if (!EncodeAndStringTool.isListEmpty(addressListBeans) && addressListBeans.size() > 0) {
                     llEmpty.setVisibility(View.GONE);
                     rvAddressInfo.setVisibility(View.VISIBLE);

@@ -23,7 +23,6 @@ import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MessageEvent;
 import com.shuyun.qapp.bean.SignInBean;
 import com.shuyun.qapp.bean.TaskBeans;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -47,7 +46,7 @@ import butterknife.ButterKnife;
  * 签到
  */
 
-public class SignInActivity extends BaseActivity implements View.OnClickListener, OnRemotingCallBackListener<Object> {
+public class SignInActivity extends BaseActivity implements View.OnClickListener, OnRemotingCallBackListener {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;
@@ -149,17 +148,17 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     //获取用户签到信息
     public void getSignInInfo() {
-        RemotingEx.doRequest("signInInfo", ApiServiceBean.getSingInInfo(), null, this);
+        RemotingEx.doRequest("signInInfo", RemotingEx.Builder().getSingInInfo(), this);
     }
 
     //签到
     public void SignIn() {
-        RemotingEx.doRequest("signIn", ApiServiceBean.SingIn(), new Object[]{nextTaskId}, this);
+        RemotingEx.doRequest("signIn", RemotingEx.Builder().SingIn(nextTaskId), this);
     }
 
     //获取任务信息
     public void getTaskInfo() {
-        RemotingEx.doRequest("taskInfo", ApiServiceBean.taskInfo(), null, this);
+        RemotingEx.doRequest("taskInfo", RemotingEx.Builder().taskInfo(), this);
     }
 
     @Override
@@ -198,7 +197,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse response) {
         if (!response.isSuccees()) {
             ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
             return;
@@ -296,7 +295,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         List<TaskBeans.DatasBean> list = taskBeans.getDatas();
         for (int i = 0, j = list.size(); i < j; i++) {
             int size = list.get(i).getTasks().size();
-            if(size > max)
+            if (size > max)
                 max = size;
         }
         //计算高度

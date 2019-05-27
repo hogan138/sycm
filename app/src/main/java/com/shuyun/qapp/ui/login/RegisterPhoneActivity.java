@@ -20,13 +20,11 @@ import com.mylhyl.circledialog.params.DialogParams;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.webview.WebPublicActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.MyActivityManager;
 import com.shuyun.qapp.utils.MyActivityManager1;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.RegularTool;
@@ -143,7 +141,7 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
 
     private void registered() {
         final String account = etPhoneNumber.getText().toString();
-        RemotingEx.doRequest("", ApiServiceBean.registered(), new Object[]{account}, new OnRemotingCallBackListener<Object>() {
+        RemotingEx.doRequest(RemotingEx.Builder().registered(account), new OnRemotingCallBackListener<Object>() {
             @Override
             public void onCompleted(String action) {
                 btnNext.setEnabled(true);

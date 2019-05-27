@@ -41,7 +41,6 @@ import com.shuyun.qapp.bean.MessageEvent;
 import com.shuyun.qapp.bean.NewHomeSelectBean;
 import com.shuyun.qapp.manager.ActivityRegionManager2;
 import com.shuyun.qapp.manager.LoginDataManager;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
@@ -75,7 +74,7 @@ import cn.kevin.banner.IBannerItem;
  * @Author: ganquan
  * @CreateDate: 2019/5/7 9:18
  */
-public class HomeSelectFragment extends BaseFragment implements OnRemotingCallBackListener<Object> {
+public class HomeSelectFragment extends BaseFragment implements OnRemotingCallBackListener {
     @BindView(R.id.ll_home_fragment)
     RelativeLayout llHomeFragment;
     @BindView(R.id.banner)
@@ -413,14 +412,14 @@ public class HomeSelectFragment extends BaseFragment implements OnRemotingCallBa
      * 精选数据
      */
     public void loadSelectInfo() {
-        RemotingEx.doRequest("getSelectInfo", ApiServiceBean.homeSelectInfo(), null, this);
+        RemotingEx.doRequest("getSelectInfo", RemotingEx.Builder().homeSelectInfo(), this);
     }
 
     /**
      * 首页底部信息
      */
     private void getBottomInfo() {
-        RemotingEx.doRequest("homeBottomInfo", ApiServiceBean.homeBottomInfo(), null, this);
+        RemotingEx.doRequest("homeBottomInfo", RemotingEx.Builder().homeBottomInfo(), this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -452,7 +451,7 @@ public class HomeSelectFragment extends BaseFragment implements OnRemotingCallBa
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse response) {
 
         if (!response.isSuccees()) {
             if ("U0001".equals(response.getErr())) {

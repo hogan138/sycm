@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -17,7 +16,6 @@ import com.shuyun.qapp.adapter.GameCenterAdapter;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.GameListBeans;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
@@ -37,7 +35,7 @@ import butterknife.OnClick;
  * 游戏中心
  */
 
-public class GameCenterActivity extends BaseActivity implements OnRemotingCallBackListener<Object> {
+public class GameCenterActivity extends BaseActivity implements OnRemotingCallBackListener {
 
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle;
@@ -104,12 +102,12 @@ public class GameCenterActivity extends BaseActivity implements OnRemotingCallBa
 
     //游戏列表
     private void loadGame() {
-        RemotingEx.doRequest("gameList", ApiServiceBean.gameList(), null, this);
+        RemotingEx.doRequest("gameList", RemotingEx.Builder().gameList(), this);
     }
 
     //游戏认证
     private void GameAuth(String url) {
-        RemotingEx.doRequest("gameAuth", ApiServiceBean.gameAuth(), new Object[]{url}, this);
+        RemotingEx.doRequest("gameAuth", RemotingEx.Builder().gameAuth(url), this);
     }
 
     @Override
@@ -129,7 +127,7 @@ public class GameCenterActivity extends BaseActivity implements OnRemotingCallBa
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse response) {
         if (!response.isSuccees()) {
             ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
             return;

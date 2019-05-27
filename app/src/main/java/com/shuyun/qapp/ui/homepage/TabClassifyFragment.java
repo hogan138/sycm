@@ -15,7 +15,6 @@ import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.HomeTabClassifyAdapter;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.HomeTabContentBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -35,7 +34,7 @@ import butterknife.Unbinder;
  * @Author: ganquan
  * @CreateDate: 2019/5/13 9:42
  */
-public class TabClassifyFragment extends Fragment implements OnRemotingCallBackListener<Object> {
+public class TabClassifyFragment extends Fragment implements OnRemotingCallBackListener<HomeTabContentBean> {
 
     Unbinder unbinder;
     @BindView(R.id.rv_classify_group)
@@ -78,7 +77,7 @@ public class TabClassifyFragment extends Fragment implements OnRemotingCallBackL
      * tab数据
      */
     public void loadTabInfo(Long tabId) {
-        RemotingEx.doRequest("getTabInfo", ApiServiceBean.HometabContent(), new Object[]{tabId}, this);
+        RemotingEx.doRequest("getTabInfo", RemotingEx.Builder().HometabContent(tabId), this);
     }
 
     public static TabClassifyFragment newInstance(Long tabId) {
@@ -106,7 +105,7 @@ public class TabClassifyFragment extends Fragment implements OnRemotingCallBackL
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse<HomeTabContentBean> response) {
         if (!response.isSuccees()) {
             ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
             return;

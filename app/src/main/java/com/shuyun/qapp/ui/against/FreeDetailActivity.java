@@ -20,7 +20,6 @@ import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.SharedBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -30,6 +29,7 @@ import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ImageLoaderManager;
+import com.shuyun.qapp.utils.ObjectUtil;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.ScannerUtils;
 import com.shuyun.qapp.view.RoundImageView;
@@ -48,7 +48,7 @@ import static com.blankj.utilcode.util.SizeUtils.dp2px;
 /**
  * 自由对战专题详情
  */
-public class FreeDetailActivity extends BaseActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface, OnRemotingCallBackListener<Object> {
+public class FreeDetailActivity extends BaseActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface, OnRemotingCallBackListener {
 
 
     @BindView(R.id.iv_left_icon)
@@ -288,7 +288,7 @@ public class FreeDetailActivity extends BaseActivity implements View.OnClickList
     private void loadBattleAnswerShared(final int channl) {
 
         share_style = channl;
-        RemotingEx.doRequest(AppConst.AGAINST_SHARE, ApiServiceBean.battleAnswerShared(), new Object[]{channl}, this);
+        RemotingEx.doRequest(AppConst.AGAINST_SHARE, RemotingEx.Builder().battleAnswerShared(channl), this);
 
     }
 
@@ -366,7 +366,7 @@ public class FreeDetailActivity extends BaseActivity implements View.OnClickList
      * @param channel 1:微信朋友圈 2:微信好友
      */
     private void loadSharedSure(Long id, int result, int channel) {
-        RemotingEx.doRequest(AppConst.AGAINST_SHARE_CONFIM, ApiServiceBean.sharedConfirm(), new Object[]{id, result, channel}, this);
+        RemotingEx.doRequest(AppConst.AGAINST_SHARE_CONFIM, RemotingEx.Builder().sharedConfirm(id, result, channel), this);
     }
 
     @Override
@@ -394,10 +394,10 @@ public class FreeDetailActivity extends BaseActivity implements View.OnClickList
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> listDataResponse) {
+    public void onSucceed(String action, DataResponse listDataResponse) {
         if (AppConst.AGAINST_SHARE.equals(action)) { //答题对战分享
             if (listDataResponse.isSuccees()) {
-                SharedBean sharedBean = (SharedBean) listDataResponse.getDat();
+                SharedBean sharedBean = ObjectUtil.cast(listDataResponse.getDat());
                 if (!EncodeAndStringTool.isObjectEmpty(sharedBean)) {
                     if (share_style == 3) {
                         sharedBean1 = (SharedBean) listDataResponse.getDat();

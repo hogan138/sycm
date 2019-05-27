@@ -16,7 +16,6 @@ import com.shuyun.qapp.adapter.MyPagerAdapter;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MineBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -36,7 +35,7 @@ import butterknife.OnClick;
 /**
  * 我的奖品界面
  */
-public class MinePrizeActivity extends BaseActivity implements OnRemotingCallBackListener<Object> {
+public class MinePrizeActivity extends BaseActivity implements OnRemotingCallBackListener<MineBean> {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;
@@ -148,7 +147,7 @@ public class MinePrizeActivity extends BaseActivity implements OnRemotingCallBac
      * 获取到我的首界面数据
      */
     private void loadMineHomeData() {
-        RemotingEx.doRequest(ApiServiceBean.getMineHomeData(), this);
+        RemotingEx.doRequest(RemotingEx.Builder().getMineHomeData(), this);
     }
 
     @Override
@@ -162,12 +161,12 @@ public class MinePrizeActivity extends BaseActivity implements OnRemotingCallBac
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse<MineBean> response) {
         if (!response.isSuccees()) {
             ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
             return;
         }
-        mineBean = (MineBean) response.getDat();
+        mineBean = response.getDat();
         SaveUserInfo.getInstance(mContext).setUserInfo("cer", String.valueOf(mineBean.getCertification()));
         //添加标题
         initTitile();

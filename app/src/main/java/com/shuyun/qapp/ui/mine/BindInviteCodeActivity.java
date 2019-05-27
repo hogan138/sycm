@@ -14,8 +14,8 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
+import com.shuyun.qapp.bean.AddWxWithdrawBean;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
  * 绑定邀请码
  */
 
-public class BindInviteCodeActivity extends BaseActivity implements View.OnClickListener, OnRemotingCallBackListener<Object> {
+public class BindInviteCodeActivity extends BaseActivity implements View.OnClickListener, OnRemotingCallBackListener<AddWxWithdrawBean> {
 
     @BindView(R.id.iv_back)
     RelativeLayout rlBack;
@@ -83,7 +83,7 @@ public class BindInviteCodeActivity extends BaseActivity implements View.OnClick
             case R.id.btn_commit:
                 String code = etInviteCode.getText().toString();
                 //提交绑定邀请码
-                RemotingEx.doRequest("bindInviteCode", ApiServiceBean.bindInviteCode(), new Object[]{code}, this);
+                RemotingEx.doRequest("bindInviteCode", RemotingEx.Builder().bindInviteCode(code), this);
                 break;
             default:
                 break;
@@ -137,7 +137,7 @@ public class BindInviteCodeActivity extends BaseActivity implements View.OnClick
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse<AddWxWithdrawBean> response) {
         if (!response.isSuccees()) {
             ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
             return;

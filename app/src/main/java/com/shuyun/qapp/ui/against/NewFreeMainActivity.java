@@ -27,7 +27,6 @@ import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.AgainstGruopListBeans;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.SharedBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -58,7 +57,7 @@ import static com.blankj.utilcode.util.SizeUtils.dp2px;
  * 对战首页
  */
 
-public class NewFreeMainActivity extends BaseActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface, OnRemotingCallBackListener<Object> {
+public class NewFreeMainActivity extends BaseActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface, OnRemotingCallBackListener {
 
 
     @BindView(R.id.iv_left_icon)
@@ -117,7 +116,7 @@ public class NewFreeMainActivity extends BaseActivity implements View.OnClickLis
         /**
          * 首页题组列表
          */
-        RemotingEx.doRequest("groupList", ApiServiceBean.getAgainstList(), new Object[]{type}, this);
+        RemotingEx.doRequest("groupList", RemotingEx.Builder().getAgainstList(type), this);
 
         ivLeftIcon.setImageResource(R.mipmap.backb);//左侧返回
         ivRightIcon.setOnClickListener(this);
@@ -306,7 +305,7 @@ public class NewFreeMainActivity extends BaseActivity implements View.OnClickLis
      */
     private void loadBattleAnswerShared(final int channl) {
         share_style = channl;
-        RemotingEx.doRequest(AppConst.AGAINST_SHARE, ApiServiceBean.battleAnswerShared(), new Object[]{channl}, this);
+        RemotingEx.doRequest(AppConst.AGAINST_SHARE, RemotingEx.Builder().battleAnswerShared(channl), this);
     }
 
     /**
@@ -384,7 +383,7 @@ public class NewFreeMainActivity extends BaseActivity implements View.OnClickLis
      */
     private void loadSharedSure(Long id, int result, int channel) {
 
-        RemotingEx.doRequest(AppConst.AGAINST_SHARE_CONFIM, ApiServiceBean.sharedConfirm(), new Object[]{id, result, channel}, this);
+        RemotingEx.doRequest(AppConst.AGAINST_SHARE_CONFIM, RemotingEx.Builder().sharedConfirm(id, result, channel), this);
 
     }
 
@@ -414,7 +413,7 @@ public class NewFreeMainActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse response) {
         if (!response.isSuccees()) {
             ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
             return;

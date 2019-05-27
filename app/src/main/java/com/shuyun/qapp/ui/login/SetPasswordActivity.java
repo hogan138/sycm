@@ -25,7 +25,6 @@ import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.LoginResponse;
 import com.shuyun.qapp.bean.Msg;
 import com.shuyun.qapp.manager.ActivityCallManager;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -264,7 +263,17 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
         }
         String deviceId = SmAntiFraud.getDeviceId();
 
-        RemotingEx.doRequest(ApiServiceBean.modifyPassWord(), new Object[]{phoneNum, password, AppConst.DEV_ID, AppConst.APP_ID, salt, tsn, deviceId, APKVersionCodeTools.getVerName(this), AppConst.V, curTime, signCode}, new OnRemotingCallBackListener<LoginResponse>() {
+        RemotingEx.doRequest(RemotingEx.Builder().modifyPassWord(phoneNum,
+                password,
+                AppConst.DEV_ID,
+                AppConst.APP_ID,
+                salt,
+                tsn,
+                deviceId,
+                APKVersionCodeTools.getVerName(this),
+                AppConst.V,
+                curTime,
+                signCode), new OnRemotingCallBackListener<LoginResponse>() {
             @Override
             public void onCompleted(String action) {
 
@@ -316,7 +325,7 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
         //DESede/CBC/PKCS5Padding
         String password = EncryptUtils.encrypt3DES2HexString(pwd.getBytes(), new_key.getBytes(), "DESede/CBC/PKCS5Padding", iv.getBytes());
 
-        RemotingEx.doRequest(ApiServiceBean.setPwd(), new Object[]{password}, new OnRemotingCallBackListener<String>() {
+        RemotingEx.doRequest(RemotingEx.Builder().setPwd(password), new OnRemotingCallBackListener<String>() {
             @Override
             public void onCompleted(String action) {
 

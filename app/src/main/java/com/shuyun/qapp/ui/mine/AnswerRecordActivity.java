@@ -18,7 +18,6 @@ import com.shuyun.qapp.adapter.AnswerRecordAdapter;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.AnswerRecordBean;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -122,7 +121,7 @@ public class AnswerRecordActivity extends BaseActivity {
     List<AnswerRecordBean> answerRecordBeanList = new ArrayList<>();
 
     private void loadAnswerRecord(int currentPage) {
-        RemotingEx.doRequest(ApiServiceBean.getAnswerRecord(), new Object[]{currentPage}, new OnRemotingCallBackListener<List<AnswerRecordBean>>() {
+        RemotingEx.doRequest(RemotingEx.Builder().getAnswerRecord(currentPage), new OnRemotingCallBackListener<List<AnswerRecordBean>>() {
             @Override
             public void onCompleted(String action) {
 

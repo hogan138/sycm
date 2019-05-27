@@ -34,8 +34,6 @@ import com.shuyun.qapp.bean.LoginInput;
 import com.shuyun.qapp.bean.LoginResponse;
 import com.shuyun.qapp.bean.MessageEvent;
 import com.shuyun.qapp.bean.Msg;
-import com.shuyun.qapp.net.ApiService;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -348,7 +346,7 @@ public class LoginActivity extends BaseActivity implements OnRemotingCallBackLis
         Log.i(TAG, "loadLogin: " + loginInput.toString());
 
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputBean);
-        RemotingEx.doRequest(ApiServiceBean.login(), new Object[]{body}, this);
+        RemotingEx.doRequest(RemotingEx.Builder().login(body), this);
     }
 
     /**

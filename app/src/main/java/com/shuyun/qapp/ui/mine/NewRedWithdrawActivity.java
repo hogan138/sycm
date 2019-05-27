@@ -14,7 +14,6 @@ import android.text.style.AbsoluteSizeSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -32,7 +31,6 @@ import com.shuyun.qapp.bean.MessageEvent;
 import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.bean.OutPutWithdraw;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
@@ -58,7 +56,7 @@ import okhttp3.RequestBody;
 /**
  * 红包提现
  */
-public class NewRedWithdrawActivity extends BaseActivity implements View.OnClickListener, OnRemotingCallBackListener<Object> {
+public class NewRedWithdrawActivity extends BaseActivity implements View.OnClickListener, OnRemotingCallBackListener {
     @BindView(R.id.ll_main)
     LinearLayout llMain;
     @BindView(R.id.rl_back)
@@ -302,12 +300,12 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
 
         final String inputbean = JSON.toJSONString(inputWithdrawalbean);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
-        RemotingEx.doRequest("applyWithdrawal", ApiServiceBean.applyWithdrawal(), new Object[]{body}, this);
+        RemotingEx.doRequest("applyWithdrawal", RemotingEx.Builder().applyWithdrawal(body), this);
     }
 
     //加载个人信息
     private void loadMineHomeData() {
-        RemotingEx.doRequest("getMineHomeData", ApiServiceBean.getMineHomeData(), null, this);
+        RemotingEx.doRequest("getMineHomeData", RemotingEx.Builder().getMineHomeData(), this);
     }
 
     @Override
@@ -322,7 +320,7 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse response) {
         if (!response.isSuccees()) {
             ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
             return;

@@ -20,7 +20,6 @@ import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.SharePublicBean;
 import com.shuyun.qapp.bean.SharedBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -137,7 +136,7 @@ public class SharePopupUtil {
         String action = sharedBean.getAction();
         String id = sharedBean.getId();
         if (!EncodeAndStringTool.isStringEmpty(sharedBean.getId())) {
-            RemotingEx.doRequest(ApiServiceBean.SharedPublic(), new Object[]{channl, action, id}, new OnRemotingCallBackListener<SharedBean>() {
+            RemotingEx.doRequest(RemotingEx.Builder().SharedPublic(channl, action, id), new OnRemotingCallBackListener<SharedBean>() {
                 @Override
                 public void onCompleted(String action) {
 
@@ -167,7 +166,7 @@ public class SharePopupUtil {
                 }
             });
         } else {
-            RemotingEx.doRequest(ApiServiceBean.SharedPublic1(), new Object[]{channl, action}, new OnRemotingCallBackListener<SharedBean>() {
+            RemotingEx.doRequest(RemotingEx.Builder().SharedPublic1(channl, action), new OnRemotingCallBackListener<SharedBean>() {
                 @Override
                 public void onCompleted(String action) {
 
@@ -331,7 +330,7 @@ public class SharePopupUtil {
      * @param channel 1:微信朋友圈 2:微信好友
      */
     private static void loadSharedSure(Long id, int result, int channel, final Context context) {
-        RemotingEx.doRequest(ApiServiceBean.sharedConfirm(), new Object[]{id, result, channel}, new OnRemotingCallBackListener<Object>() {
+        RemotingEx.doRequest(RemotingEx.Builder().sharedConfirm(id, result, channel), new OnRemotingCallBackListener() {
             @Override
             public void onCompleted(String action) {
 
@@ -343,7 +342,7 @@ public class SharePopupUtil {
             }
 
             @Override
-            public void onSucceed(String action, DataResponse<Object> dataResponse) {
+            public void onSucceed(String action, DataResponse dataResponse) {
                 if (dataResponse.isSuccees()) {
 
                 } else {

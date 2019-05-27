@@ -18,7 +18,6 @@ import com.shuyun.qapp.animation.MyLayoutAnimationHelper;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.PrizeHistoryBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -108,7 +107,7 @@ public class OpenPrizeHistoryActivity extends BaseActivity {
 
     private void loadIntegralCurrent() {
 
-        RemotingEx.doRequest(ApiServiceBean.getPrizeHistory(), new Object[]{currentPage}, new OnRemotingCallBackListener<List<PrizeHistoryBean>>() {
+        RemotingEx.doRequest(RemotingEx.Builder().getPrizeHistory(currentPage), new OnRemotingCallBackListener<List<PrizeHistoryBean>>() {
             @Override
             public void onCompleted(String action) {
 

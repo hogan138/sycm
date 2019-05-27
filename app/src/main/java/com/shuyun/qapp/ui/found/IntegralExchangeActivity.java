@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -27,11 +26,9 @@ import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.ScoreExchangeBeans;
 import com.shuyun.qapp.bean.ScoreExchangeResult;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.classify.ClassifyActivity;
-import com.shuyun.qapp.ui.mine.ChangePersonalInfoActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
@@ -52,7 +49,7 @@ import butterknife.ButterKnife;
  * 发现---积分兑换
  */
 
-public class IntegralExchangeActivity extends BaseActivity implements View.OnClickListener, OnRemotingCallBackListener<Object> {
+public class IntegralExchangeActivity extends BaseActivity implements View.OnClickListener, OnRemotingCallBackListener {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;
@@ -172,14 +169,14 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
      * 获取商品列表
      */
     private void loadHomeData() {
-        RemotingEx.doRequest("getGoodsList", ApiServiceBean.scoreExchange(), null, this);
+        RemotingEx.doRequest("getGoodsList", RemotingEx.Builder().scoreExchange(), this);
     }
 
     /**
      * 道具兑换
      */
     private void propExchange(String goodsId) {
-        RemotingEx.doRequest("propExchange", ApiServiceBean.scoreExchangeApply(), new Object[]{goodsId}, this);
+        RemotingEx.doRequest("propExchange", RemotingEx.Builder().scoreExchangeApply(goodsId), this);
     }
 
     @Override
@@ -191,7 +188,7 @@ public class IntegralExchangeActivity extends BaseActivity implements View.OnCli
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse response) {
         if (!response.isSuccees()) {
             String err = response.getErr();
             if ("L0001".equals(err)) {

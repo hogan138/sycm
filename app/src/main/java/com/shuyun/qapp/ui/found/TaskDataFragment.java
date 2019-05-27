@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,7 +17,6 @@ import com.shuyun.qapp.base.TaskFragment;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.TaskApplayBean;
 import com.shuyun.qapp.bean.TaskBeans;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -123,7 +121,7 @@ public class TaskDataFragment extends TaskFragment implements FoundTaskAdapter.O
 
     //领取奖励
     public void applyTask(final TaskBeans.DatasBean.TasksBean tasksBean) {
-        RemotingEx.doRequest(ApiServiceBean.taskApply(), new Object[]{tasksBean.getTaskId()}, new OnRemotingCallBackListener<TaskApplayBean>() {
+        RemotingEx.doRequest(RemotingEx.Builder().taskApply(tasksBean.getTaskId()), new OnRemotingCallBackListener<TaskApplayBean>() {
             @Override
             public void onCompleted(String action) {
 

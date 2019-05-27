@@ -26,7 +26,6 @@ import com.shuyun.qapp.bean.InputWithdrawalbean;
 import com.shuyun.qapp.bean.MessageEvent;
 import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.bean.OutPutWithdraw;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
@@ -50,7 +49,7 @@ import okhttp3.RequestBody;
 /**
  * 现金提现
  */
-public class NewCashWithdrawActivity extends BaseActivity implements View.OnClickListener, OnRemotingCallBackListener<Object> {
+public class NewCashWithdrawActivity extends BaseActivity implements View.OnClickListener, OnRemotingCallBackListener {
 
     @BindView(R.id.rl_back)
     RelativeLayout rlBack;
@@ -204,12 +203,12 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
 
         final String inputbean = JSON.toJSONString(inputWithdrawalbean);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
-        RemotingEx.doRequest("applyWithdrawal", ApiServiceBean.applyWithdrawal(), new Object[]{body}, this);
+        RemotingEx.doRequest("applyWithdrawal", RemotingEx.Builder().applyWithdrawal(body), this);
     }
 
     //加载个人信息
     private void loadMineHomeData() {
-        RemotingEx.doRequest("getMineHomeData", ApiServiceBean.getMineHomeData(), null, this);
+        RemotingEx.doRequest("getMineHomeData", RemotingEx.Builder().getMineHomeData(), this);
     }
 
     /**
@@ -312,7 +311,7 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse response) {
         if (!response.isSuccees()) {
             ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
             return;

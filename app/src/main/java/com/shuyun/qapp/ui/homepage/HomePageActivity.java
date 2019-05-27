@@ -39,10 +39,9 @@ import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.HomeTabBean;
 import com.shuyun.qapp.bean.QPushBean;
 import com.shuyun.qapp.manager.FragmentTouchManager;
-import com.shuyun.qapp.net.ApiServiceBean;
-import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.manager.HeartBeatManager;
 import com.shuyun.qapp.manager.LoginDataManager;
+import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.activity.SeventyYearFragment;
@@ -347,7 +346,12 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         String myCode = encryptMD5ToString(signString);
         String signCode = getCode(myCode);
 
-        RemotingEx.doRequest(ApiServiceBean.updateVersion(), new Object[]{APKVersionCodeTools.getVerName(this), AppConst.DEV_ID, AppConst.APP_ID, AppConst.V, curTime, signCode}, new OnRemotingCallBackListener<AppVersionBean>() {
+        RemotingEx.doRequest(RemotingEx.Builder().updateVersion(APKVersionCodeTools.getVerName(this),
+                AppConst.DEV_ID,
+                AppConst.APP_ID,
+                AppConst.V,
+                curTime,
+                signCode), new OnRemotingCallBackListener<AppVersionBean>() {
             @Override
             public void onCompleted(String action) {
 
@@ -497,7 +501,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
 
     private void getActivityShow(final int i) {
 
-        RemotingEx.doRequest(ApiServiceBean.getActivityShow(), new OnRemotingCallBackListener<ActivityTimeBean>() {
+        RemotingEx.doRequest(RemotingEx.Builder().getActivityShow(), new OnRemotingCallBackListener<ActivityTimeBean>() {
             @Override
             public void onCompleted(String action) {
 
@@ -547,7 +551,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
     //首页tab
     private void homeTab() {
 
-        RemotingEx.doRequest(ApiServiceBean.homeTab(), new OnRemotingCallBackListener<HomeTabBean>() {
+        RemotingEx.doRequest(RemotingEx.Builder().homeTab(), new OnRemotingCallBackListener<HomeTabBean>() {
             @Override
             public void onCompleted(String action) {
 
@@ -635,7 +639,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
     //活动专区点击
     private void clickActivity() {
 
-        RemotingEx.doRequest(ApiServiceBean.clickActivity(), new OnRemotingCallBackListener<String>() {
+        RemotingEx.doRequest(RemotingEx.Builder().clickActivity(), new OnRemotingCallBackListener<String>() {
             @Override
             public void onCompleted(String action) {
 
@@ -756,7 +760,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
         if (AppConst.isLogin()) {
             //查询绑定别名
             String deviceId = PushServiceFactory.getCloudPushService().getDeviceId();
-            RemotingEx.doRequest(ApiServiceBean.queryBind(), new Object[]{deviceId}, new OnRemotingCallBackListener<QPushBean>() {
+            RemotingEx.doRequest(RemotingEx.Builder().queryBind(deviceId), new OnRemotingCallBackListener<QPushBean>() {
                 @Override
                 public void onCompleted(String action) {
 

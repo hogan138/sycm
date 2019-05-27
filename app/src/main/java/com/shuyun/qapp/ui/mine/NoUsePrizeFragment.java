@@ -3,7 +3,6 @@ package com.shuyun.qapp.ui.mine;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -18,11 +17,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.mylhyl.circledialog.CircleDialog;
-import com.mylhyl.circledialog.callback.ConfigButton;
-import com.mylhyl.circledialog.callback.ConfigDialog;
-import com.mylhyl.circledialog.params.ButtonParams;
-import com.mylhyl.circledialog.params.DialogParams;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
@@ -31,17 +25,14 @@ import com.shuyun.qapp.adapter.PrizeAdapter;
 import com.shuyun.qapp.alipay.AlipayTradeManager;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MinePrize;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
-import com.shuyun.qapp.ui.classify.ClassifyActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
 import com.shuyun.qapp.ui.webview.WebPrizeBoxActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.LockSkipUtils;
-import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ToastUtil;
 import com.shuyun.qapp.view.RealNamePopupUtil;
@@ -58,7 +49,7 @@ import butterknife.Unbinder;
  * 2018/6/9
  * ganquan
  */
-public class NoUsePrizeFragment extends Fragment implements OnRemotingCallBackListener<Object> {
+public class NoUsePrizeFragment extends Fragment implements OnRemotingCallBackListener {
 
     Unbinder unbinder;
     @BindView(R.id.rv_prize)
@@ -185,7 +176,7 @@ public class NoUsePrizeFragment extends Fragment implements OnRemotingCallBackLi
                         //使用优惠券
                         if (Integer.parseInt(SaveUserInfo.getInstance(getActivity()).getUserInfo("cert")) == 1) {
                             //调用使用优惠券接口
-                            RemotingEx.doRequest(ApiServiceBean.useCoupon(), new Object[]{minePrize.getId()}, null);
+                            RemotingEx.doRequest(RemotingEx.Builder().useCoupon(minePrize.getId()), null);
                             AlipayTradeManager.instance().showBasePage(getActivity(), minePrize.getH5Url());
                         } else {
                             RealNamePopupUtil.showAuthPop(getContext(), ((MinePrizeActivity) getActivity()).llPrize, getString(R.string.real_gift_describe));
@@ -211,7 +202,7 @@ public class NoUsePrizeFragment extends Fragment implements OnRemotingCallBackLi
     }
 
     private void loadMinePrize(int status, int page) {
-        RemotingEx.doRequest("getMyPrize", ApiServiceBean.getMyPrize(), new Object[]{status, page}, this);
+        RemotingEx.doRequest("getMyPrize", RemotingEx.Builder().getMyPrize(status, page), this);
     }
 
     /**
@@ -251,7 +242,7 @@ public class NoUsePrizeFragment extends Fragment implements OnRemotingCallBackLi
      * @param id
      */
     public void useAddCard(String id) {
-        RemotingEx.doRequest("addAnswerNum", ApiServiceBean.addAnswerNum(), new Object[]{id}, this);
+        RemotingEx.doRequest("addAnswerNum", RemotingEx.Builder().addAnswerNum(id), this);
     }
 
     @Override
@@ -268,7 +259,7 @@ public class NoUsePrizeFragment extends Fragment implements OnRemotingCallBackLi
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse response) {
         if (!response.isSuccees()) {
             ErrorCodeTools.errorCodePrompt(getActivity(), response.getErr(), response.getMsg());
             return;

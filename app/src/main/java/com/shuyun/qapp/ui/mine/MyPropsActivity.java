@@ -17,12 +17,12 @@ import com.shuyun.qapp.adapter.MyPropsAdapter;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MyPropsBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.ObjectUtil;
 import com.shuyun.qapp.utils.UmengPageUtil;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ import butterknife.ButterKnife;
 /**
  * 我的道具
  */
-public class MyPropsActivity extends BaseActivity implements OnRemotingCallBackListener<Object> {
+public class MyPropsActivity extends BaseActivity implements OnRemotingCallBackListener {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;
@@ -99,14 +99,14 @@ public class MyPropsActivity extends BaseActivity implements OnRemotingCallBackL
     }
 
     private void loadProps() {
-        RemotingEx.doRequest("MyProps", ApiServiceBean.MyProps(), null, this);
+        RemotingEx.doRequest("MyProps", RemotingEx.Builder().MyProps(), this);
     }
 
     /**
      * 使用道具
      */
     private void useProps(String mode) {
-        RemotingEx.doRequest("useProps", ApiServiceBean.useProps(), new Object[]{mode}, this);
+        RemotingEx.doRequest("useProps", RemotingEx.Builder().useProps(mode), this);
     }
 
     @Override
@@ -120,13 +120,13 @@ public class MyPropsActivity extends BaseActivity implements OnRemotingCallBackL
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse response) {
         if (!response.isSuccees()) {
             ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
             return;
         }
         if ("MyProps".equals(action)) {
-            List<MyPropsBean> minePrizeList1 = (List<MyPropsBean>) response.getDat();
+            List<MyPropsBean> minePrizeList1 = ObjectUtil.cast(response.getDat());
             if (!EncodeAndStringTool.isListEmpty(minePrizeList1) && minePrizeList1.size() > 0) {
                 ivEmpty.setVisibility(View.GONE);
                 rvProps.setVisibility(View.VISIBLE);

@@ -19,7 +19,6 @@ import com.shuyun.qapp.adapter.PrizeAdapter;
 import com.shuyun.qapp.alipay.AlipayTradeManager;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MinePrize;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -136,7 +135,7 @@ public class UsePrizeFragment extends Fragment implements OnRemotingCallBackList
     }
 
     private void loadMinePrize(int status, int page) {
-        RemotingEx.doRequest(ApiServiceBean.getMyPrize(), new Object[]{status, page}, this);
+        RemotingEx.doRequest(RemotingEx.Builder().getMyPrize(status, page), this);
     }
 
     @Override

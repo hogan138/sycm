@@ -16,7 +16,6 @@ import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.blankj.utilcode.util.KeyboardUtils;
-import com.blankj.utilcode.util.PhoneUtils;
 import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.callback.ConfigButton;
 import com.mylhyl.circledialog.callback.ConfigDialog;
@@ -27,7 +26,6 @@ import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.AddressListBeans;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.ProvinceBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -48,7 +46,7 @@ import okhttp3.RequestBody;
 /**
  * 新增收货地址
  */
-public class AddNewAddressActivity extends BaseActivity implements View.OnClickListener, OnRemotingCallBackListener<Object> {
+public class AddNewAddressActivity extends BaseActivity implements View.OnClickListener, OnRemotingCallBackListener {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;
@@ -164,7 +162,7 @@ public class AddNewAddressActivity extends BaseActivity implements View.OnClickL
      * 获取城市列表
      */
     public void loadProvinceInfo() {
-        RemotingEx.doRequest("provinceInfo", ApiServiceBean.getProvinceList(), null, this);
+        RemotingEx.doRequest("provinceInfo", RemotingEx.Builder().getProvinceList(), this);
     }
 
     /**
@@ -173,7 +171,7 @@ public class AddNewAddressActivity extends BaseActivity implements View.OnClickL
     public void addAddress(AddressListBeans userAddressBean) {
         String inputbean = JSON.toJSONString(userAddressBean);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
-        RemotingEx.doRequest("addAddress", ApiServiceBean.addAddress(), new Object[]{body}, this);
+        RemotingEx.doRequest("addAddress", RemotingEx.Builder().addAddress(body), this);
     }
 
     /**
@@ -182,14 +180,14 @@ public class AddNewAddressActivity extends BaseActivity implements View.OnClickL
     public void modifyAddress(AddressListBeans userAddressBean) {
         String inputbean = JSON.toJSONString(userAddressBean);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
-        RemotingEx.doRequest("modifyAddress", ApiServiceBean.modifyAddress(), new Object[]{body}, this);
+        RemotingEx.doRequest("modifyAddress", RemotingEx.Builder().modifyAddress(body), this);
     }
 
     /**
      * 删除用户地址
      */
     public void deleteAddress() {
-        RemotingEx.doRequest("deleteAddress", ApiServiceBean.deleteAddress(), new Object[]{id}, this);
+        RemotingEx.doRequest("deleteAddress", RemotingEx.Builder().deleteAddress(id), this);
     }
 
     @Override
@@ -299,7 +297,7 @@ public class AddNewAddressActivity extends BaseActivity implements View.OnClickL
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse response) {
         if (!response.isSuccees()) {
             ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
             return;

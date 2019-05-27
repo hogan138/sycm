@@ -13,23 +13,18 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.KeyboardUtils;
-import com.blankj.utilcode.util.NetworkUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.InputVerficationCodeBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
-import com.shuyun.qapp.utils.AliPushBind;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.NetWorkUtils;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ToastUtil;
-
-import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,7 +38,7 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 /**
  * 更换绑定手机号
  */
-public class ChangePhoneActivity extends BaseActivity implements OnRemotingCallBackListener<Object> {
+public class ChangePhoneActivity extends BaseActivity implements OnRemotingCallBackListener {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;
@@ -132,7 +127,7 @@ public class ChangePhoneActivity extends BaseActivity implements OnRemotingCallB
         String inputbean = JSON.toJSONString(verficationCodeBean);
         Log.i(TAG, "loadLogin: " + verficationCodeBean.toString());
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
-        RemotingEx.doRequest("getCode", ApiServiceBean.getCode(), new Object[]{body}, this);
+        RemotingEx.doRequest("getCode", RemotingEx.Builder().getCode(body), this);
     }
 
     /**
@@ -145,7 +140,7 @@ public class ChangePhoneActivity extends BaseActivity implements OnRemotingCallB
             ToastUtil.showToast(this, "手机号或验证码不能为空");
             return;
         }
-        RemotingEx.doRequest("verifynewphone", ApiServiceBean.verifynewphone(), new Object[]{code, phoneNumber}, this);
+        RemotingEx.doRequest("verifynewphone", RemotingEx.Builder().verifynewphone(code, phoneNumber), this);
     }
 
     @Override
@@ -159,7 +154,7 @@ public class ChangePhoneActivity extends BaseActivity implements OnRemotingCallB
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse response) {
         if ("getCode".equals(action)) {
             if (response.isSuccees()) {
                 ToastUtil.showToast(this, "获取验证码成功");

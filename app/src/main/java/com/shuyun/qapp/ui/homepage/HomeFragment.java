@@ -55,10 +55,10 @@ import com.shuyun.qapp.bean.MarkBannerItem;
 import com.shuyun.qapp.bean.MarkBannerItem1;
 import com.shuyun.qapp.bean.SystemInfo;
 import com.shuyun.qapp.manager.ActivityRegionManager;
+import com.shuyun.qapp.manager.FloatImageviewManage;
 import com.shuyun.qapp.manager.FragmentTouchManager;
-import com.shuyun.qapp.net.ApiServiceBean;
-import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.manager.LoginDataManager;
+import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SykscApplication;
@@ -75,11 +75,10 @@ import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.UmengPageUtil;
+import com.shuyun.qapp.view.ActionJumpUtil;
 import com.shuyun.qapp.view.AnyPositionImgManage;
-import com.shuyun.qapp.manager.FloatImageviewManage;
 import com.shuyun.qapp.view.ITextBannerItemClickListener;
 import com.shuyun.qapp.view.InviteSharePopupUtil;
-import com.shuyun.qapp.view.ActionJumpUtil;
 import com.shuyun.qapp.view.MainActivityDialogInfo;
 import com.shuyun.qapp.view.NotifyDialog;
 import com.shuyun.qapp.view.OvalImageView;
@@ -102,7 +101,7 @@ import cn.kevin.banner.transformer.YZoomTransFormer;
 /**
  * 首页
  */
-public class HomeFragment extends BaseFragment implements OnRemotingCallBackListener<Object>, FragmentTouchManager.FragmentTouchListener {
+public class HomeFragment extends BaseFragment implements OnRemotingCallBackListener, FragmentTouchManager.FragmentTouchListener {
     @BindView(R.id.tv_invite)
     TextView tvInvite; //分享
     @BindView(R.id.tv_common_title)
@@ -582,42 +581,42 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
      * 轮播图数据
      */
     public void loadHomeBanners() {
-        RemotingEx.doRequest("getHomeBanner", ApiServiceBean.getHomeBanner(), null, this);
+        RemotingEx.doRequest("getHomeBanner", RemotingEx.Builder().getHomeBanner(), this);
     }
 
     /**
      * 首页浮窗
      */
     public void loadHomeFloatWindow() {
-        RemotingEx.doRequest("getHomefloatwindow", ApiServiceBean.homeFloatWindow(), null, this);
+        RemotingEx.doRequest("getHomefloatwindow", RemotingEx.Builder().homeFloatWindow(), this);
     }
 
     /**
      * 获取跑马灯消息
      */
     private void loadSystemInfo() {
-        RemotingEx.doRequest("getSystemInfo", ApiServiceBean.getSystemInfo(), null, this);
+        RemotingEx.doRequest("getSystemInfo", RemotingEx.Builder().getSystemInfo(), this);
     }
 
     /**
      * 获取活动配置信息
      */
     private void getConfigInfo() {
-        RemotingEx.doRequest("configMainActivity", ApiServiceBean.configMainActivity(), null, this);
+        RemotingEx.doRequest("configMainActivity", RemotingEx.Builder().configMainActivity(), this);
     }
 
     /**
      * 首页题组
      */
     private void loadHomeGroups() {
-        RemotingEx.doRequest("getHomeGroups", ApiServiceBean.getHomeGroups(), new Object[]{AppUtils.getAppVersionName()}, this);
+        RemotingEx.doRequest("getHomeGroups", RemotingEx.Builder().getHomeGroups(AppUtils.getAppVersionName()), this);
     }
 
     /**
      * 首页底部信息
      */
     private void getBottomInfo() {
-        RemotingEx.doRequest("homeBottomInfo", ApiServiceBean.homeBottomInfo(), null, this);
+        RemotingEx.doRequest("homeBottomInfo", RemotingEx.Builder().homeBottomInfo(), this);
     }
 
     /**
@@ -805,7 +804,7 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
      * 获取宝箱数量
      */
     private void loadTreasureBoxNum() {
-        RemotingEx.doRequest("loadTreasureBoxNum", ApiServiceBean.getTreasureNumV2(), null, this);
+        RemotingEx.doRequest("loadTreasureBoxNum", RemotingEx.Builder().getTreasureNumV2(), this);
     }
 
     @Override
@@ -817,12 +816,12 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
 
     //获取活动弹框信息
     private void getDialogInfo() {
-        RemotingEx.doRequest("configDialog", ApiServiceBean.configDialog(), null, this);
+        RemotingEx.doRequest("configDialog", RemotingEx.Builder().configDialog(), this);
     }
 
     //获取公告信息
     private void getNoticeInfo() {
-        RemotingEx.doRequest("homeNotice", ApiServiceBean.homeNotice(), null, this);
+        RemotingEx.doRequest("homeNotice", RemotingEx.Builder().homeNotice(), this);
     }
 
     @Override
@@ -885,7 +884,7 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
             loadTreasureBoxNum();
 
             //用户活跃度
-            RemotingEx.doRequest(ApiServiceBean.activeness(), null, null);
+            RemotingEx.doRequest(RemotingEx.Builder().activeness(), null);
         } else {
             //用户未登录
             try {
@@ -926,7 +925,7 @@ public class HomeFragment extends BaseFragment implements OnRemotingCallBackList
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse response) {
         if (!response.isSuccees()) {
             if ("U0001".equals(response.getErr())) {
                 mContext.finish();

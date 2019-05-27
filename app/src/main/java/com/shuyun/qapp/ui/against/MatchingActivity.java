@@ -24,7 +24,6 @@ import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MatchTimeBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -32,6 +31,7 @@ import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.ObjectUtil;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.UmengPageUtil;
@@ -45,7 +45,7 @@ import butterknife.ButterKnife;
  * 答题对战----匹配对手
  */
 
-public class MatchingActivity extends BaseActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface, OnRemotingCallBackListener<Object> {
+public class MatchingActivity extends BaseActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface, OnRemotingCallBackListener {
 
 
     @BindView(R.id.iv_left_icon)
@@ -196,7 +196,7 @@ public class MatchingActivity extends BaseActivity implements View.OnClickListen
      */
     private void loadMatchInfo() {
 
-        RemotingEx.doRequest(AppConst.MATCHING_USER_TIME, ApiServiceBean.getMatchTimeInfo(), null, this);
+        RemotingEx.doRequest(AppConst.MATCHING_USER_TIME, RemotingEx.Builder().getMatchTimeInfo(), this);
 
     }
 
@@ -242,7 +242,7 @@ public class MatchingActivity extends BaseActivity implements View.OnClickListen
      */
     private void loadUseBpCons() {
 
-        RemotingEx.doRequest(AppConst.AGAINST_REDUCE_SCORE, ApiServiceBean.useBpCons(), new Object[]{type}, this);
+        RemotingEx.doRequest(AppConst.AGAINST_REDUCE_SCORE, RemotingEx.Builder().useBpCons(type), this);
 
     }
 
@@ -381,11 +381,11 @@ public class MatchingActivity extends BaseActivity implements View.OnClickListen
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> listDataResponse) {
+    public void onSucceed(String action, DataResponse listDataResponse) {
         if (AppConst.MATCHING_USER_TIME.equals(action)) { //获取用户匹配时长
             if (listDataResponse.isSuccees()) {
                 try {
-                    matchTimeBean = (MatchTimeBean) listDataResponse.getDat();
+                    matchTimeBean = ObjectUtil.cast(listDataResponse.getDat());
                     if (matchTimeBean.getMatchTime() < 0) {
                         ivHeadMine.setImageResource(icon[matchTimeBean.getUser().getHeaderId() - 1]);
                         //开始动画

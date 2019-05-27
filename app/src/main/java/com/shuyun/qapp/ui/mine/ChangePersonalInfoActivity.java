@@ -28,7 +28,6 @@ import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MessageEvent;
 import com.shuyun.qapp.bean.MineBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SykscApplication;
@@ -260,7 +259,7 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
      * @param position
      */
     private void loadChangeHeader(int position) {
-        RemotingEx.doRequest(ApiServiceBean.changeHeader(), new Object[]{position}, new OnRemotingCallBackListener<Integer>() {
+        RemotingEx.doRequest(RemotingEx.Builder().changeHeader(position), new OnRemotingCallBackListener<Integer>() {
             @Override
             public void onCompleted(String action) {
 
@@ -388,7 +387,7 @@ public class ChangePersonalInfoActivity extends BaseActivity implements CommonPo
     }
 
     private void loadMineHomeData() {
-        RemotingEx.doRequest(ApiServiceBean.getMineHomeData(), new OnRemotingCallBackListener<MineBean>() {
+        RemotingEx.doRequest(RemotingEx.Builder().getMineHomeData(), new OnRemotingCallBackListener<MineBean>() {
             @Override
             public void onCompleted(String action) {
 

@@ -19,7 +19,6 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.EncryptUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
-import com.blankj.utilcode.util.NetworkUtils;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
@@ -27,7 +26,6 @@ import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.InputVerficationCodeBean;
 import com.shuyun.qapp.bean.LoginResponse;
 import com.shuyun.qapp.bean.Msg;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -199,7 +197,7 @@ public class ChangePasswordActivity extends BaseActivity {
         String inputbean = JSON.toJSONString(verficationCodeBean);
         Log.i(TAG, "loadLogin: " + verficationCodeBean.toString());
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
-        RemotingEx.doRequest(ApiServiceBean.getCode(), new Object[]{body}, new OnRemotingCallBackListener<String>() {
+        RemotingEx.doRequest(RemotingEx.Builder().getCode(body), new OnRemotingCallBackListener<String>() {
             @Override
             public void onCompleted(String action) {
 
@@ -277,7 +275,17 @@ public class ChangePasswordActivity extends BaseActivity {
         }
         String deviceId = SmAntiFraud.getDeviceId();
 
-        RemotingEx.doRequest(ApiServiceBean.modifyPassWord(), new Object[]{phoneNum, password, AppConst.DEV_ID, AppConst.APP_ID, salt, tsn, deviceId, APKVersionCodeTools.getVerName(this), AppConst.V, curTime, signCode}, new OnRemotingCallBackListener<LoginResponse>() {
+        RemotingEx.doRequest(RemotingEx.Builder().modifyPassWord(phoneNum,
+                password,
+                AppConst.DEV_ID,
+                AppConst.APP_ID,
+                salt,
+                tsn,
+                deviceId,
+                APKVersionCodeTools.getVerName(this),
+                AppConst.V,
+                curTime,
+                signCode), new OnRemotingCallBackListener<LoginResponse>() {
             @Override
             public void onCompleted(String action) {
 

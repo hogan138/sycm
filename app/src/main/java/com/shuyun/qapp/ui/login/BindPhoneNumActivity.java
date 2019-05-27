@@ -15,13 +15,11 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.KeyboardUtils;
-import com.blankj.utilcode.util.NetworkUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.InputVerficationCodeBean;
 import com.shuyun.qapp.bean.LoginResponse;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -31,9 +29,7 @@ import com.shuyun.qapp.ui.webview.WebPublicActivity;
 import com.shuyun.qapp.utils.AliPushBind;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.MyActivityManager1;
 import com.shuyun.qapp.utils.NetWorkUtils;
-import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.ToastUtil;
 
 import butterknife.BindView;
@@ -163,7 +159,7 @@ public class BindPhoneNumActivity extends BaseActivity {
         String inputbean = JSON.toJSONString(verficationCodeBean);
         Log.i(TAG, "loadLogin: " + verficationCodeBean.toString());
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
-        RemotingEx.doRequest(ApiServiceBean.getCode(), new Object[]{body}, new OnRemotingCallBackListener<String>() {
+        RemotingEx.doRequest(RemotingEx.Builder().getCode(body), new OnRemotingCallBackListener<String>() {
             @Override
             public void onCompleted(String action) {
 
@@ -213,7 +209,7 @@ public class BindPhoneNumActivity extends BaseActivity {
         String code = etCode.getText().toString().trim();
         if (!EncodeAndStringTool.checkNull(phoneNumber, code)) {
         } else {
-            RemotingEx.doRequest(ApiServiceBean.bindWx(), new Object[]{phoneNumber, code}, new OnRemotingCallBackListener<Object>() {
+            RemotingEx.doRequest(RemotingEx.Builder().bindWx(phoneNumber, code), new OnRemotingCallBackListener() {
                 @Override
                 public void onCompleted(String action) {
 
@@ -225,7 +221,7 @@ public class BindPhoneNumActivity extends BaseActivity {
                 }
 
                 @Override
-                public void onSucceed(String action, DataResponse<Object> dataResponse) {
+                public void onSucceed(String action, DataResponse dataResponse) {
                     if (dataResponse.isSuccees()) {
                         //阿里推送绑定别名
                         AliPushBind.bindPush();

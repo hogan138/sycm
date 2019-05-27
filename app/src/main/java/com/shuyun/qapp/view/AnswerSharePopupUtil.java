@@ -17,14 +17,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.blankj.utilcode.util.NetworkUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.AnswerOpptyBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.SharedBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -33,7 +30,6 @@ import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.JsInterationUtil;
-import com.shuyun.qapp.utils.NetWorkUtils;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.ScannerUtils;
 import com.umeng.socialize.ShareAction;
@@ -165,7 +161,7 @@ public class AnswerSharePopupUtil {
     private static SharedBean sharedBean1;
 
     private static void loadGroupShared(final int channel, Long groupId, final Context context, final View view) {
-        RemotingEx.doRequest("groupShared", ApiServiceBean.groupShared(), new Object[]{channel, groupId}, new OnRemotingCallBackListener<SharedBean>() {
+        RemotingEx.doRequest("groupShared", RemotingEx.Builder().groupShared(channel, groupId), new OnRemotingCallBackListener<SharedBean>() {
             @Override
             public void onCompleted(String action) {
 
@@ -198,7 +194,7 @@ public class AnswerSharePopupUtil {
     }
 
     private static void loadAnswerShared(final int channel, String id, final Context context, final View view) {
-        RemotingEx.doRequest("answerShared", ApiServiceBean.answerShared(), new Object[]{channel, id}, new OnRemotingCallBackListener<SharedBean>() {
+        RemotingEx.doRequest("answerShared", RemotingEx.Builder().answerShared(channel, id), new OnRemotingCallBackListener<SharedBean>() {
             @Override
             public void onCompleted(String action) {
 
@@ -290,7 +286,7 @@ public class AnswerSharePopupUtil {
     private static String remainderTime;
 
     private static void loadAnswerOpptyRemainder(final Context context) {
-        RemotingEx.doRequest("getAnswerOpptyRemainder", ApiServiceBean.getAnswerOpptyRemainder(), null, new OnRemotingCallBackListener<String>() {
+        RemotingEx.doRequest("getAnswerOpptyRemainder", RemotingEx.Builder().getAnswerOpptyRemainder(), new OnRemotingCallBackListener<String>() {
             @Override
             public void onCompleted(String action) {
 
@@ -426,7 +422,7 @@ public class AnswerSharePopupUtil {
      * @param channel 1:微信朋友圈 2:微信好友
      */
     private static void loadSharedSure(Long id, int result, int channel, final Context context) {
-        RemotingEx.doRequest("sharedConfirm", ApiServiceBean.sharedConfirm(), new Object[]{id, result, channel}, new OnRemotingCallBackListener<Object>() {
+        RemotingEx.doRequest("sharedConfirm", RemotingEx.Builder().sharedConfirm(id, result, channel), new OnRemotingCallBackListener() {
             @Override
             public void onCompleted(String action) {
 
@@ -438,7 +434,7 @@ public class AnswerSharePopupUtil {
             }
 
             @Override
-            public void onSucceed(String action, DataResponse<Object> dataResponse) {
+            public void onSucceed(String action, DataResponse dataResponse) {
                 if (dataResponse.isSuccees()) {
 
                 } else {
@@ -517,7 +513,7 @@ public class AnswerSharePopupUtil {
     private static AnswerOpptyBean answerOpptyBean;
 
     private static void loadAnswerOppty(final Context context, final WebView wvAnswerHome) {
-        RemotingEx.doRequest("getAnswerOppty", ApiServiceBean.getAnswerOppty(), null, new OnRemotingCallBackListener<Object>() {
+        RemotingEx.doRequest("getAnswerOppty", RemotingEx.Builder().getAnswerOppty(), new OnRemotingCallBackListener<AnswerOpptyBean>() {
             @Override
             public void onCompleted(String action) {
 
@@ -529,7 +525,7 @@ public class AnswerSharePopupUtil {
             }
 
             @Override
-            public void onSucceed(String action, DataResponse<Object> dataResponse) {
+            public void onSucceed(String action, DataResponse<AnswerOpptyBean> dataResponse) {
                 if (dataResponse.isSuccees()) {
                     answerOpptyBean = (AnswerOpptyBean) dataResponse.getDat();
                     if (!EncodeAndStringTool.isObjectEmpty(answerOpptyBean)) {

@@ -16,7 +16,6 @@ import com.shuyun.qapp.adapter.AccountRecordAdapter;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.AccountBean;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -34,7 +33,7 @@ import butterknife.ButterKnife;
  * 2018/6/9
  * ganquan
  */
-public class IntegralAccountActivity extends BaseActivity implements OnRemotingCallBackListener<Object> {
+public class IntegralAccountActivity extends BaseActivity implements OnRemotingCallBackListener<List<AccountBean>> {
 
     @BindView(R.id.rv_account_record)
     RecyclerView rvAccountRecord;
@@ -103,7 +102,7 @@ public class IntegralAccountActivity extends BaseActivity implements OnRemotingC
     }
 
     private void loadIntegralCurrent() {
-        RemotingEx.doRequest(ApiServiceBean.queryIntegralCurrent(), new Object[]{currentPage}, this);
+        RemotingEx.doRequest(RemotingEx.Builder().queryIntegralCurrent(currentPage), this);
     }
 
     @Override
@@ -121,12 +120,12 @@ public class IntegralAccountActivity extends BaseActivity implements OnRemotingC
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse<List<AccountBean>> response) {
         if (!response.isSuccees()) {
             ErrorCodeTools.errorCodePrompt(this, response.getErr(), response.getMsg());
             return;
         }
-        List<AccountBean> accountBeanList1 = (List<AccountBean>) response.getDat();
+        List<AccountBean> accountBeanList1 = response.getDat();
         if (!EncodeAndStringTool.isListEmpty(accountBeanList1)) {
             ivEmpty.setVisibility(View.GONE);
             if (loadState == AppConst.STATE_NORMAL || loadState == AppConst.STATE_REFRESH) {//首次加載||下拉刷新

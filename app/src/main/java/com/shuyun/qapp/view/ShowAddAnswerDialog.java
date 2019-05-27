@@ -8,19 +8,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.blankj.utilcode.util.NetworkUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.AnswerOpptyBean;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
-import com.shuyun.qapp.utils.NetWorkUtils;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 
 import java.text.SimpleDateFormat;
@@ -107,7 +103,7 @@ public class ShowAddAnswerDialog {
      * U0004  答题机会已到上限
      */
     private static void loadAnswerOpptyRemainder() {
-        RemotingEx.doRequest(ApiServiceBean.getAnswerOpptyRemainder(), null, new OnRemotingCallBackListener<String>() {
+        RemotingEx.doRequest(RemotingEx.Builder().getAnswerOpptyRemainder(), new OnRemotingCallBackListener<String>() {
             @Override
             public void onCompleted(String action) {
 
@@ -141,7 +137,7 @@ public class ShowAddAnswerDialog {
      * U0005
      */
     private static void loadAnswerOppty() {
-        RemotingEx.doRequest(ApiServiceBean.getAnswerOppty(), null, new OnRemotingCallBackListener<AnswerOpptyBean>() {
+        RemotingEx.doRequest(RemotingEx.Builder().getAnswerOppty(), new OnRemotingCallBackListener<AnswerOpptyBean>() {
             @Override
             public void onCompleted(String action) {
 

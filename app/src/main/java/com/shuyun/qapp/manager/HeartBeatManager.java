@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Handler;
 
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -53,7 +52,7 @@ public class HeartBeatManager {
         if (!AppConst.isLogin())
             return;
         //执行接口请求
-        RemotingEx.doRequest(null, ApiServiceBean.heartBeat(), null, new OnRemotingCallBackListener<Object>() {
+        RemotingEx.doRequest(RemotingEx.Builder().heartBeat(), new OnRemotingCallBackListener<Object>() {
             @Override
             public void onCompleted(String action) {
                 doHeart();

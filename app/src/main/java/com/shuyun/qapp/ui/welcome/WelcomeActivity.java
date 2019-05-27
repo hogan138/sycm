@@ -5,10 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
@@ -21,17 +19,14 @@ import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.AdBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.TouristsBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
-import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.ImageLoaderManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
-import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SaveUserInfo1;
 import com.tencent.stat.MtaSDkException;
 import com.tencent.stat.StatConfig;
@@ -41,14 +36,13 @@ import com.tencent.stat.common.StatConstants;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.blankj.utilcode.util.SizeUtils.dp2px;
 import static com.shuyun.qapp.utils.EncodeAndStringTool.encryptMD5ToString;
 import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 
 /**
  * 广告页
  */
-public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackListener<Object> {
+public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackListener {
     private static final int LOGIN_MODE = 1;
 
     @BindView(R.id.fl_main)
@@ -117,13 +111,12 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
         //将拼接的字符串转化为16进制MD5
         String myCode = encryptMD5ToString(sb.toString());
         String signCode = getCode(myCode);
-        RemotingEx.doRequest(AppConst.WELCOME_AD, ApiServiceBean.getAd(), new Object[]{
+        RemotingEx.doRequest(AppConst.WELCOME_AD, RemotingEx.Builder().getAd(
                 AppConst.DEV_ID,
                 AppConst.APP_ID,
                 AppConst.V,
                 String.valueOf(curTime),
-                signCode
-        }, this);
+                signCode), this);
     }
 
     /**
@@ -238,7 +231,7 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
         }, 1600);
 
         //获取是否需要登录
-        RemotingEx.doRequest(AppConst.TOURISTS, ApiServiceBean.tourists(), null, this);
+        RemotingEx.doRequest(AppConst.TOURISTS, RemotingEx.Builder().tourists(), this);
 
     }
 
@@ -254,7 +247,7 @@ public class WelcomeActivity extends BaseActivity implements OnRemotingCallBackL
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse response) {
         if (AppConst.WELCOME_AD.equals(action)) { //广告页接口
             if (response.isSuccees()) {
                 adBean = (AdBean) response.getDat();

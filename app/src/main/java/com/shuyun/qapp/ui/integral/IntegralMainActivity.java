@@ -20,7 +20,6 @@ import com.shuyun.qapp.adapter.IntegralAllPrizeAdapter;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.IntegralAllPrizeBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -134,7 +133,7 @@ public class IntegralMainActivity extends BaseActivity implements View.OnClickLi
 
     private void loadIntegralCurrent() {
 
-        RemotingEx.doRequest(ApiServiceBean.getAllPrize(), new Object[]{currentPage}, new OnRemotingCallBackListener<List<IntegralAllPrizeBean>>() {
+        RemotingEx.doRequest(RemotingEx.Builder().getAllPrize(currentPage), new OnRemotingCallBackListener<List<IntegralAllPrizeBean>>() {
             @Override
             public void onCompleted(String action) {
 

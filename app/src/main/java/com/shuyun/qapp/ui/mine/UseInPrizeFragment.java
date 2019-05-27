@@ -23,7 +23,6 @@ import com.shuyun.qapp.adapter.PrizeAdapter;
 import com.shuyun.qapp.alipay.AlipayTradeManager;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MinePrize;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -47,7 +46,7 @@ import butterknife.Unbinder;
  * 我的奖品使用中Fragment
  * ganquan
  */
-public class UseInPrizeFragment extends Fragment implements OnRemotingCallBackListener<Object> {
+public class UseInPrizeFragment extends Fragment implements OnRemotingCallBackListener {
 
     Unbinder unbinder;
     @BindView(R.id.rv_prize)
@@ -150,7 +149,7 @@ public class UseInPrizeFragment extends Fragment implements OnRemotingCallBackLi
                         //使用优惠券
                         if (Integer.parseInt(SaveUserInfo.getInstance(getActivity()).getUserInfo("cert")) == 1) {
                             //调用使用优惠券接口
-                            RemotingEx.doRequest(ApiServiceBean.useCoupon(), new Object[]{minePrize.getId()}, null);
+                            RemotingEx.doRequest(RemotingEx.Builder().useCoupon(minePrize.getId()), null);
                             AlipayTradeManager.instance().showBasePage(getActivity(), minePrize.getH5Url());
                         } else {
                             RealNamePopupUtil.showAuthPop(getContext(), ((MinePrizeActivity) getActivity()).llPrize, getString(R.string.real_gift_describe));
@@ -176,7 +175,7 @@ public class UseInPrizeFragment extends Fragment implements OnRemotingCallBackLi
     }
 
     private void loadMinePrize(int status, int page) {
-        RemotingEx.doRequest("getMyPrize", ApiServiceBean.getMyPrize(), new Object[]{status, page}, this);
+        RemotingEx.doRequest("getMyPrize", RemotingEx.Builder().getMyPrize(status, page), this);
     }
 
     /**
@@ -211,7 +210,7 @@ public class UseInPrizeFragment extends Fragment implements OnRemotingCallBackLi
      * @param id
      */
     public void useAddCard(String id) {
-        RemotingEx.doRequest("addAnswerNum", ApiServiceBean.addAnswerNum(), new Object[]{id}, this);
+        RemotingEx.doRequest("addAnswerNum", RemotingEx.Builder().addAnswerNum(id), this);
     }
 
     @Override
@@ -228,7 +227,7 @@ public class UseInPrizeFragment extends Fragment implements OnRemotingCallBackLi
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse response) {
         if (!response.isSuccees()) {
             ErrorCodeTools.errorCodePrompt(getActivity(), response.getErr(), response.getMsg());
             return;

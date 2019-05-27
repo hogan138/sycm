@@ -21,7 +21,6 @@ import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.HistoryDataBean;
 import com.shuyun.qapp.bean.LookAnswerResultBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -31,6 +30,7 @@ import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.ObjectUtil;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.RSAUtils;
 import com.shuyun.qapp.utils.ToastUtil;
@@ -49,7 +49,7 @@ import butterknife.OnClick;
 /**
  * 答题历史
  */
-public class AnswerHistoryActivity extends BaseActivity implements CommonPopupWindow.ViewInterface, OnRemotingCallBackListener<Object> {
+public class AnswerHistoryActivity extends BaseActivity implements CommonPopupWindow.ViewInterface, OnRemotingCallBackListener {
 
     @BindView(R.id.ll_answer_history)
     RelativeLayout llAnswerHistory;
@@ -107,8 +107,7 @@ public class AnswerHistoryActivity extends BaseActivity implements CommonPopupWi
      * @param answerId 答题Id
      */
     private void loadLookAnswerResult(String answerId) {
-
-        RemotingEx.doRequest(AppConst.ANSWER_HISTORY, ApiServiceBean.lookAnswerResult(), new Object[]{answerId}, this);
+        RemotingEx.doRequest(AppConst.ANSWER_HISTORY, RemotingEx.Builder().lookAnswerResult(answerId), this);
 
     }
 
@@ -198,8 +197,7 @@ public class AnswerHistoryActivity extends BaseActivity implements CommonPopupWi
      * @param positionId
      */
     private void loadAnswerFeedBack(int positionId) {
-
-        RemotingEx.doRequest(AppConst.ANSWER_FEEDBACK, ApiServiceBean.getAnswerFeedBack(), new Object[]{questionId, positionId}, this);
+        RemotingEx.doRequest(AppConst.ANSWER_FEEDBACK, RemotingEx.Builder().getAnswerFeedBack(questionId, positionId), this);
 
     }
 
@@ -220,10 +218,10 @@ public class AnswerHistoryActivity extends BaseActivity implements CommonPopupWi
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse response) {
         if (AppConst.ANSWER_HISTORY.equals(action)) { //答题历史
             if (response.isSuccees()) {
-                lookAnswerResult = (LookAnswerResultBean) response.getDat();
+                lookAnswerResult = ObjectUtil.cast(response.getDat());
                 if (!EncodeAndStringTool.isObjectEmpty(lookAnswerResult)) {
 
                     tvCommonTitle.setText(lookAnswerResult.getGroupName());

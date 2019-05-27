@@ -18,7 +18,6 @@ import com.shuyun.qapp.animation.MyLayoutAnimationHelper;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.ExchangeMyPrizeBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -109,7 +108,7 @@ public class MyPrizeActivity extends BaseActivity {
 
     private void loadIntegralCurrent() {
 
-        RemotingEx.doRequest(ApiServiceBean.getMyTicket(), new Object[]{currentPage}, new OnRemotingCallBackListener<List<ExchangeMyPrizeBean>>() {
+        RemotingEx.doRequest(RemotingEx.Builder().getMyTicket(currentPage), new OnRemotingCallBackListener<List<ExchangeMyPrizeBean>>() {
             @Override
             public void onCompleted(String action) {
 

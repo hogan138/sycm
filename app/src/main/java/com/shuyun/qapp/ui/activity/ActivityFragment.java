@@ -23,9 +23,8 @@ import com.shuyun.qapp.adapter.ActivityTabAdapter;
 import com.shuyun.qapp.base.BaseFragment;
 import com.shuyun.qapp.bean.ActivityTabBean;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.net.ApiServiceBean;
-import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.manager.LoginDataManager;
+import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
@@ -104,7 +103,7 @@ public class ActivityFragment extends BaseFragment implements OnRemotingCallBack
         }
     }
 
-    private void init(){
+    private void init() {
         refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
@@ -154,7 +153,7 @@ public class ActivityFragment extends BaseFragment implements OnRemotingCallBack
     }
 
     private void loadActivityList(int currentPage) {
-        RemotingEx.doRequest(ApiServiceBean.ActivityList(), new Object[]{String.valueOf(currentPage), "20"}, this);
+        RemotingEx.doRequest(RemotingEx.Builder().ActivityList(String.valueOf(currentPage), "20"), this);
     }
 
     private void loadInfo() {

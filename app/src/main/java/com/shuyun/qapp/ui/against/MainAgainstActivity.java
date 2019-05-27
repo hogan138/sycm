@@ -21,7 +21,6 @@ import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MainAgainstBean;
 import com.shuyun.qapp.bean.SharedBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -50,7 +49,7 @@ import static com.blankj.utilcode.util.SizeUtils.dp2px;
  * 答题对战首页
  */
 
-public class MainAgainstActivity extends BaseActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface, OnRemotingCallBackListener<Object> {
+public class MainAgainstActivity extends BaseActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface, OnRemotingCallBackListener {
 
 
     @BindView(R.id.iv_left_icon)
@@ -135,7 +134,7 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
         super.onResume();
 
         //获取答题对战首页
-        RemotingEx.doRequest(AppConst.AGAINST_MAIN_INFO, ApiServiceBean.mainAgainst(), null, this);
+        RemotingEx.doRequest(AppConst.AGAINST_MAIN_INFO, RemotingEx.Builder().mainAgainst(), this);
     }
 
     @Override
@@ -393,7 +392,7 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
      */
     private void loadBattleAnswerShared(int channl) {
         share_style = channl;
-        RemotingEx.doRequest(AppConst.AGAINST_SHARE, ApiServiceBean.battleAnswerShared(), new Object[]{channl}, this);
+        RemotingEx.doRequest(AppConst.AGAINST_SHARE, RemotingEx.Builder().battleAnswerShared(channl), this);
     }
 
     /**
@@ -471,7 +470,7 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
      */
     private void loadSharedSure(Long id, int result, int channel) {
 
-        RemotingEx.doRequest(AppConst.AGAINST_SHARE_CONFIM, ApiServiceBean.sharedConfirm(), new Object[]{id, result, channel}, this);
+        RemotingEx.doRequest(AppConst.AGAINST_SHARE_CONFIM, RemotingEx.Builder().sharedConfirm(id, result, channel), this);
 
     }
 
@@ -501,7 +500,7 @@ public class MainAgainstActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse response) {
         if (AppConst.AGAINST_MAIN_INFO.equals(action)) {  //获取答题对战首页信息
             MainAgainstBean mainAgainstBean = (MainAgainstBean) response.getDat();
             if (response.isSuccees()) {

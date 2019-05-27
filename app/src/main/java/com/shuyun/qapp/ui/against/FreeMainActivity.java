@@ -24,7 +24,6 @@ import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.GroupAgainstBean;
 import com.shuyun.qapp.bean.SharedBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -33,6 +32,7 @@ import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
+import com.shuyun.qapp.utils.ObjectUtil;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.ScannerUtils;
 import com.umeng.socialize.ShareAction;
@@ -53,7 +53,7 @@ import static com.blankj.utilcode.util.SizeUtils.dp2px;
  * 自由对战首页
  */
 
-public class FreeMainActivity extends BaseActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface, OnRemotingCallBackListener<Object> {
+public class FreeMainActivity extends BaseActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface, OnRemotingCallBackListener {
 
 
     @BindView(R.id.iv_left_icon)
@@ -101,7 +101,7 @@ public class FreeMainActivity extends BaseActivity implements View.OnClickListen
         /**
          * 首页题组
          */
-        RemotingEx.doRequest(AppConst.GET_GROUP_LIST, ApiServiceBean.groupAgainst(), new Object[]{type}, this);
+        RemotingEx.doRequest(AppConst.GET_GROUP_LIST, RemotingEx.Builder().groupAgainst(type), this);
 
         ivLeftIcon.setImageResource(R.mipmap.backb);//左侧返回
         ivRightIcon.setOnClickListener(this);
@@ -291,7 +291,7 @@ public class FreeMainActivity extends BaseActivity implements View.OnClickListen
      */
     private void loadBattleAnswerShared(final int channl) {
         share_style = channl;
-        RemotingEx.doRequest(AppConst.AGAINST_SHARE, ApiServiceBean.battleAnswerShared(), new Object[]{channl}, this);
+        RemotingEx.doRequest(AppConst.AGAINST_SHARE, RemotingEx.Builder().battleAnswerShared(channl), this);
     }
 
     /**
@@ -369,7 +369,7 @@ public class FreeMainActivity extends BaseActivity implements View.OnClickListen
      */
     private void loadSharedSure(Long id, int result, int channel) {
 
-        RemotingEx.doRequest(AppConst.AGAINST_SHARE_CONFIM, ApiServiceBean.sharedConfirm(), new Object[]{id, result, channel}, this);
+        RemotingEx.doRequest(AppConst.AGAINST_SHARE_CONFIM, RemotingEx.Builder().sharedConfirm(id, result, channel), this);
 
     }
 
@@ -399,11 +399,11 @@ public class FreeMainActivity extends BaseActivity implements View.OnClickListen
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> listDataResponse) {
+    public void onSucceed(String action, DataResponse listDataResponse) {
 
         if (AppConst.GET_GROUP_LIST.equals(action)) { //获取题组列表
             if (listDataResponse.isSuccees()) {
-                final List<GroupAgainstBean> groupAgainstBean = (List<GroupAgainstBean>) listDataResponse.getDat();
+                final List<GroupAgainstBean> groupAgainstBean = ObjectUtil.cast(listDataResponse.getDat());
                 rvAgainstGroup.setHasFixedSize(true);
                 rvAgainstGroup.setNestedScrollingEnabled(false);
                 FreeGroupAdapter freeGroupAdapter = new FreeGroupAdapter(groupAgainstBean, FreeMainActivity.this);
@@ -433,10 +433,10 @@ public class FreeMainActivity extends BaseActivity implements View.OnClickListen
             }
         } else if (AppConst.AGAINST_SHARE.equals(action)) { //答题对战分享
             if (listDataResponse.isSuccees()) {
-                SharedBean sharedBean = (SharedBean) listDataResponse.getDat();
+                SharedBean sharedBean = ObjectUtil.cast(listDataResponse.getDat());
                 if (!EncodeAndStringTool.isObjectEmpty(sharedBean)) {
                     if (share_style == 3) {
-                        sharedBean1 = (SharedBean) listDataResponse.getDat();
+                        sharedBean1 = ObjectUtil.cast(listDataResponse.getDat());
                         //显示二维码弹框
                         showQr();
                     } else {

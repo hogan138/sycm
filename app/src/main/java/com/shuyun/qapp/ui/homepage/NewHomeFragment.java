@@ -33,10 +33,10 @@ import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.FloatWindowBean;
 import com.shuyun.qapp.bean.HomeTabBeans;
 import com.shuyun.qapp.bean.TitleBean;
+import com.shuyun.qapp.manager.FloatImageviewManage;
 import com.shuyun.qapp.manager.FragmentTouchManager;
-import com.shuyun.qapp.net.ApiServiceBean;
-import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.manager.LoginDataManager;
+import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.mine.MinePrizeActivity;
@@ -50,7 +50,6 @@ import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.shuyun.qapp.utils.UmengPageUtil;
-import com.shuyun.qapp.manager.FloatImageviewManage;
 import com.shuyun.qapp.view.MainActivityDialogInfo;
 import com.shuyun.qapp.view.NotifyDialog;
 import com.zhy.view.flowlayout.FlowLayout;
@@ -72,7 +71,7 @@ import butterknife.Unbinder;
  * @Author: ganquan
  * @CreateDate: 2019/5/6 15:23
  */
-public class NewHomeFragment extends BaseFragment implements OnRemotingCallBackListener<Object>, XTabLayout.OnTabSelectedListener, TagFlowLayout.OnTagClickListener, FragmentTouchManager.FragmentTouchListener {
+public class NewHomeFragment extends BaseFragment implements OnRemotingCallBackListener, XTabLayout.OnTabSelectedListener, TagFlowLayout.OnTagClickListener, FragmentTouchManager.FragmentTouchListener {
 
     Unbinder unbinder;
     @BindView(R.id.home_tab_layout)
@@ -235,7 +234,7 @@ public class NewHomeFragment extends BaseFragment implements OnRemotingCallBackL
         //用户已登录
         if (AppConst.isLogin()) {
             //用户活跃度
-            RemotingEx.doRequest(ApiServiceBean.activeness(), null, null);
+            RemotingEx.doRequest(RemotingEx.Builder().activeness(), null);
 
             //获取宝箱数量
             loadTreasureBoxNum();
@@ -257,28 +256,28 @@ public class NewHomeFragment extends BaseFragment implements OnRemotingCallBackL
      * tab数据
      */
     public void loadTabInfo() {
-        RemotingEx.doRequest("getTabInfo", ApiServiceBean.newHometab(), null, this);
+        RemotingEx.doRequest("getTabInfo", RemotingEx.Builder().newHometab(), this);
     }
 
     /**
      * 获取宝箱数量
      */
     private void loadTreasureBoxNum() {
-        RemotingEx.doRequest("loadTreasureBoxNum", ApiServiceBean.getTreasureNumV2(), null, this);
+        RemotingEx.doRequest("loadTreasureBoxNum", RemotingEx.Builder().getTreasureNumV2(), this);
     }
 
     /**
      * 首页浮窗
      */
     public void loadHomeFloatWindow() {
-        RemotingEx.doRequest("getHomefloatwindow", ApiServiceBean.homeFloatWindow(), null, this);
+        RemotingEx.doRequest("getHomefloatwindow", RemotingEx.Builder().homeFloatWindow(), this);
     }
 
     /**
      * 获取活动弹框信息
      */
     private void getDialogInfo() {
-        RemotingEx.doRequest("configDialog", ApiServiceBean.configDialog(), null, this);
+        RemotingEx.doRequest("configDialog", RemotingEx.Builder().configDialog(), this);
     }
 
     @Override
@@ -320,7 +319,7 @@ public class NewHomeFragment extends BaseFragment implements OnRemotingCallBackL
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse response) {
         if (!response.isSuccees()) {
             ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
             return;

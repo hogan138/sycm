@@ -13,12 +13,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import com.blankj.utilcode.util.NetworkUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.InputVerficationCodeBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -39,7 +37,7 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 /**
  * 更改手机号---验证老手机号
  */
-public class ChangePhoneNumActivity extends BaseActivity implements OnRemotingCallBackListener<Object> {
+public class ChangePhoneNumActivity extends BaseActivity implements OnRemotingCallBackListener {
 
     @BindView(R.id.iv_back)
     RelativeLayout ivBack;//返回按钮
@@ -130,7 +128,7 @@ public class ChangePhoneNumActivity extends BaseActivity implements OnRemotingCa
         String inputbean = JSON.toJSONString(verficationCodeBean);
         Log.i(TAG, "loadLogin: " + verficationCodeBean.toString());
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
-        RemotingEx.doRequest("getCode", ApiServiceBean.getCode(), new Object[]{body}, this);
+        RemotingEx.doRequest("getCode", RemotingEx.Builder().getCode(body), this);
     }
 
     /**
@@ -143,7 +141,7 @@ public class ChangePhoneNumActivity extends BaseActivity implements OnRemotingCa
             ToastUtil.showToast(this, "手机号或验证码不能为空");
             return;
         }
-        RemotingEx.doRequest("verifyoldphone", ApiServiceBean.verifyoldphone(), new Object[]{code}, this);
+        RemotingEx.doRequest("verifyoldphone", RemotingEx.Builder().verifyoldphone(code), this);
     }
 
     @Override
@@ -157,7 +155,7 @@ public class ChangePhoneNumActivity extends BaseActivity implements OnRemotingCa
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse response) {
         if ("getCode".equals(action)) {
             if (response.isSuccees()) {
                 ToastUtil.showToast(this, "获取验证码成功");

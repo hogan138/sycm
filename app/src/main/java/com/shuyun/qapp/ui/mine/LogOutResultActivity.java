@@ -10,7 +10,6 @@ import android.widget.Toast;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.ErrorCodeTools;
@@ -22,7 +21,7 @@ import butterknife.OnClick;
 /**
  * 账户注销结果页
  */
-public class LogOutResultActivity extends BaseActivity implements OnRemotingCallBackListener<Object> {
+public class LogOutResultActivity extends BaseActivity implements OnRemotingCallBackListener {
 
     @BindView(R.id.iv_left_back)
     ImageView ivLeftBack;
@@ -65,7 +64,7 @@ public class LogOutResultActivity extends BaseActivity implements OnRemotingCall
 
     //撤回注销申请
     private void removeCondition() {
-        RemotingEx.doRequest(ApiServiceBean.removeCondition(), this);
+        RemotingEx.doRequest(RemotingEx.Builder().removeCondition(), this);
     }
 
     @Override
@@ -79,7 +78,7 @@ public class LogOutResultActivity extends BaseActivity implements OnRemotingCall
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse response) {
         if (!response.isSuccees()) {
             ErrorCodeTools.errorCodePrompt(this, response.getErr(), response.getMsg());
             return;

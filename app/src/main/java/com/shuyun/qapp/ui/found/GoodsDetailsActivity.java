@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -36,7 +35,6 @@ import com.shuyun.qapp.bean.GoodsCommitBean;
 import com.shuyun.qapp.bean.GoodsDetailBeans;
 import com.shuyun.qapp.bean.MarkBannerItem1;
 import com.shuyun.qapp.bean.ScoreExchangeResult;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -76,7 +74,7 @@ import cn.kevin.banner.IBannerItem;
 /**
  * 商品详情
  */
-public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCallBackListener<Object>, View.OnClickListener, CommonPopupWindow.ViewInterface {
+public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCallBackListener, View.OnClickListener, CommonPopupWindow.ViewInterface {
 
     @BindView(R.id.rl_back)
     RelativeLayout rlBack;
@@ -159,7 +157,7 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
 
     //获取商品信息
     private void getGoodsInfo(String id) {
-        RemotingEx.doRequest("getGoodsInfo", ApiServiceBean.getGoodsInfo(), new Object[]{id}, this);
+        RemotingEx.doRequest("getGoodsInfo", RemotingEx.Builder().getGoodsInfo(id), this);
     }
 
     @Override
@@ -179,7 +177,7 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse response) {
         if (!response.isSuccees()) {
             String err = response.getErr();
             if ("L0001".equals(err)) {
@@ -519,7 +517,7 @@ public class GoodsDetailsActivity extends BaseActivity implements OnRemotingCall
      * 商品兑换
      */
     private void propExchange(String goodsId, String detail) {
-        RemotingEx.doRequest("goodsExchange", ApiServiceBean.scoreExchangeApplyGoods(), new Object[]{goodsId, detail}, this);
+        RemotingEx.doRequest("goodsExchange", RemotingEx.Builder().scoreExchangeApplyGoods(goodsId, detail), this);
     }
 
     //兑换弹框

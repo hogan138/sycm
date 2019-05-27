@@ -15,7 +15,6 @@ import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.IntegralExchangeBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -147,7 +146,7 @@ public class IntegralCenterActivity extends BaseActivity implements View.OnClick
     //获取积分信息
     private void getInfo() {
 
-        RemotingEx.doRequest(ApiServiceBean.getExchangeMain(), new OnRemotingCallBackListener<IntegralExchangeBean>() {
+        RemotingEx.doRequest(RemotingEx.Builder().getExchangeMain(), new OnRemotingCallBackListener<IntegralExchangeBean>() {
             @Override
             public void onCompleted(String action) {
 

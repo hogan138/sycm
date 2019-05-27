@@ -21,7 +21,6 @@ import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.base.BaseFragment;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.HistoryDataBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -149,7 +148,7 @@ public class AnswerRecordNewActivity extends BaseActivity implements ViewPager.O
 
     private void loadAnswerRecord(int currentPage) {
         isLoading = true;
-        RemotingEx.doRequest(ApiServiceBean.getExamHistoryList(), new Object[]{currentPage, pageSize}, this);
+        RemotingEx.doRequest(RemotingEx.Builder().getExamHistoryList(currentPage, pageSize), this);
     }
 
     @Override

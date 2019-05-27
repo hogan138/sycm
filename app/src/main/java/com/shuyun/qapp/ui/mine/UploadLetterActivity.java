@@ -49,7 +49,6 @@ import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.CommonPopUtil;
@@ -77,7 +76,7 @@ import id.zelory.compressor.Compressor;
 /**
  * 账户注销上传邀请函
  */
-public class UploadLetterActivity extends BaseActivity implements CommonPopupWindow.ViewInterface, OnRemotingCallBackListener<Object> {
+public class UploadLetterActivity extends BaseActivity implements CommonPopupWindow.ViewInterface, OnRemotingCallBackListener {
 
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle;//标题
@@ -503,7 +502,7 @@ public class UploadLetterActivity extends BaseActivity implements CommonPopupWin
 
     //账户注销提交审核
     private void commitCondition(String imagePath) {
-        RemotingEx.doRequest(ApiServiceBean.commitCondition(), new Object[]{imagePath}, this);
+        RemotingEx.doRequest(null, RemotingEx.Builder().commitCondition(imagePath), this);
     }
 
     @Override
@@ -517,7 +516,7 @@ public class UploadLetterActivity extends BaseActivity implements CommonPopupWin
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse response) {
         btnNext.setEnabled(true);
         if (response.isSuccees()) {
             if (response.getErr().equals("00000")) {

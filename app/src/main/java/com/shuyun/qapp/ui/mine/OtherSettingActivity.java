@@ -11,7 +11,6 @@ import android.widget.Toast;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 
@@ -61,7 +60,7 @@ public class OtherSettingActivity extends BaseActivity {
     //判断账户注销前置条件
     private void verifyCondition() {
 
-        RemotingEx.doRequest(ApiServiceBean.verifyCondition(), new OnRemotingCallBackListener<Object>() {
+        RemotingEx.doRequest(RemotingEx.Builder().verifyCondition(), new OnRemotingCallBackListener() {
             @Override
             public void onCompleted(String action) {
 
@@ -73,7 +72,7 @@ public class OtherSettingActivity extends BaseActivity {
             }
 
             @Override
-            public void onSucceed(String action, DataResponse<Object> loginResponse) {
+            public void onSucceed(String action, DataResponse loginResponse) {
                 if (loginResponse.getErr().equals("00000")) {
                     startActivity(new Intent(OtherSettingActivity.this, AccountLogoutActivity.class));
                 } else if (loginResponse.getErr().equals("CERT01")) {

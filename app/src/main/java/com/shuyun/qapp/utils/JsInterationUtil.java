@@ -48,9 +48,8 @@ import com.shuyun.qapp.bean.ReturnDialogBean;
 import com.shuyun.qapp.bean.SharePublicBean;
 import com.shuyun.qapp.bean.StartPagerBean;
 import com.shuyun.qapp.bean.WebAnswerHomeBean;
-import com.shuyun.qapp.net.ApiServiceBean;
-import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.manager.LoginDataManager;
+import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.ui.answer.AnswerHistoryActivity;
@@ -60,9 +59,9 @@ import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.mine.CashRecordActivity;
 import com.shuyun.qapp.ui.mine.NewRedWithdrawActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
+import com.shuyun.qapp.view.ActionJumpUtil;
 import com.shuyun.qapp.view.AnswerSharePopupUtil;
 import com.shuyun.qapp.view.InviteSharePopupUtil;
-import com.shuyun.qapp.view.ActionJumpUtil;
 import com.shuyun.qapp.view.RealNamePopupUtil;
 import com.shuyun.qapp.view.SharePopupUtil;
 import com.umeng.analytics.MobclickAgent;
@@ -754,7 +753,7 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
                     //优惠券
                     if (Integer.parseInt(SaveUserInfo.getInstance(activity).getUserInfo("cert")) == 1) {
                         //调用使用优惠券接口
-                        RemotingEx.doRequest(ApiServiceBean.useCoupon(), new Object[]{minePrize.getId()}, null);
+                        RemotingEx.doRequest(RemotingEx.Builder().useCoupon(minePrize.getId()), null);
                         AlipayTradeManager.instance().showBasePage(activity, minePrize.getH5Url());
                     } else {
                         //显示实名认证弹窗

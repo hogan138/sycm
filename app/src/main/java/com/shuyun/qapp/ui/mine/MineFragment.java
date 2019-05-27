@@ -25,7 +25,6 @@ import com.shuyun.qapp.base.BaseFragment;
 import com.shuyun.qapp.bean.AnswerOpptyBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MineBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -61,7 +60,7 @@ import butterknife.Unbinder;
  * https://www.jianshu.com/p/9304d553aa67
  * 我的首界面
  */
-public class MineFragment extends BaseFragment implements CommonPopupWindow.ViewInterface, OnRemotingCallBackListener<Object> {
+public class MineFragment extends BaseFragment implements CommonPopupWindow.ViewInterface, OnRemotingCallBackListener {
 
     @BindView(R.id.ll_mine_fragment)
     LinearLayout llMineFragment;
@@ -157,7 +156,7 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
      * 获取到我的首界面数据
      */
     private void loadMineHomeData() {
-        RemotingEx.doRequest(LOAD_MINE_HOME_DATA, ApiServiceBean.getMineHomeData(), null, this);
+        RemotingEx.doRequest(LOAD_MINE_HOME_DATA, RemotingEx.Builder().getMineHomeData(), this);
     }
 
     @OnClick({R.id.rl_back, R.id.iv_common_right_icon, R.id.iv_header_pic, R.id.rl_cardview,
@@ -327,7 +326,7 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
      * U0004  答题机会已到上限
      */
     private void loadAnswerOpptyRemainder() {
-        RemotingEx.doRequest(LOAD_ANSWER_OPPTY_REMAINDER, ApiServiceBean.getAnswerOpptyRemainder(), null, this);
+        RemotingEx.doRequest(LOAD_ANSWER_OPPTY_REMAINDER, RemotingEx.Builder().getAnswerOpptyRemainder(), this);
     }
 
     /**
@@ -335,7 +334,7 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
      * U0005
      */
     private void loadAnswerOppty() {
-        RemotingEx.doRequest(LOAD_ANSWER_OPPTY, ApiServiceBean.getAnswerOppty(), null, this);
+        RemotingEx.doRequest(LOAD_ANSWER_OPPTY, RemotingEx.Builder().getAnswerOppty(), this);
     }
 
     /**
@@ -403,7 +402,7 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse response) {
         if (!response.isSuccees()) {
             ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
             return;

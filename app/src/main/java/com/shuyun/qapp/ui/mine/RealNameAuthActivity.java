@@ -31,7 +31,6 @@ import com.shuyun.qapp.bean.AuthNameBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.bean.RealNameBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
@@ -113,7 +112,7 @@ public class RealNameAuthActivity extends BaseActivity {
      * @param etIdCard 身份证
      */
     private void loadAuthNameData(String realName, String etIdCard) {
-        RemotingEx.doRequest(ApiServiceBean.realNameAuth(), new Object[]{realName, etIdCard}, new OnRemotingCallBackListener<RealNameBean>() {
+        RemotingEx.doRequest(RemotingEx.Builder().realNameAuth(realName, etIdCard), new OnRemotingCallBackListener<RealNameBean>() {
             @Override
             public void onCompleted(String action) {
 
@@ -263,7 +262,7 @@ public class RealNameAuthActivity extends BaseActivity {
      * 实名认证结果查询
      */
     private void queryResult() {
-        RemotingEx.doRequest(ApiServiceBean.queryRealResult(), new Object[]{bizNo}, new OnRemotingCallBackListener<AuthNameBean>() {
+        RemotingEx.doRequest(RemotingEx.Builder().queryRealResult(bizNo), new OnRemotingCallBackListener<AuthNameBean>() {
             @Override
             public void onCompleted(String action) {
 
@@ -306,7 +305,7 @@ public class RealNameAuthActivity extends BaseActivity {
 
     private void loadMineHomeData() {
 
-        RemotingEx.doRequest(ApiServiceBean.getMineHomeData(), new OnRemotingCallBackListener<MineBean>() {
+        RemotingEx.doRequest(RemotingEx.Builder().getMineHomeData(), new OnRemotingCallBackListener<MineBean>() {
             @Override
             public void onCompleted(String action) {
 

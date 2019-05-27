@@ -28,7 +28,6 @@ import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.AddWithdrawResultBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.SubmitWithdrawInfoBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
@@ -213,7 +212,7 @@ public class AddWithdrawInfoActivity extends BaseActivity implements View.OnClic
         final String inputbean = JSON.toJSONString(submitWithdrawInfoBean);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
 
-        RemotingEx.doRequest(ApiServiceBean.submitWithdrawInfo(), new Object[]{body}, new OnRemotingCallBackListener<AddWithdrawResultBean>() {
+        RemotingEx.doRequest(RemotingEx.Builder().submitWithdrawInfo(body), new OnRemotingCallBackListener<AddWithdrawResultBean>() {
             @Override
             public void onCompleted(String action) {
 

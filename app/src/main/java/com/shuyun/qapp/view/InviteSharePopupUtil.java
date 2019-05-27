@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.SharedBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -34,8 +33,6 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
-
-import java.util.logging.Handler;
 
 import static com.blankj.utilcode.util.SizeUtils.dp2px;
 import static com.umeng.socialize.net.dplus.CommonNetImpl.TAG;
@@ -141,7 +138,7 @@ public class InviteSharePopupUtil {
      */
     private static void loadInviteShared(final int channl, final Context context, final View view) {
 
-        RemotingEx.doRequest(ApiServiceBean.inviteShared(), new Object[]{channl}, new OnRemotingCallBackListener<SharedBean>() {
+        RemotingEx.doRequest(RemotingEx.Builder().inviteShared(channl), new OnRemotingCallBackListener<SharedBean>() {
             @Override
             public void onCompleted(String action) {
 
@@ -305,7 +302,7 @@ public class InviteSharePopupUtil {
      * @param channel 1:微信朋友圈 2:微信好友
      */
     private static void loadSharedSure(Long id, int result, int channel, final Context context) {
-        RemotingEx.doRequest(ApiServiceBean.sharedConfirm(), new Object[]{id, result, channel}, new OnRemotingCallBackListener<Object>() {
+        RemotingEx.doRequest(RemotingEx.Builder().sharedConfirm(id, result, channel), new OnRemotingCallBackListener() {
             @Override
             public void onCompleted(String action) {
 
@@ -317,7 +314,7 @@ public class InviteSharePopupUtil {
             }
 
             @Override
-            public void onSucceed(String action, DataResponse<Object> dataResponse) {
+            public void onSucceed(String action, DataResponse dataResponse) {
                 if (dataResponse.isSuccees()) {
 
                 } else {

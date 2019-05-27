@@ -21,7 +21,6 @@ import com.shuyun.qapp.adapter.PrizeHistoryAdapter;
 import com.shuyun.qapp.animation.MyLayoutAnimationHelper;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.ExchangeHistoryBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
@@ -191,7 +190,7 @@ public class PrizeHistoryFragment extends Fragment implements View.OnClickListen
 
     private void loadHomeGroups(final int type, final int page) {
 
-        RemotingEx.doRequest(ApiServiceBean.ExchangeHistory(), new Object[]{SaveUserInfo.getInstance(getActivity()).getUserInfo("scheduleId"), type, page}, new OnRemotingCallBackListener<ExchangeHistoryBean>() {
+        RemotingEx.doRequest(RemotingEx.Builder().ExchangeHistory(SaveUserInfo.getInstance(getActivity()).getUserInfo("scheduleId"), type, page), new OnRemotingCallBackListener<ExchangeHistoryBean>() {
             @Override
             public void onCompleted(String action) {
 

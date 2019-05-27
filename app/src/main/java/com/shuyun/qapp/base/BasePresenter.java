@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
 import okhttp3.Request;
@@ -28,7 +29,7 @@ public class BasePresenter {
     private static volatile OkHttpClient mOkHttpClient;
     private static ApiService apiService;
 
-    public static ApiService create(int port) {
+    public static ApiService Builder() {
         if (apiService == null) {
             Retrofit retrofit = new Retrofit.Builder().baseUrl(AppConst.BASE_URL)
                     .client(getOkHttpClient())
@@ -37,10 +38,6 @@ public class BasePresenter {
             apiService = retrofit.create(ApiService.class);
         }
         return apiService;
-    }
-
-    public static ApiService Builder() {
-        return create(0);
     }
 
     /**
@@ -96,9 +93,11 @@ public class BasePresenter {
             Response response = chain.proceed(request);//请求输入的链接
             //错误拦截
             if (response.code() != 200) {
+                ResponseBody body = response.body();
+                MediaType mediaType = body.contentType();
                 return new Response.Builder()
                         .code(0)
-                        .body(ResponseBody.create(response.body().contentType(), "服务器错误！"))
+                        .body(ResponseBody.create(mediaType, "服务器错误！"))
                         .request(request)
                         .protocol(Protocol.HTTP_1_1)
                         .build();

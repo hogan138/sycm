@@ -18,7 +18,6 @@ import com.shuyun.qapp.bean.Msg;
 import com.shuyun.qapp.bean.SubmitWithdrawInfoBean;
 import com.shuyun.qapp.bean.UserWxInfo;
 import com.shuyun.qapp.manager.ActivityCallManager;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -50,7 +49,7 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 /**
  * 微信登录
  */
-public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHandler, OnRemotingCallBackListener<Object> {
+public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHandler, OnRemotingCallBackListener {
     private static final int RETURN_MSG_TYPE_LOGIN = 1;
     private static final int RETURN_MSG_TYPE_SHARE = 2;
     private static final String TAG = "WXEntryActivity";
@@ -175,7 +174,7 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
      * @param wxcode
      */
     public void addWxWtihdraw(String wxcode) {
-        RemotingEx.doRequest("addWxWtihdraw", ApiServiceBean.addWxWithdraw(), new Object[]{wxcode}, this);
+        RemotingEx.doRequest("addWxWtihdraw", RemotingEx.Builder().addWxWithdraw(wxcode), this);
     }
 
 
@@ -185,7 +184,7 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
      * @param wxcode
      */
     public void loadChangeWXbind(String wxcode) {
-        RemotingEx.doRequest("changeWXbind", ApiServiceBean.changeWXbind(), new Object[]{wxcode}, this);
+        RemotingEx.doRequest("changeWXbind", RemotingEx.Builder().changeWXbind(wxcode), this);
     }
 
 
@@ -205,7 +204,7 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
         final String inputbean = JSON.toJSONString(loginInput);
         Log.i(TAG, "loadLogin: " + loginInput.toString());
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
-        RemotingEx.doRequest("login", ApiServiceBean.login(), new Object[]{body}, this);
+        RemotingEx.doRequest("login", RemotingEx.Builder().login(body), this);
     }
 
     @Override
@@ -226,7 +225,7 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
+    public void onSucceed(String action, DataResponse response) {
         if ("changeWXbind".equals(action)) {
             UserWxInfo wxBindResultBean = (UserWxInfo) response.getDat();
             if (response.isSuccees()) {
@@ -276,7 +275,7 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
         final String inputbean = JSON.toJSONString(submitWithdrawInfoBean);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
 
-        RemotingEx.doRequest(ApiServiceBean.submitWithdrawInfo(), new Object[]{body}, new OnRemotingCallBackListener<AddWithdrawResultBean>() {
+        RemotingEx.doRequest(RemotingEx.Builder().submitWithdrawInfo(body), new OnRemotingCallBackListener<AddWithdrawResultBean>() {
             @Override
             public void onCompleted(String action) {
 

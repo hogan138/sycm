@@ -218,7 +218,7 @@ public interface ApiService {
      * @return
      */
     @GET("/rest/share/{id}/confirm")
-    Observable<DataResponse> sharedConfirm(@Path("id") Long id, @Query("result") long result, @Query("channel") long channel);
+    Observable<DataResponse<Object>> sharedConfirm(@Path("id") Long id, @Query("result") long result, @Query("channel") long channel);
 
     /**
      * 29、获取题组树
@@ -246,7 +246,7 @@ public interface ApiService {
      * /activity-center
      */
     @GET("/rest/act/q/{id}/fb")
-    Observable<DataResponse> getAnswerFeedBack(@Path("id") Long id, @Query("feedbackId") long feedbackId);
+    Observable<DataResponse<Object>> getAnswerFeedBack(@Path("id") Long id, @Query("feedbackId") long feedbackId);
 
     /**
      * 32、领取答题机会TODO
@@ -267,7 +267,7 @@ public interface ApiService {
      * /user-center
      */
     @POST("/rest/user/fb")
-    Observable<DataResponse> getFeedBack(@Body RequestBody body);
+    Observable<DataResponse<Object>> getFeedBack(@Body RequestBody body);
 
     /**
      * 35、获取系统消息/app-center
@@ -293,14 +293,14 @@ public interface ApiService {
      * @return
      */
     @GET("/rest/user/wx/bind")
-    Observable<DataResponse> bindWx(@Query("phone") String phone, @Query("code") String code);
+    Observable<DataResponse<Object>> bindWx(@Query("phone") String phone, @Query("code") String code);
 
     /**
      * 38、使用道具
      * 增次卡
      */
     @GET("/rest/user/prop/{id}/use")
-    Observable<DataResponse> addAnswerNum(@Path("id") String id);
+    Observable<DataResponse<Object>> addAnswerNum(@Path("id") String id);
 
 
     /**
@@ -370,19 +370,19 @@ public interface ApiService {
      * 46、账户注销前置条件判断
      */
     @GET("/rest/accountDel/condition")
-    Observable<DataResponse> verifyCondition();
+    Observable<DataResponse<Object>> verifyCondition();
 
     /**
      * 47、账户注销提交审核
      */
     @GET("/rest/accountDel/publish")
-    Observable<DataResponse> commitCondition(@Query("picUrl") String picUrl);
+    Observable<DataResponse<Object>> commitCondition(@Query("picUrl") String picUrl);
 
     /**
      * 48、账户注销撤回审核
      */
     @GET("/rest/accountDel/cancel")
-    Observable<DataResponse> removeCondition();
+    Observable<DataResponse<Object>> removeCondition();
 
     /**
      * 49、答题对战首页
@@ -423,7 +423,7 @@ public interface ApiService {
      * @return
      */
     @GET("/rest/battle/bUserBpCons")
-    Observable<DataResponse> useBpCons(@Query("type") long type);
+    Observable<DataResponse<Object>> useBpCons(@Query("type") long type);
 
     /**
      * 55、答题对战结束
@@ -482,7 +482,7 @@ public interface ApiService {
      * 62、确认兑换
      */
     @GET("/rest/act/bp/treasure/confirmExchange")
-    Observable<DataResponse> enterExchange(@Query("scheduleId") String scheduleId);
+    Observable<DataResponse<Object>> enterExchange(@Query("scheduleId") String scheduleId);
 
     /**
      * 63、兑换记录
@@ -686,7 +686,7 @@ public interface ApiService {
      * 94、用户签到
      */
     @GET("/rest/user/sign/apply")
-    Observable<DataResponse> SingIn(@Query("taskId") String taskId);
+    Observable<DataResponse<Object>> SingIn(@Query("taskId") String taskId);
 
     /**
      * 95、用户任务信息

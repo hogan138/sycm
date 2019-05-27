@@ -20,7 +20,6 @@ import com.shuyun.qapp.adapter.InfomationAdapter;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.Msg;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
@@ -108,7 +107,9 @@ public class InformationActivity extends BaseActivity implements CommonPopupWind
             stamp1 = 0;
         }
 
-        RemotingEx.doRequest(ApiServiceBean.getMsg(), new Object[]{0, stamp1, System.currentTimeMillis()}, new OnRemotingCallBackListener<List<Msg>>() {
+        RemotingEx.doRequest(RemotingEx.Builder().getMsg(0,
+                stamp1,
+                System.currentTimeMillis()), new OnRemotingCallBackListener<List<Msg>>() {
             @Override
             public void onCompleted(String action) {
 

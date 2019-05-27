@@ -27,9 +27,8 @@ import com.shuyun.qapp.bean.LoginInput;
 import com.shuyun.qapp.bean.LoginResponse;
 import com.shuyun.qapp.bean.Msg;
 import com.shuyun.qapp.manager.ActivityCallManager;
-import com.shuyun.qapp.net.ApiServiceBean;
-import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.manager.LoginDataManager;
+import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
@@ -236,7 +235,7 @@ public class VerifyCodeActivity extends BaseActivity {
         String inputbean = JSON.toJSONString(verficationCodeBean);
         Log.i(TAG, "loadLogin: " + verficationCodeBean.toString());
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
-        RemotingEx.doRequest(ApiServiceBean.getCode(), new Object[]{body}, new OnRemotingCallBackListener<String>() {
+        RemotingEx.doRequest(RemotingEx.Builder().getCode(body), new OnRemotingCallBackListener<String>() {
             @Override
             public void onCompleted(String action) {
 
@@ -328,7 +327,7 @@ public class VerifyCodeActivity extends BaseActivity {
         Log.i(TAG, "loadLogin: " + loginInput.toString());
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inputbean);
 
-        RemotingEx.doRequest(ApiServiceBean.login(), new Object[]{body}, new OnRemotingCallBackListener<LoginResponse>() {
+        RemotingEx.doRequest(RemotingEx.Builder().login(body), new OnRemotingCallBackListener<LoginResponse>() {
             @Override
             public void onCompleted(String action) {
                 LoadingBar.cancel(llMain);
@@ -458,7 +457,7 @@ public class VerifyCodeActivity extends BaseActivity {
         CustomLoadingFactory factory = new CustomLoadingFactory();
         LoadingBar.make(llMain, factory).show();
 
-        RemotingEx.doRequest(ApiServiceBean.verifyPassWord(), new Object[]{phoneNum, AppConst.DEV_ID, AppConst.APP_ID, 4, AppConst.V, curTime, signCode}, new OnRemotingCallBackListener<String>() {
+        RemotingEx.doRequest(RemotingEx.Builder().verifyPassWord(phoneNum, AppConst.DEV_ID, AppConst.APP_ID, 4, AppConst.V, curTime, signCode), new OnRemotingCallBackListener<String>() {
             @Override
             public void onCompleted(String action) {
                 LoadingBar.cancel(llMain);

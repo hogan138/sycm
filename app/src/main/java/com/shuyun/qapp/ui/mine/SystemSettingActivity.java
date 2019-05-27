@@ -11,10 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.callback.ConfigDialog;
 import com.mylhyl.circledialog.params.DialogParams;
@@ -22,7 +18,6 @@ import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.AppVersionBean;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -39,10 +34,6 @@ import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SaveUserInfo1;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 import com.umeng.analytics.MobclickAgent;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -140,7 +131,12 @@ public class SystemSettingActivity extends BaseActivity implements OnRemotingCal
         String myCode = encryptMD5ToString(sb.toString());
         String signCode = getCode(myCode);
 
-        RemotingEx.doRequest(ApiServiceBean.updateVersion(), new Object[]{dName, AppConst.DEV_ID, AppConst.APP_ID, AppConst.V, curTime, signCode}, this);
+        RemotingEx.doRequest(RemotingEx.Builder().updateVersion(dName,
+                AppConst.DEV_ID,
+                AppConst.APP_ID,
+                AppConst.V,
+                curTime,
+                signCode), this);
     }
 
     private void updateDialog(final String url) {

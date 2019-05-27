@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.animation.SpringAnimation;
 import android.support.animation.SpringForce;
 import android.view.Gravity;
@@ -23,7 +22,6 @@ import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.SharedBean;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -54,7 +52,7 @@ import static com.blankj.utilcode.util.SizeUtils.dp2px;
  * 答题对战结果页
  */
 
-public class AgainstResultActivity extends BaseActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface, OnRemotingCallBackListener<Object> {
+public class AgainstResultActivity extends BaseActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface, OnRemotingCallBackListener {
 
     @BindView(R.id.iv_left_icon)
     ImageView ivLeftIcon;
@@ -205,7 +203,7 @@ public class AgainstResultActivity extends BaseActivity implements View.OnClickL
      */
     private void loadCompleteAnswAgainst(int isWin) {
 
-        RemotingEx.doRequest(AppConst.AGAINST_RESULT, ApiServiceBean.completeAnswAgainst(), new Object[]{type, isWin}, this);
+        RemotingEx.doRequest(AppConst.AGAINST_RESULT, RemotingEx.Builder().completeAnswAgainst(type, isWin), this);
 
     }
 
@@ -389,7 +387,7 @@ public class AgainstResultActivity extends BaseActivity implements View.OnClickL
     private void loadBattleAnswerShared(final int channl) {
 
         share_style = channl;
-        RemotingEx.doRequest(AppConst.AGAINST_RESULT_SHARE, ApiServiceBean.battleAnswerShared1(), new Object[]{channl, type}, this);
+        RemotingEx.doRequest(AppConst.AGAINST_RESULT_SHARE, RemotingEx.Builder().battleAnswerShared1(channl, type), this);
 
     }
 
@@ -468,7 +466,7 @@ public class AgainstResultActivity extends BaseActivity implements View.OnClickL
      */
     private void loadSharedSure(Long id, int result, int channel) {
 
-        RemotingEx.doRequest(AppConst.AGAINST_SHARE_CONFIM, ApiServiceBean.sharedConfirm(), new Object[]{id, result, channel}, this);
+        RemotingEx.doRequest(AppConst.AGAINST_SHARE_CONFIM, RemotingEx.Builder().sharedConfirm(id, result, channel), this);
 
     }
 
@@ -497,7 +495,7 @@ public class AgainstResultActivity extends BaseActivity implements View.OnClickL
     }
 
     @Override
-    public void onSucceed(String action, DataResponse<Object> dataResponse) {
+    public void onSucceed(String action, DataResponse dataResponse) {
         if (AppConst.AGAINST_RESULT.equals(action)) { //对战结果
             if (dataResponse.isSuccees()) {
                 if (type == 0) { //自由对战不提示积分情况

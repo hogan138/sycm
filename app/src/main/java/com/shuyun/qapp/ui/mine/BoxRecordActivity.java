@@ -23,7 +23,6 @@ import com.shuyun.qapp.adapter.BoxRecordAdapter;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.BoxRecordBean;
 import com.shuyun.qapp.bean.DataResponse;
-import com.shuyun.qapp.net.ApiServiceBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -118,7 +117,7 @@ public class BoxRecordActivity extends BaseActivity implements OnRemotingCallBac
     }
 
     private void loadBoxRecord(int currentPage) {
-        RemotingEx.doRequest(ApiServiceBean.boxRecord(), new Object[]{currentPage}, this);
+        RemotingEx.doRequest(RemotingEx.Builder().boxRecord(currentPage), this);
     }
 
     /**

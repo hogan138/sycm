@@ -3,11 +3,9 @@ package com.shuyun.qapp.ui.found;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -30,10 +28,10 @@ import com.shuyun.qapp.bean.FloatWindowBean;
 import com.shuyun.qapp.bean.FoundDataBean;
 import com.shuyun.qapp.bean.MarkBannerItem1;
 import com.shuyun.qapp.manager.ActivityRegionManager1;
+import com.shuyun.qapp.manager.FloatImageviewManage;
 import com.shuyun.qapp.manager.FragmentTouchManager;
-import com.shuyun.qapp.net.ApiServiceBean;
-import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.manager.LoginDataManager;
+import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.loader.GlideImageLoader;
@@ -42,7 +40,6 @@ import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.UmengPageUtil;
-import com.shuyun.qapp.manager.FloatImageviewManage;
 import com.shuyun.qapp.view.ActionJumpUtil;
 import com.shuyun.qapp.view.ViewPagerScroller;
 
@@ -58,7 +55,7 @@ import cn.kevin.banner.IBannerItem;
 /**
  * 活动Fragment
  */
-public class FoundFragment extends BaseFragment implements OnRemotingCallBackListener<Object>, FragmentTouchManager.FragmentTouchListener {
+public class FoundFragment extends BaseFragment implements FragmentTouchManager.FragmentTouchListener {
 
     @BindView(R.id.tv_common_title)
     TextView tvCommonTitle; //标题文字
@@ -190,70 +187,25 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
      * 发现页数据
      */
     public void loadHomeInfo() {
-        RemotingEx.doRequest("foundInfo", ApiServiceBean.foundInfo(), null, this);
-    }
+        RemotingEx.doRequest(RemotingEx.Builder().foundInfo(), new OnRemotingCallBackListener<FoundDataBean>() {
+            @Override
+            public void onCompleted(String action) {
 
-    /**
-     * 浮窗数据
-     */
-    public void loadfloatWindow() {
-        RemotingEx.doRequest("floatWindow", ApiServiceBean.floatWindow(), null, this);
-    }
+            }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
+            @Override
+            public void onFailed(String action, String message) {
 
-    @Override
-    public void refresh() {
+            }
 
-        //发现页数据
-        loadHomeInfo();
+            @Override
+            public void onSucceed(String action, DataResponse<FoundDataBean> response) {
+                if (!response.isSuccees()) {
+                    ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
+                    return;
+                }
 
-        //浮窗数据
-        loadfloatWindow();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == Activity.RESULT_OK && (requestCode == AppConst.INVITE_CODE
-                || requestCode == AppConst.GROUP_CODE
-                || requestCode == AppConst.INTEGRAL_CODE
-                || requestCode == AppConst.TREASURE_CODE
-                || requestCode == AppConst.REAL_CODE
-                || requestCode == AppConst.H5_CODE
-                || requestCode == AppConst.AGAINST_CODE
-                || requestCode == AppConst.OPEN_BOX_CODE
-                || requestCode == AppConst.WITHDRAW_INFO_CODE
-        )) {
-            LoginDataManager.instance().handler(mContext, null);
-        }
-    }
-
-
-    @Override
-    public void onCompleted(String action) {
-
-    }
-
-    @Override
-    public void onFailed(String action, String message) {
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
-    @Override
-    public void onSucceed(String action, DataResponse<Object> response) {
-        if (!response.isSuccees()) {
-            ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
-            return;
-        }
-        try {
-            if ("foundInfo".equals(action)) {
-                FoundDataBean foundDataBean = (FoundDataBean) response.getDat();
+                FoundDataBean foundDataBean = response.getDat();
                 String str = JSON.toJSONString(foundDataBean);
                 if (bannerDataString != null && bannerDataString.equals(str)) {
                     return;
@@ -305,10 +257,32 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
                 vp.addOnPageChangeListener(new XTabLayout.TabLayoutOnPageChangeListener(tabLayout));
                 //将tablayout与fragment关联
                 tabLayout.setupWithViewPager(vp);
+            }
+        });
+    }
 
+    /**
+     * 浮窗数据
+     */
+    public void loadfloatWindow() {
+        RemotingEx.doRequest("floatWindow", RemotingEx.Builder().floatWindow(), new OnRemotingCallBackListener<FloatWindowBean>() {
+            @Override
+            public void onCompleted(String action) {
 
-            } else if ("floatWindow".equals(action)) {
-                final FloatWindowBean floatWindowBean = (FloatWindowBean) response.getDat();
+            }
+
+            @Override
+            public void onFailed(String action, String message) {
+
+            }
+
+            @Override
+            public void onSucceed(String action, DataResponse<FloatWindowBean> response) {
+                if (!response.isSuccees()) {
+                    ErrorCodeTools.errorCodePrompt(mContext, response.getErr(), response.getMsg());
+                    return;
+                }
+                final FloatWindowBean floatWindowBean = response.getDat();
                 Long status = floatWindowBean.getStatus();
                 if (status == 1) {
                     rlLogo.setVisibility(View.VISIBLE);
@@ -318,12 +292,42 @@ public class FoundFragment extends BaseFragment implements OnRemotingCallBackLis
                     rlLogo.setVisibility(View.GONE);
                 }
             }
-        } catch (Exception e) {
-
-        }
-
+        });
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @Override
+    public void refresh() {
+
+        //发现页数据
+        loadHomeInfo();
+
+        //浮窗数据
+        loadfloatWindow();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK && (requestCode == AppConst.INVITE_CODE
+                || requestCode == AppConst.GROUP_CODE
+                || requestCode == AppConst.INTEGRAL_CODE
+                || requestCode == AppConst.TREASURE_CODE
+                || requestCode == AppConst.REAL_CODE
+                || requestCode == AppConst.H5_CODE
+                || requestCode == AppConst.AGAINST_CODE
+                || requestCode == AppConst.OPEN_BOX_CODE
+                || requestCode == AppConst.WITHDRAW_INFO_CODE
+        )) {
+            LoginDataManager.instance().handler(mContext, null);
+        }
+    }
 
     @Override
     public void onDestroy() {
