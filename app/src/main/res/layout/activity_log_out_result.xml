@@ -43,7 +43,7 @@
         android:layout_marginLeft="@dimen/text_50"
         android:layout_marginTop="@dimen/text_15"
         android:layout_marginRight="@dimen/text_50"
-        android:text="在审核阶段,您仍可以正常使用全民共进,\n并且在此期间,您可以随时测回注销申请。"
+        android:text="在审核阶段,您仍可以正常使用全民共进,\n并且在此期间,您可以随时撤回注销申请。"
         android:textColor="@color/color_27"
         android:textSize="@dimen/text_12" />
 
