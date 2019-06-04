@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/common_left_title" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@mipmap/bg_king_answer">
+
+        <ImageView
+            android:id="@+id/iv_big_circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/text_70"
+            android:src="@mipmap/king_matching_big_circle" />
+
+        <ImageView
+            android:id="@+id/iv_small_circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/text_70"
+            android:src="@mipmap/king_matching_small_circle" />
+
+        <ImageView
+            android:layout_width="217dp"
+            android:layout_height="217dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/text_90"
+            android:src="@drawable/bg_king_matching" />
+
+
+    </RelativeLayout>
+
+</LinearLayout>

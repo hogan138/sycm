@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/common_left_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_king_my_ranking">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginLeft="@dimen/text_15"
+                android:layout_marginTop="@dimen/text_14"
+                android:layout_marginRight="@dimen/text_15"
+                android:background="@drawable/bg_king_ranking_shape"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/rl_head"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/text_20"
+                    android:background="@mipmap/head_bg">
+
+                    <com.shuyun.qapp.view.RoundImageView
+                        android:id="@+id/iv_header_pic"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerInParent="true"
+                        android:src="@mipmap/header02"
+                        app:type="circle" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/text_15"
+                    android:layout_toRightOf="@+id/rl_head"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="甘甘甘甘"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_14" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/text_6"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@mipmap/icon_ranking_logo"
+                            android:drawablePadding="@dimen/text_2"
+                            android:text="Lv.3"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_10" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/text_25"
+                            android:background="@mipmap/iv_level_logo"
+                            android:gravity="center_horizontal"
+                            android:text="初中生"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_10" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/text_25"
+                            android:drawableLeft="@mipmap/icon_ranking_star_logo"
+                            android:drawablePadding="@dimen/text_2"
+                            android:text="10"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_10" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_15"
+                android:layout_marginTop="@dimen/text_15"
+                android:layout_marginRight="@dimen/text_15"
+                android:background="@drawable/bg_king_ranking_shape"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/text_20"
+                    android:layout_marginTop="@dimen/text_10"
+                    android:text="我的战绩"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_20" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="43dp"
+                    android:layout_marginTop="@dimen/text_15"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/record_rank_logo" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="43dp"
+                        android:text="排名："
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="5684"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="43dp"
+                    android:layout_marginTop="@dimen/text_15"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/record_count_logo" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="43dp"
+                        android:text="挑战次数："
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="60"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="43dp"
+                    android:layout_marginTop="@dimen/text_15"
+                    android:layout_marginBottom="@dimen/text_15"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/record_odds_logo" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="43dp"
+                        android:text="胜率："
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="65%"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_15"
+                android:layout_marginTop="@dimen/text_10"
+                android:layout_marginRight="@dimen/text_15"
+                android:layout_marginBottom="@dimen/text_29"
+                android:background="@drawable/bg_king_ranking_shape"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/text_20"
+                    android:layout_marginTop="@dimen/text_10"
+                    android:text="我的证书"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_20" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="210dp"
+                    android:layout_marginLeft="@dimen/text_10"
+                    android:layout_marginTop="@dimen/text_15"
+                    android:layout_marginRight="@dimen/text_10"
+                    android:layout_marginBottom="@dimen/text_15"
+                    android:background="@mipmap/icon_certificate_bg">
+
+
+                    <com.shuyun.qapp.view.RoundImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="95dp"
+                        android:layout_marginTop="@dimen/text_18"
+                        android:src="@mipmap/header02"
+                        app:type="circle" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/text_15"
+                        android:layout_marginTop="60dp"
+                        android:gravity="center_horizontal"
+                        android:text="甘甘甘甘"
+                        android:textColor="@color/color_1"
+                        android:textSize="@dimen/text_14" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginRight="@dimen/text_5"
+                        android:layout_marginBottom="@dimen/text_20"
+                        android:text="2019年6月3日"
+                        android:textColor="@color/color_1"
+                        android:textSize="@dimen/text_14" />
+
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

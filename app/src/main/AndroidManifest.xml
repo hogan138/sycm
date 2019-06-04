@@ -40,8 +40,29 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Base"
         tools:replace="label,allowBackup">
-        <activity android:name=".ui.found.GameCenterActivity"></activity>
-        <activity android:name=".ui.mine.AddNewAddressActivity" /> <!-- 友盟Key -->
+        <!--开始匹配-->
+        <activity
+            android:name=".ui.king.KingMatchingActivity"
+            android:screenOrientation="portrait" />
+        <!--开始挑战-->
+        <activity
+            android:name=".ui.king.StartChallengeActivity"
+            android:screenOrientation="portrait" /> <!-- 我的排名 -->
+        <activity
+            android:name=".ui.king.MyRankingActivity"
+            android:screenOrientation="portrait" /> <!-- 我的战绩 -->
+        <activity
+            android:name=".ui.king.MyRecordActivity"
+            android:screenOrientation="portrait" /> <!-- 答题王者首页 -->
+        <activity
+            android:name=".ui.king.AnswerKingMainActivity"
+            android:screenOrientation="portrait" /> <!-- 游戏中心 -->
+        <activity
+            android:name=".ui.found.GameCenterActivity"
+            android:screenOrientation="portrait" /> <!-- 添加新地址 -->
+        <activity
+            android:name=".ui.mine.AddNewAddressActivity"
+            android:screenOrientation="portrait" /> <!-- 友盟Key -->
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="581bf94d734be436a600147a" /> <!-- 渠道 -->

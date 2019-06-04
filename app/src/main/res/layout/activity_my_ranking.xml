@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/common_left_title" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_king_my_ranking">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_17">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="第一期活动"
+                    android:textColor="@color/color_ffd943"
+                    android:textSize="@dimen/text_25" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/text_5"
+                    android:layout_marginRight="@dimen/text_30"
+                    android:background="@drawable/ranking_date_bg"
+                    android:paddingLeft="@dimen/text_5"
+                    android:paddingRight="@dimen/text_5"
+                    android:text="2019.6.1-6.30"
+                    android:textColor="@color/color_1"
+                    android:textSize="@dimen/text_11" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/text_4"
+                android:text="已有3421人达成“答题王者”称号"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_13" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/text_2"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="瓜分"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_17" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="10000"
+                    android:textColor="@color/color_ffd943"
+                    android:textSize="@dimen/text_17" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="元现金"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_17" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/text_9"
+                android:background="@color/color_8b" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="@dimen/text_15"
+                android:layout_marginTop="@dimen/text_10"
+                android:layout_marginRight="@dimen/text_15"
+                android:background="@drawable/bg_king_ranking_info">
+
+
+                <com.shuyun.qapp.view.RoundImageView
+                    android:id="@+id/iv_header_pic"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/text_20"
+                    android:src="@mipmap/header02"
+                    app:type="circle" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/text_15"
+                    android:layout_toRightOf="@+id/iv_header_pic"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="甘甘甘甘"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_14" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/text_6"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@mipmap/icon_ranking_logo"
+                            android:drawablePadding="@dimen/text_2"
+                            android:text="Lv.3"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_10" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/text_25"
+                            android:background="@mipmap/iv_level_logo"
+                            android:gravity="center_horizontal"
+                            android:text="初中生"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_10" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/text_25"
+                            android:drawableLeft="@mipmap/icon_ranking_star_logo"
+                            android:drawablePadding="@dimen/text_2"
+                            android:text="10"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_10" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/text_15"
+                    android:text="35673名"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_14" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:descendantFocusability="blocksDescendants">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_ranking"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/text_15"
+                    android:layout_marginTop="@dimen/text_17"
+                    android:layout_marginRight="@dimen/text_15" />
+            </RelativeLayout>
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+</LinearLayout>

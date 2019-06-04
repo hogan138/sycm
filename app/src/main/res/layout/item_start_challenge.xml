@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_start"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:layout_marginBottom="@dimen/text_10"
+    android:background="@drawable/bg_king_item_start_normal"
+    android:foreground="?attr/selectableItemBackground">
+
+
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/text_15"
+        android:src="@mipmap/item_start_level_logo" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/text_15"
+        android:layout_toRightOf="@+id/iv_logo"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="出入学堂"
+            android:textColor="@color/color_f77"
+            android:textSize="@dimen/text_14" />
+
+
+        <TextView
+            android:id="@+id/tv_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lv.3"
+            android:textColor="@color/color_f77"
+            android:textSize="@dimen/text_12" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_add_star"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/text_15"
+        android:orientation="horizontal" />
+
+    <TextView
+        android:id="@+id/tv_current_level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/text_5"
+        android:background="@drawable/bg_current_level"
+        android:paddingLeft="@dimen/text_5"
+        android:paddingRight="@dimen/text_5"
+        android:text="当前等级"
+        android:textColor="@color/color_1"
+        android:textSize="@dimen/text_11" />
+
+    <RelativeLayout
+        android:id="@+id/rl_lock"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/bg_king_item_start_lock"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/item_start_logo_lock" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

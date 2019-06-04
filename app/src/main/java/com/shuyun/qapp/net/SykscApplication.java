@@ -270,7 +270,8 @@ public class SykscApplication extends Application {
     }
 
     //下拉刷新
-    static {//static 代码段可以防止内存泄露
+    static {
+        //static 代码段可以防止内存泄露
         //设置全局的Header构建器
         SmartRefreshLayout.setDefaultRefreshHeaderCreater(new DefaultRefreshHeaderCreater() {
             @Override

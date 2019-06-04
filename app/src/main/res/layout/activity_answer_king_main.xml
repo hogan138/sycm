@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/common_left_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/bg_king_main">
+
+            <RelativeLayout
+                android:id="@+id/rl_info"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_marginLeft="@dimen/text_15"
+                android:layout_marginTop="196dp"
+                android:layout_marginRight="@dimen/text_15"
+                android:background="@mipmap/icon_king_score_bg">
+
+                <LinearLayout
+                    android:id="@+id/ll_my_record"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/text_33"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@mipmap/icon_king_ranking" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/text_2"
+                        android:text="我的战绩"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_17" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:drawableLeft="@mipmap/icon_ranking_logo"
+                        android:drawablePadding="@dimen/text_2"
+                        android:text="Lv.3        初中生"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_10" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_my_ranking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/text_33"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@mipmap/king_icon_record" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/text_2"
+                        android:text="我的排名"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_17" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="全国34213名"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_10" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/btn_start"
+                android:layout_width="@dimen/text_250"
+                android:layout_height="44dp"
+                android:layout_below="@+id/rl_info"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/text_15"
+                android:background="@mipmap/btn_king_start"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="开  始  挑  战"
+                android:textColor="@color/white"
+                android:textSize="22sp" />
+
+            <ImageView
+                android:id="@+id/iv_answer_against"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="307dp"
+                android:src="@mipmap/king_main_answer_logo" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/btn_start"
+                android:layout_marginLeft="@dimen/text_15"
+                android:layout_marginTop="@dimen/text_15"
+                android:layout_marginRight="@dimen/text_15"
+                android:layout_marginBottom="42dp"
+                android:background="@drawable/white_stroke_rule_bg"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/text_20"
+                    android:layout_marginTop="@dimen/text_25"
+                    android:text="活动规则："
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_14" />
+
+                <TextView
+                    android:id="@+id/tv_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/text_20"
+                    android:layout_marginTop="@dimen/text_8"
+                    android:layout_marginRight="@dimen/text_20"
+                    android:layout_marginBottom="@dimen/text_20"
+                    android:lineSpacingExtra="@dimen/text_3"
+                    android:text="@string/tv_king_rule_content"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_12" />
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>
