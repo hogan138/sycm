@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -35,6 +36,79 @@
             android:layout_marginTop="@dimen/text_90"
             android:src="@drawable/bg_king_matching" />
 
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="168dp"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="62dp"
+                android:layout_height="62dp"
+                android:background="@drawable/bg_head_king_matching">
+
+                <com.shuyun.qapp.view.RoundImageView
+                    android:id="@+id/iv_mine_head"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/icon_head_default"
+                    app:type="circle" />
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/text_16"
+                android:text="VS"
+                android:textColor="@color/color_1"
+                android:textSize="@dimen/text_20" />
+
+            <RelativeLayout
+                android:layout_width="62dp"
+                android:layout_height="62dp"
+                android:layout_marginLeft="@dimen/text_16"
+                android:background="@drawable/bg_head_king_matching">
+
+                <com.shuyun.qapp.view.RoundImageView
+                    android:id="@+id/iv_him_head"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/icon_head_default"
+                    app:type="circle" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_matching_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_big_circle"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/text_40"
+            android:text="正在匹配对手......"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_15" />
+
+        <TextView
+            android:id="@+id/tv_cancel_matching"
+            android:layout_width="110dp"
+            android:layout_height="@dimen/text_40"
+            android:layout_below="@+id/tv_matching_status"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/bg_btn_king_matching"
+            android:gravity="center"
+            android:text="取消匹配"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_15" />
 
     </RelativeLayout>
 

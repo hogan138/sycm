@@ -10,7 +10,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.shuyun.qapp.R;
-import com.shuyun.qapp.adapter.MyBankingAdapter;
 import com.shuyun.qapp.adapter.StartChallengeAdapter;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;

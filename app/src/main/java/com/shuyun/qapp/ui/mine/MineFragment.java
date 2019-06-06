@@ -173,9 +173,9 @@ public class MineFragment extends BaseFragment implements CommonPopupWindow.View
                 }
                 break;
             case R.id.iv_common_right_icon: //右侧消息按钮;
-//                ivCommonRightIcon.setImageResource(R.mipmap.messagew_n);
-//                startActivity(new Intent(mContext, InformationActivity.class));
-                startActivity(new Intent(mContext, AnswerKingMainActivity.class));
+                ivCommonRightIcon.setImageResource(R.mipmap.messagew_n);
+                startActivity(new Intent(mContext, InformationActivity.class));
+//                startActivity(new Intent(mContext, AnswerKingMainActivity.class));
                 break;
             case R.id.iv_header_pic://点击头像和修改个人信息走相同的逻辑
             case R.id.rl_cardview:
