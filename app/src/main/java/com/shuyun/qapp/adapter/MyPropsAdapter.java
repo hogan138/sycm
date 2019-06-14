@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.MyPropsBean;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
-import com.shuyun.qapp.utils.ImageLoaderManager;
+import com.shuyun.qapp.manager.ImageLoaderManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.view.RoundImageView;
 

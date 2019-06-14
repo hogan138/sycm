@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseFragment;
@@ -20,7 +19,7 @@ import com.shuyun.qapp.bean.HistoryDataBean;
 import com.shuyun.qapp.ui.answer.AnswerHistoryActivity;
 import com.shuyun.qapp.utils.DisplayUtil;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
-import com.shuyun.qapp.utils.ImageLoaderManager;
+import com.shuyun.qapp.manager.ImageLoaderManager;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;

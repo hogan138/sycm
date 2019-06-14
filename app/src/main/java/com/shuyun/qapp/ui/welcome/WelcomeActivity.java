@@ -25,7 +25,7 @@ import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.ImageLoaderManager;
+import com.shuyun.qapp.manager.ImageLoaderManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo1;
 import com.tencent.stat.MtaSDkException;

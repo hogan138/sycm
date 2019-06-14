@@ -47,7 +47,7 @@ import com.shuyun.qapp.ui.loader.GlideImageLoader;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.ImageLoaderManager;
+import com.shuyun.qapp.manager.ImageLoaderManager;
 import com.shuyun.qapp.view.ActionJumpUtil;
 import com.shuyun.qapp.view.GridSpacingItemDecoration;
 import com.shuyun.qapp.view.ViewPagerScroller;

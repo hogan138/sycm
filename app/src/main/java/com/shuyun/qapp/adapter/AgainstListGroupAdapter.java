@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.SizeUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.AgainstGruopListBeans;
-import com.shuyun.qapp.utils.ImageLoaderManager;
+import com.shuyun.qapp.manager.ImageLoaderManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.view.OvalImageView;
 

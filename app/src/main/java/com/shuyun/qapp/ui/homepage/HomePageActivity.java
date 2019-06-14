@@ -57,7 +57,7 @@ import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
 import com.shuyun.qapp.utils.GlideUtils;
 import com.shuyun.qapp.utils.ImageUitils;
-import com.shuyun.qapp.utils.MyActivityManager;
+import com.shuyun.qapp.manager.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SaveUserInfo1;

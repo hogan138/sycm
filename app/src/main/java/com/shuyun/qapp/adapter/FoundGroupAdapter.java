@@ -2,7 +2,6 @@ package com.shuyun.qapp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,7 @@ import android.widget.TextView;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.FoundDataBean;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
-import com.shuyun.qapp.utils.ImageLoaderManager;
+import com.shuyun.qapp.manager.ImageLoaderManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.view.OvalImageView;
 

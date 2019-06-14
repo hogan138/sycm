@@ -29,7 +29,7 @@ import com.shuyun.qapp.utils.CommonPopUtil;
 import com.shuyun.qapp.utils.CommonPopupWindow;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.MyActivityManager;
+import com.shuyun.qapp.manager.MyActivityManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 
 import org.litepal.LitePal;

@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.shuyun.qapp.R;
-import com.shuyun.qapp.adapter.StartChallengeAdapter;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.ui.against.MainAgainstActivity;
 

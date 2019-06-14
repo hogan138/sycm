@@ -1,4 +1,4 @@
-package com.shuyun.qapp.utils;
+package com.shuyun.qapp.manager;
 
 import android.content.Context;
 import android.widget.ImageView;

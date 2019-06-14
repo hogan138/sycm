@@ -1,4 +1,4 @@
-package com.shuyun.qapp.utils;
+package com.shuyun.qapp.manager;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;

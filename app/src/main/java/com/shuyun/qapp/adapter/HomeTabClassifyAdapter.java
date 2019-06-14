@@ -12,7 +12,7 @@ import com.blankj.utilcode.util.ConvertUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.HomeTabContentBean;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
-import com.shuyun.qapp.utils.ImageLoaderManager;
+import com.shuyun.qapp.manager.ImageLoaderManager;
 import com.shuyun.qapp.view.GridSpacingItemDecoration;
 import com.shuyun.qapp.view.ActionJumpUtil;
 
@@ -72,18 +72,34 @@ public class HomeTabClassifyAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     //解决数据加载不完的问题
                     ((MyViewHolder) holder).rvClassifyGroup.setHasFixedSize(true);
                     ((MyViewHolder) holder).rvClassifyGroup.setNestedScrollingEnabled(false);
-                    TabClassifyGroupAdapter foundGroupAdapter = new TabClassifyGroupAdapter(dataBeanList, mContext, contentsBean.getData().getRowNum(), contentsBean.getData().getScale());
-                    GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, contentsBean.getData().getRowNum()) {
-                        @Override
-                        public boolean canScrollVertically() {//禁止layout垂直滑动
-                            return false;
-                        }
-                    };
+                    GridLayoutManager gridLayoutManager;
+                    //列表数量
+                    int count = dataBeanList.size();
+                    //类型少于等于5个且为奇数时，使用大图显示
+                    if (count <= 5 && count % 2 == 1) {
+                        TabClassifyGroupAdapter1 foundGroupAdapter = new TabClassifyGroupAdapter1(dataBeanList, mContext);
+                        gridLayoutManager = new GridLayoutManager(mContext, 1) {
+                            @Override
+                            public boolean canScrollVertically() {//禁止layout垂直滑动
+                                return false;
+                            }
+                        };
+                        ((MyViewHolder) holder).rvClassifyGroup.setAdapter(foundGroupAdapter);
+                    } else {
+                        //默认使用小图显示
+                        TabClassifyGroupAdapter foundGroupAdapter = new TabClassifyGroupAdapter(dataBeanList, mContext);
+                        gridLayoutManager = new GridLayoutManager(mContext, 2) {
+                            @Override
+                            public boolean canScrollVertically() {//禁止layout垂直滑动
+                                return false;
+                            }
+                        };
+                        ((MyViewHolder) holder).rvClassifyGroup.setAdapter(foundGroupAdapter);
+                        ((MyViewHolder) holder).rvClassifyGroup.addItemDecoration(new GridSpacingItemDecoration(2, ConvertUtils.dp2px(5), false));
+                    }
                     gridLayoutManager.setSmoothScrollbarEnabled(true);
                     gridLayoutManager.setAutoMeasureEnabled(true);
                     ((MyViewHolder) holder).rvClassifyGroup.setLayoutManager(gridLayoutManager);
-                    ((MyViewHolder) holder).rvClassifyGroup.setAdapter(foundGroupAdapter);
-                    ((MyViewHolder) holder).rvClassifyGroup.addItemDecoration(new GridSpacingItemDecoration(contentsBean.getData().getRowNum(), ConvertUtils.dp2px(5), false));
                 } catch (Exception e) {
                 }
             }

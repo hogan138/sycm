@@ -26,14 +26,14 @@ import butterknife.ButterKnife;
  * tab 类题组
  */
 
-public class TabClassifyGroupAdapter extends RecyclerView.Adapter<TabClassifyGroupAdapter.ViewHolder> {
+public class TabClassifyGroupAdapter1 extends RecyclerView.Adapter<TabClassifyGroupAdapter1.ViewHolder> {
     private Activity mContext;
     //题组分类集合
     private List<HomeTabContentBean.ContentsBean.DataBean.DatasBean> dataBeanList;
     private LayoutInflater layoutInflater;
     private int wdith = 0, height = 0; //宽高
 
-    public TabClassifyGroupAdapter(List<HomeTabContentBean.ContentsBean.DataBean.DatasBean> dataBeanList, Activity mContext) {
+    public TabClassifyGroupAdapter1(List<HomeTabContentBean.ContentsBean.DataBean.DatasBean> dataBeanList, Activity mContext) {
         this.dataBeanList = dataBeanList;
         this.mContext = mContext;
         layoutInflater = LayoutInflater.from(mContext);
@@ -43,7 +43,7 @@ public class TabClassifyGroupAdapter extends RecyclerView.Adapter<TabClassifyGro
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = layoutInflater.inflate(R.layout.item_tab_classify_group, parent, false);
+        View view = layoutInflater.inflate(R.layout.item_tab_classify_group1, parent, false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }
@@ -57,12 +57,13 @@ public class TabClassifyGroupAdapter extends RecyclerView.Adapter<TabClassifyGro
             //获取屏幕宽度
             DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
             //计算图片高度宽高比
-            wdith = (((int) Math.ceil(dm.widthPixels) - ConvertUtils.dp2px(5))) / 2;
-            height = (int) (Math.ceil(wdith * (135f / 185f)));
+            wdith = ((int) Math.ceil(dm.widthPixels) - ConvertUtils.dp2px(20));
+            height = (int) (Math.ceil(wdith * (179f / 355f)));
             Params.height = height;
             holder.ivGroupBg.setLayoutParams(Params);
 
             ImageLoaderManager.LoadImage(mContext, dataBean.getPicture(), holder.ivGroupBg, R.mipmap.zw01);
+            holder.tvButtonName.setText(dataBean.getButton());
 
             final String action = dataBean.getAction();
             holder.rlGroup.setOnClickListener(new OnMultiClickListener() {
@@ -87,6 +88,8 @@ public class TabClassifyGroupAdapter extends RecyclerView.Adapter<TabClassifyGro
         ImageView ivGroupBg;
         @BindView(R.id.tv_group_name)
         TextView tvGroupName;
+        @BindView(R.id.tv_button_name)
+        TextView tvButtonName;
         @BindView(R.id.rl_group)
         RelativeLayout rlGroup;
 

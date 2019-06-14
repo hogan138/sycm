@@ -32,7 +32,7 @@ import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.MyActivityManager1;
+import com.shuyun.qapp.manager.MyActivityManager1;
 import com.shuyun.qapp.utils.SaveUserInfo;
 import com.shuyun.qapp.utils.SharedPrefrenceTool;
 

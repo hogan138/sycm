@@ -638,18 +638,23 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
             @SuppressLint("ResourceType")
             @Override
             public void run() {
-                tvCommonTitle.setTextColor(Color.parseColor(titleColor));
-                if (backType == -1) {
-                    ivLeftIcon.setVisibility(View.GONE);
-                } else if (backType == 0) {
-                    ivLeftIcon.setImageResource(R.mipmap.backb);
-                } else if (backType == 1) {
-                    ivLeftIcon.setImageResource(R.mipmap.back_white);
-                }
-                rlTitle.setBackgroundColor(Color.parseColor(bgColor));
+                try {
+                    tvCommonTitle.setTextColor(Color.parseColor(titleColor));
+                    if (backType == -1) {
+                        ivLeftIcon.setVisibility(View.GONE);
+                    } else if (backType == 0) {
+                        ivLeftIcon.setImageResource(R.mipmap.backb);
+                    } else if (backType == 1) {
+                        ivLeftIcon.setImageResource(R.mipmap.back_white);
+                    }
+                    rlTitle.setBackgroundColor(Color.parseColor(bgColor));
 
-                //改变状态栏颜色
-                StatusBarUtil.setStatusBarColor(activity, Color.parseColor(bgColor), false);
+                    //改变状态栏颜色
+                    StatusBarUtil.setStatusBarColor(activity, Color.parseColor(bgColor), false);
+
+                } catch (Exception e) {
+
+                }
             }
         });
     }
@@ -1064,7 +1069,7 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
                             }
                         } else if ("continue.to.perform".equals(action)) {
                             //继续执行
-
+                            show = true;
                         } else if ("determined.to.leave".equals(action)) {
                             //确定离开
                             activity.finish();
@@ -1093,6 +1098,7 @@ public class JsInterationUtil implements CommonPopupWindow.ViewInterface {
                             }
                         } else if ("continue.to.perform".equals(action)) {
                             //继续执行
+                            show = true;
                         } else if ("determined.to.leave".equals(action)) {
                             //确定离开
                             activity.finish();

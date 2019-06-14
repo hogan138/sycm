@@ -16,7 +16,7 @@ import com.shuyun.qapp.bean.AnyPositionBean;
 import com.shuyun.qapp.bean.GroupClassifyBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
-import com.shuyun.qapp.utils.ImageLoaderManager;
+import com.shuyun.qapp.manager.ImageLoaderManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.view.AnyPositionImgManage;
 import com.shuyun.qapp.view.OvalImageView;

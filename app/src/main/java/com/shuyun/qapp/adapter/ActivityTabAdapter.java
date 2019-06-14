@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.ActivityTabBean;
-import com.shuyun.qapp.utils.ImageLoaderManager;
+import com.shuyun.qapp.manager.ImageLoaderManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.view.RoundImageView;
 

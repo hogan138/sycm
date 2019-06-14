@@ -21,7 +21,7 @@ import com.shuyun.qapp.bean.HistoryDataBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.utils.DisplayUtil;
-import com.shuyun.qapp.utils.ImageLoaderManager;
+import com.shuyun.qapp.manager.ImageLoaderManager;
 import com.shuyun.qapp.utils.ViewToBitmap;
 import com.shuyun.qapp.view.OvalImageView;
 import com.umeng.socialize.ShareAction;

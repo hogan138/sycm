@@ -5,7 +5,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -32,7 +31,6 @@ import com.shuyun.qapp.ui.homepage.HomePageActivity;
 import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.JsInterationUtil;
-import com.shuyun.qapp.utils.StatusBarUtil;
 import com.shuyun.qapp.view.RippleLayout;
 
 import butterknife.BindView;

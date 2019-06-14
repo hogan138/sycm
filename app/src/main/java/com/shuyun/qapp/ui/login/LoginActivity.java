@@ -44,7 +44,7 @@ import com.shuyun.qapp.utils.AliPushBind;
 import com.shuyun.qapp.utils.CustomLoadingFactory;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.MyActivityManager1;
+import com.shuyun.qapp.manager.MyActivityManager1;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.PermissionsChecker;
 import com.shuyun.qapp.utils.RegularTool;

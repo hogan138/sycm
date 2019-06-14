@@ -5,10 +5,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import com.shuyun.qapp.bean.DataResponse;
+import com.shuyun.qapp.manager.MyActivityManager;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.ui.login.LoginActivity;
-import com.shuyun.qapp.ui.mine.SystemSettingActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;

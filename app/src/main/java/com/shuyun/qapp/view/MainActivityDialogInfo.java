@@ -12,7 +12,7 @@ import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.ConfigDialogBean;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.manager.LoginDataManager;
-import com.shuyun.qapp.utils.ImageLoaderManager;
+import com.shuyun.qapp.manager.ImageLoaderManager;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 import com.shuyun.qapp.utils.SaveUserInfo;
 

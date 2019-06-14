@@ -1,4 +1,4 @@
-package com.shuyun.qapp.utils;
+package com.shuyun.qapp.manager;
 
 import android.app.Activity;
 import android.util.Log;

@@ -32,7 +32,7 @@ import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.utils.APKVersionCodeTools;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.ErrorCodeTools;
-import com.shuyun.qapp.utils.MyActivityManager;
+import com.shuyun.qapp.manager.MyActivityManager;
 import com.shuyun.qapp.utils.NetWorkUtils;
 import com.shuyun.qapp.utils.RegularTool;
 import com.shuyun.qapp.utils.SaveUserInfo;
