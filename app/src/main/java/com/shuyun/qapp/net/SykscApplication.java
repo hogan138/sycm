@@ -45,6 +45,7 @@ import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 import com.ut.mini.internal.UTTeamWork;
+import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
 import org.litepal.LitePal;
 import org.litepal.tablemanager.Connector;
@@ -98,6 +99,8 @@ public class SykscApplication extends Application {
         //初始化工具类
         Utils.init(this);
 
+        //二维码
+        ZXingLibrary.initDisplayOpinion(this);
 
         //阿里推送
         initCloudChannel(this);
