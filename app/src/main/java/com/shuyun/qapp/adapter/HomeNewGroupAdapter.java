@@ -64,7 +64,7 @@ public class HomeNewGroupAdapter extends RecyclerView.Adapter<HomeNewGroupAdapte
                 @Override
                 public void onMultiClick(View v) {
                     Intent intent = new Intent(mContext, WebAnswerActivity.class);
-                    intent.putExtra("groupId", newTopicsBean.getId());
+                    intent.putExtra("groupId", Long.parseLong(newTopicsBean.getId()));
                     intent.putExtra("h5Url", newTopicsBean.getH5Url());
                     startActivity(intent);
                 }

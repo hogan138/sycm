@@ -345,7 +345,7 @@ public class HomeSelectFragment extends BaseFragment implements OnRemotingCallBa
         homeLikeGroupAdapter.setOnItemClickLitsener(new HomeLikeGroupAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Long groupId = Long.valueOf(guessBeanList.get(position).getId());
+                Long groupId = Long.parseLong(guessBeanList.get(position).getId());
                 Intent intent = new Intent(mContext, WebAnswerActivity.class);
                 intent.putExtra("groupId", groupId);
                 intent.putExtra("h5Url", guessBeanList.get(position).getH5Url());
