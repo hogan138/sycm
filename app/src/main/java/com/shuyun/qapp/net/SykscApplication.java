@@ -9,10 +9,8 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.multidex.MultiDex;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.alibaba.baichuan.android.trade.AlibcTradeSDK;
-import com.alibaba.baichuan.android.trade.adapter.ut.AlibcUserTracker;
 import com.alibaba.baichuan.android.trade.callback.AlibcTradeInitCallback;
 import com.alibaba.sdk.android.push.CloudPushService;
 import com.alibaba.sdk.android.push.CommonCallback;
@@ -44,14 +42,10 @@ import com.tencent.stat.hybrid.StatHybridHandler;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
-import com.ut.mini.internal.UTTeamWork;
 import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
 import org.litepal.LitePal;
 import org.litepal.tablemanager.Connector;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class SykscApplication extends Application {
 

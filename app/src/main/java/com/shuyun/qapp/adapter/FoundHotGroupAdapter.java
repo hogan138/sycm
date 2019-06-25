@@ -1,7 +1,6 @@
 package com.shuyun.qapp.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.FoundDataBean;
-import com.shuyun.qapp.bean.GroupClassifyBean;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 
 import java.util.List;
