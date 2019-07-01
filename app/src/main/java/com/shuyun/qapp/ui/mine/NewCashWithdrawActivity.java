@@ -26,6 +26,7 @@ import com.shuyun.qapp.bean.InputWithdrawalbean;
 import com.shuyun.qapp.bean.MessageEvent;
 import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.bean.OutPutWithdraw;
+import com.shuyun.qapp.manager.MyActivityManager1;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
@@ -118,14 +119,7 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
         //提现金额EditText设置变化监听事件
         addListener(tvMoney, ivClearMoney);
 
-//        SpannableString ss = new SpannableString("最低提现金额为50元");
-//        // 新建一个属性对象,设置文字的大小
-//        AbsoluteSizeSpan ass = new AbsoluteSizeSpan(12, true);
-//        // 附加属性到文本
-//        ss.setSpan(ass, 0, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//
-//        // 设置hint
-//        tvMoney.setHint(new SpannedString(ss)); // 一定要进行转换,否则属性会消失
+        MyActivityManager1.getInstance().pushOneActivity(this);
 
         EventBus.getDefault().register(this);//注册Eventbus
     }
@@ -319,8 +313,7 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
         if ("applyWithdrawal".equals(action)) {
             OutPutWithdraw outPutWithdraw = (OutPutWithdraw) response.getDat();
             if (!EncodeAndStringTool.isObjectEmpty(outPutWithdraw)) {
-                Intent intent = new Intent(mContext, WithdrawResultActivity.class);
-                intent.putExtra("from", "withdraw");
+                Intent intent = new Intent(mContext, NewWithdrawResultActivity.class);
                 intent.putExtra("remark", outPutWithdraw.getRemark());
                 startActivity(intent);
                 finish();

@@ -41,10 +41,6 @@ public class WithdrawResultActivity extends BaseActivity implements View.OnClick
             //添加信息
             tvRsult.setText("完善成功");
             btnSure.setText("完成");
-        } else if ("withdraw".equals(content)) {
-            //提现结果
-            tvRsult.setText(getIntent().getStringExtra("remark"));
-            btnSure.setText("确定");
         }
     }
 

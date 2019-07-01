@@ -15,11 +15,13 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.adapter.AccountRecordAdapter;
+import com.shuyun.qapp.adapter.MyBankingAdapter;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.AccountBean;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.bean.WithdrawNoticeBean;
+import com.shuyun.qapp.manager.MyActivityManager1;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -84,6 +86,8 @@ public class CashRecordActivity extends BaseActivity implements OnRemotingCallBa
 
         //友盟页面统计
         UmengPageUtil.startPage(AppConst.APP_PERSONAL_CASH);
+
+        MyActivityManager1.getInstance().pushOneActivity(this);
     }
 
     @Override
@@ -132,6 +136,7 @@ public class CashRecordActivity extends BaseActivity implements OnRemotingCallBa
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
+                MyActivityManager1.getInstance().popOneActivity(this);
                 break;
             case R.id.btn_cash:
                 Intent intent = new Intent(this, NewCashWithdrawActivity.class);

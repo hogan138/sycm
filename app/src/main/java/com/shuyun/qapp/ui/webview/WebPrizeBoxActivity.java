@@ -20,6 +20,7 @@ import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.BoxBean;
 import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.bean.WebAnswerHomeBean;
+import com.shuyun.qapp.manager.MyActivityManager1;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.utils.EncodeAndStringTool;
 import com.shuyun.qapp.utils.JsInterationUtil;
@@ -59,6 +60,8 @@ public class WebPrizeBoxActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         context = this;
+
+        MyActivityManager1.getInstance().pushOneActivity(this);
 
         Intent intent = getIntent();
         try {

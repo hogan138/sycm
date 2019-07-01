@@ -16,6 +16,7 @@ import com.shuyun.qapp.adapter.MyPagerAdapter;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.MineBean;
+import com.shuyun.qapp.manager.MyActivityManager1;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -72,6 +73,8 @@ public class MinePrizeActivity extends BaseActivity implements OnRemotingCallBac
 
         //友盟页面统计
         UmengPageUtil.startPage(AppConst.APP_PERSONAL_PRIZE);
+
+        MyActivityManager1.getInstance().pushOneActivity(this);
     }
 
     @Override

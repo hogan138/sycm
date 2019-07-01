@@ -15,6 +15,7 @@ import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.DataResponse;
 import com.shuyun.qapp.bean.IntegralExchangeBean;
+import com.shuyun.qapp.manager.MyActivityManager1;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
@@ -91,6 +92,8 @@ public class IntegralCenterActivity extends BaseActivity implements View.OnClick
 
         //友盟页面统计
         UmengPageUtil.startPage(AppConst.APP_PERSONAL_BP);
+
+        MyActivityManager1.getInstance().pushOneActivity(this);
     }
 
     @Override

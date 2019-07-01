@@ -31,6 +31,7 @@ import com.shuyun.qapp.bean.MessageEvent;
 import com.shuyun.qapp.bean.MineBean;
 import com.shuyun.qapp.bean.MinePrize;
 import com.shuyun.qapp.bean.OutPutWithdraw;
+import com.shuyun.qapp.manager.MyActivityManager1;
 import com.shuyun.qapp.net.OnRemotingCallBackListener;
 import com.shuyun.qapp.net.RemotingEx;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
@@ -95,6 +96,8 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+
+        MyActivityManager1.getInstance().pushOneActivity(this);
 
         mContext = this;
 
@@ -328,8 +331,7 @@ public class NewRedWithdrawActivity extends BaseActivity implements View.OnClick
         if ("applyWithdrawal".equals(action)) {
             OutPutWithdraw outPutWithdraw = (OutPutWithdraw) response.getDat();
             if (!EncodeAndStringTool.isObjectEmpty(outPutWithdraw)) {
-                Intent intent = new Intent(mContext, WithdrawResultActivity.class);
-                intent.putExtra("from", "withdraw");
+                Intent intent = new Intent(mContext, NewWithdrawResultActivity.class);
                 intent.putExtra("remark", outPutWithdraw.getRemark());
                 startActivity(intent);
                 finish();

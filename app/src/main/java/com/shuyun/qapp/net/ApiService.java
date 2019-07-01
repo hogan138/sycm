@@ -65,6 +65,7 @@ import com.shuyun.qapp.bean.TaskBeans;
 import com.shuyun.qapp.bean.TouristsBean;
 import com.shuyun.qapp.bean.UserWxInfo;
 import com.shuyun.qapp.bean.WithdrawNoticeBean;
+import com.shuyun.qapp.bean.WithdrawResultGroupBean;
 
 import java.util.List;
 
@@ -826,4 +827,9 @@ public interface ApiService {
     @GET("/rest/battle/groups/list")
     Observable<DataResponse<List<AgainstGruopListBeans>>> getAgainstList(@Query("type") int type);
 
+    /**
+     * 115、提现结果页面题组列表
+     */
+    @GET("/rest/user/money/withdraw/group")
+    Observable<DataResponse<WithdrawResultGroupBean>> withdrawResultGroupList();
 }

@@ -40,11 +40,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Base"
         tools:replace="label,allowBackup">
-        <!--开始匹配-->
+        <!--新版提现结果页-->
+        <activity
+            android:name=".ui.mine.NewWithdrawResultActivity"
+            android:screenOrientation="portrait" />
+        <!-- 开始匹配 -->
         <activity
             android:name=".ui.king.KingMatchingActivity"
-            android:screenOrientation="portrait" />
-        <!--开始挑战-->
+            android:screenOrientation="portrait" /> <!-- 开始挑战 -->
         <activity
             android:name=".ui.king.StartChallengeActivity"
             android:screenOrientation="portrait" /> <!-- 我的排名 -->
