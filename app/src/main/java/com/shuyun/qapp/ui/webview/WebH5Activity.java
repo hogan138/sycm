@@ -25,6 +25,7 @@ import com.ishumei.smantifraud.SmAntiFraud;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.base.BaseActivity;
 import com.shuyun.qapp.bean.WebAnswerHomeBean;
+import com.shuyun.qapp.manager.MyActivityManager1;
 import com.shuyun.qapp.net.AppConst;
 import com.shuyun.qapp.net.SykscApplication;
 import com.shuyun.qapp.ui.homepage.HomePageActivity;
@@ -75,6 +76,8 @@ public class WebH5Activity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         context = this;
+
+        MyActivityManager1.getInstance().pushOneActivity(this);
 
         ButterKnife.bind(this);
 

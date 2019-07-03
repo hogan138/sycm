@@ -368,48 +368,53 @@ public class NewHomeFragment extends BaseFragment implements OnRemotingCallBackL
             init(size);
 
         } else if ("loadTreasureBoxNum".equals(action)) {
-            BoxBean boxBean = (BoxBean) response.getDat();
-            if (!EncodeAndStringTool.isObjectEmpty(boxBean)) {
-                if (boxBean.getCount() > 0) {
-                    if (boxBean.getCount() == 1 && boxBean.getSource() == 3) {//从微信获取且只有一个宝箱，直接跳开宝箱页面
-                        SharedPreferences sharedPreferences = mContext.getSharedPreferences("FirstRun", 0);
-                        Boolean first_run = sharedPreferences.getBoolean("Main", true);
-                        if (first_run) {
-                            sharedPreferences.edit().putBoolean("Main", false).apply();
-                            Intent intent = new Intent(mContext, WebPrizeBoxActivity.class);
-                            intent.putExtra("BoxBean", boxBean);
-                            intent.putExtra("main_box", "main_box");
-                            startActivity(intent);
-                        }
-                    } else {//如果宝箱数量大于0,首页左下角显示宝箱摇晃动画
-                        ivBx.setVisibility(View.VISIBLE);
-                        TranslateAnimation animation = new TranslateAnimation(5, -5, 0, 0);
-                        animation.setInterpolator(new OvershootInterpolator());
-                        animation.setDuration(500);
-                        animation.setRepeatCount(Animation.INFINITE);
-                        animation.setRepeatMode(Animation.REVERSE);
-                        ivBx.startAnimation(animation);
-                        ivBx.setOnClickListener(new OnMultiClickListener() {
-                            @Override
-                            public void onMultiClick(View v) {
-                                Intent intent = new Intent(mContext, MinePrizeActivity.class);
-                                intent.putExtra("status", 1);
+            try {
+                BoxBean boxBean = (BoxBean) response.getDat();
+                if (!EncodeAndStringTool.isObjectEmpty(boxBean)) {
+                    if (boxBean.getCount() > 0) {
+                        if (boxBean.getCount() == 1 && boxBean.getSource() == 3) {//从微信获取且只有一个宝箱，直接跳开宝箱页面
+                            SharedPreferences sharedPreferences = mContext.getSharedPreferences("FirstRun", 0);
+                            Boolean first_run = sharedPreferences.getBoolean("Main", true);
+
+                            if (first_run) {
+                                sharedPreferences.edit().putBoolean("Main", false).apply();
+                                Intent intent = new Intent(mContext, WebPrizeBoxActivity.class);
+                                intent.putExtra("BoxBean", boxBean);
+                                intent.putExtra("main_box", "main_box");
                                 startActivity(intent);
                             }
-                        });
-                    }
-                } else {
-                    ivBx.clearAnimation();
-                    ivBx.setVisibility(View.GONE);
-                }
-                //是否实名认证
-                if (!EncodeAndStringTool.isStringEmpty(boxBean.getIsRealName())) {
-                    if (boxBean.getIsRealName().equals("true")) {
-                        SaveUserInfo.getInstance(mContext).setUserInfo("cert", "1");
+                        } else {//如果宝箱数量大于0,首页左下角显示宝箱摇晃动画
+                            ivBx.setVisibility(View.VISIBLE);
+                            TranslateAnimation animation = new TranslateAnimation(5, -5, 0, 0);
+                            animation.setInterpolator(new OvershootInterpolator());
+                            animation.setDuration(500);
+                            animation.setRepeatCount(Animation.INFINITE);
+                            animation.setRepeatMode(Animation.REVERSE);
+                            ivBx.startAnimation(animation);
+                            ivBx.setOnClickListener(new OnMultiClickListener() {
+                                @Override
+                                public void onMultiClick(View v) {
+                                    Intent intent = new Intent(mContext, MinePrizeActivity.class);
+                                    intent.putExtra("status", 1);
+                                    startActivity(intent);
+                                }
+                            });
+                        }
                     } else {
-                        SaveUserInfo.getInstance(mContext).setUserInfo("cert", "0");
+                        ivBx.clearAnimation();
+                        ivBx.setVisibility(View.GONE);
+                    }
+                    //是否实名认证
+                    if (!EncodeAndStringTool.isStringEmpty(boxBean.getIsRealName())) {
+                        if (boxBean.getIsRealName().equals("true")) {
+                            SaveUserInfo.getInstance(mContext).setUserInfo("cert", "1");
+                        } else {
+                            SaveUserInfo.getInstance(mContext).setUserInfo("cert", "0");
+                        }
                     }
                 }
+            } catch (Exception e) {
+
             }
         } else if ("getHomefloatwindow".equals(action)) {
             //首页浮窗

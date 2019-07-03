@@ -23,7 +23,7 @@ public class BoxBean implements Parcelable {
     private Double beatRate; // 击败率
     private Double accuracy; // 正确率
     @JSONField(serializeUsing = ToStringSerializer.class)
-    private Long prizeId; // 对应的奖品id
+    private Long prizeId = 0L; // 对应的奖品id
     @JSONField(serializeUsing = ToStringSerializer.class)
     private Long ruleId; // 得奖时的规则id
     private Long expireTime; // 有效期-结束日期

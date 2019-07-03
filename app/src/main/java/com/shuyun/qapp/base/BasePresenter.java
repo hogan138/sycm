@@ -73,7 +73,7 @@ public class BasePresenter {
              * 登录前没有获取到Authorization和sycm请求头参数;
              * 在调用登录和获取验证码、是否已注册接口的时候,需要reture chain.proceed(originalRequest);
              */
-            if (urlPath.contains("/rest/security/") || urlPath.contains("/rest/user/registered")) {
+            if (urlPath.contains("/rest/security/") || urlPath.contains("/rest/user/registered") || urlPath.contains("/rest/app/tourists")) {
                 return chain.proceed(originalRequest);
             }
             Request newRequest = originalRequest.newBuilder()

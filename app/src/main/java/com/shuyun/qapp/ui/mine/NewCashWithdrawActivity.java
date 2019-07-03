@@ -1,5 +1,6 @@
 package com.shuyun.qapp.ui.mine;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -87,6 +88,7 @@ public class NewCashWithdrawActivity extends BaseActivity implements View.OnClic
 
     private ChooseWithdrawInfoAdapter chooseWithdrawInfoAdapter;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

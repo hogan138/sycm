@@ -75,7 +75,7 @@ public class WebAnswerActivity extends BaseActivity {
         SharedPrefrenceTool.put(mContext, "boxId", "");//清空答题免登录返回宝箱id
 
         /**
-         * 检测微信是否安装,如果没有安装,需不显示分享按钮,如果安装了,需要显示分享按钮
+         * 检测微信是否安装,如果没有安装,不显示分享按钮,如果安装了,需要显示分享按钮
          */
         if (!SykscApplication.mWxApi.isWXAppInstalled()) {
             ivRightIcon.setVisibility(View.GONE);
