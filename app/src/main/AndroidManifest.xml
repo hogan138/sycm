@@ -159,7 +159,7 @@
             android:screenOrientation="portrait" /> <!-- 实名认证页面 -->
         <activity
             android:name=".ui.mine.RealNameAuthActivity"
-
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" /> <!-- 实名认证结果 -->
         <activity
             android:name=".ui.mine.AuthResultActivity"
