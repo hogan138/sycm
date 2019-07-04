@@ -117,21 +117,8 @@
         <activity
             android:name=".ui.homepage.HomePageActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait">
-
-            <!-- 通过浏览器Url启动app -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="qapp"
-                    android:scheme="com.shuyun" />
-                <!-- <a href="[scheme]://[host]/[path]?[query]">启动应用程序</a> -->
-            </intent-filter>
-        </activity> <!-- 登录页 -->
+            android:screenOrientation="portrait" />
+        <!-- 登录页 -->
         <activity
             android:name=".ui.login.LoginActivity"
             android:launchMode="singleTask"
@@ -160,7 +147,20 @@
         <activity
             android:name=".ui.mine.RealNameAuthActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" /> <!-- 实名认证结果 -->
+            android:screenOrientation="portrait">
+            <!-- 通过浏览器Url启动app -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="qapp"
+                    android:scheme="com.shuyun" />
+                <!-- <a href="[scheme]://[host]/[path]?[query]">启动应用程序</a> -->
+            </intent-filter>
+        </activity> <!-- 实名认证结果 -->
         <activity
             android:name=".ui.mine.AuthResultActivity"
             android:launchMode="singleTop"
