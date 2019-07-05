@@ -106,6 +106,7 @@ public class WebPrizeBoxActivity extends BaseActivity {
             } else {
                 //为空加载本地
                 wvPrizeBox.loadUrl(AppConst.BOX);
+
             }
         } else if (!EncodeAndStringTool.isStringEmpty(getIntent().getStringExtra("main_box")) && getIntent().getStringExtra("main_box").equals("score_box")) {
             String h5Url = getIntent().getStringExtra("h5Url");

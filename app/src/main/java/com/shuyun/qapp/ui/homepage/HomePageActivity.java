@@ -81,7 +81,7 @@ import static com.shuyun.qapp.utils.EncodeAndStringTool.getCode;
 public class HomePageActivity extends BaseActivity implements ViewPager.OnPageChangeListener, View.OnClickListener {
 
     @BindView(R.id.radioGroup)
-    RadioGroup radioGroup; //首页
+    RadioGroup radioGroup;
     @BindView(R.id.radio_main)
     RadioButton radioMain; //首页
     @BindView(R.id.radio_classify)
