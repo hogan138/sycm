@@ -5,10 +5,12 @@ import com.alibaba.fastjson.serializer.ToStringSerializer;
 
 import java.util.List;
 
+import lombok.Data;
+
 /**
  * 查看答题结果返回数据
  */
-
+@Data
 public class LookAnswerResultBean {
 
     /**
@@ -52,79 +54,7 @@ public class LookAnswerResultBean {
     private String groupPicture;//题组图片
 
 
-    public String getId() {
-        return id;
-    }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getGroupPicture() {
-        return groupPicture;
-    }
-
-    public void setGroupPicture(String groupPicture) {
-        this.groupPicture = groupPicture;
-    }
-
-    public String getGroupName() {
-        return groupName;
-    }
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
-
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-
-    public Long getTotal() {
-        return total;
-    }
-
-    public Long getActual() {
-        return actual;
-    }
-
-    public String getAccuracy() {
-        return accuracy;
-    }
-
-    public Long getCorrect() {
-        return correct;
-    }
-
-    public Long getError() {
-        return error;
-    }
-
-    public Long getTimeout() {
-        return timeout;
-    }
-
-    public Long getExamTime() {
-        return examTime;
-    }
-
-    public Long getFinishTime() {
-        return finishTime;
-    }
-
-    public Long getResult() {
-        return result;
-    }
-
-    public List<QuestionsBean> getQuestions() {
-        return questions;
-    }
 
     @Override
     public String toString() {
@@ -141,7 +71,7 @@ public class LookAnswerResultBean {
                 ", questions=" + questions +
                 '}';
     }
-
+    @Data
     public static class QuestionsBean {
         /**
          * id : 532
@@ -181,62 +111,7 @@ public class LookAnswerResultBean {
         private String picture;//题目的图片 type=2有效
         private List<OptionsBean> options;//题目的选项
 
-        public String getPicture() {
-            return picture;
-        }
 
-        public void setPicture(String picture) {
-            this.picture = picture;
-        }
-
-        public Long getId() {
-            return id;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public String getRemark() {
-            return remark;
-        }
-
-        public Long getType() {
-            return type;
-        }
-
-        public Long getOrderNo() {
-            return orderNo;
-        }
-
-        public Long getResult() {
-            return result;
-        }
-
-        public String getOks() {
-            return oks;
-        }
-
-        public String getAnswer() {
-            return answer;
-        }
-
-        public Long getExamTime() {
-            return examTime;
-        }
-
-        public Long getFinishTime() {
-            return finishTime;
-        }
-
-
-        public List<OptionsBean> getOptions() {
-            return options;
-        }
 
         @Override
         public String toString() {
@@ -256,7 +131,7 @@ public class LookAnswerResultBean {
                     ", options=" + options +
                     '}';
         }
-
+        @Data
         public static class OptionsBean {
             /**
              * id : 2120
@@ -270,30 +145,6 @@ public class LookAnswerResultBean {
             private String remark;//选项备注
             private String picture;//选项图片
             private Long orderNo;//选项的排序
-
-            public String getId() {
-                return id;
-            }
-
-            public String getTitle() {
-                return title;
-            }
-
-            public String getDescription() {
-                return description;
-            }
-
-            public String getRemark() {
-                return remark;
-            }
-
-            public String getPicture() {
-                return picture;
-            }
-
-            public Long getOrderNo() {
-                return orderNo;
-            }
 
             @Override
             public String toString() {

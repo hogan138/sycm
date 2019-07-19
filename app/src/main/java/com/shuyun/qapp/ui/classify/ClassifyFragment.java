@@ -141,9 +141,9 @@ public class ClassifyFragment extends BaseFragment implements OnRemotingCallBack
                 if (!EncodeAndStringTool.isListEmpty(classifyBeans)) {
                     for (int i = 0; i < classifyBeans.size(); i++) {
                         if (i == position) {
-                            classifyBeans.get(i).setFlag(true);
+                            classifyBeans.get(i).setIsFlag(true);
                         } else {
-                            classifyBeans.get(i).setFlag(false);
+                            classifyBeans.get(i).setIsFlag(false);
                         }
                         groupTreeAdapter.notifyDataSetChanged();
                     }
@@ -260,16 +260,16 @@ public class ClassifyFragment extends BaseFragment implements OnRemotingCallBack
                 Long id = mContext.getIntent().getLongExtra("id", 0);
                 for (int i = 0; i < beans.size(); i++) {
                     if (beans.get(i).getId().longValue() == id.longValue()) {
-                        beans.get(i).setFlag(true);
+                        beans.get(i).setIsFlag(true);
                         refreshRightGroup(i, beans);
                         groupTreeAdapter.setSelectedPosition(i);
                     } else if (id == 0) {
-                        beans.get(0).setFlag(true);
+                        beans.get(0).setIsFlag(true);
                         refreshRightGroup(0, beans);
                     }
                 }
             } else if (mContext instanceof HomePageActivity) {
-                beans.get(0).setFlag(true);
+                beans.get(0).setIsFlag(true);
                 refreshRightGroup(0, beans);
             }
             groupTreeAdapter.notifyDataSetChanged();

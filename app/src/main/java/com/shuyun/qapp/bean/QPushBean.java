@@ -1,5 +1,7 @@
 package com.shuyun.qapp.bean;
 
+import lombok.Data;
+
 /**
  * @ProjectName: 全民共进
  * @Package: com.shuyun.qapp.bean
@@ -8,6 +10,7 @@ package com.shuyun.qapp.bean;
  * @Author: ganquan
  * @CreateDate: 2019/1/14 14:54
  */
+@Data
 public class QPushBean {
 
     /**
@@ -16,11 +19,5 @@ public class QPushBean {
 
     private String count;
 
-    public String getCount() {
-        return count;
-    }
 
-    public void setCount(String count) {
-        this.count = count;
-    }
 }

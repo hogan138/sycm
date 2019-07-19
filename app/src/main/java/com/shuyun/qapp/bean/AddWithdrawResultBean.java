@@ -1,8 +1,11 @@
 package com.shuyun.qapp.bean;
 
+import lombok.Data;
+
 /**
  * 提现返回bean
  */
+@Data
 public class AddWithdrawResultBean {
 
 
@@ -24,59 +27,4 @@ public class AddWithdrawResultBean {
     private Boolean enabled;
     private Long status;
 
-    public String getStateName() {
-        return stateName;
-    }
-
-    public void setStateName(String stateName) {
-        this.stateName = stateName;
-    }
-
-    public Long getBankType() {
-        return bankType;
-    }
-
-    public void setBankType(Long bankType) {
-        this.bankType = bankType;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public Long getStatus() {
-        return status;
-    }
-
-    public void setStatus(Long status) {
-        this.status = status;
-    }
 }

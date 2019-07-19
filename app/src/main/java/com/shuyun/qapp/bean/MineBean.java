@@ -8,10 +8,12 @@ import com.alibaba.fastjson.serializer.ToStringSerializer;
 
 import java.util.List;
 
+import lombok.Data;
+
 /**
  * 用户信息bean
  */
-
+@Data
 public class MineBean implements Parcelable {
 
 
@@ -189,269 +191,6 @@ public class MineBean implements Parcelable {
         }
     };
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getAccount() {
-        return account;
-    }
-
-    public void setAccount(String account) {
-        this.account = account;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public Long getObt() {
-        return obt;
-    }
-
-    public void setObt(Long obt) {
-        this.obt = obt;
-    }
-
-    public String getHeader() {
-        return header;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
-    }
-
-    public int getHeaderId() {
-        return headerId;
-    }
-
-    public void setHeaderId(int headerId) {
-        this.headerId = headerId;
-    }
-
-    public Long getStatus() {
-        return status;
-    }
-
-    public void setStatus(Long status) {
-        this.status = status;
-    }
-
-    public int getCertification() {
-        return certification;
-    }
-
-    public void setCertification(int certification) {
-        this.certification = certification;
-    }
-
-    public String getCertInfo() {
-        return certInfo;
-    }
-
-    public void setCertInfo(String certInfo) {
-        this.certInfo = certInfo;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public Long getGender() {
-        return gender;
-    }
-
-    public void setGender(Long gender) {
-        this.gender = gender;
-    }
-
-    public String getCash() {
-        return cash;
-    }
-
-    public void setCash(String cash) {
-        this.cash = cash;
-    }
-
-    public String getBp() {
-        return bp;
-    }
-
-    public void setBp(String bp) {
-        this.bp = bp;
-    }
-
-    public Long getOpporitunity() {
-        return opporitunity;
-    }
-
-    public void setOpporitunity(Long opporitunity) {
-        this.opporitunity = opporitunity;
-    }
-
-    public Long getWithdraw() {
-        return withdraw;
-    }
-
-    public void setWithdraw(Long withdraw) {
-        this.withdraw = withdraw;
-    }
-
-    public Long getAvailablePrize() {
-        return availablePrize;
-    }
-
-    public void setAvailablePrize(Long availablePrize) {
-        this.availablePrize = availablePrize;
-    }
-
-    public Long getPropCount() {
-        return propCount;
-    }
-
-    public void setPropCount(Long propCount) {
-        this.propCount = propCount;
-    }
-
-    public Long getUpcommings() {
-        return upcommings;
-    }
-
-    public void setUpcommings(Long upcommings) {
-        this.upcommings = upcommings;
-    }
-
-    public Long getMessages() {
-        return messages;
-    }
-
-    public void setMessages(Long messages) {
-        this.messages = messages;
-    }
-
-    public Long getWxBind() {
-        return wxBind;
-    }
-
-    public void setWxBind(Long wxBind) {
-        this.wxBind = wxBind;
-    }
-
-    public String getWxHeader() {
-        return wxHeader;
-    }
-
-    public void setWxHeader(String wxHeader) {
-        this.wxHeader = wxHeader;
-    }
-
-    public String getCashTotal() {
-        return cashTotal;
-    }
-
-    public void setCashTotal(String cashTotal) {
-        this.cashTotal = cashTotal;
-    }
-
-    public Long getOrderEnabled() {
-        return orderEnabled;
-    }
-
-    public void setOrderEnabled(Long orderEnabled) {
-        this.orderEnabled = orderEnabled;
-    }
-
-    public String getContactUs() {
-        return contactUs;
-    }
-
-    public void setContactUs(String contactUs) {
-        this.contactUs = contactUs;
-    }
-
-    public String getCashRuleUrl() {
-        return cashRuleUrl;
-    }
-
-    public void setCashRuleUrl(String cashRuleUrl) {
-        this.cashRuleUrl = cashRuleUrl;
-    }
-
-    public String getRedRuleUrl() {
-        return redRuleUrl;
-    }
-
-    public void setRedRuleUrl(String redRuleUrl) {
-        this.redRuleUrl = redRuleUrl;
-    }
-
-    public String getCodeUrl() {
-        return codeUrl;
-    }
-
-    public void setCodeUrl(String codeUrl) {
-        this.codeUrl = codeUrl;
-    }
-
-    public Long getCertCount() {
-        return certCount;
-    }
-
-    public void setCertCount(Long certCount) {
-        this.certCount = certCount;
-    }
-
-    public CertBaseBean getCertBase() {
-        return certBase;
-    }
-
-    public void setCertBase(CertBaseBean certBase) {
-        this.certBase = certBase;
-    }
-
-    public List<WithdrawBaseBean> getWithdrawBase() {
-        return withdrawBase;
-    }
-
-    public void setWithdrawBase(List<WithdrawBaseBean> withdrawBase) {
-        this.withdrawBase = withdrawBase;
-    }
-
-    public List<DatasBean> getDatas() {
-        return datas;
-    }
-
-    public void setDatas(List<DatasBean> datas) {
-        this.datas = datas;
-    }
-
-    public String getInviteUrl() {
-        return inviteUrl;
-    }
-
-    public void setInviteUrl(String inviteUrl) {
-        this.inviteUrl = inviteUrl;
-    }
-
-    public Long getInviteCode() {
-        return inviteCode;
-    }
-
-    public void setInviteCode(Long inviteCode) {
-        this.inviteCode = inviteCode;
-    }
 
     @Override
     public int describeContents() {
@@ -565,7 +304,7 @@ public class MineBean implements Parcelable {
         dest.writeTypedList(datas);
     }
 
-
+    @Data
     public static class CertBaseBean implements Parcelable {
         /**
          * stateName : 认证成功
@@ -608,53 +347,6 @@ public class MineBean implements Parcelable {
             }
         };
 
-        public String getStateName() {
-            return stateName;
-        }
-
-        public void setStateName(String stateName) {
-            this.stateName = stateName;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public void setMessage(String message) {
-            this.message = message;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public boolean isEnabled() {
-            return enabled;
-        }
-
-        public void setEnabled(boolean enabled) {
-            this.enabled = enabled;
-        }
-
-        public Long getStatus() {
-            return status;
-        }
-
-        public void setStatus(Long status) {
-            this.status = status;
-        }
 
         @Override
         public int describeContents() {
@@ -677,6 +369,7 @@ public class MineBean implements Parcelable {
         }
     }
 
+    @Data
     public static class WithdrawBaseBean implements Parcelable {
         /**
          * bankId : 39
@@ -732,77 +425,6 @@ public class MineBean implements Parcelable {
             }
         };
 
-        public String getBankId() {
-            return bankId;
-        }
-
-        public void setBankId(String bankId) {
-            this.bankId = bankId;
-        }
-
-        public String getStateName() {
-            return stateName;
-        }
-
-        public void setStateName(String stateName) {
-            this.stateName = stateName;
-        }
-
-        public Long getBankType() {
-            return bankType;
-        }
-
-        public void setBankType(Long bankType) {
-            this.bankType = bankType;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public void setMessage(String message) {
-            this.message = message;
-        }
-
-        public boolean isEnabled() {
-            return enabled;
-        }
-
-        public void setEnabled(boolean enabled) {
-            this.enabled = enabled;
-        }
-
-        public Long getStatus() {
-            return status;
-        }
-
-        public void setStatus(Long status) {
-            this.status = status;
-        }
-
-        public boolean isSelected() {
-            return isSelected;
-        }
-
-        public void setSelected(boolean selected) {
-            isSelected = selected;
-        }
 
         @Override
         public int describeContents() {
@@ -833,6 +455,7 @@ public class MineBean implements Parcelable {
         }
     }
 
+    @Data
     public static class DatasBean implements Parcelable {
         /**
          * bankId : 39
@@ -885,69 +508,6 @@ public class MineBean implements Parcelable {
             }
         };
 
-        public String getBankId() {
-            return bankId;
-        }
-
-        public void setBankId(String bankId) {
-            this.bankId = bankId;
-        }
-
-        public String getStateName() {
-            return stateName;
-        }
-
-        public void setStateName(String stateName) {
-            this.stateName = stateName;
-        }
-
-        public Long getBankType() {
-            return bankType;
-        }
-
-        public void setBankType(Long bankType) {
-            this.bankType = bankType;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public void setMessage(String message) {
-            this.message = message;
-        }
-
-        public boolean isEnabled() {
-            return enabled;
-        }
-
-        public void setEnabled(boolean enabled) {
-            this.enabled = enabled;
-        }
-
-        public Long getStatus() {
-            return status;
-        }
-
-        public void setStatus(Long status) {
-            this.status = status;
-        }
 
         @Override
         public int describeContents() {

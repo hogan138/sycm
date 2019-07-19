@@ -1,8 +1,11 @@
 package com.shuyun.qapp.bean;
 
+import lombok.Data;
+
 /**
  * h5返回分享bean
  */
+@Data
 public class SharePublicBean {
 
 
@@ -15,27 +18,5 @@ public class SharePublicBean {
     private String id;
     private String action;
 
-    public boolean isShow() {
-        return show;
-    }
 
-    public void setShow(boolean show) {
-        this.show = show;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
-    }
 }

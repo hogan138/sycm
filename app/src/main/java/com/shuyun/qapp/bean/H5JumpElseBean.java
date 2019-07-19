@@ -1,5 +1,7 @@
 package com.shuyun.qapp.bean;
 
+import lombok.Data;
+
 /**
  * @ProjectName: 全民共进
  * @Package: com.shuyun.qapp.bean
@@ -8,25 +10,12 @@ package com.shuyun.qapp.bean;
  * @Author: ganquan
  * @CreateDate: 2019/4/11 9:49
  */
+@Data
 public class H5JumpElseBean {
 
     private String urlScheme; //url
     private String appName;//app名称
 
-    public String getAppName() {
-        return appName;
-    }
 
-    public void setAppName(String appName) {
-        this.appName = appName;
-    }
-
-    public String getUrlScheme() {
-        return urlScheme;
-    }
-
-    public void setUrlScheme(String urlScheme) {
-        this.urlScheme = urlScheme;
-    }
 
 }

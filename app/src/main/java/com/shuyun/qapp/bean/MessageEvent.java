@@ -1,5 +1,7 @@
 package com.shuyun.qapp.bean;
 
+import lombok.Data;
+
 /**
  * @ProjectName: 全民共进
  * @Package: com.shuyun.qapp.bean
@@ -8,6 +10,7 @@ package com.shuyun.qapp.bean;
  * @Author: ganquan
  * @CreateDate: 2019/4/3 13:30
  */
+@Data
 public class MessageEvent {
     private String message;
 
@@ -15,11 +18,4 @@ public class MessageEvent {
         this.message = message;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }

@@ -5,10 +5,12 @@ import android.os.Parcelable;
 
 import java.util.List;
 
+import lombok.Data;
+
 /**
  * 广告页面bean
  */
-
+@Data
 public class AdBean implements Parcelable {
     private Long timeout;//倒计时，秒  0表示需要手动跳过
     private List<AdInfo> ad;//广告信息
@@ -38,21 +40,6 @@ public class AdBean implements Parcelable {
         }
     };
 
-    public String getBoxUrl() {
-        return boxUrl;
-    }
-
-    public void setBoxUrl(String boxUrl) {
-        this.boxUrl = boxUrl;
-    }
-
-    public String getExamUrl() {
-        return examUrl;
-    }
-
-    public void setExamUrl(String examUrl) {
-        this.examUrl = examUrl;
-    }
 
     @Override
     public int describeContents() {
@@ -71,7 +58,7 @@ public class AdBean implements Parcelable {
         dest.writeString(examUrl);
     }
 
-
+    @Data
     public static class AdInfo implements Parcelable {
         /**
          * 广告类型
@@ -128,53 +115,6 @@ public class AdBean implements Parcelable {
             }
         };
 
-        public Long getIsLogin() {
-            return isLogin;
-        }
-
-        public void setIsLogin(Long isLogin) {
-            this.isLogin = isLogin;
-        }
-
-        public void setType(Long type) {
-            this.type = type;
-        }
-
-        public void setUrl(String url) {
-            this.url = url;
-        }
-
-        public void setModel(Long model) {
-            this.model = model;
-        }
-
-        public void setContent(String content) {
-            this.content = content;
-        }
-
-        public Long getType() {
-            return type;
-        }
-
-        public String getUrl() {
-            return url;
-        }
-
-        public Long getModel() {
-            return model;
-        }
-
-        public String getContent() {
-            return content;
-        }
-
-        public String getBottomIcon() {
-            return bottomIcon;
-        }
-
-        public void setBottomIcon(String bottomIcon) {
-            this.bottomIcon = bottomIcon;
-        }
 
         @Override
         public String toString() {
@@ -214,22 +154,6 @@ public class AdBean implements Parcelable {
                 dest.writeLong(isLogin);
             }
         }
-    }
-
-    public void setTimeout(Long timeout) {
-        this.timeout = timeout;
-    }
-
-    public void setAd(List<AdInfo> ad) {
-        this.ad = ad;
-    }
-
-    public Long getTimeout() {
-        return timeout;
-    }
-
-    public List<AdInfo> getAd() {
-        return ad;
     }
 
     @Override

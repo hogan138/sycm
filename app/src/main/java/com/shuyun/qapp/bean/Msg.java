@@ -3,10 +3,12 @@ package com.shuyun.qapp.bean;
 import org.litepal.annotation.Column;
 import org.litepal.crud.LitePalSupport;
 
+import lombok.Data;
+
 /**
  * 系统消息bean
  */
-
+@Data
 public class Msg extends LitePalSupport {
 
     @Column(unique = true)
@@ -42,77 +44,6 @@ public class Msg extends LitePalSupport {
     private Long time;//消息时间
     private String h5Url; //答题url
 
-    public String getMsgId() {
-        return msgId;
-    }
-
-    public void setMsgId(String msgId) {
-        this.msgId = msgId;
-    }
-
-    public String getH5Url() {
-        return h5Url;
-    }
-
-    public void setH5Url(String h5Url) {
-        this.h5Url = h5Url;
-    }
-
-    public void setType(Long type) {
-        this.type = type;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public void setTime(Long time) {
-        this.time = time;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getType() {
-        return type;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public Long getTime() {
-        return time;
-    }
-
-    public Long getId() {
-        return id;
-    }
 
     @Override
     public String toString() {

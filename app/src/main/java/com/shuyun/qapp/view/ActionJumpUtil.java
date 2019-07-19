@@ -14,6 +14,7 @@ import com.shuyun.qapp.ui.integral.IntegralMainActivity;
 import com.shuyun.qapp.ui.login.LoginActivity;
 import com.shuyun.qapp.ui.mine.AddWithdrawInfoActivity;
 import com.shuyun.qapp.ui.mine.MinePrizeActivity;
+import com.shuyun.qapp.ui.mine.MyPropsActivity;
 import com.shuyun.qapp.ui.mine.RealNameAuthActivity;
 import com.shuyun.qapp.ui.webview.WebAnswerActivity;
 import com.shuyun.qapp.ui.webview.WebH5Activity;
@@ -136,6 +137,8 @@ public class ActionJumpUtil {
                 context.startActivity(intent);
             } else if (AppConst.ACTION_GAME.equals(action)) { //游戏中心
                 context.startActivity(new Intent(context, GameCenterActivity.class));
+            } else if (AppConst.ACTION_PROPS.equals(action)) { //我的道具
+                context.startActivity(new Intent(context, MyPropsActivity.class));
             }
         } catch (Exception e) {
 

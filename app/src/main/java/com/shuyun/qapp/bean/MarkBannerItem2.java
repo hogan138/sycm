@@ -2,11 +2,14 @@ package com.shuyun.qapp.bean;
 
 import java.util.List;
 
+import lombok.Data;
+
 /**
  * 项目名称：android
  * 创建人：${ganquan}
  * homebanner
  */
+@Data
 public class MarkBannerItem2 extends BannerItem {
 
     String name; //名称
@@ -19,28 +22,5 @@ public class MarkBannerItem2 extends BannerItem {
         super(url);
     }
 
-    public List<BannerBean.AdConfigs> getAdConfigs() {
-        return adConfigs;
-    }
-
-    public void setAdConfigs(List<BannerBean.AdConfigs> adConfigs) {
-        this.adConfigs = adConfigs;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
 }

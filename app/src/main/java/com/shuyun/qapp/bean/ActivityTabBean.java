@@ -5,9 +5,12 @@ import com.alibaba.fastjson.serializer.ToStringSerializer;
 
 import java.util.List;
 
+import lombok.Data;
+
 /**
  * 活动专区bean
  */
+@Data
 public class ActivityTabBean {
 
 
@@ -19,22 +22,7 @@ public class ActivityTabBean {
     private Long total;
     private List<ResultBean> result;
 
-    public Long getTotal() {
-        return total;
-    }
-
-    public void setTotal(Long total) {
-        this.total = total;
-    }
-
-    public List<ResultBean> getResult() {
-        return result;
-    }
-
-    public void setResult(List<ResultBean> result) {
-        this.result = result;
-    }
-
+    @Data
     public static class ResultBean {
         /**
          * h5Url : http://192.168.3.137:8080/h5_invitation/index.html
@@ -53,60 +41,5 @@ public class ActivityTabBean {
         private String content;
         private Long isLogin;
 
-        public Long getIsLogin() {
-            return isLogin;
-        }
-
-        public void setIsLogin(Long isLogin) {
-            this.isLogin = isLogin;
-        }
-
-        public String getContent() {
-            return content;
-        }
-
-        public void setContent(String content) {
-            this.content = content;
-        }
-
-        public String getH5Url() {
-            return h5Url;
-        }
-
-        public void setH5Url(String h5Url) {
-            this.h5Url = h5Url;
-        }
-
-        public boolean isStop() {
-            return stop;
-        }
-
-        public void setStop(boolean stop) {
-            this.stop = stop;
-        }
-
-        public String getBaseImage() {
-            return baseImage;
-        }
-
-        public void setBaseImage(String baseImage) {
-            this.baseImage = baseImage;
-        }
-
-        public Long getId() {
-            return id;
-        }
-
-        public void setId(Long id) {
-            this.id = id;
-        }
-
-        public String getBtnAction() {
-            return btnAction;
-        }
-
-        public void setBtnAction(String btnAction) {
-            this.btnAction = btnAction;
-        }
     }
 }

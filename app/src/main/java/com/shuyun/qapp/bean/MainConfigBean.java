@@ -2,9 +2,12 @@ package com.shuyun.qapp.bean;
 
 import java.util.List;
 
+import lombok.Data;
+
 /**
  * 首页活动配置bean
  */
+@Data
 public class MainConfigBean {
 
     /**
@@ -19,38 +22,8 @@ public class MainConfigBean {
     private String height; //高度
     private List<DatasBean> datas; //配置数据
 
-    public String getColumn() {
-        return column;
-    }
 
-    public void setColumn(String column) {
-        this.column = column;
-    }
-
-    public String getRow() {
-        return row;
-    }
-
-    public void setRow(String row) {
-        this.row = row;
-    }
-
-    public String getHeight() {
-        return height;
-    }
-
-    public void setHeight(String height) {
-        this.height = height;
-    }
-
-    public List<DatasBean> getDatas() {
-        return datas;
-    }
-
-    public void setDatas(List<DatasBean> datas) {
-        this.datas = datas;
-    }
-
+    @Data
     public static class DatasBean {
         /**
          * template : 1
@@ -82,116 +55,6 @@ public class MainConfigBean {
         private String content;
         private Long isLogin;
 
-        public Long getIsLogin() {
-            return isLogin;
-        }
 
-        public void setIsLogin(Long isLogin) {
-            this.isLogin = isLogin;
-        }
-
-        public String getContent() {
-            return content;
-        }
-
-        public void setContent(String content) {
-            this.content = content;
-        }
-
-        public String getTemplate() {
-            return template;
-        }
-
-        public void setTemplate(String template) {
-            this.template = template;
-        }
-
-        public String getColspan() {
-            return colspan;
-        }
-
-        public void setColspan(String colspan) {
-            this.colspan = colspan;
-        }
-
-        public String getH5Url() {
-            return h5Url;
-        }
-
-        public void setH5Url(String h5Url) {
-            this.h5Url = h5Url;
-        }
-
-        public String getRowspan() {
-            return rowspan;
-        }
-
-        public void setRowspan(String rowspan) {
-            this.rowspan = rowspan;
-        }
-
-        public String getIcon() {
-            return icon;
-        }
-
-        public void setIcon(String icon) {
-            this.icon = icon;
-        }
-
-        public String getCount() {
-            return count;
-        }
-
-        public void setCount(String count) {
-            this.count = count;
-        }
-
-        public String getColumn() {
-            return column;
-        }
-
-        public void setColumn(String column) {
-            this.column = column;
-        }
-
-        public String getAction() {
-            return action;
-        }
-
-        public void setAction(String action) {
-            this.action = action;
-        }
-
-        public String getRemark() {
-            return remark;
-        }
-
-        public void setRemark(String remark) {
-            this.remark = remark;
-        }
-
-        public String getRow() {
-            return row;
-        }
-
-        public void setRow(String row) {
-            this.row = row;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public String getHeight() {
-            return height;
-        }
-
-        public void setHeight(String height) {
-            this.height = height;
-        }
     }
 }

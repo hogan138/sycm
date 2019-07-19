@@ -1,5 +1,7 @@
 package com.shuyun.qapp.bean;
 
+import lombok.Data;
+
 /**
  * @ProjectName: 全民共进
  * @Package: com.shuyun.qapp.bean
@@ -8,6 +10,7 @@ package com.shuyun.qapp.bean;
  * @Author: ganquan
  * @CreateDate: 2019/3/25 17:19
  */
+@Data
 public class TaskApplayBean {
 
 
@@ -17,11 +20,5 @@ public class TaskApplayBean {
 
     private Long bp;
 
-    public Long getBp() {
-        return bp;
-    }
 
-    public void setBp(Long bp) {
-        this.bp = bp;
-    }
 }

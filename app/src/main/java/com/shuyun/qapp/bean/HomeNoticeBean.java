@@ -1,5 +1,7 @@
 package com.shuyun.qapp.bean;
 
+import lombok.Data;
+
 /**
  * @ProjectName: 全民共进
  * @Package: com.shuyun.qapp.bean
@@ -8,6 +10,7 @@ package com.shuyun.qapp.bean;
  * @Author: ganquan
  * @CreateDate: 2018/11/22 15:00
  */
+@Data
 public class HomeNoticeBean {
 
     /**
@@ -23,43 +26,5 @@ public class HomeNoticeBean {
     private String groupId;
     private Long isLogin;
 
-    public Long getIsLogin() {
-        return isLogin;
-    }
 
-    public void setIsLogin(Long isLogin) {
-        this.isLogin = isLogin;
-    }
-
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
-    }
-
-    public String getH5Url() {
-        return h5Url;
-    }
-
-    public void setH5Url(String h5Url) {
-        this.h5Url = h5Url;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
-    }
 }

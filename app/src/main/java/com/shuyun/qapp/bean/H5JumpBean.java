@@ -1,8 +1,11 @@
 package com.shuyun.qapp.bean;
 
+import lombok.Data;
+
 /**
  * 与h5交互跳转bean
  */
+@Data
 public class H5JumpBean {
 
 
@@ -16,27 +19,5 @@ public class H5JumpBean {
     private String content;
     private String h5Url;
 
-    public String getBtnAction() {
-        return btnAction;
-    }
 
-    public void setBtnAction(String btnAction) {
-        this.btnAction = btnAction;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getH5Url() {
-        return h5Url;
-    }
-
-    public void setH5Url(String h5Url) {
-        this.h5Url = h5Url;
-    }
 }

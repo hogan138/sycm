@@ -9,11 +9,13 @@ import com.alibaba.fastjson.serializer.ToStringSerializer;
 import java.math.BigDecimal;
 import java.util.List;
 
+import lombok.Data;
+
 /**
  * 宝箱bean
  */
 
-
+@Data
 public class BoxBean implements Parcelable {
     private Long count;// 宝箱数量
     private Long source; // 宝箱来源，仅当count=1时有效
@@ -35,6 +37,7 @@ public class BoxBean implements Parcelable {
     private Double amount; // 奖品价值
     private String h5Url;
     private String isRealName;//是否实名认证
+    private Long beat = 0L; // 得到宝箱时击败的人次
 
     public BoxBean() {
 
@@ -77,160 +80,6 @@ public class BoxBean implements Parcelable {
         }
     };
 
-    public String getIsRealName() {
-        return isRealName;
-    }
-
-    public void setIsRealName(String isRealName) {
-        this.isRealName = isRealName;
-    }
-
-    public String getH5Url() {
-        return h5Url;
-    }
-
-    public void setH5Url(String h5Url) {
-        this.h5Url = h5Url;
-    }
-
-    public Long getCount() {
-        return count;
-    }
-
-    public void setCount(Long count) {
-        this.count = count;
-    }
-
-    public Long getSource() {
-        return source;
-    }
-
-    public void setSource(Long source) {
-        this.source = source;
-    }
-
-    public List<PrizeInfo> getPrizes() {
-        return prizes;
-    }
-
-    public void setPrizes(List<PrizeInfo> prizes) {
-        this.prizes = prizes;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getBulletin() {
-        return bulletin;
-    }
-
-    public void setBulletin(String bulletin) {
-        this.bulletin = bulletin;
-    }
-
-    public Double getBeatRate() {
-        return beatRate;
-    }
-
-    public void setBeatRate(Double beatRate) {
-        this.beatRate = beatRate;
-    }
-
-    public Double getAccuracy() {
-        return accuracy;
-    }
-
-    public void setAccuracy(Double accuracy) {
-        this.accuracy = accuracy;
-    }
-
-    public Long getPrizeId() {
-        return prizeId;
-    }
-
-    public void setPrizeId(Long prizeId) {
-        this.prizeId = prizeId;
-    }
-
-    public Long getRuleId() {
-        return ruleId;
-    }
-
-    public void setRuleId(Long ruleId) {
-        this.ruleId = ruleId;
-    }
-
-    public Long getExpireTime() {
-        return expireTime;
-    }
-
-    public void setExpireTime(Long expireTime) {
-        this.expireTime = expireTime;
-    }
-
-    public Long getValidTime() {
-        return validTime;
-    }
-
-    public void setValidTime(Long validTime) {
-        this.validTime = validTime;
-    }
-
-    public Short getStatus() {
-        return status;
-    }
-
-    public void setStatus(Short status) {
-        this.status = status;
-    }
-
-    public Short getSubstatus() {
-        return substatus;
-    }
-
-    public void setSubstatus(Short substatus) {
-        this.substatus = substatus;
-    }
-
-    public String getSubstatusName() {
-        return substatusName;
-    }
-
-    public void setSubstatusName(String substatusName) {
-        this.substatusName = substatusName;
-    }
-
-    public Short getUpcomming() {
-        return upcomming;
-    }
-
-    public void setUpcomming(Short upcomming) {
-        this.upcomming = upcomming;
-    }
-
-    public Double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
-
-    public Long getBeat() {
-        return beat;
-    }
-
-    public void setBeat(Long beat) {
-        this.beat = beat;
-    }
-
-    private Long beat = 0L; // 得到宝箱时击败的人次
-
     @Override
     public int describeContents() {
         return 0;
@@ -263,7 +112,7 @@ public class BoxBean implements Parcelable {
         dest.writeString(h5Url);
     }
 
-
+    @Data
     public static class PrizeInfo implements Parcelable {
         private String name; // 奖品名称
         private Short type; // 奖品类型
@@ -321,125 +170,7 @@ public class BoxBean implements Parcelable {
             }
         };
 
-        public String getName() {
-            return name;
-        }
 
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public Short getType() {
-            return type;
-        }
-
-        public void setType(Short type) {
-            this.type = type;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
-        }
-
-        public Short getMode() {
-            return mode;
-        }
-
-        public void setMode(Short mode) {
-            this.mode = mode;
-        }
-
-        public String getPurpose() {
-            return purpose;
-        }
-
-        public void setPurpose(String purpose) {
-            this.purpose = purpose;
-        }
-
-        public String getContent() {
-            return content;
-        }
-
-        public void setContent(String content) {
-            this.content = content;
-        }
-
-        public String getPicture() {
-            return picture;
-        }
-
-        public void setPicture(String picture) {
-            this.picture = picture;
-        }
-
-        public String getOpenPicture() {
-            return openPicture;
-        }
-
-        public void setOpenPicture(String openPicture) {
-            this.openPicture = openPicture;
-        }
-
-        public String getMainImage() {
-            return mainImage;
-        }
-
-        public void setMainImage(String mainImage) {
-            this.mainImage = mainImage;
-        }
-
-        public String getLongImage() {
-            return LongImage;
-        }
-
-        public void setLongImage(String LongImage) {
-            this.LongImage = LongImage;
-        }
-
-        public Long getId() {
-            return id;
-        }
-
-        public void setId(Long id) {
-            this.id = id;
-        }
-
-        public String getGoodsCode() {
-            return goodsCode;
-        }
-
-        public void setGoodsCode(String goodsCode) {
-            this.goodsCode = goodsCode;
-        }
-
-        public BigDecimal getWorthLower() {
-            return worthLower;
-        }
-
-        public void setWorthLower(BigDecimal worthLower) {
-            this.worthLower = worthLower;
-        }
-
-        public BigDecimal getWorthUpper() {
-            return worthUpper;
-        }
-
-        public void setWorthUpper(BigDecimal worthUpper) {
-            this.worthUpper = worthUpper;
-        }
-
-        public String getShowName() {
-            return showName;
-        }
-
-        public void setShowName(String showName) {
-            this.showName = showName;
-        }
 
         @Override
         public int describeContents() {

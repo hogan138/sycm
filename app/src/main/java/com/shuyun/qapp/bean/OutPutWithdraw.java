@@ -5,11 +5,13 @@ import android.os.Parcelable;
 
 import java.math.BigDecimal;
 
+import lombok.Data;
+
 /**
  * Created by sunxiao on 2018/5/7.
  * 提现正确输出
  */
-
+@Data
 public class OutPutWithdraw implements Parcelable {
     private String id;
     private BigDecimal amount;
@@ -43,41 +45,6 @@ public class OutPutWithdraw implements Parcelable {
         }
     };
 
-    public String getId() {
-        return id;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public Long getType() {
-        return type;
-    }
-
-    public Long getStatus() {
-        return status;
-    }
-
-    public BigDecimal getCharge() {
-        return charge;
-    }
-
-    public BigDecimal getActual() {
-        return actual;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
 
     @Override
     public String toString() {

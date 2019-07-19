@@ -3,11 +3,13 @@ package com.shuyun.qapp.bean;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.ToStringSerializer;
 
+import lombok.Data;
+
 /**
  * Created by sunxiao on 2018/6/27.
  * 答题首页需要传给H5的参数
  */
-
+@Data
 public class WebAnswerHomeBean {
 
     private String token;//登录返回参数
@@ -26,86 +28,6 @@ public class WebAnswerHomeBean {
     private Integer share;
     private String deviceId;//设备id  数美sdk得到的设备id
     private String pages; //友盟页面统计记录
-
-    public void setPages(String pages) {
-        this.pages = pages;
-    }
-
-    public String getPages() {
-        return pages;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
-    }
-
-    public void setShare(Integer share) {
-        this.share = share;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public void setRandom(String random) {
-        this.random = random;
-    }
-
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
-    }
-
-    public void setAct(Long act) {
-        this.act = act;
-    }
-
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public String getRandom() {
-        return random;
-    }
-
-    public Long getGroupId() {
-        return groupId;
-    }
-
-    public Long getAct() {
-        return act;
-    }
-
-    public void setV(Long v) {
-        this.v = v;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
-    public void setAppSecret(String appSecret) {
-        this.appSecret = appSecret;
-    }
-
-    public Long getV() {
-        return v;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public String getAppSecret() {
-        return appSecret;
-    }
-
-    public Integer getShare() {
-        return share;
-    }
 
     @Override
     public String toString() {

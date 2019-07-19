@@ -5,10 +5,12 @@ import com.alibaba.fastjson.serializer.ToStringSerializer;
 
 import java.io.Serializable;
 
+import lombok.Data;
+
 /**
  * 登录返回
  */
-
+@Data
 public class LoginResponse implements Serializable {
     private String token;//返回的token
     private Long expire;//token的有效期
@@ -24,110 +26,8 @@ public class LoginResponse implements Serializable {
     private String boxId; //宝箱ID
     private String certification; //是否实名
 
-    public String getCertification() {
-        return certification;
-    }
 
-    public void setCertification(String certification) {
-        this.certification = certification;
-    }
-
-    public String getBoxId() {
-        return boxId;
-    }
-
-    public void setBoxId(String boxId) {
-        this.boxId = boxId;
-    }
-
-    public String getOpenId() {
-        return openId;
-    }
-
-    public void setOpenId(String openId) {
-        this.openId = openId;
-    }
-
-    public String getWxName() {
-        return wxName;
-    }
-
-    public void setWxName(String wxName) {
-        this.wxName = wxName;
-    }
-
-    public String getWxHeadUrl() {
-        return wxHeadUrl;
-    }
-
-    public void setWxHeadUrl(String wxHeadUrl) {
-        this.wxHeadUrl = wxHeadUrl;
-    }
-
-    public Boolean isSetPwd() {
-        return setPwd;
-    }
-
-    public void setSetPwd(Boolean setPwd) {
-        this.setPwd = setPwd;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public void setExpire(Long expire) {
-        this.expire = expire;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public void setRandom(String random) {
-        this.random = random;
-    }
-
-    public void setBind(Integer bind) {
-        this.bind = bind;
-    }
-
-    public void setInvite(String invite) {
-        this.invite = invite;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public Long getExpire() {
-        return expire;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public String getRandom() {
-        return random;
-    }
-
-    public Integer getBind() {
-        return bind;
-    }
-
-    public String getInvite() {
-        return invite;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
+    @Data
     public static class User implements Serializable {
         private String nickname;//用户的昵称
         private Integer type;//用户类型   1——正式用户 0——内部用户
@@ -137,53 +37,7 @@ public class LoginResponse implements Serializable {
         @JSONField(serializeUsing = ToStringSerializer.class)
         private Long id;
 
-        public Long getId() {
-            return id;
-        }
 
-        public void setId(Long id) {
-            this.id = id;
-        }
-
-        public void setNickname(String nickname) {
-            this.nickname = nickname;
-        }
-
-        public void setType(Integer type) {
-            this.type = type;
-        }
-
-        public void setHeaderId(String headerId) {
-            this.headerId = headerId;
-        }
-
-        public void setOb(Integer ob) {
-            this.ob = ob;
-        }
-
-        public void setShare(Integer share) {
-            this.share = share;
-        }
-
-        public String getNickname() {
-            return nickname;
-        }
-
-        public Integer getType() {
-            return type;
-        }
-
-        public String getHeaderId() {
-            return headerId;
-        }
-
-        public Integer getOb() {
-            return ob;
-        }
-
-        public Integer getShare() {
-            return share;
-        }
 
         @Override
         public String toString() {

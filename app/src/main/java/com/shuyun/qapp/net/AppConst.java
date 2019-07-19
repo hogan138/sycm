@@ -145,6 +145,7 @@ public class AppConst {
     public static final String ACTION_PRIZE = "action.prize";//我的奖品
     public static final String ACTION_GAME = "action.third.game";//游戏中心
     public static final String ACTION_SCHEME = "action.url.scheme";//scheme
+    public static final String ACTION_PROPS = "action.props";//我的道具
 
     //邀请登录跳转
     public static final int INVITE_CODE = 0x2001;

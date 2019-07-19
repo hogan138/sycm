@@ -3,11 +3,14 @@ package com.shuyun.qapp.bean;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.ToStringSerializer;
 
+import lombok.Data;
+
 /**
  * 项目名称：QMGJ
  * 创建人：${ganquan}
  * 创建日期：2018/7/12 13:54
  */
+@Data
 public class RobotInputAgainstBean {
 
 
@@ -38,99 +41,5 @@ public class RobotInputAgainstBean {
     private String robotOptionId; //机器人选项id
     private String examId;
 
-    public String getExamId() {
-        return examId;
-    }
 
-    public void setExamId(String examId) {
-        this.examId = examId;
-    }
-
-    public String getRobotOptionId() {
-        return robotOptionId;
-    }
-
-    public void setRobotOptionId(String robotOptionId) {
-        this.robotOptionId = robotOptionId;
-    }
-
-    public Integer getIsLast() {
-        return isLast;
-    }
-
-    public void setIsLast(Integer isLast) {
-        this.isLast = isLast;
-    }
-
-    public String getQuestionArry() {
-        return questionArry;
-    }
-
-    public void setQuestionArry(String questionArry) {
-        this.questionArry = questionArry;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public Long getQuestionId() {
-        return questionId;
-    }
-
-    public void setQuestionId(Long questionId) {
-        this.questionId = questionId;
-    }
-
-    public Integer getUserScore() {
-        return userScore;
-    }
-
-    public void setUserScore(Integer userScore) {
-        this.userScore = userScore;
-    }
-
-    public Integer getRobotScore() {
-        return robotScore;
-    }
-
-    public void setRobotScore(Integer robotScore) {
-        this.robotScore = robotScore;
-    }
-
-    public String getRobotId() {
-        return robotId;
-    }
-
-    public void setRobotId(String robotId) {
-        this.robotId = robotId;
-    }
-
-    public String getUserOptionId() {
-        return userOptionId;
-    }
-
-    public void setUserOptionId(String userOptionId) {
-        this.userOptionId = userOptionId;
-    }
-
-    public Double getUserConst() {
-        return userConst;
-    }
-
-    public void setUserConst(Double userConst) {
-        this.userConst = userConst;
-    }
-
-    public Long getNextQuestionId() {
-        return nextQuestionId;
-    }
-
-    public void setNextQuestionId(Long nextQuestionId) {
-        this.nextQuestionId = nextQuestionId;
-    }
 }

@@ -5,10 +5,12 @@ import com.alibaba.fastjson.serializer.ToStringSerializer;
 
 import java.util.List;
 
+import lombok.Data;
+
 /**
  * Created by sunxiao on 2018/4/25.
  */
-
+@Data
 public class BannerBean {
 
     @JSONField(serializeUsing = ToStringSerializer.class)
@@ -27,61 +29,6 @@ public class BannerBean {
     //任意位置logo配置
     private List<AdConfigs> adConfigs;
 
-    public Long getIsLogin() {
-        return isLogin;
-    }
-
-    public void setIsLogin(Long isLogin) {
-        this.isLogin = isLogin;
-    }
-
-    public String getAction() {
-        return action;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public String getH5Url() {
-        return h5Url;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public String getPicture() {
-        return picture;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public Long getType() {
-        return type;
-    }
-
-    public List<AdConfigs> getAdConfigs() {
-        return adConfigs;
-    }
-
-    public void setAdConfigs(List<AdConfigs> adConfigs) {
-        this.adConfigs = adConfigs;
-    }
 
     @Override
     public String toString() {
@@ -95,7 +42,7 @@ public class BannerBean {
                 ", type=" + type +
                 '}';
     }
-
+    @Data
     public static class AdConfigs {
 
         /**
@@ -123,93 +70,7 @@ public class BannerBean {
         private String shadowRadius;
         private String imageUrl;
 
-        public Long getType() {
-            return type;
-        }
 
-        public void setType(Long type) {
-            this.type = type;
-        }
-
-        public Long getLocation() {
-            return location;
-        }
-
-        public void setLocation(Long location) {
-            this.location = location;
-        }
-
-        public Long getWidth() {
-            return width;
-        }
-
-        public void setWidth(Long width) {
-            this.width = width;
-        }
-
-        public Long getHeight() {
-            return height;
-        }
-
-        public void setHeight(Long height) {
-            this.height = height;
-        }
-
-        public String getPadding() {
-            return padding;
-        }
-
-        public void setPadding(String padding) {
-            this.padding = padding;
-        }
-
-        public String getMargin() {
-            return margin;
-        }
-
-        public void setMargin(String margin) {
-            this.margin = margin;
-        }
-
-        public Long getShadow() {
-            return shadow;
-        }
-
-        public void setShadow(Long shadow) {
-            this.shadow = shadow;
-        }
-
-        public String getShadowColor() {
-            return shadowColor;
-        }
-
-        public void setShadowColor(String shadowColor) {
-            this.shadowColor = shadowColor;
-        }
-
-        public String getShadowAlpha() {
-            return shadowAlpha;
-        }
-
-        public void setShadowAlpha(String shadowAlpha) {
-            this.shadowAlpha = shadowAlpha;
-        }
-
-        public String getShadowRadius() {
-            return shadowRadius;
-        }
-
-        public void setShadowRadius(String shadowRadius) {
-            this.shadowRadius = shadowRadius;
-        }
-
-        public String getImageUrl() {
-            return imageUrl;
-        }
-
-        public void setImageUrl(String imageUrl) {
-            this.imageUrl = imageUrl;
-        }
     }
 
 

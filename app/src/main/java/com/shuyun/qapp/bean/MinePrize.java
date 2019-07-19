@@ -295,7 +295,7 @@ public class MinePrize implements Parcelable {
         this.groups = ChildMinePrizes;
     }
 
-
+    @Data
     public static class PrizesBean implements Parcelable {
         /**
          * showName : 现金

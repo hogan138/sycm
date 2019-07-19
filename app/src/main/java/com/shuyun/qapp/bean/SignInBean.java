@@ -2,6 +2,8 @@ package com.shuyun.qapp.bean;
 
 import java.util.List;
 
+import lombok.Data;
+
 /**
  * @ProjectName: 全民共进
  * @Package: com.shuyun.qapp.bean
@@ -10,6 +12,7 @@ import java.util.List;
  * @Author: ganquan
  * @CreateDate: 2019/3/22 13:30
  */
+@Data
 public class SignInBean {
 
     /**
@@ -26,46 +29,8 @@ public class SignInBean {
     private boolean signDay;
     private List<DatasBean> datas;
 
-    public Long getBp() {
-        return bp;
-    }
 
-    public void setBp(Long bp) {
-        this.bp = bp;
-    }
-
-    public Long getDays() {
-        return days;
-    }
-
-    public void setDays(Long days) {
-        this.days = days;
-    }
-
-    public String getNextTaskId() {
-        return nextTaskId;
-    }
-
-    public void setNextTaskId(String nextTaskId) {
-        this.nextTaskId = nextTaskId;
-    }
-
-    public boolean isSignDay() {
-        return signDay;
-    }
-
-    public void setSignDay(boolean signDay) {
-        this.signDay = signDay;
-    }
-
-    public List<DatasBean> getDatas() {
-        return datas;
-    }
-
-    public void setDatas(List<DatasBean> datas) {
-        this.datas = datas;
-    }
-
+    @Data
     public static class DatasBean {
         /**
          * taskId : 6514710400368513024
@@ -79,36 +44,6 @@ public class SignInBean {
         private String remark;
         private boolean selected;
 
-        public String getTaskId() {
-            return taskId;
-        }
 
-        public void setTaskId(String taskId) {
-            this.taskId = taskId;
-        }
-
-        public String getDay() {
-            return day;
-        }
-
-        public void setDay(String day) {
-            this.day = day;
-        }
-
-        public String getRemark() {
-            return remark;
-        }
-
-        public void setRemark(String remark) {
-            this.remark = remark;
-        }
-
-        public boolean isSelected() {
-            return selected;
-        }
-
-        public void setSelected(boolean selected) {
-            this.selected = selected;
-        }
     }
 }

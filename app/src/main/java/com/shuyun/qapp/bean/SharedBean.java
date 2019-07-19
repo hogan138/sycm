@@ -3,11 +3,13 @@ package com.shuyun.qapp.bean;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.ToStringSerializer;
 
+import lombok.Data;
+
 /**
  * Created by sunxiao on 2018/5/10.
  * 答题分享
  */
-
+@Data
 public class SharedBean {
 
     /**
@@ -33,61 +35,6 @@ public class SharedBean {
     private String picture;//背景图
     private String buttonCaption;//按钮标题
 
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public String getPicture() {
-        return picture;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public void setButtonCaption(String buttonCaption) {
-        this.buttonCaption = buttonCaption;
-    }
-
-    public String getButtonCaption() {
-        return buttonCaption;
-    }
 
     @Override
     public String toString() {

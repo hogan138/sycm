@@ -1,10 +1,12 @@
 package com.shuyun.qapp.bean;
 
 
+import lombok.Data;
+
 /**
  * 用户匹配时长
  */
-
+@Data
 public class MatchTimeBean {
 
 
@@ -20,38 +22,7 @@ public class MatchTimeBean {
     private String robotAccount;//机器人账号
     private Integer matchTime;//匹配时间
 
-    public UserBean getUser() {
-        return user;
-    }
-
-    public void setUser(UserBean user) {
-        this.user = user;
-    }
-
-    public Integer getRobotPic() {
-        return robotPic;
-    }
-
-    public void setRobotPic(Integer robotPic) {
-        this.robotPic = robotPic;
-    }
-
-    public String getRobotAccount() {
-        return robotAccount;
-    }
-
-    public void setRobotAccount(String robotAccount) {
-        this.robotAccount = robotAccount;
-    }
-
-    public Integer getMatchTime() {
-        return matchTime;
-    }
-
-    public void setMatchTime(Integer matchTime) {
-        this.matchTime = matchTime;
-    }
-
+    @Data
     public static class UserBean {
         /**
          * account : 15868421563
@@ -94,158 +65,6 @@ public class MatchTimeBean {
         private Long messages;
         private Long wxBind;
         private String wxHeader;
-
-        public String getAccount() {
-            return account;
-        }
-
-        public void setAccount(String account) {
-            this.account = account;
-        }
-
-        public String getNickname() {
-            return nickname;
-        }
-
-        public void setNickname(String nickname) {
-            this.nickname = nickname;
-        }
-
-        public Long getObt() {
-            return obt;
-        }
-
-        public void setObt(Long obt) {
-            this.obt = obt;
-        }
-
-        public String getHeader() {
-            return header;
-        }
-
-        public void setHeader(String header) {
-            this.header = header;
-        }
-
-        public Integer getHeaderId() {
-            return headerId;
-        }
-
-        public void setHeaderId(Integer headerId) {
-            this.headerId = headerId;
-        }
-
-        public Long getStatus() {
-            return status;
-        }
-
-        public void setStatus(Long status) {
-            this.status = status;
-        }
-
-        public Integer getCertification() {
-            return certification;
-        }
-
-        public void setCertification(Integer certification) {
-            this.certification = certification;
-        }
-
-        public String getCertInfo() {
-            return certInfo;
-        }
-
-        public void setCertInfo(String certInfo) {
-            this.certInfo = certInfo;
-        }
-
-        public String getPhone() {
-            return phone;
-        }
-
-        public void setPhone(String phone) {
-            this.phone = phone;
-        }
-
-        public Long getGender() {
-            return gender;
-        }
-
-        public void setGender(Long gender) {
-            this.gender = gender;
-        }
-
-        public Double getCash() {
-            return cash;
-        }
-
-        public void setCash(Double cash) {
-            this.cash = cash;
-        }
-
-        public Long getBp() {
-            return bp;
-        }
-
-        public void setBp(Long bp) {
-            this.bp = bp;
-        }
-
-        public Long getOpporitunity() {
-            return opporitunity;
-        }
-
-        public void setOpporitunity(Long opporitunity) {
-            this.opporitunity = opporitunity;
-        }
-
-        public Long getWithdraw() {
-            return withdraw;
-        }
-
-        public void setWithdraw(Long withdraw) {
-            this.withdraw = withdraw;
-        }
-
-        public Long getAvailablePrize() {
-            return availablePrize;
-        }
-
-        public void setAvailablePrize(Long availablePrize) {
-            this.availablePrize = availablePrize;
-        }
-
-        public Long getUpcommings() {
-            return upcommings;
-        }
-
-        public void setUpcommings(Long upcommings) {
-            this.upcommings = upcommings;
-        }
-
-        public Long getMessages() {
-            return messages;
-        }
-
-        public void setMessages(Long messages) {
-            this.messages = messages;
-        }
-
-        public Long getWxBind() {
-            return wxBind;
-        }
-
-        public void setWxBind(Long wxBind) {
-            this.wxBind = wxBind;
-        }
-
-        public String getWxHeader() {
-            return wxHeader;
-        }
-
-        public void setWxHeader(String wxHeader) {
-            this.wxHeader = wxHeader;
-        }
 
         @Override
         public String toString() {

@@ -1,9 +1,11 @@
 package com.shuyun.qapp.bean;
 
+import lombok.Data;
+
 /**
  * 现金流水和积分流水记录共用的javaBean
  */
-
+@Data
 public class AccountBean {
 
     /**
@@ -23,35 +25,6 @@ public class AccountBean {
     private Long status;//流水状态
     private String time;//流水时间
     private String name;//名称
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setSource(Long source) {
-        this.source = source;
-    }
-
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
-
-    public void setStatus(Long status) {
-        this.status = status;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public void setWay(int way) {
-        this.way = way;
-    }
-
     /**
      * 流水方式：
      * 1——收入
@@ -59,25 +32,6 @@ public class AccountBean {
      */
     private int way;
 
-    public Long getSource() {
-        return source;
-    }
-
-    public String getAmount() {
-        return amount;
-    }
-
-    public Long getStatus() {
-        return status;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public int getWay() {
-        return way;
-    }
 
     @Override
     public String toString() {

@@ -1,8 +1,11 @@
 package com.shuyun.qapp.bean;
 
+import lombok.Data;
+
 /**
  * 获取活动专区显示
  */
+@Data
 public class ActivityTimeBean {
 
 
@@ -12,11 +15,4 @@ public class ActivityTimeBean {
 
     private String show;
 
-    public String getShow() {
-        return show;
-    }
-
-    public void setShow(String show) {
-        this.show = show;
-    }
 }

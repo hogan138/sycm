@@ -3,10 +3,13 @@ package com.shuyun.qapp.bean;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.ToStringSerializer;
 
+import lombok.Data;
+
 /**
  * Created by sunxiao on 2018/5/21.
  * 用户答题记录
  */
+@Data
 public class AnswerRecordBean {
 
     private String id;//答题id
@@ -23,66 +26,6 @@ public class AnswerRecordBean {
      * 1——中奖
      */
     private Long result;
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
-    }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public void setAccuracy(Double accuracy) {
-        this.accuracy = accuracy;
-    }
-
-    public void setMerchantName(String merchantName) {
-        this.merchantName = merchantName;
-    }
-
-    public void setResult(Long result) {
-        this.result = result;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public Long getGroupId() {
-        return groupId;
-    }
-
-    public String getPicture() {
-        return picture;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public Double getAccuracy() {
-        return accuracy;
-    }
-
-    public String getMerchantName() {
-        return merchantName;
-    }
-
-    public Long getResult() {
-        return result;
-    }
-
-    public String getTitle() {
-        return title;
-    }
 
     @Override
     public String toString() {

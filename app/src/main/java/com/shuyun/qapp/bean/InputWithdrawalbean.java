@@ -2,12 +2,14 @@ package com.shuyun.qapp.bean;
 
 import java.util.Arrays;
 
+import lombok.Data;
+
 /**
  * Created by sunxiao on 2018/5/7.
  * 以json的形式传给服务端
  * 涉及金额的用BigDecimal类型
  */
-
+@Data
 public class InputWithdrawalbean {
 
     private String amount;//提现金额
@@ -15,55 +17,6 @@ public class InputWithdrawalbean {
     private String cardNo;//支付宝账号
     private String realname;//支付宝账号名称
     private String bankId;
-
-    public String getBankId() {
-        return bankId;
-    }
-
-    public void setBankId(String bankId) {
-        this.bankId = bankId;
-    }
-
-    public String getAmount() {
-        return amount;
-    }
-
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
-
-    public String getCardNo() {
-        return cardNo;
-    }
-
-    public void setCardNo(String cardNo) {
-        this.cardNo = cardNo;
-    }
-
-    public String getRealname() {
-        return realname;
-    }
-
-    public void setRealname(String realname) {
-        this.realname = realname;
-    }
-
-    public String[] getReds() {
-        return reds;
-    }
-
-    public void setReds(String[] reds) {
-        this.reds = reds;
-    }
-
     private String[] reds;//针对哪几个红包提现,多个红包id用逗号分隔;Type=2时必须加密传输
 
     public InputWithdrawalbean() {

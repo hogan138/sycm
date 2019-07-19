@@ -1,5 +1,7 @@
 package com.shuyun.qapp.bean;
 
+import lombok.Data;
+
 /**
  * @ProjectName: 全民共进
  * @Package: com.shuyun.qapp.bean
@@ -8,6 +10,7 @@ package com.shuyun.qapp.bean;
  * @Author: ganquan
  * @CreateDate: 2018/12/24 11:07
  */
+@Data
 public class TouristsBean {
 
 
@@ -17,11 +20,5 @@ public class TouristsBean {
 
     private String mode;
 
-    public String getMode() {
-        return mode;
-    }
 
-    public void setMode(String mode) {
-        this.mode = mode;
-    }
 }

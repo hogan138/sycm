@@ -3,12 +3,15 @@ package com.shuyun.qapp.bean;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.ToStringSerializer;
 
+import lombok.Data;
+
 /**
  * 项目名称：QMGJ
  * 创建人：${ganquan}
  * 创建日期：2018/8/2 14:46
  * 积分夺宝全部奖品
  */
+@Data
 public class IntegralAllPrizeBean {
 
 
@@ -35,84 +38,5 @@ public class IntegralAllPrizeBean {
     private Long participate; //参与人数
     private String h5Url;
 
-    public String getH5Url() {
-        return h5Url;
-    }
 
-    public void setH5Url(String h5Url) {
-        this.h5Url = h5Url;
-    }
-
-
-    public Long getScheduleId() {
-        return scheduleId;
-    }
-
-    public void setScheduleId(Long scheduleId) {
-        this.scheduleId = scheduleId;
-    }
-
-    public String getPrizeName() {
-        return prizeName;
-    }
-
-    public void setPrizeName(String prizeName) {
-        this.prizeName = prizeName;
-    }
-
-    public String getMainPic() {
-        return mainPic;
-    }
-
-    public void setMainPic(String mainPic) {
-        this.mainPic = mainPic;
-    }
-
-    public Long getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Long endTime) {
-        this.endTime = endTime;
-    }
-
-    public Long getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(Long schedule) {
-        this.schedule = schedule;
-    }
-
-    public Long getCount() {
-        return count;
-    }
-
-    public void setCount(Long count) {
-        this.count = count;
-    }
-
-    public Long getScheduleStatus() {
-        return scheduleStatus;
-    }
-
-    public void setScheduleStatus(Long scheduleStatus) {
-        this.scheduleStatus = scheduleStatus;
-    }
-
-    public Long getBpcons() {
-        return bpcons;
-    }
-
-    public void setBpcons(Long bpcons) {
-        this.bpcons = bpcons;
-    }
-
-    public Long getParticipate() {
-        return participate;
-    }
-
-    public void setParticipate(Long participate) {
-        this.participate = participate;
-    }
 }

@@ -89,7 +89,6 @@ public class NewHomeFragment extends BaseFragment implements OnRemotingCallBackL
 
     private Activity mContext;
     private Handler mHandler = new Handler();
-    private boolean isLoading = false;
 
     //顶部tablayout
     private List<Fragment> mFragmentList = new ArrayList<>();
@@ -113,6 +112,7 @@ public class NewHomeFragment extends BaseFragment implements OnRemotingCallBackL
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         mContext = getActivity();
 
         FragmentTouchManager.instance().registerFragmentTouchListener(this);

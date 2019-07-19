@@ -14,8 +14,6 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.ConvertUtils;
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.NewHomeSelectBean;
-import com.shuyun.qapp.ui.integral.IntegralCenterActivity;
-import com.shuyun.qapp.utils.GlideUtils;
 import com.shuyun.qapp.utils.OnMultiClickListener;
 
 import java.util.List;

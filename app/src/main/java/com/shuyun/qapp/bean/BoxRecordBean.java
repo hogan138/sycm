@@ -1,5 +1,7 @@
 package com.shuyun.qapp.bean;
 
+import lombok.Data;
+
 /**
  * @ProjectName: 全民共进
  * @Package: com.shuyun.qapp.bean
@@ -8,6 +10,7 @@ package com.shuyun.qapp.bean;
  * @Author: ganquan
  * @CreateDate: 2018/11/28 10:19
  */
+@Data
 public class BoxRecordBean {
 
 
@@ -21,28 +24,6 @@ public class BoxRecordBean {
     private String remark;
     private String title;
 
-    public String getBoxTime() {
-        return boxTime;
-    }
 
-    public void setBoxTime(String boxTime) {
-        this.boxTime = boxTime;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
 }

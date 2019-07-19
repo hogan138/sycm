@@ -1,10 +1,12 @@
 package com.shuyun.qapp.bean;
 
+import lombok.Data;
+
 /**
  * Created by sunxiao on 2018/5/15.
  * 获取验证码输入参数
  */
-
+@Data
 public class InputVerficationCodeBean {
     private String phone;//手机号码
     /**
@@ -19,62 +21,6 @@ public class InputVerficationCodeBean {
     private Long v;//接口版本
     private Long stamp;//当前时间戳
     private String code;//签名验证码
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
-
-    public void setDevId(Long devId) {
-        this.devId = devId;
-    }
-
-    public void setAppId(Long appId) {
-        this.appId = appId;
-    }
-
-    public void setV(Long v) {
-        this.v = v;
-    }
-
-    public void setStamp(Long stamp) {
-        this.stamp = stamp;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public Long getDevId() {
-        return devId;
-    }
-
-    public Long getAppId() {
-        return appId;
-    }
-
-    public Long getV() {
-        return v;
-    }
-
-    public Long getStamp() {
-        return stamp;
-    }
-
-    public String getCode() {
-        return code;
-    }
 
     @Override
     public String toString() {

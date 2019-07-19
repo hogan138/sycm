@@ -368,7 +368,7 @@ public class VerifyCodeActivity extends BaseActivity {
 
                         if (mode == 2) {
                             try {
-                                if (loginResp.isSetPwd()) {
+                                if (loginResp.getSetPwd()) {
                                     //未设置密码
                                     Intent intent = new Intent(mContext, SetPasswordActivity.class);
                                     intent.putExtra("name", "register");

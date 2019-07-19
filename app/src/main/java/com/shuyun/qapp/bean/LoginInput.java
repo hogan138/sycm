@@ -3,10 +3,12 @@ package com.shuyun.qapp.bean;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.ToStringSerializer;
 
+import lombok.Data;
+
 /**
  * Created by sunxiao on 2018/5/15.
  */
-
+@Data
 public class LoginInput {
     /**
      * 登录模式1:账号+密码登录;2:手机号+验证码登录;3:微信登录
@@ -29,127 +31,7 @@ public class LoginInput {
     private String deviceId;//设备id  数美sdk得到的设备id
     private String examId;//答题免登录传入的答卷id
 
-    public String getExamId() {
-        return examId;
-    }
 
-    public void setExamId(String examId) {
-        this.examId = examId;
-    }
-
-    public void setAppVersion(String appVersion) {
-        this.appVersion = appVersion;
-    }
-
-    public void setMode(Long mode) {
-        this.mode = mode;
-    }
-
-    public void setAccount(String account) {
-        this.account = account;
-    }
-
-    public void setLng(Double lng) {
-        this.lng = lng;
-    }
-
-    public void setLat(Double lat) {
-        this.lat = lat;
-    }
-
-    public void setTsn(String tsn) {
-        this.tsn = tsn;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
-    public void setDevId(Long devId) {
-        this.devId = devId;
-    }
-
-    public void setAppId(Long appId) {
-        this.appId = appId;
-    }
-
-    public void setV(Long v) {
-        this.v = v;
-    }
-
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public void setStamp(Long stamp) {
-        this.stamp = stamp;
-    }
-
-    public Long getMode() {
-
-        return mode;
-    }
-
-    public Long getStamp() {
-        return stamp;
-    }
-
-    public String getAccount() {
-        return account;
-    }
-
-    public Double getLng() {
-        return lng;
-    }
-
-    public Double getLat() {
-        return lat;
-    }
-
-    public String getTsn() {
-        return tsn;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public Long getDevId() {
-        return devId;
-    }
-
-    public Long getAppId() {
-        return appId;
-    }
-
-    public Long getV() {
-        return v;
-    }
-
-    public String getAppVersion() {
-        return appVersion;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setInviter(Long inviter) {
-        this.inviter = inviter;
-    }
-
-    public Long getInviter() {
-        return inviter;
-    }
-
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
-    }
 
     @Override
     public String toString() {

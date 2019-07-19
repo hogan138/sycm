@@ -2,11 +2,13 @@ package com.shuyun.qapp.bean;
 
 import java.util.List;
 
+import lombok.Data;
+
 /**
  * Created by sunxiao on 2018/5/21.
  * 首页题组
  */
-
+@Data
 public class HomeGroupsBean {
     /**
      * 推荐题组列表
@@ -27,21 +29,7 @@ public class HomeGroupsBean {
      */
     private List<GroupClassifyBean> tree;
 
-    public List<GroupBean> getRecommend() {
-        return recommend;
-    }
 
-    public List<GroupBean> getThermal() {
-        return thermal;
-    }
-
-    public List<GroupBean> getOften() {
-        return often;
-    }
-
-    public List<GroupClassifyBean> getTree() {
-        return tree;
-    }
 
     @Override
     public String toString() {

@@ -1,5 +1,7 @@
 package com.shuyun.qapp.bean;
 
+import lombok.Data;
+
 /**
  * @ProjectName: 全民共进
  * @Package: com.shuyun.qapp.bean
@@ -8,6 +10,7 @@ package com.shuyun.qapp.bean;
  * @Author: ganquan
  * @CreateDate: 2019/3/26 14:48
  */
+@Data
 public class ScoreExchangeResult {
 
     /**
@@ -18,27 +21,5 @@ public class ScoreExchangeResult {
     private String title;
     private String picture;
 
-    public Long getBp() {
-        return bp;
-    }
 
-    public void setBp(Long bp) {
-        this.bp = bp;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getPicture() {
-        return picture;
-    }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
 }

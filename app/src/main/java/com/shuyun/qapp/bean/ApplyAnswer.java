@@ -5,10 +5,12 @@ import com.alibaba.fastjson.serializer.ToStringSerializer;
 
 import java.util.List;
 
+import lombok.Data;
+
 /**
  * Created by sunxiao on 2018/5/4.
  */
-
+@Data
 public class ApplyAnswer {
 
     /**
@@ -23,38 +25,8 @@ public class ApplyAnswer {
     private int answers;//需要回答的题目数量
     private List<QuestionsBean> questions;//问题
 
-    public String getId() {
-        return id;
-    }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public int getTimeout() {
-        return timeout;
-    }
-
-    public void setTimeout(int timeout) {
-        this.timeout = timeout;
-    }
-
-    public int getAnswers() {
-        return answers;
-    }
-
-    public void setAnswers(int answers) {
-        this.answers = answers;
-    }
-
-    public List<QuestionsBean> getQuestions() {
-        return questions;
-    }
-
-    public void setQuestions(List<QuestionsBean> questions) {
-        this.questions = questions;
-    }
-
+    @Data
     public static class QuestionsBean {
         /**
          * id : 10579
@@ -75,62 +47,8 @@ public class ApplyAnswer {
         private String oksIndex; // 正确的选项的下标
         private List<OptionsBean> options;//题目的选项
 
-        public String getOksIndex() {
-            return oksIndex;
-        }
 
-        public void setOksIndex(String oksIndex) {
-            this.oksIndex = oksIndex;
-        }
-
-        public void setType(int type) {
-            this.type = type;
-        }
-
-        public int getType() {
-            return type;
-        }
-
-        public Long getId() {
-            return id;
-        }
-
-        public void setId(Long id) {
-            this.id = id;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public String getPicture() {
-            return picture;
-        }
-
-        public void setPicture(String picture) {
-            this.picture = picture;
-        }
-
-        public String getOks() {
-            return oks;
-        }
-
-        public void setOks(String oks) {
-            this.oks = oks;
-        }
-
-        public List<OptionsBean> getOptions() {
-            return options;
-        }
-
-        public void setOptions(List<OptionsBean> options) {
-            this.options = options;
-        }
-
+        @Data
         public static class OptionsBean {
             /**
              * id : 37922
@@ -141,30 +59,6 @@ public class ApplyAnswer {
             private Long id;//选项id
             private String title;//选项标题
             private String picture;//选项图片
-
-            public Long getId() {
-                return id;
-            }
-
-            public void setId(Long id) {
-                this.id = id;
-            }
-
-            public String getTitle() {
-                return title;
-            }
-
-            public void setTitle(String title) {
-                this.title = title;
-            }
-
-            public String getPicture() {
-                return picture;
-            }
-
-            public void setPicture(String picture) {
-                this.picture = picture;
-            }
 
             @Override
             public String toString() {

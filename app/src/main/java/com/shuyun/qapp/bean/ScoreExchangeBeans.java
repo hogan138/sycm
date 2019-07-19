@@ -2,6 +2,8 @@ package com.shuyun.qapp.bean;
 
 import java.util.List;
 
+import lombok.Data;
+
 /**
  * @ProjectName: 全民共进
  * @Package: com.shuyun.qapp.bean
@@ -10,6 +12,7 @@ import java.util.List;
  * @Author: ganquan
  * @CreateDate: 2019/3/26 13:55
  */
+@Data
 public class ScoreExchangeBeans {
 
 
@@ -18,30 +21,8 @@ public class ScoreExchangeBeans {
 
     private String ruleUrl;
 
-    public List<PropsBean> getProps() {
-        return props;
-    }
 
-    public void setProps(List<PropsBean> props) {
-        this.props = props;
-    }
-
-    public List<PresentsBean> getPresents() {
-        return presents;
-    }
-
-    public void setPresents(List<PresentsBean> presents) {
-        this.presents = presents;
-    }
-
-    public String getRuleUrl() {
-        return ruleUrl;
-    }
-
-    public void setRuleUrl(String ruleUrl) {
-        this.ruleUrl = ruleUrl;
-    }
-
+    @Data
     public static class PropsBean {
         /**
          * id : 6516149939704303616
@@ -59,55 +40,10 @@ public class ScoreExchangeBeans {
         private String action;
         private String actionLabel;
 
-        public String getId() {
-            return id;
-        }
 
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getPicture() {
-            return picture;
-        }
-
-        public void setPicture(String picture) {
-            this.picture = picture;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getPurpose() {
-            return purpose;
-        }
-
-        public void setPurpose(String purpose) {
-            this.purpose = purpose;
-        }
-
-        public String getAction() {
-            return action;
-        }
-
-        public void setAction(String action) {
-            this.action = action;
-        }
-
-        public String getActionLabel() {
-            return actionLabel;
-        }
-
-        public void setActionLabel(String actionLabel) {
-            this.actionLabel = actionLabel;
-        }
     }
 
+    @Data
     public static class PresentsBean {
         /**
          * id : 6516149941826621441
@@ -125,52 +61,6 @@ public class ScoreExchangeBeans {
         private String action;
         private String actionLabel;
 
-        public String getId() {
-            return id;
-        }
 
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getPicture() {
-            return picture;
-        }
-
-        public void setPicture(String picture) {
-            this.picture = picture;
-        }
-
-        public String getPurpose() {
-            return purpose;
-        }
-
-        public void setPurpose(String purpose) {
-            this.purpose = purpose;
-        }
-
-        public String getAction() {
-            return action;
-        }
-
-        public void setAction(String action) {
-            this.action = action;
-        }
-
-        public String getActionLabel() {
-            return actionLabel;
-        }
-
-        public void setActionLabel(String actionLabel) {
-            this.actionLabel = actionLabel;
-        }
     }
 }

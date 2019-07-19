@@ -1,8 +1,11 @@
 package com.shuyun.qapp.bean;
 
+import lombok.Data;
+
 /**
  * 实名认证bean
  */
+@Data
 public class RealNameBean {
 
 
@@ -18,35 +21,5 @@ public class RealNameBean {
     private String body;
     private String status;
 
-    public Long getCertCount() {
-        return certCount;
-    }
 
-    public void setCertCount(Long certCount) {
-        this.certCount = certCount;
-    }
-
-    public String getBizNo() {
-        return bizNo;
-    }
-
-    public void setBizNo(String bizNo) {
-        this.bizNo = bizNo;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }

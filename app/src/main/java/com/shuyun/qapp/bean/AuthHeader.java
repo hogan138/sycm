@@ -2,11 +2,13 @@ package com.shuyun.qapp.bean;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
+import lombok.Data;
+
 /**
  * Created by sunxiao on 2018/5/22.
  * 分享需要传给H5的签名
  */
-
+@Data
 public class AuthHeader {
 
     @JSONField(name = "Authorization")
@@ -15,29 +17,7 @@ public class AuthHeader {
 
     private String id;
 
-    public void setAuthorization(String authorization) {
-        this.authorization = authorization;
-    }
 
-    public void setSycm(String sycm) {
-        this.sycm = sycm;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getAuthorization() {
-        return authorization;
-    }
-
-    public String getSycm() {
-        return sycm;
-    }
-
-    public String getId() {
-        return id;
-    }
 
     @Override
     public String toString() {

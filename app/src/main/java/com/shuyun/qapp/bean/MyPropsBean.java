@@ -1,5 +1,7 @@
 package com.shuyun.qapp.bean;
 
+import lombok.Data;
+
 /**
  * @ProjectName: 全民共进
  * @Package: com.shuyun.qapp.bean
@@ -8,6 +10,7 @@ package com.shuyun.qapp.bean;
  * @Author: ganquan
  * @CreateDate: 2018/11/30 13:53
  */
+@Data
 public class MyPropsBean {
 
 
@@ -32,67 +35,5 @@ public class MyPropsBean {
     private String explain;
     private String remark;
 
-    public String getCount() {
-        return count;
-    }
 
-    public void setCount(String count) {
-        this.count = count;
-    }
-
-    public String getPrizeName() {
-        return prizeName;
-    }
-
-    public void setPrizeName(String prizeName) {
-        this.prizeName = prizeName;
-    }
-
-    public String getPrizePicture() {
-        return prizePicture;
-    }
-
-    public void setPrizePicture(String prizePicture) {
-        this.prizePicture = prizePicture;
-    }
-
-    public String getPrizeMode() {
-        return prizeMode;
-    }
-
-    public void setPrizeMode(String prizeMode) {
-        this.prizeMode = prizeMode;
-    }
-
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
-    }
-
-    public String getActionLabel() {
-        return actionLabel;
-    }
-
-    public void setActionLabel(String actionLabel) {
-        this.actionLabel = actionLabel;
-    }
-
-    public String getExplain() {
-        return explain;
-    }
-
-    public void setExplain(String explain) {
-        this.explain = explain;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
 }

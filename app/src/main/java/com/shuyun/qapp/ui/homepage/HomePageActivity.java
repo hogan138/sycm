@@ -368,9 +368,7 @@ public class HomePageActivity extends BaseActivity implements ViewPager.OnPageCh
                     AppVersionBean appVersionBean = loginResponse.getDat();
                     if (!EncodeAndStringTool.isObjectEmpty(appVersionBean)) {
                         Long mode = appVersionBean.getMode();
-                        if (mode == 0) {
-                        } else if (mode == 1) {
-                        } else if (mode == 2) {
+                        if (mode == 2) {
                             updateDialog(appVersionBean.getUrl());
                         }
                     }

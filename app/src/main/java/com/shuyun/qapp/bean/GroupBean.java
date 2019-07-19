@@ -5,10 +5,12 @@ import com.alibaba.fastjson.serializer.ToStringSerializer;
 
 import java.util.List;
 
+import lombok.Data;
+
 /**
  * 推荐题组 大家都在答题组
  */
-
+@Data
 public class GroupBean {
     /**
      * id : 611
@@ -47,126 +49,8 @@ public class GroupBean {
     private boolean recommend;
     private String remark;
 
-    public boolean isRecommend() {
-        return recommend;
-    }
 
-    public void setRecommend(boolean recommend) {
-        this.recommend = recommend;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public String getTag() {
-        return tag;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getPicture() {
-        return picture;
-    }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
-
-    public Long getOpportunity() {
-        return opportunity;
-    }
-
-    public void setOpportunity(Long opportunity) {
-        this.opportunity = opportunity;
-    }
-
-    public Long getGuideId() {
-        return guideId;
-    }
-
-    public void setGuideId(Long guideId) {
-        this.guideId = guideId;
-    }
-
-    public String getMerchantName() {
-        return merchantName;
-    }
-
-    public void setMerchantName(String merchantName) {
-        this.merchantName = merchantName;
-    }
-
-    public Long getSorting() {
-        return sorting;
-    }
-
-    public void setSorting(Long sorting) {
-        this.sorting = sorting;
-    }
-
-    public String getH5Url() {
-        return h5Url;
-    }
-
-    public void setH5Url(String h5Url) {
-        this.h5Url = h5Url;
-    }
-
-    public String getOpportunityLabel() {
-        return opportunityLabel;
-    }
-
-    public void setOpportunityLabel(String opportunityLabel) {
-        this.opportunityLabel = opportunityLabel;
-    }
-
-    public List<TagsBean> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<TagsBean> tags) {
-        this.tags = tags;
-    }
-
-    public List<AdConfigs> getAdConfigs() {
-        return adConfigs;
-    }
-
-    public void setAdConfigs(List<AdConfigs> adConfigs) {
-        this.adConfigs = adConfigs;
-    }
-
+    @Data
     public static class TagsBean {
         /**
          * groupId : 611
@@ -178,31 +62,9 @@ public class GroupBean {
         private String remark;
         private String tagName;
 
-        public Long getGroupId() {
-            return groupId;
-        }
 
-        public void setGroupId(Long groupId) {
-            this.groupId = groupId;
-        }
-
-        public String getRemark() {
-            return remark;
-        }
-
-        public void setRemark(String remark) {
-            this.remark = remark;
-        }
-
-        public String getTagName() {
-            return tagName;
-        }
-
-        public void setTagName(String tagName) {
-            this.tagName = tagName;
-        }
     }
-
+    @Data
     public static class AdConfigs {
 
         /**
@@ -230,93 +92,6 @@ public class GroupBean {
         private String shadowRadius;
         private String imageUrl;
 
-        public Long getType() {
-            return type;
-        }
-
-        public void setType(Long type) {
-            this.type = type;
-        }
-
-        public Long getLocation() {
-            return location;
-        }
-
-        public void setLocation(Long location) {
-            this.location = location;
-        }
-
-        public Long getWidth() {
-            return width;
-        }
-
-        public void setWidth(Long width) {
-            this.width = width;
-        }
-
-        public Long getHeight() {
-            return height;
-        }
-
-        public void setHeight(Long height) {
-            this.height = height;
-        }
-
-        public String getPadding() {
-            return padding;
-        }
-
-        public void setPadding(String padding) {
-            this.padding = padding;
-        }
-
-        public String getMargin() {
-            return margin;
-        }
-
-        public void setMargin(String margin) {
-            this.margin = margin;
-        }
-
-        public Long getShadow() {
-            return shadow;
-        }
-
-        public void setShadow(Long shadow) {
-            this.shadow = shadow;
-        }
-
-        public String getShadowColor() {
-            return shadowColor;
-        }
-
-        public void setShadowColor(String shadowColor) {
-            this.shadowColor = shadowColor;
-        }
-
-        public String getShadowAlpha() {
-            return shadowAlpha;
-        }
-
-        public void setShadowAlpha(String shadowAlpha) {
-            this.shadowAlpha = shadowAlpha;
-        }
-
-        public String getShadowRadius() {
-            return shadowRadius;
-        }
-
-        public void setShadowRadius(String shadowRadius) {
-            this.shadowRadius = shadowRadius;
-        }
-
-        public String getImageUrl() {
-            return imageUrl;
-        }
-
-        public void setImageUrl(String imageUrl) {
-            this.imageUrl = imageUrl;
-        }
     }
 
 }

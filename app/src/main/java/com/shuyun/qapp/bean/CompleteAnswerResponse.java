@@ -8,11 +8,13 @@ import com.alibaba.fastjson.serializer.ToStringSerializer;
 
 import java.util.List;
 
+import lombok.Data;
+
 /**
  * Created by sunxiao on 2018/5/4.
  * 完成答题 返回数据
  */
-
+@Data
 public class CompleteAnswerResponse implements Parcelable {
     private Long total;//答题实际回答的数量
     private Long status;//答题的最终状态
@@ -29,7 +31,7 @@ public class CompleteAnswerResponse implements Parcelable {
     private Long beat;//击败多少人
     private Long beat0;//真实击败人次
     private Double beatRate;//击败的人次比例值
-
+    private List<PrizesBean> prizes;
     public  CompleteAnswerResponse(){
 
     }
@@ -89,24 +91,8 @@ public class CompleteAnswerResponse implements Parcelable {
         }
     };
 
-    public List<PrizesBean> getPrizes() {
-        return prizes;
-    }
 
-    public void setPrizes(List<PrizesBean> prizes) {
-        this.prizes = prizes;
-    }
-
-    private List<PrizesBean> prizes;
-
-    public Long getBeat0() {
-        return beat0;
-    }
-
-    public Double getBeatRate() {
-        return beatRate;
-    }
-
+    @Data
     public static class PrizesBean implements Parcelable {
         /**
          * showName : 现金
@@ -161,85 +147,7 @@ public class CompleteAnswerResponse implements Parcelable {
             }
         };
 
-        public String getName() {
-            return showName;
-        }
 
-        public void setName(String name) {
-            this.showName = name;
-        }
-
-        public Long getType() {
-            return type;
-        }
-
-        public void setType(Long type) {
-            this.type = type;
-        }
-
-        public Long getMode() {
-            return mode;
-        }
-
-        public void setMode(Long mode) {
-            this.mode = mode;
-        }
-
-        public String getPurpose() {
-            return purpose;
-        }
-
-        public void setPurpose(String purpose) {
-            this.purpose = purpose;
-        }
-
-        public String getMainImage() {
-            return mainImage;
-        }
-
-        public void setMainImage(String mainImage) {
-            this.mainImage = mainImage;
-        }
-
-        public String getLongImage() {
-            return LongImage;
-        }
-
-        public void setLongImage(String LongImage) {
-            this.LongImage = LongImage;
-        }
-
-        public String getShortImage() {
-            return shortImage;
-        }
-
-        public void setShortImage(String shortImage) {
-            this.shortImage = shortImage;
-        }
-
-        public Long getId() {
-            return id;
-        }
-
-        public void setId(Long id) {
-            this.id = id;
-        }
-
-        public Double getWorthLower() {
-            return worthLower;
-        }
-
-        public void setWorthLower(Double worthLower) {
-            this.worthLower = worthLower;
-        }
-
-        public Double getWorthUpper() {
-            return worthUpper;
-        }
-
-        public void setWorthUpper(Double worthUpper) {
-            this.worthUpper = worthUpper;
-        }
 
         @Override
         public int describeContents() {
@@ -260,58 +168,5 @@ public class CompleteAnswerResponse implements Parcelable {
             dest.writeDouble(worthUpper);
         }
     }
-
-    public Long getTotal() {
-        return total;
-    }
-
-    public Long getStatus() {
-        return status;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public Long getCorrect() {
-        return correct;
-    }
-
-    public Long getError() {
-        return error;
-    }
-
-    public Long getTimeout() {
-        return timeout;
-    }
-
-    public Double getAccuracy() {
-        return accuracy;
-    }
-
-    public Float getDifficulty() {
-        return difficulty;
-    }
-
-    public Long getResult() {
-        return result;
-    }
-
-    public Float getWorth() {
-        return worth;
-    }
-
-    public String getBulletin() {
-        return bulletin;
-    }
-
-    public List<MinePrize> getPrize() {
-        return prize;
-    }
-
-    public Long getBeat() {
-        return beat;
-    }
-
 
 }

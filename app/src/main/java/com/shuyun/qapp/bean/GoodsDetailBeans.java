@@ -2,6 +2,8 @@ package com.shuyun.qapp.bean;
 
 import java.util.List;
 
+import lombok.Data;
+
 /**
  * @ProjectName: 全民共进
  * @Package: com.shuyun.qapp.bean
@@ -10,6 +12,7 @@ import java.util.List;
  * @Author: ganquan
  * @CreateDate: 2019/3/28 16:56
  */
+@Data
 public class GoodsDetailBeans {
 
 
@@ -43,110 +46,8 @@ public class GoodsDetailBeans {
     private List<VideosBean> videos;
     private List<StandardsBean> standards;
 
-    public String getShortName() {
-        return shortName;
-    }
 
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPicture() {
-        return picture;
-    }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
-
-    public String getPurpose() {
-        return purpose;
-    }
-
-    public void setPurpose(String purpose) {
-        this.purpose = purpose;
-    }
-
-    public String getDetail() {
-        return detail;
-    }
-
-    public void setDetail(String detail) {
-        this.detail = detail;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public Long getBp() {
-        return bp;
-    }
-
-    public void setBp(Long bp) {
-        this.bp = bp;
-    }
-
-    public Long getInventory() {
-        return inventory;
-    }
-
-    public void setInventory(Long inventory) {
-        this.inventory = inventory;
-    }
-
-    public Long getMode() {
-        return mode;
-    }
-
-    public void setMode(Long mode) {
-        this.mode = mode;
-    }
-
-    public List<String> getPictures() {
-        return pictures;
-    }
-
-    public void setPictures(List<String> pictures) {
-        this.pictures = pictures;
-    }
-
-    public List<VideosBean> getVideos() {
-        return videos;
-    }
-
-    public void setVideos(List<VideosBean> videos) {
-        this.videos = videos;
-    }
-
-    public List<StandardsBean> getStandards() {
-        return standards;
-    }
-
-    public void setStandards(List<StandardsBean> standards) {
-        this.standards = standards;
-    }
-
+    @Data
     public static class VideosBean {
         /**
          * value : http://tanzi27niu.cdsb.mobi/wps/wp-content/uploads/2017/05/2017-05-17_17-33-30.mp4
@@ -158,31 +59,9 @@ public class GoodsDetailBeans {
         private String title;
         private String picture;
 
-        public String getValue() {
-            return value;
-        }
 
-        public void setValue(String value) {
-            this.value = value;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public String getPicture() {
-            return picture;
-        }
-
-        public void setPicture(String picture) {
-            this.picture = picture;
-        }
     }
-
+    @Data
     public static class StandardsBean {
         /**
          * label : 规格
@@ -194,30 +73,8 @@ public class GoodsDetailBeans {
         private String param;
         private List<StasBean> stas;
 
-        public String getLabel() {
-            return label;
-        }
 
-        public void setLabel(String label) {
-            this.label = label;
-        }
-
-        public String getParam() {
-            return param;
-        }
-
-        public void setParam(String param) {
-            this.param = param;
-        }
-
-        public List<StasBean> getStas() {
-            return stas;
-        }
-
-        public void setStas(List<StasBean> stas) {
-            this.stas = stas;
-        }
-
+        @Data
         public static class StasBean {
             /**
              * value : M
@@ -228,37 +85,7 @@ public class GoodsDetailBeans {
             private String color;
             private boolean selected = false;
 
-            public String getValue() {
-                return value;
-            }
 
-            public void setValue(String value) {
-                this.value = value;
-            }
-
-            public String getLabel() {
-                return label;
-            }
-
-            public void setLabel(String label) {
-                this.label = label;
-            }
-
-            public String getColor() {
-                return color;
-            }
-
-            public void setColor(String color) {
-                this.color = color;
-            }
-
-            public boolean isSelected() {
-                return selected;
-            }
-
-            public void setSelected(boolean selected) {
-                this.selected = selected;
-            }
         }
     }
 }

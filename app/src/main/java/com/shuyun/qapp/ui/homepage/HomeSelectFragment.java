@@ -164,7 +164,6 @@ public class HomeSelectFragment extends BaseFragment implements OnRemotingCallBa
     private NewHomeSelectBean.RecommendsBean recommendGroup1;
     private NewHomeSelectBean.RecommendsBean recommendGroup2;
     private int recommendIndex = 0;
-    private String recommendString = null;
     private int recommendWidth = 0, recommendHeight = 0;
 
     //常答题组

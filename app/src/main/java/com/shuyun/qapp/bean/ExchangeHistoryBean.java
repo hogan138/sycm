@@ -2,12 +2,15 @@ package com.shuyun.qapp.bean;
 
 import java.util.List;
 
+import lombok.Data;
+
 /**
  * 项目名称：QMGJ
  * 创建人：${ganquan}
  * 创建日期：2018/8/3 11:23
  * 兑换记录
  */
+@Data
 public class ExchangeHistoryBean {
 
 
@@ -25,54 +28,7 @@ public class ExchangeHistoryBean {
     private String mainPic;
     private List<TreasureUserChangeDataListBean> treasureUserChangeDataList;
 
-    public String getMainPic() {
-        return mainPic;
-    }
-
-    public void setMainPic(String mainPic) {
-        this.mainPic = mainPic;
-    }
-
-    public Long getScheduleId() {
-        return scheduleId;
-    }
-
-    public void setScheduleId(Long scheduleId) {
-        this.scheduleId = scheduleId;
-    }
-
-    public String getPrizeName() {
-        return prizeName;
-    }
-
-    public void setPrizeName(String prizeName) {
-        this.prizeName = prizeName;
-    }
-
-    public String getPrizePurpose() {
-        return prizePurpose;
-    }
-
-    public void setPrizePurpose(String prizePurpose) {
-        this.prizePurpose = prizePurpose;
-    }
-
-    public Long getScheduleStatus() {
-        return scheduleStatus;
-    }
-
-    public void setScheduleStatus(Long scheduleStatus) {
-        this.scheduleStatus = scheduleStatus;
-    }
-
-    public List<TreasureUserChangeDataListBean> getTreasureUserChangeDataList() {
-        return treasureUserChangeDataList;
-    }
-
-    public void setTreasureUserChangeDataList(List<TreasureUserChangeDataListBean> treasureUserChangeDataList) {
-        this.treasureUserChangeDataList = treasureUserChangeDataList;
-    }
-
+    @Data
     public static class TreasureUserChangeDataListBean {
         /**
          * changeTime : 1533017199000
@@ -88,44 +44,6 @@ public class ExchangeHistoryBean {
         private Long isMine;
         private Long isWin;
 
-        public Long getChangeTime() {
-            return changeTime;
-        }
 
-        public void setChangeTime(Long changeTime) {
-            this.changeTime = changeTime;
-        }
-
-        public String getUserAccount() {
-            return userAccount;
-        }
-
-        public void setUserAccount(String userAccount) {
-            this.userAccount = userAccount;
-        }
-
-        public String getTicketNum() {
-            return ticketNum;
-        }
-
-        public void setTicketNum(String ticketNum) {
-            this.ticketNum = ticketNum;
-        }
-
-        public Long getIsMine() {
-            return isMine;
-        }
-
-        public void setIsMine(Long isMine) {
-            this.isMine = isMine;
-        }
-
-        public Long getIsWin() {
-            return isWin;
-        }
-
-        public void setIsWin(Long isWin) {
-            this.isWin = isWin;
-        }
     }
 }

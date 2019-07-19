@@ -83,7 +83,7 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
             }
 
             //推荐标签
-            if (childrenBean.isRecommend()) {
+            if (childrenBean.getRecommend()) {
                 holder.recommendLogo.setVisibility(View.VISIBLE);
             } else {
                 holder.recommendLogo.setVisibility(View.GONE);
@@ -91,7 +91,7 @@ public class ChildrenGroupAdapter extends RecyclerView.Adapter<ChildrenGroupAdap
 
             //标签
             if (!EncodeAndStringTool.isStringEmpty(childrenBean.getRemark())) {
-                if (childrenBean.isRecommend()) {
+                if (childrenBean.getRecommend()) {
                     holder.tvTag.setVisibility(View.VISIBLE);
                     holder.tvTag1.setVisibility(View.GONE);
                     holder.tvTag.setText(childrenBean.getRemark().replaceAll(" ", "\n"));

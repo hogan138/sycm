@@ -2,6 +2,8 @@ package com.shuyun.qapp.bean;
 
 import java.util.List;
 
+import lombok.Data;
+
 /**
  * @ProjectName: 全民共进
  * @Package: com.shuyun.qapp.bean
@@ -10,19 +12,14 @@ import java.util.List;
  * @Author: ganquan
  * @CreateDate: 2019/3/25 10:31
  */
+@Data
 public class TaskBeans {
 
 
     private List<DatasBean> datas;
 
-    public List<DatasBean> getDatas() {
-        return datas;
-    }
 
-    public void setDatas(List<DatasBean> datas) {
-        this.datas = datas;
-    }
-
+    @Data
     public static class DatasBean {
         /**
          * tabTitle : 新手任务
@@ -32,22 +29,8 @@ public class TaskBeans {
         private String tabTitle;
         private List<TasksBean> tasks;
 
-        public String getTabTitle() {
-            return tabTitle;
-        }
 
-        public void setTabTitle(String tabTitle) {
-            this.tabTitle = tabTitle;
-        }
-
-        public List<TasksBean> getTasks() {
-            return tasks;
-        }
-
-        public void setTasks(List<TasksBean> tasks) {
-            this.tasks = tasks;
-        }
-
+        @Data
         public static class TasksBean {
             /**
              * taskId : 6514710403220639744
@@ -70,77 +53,7 @@ public class TaskBeans {
             private String h5Url;
             private String content;
 
-            public String getTaskId() {
-                return taskId;
-            }
 
-            public void setTaskId(String taskId) {
-                this.taskId = taskId;
-            }
-
-            public String getName() {
-                return name;
-            }
-
-            public void setName(String name) {
-                this.name = name;
-            }
-
-            public String getPicture() {
-                return picture;
-            }
-
-            public void setPicture(String picture) {
-                this.picture = picture;
-            }
-
-            public String getPurpose() {
-                return purpose;
-            }
-
-            public void setPurpose(String purpose) {
-                this.purpose = purpose;
-            }
-
-            public String getPrize() {
-                return prize;
-            }
-
-            public void setPrize(String prize) {
-                this.prize = prize;
-            }
-
-            public String getAction() {
-                return action;
-            }
-
-            public void setAction(String action) {
-                this.action = action;
-            }
-
-            public String getActionLabel() {
-                return actionLabel;
-            }
-
-            public void setActionLabel(String actionLabel) {
-                this.actionLabel = actionLabel;
-            }
-
-            public String getH5Url() {
-                return h5Url;
-            }
-
-            public void setH5Url(String h5Url) {
-                this.h5Url = h5Url;
-            }
-
-            public String getContent() {
-                return content;
-            }
-
-            public void setContent(String content) {
-                this.content = content;
-            }
         }
     }
 }

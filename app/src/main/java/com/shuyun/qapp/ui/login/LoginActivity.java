@@ -266,6 +266,7 @@ public class LoginActivity extends BaseActivity implements OnRemotingCallBackLis
                 if (checkPwd) {
                     CustomLoadingFactory factory = new CustomLoadingFactory();
                     LoadingBar.make(rlMain, factory).show();
+                    btnLogin.setEnabled(false);
 
                     String mdCode = encryptMD5ToString(phoneNum + encryptMD5ToString(password));
                     long curTime = System.currentTimeMillis();
@@ -486,11 +487,13 @@ public class LoginActivity extends BaseActivity implements OnRemotingCallBackLis
     @Override
     public void onCompleted(String action) {
         LoadingBar.cancel(rlMain);
+        btnLogin.setEnabled(true);
     }
 
     @Override
     public void onFailed(String action, String message) {
         LoadingBar.cancel(rlMain);
+        btnLogin.setEnabled(true);
     }
 
     @Override
@@ -511,8 +514,6 @@ public class LoginActivity extends BaseActivity implements OnRemotingCallBackLis
                 if (!EncodeAndStringTool.isStringEmpty(loginResp.getBoxId())) {
                     SharedPrefrenceTool.put(mContext, "boxId", loginResp.getBoxId());
                 }
-
-                btnLogin.setEnabled(false);
 
                 //阿里推送绑定别名
                 AliPushBind.bindPush();
@@ -542,6 +543,8 @@ public class LoginActivity extends BaseActivity implements OnRemotingCallBackLis
                 }, 10);
             }
         } else {
+            btnLogin.setEnabled(true);
+
             if ("TAU11".equals(response.getErr())) {
                 if (error == 0) {
                     error = 1;
