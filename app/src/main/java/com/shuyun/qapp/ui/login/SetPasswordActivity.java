@@ -153,11 +153,11 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
         if (pwd.getInputType() == type) {
             pwd.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
             pwd.setSelection(pwd.getText().length());
-            ivIsShowPwd.setImageResource(R.drawable.show_pwd);
+            ivIsShowPwd.setImageResource(R.mipmap.show_pwd);
         } else {
             pwd.setInputType(type);
             pwd.setSelection(pwd.getText().length());
-            ivIsShowPwd.setImageResource(R.drawable.no_show_pwd);
+            ivIsShowPwd.setImageResource(R.mipmap.no_show_pwd);
         }
     }
 
