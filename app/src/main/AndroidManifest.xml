@@ -243,10 +243,8 @@
         </provider> <!-- 答题对战首页 -->
         <activity
             android:name=".ui.against.MainAgainstActivity"
-            android:screenOrientation="portrait" /> <!-- 自由对战首页 -->
-        <activity
-            android:name=".ui.against.FreeMainActivity"
-            android:screenOrientation="portrait" /> <!-- 新版自由对战首页 -->
+            android:screenOrientation="portrait" />
+        <!-- 新版自由对战首页 -->
         <activity
             android:name=".ui.against.NewFreeMainActivity"
             android:screenOrientation="portrait" /> <!-- 自由对战题组详情 -->

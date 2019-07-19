@@ -11,12 +11,9 @@ import android.widget.TextView;
 
 import com.shuyun.qapp.R;
 import com.shuyun.qapp.bean.AnyPositionBean;
-import com.shuyun.qapp.bean.BannerBean;
 import com.shuyun.qapp.bean.GroupBean;
 import com.shuyun.qapp.bean.MarkBannerItem;
-import com.shuyun.qapp.bean.MarkBannerItem1;
 import com.shuyun.qapp.net.AppConst;
-import com.shuyun.qapp.ui.activity.ActivityFragment;
 import com.shuyun.qapp.view.AnyPositionImgManage;
 
 import java.util.ArrayList;
