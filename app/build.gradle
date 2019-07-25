@@ -46,33 +46,11 @@ android {
         }
 
     }
-    /*多渠道的一些配置 */
-    //关于多渠道打包的另一种配置可以参考另一篇文章：https://www.jianshu.com/p/332525b09a88
-//    productFlavors {
-//        tencent {
-//            applicationId "com.example.administrator.tcsharefood"
-//            dimension "pack"
-//            manifestPlaceholders = [appName: "tencent"]
-//        }
-//        baidu {
-//            applicationId "com.example.administrator.bdsharefood"
-//            dimension "pack"
-//            manifestPlaceholders = [appName: "baidu"]
-//        }
-//    }
+
 
     //读取签名配置文件
     getSigningProperties()
 
-
-    //自定义输出包名的设置
-//    applicationVariants.all { variant ->
-//        variant.outputs.all {
-//            // 输出apk名称为sharev1.0_tencent.apk
-//            def fileName = "share${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
-//            outputFileName = fileName
-//        }
-//    }
 
 
     buildTypes {
@@ -87,17 +65,7 @@ android {
         debug {
             signingConfig signingConfigs.release
         }
-        //输出类型
-//        applicationVariants.all {
-//            //判断是release还是debug版本
-//            def buildType = it.buildType.name
-//            //获取当前时间的"YYYY-MM-dd"格式。
-//            def createTime = new Date().format("YYYY-MM-dd", TimeZone.getTimeZone("GMT+08:00"))
-//            //如果是正式包,将其输入到指定文件夹
-//            if (buildType == "release") {
-//                it.getPackageApplicationProvider().outputDirectory = new File('C:\\out_apk' + "/${it.productFlavors[0].applicationId}/${createTime}")
-//            }
-//        }
+
     }
 
     sourceSets {//手动添加jniLibs在src/main/jniLibs时要加入
