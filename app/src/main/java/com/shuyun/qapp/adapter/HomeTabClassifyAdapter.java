@@ -3,6 +3,7 @@ package com.shuyun.qapp.adapter;
 import android.app.Activity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ public class HomeTabClassifyAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private Activity mContext;
     //题组分类集合
     private List<HomeTabContentBean.ContentsBean> contentsBeanList;
+    private int wdith = 0, height = 0; //宽高
 
     public HomeTabClassifyAdapter(List<HomeTabContentBean.ContentsBean> contentsBeanList, Activity mContext) {
         this.contentsBeanList = contentsBeanList;
@@ -54,7 +56,12 @@ public class HomeTabClassifyAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         final HomeTabContentBean.ContentsBean contentsBean = contentsBeanList.get(position);
         try {
             ViewGroup.LayoutParams bannerParams = ((MyViewHolder) holder).ivTopBg.getLayoutParams();
-            bannerParams.height = ConvertUtils.dp2px(contentsBean.getHead().getHeight());
+            //获取屏幕宽度
+            DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
+            //计算图片高度宽高比
+            wdith = (int) Math.ceil(dm.widthPixels);
+            height = (int) (Math.ceil(wdith * (420f / 750f)));
+            bannerParams.height = height;
             ((MyViewHolder) holder).ivTopBg.setLayoutParams(bannerParams);
             ImageLoaderManager.LoadImage(mContext, contentsBean.getHead().getPicture(), ((MyViewHolder) holder).ivTopBg, R.mipmap.zw01);
             final String action = contentsBean.getHead().getAction();

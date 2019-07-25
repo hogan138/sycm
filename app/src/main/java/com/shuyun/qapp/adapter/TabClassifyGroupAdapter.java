@@ -60,6 +60,7 @@ public class TabClassifyGroupAdapter extends RecyclerView.Adapter<TabClassifyGro
             wdith = (((int) Math.ceil(dm.widthPixels) - ConvertUtils.dp2px(5))) / 2;
             height = (int) (Math.ceil(wdith * (135f / 185f)));
             Params.height = height;
+
             holder.ivGroupBg.setLayoutParams(Params);
 
             ImageLoaderManager.LoadImage(mContext, dataBean.getPicture(), holder.ivGroupBg, R.mipmap.zw01);

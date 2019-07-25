@@ -75,7 +75,7 @@ public class PrizeAdapter extends RecyclerView.Adapter<PrizeAdapter.ViewHolder> 
         //显示到期时间
         if (!EncodeAndStringTool.isStringEmpty(minePrize.getExpireTime()) && !minePrize.getExpireTime().equals("0") && minePrize.getStatus() != 4) {
             holder.tvExpirationTime.setVisibility(View.VISIBLE);
-            String time = TimeTool.getTime1(minePrize.getExpireTime());
+            String time = TimeTool.getTimeMill(minePrize.getExpireTime());
             holder.tvExpirationTime.setText("到期日期：" + time);//格式化时间
         } else {
             holder.tvExpirationTime.setVisibility(View.GONE);

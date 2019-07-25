@@ -36,14 +36,7 @@ public class TimeTool {
      */
     public static String getTimeMill(String Time) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
-        Date date = null;
-        try {
-            date = format.parse(Time);
-        } catch (ParseException e) {
-            e.printStackTrace();
-
-        }
-        return date.toString();
+        return format.format(new Date(Long.valueOf(Time)));
     }
 
 
@@ -54,9 +47,8 @@ public class TimeTool {
      * @return
      */
     public static String getTime(String Time) {
-        Date currentTime = new Date(Long.parseLong(Time));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
-        return formatter.format(currentTime);
+        return formatter.format(new Date(Long.valueOf(Time)));
     }
 
     /**
@@ -66,9 +58,8 @@ public class TimeTool {
      * @return
      */
     public static String getTime1(String Time) {
-        Date currentTime = new Date(Long.parseLong(Time));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd", Locale.CHINA);
-        return formatter.format(currentTime);
+        return formatter.format(new Date(Long.valueOf(Time)));
     }
 
     /**
@@ -78,9 +69,8 @@ public class TimeTool {
      * @return
      */
     public static String getCommTime(String Time, String format) {
-        Date currentTime = new Date(Long.parseLong(Time));
         SimpleDateFormat formatter = new SimpleDateFormat(format, Locale.CHINA);
-        return formatter.format(currentTime);
+        return formatter.format(new Date(Long.valueOf(Time)));
     }
 
     /**
